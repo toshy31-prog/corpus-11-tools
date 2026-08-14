@@ -1,0 +1,7 @@
+interface:
+  display_name: "Center Detection"
+  short_description: "Identify effective centers of control through orchestration, veto, dependency, and coordination rather than titles alone. Use for organizations, networks, institutions, and indirec"
+  default_prompt: "Apply center-detection to this request."
+policy:
+  products: ["CHAT", "CODEX"]
+  allow_implicit_invocation: true

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Real Transformation Assessment"
+  short_description: "Assess whether a reform or transformation changes usable capacities, costs, recourse, traces, workarounds, reactivation, and reversibility rather than vocabulary or appearance alon"
+  default_prompt: "Apply real-transformation-assessment to this request."
+policy:
+  products: ["CHAT", "CODEX"]
+  allow_implicit_invocation: true

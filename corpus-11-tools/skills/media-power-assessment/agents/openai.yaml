@@ -1,0 +1,7 @@
+interface:
+  display_name: "Media Power Assessment"
+  short_description: "Assess material media power through selection, circulation, repetition, agenda control, access, and closure rather than content alone."
+  default_prompt: "Apply media-power-assessment to this request."
+policy:
+  products: ["CHAT", "CODEX"]
+  allow_implicit_invocation: true

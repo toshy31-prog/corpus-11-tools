@@ -1,0 +1,7 @@
+interface:
+  display_name: "Identify Reversal Condition"
+  short_description: "Identify the observable result or evidence that would force a conclusion, model, attribution, or theory to be revised or withdrawn."
+  default_prompt: "Apply identify-reversal-condition to this request."
+policy:
+  products: ["CHAT", "CODEX"]
+  allow_implicit_invocation: true

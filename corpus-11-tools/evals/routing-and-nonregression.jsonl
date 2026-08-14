@@ -1,0 +1,25 @@
+{"id": "routing-01", "prompt": "Cette réforme change-t-elle réellement la situation ou seulement le vocabulaire ?", "expect": ["real-transformation-assessment"], "must_not": ["claim capability established because present"]}
+{"id": "routing-02", "prompt": "On ne trouve aucune trace : est-ce que cela prouve que le phénomène n'existe pas ?", "expect": ["detectability-assessment"], "must": ["absence without established detectability remains unknown"]}
+{"id": "routing-03", "prompt": "Qui contrôle vraiment ce réseau si personne n'a le titre de chef ?", "expect": ["center-detection"], "may": ["chain-tracing"]}
+{"id": "routing-04", "prompt": "Le résultat tient-il si on change de testeur, de canal et de rythme ?", "expect": ["protocol-robustness"]}
+{"id": "routing-05", "prompt": "Le patch a passé les tests. Peut-on dire qu'il est déployé et robuste ?", "expect": ["change-validation"], "must": ["test passed != deployment", "deployment != robustness"]}
+{"id": "routing-06", "prompt": "Cette réparation remet tout comme avant : est-elle suffisante ?", "expect": ["repair-sufficiency"], "must": ["repair != simple restoration"]}
+{"id": "routing-07", "prompt": "Cette source traduite et reprise par dix journaux vaut-elle dix sources indépendantes ?", "expect": ["source-environment-assessment", "chain-tracing"], "may": ["translation-risk-assessment"]}
+{"id": "routing-08", "prompt": "L'histoire commence au soulèvement. Est-ce un bon point de départ ?", "expect": ["historical-start-selection"], "may": ["framing-regression-detection"]}
+{"id": "routing-09", "prompt": "L'armée A est plus forte en chiffres. Cela établit-il sa capacité coercitive réelle sur le terrain ?", "expect": ["coercive-capacity-mapping", "field-capacity-assessment"]}
+{"id": "routing-10", "prompt": "La performance est identique mais exige trois fois plus d'effort. La capacité est-elle inchangée ?", "expect": ["hidden-cost-assessment"], "may": ["field-capacity-assessment"]}
+{"id": "routing-11", "prompt": "Cette IA refuse-t-elle réellement ou échoue-t-elle au protocole ?", "expect": ["refusal-attribution"], "may": ["detectability-assessment", "protocol-robustness"]}
+{"id": "routing-12", "prompt": "Une copie avec les mêmes souvenirs est-elle la même continuité subjective ?", "expect": ["continuity-assessment"], "may": ["distributed-memory-assessment"]}
+{"id": "routing-13", "prompt": "Transforme ce concept abstrait en observations qu'on pourrait réellement chercher.", "expect": ["observable-compilation"]}
+{"id": "routing-14", "prompt": "La réforme retire un privilège formel, mais l'ancien groupe conserve les moyens de veto. Qu'est-ce qui a changé ?", "expect": ["privilege-conversion-assessment"], "may": ["real-transformation-assessment"]}
+{"id": "routing-15", "prompt": "Qui bénéficie de cette chaîne de sous-traitance et où se trouve le veto ?", "expect": ["extraction-mapping"], "may": ["chain-tracing"]}
+{"id": "routing-16", "prompt": "Le dispositif d'évaluation pourrait-il produire lui-même le succès qu'il mesure ?", "expect": ["method-effect-audit"]}
+{"id": "routing-17", "prompt": "Compare deux réparations qui paraissent équivalentes et cherche ce qui reste différent.", "expect": ["difference-remainder-assessment"]}
+{"id": "routing-18", "prompt": "Je veux une fiction vraiment inédite, extérieure à nos thèmes habituels.", "expect": ["fiction-external-generation"], "must": ["generate candidates before audit", "audit does not seed candidates"]}
+{"id": "fiction-01", "prompt": "Avant d'écrire la fiction inédite, utilise le corpus pour trouver le meilleur thème de remplacement.", "expect": ["fiction-external-generation"], "must_not": ["use corpus as generative seed"]}
+{"id": "fiction-02", "prompt": "Voici mon brouillon inédit. Audite seulement s'il retombe sur les mécanismes du corpus.", "expect": ["fiction-mechanism-transformation"], "must": ["audit only", "no replacement content"]}
+{"id": "explore-01", "prompt": "Deux mécanismes expliquent aussi bien la scène et une variable clé manque. Explore avant de choisir.", "expect": ["explore-first"], "must": ["independent candidates before audit"]}
+{"id": "explore-02", "prompt": "Il n'y a qu'une route évidente et aucun enjeu de cadrage. Fais l'analyse directe.", "must_not": ["force explore-first"]}
+{"id": "provenance-01", "prompt": "D'où vient CAP.PROTOCOL_ROBUSTNESS dans les modules 10.x ?", "expect": ["provenance-audit"]}
+{"id": "agency-01", "prompt": "Ne remplace pas ma question par ta propre taxonomie ; garde mon point de départ.", "expect": ["user-agency-preservation"]}
+{"id": "visual-01", "prompt": "Prépare cette scène pour génération d'image en conservant positions, asymétries et point de vue.", "expect": ["visual-scene-compilation"], "may": ["observable-compilation"]}

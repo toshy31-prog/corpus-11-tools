@@ -1,0 +1,7 @@
+interface:
+  display_name: "Consciousness Evidence Assessment"
+  short_description: "Assess evidence relevant to consciousness or interiority without over-attribution, including detectability and protocol robustness. Use for AI, animals, persons, or systems where c"
+  default_prompt: "Apply consciousness-evidence-assessment to this request."
+policy:
+  products: ["CHAT", "CODEX"]
+  allow_implicit_invocation: true

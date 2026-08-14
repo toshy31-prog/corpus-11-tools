@@ -1,0 +1,7 @@
+interface:
+  display_name: "Continuity Assessment"
+  short_description: "Assess subjective or functional continuity without equating memory, state copying, or support persistence with identity. Use for identity, copies, agents, restoration, or continuit"
+  default_prompt: "Apply continuity-assessment to this request."
+policy:
+  products: ["CHAT", "CODEX"]
+  allow_implicit_invocation: true

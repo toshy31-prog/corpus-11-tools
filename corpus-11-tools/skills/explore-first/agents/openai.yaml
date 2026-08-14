@@ -1,0 +1,7 @@
+interface:
+  display_name: "Explore First"
+  short_description: "Generate independent candidates, then audit and select"
+  default_prompt: "Explore independent candidates before auditing this problem."
+policy:
+  products: ["CHAT", "CODEX"]
+  allow_implicit_invocation: true

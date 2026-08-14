@@ -1,0 +1,7 @@
+interface:
+  display_name: "Chain Tracing"
+  short_description: "Trace ordered chains of action, transmission, responsibility, dependency, or provenance while bounding attribution. Use when downstream effects or intermediaries matter."
+  default_prompt: "Apply chain-tracing to this request."
+policy:
+  products: ["CHAT", "CODEX"]
+  allow_implicit_invocation: true

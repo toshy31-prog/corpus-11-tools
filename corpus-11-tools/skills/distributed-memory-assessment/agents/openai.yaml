@@ -1,0 +1,7 @@
+interface:
+  display_name: "Distributed Memory Assessment"
+  short_description: "Assess memory distributed across carriers, traces, environments, and reactivation channels without confusing it with subjective continuity."
+  default_prompt: "Apply distributed-memory-assessment to this request."
+policy:
+  products: ["CHAT", "CODEX"]
+  allow_implicit_invocation: true

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Change Validation"
+  short_description: "Distinguish proposed, written, tested, authorized, deployed, and re-observed change. Use for patches, reforms, model changes, deployments, and claims that something was fixed."
+  default_prompt: "Apply change-validation to this request."
+policy:
+  products: ["CHAT", "CODEX"]
+  allow_implicit_invocation: true

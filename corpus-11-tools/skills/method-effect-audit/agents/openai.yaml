@@ -1,0 +1,7 @@
+interface:
+  display_name: "Method Effect Audit"
+  short_description: "Audit whether the method, protocol, interface, evaluator, or intervention produces, masks, or replaces part of the object being assessed."
+  default_prompt: "Apply method-effect-audit to this request."
+policy:
+  products: ["CHAT", "CODEX"]
+  allow_implicit_invocation: true

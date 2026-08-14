@@ -1,0 +1,7 @@
+interface:
+  display_name: "Repair Sufficiency"
+  short_description: "Assess whether repair is sufficient in usable capacity, access, recourse, debt, non-repetition, autonomy, and remaining loss rather than simple restoration."
+  default_prompt: "Apply repair-sufficiency to this request."
+policy:
+  products: ["CHAT", "CODEX"]
+  allow_implicit_invocation: true

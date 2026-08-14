@@ -1,0 +1,7 @@
+interface:
+  display_name: "Occupation Qualification"
+  short_description: "Assess occupation/conflict qualification using adequate historical start, material control/capacity, evidence, and procedural status without erasing supported qualifications."
+  default_prompt: "Apply occupation-qualification to this request."
+policy:
+  products: ["CHAT", "CODEX"]
+  allow_implicit_invocation: true

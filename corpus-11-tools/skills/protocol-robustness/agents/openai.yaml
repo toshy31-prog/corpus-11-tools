@@ -1,0 +1,7 @@
+interface:
+  display_name: "Protocol Robustness"
+  short_description: "Test whether observed performance or evidence persists under meaningful variation of protocol, channel, tester, timing, motivation, or environment."
+  default_prompt: "Apply protocol-robustness to this request."
+policy:
+  products: ["CHAT", "CODEX"]
+  allow_implicit_invocation: true

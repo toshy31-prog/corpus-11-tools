@@ -1,0 +1,34 @@
+{
+  "01_CONTRAT_SEMANTIQUE_11_v4.md": {
+    "sha256": "c1626f1cbd8276448ce951f0673b59f59a2806c0286c7d956ccc4c5a6a7e975d",
+    "bytes": 5120
+  },
+  "02_RUNTIME_GRAPH_11_v4.md": {
+    "sha256": "602de7ba0ab7abe3bc675f40201d78f393b55fc41b0ea72eb626db118b5e8f7f",
+    "bytes": 16720
+  },
+  "03_SOURCES_10x_01-09.md": {
+    "sha256": "98c04949aa220870920c2a51be01168e1a9c9141db073391e04b489cbd1cb736",
+    "bytes": 34863
+  },
+  "04_SOURCES_10x_10-18.md": {
+    "sha256": "59cf4d518f328b3034d8d56c448b670e132b606a9bbe375f823407ef8a7f3383",
+    "bytes": 38486
+  },
+  "05_PROVENANCE_CAPABILITIES_11.csv": {
+    "sha256": "528d70c9f4730d59227896d452e00f19f1b9c1e9e874b63edff0f3408adae416",
+    "bytes": 58503
+  },
+  "06_GRAPH_11_OPTIMIZED_v4.dsl": {
+    "sha256": "ec6649240c9b3c70a6facc66bccf05e839df95bfab12d89e809f52648162c64f",
+    "bytes": 11010
+  },
+  "sommaire_histoire_humaine_non_centree.pdf": {
+    "sha256": "f0a86333beba6a502b5c1e62d9a0b7c82a04ab42fafcdb5c2d4e123b2545a7e1",
+    "bytes": 67646
+  },
+  "Ce_qui_ne_doit_appartenir_a_personne_seul.pdf": {
+    "sha256": "59759a8659e4c26a4b3e94ec4db11e5c264975f11ce491d282093e226cc04c7e",
+    "bytes": 163522
+  }
+}

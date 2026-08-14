@@ -1,0 +1,7 @@
+interface:
+  display_name: "Fiction Mechanism Transformation"
+  short_description: "Audit an already-written fiction draft for mechanism/form transformation and regression toward familiar corpus gravity. Audit only; never use it to invent replacement content."
+  default_prompt: "Apply fiction-mechanism-transformation to this request."
+policy:
+  products: ["CHAT", "CODEX"]
+  allow_implicit_invocation: false

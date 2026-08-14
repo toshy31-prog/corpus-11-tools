@@ -1,0 +1,7 @@
+interface:
+  display_name: "Corpus 11 — Routing"
+  short_description: "Route a request through the 11.x operational graph"
+  default_prompt: "Analyze this request with the Corpus 11 routing discipline."
+policy:
+  products: ["CHAT", "CODEX"]
+  allow_implicit_invocation: true

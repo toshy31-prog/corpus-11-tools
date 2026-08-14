@@ -1,0 +1,7 @@
+interface:
+  display_name: "Autonomous Capacity Gain"
+  short_description: "Assess whether an apparent improvement creates an autonomous, usable capacity rather than dependence or local adaptation. Use for gains, empowerment, autonomy, and durable capabili"
+  default_prompt: "Apply autonomous-capacity-gain to this request."
+policy:
+  products: ["CHAT", "CODEX"]
+  allow_implicit_invocation: true

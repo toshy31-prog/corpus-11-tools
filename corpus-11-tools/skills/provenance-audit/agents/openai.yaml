@@ -1,0 +1,7 @@
+interface:
+  display_name: "Corpus Provenance Audit"
+  short_description: "Trace 11.x objects back to 10.x source fragments"
+  default_prompt: "Audit the provenance of this Corpus 11 object or relation."
+policy:
+  products: ["CHAT", "CODEX"]
+  allow_implicit_invocation: true
