@@ -152,7 +152,13 @@ export async function executeRuleFamily(protocolLock, executionLock, outputDirec
   guard.authorize("apply_random_matched_rules"); guard.authorize("select_by_simplicity"); guard.authorize("audit_controls");
   const result = enumerateRuleFamily(config.width, config.relabeling, protocolLock.protocol.seed);
   const enumerationMismatches = Number(result.graphCount !== config.expectedGraphCount);
+  const controlFailure = enumerationMismatches + result.representationMismatches
+    + result.randomMatchingMismatches + result.extremeControlMismatches;
+  const familyClassificationCode = controlFailure > 0 ? 0
+    : result.commonCorePairs === 0 ? 2
+      : result.commonCoreAdvantage > 0 ? 1 : 0;
   const raw = sealRawResults(protocolLock, execution, { observables: {
+    family_classification_code: familyClassificationCode,
     selected_rule_id: result.selectedRule,
     exact_family_invariant_graphs: result.exactInvariantGraphs,
     common_core_graphs: result.commonCoreGraphs,

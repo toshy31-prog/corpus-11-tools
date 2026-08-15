@@ -21,4 +21,5 @@ test("small family universe passes controls", () => {
   assert.equal(result.representationMismatches, 0);
   assert.equal(result.randomMatchingMismatches, 0);
   assert.equal(result.extremeControlMismatches, 0);
+  assert.ok(Number.isInteger(result.commonCoreAdvantage));
 });
