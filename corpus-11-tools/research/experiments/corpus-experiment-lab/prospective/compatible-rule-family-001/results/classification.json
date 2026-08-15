@@ -1,0 +1,30 @@
+{
+  "evaluations": [
+    {
+      "actual": 0,
+      "expected": 2,
+      "id": "complete_convention_dependence",
+      "observableId": "family_classification_code",
+      "operator": "eq",
+      "outcome": "complete_convention_dependence",
+      "triggered": false
+    },
+    {
+      "actual": 0,
+      "expected": 0,
+      "id": "unknown_or_control_absorption",
+      "observableId": "family_classification_code",
+      "operator": "eq",
+      "outcome": "unknown",
+      "triggered": true
+    }
+  ],
+  "outcomes": [
+    "unknown"
+  ],
+  "protocolHash": "sha256:60c3f48eba8c96480847b3fccb45f5716746c5ce2de4dda64acd12252cc7cfa1",
+  "rawHash": "sha256:96c733ae48f09916205a8608e763ef5a73ee7dbd6b3f5b17ccddd773c42d1583",
+  "schema": "corpus-experiment-classification/v1",
+  "status": "reversal_triggered",
+  "classificationHash": "sha256:7b7f80ecf509e6fd75bb5908c43aac2c18fca325c66f68f1671955ba5ceb925f"
+}

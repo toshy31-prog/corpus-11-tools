@@ -1,0 +1,56 @@
+{
+  "access": {
+    "maxSteps": 6,
+    "operations": [
+      "enumerate_universe",
+      "apply_admissible_rules",
+      "compute_stable_core",
+      "apply_random_matched_rules",
+      "select_by_simplicity",
+      "audit_controls"
+    ],
+    "used": 6
+  },
+  "controls": {
+    "empty_complete_negative_controls": {
+      "mismatches": 0,
+      "passed": true
+    },
+    "exhaustive_universe": {
+      "graphCount": 32768,
+      "passed": true
+    },
+    "random_rule_matching": {
+      "mismatches": 0,
+      "passed": true
+    },
+    "representation_invariance": {
+      "mismatches": 0,
+      "passed": true
+    },
+    "simplicity_selection": {
+      "passed": true,
+      "selectedRule": "all_maximal"
+    }
+  },
+  "executionHash": "sha256:8babc5299fa7fbddc46171d59075a408b0b9b7d7b6c4bd027a4032c60587ef8c",
+  "observables": {
+    "common_core_advantage_over_random": -501,
+    "common_core_graphs": 1268,
+    "common_core_pairs_total": 3990,
+    "complete_convention_dependence_graphs": 30600,
+    "enumeration_mismatches": 0,
+    "exact_family_invariant_graphs": 1268,
+    "extreme_control_mismatches": 0,
+    "family_classification_code": 0,
+    "random_common_core_pairs_total": 4491,
+    "random_matching_mismatches": 0,
+    "representation_mismatches": 0,
+    "selected_rule_id": "all_maximal",
+    "selected_rule_pairs_outside_core": 120810,
+    "selected_rule_pairs_total": 124800
+  },
+  "protocolHash": "sha256:60c3f48eba8c96480847b3fccb45f5716746c5ce2de4dda64acd12252cc7cfa1",
+  "schema": "corpus-experiment-raw-result/v1",
+  "rawHash": "sha256:96c733ae48f09916205a8608e763ef5a73ee7dbd6b3f5b17ccddd773c42d1583"
+}
