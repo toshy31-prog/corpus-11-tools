@@ -1,0 +1,142 @@
+{
+  "schema": "corpus-experiment-protocol-lock/v1",
+  "protocolHash": "sha256:ea20865b179e39f07134ec9775a9b72c08fe54f9ccf8d47623b237f3db8af998",
+  "protocol": {
+    "alternatives": [
+      "The learned F_T-minimizing orders have no positive aggregate predictive advantage over independent random orders.",
+      "Mean held-out error is not nondecreasing across the preregistered noise levels.",
+      "The result depends on vertex labels or the generator fails to inject exactly the declared number of reversals."
+    ],
+    "analysis": {
+      "comparisonPlan": "Require strictly positive aggregate predictive advantage, zero adjacent monotonicity violations, zero representation mismatches and zero oracle mismatches. Apply only the four locked reversal conditions.",
+      "stoppingRule": "Execute exactly 48 independent training/test pairs at each of the four declared flip counts in one primary run. After sealing, permit one deterministic reconstruction solely for byte comparison; never add samples or change thresholds."
+    },
+    "classification": {
+      "allowedOutcomes": [
+        "predictive_component_not_supported",
+        "noise_ordering_prediction_not_supported",
+        "protocol_or_model_invalid",
+        "not_triggered",
+        "inconclusive"
+      ]
+    },
+    "controls": [
+      {
+        "id": "independent_random_order",
+        "purpose": "Test whether the learned order beats a seed-generated order independent of both tournaments."
+      },
+      {
+        "id": "representation_invariance",
+        "purpose": "Verify that transported vertex relabelling preserves both the training minimum and held-out score."
+      },
+      {
+        "id": "latent_order_generation",
+        "purpose": "Verify that each test tournament contains exactly the declared number of reversals relative to its latent order."
+      }
+    ],
+    "hypothesis": "Within the preregistered noisy latent-order family, an exact F_T-minimizing order learned from one tournament predicts an independent tournament better than an independent random order, and its mean held-out error is nondecreasing with the injected noise level.",
+    "model": {
+      "configuration": {
+        "experimentKind": "latent_order_predictive_validation",
+        "flipCounts": [
+          0,
+          3,
+          6,
+          9
+        ],
+        "relabeling": [
+          3,
+          6,
+          1,
+          5,
+          0,
+          2,
+          4
+        ],
+        "samplesPerNoise": 48,
+        "width": 7
+      },
+      "contentHash": "sha256:8cc356941c8849084e6d5ff628ddcd97aa10de01b8dae5f6f69e7ba0a9fd216e",
+      "id": "temporal-frustration-predictive-validation",
+      "version": "1.0.0"
+    },
+    "observables": [
+      {
+        "channel": "closed temporal predictive runner",
+        "id": "sample_records",
+        "measure": "training/test masks, latent order, fitted minimum and held-out scores for every pair"
+      },
+      {
+        "channel": "closed temporal predictive runner",
+        "id": "totals_by_noise",
+        "measure": "exact trained, control and oracle violation totals at every noise level"
+      },
+      {
+        "channel": "closed temporal predictive runner",
+        "id": "predictive_advantage_numerator",
+        "measure": "random-control violations minus trained-order violations over all held-out tournaments"
+      },
+      {
+        "channel": "closed temporal predictive runner",
+        "id": "monotonicity_violations",
+        "measure": "number of adjacent noise levels where mean trained held-out error decreases"
+      },
+      {
+        "channel": "closed temporal predictive runner",
+        "id": "representation_mismatches",
+        "measure": "number of samples changed by the preregistered transported relabelling"
+      },
+      {
+        "channel": "closed temporal predictive runner",
+        "id": "oracle_mismatches",
+        "measure": "number of test tournaments whose latent-order score differs from the injected flip count"
+      }
+    ],
+    "observer": {
+      "allowedOperations": [
+        "generate_pair",
+        "optimize_training_order",
+        "score_test_order",
+        "score_control_order",
+        "score_oracle_order",
+        "audit_representation"
+      ],
+      "maxSteps": 1152,
+      "successThreshold": 1
+    },
+    "protocolId": "temporal-predictive-prospective-001",
+    "reversalConditions": [
+      {
+        "id": "no_predictive_advantage",
+        "observableId": "predictive_advantage_numerator",
+        "operator": "lte",
+        "outcome": "predictive_component_not_supported",
+        "value": 0
+      },
+      {
+        "id": "heldout_error_not_monotone",
+        "observableId": "monotonicity_violations",
+        "operator": "gt",
+        "outcome": "noise_ordering_prediction_not_supported",
+        "value": 0
+      },
+      {
+        "id": "representation_control_failure",
+        "observableId": "representation_mismatches",
+        "operator": "gt",
+        "outcome": "protocol_or_model_invalid",
+        "value": 0
+      },
+      {
+        "id": "generator_control_failure",
+        "observableId": "oracle_mismatches",
+        "operator": "gt",
+        "outcome": "protocol_or_model_invalid",
+        "value": 0
+      }
+    ],
+    "schema": "corpus-experiment-protocol/v1",
+    "seed": 4242424242,
+    "version": "1.0.0"
+  }
+}
