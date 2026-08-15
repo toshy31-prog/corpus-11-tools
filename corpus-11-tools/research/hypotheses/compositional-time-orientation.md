@@ -13,12 +13,14 @@ active — spéculatif, mécanisme à formaliser ; aucune dérivation de la rela
 - **Attribution à la source :** la trace propose `Ω(A,B,C)` et un paramètre collectif `M`, en marquant explicitement ce saut comme fictionnel-théorique.
 - **Inférence :** le mécanisme est distinct du simple comptage de traces et formule un test clair d'invariance par changement de représentation.
 - **Démonstration disponible :** dans un modèle d'Ising déjà orienté, un couplage d'alignement peut ordonner des signes ; cela ne démontre ni l'origine des signes ni l'émergence du temps.
+- **Résultat fini exact :** un magma d'ordre trois non isomorphe à son opposé fournit deux secteurs relatifs invariants par renommage, malgré l'appariement de plusieurs résumés binaires déclarés.
 
 ## Observations défavorables
 
-- Aucun observable invariant n'est encore défini.
+- Aucun observable dynamique ou collectif reliant la non-auto-opposition à une orientation macroscopique n'est encore défini.
 - Une non-associativité peut provenir du choix de coordonnées ou de parenthésage.
 - Le modèle d'alignement suppose des degrés de liberté, un voisinage et une dynamique qui peuvent réintroduire le temps recherché.
+- La non-auto-opposition ne choisit aucun signe absolu et ne fournit ni dynamique ni lien physique ; elle établit une chiralité relative seulement.
 
 ## Hypothèses concurrentes
 
@@ -47,4 +49,4 @@ Spécifier une algèbre ou catégorie finie, ses équivalences et observables ; 
 
 ## Dernière mise à jour
 
-2026-08-15
+2026-08-15 — premier témoin fini de non-auto-opposition exécuté

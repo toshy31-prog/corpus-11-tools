@@ -6,17 +6,18 @@
 
 ## Statut
 
-suspended — **spéculatif**. Suspension maintenue tant qu'il n'existe pas à la fois un modèle fini explicite et un résultat exclusif discriminant.
+suspended — **spéculatif**. Un premier modèle fini explicite est désormais exécuté, mais aucun résultat exclusif discriminant n'est établi.
 
 ## Observations favorables
 
 - **Attribution à la source :** la trace propose `D={δ_i}` et une famille `C` d'ensembles compatibles, puis une table de lectures émergentes.
 - **Inférence :** le langage peut unifier des questions de substituabilité et de contextualité sans présupposer des objets nommés.
 - Aucune démonstration de co-émergence physique n'est disponible.
+- Deux complexes explicites à huit distinctions ont été entièrement énumérés avec `F_T`, `D_I` et `Δ` fixés avant calcul.
 
 ## Observations défavorables
 
-- Aucun complexe fini complètement spécifié n'existe dans l'état reconstruit.
+- Le premier modèle complet produit des différences directement traçables à la connexité et aux orientations d'entrée ; il ne démontre aucune émergence.
 - Aucune dynamique, mesure, équivalence ou observable exclusive n'est fixée.
 - Une classe trop expressive peut représenter n'importe quoi et devenir non falsifiable.
 
@@ -34,7 +35,7 @@ suspended — **spéculatif**. Suspension maintenue tant qu'il n'existe pas à l
 
 ## Condition de renversement
 
-Maintenir la suspension tant que modèle fini et résultat exclusif manquent. Requalifier comme langage non discriminant si, après formalisation, toute configuration cible peut être encodée sans exclusion testable. Ne pas rejeter sans ce résultat.
+Maintenir la suspension tant qu'un résultat exclusif manque. Requalifier comme langage non discriminant si, après formalisation, toute configuration cible peut être encodée sans exclusion testable. Ne pas rejeter sans ce résultat.
 
 ## Méthodes nécessaires
 
@@ -47,4 +48,4 @@ Suivre le protocole de `research/experiments/finite-compatible-distinctions-mode
 
 ## Dernière mise à jour
 
-2026-08-15
+2026-08-15 — premier modèle fini complet exécuté, résultat non exclusif

@@ -18,14 +18,14 @@ Corpus 11 Tools sert de jeu d'audit et de discrimination. Il ne fournit ni donn�
 
 ## Hypothèses actives
 
-1. Récupération contre désinscription : séparation structurelle-topologique reproduite sous protocole, mais encore réductible à des invariants standards.
-2. Orientation compositionnelle : chiralité ternaire spéculative, observable invariant encore absent.
-3. Frustration temporelle : mesure mathématique candidate de l'échec d'une projection scalaire.
-4. Invariants de factorisation : stabilité objectale candidate, distincte de `F_T`.
+1. Récupération contre désinscription : séparation structurelle-topologique reproduite sous protocole, mais encore réductible à des invariants standards ; le test à pertes de deux liens est négatif jusqu'à huit sommets.
+2. Orientation compositionnelle : une chiralité relative invariante existe dans un magma fini, sans signe absolu, dynamique ni interprétation physique.
+3. Frustration temporelle : deux tournois localement appariés ont des `F_T` différents, mais l'observable reste un invariant standard d'ordre global.
+4. Invariants de factorisation : un reste exact d'intersection triple existe à données marginales et deux à deux fixées ; la lecture objectale reste spéculative.
 
 ## Hypothèses suspendues
 
-Le complexe de distinctions compatibles reste spéculatif et suspendu jusqu'à l'existence conjointe d'un modèle fini intégralement spécifié et d'un résultat exclusif face à des contrôles concurrents.
+Le complexe de distinctions compatibles reste spéculatif et suspendu. Un premier modèle fini intégralement spécifié est maintenant exécuté, mais son résultat suit directement les entrées et n'est pas exclusif face aux contrôles concurrents.
 
 ## Hypothèses affaiblies
 
@@ -52,7 +52,12 @@ Aucune hypothèse du registre courant n'est rejetée. La prétention de nouveaut
 - Aucune représentation orthogonale réelle de dimension deux de `C6` n'apparie le profil fixe de l'action standard de `S3`. À `S3` fixé, changer de représentation change néanmoins `P_I` : l'effet n'est pas une propriété du groupe seul.
 - À Hamming, excentricité, profondeur, travail et invariants locaux fixés, deux arbres laissent `9/5` et `10/5` traces réactivables en moyenne après perte uniforme d'une arête ; le résidu est leur profil de coupes enracinées.
 - Deux actions fidèles abéliennes `V4/C4` de même ordre, dimension et profil fixe marginal donnent des `P_I` différents. L'incidence paire-à-paire des sous-espaces fixes détermine l'écart.
-- Aucun complexe fini de distinctions compatibles n'est actuellement spécifié.
+- Aucun reste à deux pertes n'a été trouvé à profil d'une perte fixé parmi tous les arbres enracinés étiquetés à sept et huit sommets.
+- Un magma d'ordre trois non isomorphe à son opposé établit deux secteurs relatifs invariants par renommage.
+- Deux tournois appariés sur séquence de scores et triangles cycliques ont `F_T=1/15` et `2/15`.
+- Deux triplets de matrices signées appariés jusqu'aux intersections deux à deux ont des intersections triples de dimensions `0` et `1`.
+- Deux complexes complets à huit distinctions ont été exécutés ; leurs différences sont injectées par la connexité et l'orientation des entrées.
+- Deux complétions admissibles du jouet historique à huit triplets donnent des distributions différentes, ce qui établit la non-identifiabilité de ses nombres à partir du texte disponible.
 
 ## Démonstrations limitées aux jouets
 
@@ -66,16 +71,17 @@ Aucune hypothèse du registre courant n'est rejetée. La prétention de nouveaut
 
 ## Tests discriminants prioritaires
 
-1. Préenregistrer le profil vectoriel de désinscription — profondeur, travail, coupes résiduelles, charge et robustesse — puis tester s'il apporte un ordre non réductible à une collection déclarée d'invariants standards.
-2. Définir un observable ternaire invariant et le comparer à des modèles binaires appariés.
-3. Énumérer des hypergraphes finis avec certificats exacts de `F_T` et contrôles sans ordre injecté.
-4. Ne rouvrir le fil holonomique qu'avec un nouvel observable préenregistré, distinct de `P_I`, susceptible de discriminer composition ou intersections d'ordre supérieur.
-5. Spécifier puis exécuter le modèle fini préenregistré avant toute levée de suspension du complexe.
+1. Tester le profil de désinscription sous ordres asynchrones ou ports multiples ; ne plus étendre la même recherche à deux pertes sans nouvelle prédiction.
+2. Ajouter une dynamique au témoin non-auto-opposé et tester si une orientation collective apparaît sans signe injecté.
+3. Étendre le contrôle de `F_T` à des hypergraphes ternaires dont l'ordre n'est pas inscrit dans les entrées.
+4. Tester la stabilité du reste d'intersection triple sous changement de base et familles de transports non sélectionnées après résultat.
+5. Ne rouvrir le fil holonomique qu'avec un nouvel observable préenregistré, distinct de `P_I`, susceptible de discriminer composition ou intersections d'ordre supérieur.
+6. Chercher un second complexe fini dont une relation non injectée échoue dans un contrôle apparié.
 
 ## Blocages
 
-Absence de spécification finie complète, d'observables empiriques, de comparaison quantitative exclusive et de protocole reproductible pour le jouet à huit triplets. Le profil de désinscription connu reste une compilation d'invariants standards. Le fil `P_I` a atteint sa condition d'arrêt d'attribution au niveau de l'incidence paire-à-paire.
+Absence de données empiriques, de canal reliant les observables au temps physique et de comparaison quantitative exclusive. Le profil de désinscription connu reste une compilation d'invariants standards. Le jouet historique à huit triplets est non identifiable sans son graphe et ses transports. Le fil `P_I` a atteint sa condition d'arrêt d'attribution au niveau de l'incidence paire-à-paire.
 
 ## Prochaine action
 
-Préenregistrer le profil vectoriel de désinscription et sa condition de nouveauté avant un nouveau calcul. Ne pas prolonger `P_I` sans nouvel observable indépendant ; maintenir la suspension du complexe de distinctions compatibles.
+Tester une perturbation réellement nouvelle du profil de désinscription, puis construire un contrôle ternaire sans ordre injecté. Appliquer le protocole empirique seulement à un dispositif contrôlé ; maintenir inconnue toute portée physique sans canal de détection. Ne pas prolonger `P_I` sans nouvel observable indépendant.

@@ -15,6 +15,7 @@ active — séparation opérationnelle et dépendance au champ topologique repro
 - **Test apparié exact :** pour la même largeur, les mêmes entrées et les mêmes lectures/resets terminaux, `(b,0,...,0)` donne `(C_info,C_erase)=(1,1)` tandis que `(b,b,...,b)` donne `(1,N)` pour `N=2..8`.
 - **Test topologique exact :** deux arbres enracinés appariés sur largeur, états terminaux, distance de Hamming, nombre d'arêtes, séquence de degrés, degré du port et travail ont la même récupération, mais des profondeurs minimales d'effacement `2` et `3`.
 - **Test de robustesse exact :** à profondeur et excentricité également fixées, deux arbres fortement appariés laissent en moyenne `9/5` et `10/5` traces réactivables après la perte uniforme d'une arête.
+- **Test négatif préenregistré :** à profil complet des pertes d'une arête fixé, aucune paire séparée par les pertes de deux arêtes n'existe parmi les `7^5` puis `8^6` arbres enracinés étiquetés parcourus.
 - **Inférence :** Corpus 11 Tools fournit un audit utile : présence d'une capacité, exécution d'un test et robustesse ne sont pas substituables, comme récupération locale et restauration globale ne le sont pas.
 
 ## Observations défavorables
@@ -24,6 +25,7 @@ active — séparation opérationnelle et dépendance au champ topologique repro
 - Dans la paire appariée exécutée, `C_erase` est exactement la distance de Hamming terminale ; aucune nouveauté par rapport à cette quantité standard n'est donc établie.
 - Dans la paire à Hamming fixé, la profondeur d'effacement est exactement l'excentricité du port ; le résidu structurel reste donc réductible à un invariant standard de graphe.
 - À excentricité fixée, la charge résiduelle est exactement le profil des tailles de coupes enracinées à une arête ; le nouveau résidu reste lui aussi un invariant standard de graphe.
+- L'extension directe aux pertes de deux arêtes n'a produit aucun reste aux tailles sept et huit sous l'appariement préenregistré ; agrandir encore sans changer de perturbation n'est plus prioritaire.
 - Les notions voisines (récupération, scrambling, écho de Loschmidt, entropie) peuvent absorber tout le contenu distinctif.
 
 ## Hypothèses concurrentes
@@ -53,4 +55,4 @@ Définir familles d'entrées, contrefactuel, tolérance, accès et coût ; const
 
 ## Dernière mise à jour
 
-2026-08-15 — robustesse du champ à excentricité fixée exécutée
+2026-08-15 — recherche à pertes de deux liens exécutée jusqu'à huit sommets

@@ -2,7 +2,7 @@
 
 ## Statut
 
-Protocole préenregistré, non exécuté. Il ne constitue pas encore le modèle fini demandé et ne lève pas la suspension de l'hypothèse-horizon.
+Protocole préenregistré, puis exécuté sur une première paire minimale de complexes à huit distinctions. Le modèle est complet, mais son résultat est non exclusif et ne lève pas la suspension de l'hypothèse-horizon.
 
 ## Question discriminante
 
@@ -10,7 +10,8 @@ Une famille finie de compatibilités, fixée sans utiliser les résultats, produ
 
 ## Séparation des énoncés
 
-- **Observation :** aucun fichier de données, graphe fini complet ou résultat d'énumération n'est présent au 2026-08-15.
+- **Observation initiale :** aucun fichier de données, graphe fini complet ou résultat d'énumération n'était présent avant le test de déblocage du 2026-08-15.
+- **Observation actuelle :** une paire complète est figée dans `finite_compatible_model_input.py` et exécutée par `execute_finite_compatible_models.py`.
 - **Attribution :** la source recommande 8–20 distinctions, trois observables indépendantes et des tests de représentation.
 - **Hypothèse testée :** des motifs émergents non triviaux peuvent résulter des seules compatibilités.
 - **Inférence autorisée :** seulement après contrôles prévus.
@@ -50,3 +51,7 @@ Un résultat est « exclusif » seulement si une relation quantitative ou une co
 ## Usage de Corpus 11 Tools
 
 Employer le paquet comme jeu d'audit : provenance des entrées, séparation capacité/exécution/robustesse, graphe de dépendances et non-régression. Ne pas en dériver les mécanismes candidats et ne pas le présenter comme donnée physique.
+
+## Premier résultat
+
+Le cycle de huit donne `F_T=4/24`, `D_I=0`, `Δ=0/8`; l'union de deux cycles de quatre donne `F_T=8/24`, `D_I=0`, `Δ=0/8`. La différence suit directement les entrées et échoue donc au critère d'exclusivité. Le blocage « modèle fini absent » est levé ; le blocage « résultat exclusif absent » demeure.
