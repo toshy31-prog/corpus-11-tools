@@ -1,0 +1,59 @@
+{
+  "schema": "corpus-experiment-protocol/v1",
+  "protocolId": "temporal-seeded-sample-001",
+  "version": "1.0.0",
+  "hypothesis": "Among 32 seed-selected tournaments on seven vertices, at least one has an exact minimum feedback-arc count of three or more, while declared representation controls produce zero mismatches.",
+  "alternatives": [
+    "Every sampled tournament has an exact minimum feedback-arc count below three.",
+    "Vertex relabelling or global relation reversal changes the exact minimum."
+  ],
+  "model": {
+    "id": "temporal-frustration-seeded-sample",
+    "version": "1.0.0",
+    "contentHash": "sha256:fa09d7b87544b207f2e32a732afc4527bf58d3effb7d540f992763fce6bdf3d8",
+    "configuration": {
+      "experimentKind": "seeded_tournament_exploration",
+      "width": 7,
+      "sampleCount": 32,
+      "generator": {
+        "name": "lcg32",
+        "multiplier": 1664525,
+        "increment": 1013904223
+      },
+      "relabeling": [2, 5, 1, 6, 0, 4, 3]
+    }
+  },
+  "observables": [
+    { "id": "sample_records", "measure": "mask, local summary and three exact minima per sample", "channel": "locked temporal adapter" },
+    { "id": "frustration_histogram", "measure": "counts by exact minimum backward-edge value", "channel": "locked temporal adapter" },
+    { "id": "maximum_backward_edges", "measure": "maximum exact minimum backward-edge count in the sample", "channel": "locked temporal adapter" },
+    { "id": "mean_backward_edges_numerator", "measure": "sum of exact minimum backward-edge counts", "channel": "locked temporal adapter" },
+    { "id": "representation_mismatches", "measure": "total relabelling and reversal mismatches", "channel": "locked temporal adapter" }
+  ],
+  "controls": [
+    { "id": "relabel_invariance", "purpose": "Verify exact frustration is invariant under the preregistered vertex permutation." },
+    { "id": "reversal_invariance", "purpose": "Verify exact frustration is invariant when every directed relation is reversed." }
+  ],
+  "observer": {
+    "allowedOperations": ["inspect_local_summary", "optimize_scalar_order"],
+    "maxSteps": 128,
+    "successThreshold": 1
+  },
+  "reversalConditions": [
+    { "id": "sample_maximum_below_prediction", "observableId": "maximum_backward_edges", "operator": "lt", "value": 3, "outcome": "distribution_prediction_not_supported" },
+    { "id": "representation_control_failure", "observableId": "representation_mismatches", "operator": "gt", "value": 0, "outcome": "protocol_or_model_not_supported" }
+  ],
+  "seed": 3141592653,
+  "analysis": {
+    "stoppingRule": "Execute exactly 32 LCG-generated masks once; no extension after observing the histogram.",
+    "comparisonPlan": "Report the full histogram and maximum; require both representation controls to have zero mismatches."
+  },
+  "classification": {
+    "allowedOutcomes": [
+      "distribution_prediction_not_supported",
+      "protocol_or_model_not_supported",
+      "not_triggered",
+      "inconclusive"
+    ]
+  }
+}
