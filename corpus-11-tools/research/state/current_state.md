@@ -18,11 +18,10 @@ Corpus 11 Tools sert de jeu d'audit et de discrimination. Il ne fournit ni donn�
 
 ## Hypothèses actives
 
-1. Récupération contre désinscription : séparation opérationnelle à tester sur architectures appariées.
+1. Récupération contre désinscription : séparation structurelle-topologique reproduite sous protocole, mais encore réductible à des invariants standards.
 2. Orientation compositionnelle : chiralité ternaire spéculative, observable invariant encore absent.
 3. Frustration temporelle : mesure mathématique candidate de l'échec d'une projection scalaire.
 4. Invariants de factorisation : stabilité objectale candidate, distincte de `F_T`.
-5. Co-émergence par holonomie `S3` : **modèle-jouet** fini seulement, sans extrapolation physique.
 
 ## Hypothèses suspendues
 
@@ -33,6 +32,8 @@ Le complexe de distinctions compatibles reste spéculatif et suspendu jusqu'à l
 - « Les traces font le temps » : trop proche de cadres connus et insuffisamment discriminant.
 - Profondeur d'inscription comme horloge : non monotone en général.
 - Premier couplage direct temps–objet : risque de programmer la co-émergence.
+- Attribution de la co-augmentation qualitative du jouet `S3` à la non-commutativité : un contrôle abélien `C6` apparié la reproduit.
+- Co-émergence par holonomie `S3` : requalifiée comme illustration exacte de l'incidence des sous-espaces fixes ; aucun mécanisme propre à `S3` ou à la non-commutativité n'est établi.
 
 Ces formulations sont affaiblies, non rejetées comme classes entières sans résultat discriminant.
 
@@ -45,6 +46,12 @@ Aucune hypothèse du registre courant n'est rejetée. La prétention de nouveaut
 - La source est une trace de recherche et marque explicitement ses limites.
 - Les résultats numériques du jouet à huit triplets ne sont pas reproductibles avec les seules spécifications rapportées.
 - Le jouet `S3` permet des comptages exacts sous ses hypothèses explicites.
+- Deux circuits appariés ont la même récupération `C_info=1` mais des désinscriptions `C_erase=1` et `C_erase=N` ; dans ce protocole, la différence reste exactement réductible à la distance de Hamming terminale.
+- Le contrôle abélien `C6` retrouve le même `P_T` que `S3` et une croissance de `P_I` sous poids de l'identité ; la formule exacte de `P_I` diffère.
+- À distance de Hamming terminale fixée, deux arbres enracinés fortement appariés ont des profondeurs minimales d'effacement `2` et `3` ; la différence est exactement leur excentricité enracinée.
+- Aucune représentation orthogonale réelle de dimension deux de `C6` n'apparie le profil fixe de l'action standard de `S3`. À `S3` fixé, changer de représentation change néanmoins `P_I` : l'effet n'est pas une propriété du groupe seul.
+- À Hamming, excentricité, profondeur, travail et invariants locaux fixés, deux arbres laissent `9/5` et `10/5` traces réactivables en moyenne après perte uniforme d'une arête ; le résidu est leur profil de coupes enracinées.
+- Deux actions fidèles abéliennes `V4/C4` de même ordre, dimension et profil fixe marginal donnent des `P_I` différents. L'incidence paire-à-paire des sous-espaces fixes détermine l'écart.
 - Aucun complexe fini de distinctions compatibles n'est actuellement spécifié.
 
 ## Démonstrations limitées aux jouets
@@ -59,16 +66,16 @@ Aucune hypothèse du registre courant n'est rejetée. La prétention de nouveaut
 
 ## Tests discriminants prioritaires
 
-1. Construire deux circuits à récupération égale et désinscription différente sous contrôles identiques.
+1. Préenregistrer le profil vectoriel de désinscription — profondeur, travail, coupes résiduelles, charge et robustesse — puis tester s'il apporte un ordre non réductible à une collection déclarée d'invariants standards.
 2. Définir un observable ternaire invariant et le comparer à des modèles binaires appariés.
 3. Énumérer des hypergraphes finis avec certificats exacts de `F_T` et contrôles sans ordre injecté.
-4. Reproduire le comptage `S3`, puis le comparer à des groupes abéliens et représentations alternatives.
+4. Ne rouvrir le fil holonomique qu'avec un nouvel observable préenregistré, distinct de `P_I`, susceptible de discriminer composition ou intersections d'ordre supérieur.
 5. Spécifier puis exécuter le modèle fini préenregistré avant toute levée de suspension du complexe.
 
 ## Blocages
 
-Absence de spécification finie complète, d'observables empiriques, de comparaison quantitative exclusive et de protocole reproductible pour le jouet à huit triplets.
+Absence de spécification finie complète, d'observables empiriques, de comparaison quantitative exclusive et de protocole reproductible pour le jouet à huit triplets. Le profil de désinscription connu reste une compilation d'invariants standards. Le fil `P_I` a atteint sa condition d'arrêt d'attribution au niveau de l'incidence paire-à-paire.
 
 ## Prochaine action
 
-Implémenter séparément l'énumération exacte du jouet `S3` et un premier circuit récupération/désinscription ; conserver le complexe de distinctions compatibles au stade de protocole jusqu'à satisfaction de ses deux critères de levée.
+Préenregistrer le profil vectoriel de désinscription et sa condition de nouveauté avant un nouveau calcul. Ne pas prolonger `P_I` sans nouvel observable indépendant ; maintenir la suspension du complexe de distinctions compatibles.

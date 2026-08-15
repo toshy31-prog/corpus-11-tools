@@ -6,18 +6,24 @@
 
 ## Statut
 
-active — **modèle-jouet exclusivement**, algébriquement testable ; ni nouvelle physique, ni théorie de jauge fondamentale.
+weakened — **illustration exacte exclusivement**. `P_I` est attribuable à l'incidence des sous-espaces fixes de l'action pondérée ; aucun mécanisme spécifique à `S3` ou à la non-commutativité n'est établi.
 
 ## Observations favorables
 
 - **Démonstration dans le jouet :** dans la représentation plane du triangle, l'identité fixe deux dimensions, une rotation non triviale zéro et une réflexion une.
 - **Démonstration dans le jouet :** avec un poids `q=e^K` pour l'identité et deux boucles indépendantes, le comptage donne `P_T=((q+2)/(q+5))²` et `P_I=(q²+6q+3)/(q+5)²` sous les conventions de la source.
+- **Classification finie :** aucune représentation orthogonale réelle de dimension deux de `C6` ne reproduit le profil fixe `(2:1,1:3,0:2)` ni le numérateur `q²+6q+3` de l'action standard de `S3`.
+- **Contrôle d'incidence :** deux actions fidèles abéliennes de `V4` et `C4`, appariées sur ordre, dimension et profil fixe marginal, donnent des numérateurs `q²+6q+3` et `q²+6q+9` ; l'incidence paire-à-paire, pas la non-commutativité, explique la différence.
 - **Inférence limitée :** la non-commutativité mémorise l'ordre et peut séparer parité globale et invariant interne.
 
 ## Observations défavorables
 
 - Indépendance des boucles, poids de Gibbs et représentation sont choisis.
 - Favoriser `H=e` favorise presque par définition plusieurs propriétés de l'identité.
+- Un contrôle `C6` apparié reproduit exactement `P_T` et fait lui aussi croître `P_I` avec le poids de l'identité : la co-augmentation qualitative n'est pas spécifique à la non-commutativité.
+- La différence restante de `P_I` peut venir des points fixes des réflexions de la représentation de `S3`, absents dans la représentation plane fidèle par rotations de `C6`.
+- À groupe `S3` fixé, les autres représentations réelles de dimension deux donnent `P_I=1` ou `P_I=P_T` : la non-commutativité seule ne détermine pas l'observable.
+- Une fois l'incidence paire-à-paire et les poids appariés, `P_I` est forcé par sa définition ; ce même observable ne peut plus révéler un reste de structure de groupe.
 - Aucun passage à une limite, observable empirique ou résultat exclusif face à une jauge discrète connue n'existe.
 
 ## Hypothèses concurrentes
@@ -47,4 +53,4 @@ Requalifier comme simple illustration si l'énumération contredit les formules 
 
 ## Dernière mise à jour
 
-2026-08-15
+2026-08-15 — requalifié après contrôle d'incidence `V4/C4`
