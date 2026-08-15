@@ -7,6 +7,10 @@ import sys
 root = Path(__file__).resolve().parents[1]
 errors: list[str] = []
 manifest = root / ".codex-plugin" / "plugin.json"
+governance = root / "skills" / "corpus-11-routing" / "references" / "epistemic-governance.md"
+routing_skill = root / "skills" / "corpus-11-routing" / "SKILL.md"
+eval_file = root / "evals" / "routing-and-nonregression.jsonl"
+inventory_file = root / "docs" / "inventory.json"
 NON_CAPABILITY_SKILLS = {
     "corpus-11-routing",
     "corpus-context-library",
@@ -14,6 +18,67 @@ NON_CAPABILITY_SKILLS = {
     "fiction-external-generation",
     "provenance-audit",
 }
+
+required_governance_invariants = {
+    "SELECTION_CRITERION != SYSTEM_PROPERTY",
+    "MODEL_PRIMITIVE != SYSTEM_INTERNAL",
+    "SHORT_CODE != STRUCTURAL_COMPRESSION",
+    "REVERSIBLE_CHOICE != STRUCTURAL_EVIDENCE",
+    "OBSERVED_FIT != INTERNALITY",
+    "PAIRWISE_WIN != UNIQUE_SELECTION",
+    "EQUIVALENT_SURVIVORS != UNIQUE_WINNER",
+    "AUDIT_CAN_REJECT != AUDIT_CAN_SEED_LAW",
+}
+required_epistemic_evals = {f"epistemic-{number:02d}" for number in range(1, 7)}
+
+if not governance.is_file():
+    errors.append("missing epistemic governance reference")
+else:
+    governance_text = governance.read_text(encoding="utf-8")
+    for invariant in sorted(required_governance_invariants):
+        if invariant not in governance_text:
+            errors.append(f"epistemic governance missing invariant: {invariant}")
+
+if not routing_skill.is_file() or "references/epistemic-governance.md" not in routing_skill.read_text(
+    encoding="utf-8"
+):
+    errors.append("routing skill does not load epistemic governance")
+
+eval_ids: list[str] = []
+if not eval_file.is_file():
+    errors.append("missing routing eval file")
+else:
+    for number, line in enumerate(eval_file.read_text(encoding="utf-8").splitlines(), 1):
+        if not line.strip():
+            continue
+        try:
+            record = json.loads(line)
+        except json.JSONDecodeError as exc:
+            errors.append(f"routing eval line {number}: invalid JSON: {exc}")
+            continue
+        eval_id = record.get("id")
+        if not isinstance(eval_id, str) or not eval_id:
+            errors.append(f"routing eval line {number}: missing id")
+        else:
+            eval_ids.append(eval_id)
+if len(eval_ids) != len(set(eval_ids)):
+    errors.append("duplicate routing eval IDs")
+missing_epistemic_evals = required_epistemic_evals - set(eval_ids)
+if missing_epistemic_evals:
+    errors.append(f"missing epistemic evals: {sorted(missing_epistemic_evals)}")
+
+if not inventory_file.is_file():
+    errors.append("missing package inventory")
+else:
+    try:
+        inventory = json.loads(inventory_file.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        errors.append(f"invalid package inventory JSON: {exc}")
+    else:
+        if inventory.get("eval_count") != len(eval_ids):
+            errors.append(
+                "inventory eval_count does not match routing/non-regression eval file"
+            )
 
 
 def parse_minimal_scalar(value: str):
@@ -174,3 +239,6 @@ if errors:
         print(" -", error)
     sys.exit(1)
 print(f"PASS: {len(names)} skills; {len(capability_ids)} unique capabilities validated")
+print(
+    f"PASS: epistemic governance linked; {len(eval_ids)} routing/non-regression evals validated"
+)

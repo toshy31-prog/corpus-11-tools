@@ -11,6 +11,7 @@ Plugin supplémentaire construit à partir de l’architecture 11.x fournie. Il 
 - 1 skill de provenance/backlinks 10.x.
 - 1 bibliothèque contextuelle explicite pour les deux ouvrages PDF.
 - Evals de routage et de non-régression.
+- Garde de gouvernance épistémique séparant critères de sélection, rôles des lois, frontière de neutralité et propriétés attribuées au système.
 - Outils déterministes de validation de paquet, contrôle de graphe et lecture de provenance.
 
 Les capabilities restent des possibles comportementaux sous conditions. Les fichiers `SKILL.md` sont des wrappers d’invocation : ils ne redéfinissent pas une capability comme algorithme.

@@ -1,6 +1,6 @@
 # État courant de la recherche
 
-Dernière mise à jour : 2026-08-15
+Dernière mise à jour : 2026-08-16
 
 ## Question centrale
 
@@ -15,6 +15,20 @@ Quelles structures minimales permettent de distinguer récupération et désinsc
 - **Démonstration** : conséquence formelle de définitions explicites, dont la portée reste celle du modèle.
 
 Corpus 11 Tools sert de jeu d'audit et de discrimination. Il ne fournit ni données physiques ni validation d'une nouvelle physique.
+
+La gouvernance distingue désormais trois axes indépendants : statut scientifique
+d'une proposition, rôle épistémique d'une loi et cycle de vie d'un changement.
+Une convention descriptive, une règle ajoutée au modèle, une primitive déclarée,
+une candidate interne au système et une contrainte observée ne sont pas des
+synonymes ni des promotions automatiques.
+
+Un critère de sélection — simplicité, compression, invariance, portée,
+prédictivité ou robustesse — n'est pas une propriété du système sans
+discrimination indépendante. Un choix n'est neutre que s'il est réversible,
+conserve l'espace des complétions, ne crée pas de différence observable et ne
+sélectionne aucune structure. Toute prétention de compression doit compter le
+décodeur, les paramètres, les exceptions, le domaine, l'information partagée et
+le certificat de complétude.
 
 ## Hypothèses actives
 
@@ -93,4 +107,12 @@ Absence de données matérielles, de mesure énergétique étalonnée, de canal 
 
 ## Prochaine action
 
-Garder `core/` et la gouvernance gelés. Le prochain test de frustration doit opposer prospectivement `F_T` à un prédicteur de degrés fixé avant résultat, puis employer une famille sans ordre générateur. Pour récupération/désinscription, brancher ensuite le même contrat sur un petit réseau matériel. Ne modifier le cœur que face à un besoin générique observé, notamment l'asynchronie matérielle. Maintenir inconnue toute portée physique sans canal de détection.
+Garder `core/` et la gouvernance consolidée gelés après validation. Les futures
+expériences doivent rendre séparément le statut scientifique, le rôle de la loi,
+la base de sélection, l'information ajoutée, le discriminant indépendant et la
+condition de renversement. Le prochain test de frustration doit opposer
+prospectivement `F_T` à un prédicteur de degrés fixé avant résultat, puis employer
+une famille sans ordre générateur. Pour récupération/désinscription, brancher
+ensuite le même contrat sur un petit réseau matériel. Ne modifier le cœur que
+face à un besoin générique observé, notamment l'asynchronie matérielle. Maintenir
+inconnue toute portée physique sans canal de détection.
