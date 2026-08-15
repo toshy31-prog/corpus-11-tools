@@ -6,7 +6,7 @@
 
 ## Statut
 
-active — composante prédictive hors ajustement réétablie mais requalifiée comme dépendante de l'ordre commun injecté ; interprétation temporelle et physique toujours spéculative.
+active — capacité prédictive mathématique conservée dans le modèle testé ; aucune émergence n'est démontrée ; le signal dépendait principalement de l'ordre commun injecté par le générateur.
 
 ## Observations favorables
 
