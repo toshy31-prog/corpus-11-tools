@@ -23,10 +23,12 @@ Les événements suivants sont silencieux :
 
 Aucune source sous research/sources/ ne doit être modifiée automatiquement.
 
-La publication automatique canonique est `scripts/publish_research_cycle.sh`.
-Elle exige un index initial vide, limite l'indexation à l'allowlist de recherche,
-et refuse toute modification, suppression, création, renommage ou remplacement
-sous `research/sources/`.
+Le cycle automatique local canonique est `scripts/run_research_cycle.sh`. Après
+un postflight `CHANGES_READY`, il crée un unique commit sur une branche locale
+`autoresearch/<horodatage>`, mémorise la branche et le hash, puis revient sur
+`main`. Il ne pousse jamais. Il exige un index initial vide, limite l'indexation
+à l'allowlist de recherche et refuse toute modification, suppression, création,
+renommage ou remplacement sous `research/sources/`.
 
 Le PDF canonique est
 `research/sources/Trace_complete_hypothese_temps_recherche.pdf`. La copie de

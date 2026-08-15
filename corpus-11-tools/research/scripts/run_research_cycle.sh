@@ -10,6 +10,9 @@ MODE="${1:-preflight}"
 POSTFLIGHT_SUCCEEDED=0
 POSTFLIGHT_STAMP_STATE=""
 POSTFLIGHT_TIMESTAMP_TMP=""
+LOCAL_RESULT="$(git rev-parse --git-path corpus11-autoresearch-local-result)"
+AUTORESEARCH_BRANCH=""
+STAGING_STARTED=0
 
 . "$RESEARCH/scripts/git_automation_guard.sh"
 cd "$ROOT"
@@ -27,6 +30,59 @@ validate_all() {
   python3 "$ROOT/corpus-11-tools/tools/validate_package.py"
   python3 "$ROOT/corpus-11-tools/tools/check_graph.py"
   git diff --check
+}
+
+unique_autoresearch_branch() {
+  local stamp="${CORPUS_AUTORESEARCH_TIMESTAMP:-$(date +%Y%m%d-%H%M%S)}"
+  local candidate="autoresearch/$stamp"
+  local suffix=1
+
+  while git show-ref --verify --quiet "refs/heads/$candidate"; do
+    candidate="autoresearch/$stamp-$suffix"
+    suffix=$((suffix + 1))
+  done
+  printf '%s\n' "$candidate"
+}
+
+return_to_synchronized_main() {
+  git switch -q main
+  corpus_require_clean_worktree
+  corpus_require_main_publish_context
+  if [ "$(git rev-parse HEAD)" != "$(git rev-parse refs/remotes/origin/main)" ]; then
+    echo "ERROR: main is not synchronized with origin/main after local commit" >&2
+    return 52
+  fi
+}
+
+create_local_autoresearch_commit() {
+  local commit_hash
+  local commit_date
+
+  AUTORESEARCH_BRANCH="$(unique_autoresearch_branch)"
+  git switch -q -c "$AUTORESEARCH_BRANCH"
+
+  validate_all
+  corpus_validate_pending_paths
+  STAGING_STARTED=1
+  corpus_stage_allowlist
+  corpus_verify_staged_diff
+
+  if [ -n "$(git diff --name-only)" ] || [ -n "$(git ls-files --others --exclude-standard)" ]; then
+    echo "ERROR: unstaged or untracked entries remain after allowlisted staging" >&2
+    git status --short >&2
+    return 34
+  fi
+  corpus_verify_staged_diff
+  commit_date="$(date +%F)"
+  git commit -m "Autoresearch ${commit_date}: update research state"
+  STAGING_STARTED=0
+  commit_hash="$(git rev-parse HEAD)"
+  printf '%s\n%s\n' "$AUTORESEARCH_BRANCH" "$commit_hash" > "$LOCAL_RESULT"
+
+  return_to_synchronized_main
+  printf 'LOCAL_BRANCH: %s\n' "$AUTORESEARCH_BRANCH"
+  printf 'LOCAL_COMMIT: %s\n' "$commit_hash"
+  echo "NO_PUSH"
 }
 
 require_main_synchronized() {
@@ -117,6 +173,13 @@ run_postflight() {
   cleanup_postflight() {
     local status=$?
     trap - EXIT
+    if [ "$status" -ne 0 ] && [ "$STAGING_STARTED" -eq 1 ]; then
+      git reset -q || true
+    fi
+    if [ "$status" -ne 0 ] && [ -n "$AUTORESEARCH_BRANCH" ] \
+      && [ "$(git branch --show-current)" = "$AUTORESEARCH_BRANCH" ]; then
+      git switch -q main || true
+    fi
     if [ "$POSTFLIGHT_SUCCEEDED" -ne 1 ]; then
       restore_stamp_state "$POSTFLIGHT_STAMP_STATE" || true
     fi
@@ -158,6 +221,7 @@ run_postflight() {
     mv -- "$POSTFLIGHT_TIMESTAMP_TMP" "$STAMP"
     POSTFLIGHT_TIMESTAMP_TMP=""
     echo "CHANGES_READY"
+    create_local_autoresearch_commit
   fi
 
   rm -f -- "$PREFLIGHT_STATE" "$STAMP_BACKUP"

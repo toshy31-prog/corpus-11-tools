@@ -26,6 +26,7 @@ make_repo() {
   REMOTE="$TEMP_ROOT/$name.git"
   mkdir -p "$REPO"
   (cd "$ROOT" && tar -cf - corpus-11-tools) | (cd "$REPO" && tar -xf -)
+  rm -f -- "$REPO/corpus-11-tools/research/state/last_automation_run.txt"
   git -C "$REPO" init -q
   git -C "$REPO" config user.name "Corpus Adversarial Test"
   git -C "$REPO" config user.email "corpus-adversarial@example.invalid"
@@ -169,6 +170,96 @@ if [ "$paths_missing" -eq 0 ]; then
 else
   record 1 "preflight exposes required semantic paths"
 fi
+
+make_repo local-no-change
+before_head="$(git -C "$REPO" rev-parse HEAD)"
+before_branches="$(git -C "$REPO" for-each-ref --format='%(refname)' refs/heads)"
+(cd "$REPO" && ./corpus-11-tools/research/scripts/run_research_cycle.sh preflight) \
+  >"$TEMP_ROOT/local-no-change-pre.out" 2>&1
+(cd "$REPO" && ./corpus-11-tools/research/scripts/run_research_cycle.sh postflight) \
+  >"$TEMP_ROOT/local-no-change-post.out" 2>&1
+after_branches="$(git -C "$REPO" for-each-ref --format='%(refname)' refs/heads)"
+if grep -qx NO_CHANGE "$TEMP_ROOT/local-no-change-post.out" \
+  && [ "$before_head" = "$(git -C "$REPO" rev-parse HEAD)" ] \
+  && [ "$before_branches" = "$after_branches" ]; then
+  record 0 "NO_CHANGE => no branch and no commit"
+else
+  record 1 "NO_CHANGE => no branch and no commit"
+fi
+
+make_repo local-changes-ready
+sources_before="$(git -C "$REPO" ls-tree -r HEAD -- corpus-11-tools/research/sources)"
+remote_before="$(git --git-dir="$REMOTE" rev-parse refs/heads/main)"
+(cd "$REPO" && ./corpus-11-tools/research/scripts/run_research_cycle.sh preflight) >/dev/null
+printf '%s\n' '# local commit fixture' >> \
+  "$REPO/corpus-11-tools/research/notes/2026-08-15-source-reconstruction.md"
+(cd "$REPO" && CORPUS_AUTORESEARCH_TIMESTAMP=20260815-120000 \
+  ./corpus-11-tools/research/scripts/run_research_cycle.sh postflight) \
+  >"$TEMP_ROOT/local-ready.out" 2>&1
+local_commit="$(git -C "$REPO" rev-parse refs/heads/autoresearch/20260815-120000)"
+if grep -qx CHANGES_READY "$TEMP_ROOT/local-ready.out" \
+  && grep -qx NO_PUSH "$TEMP_ROOT/local-ready.out" \
+  && [ "$(git -C "$REPO" branch --show-current)" = main ] \
+  && [ "$(git -C "$REPO" rev-parse HEAD)" = "$(git -C "$REPO" rev-parse refs/remotes/origin/main)" ] \
+  && [ "$(git --git-dir="$REMOTE" rev-parse refs/heads/main)" = "$remote_before" ] \
+  && [ -z "$(git -C "$REPO" status --porcelain)" ] \
+  && [ "$(git -C "$REPO" ls-tree -r "$local_commit" -- corpus-11-tools/research/sources)" = "$sources_before" ]; then
+  record 0 "CHANGES_READY => local commit, NO_PUSH, clean synchronized main, sources intact"
+else
+  record 1 "CHANGES_READY => local commit, NO_PUSH, clean synchronized main, sources intact"
+fi
+git -C "$REPO" branch -D autoresearch/20260815-120000 >/dev/null
+
+make_repo local-validation-failure
+(cd "$REPO" && ./corpus-11-tools/research/scripts/run_research_cycle.sh preflight) >/dev/null
+printf '%s\n' '# invalid outside allowlist' > "$REPO/outside.txt"
+set +e
+(cd "$REPO" && CORPUS_AUTORESEARCH_TIMESTAMP=20260815-120001 \
+  ./corpus-11-tools/research/scripts/run_research_cycle.sh postflight) >/dev/null 2>&1
+failure_status=$?
+set -e
+if [ "$failure_status" -ne 0 ] \
+  && ! git -C "$REPO" show-ref --verify --quiet refs/heads/autoresearch/20260815-120001 \
+  && git -C "$REPO" diff --cached --quiet \
+  && [ -f "$REPO/outside.txt" ]; then
+  record 0 "outside allowlist => refused with no commit and user change preserved"
+else
+  record 1 "outside allowlist => refused with no commit and user change preserved"
+fi
+
+make_repo validator-failure-no-commit
+(cd "$REPO" && ./corpus-11-tools/research/scripts/run_research_cycle.sh preflight) >/dev/null
+printf '\n## Condition de renversement\n\n' >> \
+  "$REPO/corpus-11-tools/research/hypotheses/temporal-frustration.md"
+set +e
+(cd "$REPO" && CORPUS_AUTORESEARCH_TIMESTAMP=20260815-120002 \
+  ./corpus-11-tools/research/scripts/run_research_cycle.sh postflight) >/dev/null 2>&1
+failure_status=$?
+set -e
+if [ "$failure_status" -ne 0 ] \
+  && ! git -C "$REPO" show-ref --verify --quiet refs/heads/autoresearch/20260815-120002 \
+  && git -C "$REPO" diff --cached --quiet; then
+  record 0 "validation failure => no commit"
+else
+  record 1 "validation failure => no commit"
+fi
+
+make_repo branch-collision
+git -C "$REPO" branch autoresearch/20260815-120003
+collision_head="$(git -C "$REPO" rev-parse refs/heads/autoresearch/20260815-120003)"
+(cd "$REPO" && ./corpus-11-tools/research/scripts/run_research_cycle.sh preflight) >/dev/null
+printf '%s\n' '# collision fixture' >> \
+  "$REPO/corpus-11-tools/research/notes/2026-08-15-source-reconstruction.md"
+(cd "$REPO" && CORPUS_AUTORESEARCH_TIMESTAMP=20260815-120003 \
+  ./corpus-11-tools/research/scripts/run_research_cycle.sh postflight) >/dev/null
+if [ "$(git -C "$REPO" rev-parse refs/heads/autoresearch/20260815-120003)" = "$collision_head" ] \
+  && git -C "$REPO" show-ref --verify --quiet refs/heads/autoresearch/20260815-120003-1; then
+  record 0 "branch collision => existing branch preserved and unique branch created"
+else
+  record 1 "branch collision => existing branch preserved and unique branch created"
+fi
+git -C "$REPO" branch -D autoresearch/20260815-120003 \
+  autoresearch/20260815-120003-1 >/dev/null
 
 make_repo validators
 mv "$REPO/corpus-11-tools/skills/change-validation/references/capability.md" \
