@@ -126,3 +126,9 @@ Quand l'utilisateur écrit exactement un de ces raccourcis :
 3. utiliser `state/current_state.md` comme état opérationnel ;
 4. respecter toutes les protections de ce fichier ;
 5. ne charger que les capacités susceptibles de modifier conclusion, attribution, confiance, test, priorité ou renversement.
+
+## Automatisation
+
+Pour tout run planifié ou automatique, lire également `AUTOMATION.md`.
+
+Les règles de silence, notification et protection qui y figurent s'appliquent par défaut.
