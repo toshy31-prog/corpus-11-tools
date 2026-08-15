@@ -1,0 +1,10 @@
+{
+  "status": "not_triggered",
+  "failedMetrics": [],
+  "conditions": [
+    "The two preregistered triplets no longer share all marginal and pairwise fixed dimensions.",
+    "Their total fixed dimensions cease to differ between zero and one.",
+    "The fixed-dimension profile changes under reordering or invertible basis change."
+  ],
+  "scope": "Finite linear-algebra result reproduced; objecthood and physical relevance remain unestablished."
+}

@@ -1,0 +1,203 @@
+{
+  "schema": "corpus-experiment-results/v1",
+  "plugin": {
+    "id": "factorization-invariants",
+    "version": "1.0.0",
+    "title": "Factorization invariants",
+    "observer": {
+      "allowedOperations": [
+        "inspect_transport",
+        "compute_fixed_space",
+        "intersect_fixed_spaces"
+      ],
+      "maxSteps": 48,
+      "successThreshold": 1
+    },
+    "system": "A finite three-dimensional vector space with declared transport matrices attached to admissible factorization labels.",
+    "states": "An ordered presentation of transport matrices; order is representational and not part of the invariant.",
+    "operationsDescription": [
+      "load a preregistered transport family"
+    ],
+    "perturbationsDescription": [
+      "reorder factorization labels",
+      "apply an exact invertible basis change"
+    ],
+    "observablesDescription": [
+      "marginal fixed dimensions",
+      "pairwise intersection dimensions",
+      "total intersection dimension"
+    ],
+    "controlsDescription": [
+      "matched lower-order exhaustive search",
+      "factorization reordering",
+      "exact change of basis"
+    ],
+    "conventions": {
+      "factorizationLabel": "The finite test represents each factorization only by its declared transport matrix.",
+      "invariant": "The observable is the exact dimension of the common fixed subspace.",
+      "arithmetic": "Ranks are determined by nonzero integer minors; no floating tolerance is used.",
+      "order": "Transport list order and engine journal order are provenance, not scientific inputs."
+    },
+    "reversalConditions": [
+      "The two preregistered triplets no longer share all marginal and pairwise fixed dimensions.",
+      "Their total fixed dimensions cease to differ between zero and one.",
+      "The fixed-dimension profile changes under reordering or invertible basis change."
+    ]
+  },
+  "baselineCommit": "ab5c76f786442b902b5eb9ff1911bb7300f5ae39",
+  "coreHashes": {
+    "classifier.mjs": "cb72edb3b6ad8395b4fab911f5b3219558cde22d3f792f851b06eb962eaa01e0",
+    "contracts.mjs": "f70e9f081f5d1fb0c7692437708fe3afb7a1cdd7f954ebe7af603e43d78e0710",
+    "control-runner.mjs": "40dccd728b4e983832f28700a40462adc6e4f6abaebd9e4839002a048e79be84",
+    "engine.mjs": "0cc433991498edf76f2c73ad0c9571c0c841f184a60d6f71fee72d2e359acc8d",
+    "reproducibility.mjs": "1b0f09a5dfe3e13df90b3ca79af3e327fe00353a7b3eb4848195ab45dd9a543d"
+  },
+  "controls": [
+    {
+      "plugin": "factorization-invariants",
+      "pluginVersion": "1.0.0",
+      "control": "exhaustive_higher_order_remainder",
+      "input": {},
+      "result": {
+        "dimension": 3,
+        "catalogSize": 48,
+        "tripletsSearched": 17296,
+        "matchedKeysWithMultipleTripleDimensions": 1,
+        "selected": {
+          "lowerOrder": {
+            "marginal": [
+              2,
+              2,
+              2
+            ],
+            "pairwise": [
+              1,
+              1,
+              1
+            ]
+          },
+          "indices": [
+            [
+              3,
+              5,
+              15
+            ],
+            [
+              3,
+              5,
+              17
+            ]
+          ],
+          "tripleDimensions": [
+            0,
+            1
+          ]
+        },
+        "reobserved": [
+          {
+            "indices": [
+              3,
+              5,
+              15
+            ],
+            "profile": {
+              "marginal": [
+                2,
+                2,
+                2
+              ],
+              "pairwise": [
+                1,
+                1,
+                1
+              ],
+              "total": 0
+            }
+          },
+          {
+            "indices": [
+              3,
+              5,
+              17
+            ],
+            "profile": {
+              "marginal": [
+                2,
+                2,
+                2
+              ],
+              "pairwise": [
+                1,
+                1,
+                1
+              ],
+              "total": 1
+            }
+          }
+        ]
+      },
+      "resultHash": "fnv1a64:876f56cb5f15f065"
+    },
+    {
+      "plugin": "factorization-invariants",
+      "pluginVersion": "1.0.0",
+      "control": "representation_audit",
+      "input": {},
+      "result": {
+        "original": {
+          "marginal": [
+            2,
+            2,
+            2
+          ],
+          "pairwise": [
+            1,
+            1,
+            1
+          ],
+          "total": 1
+        },
+        "reordered": {
+          "marginal": [
+            2,
+            2,
+            2
+          ],
+          "pairwise": [
+            1,
+            1,
+            1
+          ],
+          "total": 1
+        },
+        "changedBasis": {
+          "marginal": [
+            2,
+            2,
+            2
+          ],
+          "pairwise": [
+            1,
+            1,
+            1
+          ],
+          "total": 1
+        },
+        "checks": {
+          "reorderingPreservesProfile": true,
+          "basisChangePreservesProfile": true,
+          "observationsDoNotMutateState": true
+        }
+      },
+      "resultHash": "fnv1a64:77817e6487d1afde"
+    }
+  ],
+  "classification": {
+    "architecture": "supported",
+    "historicalResult": "reproduced",
+    "hypothesis": "unknown",
+    "reason": "The finite remainder is exact, but objecthood and physical relevance are not tested by this migration."
+  },
+  "comparisonHash": "fnv1a64:3b9eac5fe91f5623",
+  "allMatched": true
+}

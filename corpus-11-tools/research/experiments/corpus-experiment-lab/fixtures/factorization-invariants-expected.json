@@ -1,0 +1,17 @@
+{
+  "exhaustive": {
+    "dimension": 3,
+    "catalog_size": 48,
+    "triplets_searched": 17296,
+    "discriminating_keys": 1,
+    "marginal": [2, 2, 2],
+    "pairwise": [1, 1, 1],
+    "indices": [[3, 5, 15], [3, 5, 17]],
+    "triple_dimensions": [0, 1]
+  },
+  "representation_audit": {
+    "reordering_preserves_profile": true,
+    "basis_change_preserves_profile": true,
+    "observations_do_not_mutate_state": true
+  }
+}

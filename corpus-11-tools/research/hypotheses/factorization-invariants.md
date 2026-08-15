@@ -13,6 +13,8 @@ active — construction mathématique candidate ; lien au monde physique non ét
 - **Attribution à la source :** la trace définit quatre phases logiques selon `F_T = 0/>0` et `D_I = 0/>0`.
 - **Démonstration :** pour des matrices explicites, l'intersection des noyaux de `U_F - Id` calcule exactement `I`.
 - **Test exhaustif :** deux triplets de matrices de permutations signées ont les mêmes dimensions fixes marginales `(2,2,2)` et deux à deux `(1,1,1)`, mais des intersections triples de dimensions `0` et `1`.
+- **Portabilité architecturale :** le contrôle est réobservé comme troisième module, sans modifier `core/`, avec 17/17 attentes conformes sur les `17 296` triplets du catalogue.
+- **Audit de représentation :** réordonner les factorisations et conjuguer tous les transports par un changement de base inversible préservent exactement les profils `(2,2,2)`, `(1,1,1)` et le reste triple.
 - **Inférence :** la séparation des deux observables empêche de définir l'objet par la temporalité que l'on veut expliquer.
 
 ## Observations défavorables
@@ -21,6 +23,7 @@ active — construction mathématique candidate ; lien au monde physique non ét
 - Le premier jouet aurait maintenu `D_I = 1` indépendamment de l'orientation ; ces valeurs restent à reproduire.
 - Stabilité sous factorisation peut être une symétrie ordinaire renommée.
 - Le reste d'ordre trois est obtenu dans une famille de matrices choisie pour sa calculabilité ; aucune nécessité physique de ces transports n'est établie.
+- La migration démontre que le moteur peut porter ce calcul sans traces ni séquence temporelle ; elle ne renforce pas l'identification de l'intersection à un objet physique.
 
 ## Hypothèses concurrentes
 
@@ -40,7 +43,7 @@ Affaiblir si les invariants disparaissent sous toute équivalence naturelle ; re
 
 ## Méthodes nécessaires
 
-Fixer factorisations et foncteurs de transport avant calcul ; algèbre linéaire exacte ; tests de changement de base ; contrôles randomisés et ablations ; comparaison aux invariants de jauge et secteurs connus.
+Fixer factorisations et foncteurs de transport avant calcul ; algèbre linéaire exacte ; tests de changement de base ; contrôles randomisés et ablations ; comparaison aux invariants de jauge et secteurs connus. Le module utilise les mineurs entiers exacts et traite ordre de présentation et journal d'exécution comme provenance seulement.
 
 ## Sources
 
@@ -49,4 +52,4 @@ Fixer factorisations et foncteurs de transport avant calcul ; algèbre linéaire
 
 ## Dernière mise à jour
 
-2026-08-15 — reste d'intersection d'ordre trois exécuté
+2026-08-15 — reste d'ordre trois réobservé comme troisième module sans modification du cœur

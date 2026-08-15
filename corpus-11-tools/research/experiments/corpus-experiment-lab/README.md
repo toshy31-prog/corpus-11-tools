@@ -34,6 +34,12 @@ The migration intentionally exposes two formerly implicit choices: historical re
 node runners/temporal-frustration-nonregression.mjs
 ```
 
+`plugins/factorization-invariants.mjs` is the third-domain test. It uses exact finite linear algebra, fixed-subspace intersections, factorization relabelling and basis changes without trace or temporal-sequence semantics. See `contract-audit.md` for the core's remaining generic dependencies.
+
+```bash
+node runners/factorization-invariants-nonregression.mjs
+```
+
 ## Status boundary
 
-This establishes a written, tested core and re-observes two finite modules with different semantics and no special core path. It is neither a hardware validation nor evidence that the abstraction is universal. Factorization invariants and compositional orientation remain prospective plugins rather than empty scaffolds.
+This establishes a written, tested core and re-observes three finite modules with different semantics and no special core path. It is neither a hardware validation nor evidence that the abstraction is universal. Compositional orientation remains a prospective plugin rather than empty scaffolding.
