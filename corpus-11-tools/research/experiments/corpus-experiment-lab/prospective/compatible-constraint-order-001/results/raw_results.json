@@ -1,0 +1,91 @@
+{
+  "access": {
+    "maxSteps": 4,
+    "operations": [
+      "enumerate_universe",
+      "compute_order_observables",
+      "apply_matched_controls",
+      "audit_representation"
+    ],
+    "used": 4
+  },
+  "controls": {
+    "empty_complete_negative_controls": {
+      "mismatches": 0,
+      "passed": true
+    },
+    "exhaustive_universe": {
+      "graphCount": 32768,
+      "passed": true
+    },
+    "matched_local_summaries": {
+      "fields": [
+        "degree_sequence",
+        "triangle_count",
+        "maximal_context_size_multiset"
+      ],
+      "passed": true
+    },
+    "representation_invariance": {
+      "mismatches": 0,
+      "passed": true
+    }
+  },
+  "executionHash": "sha256:b2866a11ce12ba22cfde29fb8eab70726d0ff759bd9ead32de83b99453d34eed",
+  "observables": {
+    "canonical_witness": {
+      "matchedKey": [
+        [
+          1,
+          1,
+          1,
+          1,
+          2,
+          2
+        ],
+        0,
+        [
+          2,
+          2,
+          2,
+          2
+        ]
+      ],
+      "signatures": [
+        {
+          "mask": 120,
+          "signature": "4,2,6"
+        },
+        {
+          "mask": 657,
+          "signature": "2,2,5"
+        }
+      ]
+    },
+    "discriminating_matched_classes": 8,
+    "enumeration_mismatches": 0,
+    "extreme_control_mismatches": 0,
+    "height_histogram": {
+      "1": 2100,
+      "2": 22088,
+      "3": 8580
+    },
+    "nontrivial_order_graphs": 30668,
+    "representation_mismatches": 0,
+    "strict_pair_histogram": {
+      "0": 2100,
+      "1": 3000,
+      "2": 9180,
+      "3": 5600,
+      "4": 4140,
+      "5": 2028,
+      "6": 4620,
+      "7": 1260,
+      "8": 480,
+      "9": 360
+    }
+  },
+  "protocolHash": "sha256:cab974cf6ae65b5723664ce3153aeac642ce5f69bb34b801a4e78db316340232",
+  "schema": "corpus-experiment-raw-result/v1",
+  "rawHash": "sha256:738fe6d791effb055399085b8897a6562028e6307a8904bb05694ce3702590c0"
+}

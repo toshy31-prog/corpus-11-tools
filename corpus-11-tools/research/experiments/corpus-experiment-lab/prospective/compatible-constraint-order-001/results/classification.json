@@ -1,0 +1,55 @@
+{
+  "evaluations": [
+    {
+      "actual": 30668,
+      "expected": 0,
+      "id": "no_generated_order",
+      "observableId": "nontrivial_order_graphs",
+      "operator": "lte",
+      "outcome": "no_constraint_generated_order",
+      "triggered": false
+    },
+    {
+      "actual": 8,
+      "expected": 0,
+      "id": "absorbed_by_summaries",
+      "observableId": "discriminating_matched_classes",
+      "operator": "lte",
+      "outcome": "absorbed_by_matched_summaries",
+      "triggered": false
+    },
+    {
+      "actual": 0,
+      "expected": 0,
+      "id": "enumeration_control_failure",
+      "observableId": "enumeration_mismatches",
+      "operator": "gt",
+      "outcome": "protocol_or_model_invalid",
+      "triggered": false
+    },
+    {
+      "actual": 0,
+      "expected": 0,
+      "id": "representation_control_failure",
+      "observableId": "representation_mismatches",
+      "operator": "gt",
+      "outcome": "protocol_or_model_invalid",
+      "triggered": false
+    },
+    {
+      "actual": 0,
+      "expected": 0,
+      "id": "negative_control_failure",
+      "observableId": "extreme_control_mismatches",
+      "operator": "gt",
+      "outcome": "protocol_or_model_invalid",
+      "triggered": false
+    }
+  ],
+  "outcomes": [],
+  "protocolHash": "sha256:cab974cf6ae65b5723664ce3153aeac642ce5f69bb34b801a4e78db316340232",
+  "rawHash": "sha256:738fe6d791effb055399085b8897a6562028e6307a8904bb05694ce3702590c0",
+  "schema": "corpus-experiment-classification/v1",
+  "status": "not_triggered",
+  "classificationHash": "sha256:bcb03f55676d5dbbd45c7e54dd18a1ea61a69f20d09d179c140650dd328b0b49"
+}
