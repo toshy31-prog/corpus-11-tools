@@ -2,7 +2,7 @@
 
 ## Statut
 
-Protocole prêt à être appliqué à un système d'information distribué contrôlé. Aucune donnée n'a été collectée. Aucun lien avec le temps physique n'est établi.
+Protocole implémenté dans le banc d'essai `memory-erasure-lab/` pour des systèmes simulés. Aucune donnée matérielle n'a été collectée. Aucun lien avec le temps physique n'est établi.
 
 ## Phénomène testable
 
@@ -38,3 +38,7 @@ La durée maximale, le nombre de répétitions, la tolérance d'égalité, le se
 - Si l'instrument ne détecte pas le niveau attendu, conclure `inconnu`, pas `absence`.
 - Si la différence disparaît sous changement de port ou d'ordre, l'attribuer au protocole concerné.
 - Sans canal physique indépendant reliant ces mesures à une orientation temporelle, aucune conclusion sur l'émergence du temps n'est autorisée.
+
+## Instrument disponible
+
+Le laboratoire local fournit cinq architectures, deux modalités de diffusion, trois stratégies d'effacement, des pannes reproductibles, une campagne de cent essais et des exports JSON/CSV. Les états hors ligne conservent leur bit afin de distinguer trace inaccessible et effacement réel. Le coût en opérations est explicitement un proxy ; il ne remplace pas une mesure énergétique.

@@ -58,6 +58,7 @@ Aucune hypothèse du registre courant n'est rejetée. La prétention de nouveaut
 - Deux triplets de matrices signées appariés jusqu'aux intersections deux à deux ont des intersections triples de dimensions `0` et `1`.
 - Deux complexes complets à huit distinctions ont été exécutés ; leurs différences sont injectées par la connexité et l'orientation des entrées.
 - Deux complétions admissibles du jouet historique à huit triplets donnent des distributions différentes, ce qui établit la non-identifiabilité de ses nombres à partir du texte disponible.
+- Un banc d'essai interactif simule écriture, diffusion, lecture, effacement, pannes et traces latentes sur cinq architectures ; il exporte des campagnes reproductibles en JSON/CSV.
 
 ## Démonstrations limitées aux jouets
 
@@ -80,8 +81,8 @@ Aucune hypothèse du registre courant n'est rejetée. La prétention de nouveaut
 
 ## Blocages
 
-Absence de données empiriques, de canal reliant les observables au temps physique et de comparaison quantitative exclusive. Le profil de désinscription connu reste une compilation d'invariants standards. Le jouet historique à huit triplets est non identifiable sans son graphe et ses transports. Le fil `P_I` a atteint sa condition d'arrêt d'attribution au niveau de l'incidence paire-à-paire.
+Absence de données matérielles, de mesure énergétique étalonnée, de canal reliant les observables au temps physique et de comparaison quantitative exclusive. Le simulateur et son protocole sont prêts, mais une sortie simulée n'est pas une observation physique. Le profil de désinscription connu reste une compilation d'invariants standards. Le jouet historique à huit triplets est non identifiable sans son graphe et ses transports. Le fil `P_I` a atteint sa condition d'arrêt d'attribution au niveau de l'incidence paire-à-paire.
 
 ## Prochaine action
 
-Tester une perturbation réellement nouvelle du profil de désinscription, puis construire un contrôle ternaire sans ordre injecté. Appliquer le protocole empirique seulement à un dispositif contrôlé ; maintenir inconnue toute portée physique sans canal de détection. Ne pas prolonger `P_I` sans nouvel observable indépendant.
+Exécuter une première campagne simulée comparant les cinq architectures, puis brancher le même schéma d'export sur un petit réseau matériel. Tester ensuite une perturbation réellement nouvelle du profil de désinscription et construire un contrôle ternaire sans ordre injecté. Maintenir inconnue toute portée physique sans canal de détection.

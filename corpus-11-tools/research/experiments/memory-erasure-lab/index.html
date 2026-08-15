@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Laboratoire mémoire–effacement</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <p class="eyebrow">Corpus 11 · banc d’essai reproductible</p>
+      <h1>Laboratoire mémoire–effacement</h1>
+      <p class="subtitle">Écrire, diffuser, retrouver puis effacer un bit — et voir les traces qui résistent.</p>
+    </div>
+    <button id="guided-run" class="button primary" type="button">Lancer l’expérience complète</button>
+  </header>
+
+  <main>
+    <section class="panel configuration" aria-labelledby="configuration-title">
+      <div class="section-heading">
+        <div>
+          <p class="step-label">1 · Préparer</p>
+          <h2 id="configuration-title">Scénario</h2>
+        </div>
+        <button id="reset" class="button" type="button">Recréer le réseau</button>
+      </div>
+
+      <div class="form-grid">
+        <label>Architecture
+          <select id="topology">
+            <option value="tree">Arbre binaire</option>
+            <option value="line">Ligne</option>
+            <option value="ring">Anneau</option>
+            <option value="star">Étoile</option>
+            <option value="mesh">Maillage léger</option>
+          </select>
+        </label>
+        <label>Nombre de mémoires <output id="size-value" for="size">8</output>
+          <input id="size" type="range" min="4" max="16" value="8">
+        </label>
+        <label>Diffusion
+          <select id="propagation">
+            <option value="synchronous">Synchrone</option>
+            <option value="asynchronous">Asynchrone</option>
+          </select>
+        </label>
+        <label>Effacement
+          <select id="erasure">
+            <option value="wave">Onde locale</option>
+            <option value="direct">Accès direct</option>
+            <option value="reverse">Ordre inverse</option>
+          </select>
+        </label>
+        <label>Panne injectée
+          <select id="fault">
+            <option value="edge">Une liaison</option>
+            <option value="node">Une mémoire</option>
+            <option value="none">Aucune</option>
+          </select>
+        </label>
+        <label>Graine reproductible
+          <input id="seed" type="number" min="0" step="1" value="42">
+        </label>
+        <label>Port d’écriture
+          <select id="write-port"></select>
+        </label>
+        <label>Port de lecture
+          <select id="read-port"></select>
+        </label>
+        <label>Port d’effacement
+          <select id="erase-port"></select>
+        </label>
+      </div>
+    </section>
+
+    <section class="workspace" aria-labelledby="network-title">
+      <div class="network-column">
+        <div class="section-heading compact">
+          <div>
+            <p class="step-label">2 · Observer</p>
+            <h2 id="network-title">Réseau physique simulé</h2>
+          </div>
+          <p id="status" class="status" role="status" aria-live="polite">Réseau prêt.</p>
+        </div>
+
+        <div class="network-stage">
+          <svg id="network" viewBox="0 0 760 430" role="img" aria-labelledby="network-title network-description"></svg>
+          <p id="network-description" class="sr-only">Réseau de mémoires et liaisons. Les mémoires contenant le bit sont mises en évidence.</p>
+        </div>
+
+        <div class="legend" aria-label="Légende">
+          <span><i class="legend-dot empty"></i>Mémoire à zéro</span>
+          <span><i class="legend-dot one"></i>Bit présent</span>
+          <span><i class="legend-dot offline"></i>Hors ligne, état conservé</span>
+          <span><i class="legend-line broken"></i>Liaison coupée</span>
+        </div>
+
+        <div class="action-flow" aria-label="Actions expérimentales">
+          <button id="write" class="button" type="button"><span>1</span>Écrire le bit</button>
+          <button id="diffuse-step" class="button" type="button"><span>2</span>Diffuser un pas</button>
+          <button id="diffuse-all" class="button" type="button"><span>2</span>Diffuser complètement</button>
+          <button id="inject-fault" class="button warning" type="button"><span>3</span>Injecter la panne</button>
+          <button id="read" class="button" type="button"><span>4</span>Lire</button>
+          <button id="erase" class="button danger" type="button"><span>5</span>Effacer</button>
+        </div>
+      </div>
+
+      <aside class="measure-column" aria-labelledby="measure-title">
+        <div>
+          <p class="step-label">3 · Mesurer</p>
+          <h2 id="measure-title">Résultat courant</h2>
+        </div>
+        <dl class="metrics">
+          <div><dt>Coût de lecture</dt><dd id="metric-read">—</dd><small>mémoires inspectées</small></div>
+          <div><dt>Travail d’effacement</dt><dd id="metric-work">—</dd><small>remises à zéro</small></div>
+          <div><dt>Profondeur</dt><dd id="metric-depth">—</dd><small>étapes séquentielles</small></div>
+          <div class="critical"><dt>Traces restantes</dt><dd id="metric-traces">0</dd><small id="trace-detail">0 accessible · 0 latente</small></div>
+        </dl>
+        <div class="counterfactual" id="counterfactual">
+          <strong>Contrefactuel atteint</strong>
+          <span>L’état est identique au monde sans écriture.</span>
+        </div>
+        <p class="proxy-note">Le nombre d’opérations est un coût simulé, pas une mesure d’énergie physique.</p>
+      </aside>
+    </section>
+
+    <section class="lower-grid">
+      <section class="panel" aria-labelledby="campaign-title">
+        <div class="section-heading">
+          <div>
+            <p class="step-label">4 · Répéter</p>
+            <h2 id="campaign-title">Campagne de 100 essais</h2>
+          </div>
+          <button id="run-batch" class="button primary" type="button">Lancer 100 essais</button>
+        </div>
+        <div id="batch-empty" class="empty-state">Les pannes varieront, mais chaque essai restera reproductible grâce à sa graine.</div>
+        <div id="batch-result" hidden>
+          <div class="batch-bars" aria-label="Résultats agrégés">
+            <div><span>Effacement exact</span><strong id="batch-exact">—</strong><div class="bar"><i id="bar-exact"></i></div></div>
+            <div><span>Lecture réussie</span><strong id="batch-read">—</strong><div class="bar"><i id="bar-read"></i></div></div>
+            <div><span>Traces moyennes</span><strong id="batch-residual">—</strong><div class="bar neutral"><i id="bar-residual"></i></div></div>
+          </div>
+          <p id="batch-summary" class="batch-summary"></p>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="log-title">
+        <div class="section-heading">
+          <div>
+            <p class="step-label">Journal</p>
+            <h2 id="log-title">Trace expérimentale</h2>
+          </div>
+          <div class="export-actions">
+            <button id="export-json" class="button" type="button">Exporter JSON</button>
+            <button id="export-csv" class="button" type="button">Exporter CSV</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Étape</th><th>Opération</th><th>Détail</th></tr></thead>
+            <tbody id="event-log"><tr><td colspan="3">Aucune opération.</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer>
+    Modèle fini exploratoire · les résultats simulés ne constituent pas une preuve physique.
+  </footer>
+  <script type="module" src="./app.mjs"></script>
+</body>
+</html>
