@@ -1,0 +1,739 @@
+{
+  "access": {
+    "maxSteps": 128,
+    "operations": [
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "inspect_local_summary",
+      "optimize_scalar_order",
+      "optimize_scalar_order",
+      "optimize_scalar_order"
+    ],
+    "used": 128
+  },
+  "controls": {
+    "relabel_invariance": {
+      "mismatches": 0,
+      "passed": true
+    },
+    "reversal_invariance": {
+      "mismatches": 0,
+      "passed": true
+    }
+  },
+  "executionHash": "sha256:124b779c15c4f1ea3a1807394125513a9bab506bfce25e0ffdda73132091eb1c",
+  "observables": {
+    "frustration_histogram": {
+      "2": 4,
+      "3": 11,
+      "4": 14,
+      "5": 3
+    },
+    "maximum_backward_edges": 5,
+    "mean_backward_edges_numerator": 112,
+    "representation_mismatches": 0,
+    "sample_records": [
+      {
+        "local": {
+          "cyclicTriangles": 8,
+          "scoreSequence": [
+            4,
+            4,
+            4,
+            4,
+            3,
+            1,
+            1
+          ]
+        },
+        "mask": 152392,
+        "originalMinimum": 3,
+        "relabelledMinimum": 3,
+        "reversedMinimum": 3
+      },
+      {
+        "local": {
+          "cyclicTriangles": 12,
+          "scoreSequence": [
+            4,
+            4,
+            3,
+            3,
+            3,
+            2,
+            2
+          ]
+        },
+        "mask": 253447,
+        "originalMinimum": 5,
+        "relabelledMinimum": 5,
+        "reversedMinimum": 5
+      },
+      {
+        "local": {
+          "cyclicTriangles": 8,
+          "scoreSequence": [
+            4,
+            4,
+            4,
+            4,
+            3,
+            1,
+            1
+          ]
+        },
+        "mask": 459706,
+        "originalMinimum": 3,
+        "relabelledMinimum": 3,
+        "reversedMinimum": 3
+      },
+      {
+        "local": {
+          "cyclicTriangles": 8,
+          "scoreSequence": [
+            5,
+            4,
+            4,
+            3,
+            2,
+            2,
+            1
+          ]
+        },
+        "mask": 1064913,
+        "originalMinimum": 3,
+        "relabelledMinimum": 3,
+        "reversedMinimum": 3
+      },
+      {
+        "local": {
+          "cyclicTriangles": 7,
+          "scoreSequence": [
+            5,
+            4,
+            4,
+            3,
+            3,
+            1,
+            1
+          ]
+        },
+        "mask": 1603324,
+        "originalMinimum": 2,
+        "relabelledMinimum": 2,
+        "reversedMinimum": 2
+      },
+      {
+        "local": {
+          "cyclicTriangles": 12,
+          "scoreSequence": [
+            4,
+            4,
+            3,
+            3,
+            3,
+            2,
+            2
+          ]
+        },
+        "mask": 1140267,
+        "originalMinimum": 5,
+        "relabelledMinimum": 5,
+        "reversedMinimum": 5
+      },
+      {
+        "local": {
+          "cyclicTriangles": 10,
+          "scoreSequence": [
+            5,
+            4,
+            3,
+            3,
+            2,
+            2,
+            2
+          ]
+        },
+        "mask": 1656206,
+        "originalMinimum": 4,
+        "relabelledMinimum": 4,
+        "reversedMinimum": 4
+      },
+      {
+        "local": {
+          "cyclicTriangles": 6,
+          "scoreSequence": [
+            5,
+            4,
+            4,
+            3,
+            3,
+            2,
+            0
+          ]
+        },
+        "mask": 790421,
+        "originalMinimum": 3,
+        "relabelledMinimum": 3,
+        "reversedMinimum": 3
+      },
+      {
+        "local": {
+          "cyclicTriangles": 10,
+          "scoreSequence": [
+            5,
+            4,
+            3,
+            3,
+            2,
+            2,
+            2
+          ]
+        },
+        "mask": 924656,
+        "originalMinimum": 4,
+        "relabelledMinimum": 4,
+        "reversedMinimum": 4
+      },
+      {
+        "local": {
+          "cyclicTriangles": 10,
+          "scoreSequence": [
+            5,
+            4,
+            3,
+            3,
+            2,
+            2,
+            2
+          ]
+        },
+        "mask": 1572495,
+        "originalMinimum": 4,
+        "relabelledMinimum": 4,
+        "reversedMinimum": 4
+      },
+      {
+        "local": {
+          "cyclicTriangles": 12,
+          "scoreSequence": [
+            4,
+            4,
+            3,
+            3,
+            3,
+            2,
+            2
+          ]
+        },
+        "mask": 711330,
+        "originalMinimum": 5,
+        "relabelledMinimum": 5,
+        "reversedMinimum": 5
+      },
+      {
+        "local": {
+          "cyclicTriangles": 10,
+          "scoreSequence": [
+            4,
+            4,
+            4,
+            3,
+            3,
+            2,
+            1
+          ]
+        },
+        "mask": 694681,
+        "originalMinimum": 4,
+        "relabelledMinimum": 4,
+        "reversedMinimum": 4
+      },
+      {
+        "local": {
+          "cyclicTriangles": 12,
+          "scoreSequence": [
+            4,
+            4,
+            3,
+            3,
+            3,
+            2,
+            2
+          ]
+        },
+        "mask": 1881636,
+        "originalMinimum": 4,
+        "relabelledMinimum": 4,
+        "reversedMinimum": 4
+      },
+      {
+        "local": {
+          "cyclicTriangles": 11,
+          "scoreSequence": [
+            4,
+            4,
+            4,
+            3,
+            2,
+            2,
+            2
+          ]
+        },
+        "mask": 1739571,
+        "originalMinimum": 4,
+        "relabelledMinimum": 4,
+        "reversedMinimum": 4
+      },
+      {
+        "local": {
+          "cyclicTriangles": 8,
+          "scoreSequence": [
+            5,
+            4,
+            4,
+            3,
+            2,
+            2,
+            1
+          ]
+        },
+        "mask": 1660662,
+        "originalMinimum": 3,
+        "relabelledMinimum": 3,
+        "reversedMinimum": 3
+      },
+      {
+        "local": {
+          "cyclicTriangles": 9,
+          "scoreSequence": [
+            5,
+            4,
+            3,
+            3,
+            3,
+            2,
+            1
+          ]
+        },
+        "mask": 287197,
+        "originalMinimum": 4,
+        "relabelledMinimum": 4,
+        "reversedMinimum": 4
+      },
+      {
+        "local": {
+          "cyclicTriangles": 6,
+          "scoreSequence": [
+            6,
+            4,
+            3,
+            3,
+            2,
+            2,
+            1
+          ]
+        },
+        "mask": 1767832,
+        "originalMinimum": 3,
+        "relabelledMinimum": 3,
+        "reversedMinimum": 3
+      },
+      {
+        "local": {
+          "cyclicTriangles": 7,
+          "scoreSequence": [
+            4,
+            4,
+            4,
+            4,
+            3,
+            2,
+            0
+          ]
+        },
+        "mask": 1585175,
+        "originalMinimum": 3,
+        "relabelledMinimum": 3,
+        "reversedMinimum": 3
+      },
+      {
+        "local": {
+          "cyclicTriangles": 11,
+          "scoreSequence": [
+            4,
+            4,
+            4,
+            3,
+            2,
+            2,
+            2
+          ]
+        },
+        "mask": 1150602,
+        "originalMinimum": 4,
+        "relabelledMinimum": 4,
+        "reversedMinimum": 4
+      },
+      {
+        "local": {
+          "cyclicTriangles": 8,
+          "scoreSequence": [
+            5,
+            5,
+            3,
+            2,
+            2,
+            2,
+            2
+          ]
+        },
+        "mask": 1584225,
+        "originalMinimum": 4,
+        "relabelledMinimum": 4,
+        "reversedMinimum": 4
+      },
+      {
+        "local": {
+          "cyclicTriangles": 8,
+          "scoreSequence": [
+            5,
+            4,
+            4,
+            3,
+            2,
+            2,
+            1
+          ]
+        },
+        "mask": 1104460,
+        "originalMinimum": 3,
+        "relabelledMinimum": 3,
+        "reversedMinimum": 3
+      },
+      {
+        "local": {
+          "cyclicTriangles": 6,
+          "scoreSequence": [
+            5,
+            5,
+            3,
+            3,
+            3,
+            1,
+            1
+          ]
+        },
+        "mask": 1069371,
+        "originalMinimum": 3,
+        "relabelledMinimum": 3,
+        "reversedMinimum": 3
+      },
+      {
+        "local": {
+          "cyclicTriangles": 4,
+          "scoreSequence": [
+            5,
+            4,
+            4,
+            4,
+            3,
+            1,
+            0
+          ]
+        },
+        "mask": 234846,
+        "originalMinimum": 2,
+        "relabelledMinimum": 2,
+        "reversedMinimum": 2
+      },
+      {
+        "local": {
+          "cyclicTriangles": 7,
+          "scoreSequence": [
+            6,
+            3,
+            3,
+            3,
+            3,
+            2,
+            1
+          ]
+        },
+        "mask": 982309,
+        "originalMinimum": 3,
+        "relabelledMinimum": 3,
+        "reversedMinimum": 3
+      },
+      {
+        "local": {
+          "cyclicTriangles": 6,
+          "scoreSequence": [
+            5,
+            4,
+            4,
+            3,
+            3,
+            2,
+            0
+          ]
+        },
+        "mask": 756800,
+        "originalMinimum": 2,
+        "relabelledMinimum": 2,
+        "reversedMinimum": 2
+      },
+      {
+        "local": {
+          "cyclicTriangles": 8,
+          "scoreSequence": [
+            5,
+            5,
+            3,
+            2,
+            2,
+            2,
+            2
+          ]
+        },
+        "mask": 430751,
+        "originalMinimum": 4,
+        "relabelledMinimum": 4,
+        "reversedMinimum": 4
+      },
+      {
+        "local": {
+          "cyclicTriangles": 10,
+          "scoreSequence": [
+            5,
+            4,
+            3,
+            3,
+            2,
+            2,
+            2
+          ]
+        },
+        "mask": 1490802,
+        "originalMinimum": 4,
+        "relabelledMinimum": 4,
+        "reversedMinimum": 4
+      },
+      {
+        "local": {
+          "cyclicTriangles": 4,
+          "scoreSequence": [
+            5,
+            5,
+            4,
+            3,
+            2,
+            2,
+            0
+          ]
+        },
+        "mask": 6185,
+        "originalMinimum": 2,
+        "relabelledMinimum": 2,
+        "reversedMinimum": 2
+      },
+      {
+        "local": {
+          "cyclicTriangles": 10,
+          "scoreSequence": [
+            4,
+            4,
+            4,
+            3,
+            3,
+            2,
+            1
+          ]
+        },
+        "mask": 1147764,
+        "originalMinimum": 4,
+        "relabelledMinimum": 4,
+        "reversedMinimum": 4
+      },
+      {
+        "local": {
+          "cyclicTriangles": 10,
+          "scoreSequence": [
+            4,
+            4,
+            4,
+            3,
+            3,
+            2,
+            1
+          ]
+        },
+        "mask": 448579,
+        "originalMinimum": 4,
+        "relabelledMinimum": 4,
+        "reversedMinimum": 4
+      },
+      {
+        "local": {
+          "cyclicTriangles": 9,
+          "scoreSequence": [
+            5,
+            4,
+            3,
+            3,
+            3,
+            2,
+            1
+          ]
+        },
+        "mask": 1941702,
+        "originalMinimum": 3,
+        "relabelledMinimum": 3,
+        "reversedMinimum": 3
+      },
+      {
+        "local": {
+          "cyclicTriangles": 10,
+          "scoreSequence": [
+            4,
+            4,
+            4,
+            3,
+            3,
+            2,
+            1
+          ]
+        },
+        "mask": 1376621,
+        "originalMinimum": 4,
+        "relabelledMinimum": 4,
+        "reversedMinimum": 4
+      }
+    ]
+  },
+  "protocolHash": "sha256:87ae3ed61d9c808e7ef70c5b47cce2998143a27a7d191ceb3891587cc5c0dd76",
+  "schema": "corpus-experiment-raw-result/v1",
+  "rawHash": "sha256:17a27781a0773d50ec4d05faf1beac6385f6d8fa54f74445b03abb7d79981692"
+}

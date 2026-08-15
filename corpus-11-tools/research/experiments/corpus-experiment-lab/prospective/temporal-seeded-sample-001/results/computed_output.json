@@ -1,0 +1,15 @@
+{
+  "protocolHash": "sha256:87ae3ed61d9c808e7ef70c5b47cce2998143a27a7d191ceb3891587cc5c0dd76",
+  "rawHash": "sha256:17a27781a0773d50ec4d05faf1beac6385f6d8fa54f74445b03abb7d79981692",
+  "sampleCount": 32,
+  "pairCount": 21,
+  "histogram": {
+    "2": 4,
+    "3": 11,
+    "4": 14,
+    "5": 3
+  },
+  "maximumBackwardEdges": 5,
+  "meanBackwardEdges": "112/32",
+  "meanFrustration": "112/672"
+}

@@ -1,0 +1,15 @@
+{
+  "protocolHash": "sha256:87ae3ed61d9c808e7ef70c5b47cce2998143a27a7d191ceb3891587cc5c0dd76",
+  "rawHash": "sha256:17a27781a0773d50ec4d05faf1beac6385f6d8fa54f74445b03abb7d79981692",
+  "controls": {
+    "relabel_invariance": {
+      "mismatches": 0,
+      "passed": true
+    },
+    "reversal_invariance": {
+      "mismatches": 0,
+      "passed": true
+    }
+  },
+  "allControlsPassed": true
+}

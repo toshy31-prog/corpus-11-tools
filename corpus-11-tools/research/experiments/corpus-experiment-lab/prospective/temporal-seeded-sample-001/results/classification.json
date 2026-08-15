@@ -1,0 +1,28 @@
+{
+  "evaluations": [
+    {
+      "actual": 5,
+      "expected": 3,
+      "id": "sample_maximum_below_prediction",
+      "observableId": "maximum_backward_edges",
+      "operator": "lt",
+      "outcome": "distribution_prediction_not_supported",
+      "triggered": false
+    },
+    {
+      "actual": 0,
+      "expected": 0,
+      "id": "representation_control_failure",
+      "observableId": "representation_mismatches",
+      "operator": "gt",
+      "outcome": "protocol_or_model_not_supported",
+      "triggered": false
+    }
+  ],
+  "outcomes": [],
+  "protocolHash": "sha256:87ae3ed61d9c808e7ef70c5b47cce2998143a27a7d191ceb3891587cc5c0dd76",
+  "rawHash": "sha256:17a27781a0773d50ec4d05faf1beac6385f6d8fa54f74445b03abb7d79981692",
+  "schema": "corpus-experiment-classification/v1",
+  "status": "not_triggered",
+  "classificationHash": "sha256:2a2fbab3efb07817573e07644c59dc252f1cbc92e6c60b7e1da117d86349a1f8"
+}
