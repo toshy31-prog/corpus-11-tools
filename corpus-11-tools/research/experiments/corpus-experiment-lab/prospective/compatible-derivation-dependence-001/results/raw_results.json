@@ -1,0 +1,52 @@
+{
+  "access": {
+    "maxSteps": 6,
+    "operations": [
+      "enumerate_universe",
+      "compute_original_rule",
+      "compute_variant_rule",
+      "compare_rules",
+      "apply_matched_controls",
+      "audit_representation"
+    ],
+    "used": 6
+  },
+  "controls": {
+    "empty_complete_negative_controls": {
+      "mismatches": 0,
+      "passed": true
+    },
+    "exhaustive_universe": {
+      "graphCount": 32768,
+      "passed": true
+    },
+    "matched_local_summaries": {
+      "fields": [
+        "degree_sequence",
+        "triangle_count",
+        "maximal_context_size_multiset"
+      ],
+      "passed": true
+    },
+    "representation_invariance": {
+      "mismatches": 0,
+      "passed": true
+    }
+  },
+  "executionHash": "sha256:029d1f6d607a3282f165331cbc72fda5e7570e578e45eaa38594579ceb8600fa",
+  "observables": {
+    "enumeration_mismatches": 0,
+    "exact_relation_persistence_graphs": 10418,
+    "extreme_control_mismatches": 0,
+    "order_appearance_graphs": 570,
+    "order_disappearance_graphs": 10380,
+    "original_nontrivial_order_graphs": 30668,
+    "representation_mismatches": 0,
+    "rule_changed_graphs": 22350,
+    "variant_discriminating_matched_classes": 2,
+    "variant_nontrivial_order_graphs": 20858
+  },
+  "protocolHash": "sha256:d44762f195b68d4d6bc252f2cc75894b4531ab8fe6bb8c79dfaf6765a79a52f6",
+  "schema": "corpus-experiment-raw-result/v1",
+  "rawHash": "sha256:19d8bb0705b72168b84dcacf89f8dd917f0e117b413b38cb3ccb74d17dfbce12"
+}

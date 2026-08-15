@@ -1,0 +1,66 @@
+{
+  "evaluations": [
+    {
+      "actual": 20858,
+      "expected": 0,
+      "id": "variant_order_disappears",
+      "observableId": "variant_nontrivial_order_graphs",
+      "operator": "lte",
+      "outcome": "order_disappears_under_variant",
+      "triggered": false
+    },
+    {
+      "actual": 22350,
+      "expected": 0,
+      "id": "exact_persistence_fails",
+      "observableId": "rule_changed_graphs",
+      "operator": "gt",
+      "outcome": "order_depends_on_derivation_rule",
+      "triggered": true
+    },
+    {
+      "actual": 2,
+      "expected": 0,
+      "id": "variant_absorbed",
+      "observableId": "variant_discriminating_matched_classes",
+      "operator": "lte",
+      "outcome": "variant_absorbed_by_matched_controls",
+      "triggered": false
+    },
+    {
+      "actual": 0,
+      "expected": 0,
+      "id": "enumeration_control_failure",
+      "observableId": "enumeration_mismatches",
+      "operator": "gt",
+      "outcome": "protocol_or_model_invalid",
+      "triggered": false
+    },
+    {
+      "actual": 0,
+      "expected": 0,
+      "id": "representation_control_failure",
+      "observableId": "representation_mismatches",
+      "operator": "gt",
+      "outcome": "protocol_or_model_invalid",
+      "triggered": false
+    },
+    {
+      "actual": 0,
+      "expected": 0,
+      "id": "negative_control_failure",
+      "observableId": "extreme_control_mismatches",
+      "operator": "gt",
+      "outcome": "protocol_or_model_invalid",
+      "triggered": false
+    }
+  ],
+  "outcomes": [
+    "order_depends_on_derivation_rule"
+  ],
+  "protocolHash": "sha256:d44762f195b68d4d6bc252f2cc75894b4531ab8fe6bb8c79dfaf6765a79a52f6",
+  "rawHash": "sha256:19d8bb0705b72168b84dcacf89f8dd917f0e117b413b38cb3ccb74d17dfbce12",
+  "schema": "corpus-experiment-classification/v1",
+  "status": "reversal_triggered",
+  "classificationHash": "sha256:32d0f989f46a5eb6e2fd366978217fddf8c54e3ccdc8aadee0afdc77f5ef0c1e"
+}
