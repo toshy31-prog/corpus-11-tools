@@ -210,6 +210,87 @@ else
 fi
 git -C "$REPO" branch -D autoresearch/20260815-120000 >/dev/null
 
+make_repo malicious-post-commit
+(cd "$REPO" && ./corpus-11-tools/research/scripts/run_research_cycle.sh preflight) >/dev/null
+printf '%s\n' '# malicious post-commit fixture' >> \
+  "$REPO/corpus-11-tools/research/notes/2026-08-15-source-reconstruction.md"
+printf '%s\n' '#!/usr/bin/env bash' \
+  'git push -q origin HEAD:refs/heads/malicious-hook-push' \
+  > "$REPO/.git/hooks/post-commit"
+chmod +x "$REPO/.git/hooks/post-commit"
+mkdir -p "$TEMP_ROOT/empty-hooks-tmp"
+(cd "$REPO" && TMPDIR="$TEMP_ROOT/empty-hooks-tmp" \
+  CORPUS_AUTORESEARCH_TIMESTAMP=20260815-120004 \
+  ./corpus-11-tools/research/scripts/run_research_cycle.sh postflight) >/dev/null
+if git -C "$REPO" show-ref --verify --quiet refs/heads/autoresearch/20260815-120004 \
+  && ! git --git-dir="$REMOTE" show-ref --verify --quiet refs/heads/malicious-hook-push \
+  && [ -z "$(find "$TEMP_ROOT/empty-hooks-tmp" -mindepth 1 -print -quit)" ]; then
+  record 0 "malicious post-commit push hook => not executed; temporary hooks dir removed"
+else
+  record 1 "malicious post-commit push hook => not executed; temporary hooks dir removed"
+fi
+
+make_repo malicious-commit-hooks
+(cd "$REPO" && ./corpus-11-tools/research/scripts/run_research_cycle.sh preflight) >/dev/null
+printf '%s\n' '# malicious hooks fixture' >> \
+  "$REPO/corpus-11-tools/research/notes/2026-08-15-source-reconstruction.md"
+hooks_executed=0
+for hook in pre-commit prepare-commit-msg commit-msg post-commit post-rewrite; do
+  sentinel="$TEMP_ROOT/${hook}.executed"
+  if [ "$hook" = pre-commit ]; then
+    printf '%s\n' '#!/usr/bin/env bash' "touch '$sentinel'" 'exit 99' \
+      > "$REPO/.git/hooks/$hook"
+  else
+    printf '%s\n' '#!/usr/bin/env bash' "touch '$sentinel'" \
+      > "$REPO/.git/hooks/$hook"
+  fi
+  chmod +x "$REPO/.git/hooks/$hook"
+done
+mkdir -p "$TEMP_ROOT/failing-hooks-tmp"
+set +e
+(cd "$REPO" && TMPDIR="$TEMP_ROOT/failing-hooks-tmp" \
+  CORPUS_AUTORESEARCH_TIMESTAMP=20260815-120005 \
+  ./corpus-11-tools/research/scripts/run_research_cycle.sh postflight) >/dev/null 2>&1
+hooks_status=$?
+set -e
+for hook in pre-commit prepare-commit-msg commit-msg post-commit post-rewrite; do
+  if [ -e "$TEMP_ROOT/${hook}.executed" ]; then
+    hooks_executed=1
+  fi
+done
+if [ "$hooks_status" -eq 0 ] \
+  && [ "$hooks_executed" -eq 0 ] \
+  && git -C "$REPO" show-ref --verify --quiet refs/heads/autoresearch/20260815-120005 \
+  && [ "$(git -C "$REPO" branch --show-current)" = main ] \
+  && [ "$(git -C "$REPO" rev-parse HEAD)" = "$(git -C "$REPO" rev-parse refs/remotes/origin/main)" ] \
+  && [ -z "$(find "$TEMP_ROOT/failing-hooks-tmp" -mindepth 1 -print -quit)" ]; then
+  record 0 "all git commit hooks including failing hook => not executed"
+else
+  record 1 "all git commit hooks including failing hook => not executed"
+fi
+
+make_repo local-commit-failure-cleanup
+(cd "$REPO" && ./corpus-11-tools/research/scripts/run_research_cycle.sh preflight) >/dev/null
+printf '%s\n' '# preserve after commit failure' >> \
+  "$REPO/corpus-11-tools/research/notes/2026-08-15-source-reconstruction.md"
+failure_hash="$(sha256sum "$REPO/corpus-11-tools/research/notes/2026-08-15-source-reconstruction.md")"
+mkdir -p "$TEMP_ROOT/failed-commit-hooks-tmp"
+set +e
+(cd "$REPO" && TMPDIR="$TEMP_ROOT/failed-commit-hooks-tmp" \
+  GIT_AUTHOR_NAME= CORPUS_AUTORESEARCH_TIMESTAMP=20260815-120006 \
+  ./corpus-11-tools/research/scripts/run_research_cycle.sh postflight) >/dev/null 2>&1
+commit_failure_status=$?
+set -e
+if [ "$commit_failure_status" -ne 0 ] \
+  && git -C "$REPO" diff --cached --quiet \
+  && [ "$(git -C "$REPO" branch --show-current)" = main ] \
+  && [ "$failure_hash" = "$(sha256sum "$REPO/corpus-11-tools/research/notes/2026-08-15-source-reconstruction.md")" ] \
+  && [ -z "$(find "$TEMP_ROOT/failed-commit-hooks-tmp" -mindepth 1 -print -quit)" ]; then
+  record 0 "commit failure => empty hooks dir removed, index reset, worktree preserved"
+else
+  record 1 "commit failure => empty hooks dir removed, index reset, worktree preserved"
+fi
+
 make_repo local-validation-failure
 (cd "$REPO" && ./corpus-11-tools/research/scripts/run_research_cycle.sh preflight) >/dev/null
 printf '%s\n' '# invalid outside allowlist' > "$REPO/outside.txt"
