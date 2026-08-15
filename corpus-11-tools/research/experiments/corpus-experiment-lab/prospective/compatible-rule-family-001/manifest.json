@@ -1,0 +1,93 @@
+{
+  "schema": "corpus-experiment-protocol/v1",
+  "protocolId": "compatible-rule-family-001",
+  "version": "1.0.0",
+  "hypothesis": "A nonempty strict-implication core persists across the complete preregistered family of simple invariant context-selection rules and exceeds the core produced by count-matched random rule families.",
+  "alternatives": [
+    "The intersection of the strict relations across admissible rules is empty over the complete universe.",
+    "A common core exists but does not exceed the count-matched random-rule control.",
+    "An exhaustivity, simplicity-selection, invariance, matching or negative control fails."
+  ],
+  "model": {
+    "id": "compatible-admissible-rule-family",
+    "version": "1.0.0",
+    "contentHash": "sha256:957f669c0e4b8c835a35609269fe3fcf620f1bd8dcd857082ae8a382b770546d",
+    "configuration": {
+      "experimentKind": "compatible_admissible_rule_family",
+      "width": 6,
+      "expectedGraphCount": 32768,
+      "admissibleRules": [
+        { "id": "all_maximal", "primitiveCount": 0, "selector": "all inclusion-maximal contexts" },
+        { "id": "largest_contexts", "primitiveCount": 1, "selector": "contexts with maximum cardinality" },
+        { "id": "smallest_contexts", "primitiveCount": 1, "selector": "contexts with minimum cardinality" },
+        { "id": "highest_overlap", "primitiveCount": 2, "selector": "contexts maximizing summed pairwise overlap" },
+        { "id": "lowest_overlap", "primitiveCount": 2, "selector": "contexts minimizing summed pairwise overlap" }
+      ],
+      "simplicityOrder": [
+        "no free numeric parameter",
+        "no label or random seed in deterministic rule",
+        "ascending primitiveCount",
+        "lexicographic rule id as final tie-break"
+      ],
+      "expectedSelectedRule": "all_maximal",
+      "requiredInvariances": [
+        "vertex relabelling",
+        "context enumeration order",
+        "equivalent score ties include every tied context"
+      ],
+      "randomMatching": "for every graph and admissible rule, uniformly shuffle all maximal contexts and select exactly the deterministic rule's context count",
+      "relabeling": [2, 5, 1, 4, 0, 3]
+    }
+  },
+  "observables": [
+    { "id": "family_classification_code", "measure": "Locked code: 1 invariant-family core above random; 2 no common core; 0 unknown or failed control", "channel": "closed exhaustive rule-family runner" },
+    { "id": "selected_rule_id", "measure": "Rule selected solely by the preregistered simplicity tuple", "channel": "closed exhaustive rule-family runner" },
+    { "id": "exact_family_invariant_graphs", "measure": "Graphs whose complete strict relation is identical under all five admissible rules", "channel": "closed exhaustive rule-family runner" },
+    { "id": "common_core_graphs", "measure": "Graphs with at least one strict pair shared by all admissible rules", "channel": "closed exhaustive rule-family runner" },
+    { "id": "complete_convention_dependence_graphs", "measure": "Graphs with some rule-derived relation but an empty intersection across rules", "channel": "closed exhaustive rule-family runner" },
+    { "id": "common_core_pairs_total", "measure": "Total strict pairs in the graphwise intersection across admissible rules", "channel": "closed exhaustive rule-family runner" },
+    { "id": "random_common_core_pairs_total", "measure": "Total strict pairs in the graphwise intersection across count-matched random rules", "channel": "closed exhaustive rule-family runner" },
+    { "id": "common_core_advantage_over_random", "measure": "Admissible-family common-core total minus random-family common-core total", "channel": "closed exhaustive rule-family runner" },
+    { "id": "selected_rule_pairs_total", "measure": "Total strict pairs produced by the simplicity-selected rule", "channel": "closed exhaustive rule-family runner" },
+    { "id": "selected_rule_pairs_outside_core", "measure": "Selected-rule strict pairs absent from at least one other admissible rule", "channel": "closed exhaustive rule-family runner" },
+    { "id": "enumeration_mismatches", "measure": "Difference indicator between observed and declared graph count", "channel": "closed exhaustive rule-family runner" },
+    { "id": "representation_mismatches", "measure": "Graphs whose per-rule strict-pair counts change under transported relabelling", "channel": "closed exhaustive rule-family runner" },
+    { "id": "random_matching_mismatches", "measure": "Random rules whose selected-context count differs from their deterministic mate", "channel": "closed exhaustive rule-family runner" },
+    { "id": "extreme_control_mismatches", "measure": "Empty or complete graphs incorrectly yielding a family relation", "channel": "closed exhaustive rule-family runner" }
+  ],
+  "controls": [
+    { "id": "exhaustive_universe", "purpose": "Require all 32,768 labelled graphs." },
+    { "id": "simplicity_selection", "purpose": "Require the rule selected before results to equal all_maximal under the locked simplicity tuple." },
+    { "id": "representation_invariance", "purpose": "Require every deterministic rule's strict-pair count to survive the fixed relabelling." },
+    { "id": "random_rule_matching", "purpose": "Require every random rule to select exactly as many maximal contexts as its deterministic mate." },
+    { "id": "empty_complete_negative_controls", "purpose": "Require empty and complete graphs to have no family-derived strict relation." }
+  ],
+  "observer": {
+    "allowedOperations": [
+      "enumerate_universe",
+      "apply_admissible_rules",
+      "compute_stable_core",
+      "apply_random_matched_rules",
+      "select_by_simplicity",
+      "audit_controls"
+    ],
+    "maxSteps": 6,
+    "successThreshold": 1
+  },
+  "reversalConditions": [
+    { "id": "complete_convention_dependence", "observableId": "family_classification_code", "operator": "eq", "value": 2, "outcome": "complete_convention_dependence" },
+    { "id": "unknown_or_control_absorption", "observableId": "family_classification_code", "operator": "eq", "value": 0, "outcome": "unknown" }
+  ],
+  "seed": 2645751311,
+  "analysis": {
+    "stoppingRule": "Apply exactly the five declared deterministic rules and one count-matched random family to every graph in the complete universe. Never add, remove or reorder a rule after results. Permit one deterministic reconstruction only for byte comparison.",
+    "comparisonPlan": "Classify invariant_under_rule_family only when the admissible-family common core is nonempty, exceeds the random-family common core, and every control passes. Classify complete_convention_dependence when the admissible common-core total is zero. Classify unknown otherwise or after any control failure. Exact equality counts and selected-rule outside-core counts are descriptive locked observables, not alternative thresholds."
+  },
+  "classification": {
+    "allowedOutcomes": [
+      "complete_convention_dependence",
+      "unknown",
+      "not_triggered"
+    ]
+  }
+}

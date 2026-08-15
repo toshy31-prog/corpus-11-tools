@@ -1,0 +1,68 @@
+{
+  "execution": {
+    "engine": {
+      "contentHash": "sha256:64bd8d33343580dc89b711d2c5c57d722aac2acad18fb5b456969647958abb04",
+      "files": [
+        {
+          "id": "governance/execution-lock.mjs",
+          "sha256": "sha256:0483e28ab0d8703550e3b55bebb6f90073481797eb157637bd40d9ccccc53e8b"
+        },
+        {
+          "id": "governance/protocol-lock.mjs",
+          "sha256": "sha256:cd4134f4a06cfc9965672b6331b08c53fbaa6441868ea4c86585aee7a75918ba"
+        },
+        {
+          "id": "scientific/compatible-constraint-order.mjs",
+          "sha256": "sha256:158048e241eaa3e8fc95de9a87bd390a1cfd31028924f9fea3bd568f0add6f0a"
+        },
+        {
+          "id": "scientific/compatible-rule-family.mjs",
+          "sha256": "sha256:57dd5eb32a0bb51958622507b5a0747783d73253b78b84e7b2b1aeae888d03ae"
+        }
+      ],
+      "fingerprint": "sha256:359a0d6e4def9fea1245ddef0a5c78201c38cd8f4190ff6a37247f3650cd07ff",
+      "id": "compatible-rule-family-runner",
+      "version": "1.0.0"
+    },
+    "environment": {
+      "contentHash": "sha256:4eaf178f1d103a6895a6b476a2a89647ea9c8d3ff32f7b8cc240bb0ba8334111",
+      "dependencies": [
+        {
+          "id": "node-standard-library",
+          "source": "runtime",
+          "version": "18.19.1"
+        }
+      ],
+      "runtime": {
+        "modulesAbi": "109",
+        "name": "node",
+        "napi": "9",
+        "unicode": "15.1",
+        "uv": "1.48.0",
+        "v8": "10.2.154.26-node.28",
+        "version": "18.19.1"
+      },
+      "system": {
+        "architecture": "x64",
+        "endianness": "LE",
+        "platform": "linux"
+      }
+    },
+    "module": {
+      "contentHash": "sha256:35eeeec26807a5309f2d123708c076c730822b04a61d3a0f8827a9e568e71489",
+      "files": [
+        {
+          "id": "scientific/compatible-rule-family.mjs",
+          "sha256": "sha256:57dd5eb32a0bb51958622507b5a0747783d73253b78b84e7b2b1aeae888d03ae"
+        }
+      ],
+      "fingerprint": "sha256:bdc7ca81d8b465d4f04105172ef5682513027ef3ccf27edecccf9384be7e0545",
+      "id": "compatible-admissible-rule-family",
+      "version": "1.0.0"
+    },
+    "schema": "corpus-experiment-execution/v1"
+  },
+  "experimentFingerprint": "sha256:5d7e79865612b9ba05cc921f8cd2cf4a50206c58b982ddad71bfd976e1e54a50",
+  "protocolHash": "sha256:60c3f48eba8c96480847b3fccb45f5716746c5ce2de4dda64acd12252cc7cfa1",
+  "schema": "corpus-experiment-execution-lock/v1"
+}
