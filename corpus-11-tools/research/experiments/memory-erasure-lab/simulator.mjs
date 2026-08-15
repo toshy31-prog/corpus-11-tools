@@ -1,8 +1,8 @@
 const EDGE_KEY = (a, b) => `${Math.min(a, b)}-${Math.max(a, b)}`;
 
 export function createTopology(type = "tree", size = 8) {
-  if (!Number.isInteger(size) || size < 4 || size > 20) {
-    throw new Error("La taille doit être un entier entre 4 et 20.");
+  if (!Number.isInteger(size) || size < 2 || size > 20) {
+    throw new Error("La taille doit être un entier entre 2 et 20.");
   }
 
   const pairs = new Map();

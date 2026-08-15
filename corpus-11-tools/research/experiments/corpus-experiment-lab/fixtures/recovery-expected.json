@@ -1,0 +1,29 @@
+{
+  "localized_vs_broadcast": {
+    "widths": [2, 3, 4, 5, 6, 7, 8],
+    "localized_recovery_cost": 1,
+    "localized_erasure_cost": 1,
+    "broadcast_recovery_cost": 1,
+    "broadcast_erasure_cost": "N"
+  },
+  "matched_erasure_depth": {
+    "degree_profile": [3, 2, 2, 1, 1, 1],
+    "actuator_degree": 2,
+    "work": 5,
+    "shallow_depth": 2,
+    "deep_depth": 3
+  },
+  "single_edge_robustness": {
+    "degree_profile": [3, 2, 2, 1, 1, 1],
+    "actuator_degree": 2,
+    "eccentricity": 3,
+    "tree_a_profile": [4, 2, 1, 1, 1],
+    "tree_a_mean": "9/5",
+    "tree_b_profile": [4, 3, 1, 1, 1],
+    "tree_b_mean": "10/5"
+  },
+  "two_edge_no_remainder": {
+    "7": { "searched": 16807, "pair_found": false },
+    "8": { "searched": 262144, "pair_found": false }
+  }
+}

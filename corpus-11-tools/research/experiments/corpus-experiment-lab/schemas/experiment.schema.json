@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "corpus-experiment-lab/experiment.schema.json",
+  "title": "Corpus Experiment",
+  "type": "object",
+  "required": ["plugin", "configuration", "observer", "steps", "controls", "reversalConditions", "seed"],
+  "properties": {
+    "plugin": { "type": "string", "minLength": 1 },
+    "configuration": { "type": "object" },
+    "observer": {
+      "type": "object",
+      "required": ["allowedOperations", "maxSteps", "successThreshold"],
+      "properties": {
+        "allowedOperations": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "maxSteps": { "type": "integer", "minimum": 0 },
+        "successThreshold": { "type": "number" }
+      },
+      "additionalProperties": true
+    },
+    "steps": { "type": "array", "items": {
+      "type": "object", "required": ["kind", "id"],
+      "properties": {
+        "kind": { "enum": ["operation", "perturbation", "observation", "criterion"] },
+        "id": { "type": "string", "minLength": 1 },
+        "input": { "type": "object" }
+      },
+      "additionalProperties": false
+    } },
+    "controls": { "type": "array", "items": {
+      "type": "object", "required": ["id"],
+      "properties": { "id": { "type": "string", "minLength": 1 }, "input": { "type": "object" } },
+      "additionalProperties": false
+    } },
+    "reversalConditions": { "type": "array", "minItems": 1, "items": {
+      "oneOf": [{ "type": "string", "minLength": 1 }, { "type": "object" }]
+    } },
+    "seed": { "type": "integer", "minimum": 0 }
+  },
+  "additionalProperties": false
+}

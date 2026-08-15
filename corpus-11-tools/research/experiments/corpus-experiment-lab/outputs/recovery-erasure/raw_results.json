@@ -1,0 +1,270 @@
+{
+  "schema": "corpus-experiment-results/v1",
+  "plugin": {
+    "id": "recovery-erasure",
+    "version": "1.0.0",
+    "title": "Recovery / erasure",
+    "observer": {
+      "allowedOperations": [
+        "inspect_any_terminal_subset",
+        "traverse_online_links",
+        "inspect_node"
+      ],
+      "maxSteps": 100,
+      "successThreshold": 1
+    },
+    "conventions": {
+      "historicalRecoveryCost": "Minimum size of any terminal subset distinguishing input 0 from input 1.",
+      "interactiveReadCost": "Breadth-first inspections from one declared read port; this is a distinct observable.",
+      "historicalWaveDepth": "Synchronous propagation rounds after actuator root 0 has already been reset.",
+      "interactiveWaveDepth": "Includes the root reset, so it is historicalWaveDepth + 1 on a connected all-one tree."
+    },
+    "reversalConditions": [
+      "Any historical control fails under its declared observer and matching conditions.",
+      "Recovery and erasure costs become equal in every admissible architecture under identical local read/reset controls."
+    ]
+  },
+  "expectedFixtureHash": "fnv1a64:2194fb9942dfdd7d",
+  "controls": [
+    {
+      "plugin": "recovery-erasure",
+      "pluginVersion": "1.0.0",
+      "control": "localized_vs_broadcast",
+      "input": {},
+      "result": {
+        "cases": [
+          {
+            "width": 2,
+            "localized": {
+              "recoveryCost": 1,
+              "erasureCost": 1
+            },
+            "broadcast": {
+              "recoveryCost": 1,
+              "erasureCost": 2
+            }
+          },
+          {
+            "width": 3,
+            "localized": {
+              "recoveryCost": 1,
+              "erasureCost": 1
+            },
+            "broadcast": {
+              "recoveryCost": 1,
+              "erasureCost": 3
+            }
+          },
+          {
+            "width": 4,
+            "localized": {
+              "recoveryCost": 1,
+              "erasureCost": 1
+            },
+            "broadcast": {
+              "recoveryCost": 1,
+              "erasureCost": 4
+            }
+          },
+          {
+            "width": 5,
+            "localized": {
+              "recoveryCost": 1,
+              "erasureCost": 1
+            },
+            "broadcast": {
+              "recoveryCost": 1,
+              "erasureCost": 5
+            }
+          },
+          {
+            "width": 6,
+            "localized": {
+              "recoveryCost": 1,
+              "erasureCost": 1
+            },
+            "broadcast": {
+              "recoveryCost": 1,
+              "erasureCost": 6
+            }
+          },
+          {
+            "width": 7,
+            "localized": {
+              "recoveryCost": 1,
+              "erasureCost": 1
+            },
+            "broadcast": {
+              "recoveryCost": 1,
+              "erasureCost": 7
+            }
+          },
+          {
+            "width": 8,
+            "localized": {
+              "recoveryCost": 1,
+              "erasureCost": 1
+            },
+            "broadcast": {
+              "recoveryCost": 1,
+              "erasureCost": 8
+            }
+          }
+        ],
+        "allMatched": true
+      },
+      "resultHash": "fnv1a64:42ecd46c80cb71f5"
+    },
+    {
+      "plugin": "recovery-erasure",
+      "pluginVersion": "1.0.0",
+      "control": "matched_erasure_depth",
+      "input": {},
+      "result": {
+        "common": {
+          "recoveryCost": 1,
+          "hamming": 6,
+          "edges": 5,
+          "work": 5,
+          "degreeProfile": [
+            3,
+            2,
+            2,
+            1,
+            1,
+            1
+          ],
+          "actuatorDegree": 2
+        },
+        "shallowDepth": 2,
+        "deepDepth": 3,
+        "allMatched": true
+      },
+      "resultHash": "fnv1a64:fb75a4f7274711b1"
+    },
+    {
+      "plugin": "recovery-erasure",
+      "pluginVersion": "1.0.0",
+      "control": "single_edge_robustness",
+      "input": {},
+      "result": {
+        "common": {
+          "recoveryCost": 1,
+          "hamming": 6,
+          "edges": 5,
+          "work": 5,
+          "degreeProfile": [
+            3,
+            2,
+            2,
+            1,
+            1,
+            1
+          ],
+          "actuatorDegree": 2,
+          "eccentricity": 3
+        },
+        "treeA": {
+          "edges": [
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              3
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              1,
+              5
+            ],
+            [
+              2,
+              4
+            ]
+          ],
+          "residualProfile": [
+            4,
+            2,
+            1,
+            1,
+            1
+          ],
+          "meanNumerator": 9,
+          "meanDenominator": 5
+        },
+        "treeB": {
+          "edges": [
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              3
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              2,
+              5
+            ]
+          ],
+          "residualProfile": [
+            4,
+            3,
+            1,
+            1,
+            1
+          ],
+          "meanNumerator": 10,
+          "meanDenominator": 5
+        },
+        "allMatched": true
+      },
+      "resultHash": "fnv1a64:b939670c3979baeb"
+    },
+    {
+      "plugin": "recovery-erasure",
+      "pluginVersion": "1.0.0",
+      "control": "two_edge_no_remainder",
+      "input": {
+        "width": 7
+      },
+      "result": {
+        "width": 7,
+        "searched": 16807,
+        "total": 16807,
+        "pairFound": false
+      },
+      "resultHash": "fnv1a64:debd21a9ce80b5fd"
+    },
+    {
+      "plugin": "recovery-erasure",
+      "pluginVersion": "1.0.0",
+      "control": "two_edge_no_remainder",
+      "input": {
+        "width": 8
+      },
+      "result": {
+        "width": 8,
+        "searched": 262144,
+        "total": 262144,
+        "pairFound": false
+      },
+      "resultHash": "fnv1a64:a6f8be96a8814227"
+    }
+  ],
+  "comparisonHash": "fnv1a64:067a24799c08a30d",
+  "allMatched": true
+}

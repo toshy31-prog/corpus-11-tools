@@ -2,7 +2,7 @@
 
 ## Statut
 
-Protocole implémenté dans le banc d'essai `memory-erasure-lab/` pour des systèmes simulés. Aucune donnée matérielle n'a été collectée. Aucun lien avec le temps physique n'est établi.
+Protocole implémenté dans le banc d'essai `memory-erasure-lab/` pour des systèmes simulés et encapsulé comme premier module de `corpus-experiment-lab/`. Aucune donnée matérielle n'a été collectée. Aucun lien avec le temps physique n'est établi.
 
 ## Phénomène testable
 
@@ -42,3 +42,7 @@ La durée maximale, le nombre de répétitions, la tolérance d'égalité, le se
 ## Instrument disponible
 
 Le laboratoire local fournit cinq architectures, deux modalités de diffusion, trois stratégies d'effacement, des pannes reproductibles, une campagne de cent essais et des exports JSON/CSV. Les états hors ligne conservent leur bit afin de distinguer trace inaccessible et effacement réel. Le coût en opérations est explicitement un proxy ; il ne remplace pas une mesure énergétique.
+
+Le moteur commun impose aussi une déclaration de la classe d'observateur : opérations permises, nombre maximal d'étapes et seuil de succès. Son premier test de non-régression retrouve 45/45 attentes des expériences clôturées. Cette conformité valide la migration logicielle, pas la robustesse physique.
+
+Deux observables homonymes restent volontairement distincts : `C_info` historique autorise le meilleur sous-ensemble terminal, tandis que l'interface compte les inspections depuis un port fixe. De même, la profondeur historique commence après la remise à zéro de la racine ; l'interface compte cette opération. Toute comparaison doit sélectionner l'une de ces conventions avant exécution.

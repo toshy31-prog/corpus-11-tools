@@ -1,0 +1,9 @@
+{
+  "status": "not_triggered",
+  "failedControls": [],
+  "conditions": [
+    "Any historical control fails under its declared observer and matching conditions.",
+    "Recovery and erasure costs become equal in every admissible architecture under identical local read/reset controls."
+  ],
+  "scope": "Historical controls reproduced; no claim of physical or universal validity."
+}

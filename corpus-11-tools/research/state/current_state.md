@@ -59,6 +59,8 @@ Aucune hypothèse du registre courant n'est rejetée. La prétention de nouveaut
 - Deux complexes complets à huit distinctions ont été exécutés ; leurs différences sont injectées par la connexité et l'orientation des entrées.
 - Deux complétions admissibles du jouet historique à huit triplets donnent des distributions différentes, ce qui établit la non-identifiabilité de ses nombres à partir du texte disponible.
 - Un banc d'essai interactif simule écriture, diffusion, lecture, effacement, pannes et traces latentes sur cinq architectures ; il exporte des campagnes reproductibles en JSON/CSV.
+- Un moteur expérimental minimal exécute désormais des états opaques, transformations, perturbations, observateurs, critères et contrôles déclarés par module. Le premier module récupération/désinscription retrouve 45/45 résultats attendus, y compris les recherches exhaustives à sept et huit sommets.
+- La migration a rendu explicites deux conventions auparavant dispersées : `C_info` historique minimise sur tout sous-ensemble terminal alors que la lecture interactive part d'un port fixe ; la profondeur historique exclut la remise à zéro initiale de l'actionneur alors que l'interface l'inclut.
 
 ## Démonstrations limitées aux jouets
 
@@ -81,8 +83,8 @@ Aucune hypothèse du registre courant n'est rejetée. La prétention de nouveaut
 
 ## Blocages
 
-Absence de données matérielles, de mesure énergétique étalonnée, de canal reliant les observables au temps physique et de comparaison quantitative exclusive. Le simulateur et son protocole sont prêts, mais une sortie simulée n'est pas une observation physique. Le profil de désinscription connu reste une compilation d'invariants standards. Le jouet historique à huit triplets est non identifiable sans son graphe et ses transports. Le fil `P_I` a atteint sa condition d'arrêt d'attribution au niveau de l'incidence paire-à-paire.
+Absence de données matérielles, de mesure énergétique étalonnée, de canal reliant les observables au temps physique et de comparaison quantitative exclusive. Le simulateur, son protocole et le premier module du moteur générique sont prêts, mais une sortie simulée n'est pas une observation physique. Le profil de désinscription connu reste une compilation d'invariants standards. Les trois autres modules scientifiques envisagés ne sont pas encore implémentés. Le jouet historique à huit triplets est non identifiable sans son graphe et ses transports. Le fil `P_I` a atteint sa condition d'arrêt d'attribution au niveau de l'incidence paire-à-paire.
 
 ## Prochaine action
 
-Exécuter une première campagne simulée comparant les cinq architectures, puis brancher le même schéma d'export sur un petit réseau matériel. Tester ensuite une perturbation réellement nouvelle du profil de désinscription et construire un contrôle ternaire sans ordre injecté. Maintenir inconnue toute portée physique sans canal de détection.
+Exécuter une première campagne simulée préenregistrée via le module récupération/désinscription, puis brancher le même contrat sur un petit réseau matériel. Implémenter ensuite un seul second module — frustration temporelle — pour vérifier que le cœur reste neutre hors du domaine de l'effacement. Maintenir inconnue toute portée physique sans canal de détection.
