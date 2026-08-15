@@ -22,3 +22,13 @@ Les événements suivants sont silencieux :
 - rapport identique au précédent.
 
 Aucune source sous research/sources/ ne doit être modifiée automatiquement.
+
+La publication automatique canonique est `scripts/publish_research_cycle.sh`.
+Elle exige un index initial vide, limite l'indexation à l'allowlist de recherche,
+et refuse toute modification, suppression, création, renommage ou remplacement
+sous `research/sources/`.
+
+Le PDF canonique est
+`research/sources/Trace_complete_hypothese_temps_recherche.pdf`. La copie de
+compatibilité située directement sous `research/` est conservée tant que son
+hash reste identique ; l'automatisation ne supprime aucune des deux copies.

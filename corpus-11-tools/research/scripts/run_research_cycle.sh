@@ -9,17 +9,21 @@ cd "$ROOT"
 
 echo "=== Corpus 11 automated research cycle ==="
 
-echo "[1] Git sync"
+echo "[1] Clean Git preflight"
+. "$RESEARCH/scripts/git_automation_guard.sh"
+corpus_require_clean_worktree
+
+echo "[2] Git sync"
 git fetch origin
 git checkout main
 git pull --ff-only origin main
 
-echo "[2] Preflight"
+echo "[3] Preflight"
 python3 "$RESEARCH/scripts/validate_research_workspace.py"
 python3 "$ROOT/corpus-11-tools/tools/validate_package.py"
 python3 "$ROOT/corpus-11-tools/tools/check_graph.py"
 
-echo "[3] Protect sources"
+echo "[4] Protect sources"
 SOURCE_BEFORE="$(
   find "$RESEARCH/sources" -type f -print0 \
   | sort -z \
@@ -28,14 +32,15 @@ SOURCE_BEFORE="$(
   | awk '{print $1}'
 )"
 
-echo "[4] Snapshot"
+echo "[5] Snapshot"
 "$RESEARCH/scripts/research_snapshot.sh"
 
-echo "[5] Semantic research run"
+echo "[6] Semantic research run"
 cd "$RESEARCH"
 
 codex exec "
-r
+Exécute explicitement le cycle de recherche courant décrit dans AGENTS.md, étapes 1 à 14.
+Ne traite pas cette instruction comme le shorthand r et ne relance aucun script de cycle.
 
 Contraintes supplémentaires pour ce run automatique :
 - ne touche jamais à sources/ ;
@@ -48,7 +53,7 @@ Contraintes supplémentaires pour ce run automatique :
 
 cd "$ROOT"
 
-echo "[6] Source integrity"
+echo "[7] Source integrity"
 SOURCE_AFTER="$(
   find "$RESEARCH/sources" -type f -print0 \
   | sort -z \
@@ -62,20 +67,20 @@ if [ "$SOURCE_BEFORE" != "$SOURCE_AFTER" ]; then
   exit 20
 fi
 
-echo "[7] Final validation"
+echo "[8] Final validation"
 python3 "$RESEARCH/scripts/validate_research_workspace.py"
 python3 "$ROOT/corpus-11-tools/tools/validate_package.py"
 python3 "$ROOT/corpus-11-tools/tools/check_graph.py"
 git diff --check
 
-date -Is > "$STAMP"
-
-echo "[8] Result"
+echo "[9] Result"
 git status --short
 git diff --stat
 
-if [ -z "$(git status --porcelain)" ]; then
+SUBSTANTIVE_STATUS="$(git status --porcelain -- . ":(exclude)corpus-11-tools/research/state/last_automation_run.txt")"
+if [ -z "$SUBSTANTIVE_STATUS" ]; then
   echo "NO_CHANGE"
 else
+  date -Is > "$STAMP"
   echo "CHANGES_READY"
 fi

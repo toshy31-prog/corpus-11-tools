@@ -2,16 +2,15 @@
 set -euo pipefail
 
 ROOT="$(git rev-parse --show-toplevel)"
+RESEARCH="$ROOT/corpus-11-tools/research"
+. "$RESEARCH/scripts/git_automation_guard.sh"
+
 cd "$ROOT"
 
-echo
 echo "=== CORPUS 11 PUBLISH ==="
-echo
 
-if ! git diff --quiet -- corpus-11-tools/research/sources/; then
-  echo "ERREUR: modification détectée dans research/sources/"
-  exit 1
-fi
+corpus_require_clean_index
+corpus_validate_pending_paths
 
 python3 corpus-11-tools/research/scripts/validate_research_workspace.py
 python3 corpus-11-tools/tools/validate_package.py
@@ -23,31 +22,45 @@ if [ -z "$(git status --porcelain)" ]; then
   exit 0
 fi
 
-echo
 echo "Diff à publier :"
 git status --short
 git diff --stat
 
 DATE="$(date +%F)"
 
-git add \
-  corpus-11-tools/research/state \
-  corpus-11-tools/research/hypotheses \
-  corpus-11-tools/research/notes \
-  corpus-11-tools/research/experiments \
-  corpus-11-tools/research/reports \
-  corpus-11-tools/research/scripts \
-  corpus-11-tools/research/AGENTS.md
+corpus_stage_allowlist
 
-if git diff --cached --quiet; then
-  echo "Aucun changement admissible à commiter."
+set +e
+corpus_verify_staged_diff
+status=$?
+set -e
+if [ "$status" -ne 0 ]; then
+  if [ "$status" -eq 10 ]; then
+    echo "Aucun changement admissible à commiter."
+    exit 0
+  fi
+  exit "$status"
+fi
+
+# Re-read every Git state after staging and before committing.
+if [ -n "$(git diff --name-only)" ] || [ -n "$(git ls-files --others --exclude-standard)" ]; then
+  echo "ERROR: unstaged or untracked entries remain after allowlisted staging" >&2
+  git status --short >&2
+  exit 34
+fi
+corpus_validate_pending_paths
+corpus_verify_staged_diff
+
+if [ "${CORPUS_AUTOMATION_NO_COMMIT:-0}" = "1" ]; then
+  echo "VALIDATED_NO_COMMIT"
   exit 0
 fi
 
 git commit -m "Research cycle ${DATE}"
 
-git push origin main
+if [ "${CORPUS_AUTOMATION_NO_PUSH:-0}" != "1" ]; then
+  git push origin main
+fi
 
-echo
 echo "Publication terminée."
 git status
