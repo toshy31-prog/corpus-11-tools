@@ -1,0 +1,74 @@
+{
+  "schema": "corpus-experiment-protocol/v1",
+  "protocolId": "compatible-constraint-order-001",
+  "version": "1.0.0",
+  "hypothesis": "Across the complete six-distinction universe, undirected compatibility constraints generate at least one nontrivial implication order between distinctions, and the resulting order signature is not determined by degree sequence, triangle count and maximal-context-size multiset.",
+  "alternatives": [
+    "No compatibility graph generates a strict implication between quotient classes of distinctions.",
+    "Every generated order signature is determined by the preregistered matched local summaries.",
+    "An enumeration, representation or negative control fails."
+  ],
+  "model": {
+    "id": "compatible-constraint-order-model",
+    "version": "1.0.0",
+    "contentHash": "sha256:158048e241eaa3e8fc95de9a87bd390a1cfd31028924f9fea3bd568f0add6f0a",
+    "configuration": {
+      "experimentKind": "exhaustive_compatible_constraint_order",
+      "width": 6,
+      "expectedGraphCount": 32768,
+      "relabeling": [2, 5, 1, 4, 0, 3],
+      "matchingFields": [
+        "degree_sequence",
+        "triangle_count",
+        "maximal_context_size_multiset"
+      ]
+    }
+  },
+  "observables": [
+    { "id": "nontrivial_order_graphs", "measure": "Number of graphs whose quotient support-inclusion order has at least one strict comparison", "channel": "closed exhaustive compatible-constraint runner" },
+    { "id": "strict_pair_histogram", "measure": "Exact histogram of ordered strict comparisons between distinct support classes", "channel": "closed exhaustive compatible-constraint runner" },
+    { "id": "height_histogram", "measure": "Exact histogram of quotient-order heights", "channel": "closed exhaustive compatible-constraint runner" },
+    { "id": "discriminating_matched_classes", "measure": "Number of preregistered matched-summary classes containing more than one order signature", "channel": "closed exhaustive compatible-constraint runner" },
+    { "id": "canonical_witness", "measure": "Lexicographically first matched class and its lowest-mask representative for each distinct order signature", "channel": "closed exhaustive compatible-constraint runner" },
+    { "id": "enumeration_mismatches", "measure": "Difference indicator between observed and declared graph-universe cardinality", "channel": "closed exhaustive compatible-constraint runner" },
+    { "id": "representation_mismatches", "measure": "Number of graphs whose order signature changes under the fixed transported relabelling", "channel": "closed exhaustive compatible-constraint runner" },
+    { "id": "extreme_control_mismatches", "measure": "Number of empty or complete controls incorrectly producing a strict quotient order", "channel": "closed exhaustive compatible-constraint runner" }
+  ],
+  "controls": [
+    { "id": "exhaustive_universe", "purpose": "Require enumeration of every one of the 2^15 labelled simple graphs." },
+    { "id": "matched_local_summaries", "purpose": "Compare order signatures only within classes fixed by degree sequence, triangle count and maximal-context-size multiset." },
+    { "id": "representation_invariance", "purpose": "Require order signatures to survive the fixed bijective relabelling." },
+    { "id": "empty_complete_negative_controls", "purpose": "Require the empty and complete graphs to yield no strict implication between quotient classes." }
+  ],
+  "observer": {
+    "allowedOperations": [
+      "enumerate_universe",
+      "compute_order_observables",
+      "apply_matched_controls",
+      "audit_representation"
+    ],
+    "maxSteps": 4,
+    "successThreshold": 1
+  },
+  "reversalConditions": [
+    { "id": "no_generated_order", "observableId": "nontrivial_order_graphs", "operator": "lte", "value": 0, "outcome": "no_constraint_generated_order" },
+    { "id": "absorbed_by_summaries", "observableId": "discriminating_matched_classes", "operator": "lte", "value": 0, "outcome": "absorbed_by_matched_summaries" },
+    { "id": "enumeration_control_failure", "observableId": "enumeration_mismatches", "operator": "gt", "value": 0, "outcome": "protocol_or_model_invalid" },
+    { "id": "representation_control_failure", "observableId": "representation_mismatches", "operator": "gt", "value": 0, "outcome": "protocol_or_model_invalid" },
+    { "id": "negative_control_failure", "observableId": "extreme_control_mismatches", "operator": "gt", "value": 0, "outcome": "protocol_or_model_invalid" }
+  ],
+  "seed": 2236067977,
+  "analysis": {
+    "stoppingRule": "Enumerate exactly the complete 32,768-graph universe once. Do not add distinctions, alter the matching signature, replace the canonical witness or inspect another family after classification. One later deterministic reconstruction may be used only for byte comparison.",
+    "comparisonPlan": "Derive maximal compatible contexts and support-inclusion orders without any directed or ranked input. Test existence of nontrivial strict order and variation of its signature inside the fixed matched-summary classes. Apply only the five locked reversal conditions. A non-reversed result is mathematical evidence about this finite model only, never evidence of temporal, objectual or physical emergence."
+  },
+  "classification": {
+    "allowedOutcomes": [
+      "no_constraint_generated_order",
+      "absorbed_by_matched_summaries",
+      "protocol_or_model_invalid",
+      "not_triggered",
+      "inconclusive"
+    ]
+  }
+}

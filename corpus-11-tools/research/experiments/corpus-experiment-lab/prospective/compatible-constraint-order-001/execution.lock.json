@@ -1,0 +1,64 @@
+{
+  "execution": {
+    "engine": {
+      "contentHash": "sha256:0b2c105ffce891306f582201a54eee6b3d9e0f8983350053da1c66106ecc6c45",
+      "files": [
+        {
+          "id": "governance/execution-lock.mjs",
+          "sha256": "sha256:0483e28ab0d8703550e3b55bebb6f90073481797eb157637bd40d9ccccc53e8b"
+        },
+        {
+          "id": "governance/protocol-lock.mjs",
+          "sha256": "sha256:cd4134f4a06cfc9965672b6331b08c53fbaa6441868ea4c86585aee7a75918ba"
+        },
+        {
+          "id": "scientific/compatible-constraint-order.mjs",
+          "sha256": "sha256:158048e241eaa3e8fc95de9a87bd390a1cfd31028924f9fea3bd568f0add6f0a"
+        }
+      ],
+      "fingerprint": "sha256:1c5f28c70b9e3f96a82c635cb03acfa6064c8b2760298542ad48472b87b9acf1",
+      "id": "compatible-constraint-order-runner",
+      "version": "1.0.0"
+    },
+    "environment": {
+      "contentHash": "sha256:4eaf178f1d103a6895a6b476a2a89647ea9c8d3ff32f7b8cc240bb0ba8334111",
+      "dependencies": [
+        {
+          "id": "node-standard-library",
+          "source": "runtime",
+          "version": "18.19.1"
+        }
+      ],
+      "runtime": {
+        "modulesAbi": "109",
+        "name": "node",
+        "napi": "9",
+        "unicode": "15.1",
+        "uv": "1.48.0",
+        "v8": "10.2.154.26-node.28",
+        "version": "18.19.1"
+      },
+      "system": {
+        "architecture": "x64",
+        "endianness": "LE",
+        "platform": "linux"
+      }
+    },
+    "module": {
+      "contentHash": "sha256:cc79fff933a970ed03fe14ee2850ae6f93433b19fc72c42ae3a1ef354032e6e5",
+      "files": [
+        {
+          "id": "scientific/compatible-constraint-order.mjs",
+          "sha256": "sha256:158048e241eaa3e8fc95de9a87bd390a1cfd31028924f9fea3bd568f0add6f0a"
+        }
+      ],
+      "fingerprint": "sha256:ce673f07d88000f30b531a948c96227392371cebebad632a2fa4d31f3545d375",
+      "id": "compatible-constraint-order-model",
+      "version": "1.0.0"
+    },
+    "schema": "corpus-experiment-execution/v1"
+  },
+  "experimentFingerprint": "sha256:6e71f633ff905f921ff9986114d69af7f3cb499a33b40171ce715b39b1d1ecec",
+  "protocolHash": "sha256:cab974cf6ae65b5723664ce3153aeac642ce5f69bb34b801a4e78db316340232",
+  "schema": "corpus-experiment-execution-lock/v1"
+}
