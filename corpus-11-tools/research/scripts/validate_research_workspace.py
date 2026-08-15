@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from hashlib import sha256
 from pathlib import Path
+import re
 import subprocess
 import sys
 
@@ -29,8 +30,15 @@ if len(hypotheses) != 6:
     errors.append(f"expected six hypothesis records, found {len(hypotheses)}")
 for hypothesis in hypotheses:
     text = hypothesis.read_text(encoding="utf-8")
-    marker = "## Condition de renversement"
-    if marker not in text or not text.split(marker, 1)[1].strip():
+    section = re.search(
+        r"^## Condition de renversement\s*$\n(.*?)(?=^##\s|\Z)",
+        text,
+        re.MULTILINE | re.DOTALL,
+    )
+    content = section.group(1) if section else ""
+    content = re.sub(r"<!--.*?-->", "", content, flags=re.DOTALL)
+    content = re.sub(r"^\s*\[//\]:\s*#.*$", "", content, flags=re.MULTILINE)
+    if not content.strip():
         errors.append(f"missing reversal condition: {hypothesis.relative_to(repo)}")
 
 source_status = subprocess.run(

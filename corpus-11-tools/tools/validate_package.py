@@ -4,11 +4,66 @@ import json
 import re
 import sys
 
-import yaml
-
 root = Path(__file__).resolve().parents[1]
 errors: list[str] = []
 manifest = root / ".codex-plugin" / "plugin.json"
+NON_CAPABILITY_SKILLS = {
+    "corpus-11-routing",
+    "corpus-context-library",
+    "explore-first",
+    "fiction-external-generation",
+    "provenance-audit",
+}
+
+
+def parse_minimal_scalar(value: str):
+    value = value.strip()
+    if not value:
+        raise ValueError("empty value")
+    if value in ("true", "false"):
+        return value == "true"
+    if value.startswith('"') or value.startswith("["):
+        return json.loads(value)
+    if value.startswith("'"):
+        if len(value) < 2 or not value.endswith("'"):
+            raise ValueError("unterminated quoted scalar")
+        return value[1:-1]
+    if value[0] in "{]" or value[-1] in "[}":
+        raise ValueError("malformed scalar")
+    return value
+
+
+def parse_minimal_yaml(text: str, *, nested: bool) -> dict:
+    result: dict = {}
+    current_section: str | None = None
+    for number, raw_line in enumerate(text.splitlines(), 1):
+        if not raw_line.strip() or raw_line.lstrip().startswith("#"):
+            continue
+        if "\t" in raw_line:
+            raise ValueError(f"line {number}: tabs are not allowed")
+        indent = len(raw_line) - len(raw_line.lstrip(" "))
+        if ":" not in raw_line:
+            raise ValueError(f"line {number}: expected key: value")
+        key, value = raw_line.strip().split(":", 1)
+        if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_-]*", key):
+            raise ValueError(f"line {number}: invalid key")
+        if indent == 0:
+            if key in result:
+                raise ValueError(f"line {number}: duplicate key {key}")
+            if nested and not value.strip():
+                result[key] = {}
+                current_section = key
+            else:
+                result[key] = parse_minimal_scalar(value)
+                current_section = None
+        elif nested and indent == 2 and current_section:
+            section = result[current_section]
+            if key in section:
+                raise ValueError(f"line {number}: duplicate key {current_section}.{key}")
+            section[key] = parse_minimal_scalar(value)
+        else:
+            raise ValueError(f"line {number}: unsupported indentation")
+    return result
 
 if not manifest.exists():
     errors.append("missing .codex-plugin/plugin.json")
@@ -39,8 +94,8 @@ for skill in sorted(path for path in skill_root.iterdir() if path.is_dir()):
             errors.append(f"{skill.name}: missing YAML front matter")
         else:
             try:
-                metadata = yaml.safe_load(front_matter.group(1))
-            except yaml.YAMLError as exc:
+                metadata = parse_minimal_yaml(front_matter.group(1), nested=False)
+            except (ValueError, json.JSONDecodeError) as exc:
                 errors.append(f"{skill.name}: invalid SKILL.md YAML: {exc}")
                 metadata = None
             if not isinstance(metadata, dict):
@@ -65,8 +120,8 @@ for skill in sorted(path for path in skill_root.iterdir() if path.is_dir()):
         errors.append(f"{skill.name}: missing agents/openai.yaml")
     else:
         try:
-            agent = yaml.safe_load(agent_yaml.read_text(encoding="utf-8"))
-        except yaml.YAMLError as exc:
+            agent = parse_minimal_yaml(agent_yaml.read_text(encoding="utf-8"), nested=True)
+        except (ValueError, json.JSONDecodeError) as exc:
             errors.append(f"{skill.name}: invalid agents/openai.yaml: {exc}")
             agent = None
         interface = agent.get("interface") if isinstance(agent, dict) else None
@@ -84,7 +139,13 @@ for skill in sorted(path for path in skill_root.iterdir() if path.is_dir()):
                 f"{skill.name}: agents/openai.yaml missing boolean policy.allow_implicit_invocation"
             )
 
-    if capability_md.is_file():
+    expected_capability = "CAP." + skill.name.replace("-", "_").upper()
+    if skill.name in NON_CAPABILITY_SKILLS:
+        if capability_md.exists():
+            errors.append(f"{skill.name}: non-capability skill must not contain references/capability.md")
+    elif not capability_md.is_file():
+        errors.append(f"{skill.name}: missing references/capability.md")
+    else:
         heading = re.search(
             r"^#\s+(CAP\.[A-Z0-9_]+)\s+—\s+provenance opérationnelle$",
             capability_md.read_text(encoding="utf-8"),
@@ -92,6 +153,11 @@ for skill in sorted(path for path in skill_root.iterdir() if path.is_dir()):
         )
         if not heading:
             errors.append(f"{skill.name}: references/capability.md missing canonical CAP heading")
+        elif heading.group(1) != expected_capability:
+            errors.append(
+                f"{skill.name}: references/capability.md declares {heading.group(1)}, "
+                f"expected {expected_capability}"
+            )
         else:
             capability_ids.append(heading.group(1))
 

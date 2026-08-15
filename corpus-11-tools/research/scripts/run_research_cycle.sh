@@ -4,6 +4,38 @@ set -euo pipefail
 ROOT="$(git rev-parse --show-toplevel)"
 RESEARCH="$ROOT/corpus-11-tools/research"
 STAMP="$RESEARCH/state/last_automation_run.txt"
+STAMP_BACKUP="$(mktemp)"
+STAMP_EXISTED=0
+RUN_SUCCEEDED=0
+TIMESTAMP_TMP=""
+
+if [ -e "$STAMP" ]; then
+  cp -p -- "$STAMP" "$STAMP_BACKUP"
+  STAMP_EXISTED=1
+fi
+
+restore_initial_stamp() {
+  if [ "$STAMP_EXISTED" -eq 1 ]; then
+    cp -p -- "$STAMP_BACKUP" "$STAMP"
+  else
+    rm -f -- "$STAMP"
+  fi
+}
+
+cleanup_run() {
+  local status=$?
+  trap - EXIT
+  if [ "$RUN_SUCCEEDED" -ne 1 ]; then
+    restore_initial_stamp
+  fi
+  [ -z "$TIMESTAMP_TMP" ] || rm -f -- "$TIMESTAMP_TMP"
+  rm -f -- "$STAMP_BACKUP"
+  exit "$status"
+}
+
+trap cleanup_run EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
 
 cd "$ROOT"
 
@@ -53,6 +85,10 @@ Contraintes supplémentaires pour ce run automatique :
 
 cd "$ROOT"
 
+# The timestamp is script-owned state. Discard any mutation made by the
+# semantic subprocess before classifying or validating its output.
+restore_initial_stamp
+
 echo "[7] Source integrity"
 SOURCE_AFTER="$(
   find "$RESEARCH/sources" -type f -print0 \
@@ -72,6 +108,7 @@ python3 "$RESEARCH/scripts/validate_research_workspace.py"
 python3 "$ROOT/corpus-11-tools/tools/validate_package.py"
 python3 "$ROOT/corpus-11-tools/tools/check_graph.py"
 git diff --check
+corpus_validate_pending_paths
 
 echo "[9] Result"
 git status --short
@@ -81,6 +118,11 @@ SUBSTANTIVE_STATUS="$(git status --porcelain -- . ":(exclude)corpus-11-tools/res
 if [ -z "$SUBSTANTIVE_STATUS" ]; then
   echo "NO_CHANGE"
 else
-  date -Is > "$STAMP"
+  TIMESTAMP_TMP="$(mktemp "$RESEARCH/state/.last_automation_run.XXXXXX")"
+  date -Is > "$TIMESTAMP_TMP"
+  mv -- "$TIMESTAMP_TMP" "$STAMP"
+  TIMESTAMP_TMP=""
   echo "CHANGES_READY"
 fi
+
+RUN_SUCCEEDED=1
