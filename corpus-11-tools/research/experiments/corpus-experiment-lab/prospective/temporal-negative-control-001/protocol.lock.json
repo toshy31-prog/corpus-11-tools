@@ -1,0 +1,104 @@
+{
+  "schema": "corpus-experiment-protocol-lock/v1",
+  "protocolHash": "sha256:65ea88a77648d8771d56b3ab7aaf7e5e2a62ece0fbdcab149b1d77cadfcc4e6e",
+  "protocol": {
+    "alternatives": [
+      "No representation mismatch is observed; the apparent representation effect is absorbed by the declared negative controls.",
+      "A representation mismatch remains after one or both declared negative controls."
+    ],
+    "analysis": {
+      "comparisonPlan": "Count every relabelling and reversal mismatch. If the total is zero, classify the proposed representation effect as absorbed by the declared negative controls.",
+      "stoppingRule": "Execute exactly 16 LCG-generated masks once; do not extend, replace or rerun the sample after observing any result."
+    },
+    "classification": {
+      "allowedOutcomes": [
+        "absorbed_by_control",
+        "not_triggered",
+        "inconclusive"
+      ]
+    },
+    "controls": [
+      {
+        "id": "relabel_invariance",
+        "purpose": "Negative control: test whether the apparent effect survives a preregistered change of vertex labels."
+      },
+      {
+        "id": "reversal_invariance",
+        "purpose": "Negative control: test whether the apparent effect survives reversal of every directed relation."
+      }
+    ],
+    "hypothesis": "At least one of 16 seed-selected tournaments exhibits an apparent change in exact minimum frustration after the preregistered vertex relabelling or global relation reversal.",
+    "model": {
+      "configuration": {
+        "experimentKind": "seeded_tournament_exploration",
+        "generator": {
+          "increment": 1013904223,
+          "multiplier": 1664525,
+          "name": "lcg32"
+        },
+        "relabeling": [
+          4,
+          1,
+          6,
+          0,
+          3,
+          5,
+          2
+        ],
+        "sampleCount": 16,
+        "width": 7
+      },
+      "contentHash": "sha256:fa09d7b87544b207f2e32a732afc4527bf58d3effb7d540f992763fce6bdf3d8",
+      "id": "temporal-frustration-seeded-sample",
+      "version": "1.0.0"
+    },
+    "observables": [
+      {
+        "channel": "locked temporal adapter",
+        "id": "sample_records",
+        "measure": "mask, local summary and three exact minima per sample"
+      },
+      {
+        "channel": "locked temporal adapter",
+        "id": "frustration_histogram",
+        "measure": "counts by exact minimum backward-edge value"
+      },
+      {
+        "channel": "locked temporal adapter",
+        "id": "maximum_backward_edges",
+        "measure": "maximum exact minimum backward-edge count in the sample"
+      },
+      {
+        "channel": "locked temporal adapter",
+        "id": "mean_backward_edges_numerator",
+        "measure": "sum of exact minimum backward-edge counts"
+      },
+      {
+        "channel": "locked temporal adapter",
+        "id": "representation_mismatches",
+        "measure": "total relabelling and reversal mismatches"
+      }
+    ],
+    "observer": {
+      "allowedOperations": [
+        "inspect_local_summary",
+        "optimize_scalar_order"
+      ],
+      "maxSteps": 64,
+      "successThreshold": 1
+    },
+    "protocolId": "temporal-negative-control-001",
+    "reversalConditions": [
+      {
+        "id": "representation_effect_absorbed",
+        "observableId": "representation_mismatches",
+        "operator": "eq",
+        "outcome": "absorbed_by_control",
+        "value": 0
+      }
+    ],
+    "schema": "corpus-experiment-protocol/v1",
+    "seed": 2718281828,
+    "version": "1.0.0"
+  }
+}
