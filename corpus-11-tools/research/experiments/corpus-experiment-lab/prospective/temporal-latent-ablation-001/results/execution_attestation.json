@@ -1,0 +1,13 @@
+{
+  "schema": "corpus-experiment-execution-attestation/v1",
+  "protocolHash": "sha256:fb8d34feb677176e38d5c925f6622cf84c6856d7a64b9e8b41b599732f37f686",
+  "experimentFingerprint": "sha256:3d616fc956dc8e3174925d1185958d0f432f7ece53afc3c758ac011d6213d7fb",
+  "rawHash": "sha256:65bf62aad4bd181e83414e8f805a9b5e049f7a1fec039a7fbc39d06697ec5b44",
+  "classificationHash": "sha256:30ebdea010d1aa2d4f0c6e5dc1c4638d4edbd3c50d2ca9ca91b00011541fcda0",
+  "artifactHashes": {
+    "raw_results.json": "sha256:36077921d51c5f27e8cde653d4be4fc49aff0ba92fb4b8938e78dd33ed65c7c7",
+    "computed_output.json": "sha256:b483da69c69011e9883c63909c7deb09834f6b603ae324defb1ee46d9c8a7a8b",
+    "comparison.json": "sha256:59158c8cae1eb40b660130b92505e13047695532fee92de4a3898845a7a05877",
+    "classification.json": "sha256:bbbee03b558992c9944997781f4476c393e3a0bddbe2b1128a3f470d950a9f19"
+  }
+}

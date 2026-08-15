@@ -1,0 +1,64 @@
+{
+  "evaluations": [
+    {
+      "actual": 1966,
+      "expected": 0,
+      "id": "a_advantage_absent",
+      "observableId": "a_predictive_advantage_doubled",
+      "operator": "lte",
+      "outcome": "latent_group_prediction_not_replicated",
+      "triggered": false
+    },
+    {
+      "actual": 1888,
+      "expected": 0,
+      "id": "dependence_contrast_absent",
+      "observableId": "dependence_contrast_doubled",
+      "operator": "lte",
+      "outcome": "injected_structure_dependence_not_supported",
+      "triggered": false
+    },
+    {
+      "actual": -1654,
+      "expected": 0,
+      "id": "material_residual_in_b",
+      "observableId": "b_residual_quarter_test",
+      "operator": "gte",
+      "outcome": "matched_local_statistics_retain_material_signal",
+      "triggered": false
+    },
+    {
+      "actual": 0,
+      "expected": 0,
+      "id": "degree_matching_failure",
+      "observableId": "local_statistic_mismatches",
+      "operator": "gt",
+      "outcome": "protocol_or_model_invalid",
+      "triggered": false
+    },
+    {
+      "actual": 0,
+      "expected": 0,
+      "id": "representation_control_failure",
+      "observableId": "representation_mismatches",
+      "operator": "gt",
+      "outcome": "protocol_or_model_invalid",
+      "triggered": false
+    },
+    {
+      "actual": 0,
+      "expected": 0,
+      "id": "generator_control_failure",
+      "observableId": "oracle_mismatches",
+      "operator": "gt",
+      "outcome": "protocol_or_model_invalid",
+      "triggered": false
+    }
+  ],
+  "outcomes": [],
+  "protocolHash": "sha256:fb8d34feb677176e38d5c925f6622cf84c6856d7a64b9e8b41b599732f37f686",
+  "rawHash": "sha256:65bf62aad4bd181e83414e8f805a9b5e049f7a1fec039a7fbc39d06697ec5b44",
+  "schema": "corpus-experiment-classification/v1",
+  "status": "not_triggered",
+  "classificationHash": "sha256:30ebdea010d1aa2d4f0c6e5dc1c4638d4edbd3c50d2ca9ca91b00011541fcda0"
+}

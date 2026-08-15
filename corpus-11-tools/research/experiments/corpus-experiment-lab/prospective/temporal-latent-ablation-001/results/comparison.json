@@ -1,0 +1,29 @@
+{
+  "protocolHash": "sha256:fb8d34feb677176e38d5c925f6622cf84c6856d7a64b9e8b41b599732f37f686",
+  "experimentFingerprint": "sha256:3d616fc956dc8e3174925d1185958d0f432f7ece53afc3c758ac011d6213d7fb",
+  "rawHash": "sha256:65bf62aad4bd181e83414e8f805a9b5e049f7a1fec039a7fbc39d06697ec5b44",
+  "groups": {
+    "A": "shared explicitly generated latent order",
+    "B": "independent uniform tournaments conditioned only on A's degree multisets",
+    "C": "exact random-order expectation plus matching, representation and generator controls"
+  },
+  "controls": {
+    "degree_multiset_matching": {
+      "mismatches": 0,
+      "passed": true
+    },
+    "exact_random_order_expectation": {
+      "doubledExpectedViolationsPerTournament": 21,
+      "passed": true
+    },
+    "latent_generator_oracle": {
+      "mismatches": 0,
+      "passed": true
+    },
+    "representation_invariance": {
+      "mismatches": 0,
+      "passed": true
+    }
+  },
+  "allControlsPassed": true
+}

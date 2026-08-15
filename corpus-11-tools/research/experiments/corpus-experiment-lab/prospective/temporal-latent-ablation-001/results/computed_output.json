@@ -1,0 +1,35 @@
+{
+  "protocolHash": "sha256:fb8d34feb677176e38d5c925f6622cf84c6856d7a64b9e8b41b599732f37f686",
+  "experimentFingerprint": "sha256:3d616fc956dc8e3174925d1185958d0f432f7ece53afc3c758ac011d6213d7fb",
+  "rawHash": "sha256:65bf62aad4bd181e83414e8f805a9b5e049f7a1fec039a7fbc39d06697ec5b44",
+  "sampleCount": 192,
+  "edgeCount": 21,
+  "aViolations": 1033,
+  "bViolations": 1977,
+  "aAdvantageDoubled": 1966,
+  "bAdvantageDoubled": 78,
+  "dependenceContrastDoubled": 1888,
+  "bResidualQuarterTest": -1654,
+  "totalsByNoise": {
+    "0": {
+      "samples": 48,
+      "aViolations": 0,
+      "bViolations": 486
+    },
+    "3": {
+      "samples": 48,
+      "aViolations": 197,
+      "bViolations": 484
+    },
+    "6": {
+      "samples": 48,
+      "aViolations": 386,
+      "bViolations": 501
+    },
+    "9": {
+      "samples": 48,
+      "aViolations": 450,
+      "bViolations": 506
+    }
+  }
+}
