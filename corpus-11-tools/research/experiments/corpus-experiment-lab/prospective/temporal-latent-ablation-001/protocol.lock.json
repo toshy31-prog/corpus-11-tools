@@ -1,0 +1,179 @@
+{
+  "schema": "corpus-experiment-protocol-lock/v1",
+  "protocolHash": "sha256:fb8d34feb677176e38d5c925f6622cf84c6856d7a64b9e8b41b599732f37f686",
+  "protocol": {
+    "alternatives": [
+      "The latent-order group does not reproduce a positive predictive advantage against the exact random-order expectation.",
+      "The predictive advantage is not larger in the latent-order group than in the degree-multiset-matched group.",
+      "At least one quarter of the latent-order advantage remains in the matched group, so local degree statistics or another retained property carry a material residual signal.",
+      "A matching, representation or generator control fails."
+    ],
+    "analysis": {
+      "comparisonPlan": "A uses independent noisy training/test tournaments sharing one explicit latent order. B samples training and test independently and uniformly from the complete labelled-tournament sets matching A's respective sorted out-degree multisets, with no shared latent order. C applies the four locked controls. Classify the dependence as supported only if A has positive advantage, A exceeds B, B retains less than one quarter of A's advantage, and every control passes. This conclusion concerns model structure only and has no physical interpretation.",
+      "stoppingRule": "Execute exactly 48 paired A/B samples at each of the four declared flip counts in one primary run. After sealing, permit one deterministic reconstruction solely for byte comparison; never add samples, change the matched-null family or alter thresholds."
+    },
+    "classification": {
+      "allowedOutcomes": [
+        "latent_group_prediction_not_replicated",
+        "injected_structure_dependence_not_supported",
+        "matched_local_statistics_retain_material_signal",
+        "protocol_or_model_invalid",
+        "not_triggered",
+        "inconclusive"
+      ]
+    },
+    "controls": [
+      {
+        "id": "exact_random_order_expectation",
+        "purpose": "Use the exact expectation of half the tournament edges rather than a sampled random-order baseline."
+      },
+      {
+        "id": "degree_multiset_matching",
+        "purpose": "Require exact equality of the sorted vertex out-degree multisets for every paired A/B training and test object."
+      },
+      {
+        "id": "representation_invariance",
+        "purpose": "Require transported vertex relabelling to preserve all fitted minima and held-out scores in A and B."
+      },
+      {
+        "id": "latent_generator_oracle",
+        "purpose": "Require every A test tournament to contain exactly the declared number of reversals relative to its generated latent order."
+      }
+    ],
+    "hypothesis": "The held-out predictive advantage of an exact F_T-minimizing order is materially larger when training and test tournaments share an explicitly generated latent order than when both tournaments are sampled independently from uniform degree-multiset-matched null families.",
+    "model": {
+      "configuration": {
+        "experimentKind": "latent_order_degree_matched_ablation",
+        "flipCounts": [
+          0,
+          3,
+          6,
+          9
+        ],
+        "relabeling": [
+          5,
+          2,
+          6,
+          0,
+          4,
+          1,
+          3
+        ],
+        "samplesPerNoise": 48,
+        "width": 7
+      },
+      "contentHash": "sha256:bf27aa92485628638ddf28abad9f4daba4f8a76ff62cfee29f0a20d27c4247d8",
+      "id": "temporal-frustration-latent-ablation",
+      "version": "1.0.0"
+    },
+    "observables": [
+      {
+        "channel": "closed temporal latent-ablation runner",
+        "id": "sample_records",
+        "measure": "Masks, matched degree multisets, fitted minima and held-out scores for every paired A/B sample"
+      },
+      {
+        "channel": "closed temporal latent-ablation runner",
+        "id": "totals_by_noise",
+        "measure": "Exact A and B held-out violation totals at every injected noise level"
+      },
+      {
+        "channel": "closed temporal latent-ablation runner",
+        "id": "a_predictive_advantage_doubled",
+        "measure": "Twice the exact random-order expected violations minus twice the A held-out violations"
+      },
+      {
+        "channel": "closed temporal latent-ablation runner",
+        "id": "b_predictive_advantage_doubled",
+        "measure": "Twice the exact random-order expected violations minus twice the B held-out violations"
+      },
+      {
+        "channel": "closed temporal latent-ablation runner",
+        "id": "dependence_contrast_doubled",
+        "measure": "A predictive advantage doubled minus B predictive advantage doubled"
+      },
+      {
+        "channel": "closed temporal latent-ablation runner",
+        "id": "b_residual_quarter_test",
+        "measure": "Four times B advantage doubled minus A advantage doubled; nonnegative means at least one quarter remains"
+      },
+      {
+        "channel": "closed temporal latent-ablation runner",
+        "id": "local_statistic_mismatches",
+        "measure": "Number of A/B objects whose sorted vertex out-degree multisets differ"
+      },
+      {
+        "channel": "closed temporal latent-ablation runner",
+        "id": "representation_mismatches",
+        "measure": "Number of paired samples changed by the preregistered transported relabelling"
+      },
+      {
+        "channel": "closed temporal latent-ablation runner",
+        "id": "oracle_mismatches",
+        "measure": "Number of A test tournaments whose latent-order score differs from the injected flip count"
+      }
+    ],
+    "observer": {
+      "allowedOperations": [
+        "generate_latent_pair",
+        "sample_degree_matched_pair",
+        "optimize_a_training",
+        "score_a_test",
+        "optimize_b_training",
+        "score_b_test",
+        "score_latent_oracle",
+        "audit_representation"
+      ],
+      "maxSteps": 1536,
+      "successThreshold": 1
+    },
+    "protocolId": "temporal-latent-ablation-001",
+    "reversalConditions": [
+      {
+        "id": "a_advantage_absent",
+        "observableId": "a_predictive_advantage_doubled",
+        "operator": "lte",
+        "outcome": "latent_group_prediction_not_replicated",
+        "value": 0
+      },
+      {
+        "id": "dependence_contrast_absent",
+        "observableId": "dependence_contrast_doubled",
+        "operator": "lte",
+        "outcome": "injected_structure_dependence_not_supported",
+        "value": 0
+      },
+      {
+        "id": "material_residual_in_b",
+        "observableId": "b_residual_quarter_test",
+        "operator": "gte",
+        "outcome": "matched_local_statistics_retain_material_signal",
+        "value": 0
+      },
+      {
+        "id": "degree_matching_failure",
+        "observableId": "local_statistic_mismatches",
+        "operator": "gt",
+        "outcome": "protocol_or_model_invalid",
+        "value": 0
+      },
+      {
+        "id": "representation_control_failure",
+        "observableId": "representation_mismatches",
+        "operator": "gt",
+        "outcome": "protocol_or_model_invalid",
+        "value": 0
+      },
+      {
+        "id": "generator_control_failure",
+        "observableId": "oracle_mismatches",
+        "operator": "gt",
+        "outcome": "protocol_or_model_invalid",
+        "value": 0
+      }
+    ],
+    "schema": "corpus-experiment-protocol/v1",
+    "seed": 1732050807,
+    "version": "1.0.0"
+  }
+}

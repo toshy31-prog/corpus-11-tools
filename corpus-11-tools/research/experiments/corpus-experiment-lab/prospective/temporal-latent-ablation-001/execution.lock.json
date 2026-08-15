@@ -1,0 +1,80 @@
+{
+  "execution": {
+    "engine": {
+      "contentHash": "sha256:89621dcca395544290028a38161027c2c257efc76bbbb1d2cd85e8e60a35ad86",
+      "files": [
+        {
+          "id": "core/contracts.mjs",
+          "sha256": "sha256:f70e9f081f5d1fb0c7692437708fe3afb7a1cdd7f954ebe7af603e43d78e0710"
+        },
+        {
+          "id": "core/engine.mjs",
+          "sha256": "sha256:0cc433991498edf76f2c73ad0c9571c0c841f184a60d6f71fee72d2e359acc8d"
+        },
+        {
+          "id": "core/reproducibility.mjs",
+          "sha256": "sha256:1b0f09a5dfe3e13df90b3ca79af3e327fe00353a7b3eb4848195ab45dd9a543d"
+        },
+        {
+          "id": "governance/execution-lock.mjs",
+          "sha256": "sha256:0483e28ab0d8703550e3b55bebb6f90073481797eb157637bd40d9ccccc53e8b"
+        },
+        {
+          "id": "governance/protocol-lock.mjs",
+          "sha256": "sha256:cd4134f4a06cfc9965672b6331b08c53fbaa6441868ea4c86585aee7a75918ba"
+        },
+        {
+          "id": "scientific/temporal-latent-ablation.mjs",
+          "sha256": "sha256:74928a5a395108aa651255af0b61b43407b7c585e927ab011b7192c8cd051b8c"
+        },
+        {
+          "id": "scientific/temporal-predictive-validation.mjs",
+          "sha256": "sha256:1de9779a4c105194d9b68707cae037d1ea42bb5f2ca284d0f64a70b109715259"
+        }
+      ],
+      "fingerprint": "sha256:0a6814c091415b002cb3b6ac1b316f3253ea59a27054b8026bb8cf9d38c8deeb",
+      "id": "temporal-frustration-latent-ablation-runner",
+      "version": "1.0.0"
+    },
+    "environment": {
+      "contentHash": "sha256:4eaf178f1d103a6895a6b476a2a89647ea9c8d3ff32f7b8cc240bb0ba8334111",
+      "dependencies": [
+        {
+          "id": "node-standard-library",
+          "source": "runtime",
+          "version": "18.19.1"
+        }
+      ],
+      "runtime": {
+        "modulesAbi": "109",
+        "name": "node",
+        "napi": "9",
+        "unicode": "15.1",
+        "uv": "1.48.0",
+        "v8": "10.2.154.26-node.28",
+        "version": "18.19.1"
+      },
+      "system": {
+        "architecture": "x64",
+        "endianness": "LE",
+        "platform": "linux"
+      }
+    },
+    "module": {
+      "contentHash": "sha256:f27d114def2858b97624353d33bc28eba25351cd70ad2eeb7059ca748a0ae546",
+      "files": [
+        {
+          "id": "plugins/temporal-frustration.mjs",
+          "sha256": "sha256:9bf6e1c91a7de763e117d2c65c46dfca1c5524eff6c8842c7881c812659dc65a"
+        }
+      ],
+      "fingerprint": "sha256:ae1677e0d94e9d454c8f5ebd4cb0ac6f7ce5f01e1a9ef7496a5087521be92f61",
+      "id": "temporal-frustration",
+      "version": "1.0.0"
+    },
+    "schema": "corpus-experiment-execution/v1"
+  },
+  "experimentFingerprint": "sha256:3d616fc956dc8e3174925d1185958d0f432f7ece53afc3c758ac011d6213d7fb",
+  "protocolHash": "sha256:fb8d34feb677176e38d5c925f6622cf84c6856d7a64b9e8b41b599732f37f686",
+  "schema": "corpus-experiment-execution-lock/v1"
+}
