@@ -1,0 +1,112 @@
+{
+  "schema": "corpus-experiment-protocol-lock/v1",
+  "protocolHash": "sha256:827c8d38965ea18366902c14aaa18f37825a78f7532201dd30aaab54c2274035",
+  "protocol": {
+    "alternatives": [
+      "Every sampled tournament has an exact minimum feedback-arc count below five.",
+      "Vertex relabelling or global relation reversal changes the exact minimum."
+    ],
+    "analysis": {
+      "comparisonPlan": "Report the full histogram and maximum. Require zero mismatches for both controls. Apply only the two preregistered reversal conditions.",
+      "stoppingRule": "Execute exactly 24 LCG-generated masks in one primary run. After sealing the result, permit exactly one deterministic reconstruction solely to compare artifacts byte for byte; never extend, replace or reinterpret the sample."
+    },
+    "classification": {
+      "allowedOutcomes": [
+        "extreme_prediction_not_supported",
+        "execution_or_model_not_supported",
+        "not_triggered",
+        "inconclusive"
+      ]
+    },
+    "controls": [
+      {
+        "id": "relabel_invariance",
+        "purpose": "Verify exact frustration under the preregistered bijective vertex relabelling."
+      },
+      {
+        "id": "reversal_invariance",
+        "purpose": "Verify exact frustration after reversing every directed relation."
+      }
+    ],
+    "hypothesis": "Among 24 previously unexecuted seed-selected tournaments on seven vertices, at least one has an exact minimum feedback-arc count of five or more, while both declared representation controls produce zero mismatches.",
+    "model": {
+      "configuration": {
+        "experimentKind": "seeded_tournament_exploration",
+        "generator": {
+          "increment": 1013904223,
+          "multiplier": 1664525,
+          "name": "lcg32"
+        },
+        "relabeling": [
+          6,
+          2,
+          4,
+          1,
+          5,
+          0,
+          3
+        ],
+        "sampleCount": 24,
+        "width": 7
+      },
+      "contentHash": "sha256:fa09d7b87544b207f2e32a732afc4527bf58d3effb7d540f992763fce6bdf3d8",
+      "id": "temporal-frustration-seeded-sample",
+      "version": "1.0.0"
+    },
+    "observables": [
+      {
+        "channel": "closed temporal runner",
+        "id": "sample_records",
+        "measure": "mask, local summary and three exact minima per sample"
+      },
+      {
+        "channel": "closed temporal runner",
+        "id": "frustration_histogram",
+        "measure": "counts by exact minimum backward-edge value"
+      },
+      {
+        "channel": "closed temporal runner",
+        "id": "maximum_backward_edges",
+        "measure": "maximum exact minimum backward-edge count in the sample"
+      },
+      {
+        "channel": "closed temporal runner",
+        "id": "mean_backward_edges_numerator",
+        "measure": "sum of exact minimum backward-edge counts"
+      },
+      {
+        "channel": "closed temporal runner",
+        "id": "representation_mismatches",
+        "measure": "total relabelling and reversal mismatches"
+      }
+    ],
+    "observer": {
+      "allowedOperations": [
+        "inspect_local_summary",
+        "optimize_scalar_order"
+      ],
+      "maxSteps": 96,
+      "successThreshold": 1
+    },
+    "protocolId": "temporal-closed-prospective-001",
+    "reversalConditions": [
+      {
+        "id": "sample_maximum_below_prediction",
+        "observableId": "maximum_backward_edges",
+        "operator": "lt",
+        "outcome": "extreme_prediction_not_supported",
+        "value": 5
+      },
+      {
+        "id": "representation_control_failure",
+        "observableId": "representation_mismatches",
+        "operator": "gt",
+        "outcome": "execution_or_model_not_supported",
+        "value": 0
+      }
+    ],
+    "schema": "corpus-experiment-protocol/v1",
+    "seed": 1618033988,
+    "version": "1.0.0"
+  }
+}

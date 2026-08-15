@@ -1,0 +1,59 @@
+{
+  "schema": "corpus-experiment-protocol/v1",
+  "protocolId": "temporal-closed-prospective-001",
+  "version": "1.0.0",
+  "hypothesis": "Among 24 previously unexecuted seed-selected tournaments on seven vertices, at least one has an exact minimum feedback-arc count of five or more, while both declared representation controls produce zero mismatches.",
+  "alternatives": [
+    "Every sampled tournament has an exact minimum feedback-arc count below five.",
+    "Vertex relabelling or global relation reversal changes the exact minimum."
+  ],
+  "model": {
+    "id": "temporal-frustration-seeded-sample",
+    "version": "1.0.0",
+    "contentHash": "sha256:fa09d7b87544b207f2e32a732afc4527bf58d3effb7d540f992763fce6bdf3d8",
+    "configuration": {
+      "experimentKind": "seeded_tournament_exploration",
+      "width": 7,
+      "sampleCount": 24,
+      "generator": {
+        "name": "lcg32",
+        "multiplier": 1664525,
+        "increment": 1013904223
+      },
+      "relabeling": [6, 2, 4, 1, 5, 0, 3]
+    }
+  },
+  "observables": [
+    { "id": "sample_records", "measure": "mask, local summary and three exact minima per sample", "channel": "closed temporal runner" },
+    { "id": "frustration_histogram", "measure": "counts by exact minimum backward-edge value", "channel": "closed temporal runner" },
+    { "id": "maximum_backward_edges", "measure": "maximum exact minimum backward-edge count in the sample", "channel": "closed temporal runner" },
+    { "id": "mean_backward_edges_numerator", "measure": "sum of exact minimum backward-edge counts", "channel": "closed temporal runner" },
+    { "id": "representation_mismatches", "measure": "total relabelling and reversal mismatches", "channel": "closed temporal runner" }
+  ],
+  "controls": [
+    { "id": "relabel_invariance", "purpose": "Verify exact frustration under the preregistered bijective vertex relabelling." },
+    { "id": "reversal_invariance", "purpose": "Verify exact frustration after reversing every directed relation." }
+  ],
+  "observer": {
+    "allowedOperations": ["inspect_local_summary", "optimize_scalar_order"],
+    "maxSteps": 96,
+    "successThreshold": 1
+  },
+  "reversalConditions": [
+    { "id": "sample_maximum_below_prediction", "observableId": "maximum_backward_edges", "operator": "lt", "value": 5, "outcome": "extreme_prediction_not_supported" },
+    { "id": "representation_control_failure", "observableId": "representation_mismatches", "operator": "gt", "value": 0, "outcome": "execution_or_model_not_supported" }
+  ],
+  "seed": 1618033988,
+  "analysis": {
+    "stoppingRule": "Execute exactly 24 LCG-generated masks in one primary run. After sealing the result, permit exactly one deterministic reconstruction solely to compare artifacts byte for byte; never extend, replace or reinterpret the sample.",
+    "comparisonPlan": "Report the full histogram and maximum. Require zero mismatches for both controls. Apply only the two preregistered reversal conditions."
+  },
+  "classification": {
+    "allowedOutcomes": [
+      "extreme_prediction_not_supported",
+      "execution_or_model_not_supported",
+      "not_triggered",
+      "inconclusive"
+    ]
+  }
+}
