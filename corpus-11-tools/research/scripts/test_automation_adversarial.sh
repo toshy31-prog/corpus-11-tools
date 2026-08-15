@@ -47,6 +47,12 @@ elif [ "$(git -C "$REPO" rev-parse HEAD)" = "$before" ]; then
 else
   record 1 "publisher on branch != main => REFUSED"
 fi
+if (cd "$REPO" && ./corpus-11-tools/research/scripts/run_research_cycle.sh preflight) \
+  >/dev/null 2>&1; then
+  record 1 "deterministic preflight on branch != main => REFUSED"
+else
+  record 0 "deterministic preflight on branch != main => REFUSED"
+fi
 
 make_repo missing-origin
 git -C "$REPO" remote remove origin
@@ -118,23 +124,50 @@ else
 fi
 
 make_repo timestamp-owned
-mkdir -p "$TEMP_ROOT/bin"
-printf '%s\n' \
-  '#!/usr/bin/env bash' \
-  'printf "%s\n" fake-codex-timestamp > state/last_automation_run.txt' \
-  > "$TEMP_ROOT/bin/codex"
-chmod +x "$TEMP_ROOT/bin/codex"
 set +e
-(cd "$REPO" && PATH="$TEMP_ROOT/bin:$PATH" ./corpus-11-tools/research/scripts/run_research_cycle.sh) \
-  >/dev/null 2>&1
-timestamp_status=$?
+(cd "$REPO" && ./corpus-11-tools/research/scripts/run_research_cycle.sh preflight) \
+  >"$TEMP_ROOT/preflight.out" 2>&1
+preflight_status=$?
 set -e
-if [ "$timestamp_status" -eq 0 ] \
+printf '%s\n' fake-agent-timestamp \
+  > "$REPO/corpus-11-tools/research/state/last_automation_run.txt"
+set +e
+(cd "$REPO" && ./corpus-11-tools/research/scripts/run_research_cycle.sh postflight) \
+  >"$TEMP_ROOT/postflight.out" 2>&1
+postflight_status=$?
+set -e
+if [ "$preflight_status" -eq 0 ] \
+  && [ "$postflight_status" -eq 0 ] \
+  && grep -qx 'SEMANTIC_AGENT_REQUIRED' "$TEMP_ROOT/preflight.out" \
+  && grep -qx 'NO_CHANGE' "$TEMP_ROOT/postflight.out" \
   && [ ! -e "$REPO/corpus-11-tools/research/state/last_automation_run.txt" ] \
   && [ -z "$(git -C "$REPO" status --porcelain)" ]; then
-  record 0 "timestamp modified by semantic Codex is restored and non-substantive"
+  record 0 "timestamp modified between preflight/postflight is restored and non-substantive"
 else
-  record 1 "timestamp modified by semantic Codex is restored and non-substantive"
+  record 1 "timestamp modified between preflight/postflight is restored and non-substantive"
+fi
+
+cycle_script="$ROOT/corpus-11-tools/research/scripts/run_research_cycle.sh"
+if grep -Fq 'codex exec' "$cycle_script"; then
+  record 1 "deterministic cycle contains no forbidden agent invocation"
+else
+  record 0 "deterministic cycle contains no forbidden agent invocation"
+fi
+paths_missing=0
+for required_path in \
+  'research/state/current_state.md' \
+  'research/hypotheses/' \
+  'research/notes/' \
+  'research/experiments/' \
+  'research/reports/'; do
+  if ! grep -Fq "$required_path" "$cycle_script"; then
+    paths_missing=1
+  fi
+done
+if [ "$paths_missing" -eq 0 ]; then
+  record 0 "preflight exposes required semantic paths"
+else
+  record 1 "preflight exposes required semantic paths"
 fi
 
 make_repo validators
