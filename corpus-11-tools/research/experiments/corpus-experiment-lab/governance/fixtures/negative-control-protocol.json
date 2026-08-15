@@ -1,0 +1,35 @@
+{
+  "schema": "corpus-experiment-protocol/v1",
+  "protocolId": "governance-negative-control",
+  "version": "1.0.0",
+  "hypothesis": "The synthetic score remains strictly positive.",
+  "alternatives": ["The synthetic score is zero or negative."],
+  "model": {
+    "id": "synthetic-negative-control",
+    "version": "1.0.0",
+    "contentHash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "configuration": { "case": "deliberate-negative" }
+  },
+  "observables": [
+    { "id": "score", "measure": "exact integer score", "channel": "synthetic adapter" }
+  ],
+  "controls": [
+    { "id": "zero_control", "purpose": "Force the preregistered negative outcome." }
+  ],
+  "observer": {
+    "allowedOperations": ["inspect_score"],
+    "maxSteps": 1,
+    "successThreshold": 1
+  },
+  "reversalConditions": [
+    { "id": "nonpositive_score", "observableId": "score", "operator": "lte", "value": 0, "outcome": "hypothesis_not_supported" }
+  ],
+  "seed": 20260815,
+  "analysis": {
+    "stoppingRule": "One deterministic execution only.",
+    "comparisonPlan": "Compare score to the preregistered zero threshold."
+  },
+  "classification": {
+    "allowedOutcomes": ["hypothesis_not_supported", "not_triggered", "inconclusive"]
+  }
+}
