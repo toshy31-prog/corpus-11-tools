@@ -20,7 +20,7 @@ Corpus 11 Tools sert de jeu d'audit et de discrimination. Il ne fournit ni donn�
 
 1. Récupération contre désinscription : séparation structurelle-topologique reproduite sous protocole, mais encore réductible à des invariants standards ; le test à pertes de deux liens est négatif jusqu'à huit sommets.
 2. Orientation compositionnelle : une chiralité relative invariante existe dans un magma fini, sans signe absolu, dynamique ni interprétation physique.
-3. Frustration temporelle : deux tournois localement appariés ont des `F_T` différents, mais l'observable reste un invariant standard d'ordre global.
+3. Frustration temporelle : deux tournois localement appariés ont des `F_T` différents et un test prospectif montre une prédiction hors ajustement dans une famille à ordre latent bruité ; l'observable reste un invariant standard et l'ordre est injecté par ce contrôle.
 4. Invariants de factorisation : un reste exact d'intersection triple existe à données marginales et deux à deux fixées ; la lecture objectale reste spéculative.
 
 ## Hypothèses suspendues
@@ -63,6 +63,7 @@ Aucune hypothèse du registre courant n'est rejetée. La prétention de nouveaut
 - La migration a rendu explicites deux conventions auparavant dispersées : `C_info` historique minimise sur tout sous-ensemble terminal alors que la lecture interactive part d'un port fixe ; la profondeur historique exclut la remise à zéro initiale de l'actionneur alors que l'interface l'inclut.
 - Un second module, frustration temporelle, réobserve les `32 768` tournois et la paire `F_T=1/15` contre `2/15` avec 18/18 comparaisons conformes, sans modifier aucun octet des cinq fichiers de `core/`.
 - Dans ce module, le journal d'exécution n'entre pas dans `F_T`, un ordre candidat ne remplace pas l'optimisation, et le minimum est invariant par renommage des sommets et inversion globale des relations.
+- Dans `temporal-predictive-prospective-001`, 192 paires apprentissage/test préenregistrées donnent `1028` violations tenues à l'écart pour les ordres minimisant `F_T`, contre `1941` pour les ordres aléatoires indépendants : avantage exact `913`. Les moyennes par bruit sont strictement croissantes, les contrôles de représentation et de génération ont zéro écart, la classification automatique est `not_triggered` et la reconstruction est identique `5/5`.
 - Un troisième module, invariants de factorisation, réobserve les `17 296` triplets matriciels et le reste d'intersection triple `0/1` avec 17/17 comparaisons conformes, toujours sans modifier les cinq fichiers de `core/`.
 - Le reste matriciel est invariant sous réordonnancement des étiquettes et changement de base inversible exact. L'architecture est supportée et le résultat historique reproduit ; la portée objectale ou physique reste inconnue.
 
@@ -80,15 +81,15 @@ Aucune hypothèse du registre courant n'est rejetée. La prétention de nouveaut
 
 1. Tester le profil de désinscription sous ordres asynchrones ou ports multiples ; ne plus étendre la même recherche à deux pertes sans nouvelle prédiction.
 2. Ajouter une dynamique au témoin non-auto-opposé et tester si une orientation collective apparaît sans signe injecté.
-3. Étendre le contrôle de `F_T` à des hypergraphes ternaires dont l'ordre n'est pas inscrit dans les entrées.
+3. Comparer prospectivement la prédiction hors ajustement de `F_T` à des estimateurs standards appariés, puis étendre le contrôle à des hypergraphes ternaires dont l'ordre n'est pas inscrit dans les entrées.
 4. Tester la stabilité du reste d'intersection triple sous changement de base et familles de transports non sélectionnées après résultat.
 5. Ne rouvrir le fil holonomique qu'avec un nouvel observable préenregistré, distinct de `P_I`, susceptible de discriminer composition ou intersections d'ordre supérieur.
 6. Chercher un second complexe fini dont une relation non injectée échoue dans un contrôle apparié.
 
 ## Blocages
 
-Absence de données matérielles, de mesure énergétique étalonnée, de canal reliant les observables au temps physique et de comparaison quantitative exclusive. Le simulateur, son protocole et trois modules du moteur générique sont prêts, mais une sortie simulée n'est pas une observation physique. Le profil de désinscription connu reste une compilation d'invariants standards, `F_T` un minimum standard d'arêtes de retour et le reste factoriel une intersection de sous-espaces fixes. La portabilité sur trois domaines ne prouve pas l'universalité du contrat. La classe d'observateur est déclarée mais ses budgets ne sont pas appliqués centralement ; les gestionnaires restent synchrones. Le module orientation compositionnelle n'est pas implémenté. Le jouet historique à huit triplets est non identifiable sans son graphe et ses transports. Le fil `P_I` a atteint sa condition d'arrêt d'attribution au niveau de l'incidence paire-à-paire.
+Absence de données matérielles, de mesure énergétique étalonnée, de canal reliant les observables au temps physique et de comparaison quantitative exclusive. Le simulateur, son protocole et trois modules du moteur générique sont prêts, mais une sortie simulée n'est pas une observation physique. Le profil de désinscription connu reste une compilation d'invariants standards, `F_T` un minimum standard d'arêtes de retour et le reste factoriel une intersection de sous-espaces fixes. La prédiction hors ajustement de `F_T` est établie seulement dans un générateur qui injecte un ordre latent et n'est pas encore comparée à d'autres estimateurs standards. La portabilité sur trois domaines ne prouve pas l'universalité du contrat. Les gestionnaires scientifiques historiques restent synchrones. Le module orientation compositionnelle n'est pas implémenté. Le jouet historique à huit triplets est non identifiable sans son graphe et ses transports. Le fil `P_I` a atteint sa condition d'arrêt d'attribution au niveau de l'incidence paire-à-paire.
 
 ## Prochaine action
 
-Garder `core/` gelé et arrêter les migrations rétrospectives. Soumettre l'audit et les trois modules à revue locale, puis préenregistrer une première prédiction nouvelle avant exécution. Pour récupération/désinscription, brancher ensuite le même contrat sur un petit réseau matériel. Ne modifier le cœur que face à un besoin générique observé, notamment asynchronie matérielle ou application centrale des budgets d'accès. Maintenir inconnue toute portée physique sans canal de détection.
+Garder `core/` et la gouvernance gelés. Le prochain test de frustration doit opposer `F_T` à des prédicteurs standards sur les mêmes données, sans réutiliser le résultat actuel pour choisir la métrique. Pour récupération/désinscription, brancher ensuite le même contrat sur un petit réseau matériel. Ne modifier le cœur que face à un besoin générique observé, notamment l'asynchronie matérielle. Maintenir inconnue toute portée physique sans canal de détection.

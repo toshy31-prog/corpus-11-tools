@@ -1,0 +1,21 @@
+{
+  "protocolHash": "sha256:ea20865b179e39f07134ec9775a9b72c08fe54f9ccf8d47623b237f3db8af998",
+  "experimentFingerprint": "sha256:ad9abc3e4ca08f94e2b5b70e919393839c37f434e436d9f6a477578dd72ebad5",
+  "rawHash": "sha256:bac82b27c5de1d2fc41841a5bcdf45473a022bde5ae6b76971e5231ac67ec1e3",
+  "controls": {
+    "independent_random_order": {
+      "controlTotal": 1941,
+      "passed": true,
+      "trainedTotal": 1028
+    },
+    "latent_order_generation": {
+      "mismatches": 0,
+      "passed": true
+    },
+    "representation_invariance": {
+      "mismatches": 0,
+      "passed": true
+    }
+  },
+  "allControlsPassed": true
+}

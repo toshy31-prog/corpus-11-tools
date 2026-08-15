@@ -1,0 +1,46 @@
+{
+  "evaluations": [
+    {
+      "actual": 913,
+      "expected": 0,
+      "id": "no_predictive_advantage",
+      "observableId": "predictive_advantage_numerator",
+      "operator": "lte",
+      "outcome": "predictive_component_not_supported",
+      "triggered": false
+    },
+    {
+      "actual": 0,
+      "expected": 0,
+      "id": "heldout_error_not_monotone",
+      "observableId": "monotonicity_violations",
+      "operator": "gt",
+      "outcome": "noise_ordering_prediction_not_supported",
+      "triggered": false
+    },
+    {
+      "actual": 0,
+      "expected": 0,
+      "id": "representation_control_failure",
+      "observableId": "representation_mismatches",
+      "operator": "gt",
+      "outcome": "protocol_or_model_invalid",
+      "triggered": false
+    },
+    {
+      "actual": 0,
+      "expected": 0,
+      "id": "generator_control_failure",
+      "observableId": "oracle_mismatches",
+      "operator": "gt",
+      "outcome": "protocol_or_model_invalid",
+      "triggered": false
+    }
+  ],
+  "outcomes": [],
+  "protocolHash": "sha256:ea20865b179e39f07134ec9775a9b72c08fe54f9ccf8d47623b237f3db8af998",
+  "rawHash": "sha256:bac82b27c5de1d2fc41841a5bcdf45473a022bde5ae6b76971e5231ac67ec1e3",
+  "schema": "corpus-experiment-classification/v1",
+  "status": "not_triggered",
+  "classificationHash": "sha256:82b8e35f29f019809861094a46531b739d503b80080f97f500b1684945fc7cdc"
+}
