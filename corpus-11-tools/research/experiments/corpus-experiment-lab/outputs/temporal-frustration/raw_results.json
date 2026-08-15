@@ -1,0 +1,238 @@
+{
+  "schema": "corpus-experiment-results/v1",
+  "plugin": {
+    "id": "temporal-frustration",
+    "version": "1.0.0",
+    "title": "Temporal frustration",
+    "observer": {
+      "allowedOperations": [
+        "inspect_local_relation",
+        "propose_scalar_order",
+        "optimize_over_scalar_orders"
+      ],
+      "maxSteps": 720,
+      "successThreshold": 0
+    },
+    "conventions": {
+      "localInput": "A directed relation is supplied without a preferred scalar order.",
+      "scalarOrder": "A candidate is a permutation of vertices; a relation is violated when it points backward.",
+      "frustration": "F_T is the exact minimum violated weight divided by total relation weight.",
+      "commandOrder": "Engine journal order is execution provenance and is not an input to F_T."
+    },
+    "reversalConditions": [
+      "The matched tournament pair no longer differs in exact minimum feedback arcs.",
+      "F_T changes under a bijective relabelling of vertices.",
+      "The optimizer reads engine command order or a user-supplied candidate order as the target order."
+    ]
+  },
+  "baselineCommit": "ab5c76f786442b902b5eb9ff1911bb7300f5ae39",
+  "coreHashes": {
+    "classifier.mjs": "cb72edb3b6ad8395b4fab911f5b3219558cde22d3f792f851b06eb962eaa01e0",
+    "contracts.mjs": "f70e9f081f5d1fb0c7692437708fe3afb7a1cdd7f954ebe7af603e43d78e0710",
+    "control-runner.mjs": "40dccd728b4e983832f28700a40462adc6e4f6abaebd9e4839002a048e79be84",
+    "engine.mjs": "0cc433991498edf76f2c73ad0c9571c0c841f184a60d6f71fee72d2e359acc8d",
+    "reproducibility.mjs": "1b0f09a5dfe3e13df90b3ca79af3e327fe00353a7b3eb4848195ab45dd9a543d"
+  },
+  "controls": [
+    {
+      "plugin": "temporal-frustration",
+      "pluginVersion": "1.0.0",
+      "control": "exhaustive_matched_local_remainder",
+      "input": {},
+      "result": {
+        "width": 6,
+        "totalTournaments": 32768,
+        "matchedKeysWithMultipleFrustrations": 5,
+        "selected": {
+          "local": {
+            "scoreSequence": [
+              5,
+              3,
+              3,
+              2,
+              1,
+              1
+            ],
+            "cyclicTriangles": 3
+          },
+          "masks": [
+            8,
+            10
+          ],
+          "minimumBackwardEdges": [
+            1,
+            2
+          ],
+          "fractions": [
+            "1/15",
+            "2/15"
+          ]
+        },
+        "reobserved": [
+          {
+            "mask": 8,
+            "local": {
+              "scoreSequence": [
+                5,
+                3,
+                3,
+                2,
+                1,
+                1
+              ],
+              "cyclicTriangles": 3
+            },
+            "frustration": {
+              "minimumViolations": 1,
+              "totalRelations": 15,
+              "fraction": "1/15",
+              "witnessOrder": [
+                5,
+                4,
+                3,
+                2,
+                1,
+                0
+              ]
+            }
+          },
+          {
+            "mask": 10,
+            "local": {
+              "scoreSequence": [
+                5,
+                3,
+                3,
+                2,
+                1,
+                1
+              ],
+              "cyclicTriangles": 3
+            },
+            "frustration": {
+              "minimumViolations": 2,
+              "totalRelations": 15,
+              "fraction": "2/15",
+              "witnessOrder": [
+                5,
+                4,
+                3,
+                2,
+                1,
+                0
+              ]
+            }
+          }
+        ]
+      },
+      "resultHash": "fnv1a64:0820bc1d535abad0"
+    },
+    {
+      "plugin": "temporal-frustration",
+      "pluginVersion": "1.0.0",
+      "control": "representation_and_method_audit",
+      "input": {},
+      "result": {
+        "original": {
+          "local": {
+            "scoreSequence": [
+              5,
+              3,
+              3,
+              2,
+              1,
+              1
+            ],
+            "cyclicTriangles": 3
+          },
+          "frustration": {
+            "minimumViolations": 1,
+            "totalRelations": 15,
+            "fraction": "1/15",
+            "witnessOrder": [
+              5,
+              4,
+              3,
+              2,
+              1,
+              0
+            ]
+          }
+        },
+        "candidateOrderScore": {
+          "order": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "violations": 14,
+          "totalRelations": 15
+        },
+        "minimumAfterCandidateOrder": {
+          "minimumViolations": 1,
+          "totalRelations": 15,
+          "fraction": "1/15",
+          "witnessOrder": [
+            5,
+            4,
+            3,
+            2,
+            1,
+            0
+          ]
+        },
+        "relabelled": {
+          "local": {
+            "scoreSequence": [
+              5,
+              3,
+              3,
+              2,
+              1,
+              1
+            ],
+            "cyclicTriangles": 3
+          },
+          "frustration": {
+            "minimumViolations": 1,
+            "totalRelations": 15,
+            "fraction": "1/15",
+            "witnessOrder": [
+              3,
+              0,
+              5,
+              1,
+              4,
+              2
+            ]
+          }
+        },
+        "reversed": {
+          "minimumViolations": 1,
+          "totalRelations": 15,
+          "fraction": "1/15",
+          "witnessOrder": [
+            2,
+            4,
+            1,
+            5,
+            0,
+            3
+          ]
+        },
+        "checks": {
+          "candidateDoesNotDefineMinimum": true,
+          "relabellingPreservesLocalSummary": true,
+          "relabellingPreservesMinimum": true,
+          "reversalPreservesMinimum": true
+        }
+      },
+      "resultHash": "fnv1a64:ff47195a63ea316b"
+    }
+  ],
+  "comparisonHash": "fnv1a64:84598c297aaba2a0",
+  "allMatched": true
+}

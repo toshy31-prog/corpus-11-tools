@@ -1,0 +1,18 @@
+{
+  "exhaustive": {
+    "width": 6,
+    "total_tournaments": 32768,
+    "discriminating_keys": 5,
+    "score_sequence": [5, 3, 3, 2, 1, 1],
+    "cyclic_triangles": 3,
+    "masks": [8, 10],
+    "minimum_backward_edges": [1, 2],
+    "fractions": ["1/15", "2/15"]
+  },
+  "method_audit": {
+    "candidate_does_not_define_minimum": true,
+    "relabelling_preserves_local_summary": true,
+    "relabelling_preserves_minimum": true,
+    "reversal_preserves_minimum": true
+  }
+}

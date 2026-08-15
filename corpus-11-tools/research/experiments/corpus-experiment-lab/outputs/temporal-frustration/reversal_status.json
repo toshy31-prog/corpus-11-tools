@@ -1,0 +1,10 @@
+{
+  "status": "not_triggered",
+  "failedMetrics": [],
+  "conditions": [
+    "The matched tournament pair no longer differs in exact minimum feedback arcs.",
+    "F_T changes under a bijective relabelling of vertices.",
+    "The optimizer reads engine command order or a user-supplied candidate order as the target order."
+  ],
+  "scope": "Finite tournament result reproduced; temporal or physical interpretation remains unestablished."
+}

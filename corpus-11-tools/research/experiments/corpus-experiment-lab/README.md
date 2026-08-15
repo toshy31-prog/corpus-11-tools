@@ -15,7 +15,7 @@ Each plugin supplies:
 
 Observers and criteria receive cloned state and a cloned random stream. They cannot silently alter subsequent execution. Operations and perturbations mutate live state and every call is journalled with before/after hashes.
 
-## First plugin and milestone
+## Implemented plugins
 
 `plugins/recovery-erasure.mjs` migrates the closed recovery/erasure experiments. Run:
 
@@ -28,6 +28,12 @@ The non-regression runner writes deterministic artifacts to `outputs/recovery-er
 
 The migration intentionally exposes two formerly implicit choices: historical recovery permits any terminal subset, while the interactive UI traverses from a fixed port; historical wave depth excludes initialization of the actuator root, while the UI includes it.
 
+`plugins/temporal-frustration.mjs` is the portability test: it models directed local constraints, scalar candidate orders and exact minimum feedback arcs without using recovery/erasure concepts. Its addition changes no file in `core/`; the runner verifies all core hashes against the first-plugin commit.
+
+```bash
+node runners/temporal-frustration-nonregression.mjs
+```
+
 ## Status boundary
 
-This milestone establishes a written, tested core and re-observes the first plugin's historical model results. It is neither a hardware validation nor evidence that the abstraction is universal. Temporal frustration, factorization invariants, and compositional orientation remain prospective plugins rather than empty scaffolds.
+This establishes a written, tested core and re-observes two finite modules with different semantics and no special core path. It is neither a hardware validation nor evidence that the abstraction is universal. Factorization invariants and compositional orientation remain prospective plugins rather than empty scaffolds.
