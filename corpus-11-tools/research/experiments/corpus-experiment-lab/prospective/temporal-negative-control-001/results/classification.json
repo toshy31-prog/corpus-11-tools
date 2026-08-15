@@ -1,0 +1,21 @@
+{
+  "evaluations": [
+    {
+      "actual": 0,
+      "expected": 0,
+      "id": "representation_effect_absorbed",
+      "observableId": "representation_mismatches",
+      "operator": "eq",
+      "outcome": "absorbed_by_control",
+      "triggered": true
+    }
+  ],
+  "outcomes": [
+    "absorbed_by_control"
+  ],
+  "protocolHash": "sha256:65ea88a77648d8771d56b3ab7aaf7e5e2a62ece0fbdcab149b1d77cadfcc4e6e",
+  "rawHash": "sha256:bcc6ed861be9db909d46e308035dc344babd8b13a2f95f2e69b6734064f884f7",
+  "schema": "corpus-experiment-classification/v1",
+  "status": "reversal_triggered",
+  "classificationHash": "sha256:0f6f79c99cc64d03b689c4857c908528f9044f9dc4454e3d8970cc5e0b4f030c"
+}
