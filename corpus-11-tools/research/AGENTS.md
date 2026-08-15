@@ -108,3 +108,21 @@ Réponse courte :
 - prochaine action.
 
 Éviter les longues reconstructions sans gain discriminant.
+
+## Shorthands utilisateur
+
+Les messages exacts suivants ont un sens réservé et ne doivent jamais déclencher une demande de clarification :
+
+- `r` = exécuter le cycle de recherche courant complet.
+- `rp` = exécuter le cycle de recherche, valider, commit puis push seulement si toutes les validations passent et qu'un changement substantiel existe.
+- `rs` = afficher uniquement l'état courant, les changements détectés et les blocages.
+- `rr` = lire et résumer `state/current_state.md`.
+- `rt` = exécuter uniquement les tests discriminants actuellement prioritaires.
+- `rd` = dry-run complet : analyser, tester et proposer les changements sans modifier aucun fichier.
+
+Quand l'utilisateur écrit exactement un de ces raccourcis :
+1. ne pas demander ce qu'il veut dire ;
+2. appliquer directement la définition ci-dessus ;
+3. utiliser `state/current_state.md` comme état opérationnel ;
+4. respecter toutes les protections de ce fichier ;
+5. ne charger que les capacités susceptibles de modifier conclusion, attribution, confiance, test, priorité ou renversement.
