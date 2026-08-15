@@ -3,110 +3,79 @@ set -euo pipefail
 
 ROOT="$(git rev-parse --show-toplevel)"
 RESEARCH="$ROOT/corpus-11-tools/research"
+STAMP="$RESEARCH/state/last_automation_run.txt"
 
 cd "$ROOT"
 
-echo
-echo "=== CORPUS 11 RESEARCH CYCLE ==="
-echo
+echo "=== Corpus 11 automated research cycle ==="
 
-echo "[1/8] Vérification Git"
-git status --short
+echo "[1] Git sync"
+git fetch origin
+git checkout main
+git pull --ff-only origin main
 
-if ! git diff --quiet -- corpus-11-tools/research/sources/; then
-  echo
-  echo "ERREUR: research/sources contient déjà des modifications."
-  echo "Cycle arrêté pour protéger les sources."
-  exit 1
-fi
-
-echo
-echo "[2/8] Snapshot"
-"$RESEARCH/scripts/research_snapshot.sh"
-
-echo
-echo "[3/8] Validation workspace"
+echo "[2] Preflight"
 python3 "$RESEARCH/scripts/validate_research_workspace.py"
-
-echo
-echo "[4/8] Validation package"
 python3 "$ROOT/corpus-11-tools/tools/validate_package.py"
-
-echo
-echo "[5/8] Validation graphe"
 python3 "$ROOT/corpus-11-tools/tools/check_graph.py"
 
-BEFORE_SOURCE_HASH="$(
-  find "$RESEARCH/sources" -type f -print0 2>/dev/null \
+echo "[3] Protect sources"
+SOURCE_BEFORE="$(
+  find "$RESEARCH/sources" -type f -print0 \
   | sort -z \
-  | xargs -0 sha256sum 2>/dev/null \
+  | xargs -0 sha256sum \
   | sha256sum \
   | awk '{print $1}'
 )"
 
-echo
-echo "[6/8] Lancement Codex"
+echo "[4] Snapshot"
+"$RESEARCH/scripts/research_snapshot.sh"
 
+echo "[5] Semantic research run"
 cd "$RESEARCH"
 
 codex exec "
-run
+r
 
-Travaille selon les AGENTS.md applicables.
-Utilise state/current_state.md comme état persistant.
-Exécute le cycle de recherche courant.
-
-Priorités :
-- ne travailler que sur ce qui peut changer une conclusion, attribution, confiance, test, priorité ou condition de renversement ;
-- exécuter d'abord les tests finis déjà spécifiés lorsqu'ils sont exécutables ;
-- ne pas modifier sources/ ;
-- ne pas créer de théorie à partir de Corpus 11 Tools ;
-- ne pas faire de commit ;
-- terminer par les fichiers modifiés et la prochaine action.
+Contraintes supplémentaires pour ce run automatique :
+- ne touche jamais à sources/ ;
+- ne modifie rien si aucun résultat substantiel n'est trouvé ;
+- exécute les tests finis déjà spécifiés avant d'étendre les hypothèses ;
+- mets à jour seulement les fichiers dont le contenu est réellement devenu obsolète ;
+- ne commit pas et ne pousse pas ;
+- termine par un résumé très court des changements et de la prochaine action.
 "
 
 cd "$ROOT"
 
-echo
-echo "[7/8] Contrôles après Codex"
-
-AFTER_SOURCE_HASH="$(
-  find "$RESEARCH/sources" -type f -print0 2>/dev/null \
+echo "[6] Source integrity"
+SOURCE_AFTER="$(
+  find "$RESEARCH/sources" -type f -print0 \
   | sort -z \
-  | xargs -0 sha256sum 2>/dev/null \
+  | xargs -0 sha256sum \
   | sha256sum \
   | awk '{print $1}'
 )"
 
-if [ "$BEFORE_SOURCE_HASH" != "$AFTER_SOURCE_HASH" ]; then
-  echo
-  echo "ERREUR: research/sources a été modifié."
-  echo "Les changements restent visibles mais ne doivent pas être commités."
-  exit 2
+if [ "$SOURCE_BEFORE" != "$SOURCE_AFTER" ]; then
+  echo "ERROR: research/sources changed"
+  exit 20
 fi
 
+echo "[7] Final validation"
 python3 "$RESEARCH/scripts/validate_research_workspace.py"
 python3 "$ROOT/corpus-11-tools/tools/validate_package.py"
 python3 "$ROOT/corpus-11-tools/tools/check_graph.py"
 git diff --check
 
-echo
-echo "[8/8] Résultat"
+date -Is > "$STAMP"
 
-if git diff --quiet && [ -z "$(git status --porcelain)" ]; then
-  echo
-  echo "Aucun changement substantiel."
-  exit 0
-fi
-
-echo
-echo "Fichiers modifiés :"
+echo "[8] Result"
 git status --short
-
-echo
-echo "Résumé :"
 git diff --stat
 
-echo
-echo "Cycle terminé."
-echo "Pour valider et publier : rp"
+if [ -z "$(git status --porcelain)" ]; then
+  echo "NO_CHANGE"
+else
+  echo "CHANGES_READY"
+fi
