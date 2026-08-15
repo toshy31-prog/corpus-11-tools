@@ -1,0 +1,68 @@
+{
+  "execution": {
+    "engine": {
+      "contentHash": "sha256:b5a18098af06d9b7d357b0b376eae8a5b7d85707d7ebac8618640c07016348d5",
+      "files": [
+        {
+          "id": "governance/execution-lock.mjs",
+          "sha256": "sha256:0483e28ab0d8703550e3b55bebb6f90073481797eb157637bd40d9ccccc53e8b"
+        },
+        {
+          "id": "governance/protocol-lock.mjs",
+          "sha256": "sha256:cd4134f4a06cfc9965672b6331b08c53fbaa6441868ea4c86585aee7a75918ba"
+        },
+        {
+          "id": "scientific/compatible-constraint-order.mjs",
+          "sha256": "sha256:158048e241eaa3e8fc95de9a87bd390a1cfd31028924f9fea3bd568f0add6f0a"
+        },
+        {
+          "id": "scientific/compatible-derivation-dependence.mjs",
+          "sha256": "sha256:ef2d3dfcc25ffeb44dd65913d4613246402f6206ddf923a1043ba838e3c9fa50"
+        }
+      ],
+      "fingerprint": "sha256:4d238978bef23b50e07a81b0bca7bb735e210ebf5f006ff2969dbb40025f8f2d",
+      "id": "compatible-derivation-dependence-runner",
+      "version": "1.0.0"
+    },
+    "environment": {
+      "contentHash": "sha256:4eaf178f1d103a6895a6b476a2a89647ea9c8d3ff32f7b8cc240bb0ba8334111",
+      "dependencies": [
+        {
+          "id": "node-standard-library",
+          "source": "runtime",
+          "version": "18.19.1"
+        }
+      ],
+      "runtime": {
+        "modulesAbi": "109",
+        "name": "node",
+        "napi": "9",
+        "unicode": "15.1",
+        "uv": "1.48.0",
+        "v8": "10.2.154.26-node.28",
+        "version": "18.19.1"
+      },
+      "system": {
+        "architecture": "x64",
+        "endianness": "LE",
+        "platform": "linux"
+      }
+    },
+    "module": {
+      "contentHash": "sha256:d21d45ca706b688a7bb9fc965bda5caf5e6e6960e150b1f38f9853f646d850c3",
+      "files": [
+        {
+          "id": "scientific/compatible-derivation-dependence.mjs",
+          "sha256": "sha256:ef2d3dfcc25ffeb44dd65913d4613246402f6206ddf923a1043ba838e3c9fa50"
+        }
+      ],
+      "fingerprint": "sha256:9d68367d05fdb15c83b41b58c1e78cdfb26a6f9f783ad4f147048bc12026ac40",
+      "id": "compatible-maximum-context-rule",
+      "version": "1.0.0"
+    },
+    "schema": "corpus-experiment-execution/v1"
+  },
+  "experimentFingerprint": "sha256:a29ef7d6cb2c60ada71d854645725142c8b7f887450760893074c713da3b2319",
+  "protocolHash": "sha256:d44762f195b68d4d6bc252f2cc75894b4531ab8fe6bb8c79dfaf6765a79a52f6",
+  "schema": "corpus-experiment-execution-lock/v1"
+}

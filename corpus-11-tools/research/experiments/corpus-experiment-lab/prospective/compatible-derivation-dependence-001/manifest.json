@@ -1,0 +1,83 @@
+{
+  "schema": "corpus-experiment-protocol/v1",
+  "protocolId": "compatible-derivation-dependence-001",
+  "version": "1.0.0",
+  "hypothesis": "The exact contextual implication relation derived from all inclusion-maximal compatible contexts persists when implication is instead derived only from compatible contexts of maximum cardinality.",
+  "alternatives": [
+    "The variant produces no nontrivial order anywhere in the complete graph universe.",
+    "At least one graph changes its exact implication relation under the variant rule.",
+    "The variant order is fully determined by the preregistered matched local summaries.",
+    "An enumeration, representation or negative control fails."
+  ],
+  "model": {
+    "id": "compatible-maximum-context-rule",
+    "version": "1.0.0",
+    "contentHash": "sha256:13cf398fe45983f23c28448bec78a1d8322ea3cfe3bf2d69503774459adfa95f",
+    "configuration": {
+      "experimentKind": "compatible_derivation_rule_dependence",
+      "width": 6,
+      "expectedGraphCount": 32768,
+      "originalRule": "support inclusion over every inclusion-maximal compatible context",
+      "variantRule": "support inclusion over only maximum-cardinality compatible contexts; distinctions absent from every such context are excluded from strict implication",
+      "relabeling": [2, 5, 1, 4, 0, 3],
+      "matchingFields": [
+        "degree_sequence",
+        "triangle_count",
+        "maximal_context_size_multiset"
+      ]
+    }
+  },
+  "observables": [
+    { "id": "original_nontrivial_order_graphs", "measure": "Number of graphs with a strict relation under the original rule", "channel": "closed exhaustive derivation-dependence runner" },
+    { "id": "variant_nontrivial_order_graphs", "measure": "Number of graphs with a strict relation under the maximum-context rule", "channel": "closed exhaustive derivation-dependence runner" },
+    { "id": "exact_relation_persistence_graphs", "measure": "Number of graphs whose complete labelled strict relation is identical under both rules", "channel": "closed exhaustive derivation-dependence runner" },
+    { "id": "rule_changed_graphs", "measure": "Number of graphs whose complete labelled strict relation differs between rules", "channel": "closed exhaustive derivation-dependence runner" },
+    { "id": "order_disappearance_graphs", "measure": "Number of graphs nontrivial under the original rule and trivial under the variant", "channel": "closed exhaustive derivation-dependence runner" },
+    { "id": "order_appearance_graphs", "measure": "Number of graphs trivial under the original rule and nontrivial under the variant", "channel": "closed exhaustive derivation-dependence runner" },
+    { "id": "variant_discriminating_matched_classes", "measure": "Number of fixed matched-summary classes containing multiple variant strict-pair counts", "channel": "closed exhaustive derivation-dependence runner" },
+    { "id": "enumeration_mismatches", "measure": "Difference indicator between observed and declared universe cardinality", "channel": "closed exhaustive derivation-dependence runner" },
+    { "id": "representation_mismatches", "measure": "Number of graphs whose original or variant strict-pair count changes under transported relabelling", "channel": "closed exhaustive derivation-dependence runner" },
+    { "id": "extreme_control_mismatches", "measure": "Number of empty or complete controls incorrectly producing a strict variant order", "channel": "closed exhaustive derivation-dependence runner" }
+  ],
+  "controls": [
+    { "id": "exhaustive_universe", "purpose": "Require enumeration of every one of the 2^15 labelled simple graphs." },
+    { "id": "matched_local_summaries", "purpose": "Compare variant order signatures only within classes fixed by degree sequence, triangle count and maximal-context-size multiset." },
+    { "id": "representation_invariance", "purpose": "Require both derivation rules to survive the same fixed bijective relabelling." },
+    { "id": "empty_complete_negative_controls", "purpose": "Require the empty and complete graphs to yield no strict implication under the variant." }
+  ],
+  "observer": {
+    "allowedOperations": [
+      "enumerate_universe",
+      "compute_original_rule",
+      "compute_variant_rule",
+      "compare_rules",
+      "apply_matched_controls",
+      "audit_representation"
+    ],
+    "maxSteps": 6,
+    "successThreshold": 1
+  },
+  "reversalConditions": [
+    { "id": "variant_order_disappears", "observableId": "variant_nontrivial_order_graphs", "operator": "lte", "value": 0, "outcome": "order_disappears_under_variant" },
+    { "id": "exact_persistence_fails", "observableId": "rule_changed_graphs", "operator": "gt", "value": 0, "outcome": "order_depends_on_derivation_rule" },
+    { "id": "variant_absorbed", "observableId": "variant_discriminating_matched_classes", "operator": "lte", "value": 0, "outcome": "variant_absorbed_by_matched_controls" },
+    { "id": "enumeration_control_failure", "observableId": "enumeration_mismatches", "operator": "gt", "value": 0, "outcome": "protocol_or_model_invalid" },
+    { "id": "representation_control_failure", "observableId": "representation_mismatches", "operator": "gt", "value": 0, "outcome": "protocol_or_model_invalid" },
+    { "id": "negative_control_failure", "observableId": "extreme_control_mismatches", "operator": "gt", "value": 0, "outcome": "protocol_or_model_invalid" }
+  ],
+  "seed": 2449489742,
+  "analysis": {
+    "stoppingRule": "Enumerate the same complete 32,768-graph universe exactly once. Do not alter either rule, add thresholds, change controls or introduce a new comparison after classification. Permit one deterministic reconstruction only for byte comparison.",
+    "comparisonPlan": "Compare the complete labelled strict implication relation graph by graph. Exact equality on all graphs classifies persistence; any changed graph classifies dependence on the derivation rule. Zero variant order classifies disappearance. Zero discriminating matched classes classifies absorption by the unchanged controls. Control failure makes the result unknown. No physical interpretation is permitted."
+  },
+  "classification": {
+    "allowedOutcomes": [
+      "order_disappears_under_variant",
+      "order_depends_on_derivation_rule",
+      "variant_absorbed_by_matched_controls",
+      "protocol_or_model_invalid",
+      "not_triggered",
+      "inconclusive"
+    ]
+  }
+}
