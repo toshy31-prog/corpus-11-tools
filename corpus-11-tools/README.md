@@ -1,6 +1,10 @@
-# Corpus 11 Tools
+# Corpus 11 Tools — documentation technique
 
-Plugin supplémentaire construit à partir de l’architecture 11.x fournie. Il ne remplace pas le bot et ne constitue pas une migration.
+Pour une présentation générale et des exemples accessibles sans connaissance préalable du projet, consulter le [README à la racine du dépôt](../README.md).
+
+Vocabulaire utilisé ci-dessous : l’**architecture 11.x** est la représentation opérationnelle du projet ; un **skill** est un paquet d’instructions utilisable par Codex ; une **capability** est un comportement possible sous conditions ; une **famille** est un regroupement descriptif ; une **relation** relie deux éléments du **graphe**, c’est-à-dire la carte de ces éléments et de leurs dépendances ; une **évaluation** est un scénario de test. La **provenance** retrace l’origine d’un élément et un **backlink** renvoie vers cette origine. La **frontière de neutralité** sépare ce que la méthode sélectionne de ce qui peut être attribué au système étudié.
+
+Ce plugin supplémentaire repose sur l’architecture 11.x fournie. Il ne remplace pas le bot et ne constitue pas une migration.
 
 ## Contenu
 
