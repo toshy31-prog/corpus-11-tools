@@ -1,11 +1,11 @@
 {
   "01_CONTRAT_SEMANTIQUE_11_v4.md": {
-    "sha256": "c1626f1cbd8276448ce951f0673b59f59a2806c0286c7d956ccc4c5a6a7e975d",
-    "bytes": 5120
+    "sha256": "63bd9bc48aab991d6845bbd9e4b0737a2525266ef3118836216fe091e2d4a769",
+    "bytes": 6337
   },
   "02_RUNTIME_GRAPH_11_v4.md": {
-    "sha256": "602de7ba0ab7abe3bc675f40201d78f393b55fc41b0ea72eb626db118b5e8f7f",
-    "bytes": 16720
+    "sha256": "778d7d166d1a67732396d6d430c8737881933067b62616b64b9507f49f3e2363",
+    "bytes": 18780
   },
   "03_SOURCES_10x_01-09.md": {
     "sha256": "98c04949aa220870920c2a51be01168e1a9c9141db073391e04b489cbd1cb736",
@@ -20,8 +20,8 @@
     "bytes": 58503
   },
   "06_GRAPH_11_OPTIMIZED_v4.dsl": {
-    "sha256": "ec6649240c9b3c70a6facc66bccf05e839df95bfab12d89e809f52648162c64f",
-    "bytes": 11010
+    "sha256": "ceb8696523ca4862b6dea65fe0531b04a980858fbfb880f0df901555b7e2111d",
+    "bytes": 12497
   },
   "sommaire_histoire_humaine_non_centree.pdf": {
     "sha256": "f0a86333beba6a502b5c1e62d9a0b7c82a04ab42fafcdb5c2d4e123b2545a7e1",

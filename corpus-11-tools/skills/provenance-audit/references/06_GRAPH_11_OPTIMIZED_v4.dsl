@@ -160,6 +160,7 @@
 // FAM.DISCRIMINANT_COMPARISON: Groups capabilities involving discriminant comparison without asserting one executable mechanism.
 // FAM.ATTRIBUTION_GROUNDING: Groups attribution-related capabilities while preserving distinct constitutive criteria.
 // FAM.INDIRECT_POWER_ANALYSIS: Groups indirect power capabilities without collapsing distinct material mechanisms.
+// FAM.REVERSAL_ASYMMETRY: Groups direct/inverse capacity comparisons without asserting a universal reversal mechanism.
 
 // Optimized relations
 FAM.DISCRIMINANT_COMPARISON related_specialization -> CAP.IDENTIFY_REVERSAL_CONDITION { criticality: contextual; };
@@ -169,6 +170,11 @@ FAM.ATTRIBUTION_GROUNDING specialization -> CAP.CONSCIOUSNESS_EVIDENCE_ASSESSMEN
 FAM.INDIRECT_POWER_ANALYSIS specialization -> CAP.CENTER_DETECTION { criticality: contextual; };
 FAM.INDIRECT_POWER_ANALYSIS specialization -> CAP.MEDIA_POWER_ASSESSMENT { criticality: contextual; };
 FAM.INDIRECT_POWER_ANALYSIS specialization -> CAP.EXTRACTION_MAPPING { criticality: contextual; };
+FAM.REVERSAL_ASYMMETRY related_specialization -> CAP.FIELD_CAPACITY_ASSESSMENT { criticality: contextual; };
+FAM.REVERSAL_ASYMMETRY related_specialization -> CAP.DISTRIBUTED_MEMORY_ASSESSMENT { criticality: contextual; };
+FAM.REVERSAL_ASYMMETRY related_specialization -> CAP.DIFFERENCE_REMAINDER_ASSESSMENT { criticality: contextual; };
+FAM.REVERSAL_ASYMMETRY related_specialization -> CAP.HIDDEN_COST_ASSESSMENT { criticality: contextual; };
+FAM.REVERSAL_ASYMMETRY related_specialization -> CAP.REPAIR_SUFFICIENCY { criticality: contextual; };
 CAP.REAL_TRANSFORMATION_ASSESSMENT supports_specialization -> CAP.AUTONOMOUS_CAPACITY_GAIN { criticality: contextual; };
 CAP.CHAIN_TRACING supports -> CAP.SOURCE_ENVIRONMENT_ASSESSMENT { criticality: contextual; };
 CAP.DISTRIBUTED_MEMORY_ASSESSMENT supports -> CAP.CONTINUITY_ASSESSMENT { criticality: contextual; };
@@ -202,6 +208,20 @@ CAP.PRIVILEGE_CONVERSION_ASSESSMENT uses -> CAP.REAL_TRANSFORMATION_ASSESSMENT {
 CAP.COERCIVE_CAPACITY_MAPPING uses -> CAP.FIELD_CAPACITY_ASSESSMENT { criticality: critical; };
 CAP.CENTER_DETECTION uses -> CAP.CHAIN_TRACING { criticality: contextual; };
 CAP.USER_AGENCY_PRESERVATION uses -> CAP.METHOD_EFFECT_AUDIT { criticality: contextual; };
+
+// Direct/inverse capacity comparison (routing-only composition)
+@schema SCHEMA.REVERSAL_ASYMMETRY_PROFILE {
+  fields: [direct_goal, inverse_goal, scope, intervention_class, direct_profile, inverse_profile, carriers, channels, field_dependencies, costs, residual_traces, reactivation, recourse, remainder, reversal_condition];
+  validity_literal: "same(scope, intervention_class) OR declare_differences(scope, intervention_class)";
+}
+
+@rule RULE.DIRECT_CAPACITY_NOT_INVERSE {
+  mode: prohibition;
+  scope: comparison;
+  when_literal: "direct_capacity_established AND inverse_capacity_not_independently_assessed";
+  then_literal: "forbid(infer_inverse_capacity_from_direct_capacity)";
+  note: "Access, recovery or intervention does not establish erasure, restitution, neutralization or restoration at comparable cost.";
+}
 
 // Fiction runtime direction constraint
 @rule RULE.FICTION_AUDIT_DIRECTION {

@@ -200,6 +200,7 @@ Aucune capability n’est automatiquement établie par sa présence ici.
 - FAM.DISCRIMINANT_COMPARISON: Groups capabilities involving discriminant comparison without asserting one executable mechanism.
 - FAM.ATTRIBUTION_GROUNDING: Groups attribution-related capabilities while preserving distinct constitutive criteria.
 - FAM.INDIRECT_POWER_ANALYSIS: Groups indirect power capabilities without collapsing distinct material mechanisms.
+- FAM.REVERSAL_ASYMMETRY: Groups direct/inverse capacity comparisons without asserting a universal reversal mechanism.
 
 ## Relations optimisées
 
@@ -210,6 +211,11 @@ Aucune capability n’est automatiquement établie par sa présence ici.
 - FAM.INDIRECT_POWER_ANALYSIS --specialization[contextual]--> CAP.CENTER_DETECTION :: Center detection via orchestration/veto/dependency.
 - FAM.INDIRECT_POWER_ANALYSIS --specialization[contextual]--> CAP.MEDIA_POWER_ASSESSMENT :: Media control via selection/circulation/repetition.
 - FAM.INDIRECT_POWER_ANALYSIS --specialization[contextual]--> CAP.EXTRACTION_MAPPING :: Extraction via circuits/beneficiaries/carriers/veto.
+- FAM.REVERSAL_ASYMMETRY --related_specialization[contextual]--> CAP.FIELD_CAPACITY_ASSESSMENT :: Direct and inverse capacities can depend on different fields, devices and counterparties.
+- FAM.REVERSAL_ASYMMETRY --related_specialization[contextual]--> CAP.DISTRIBUTED_MEMORY_ASSESSMENT :: Residual carriers and reactivation channels can make removal differ from access or recovery.
+- FAM.REVERSAL_ASYMMETRY --related_specialization[contextual]--> CAP.DIFFERENCE_REMAINDER_ASSESSMENT :: A declared return or erasure may leave a consequential remainder.
+- FAM.REVERSAL_ASYMMETRY --related_specialization[contextual]--> CAP.HIDDEN_COST_ASSESSMENT :: Similar outputs can conceal unequal direct and inverse costs.
+- FAM.REVERSAL_ASYMMETRY --related_specialization[contextual]--> CAP.REPAIR_SUFFICIENCY :: Restoration and recourse must be assessed independently from initial access or intervention.
 - CAP.REAL_TRANSFORMATION_ASSESSMENT --supports_specialization[contextual]--> CAP.AUTONOMOUS_CAPACITY_GAIN :: Autonomous gain is one discriminant of transformation.
 - CAP.CHAIN_TRACING --supports[contextual]--> CAP.SOURCE_ENVIRONMENT_ASSESSMENT :: Source environment requires but exceeds chain tracing.
 - CAP.DISTRIBUTED_MEMORY_ASSESSMENT --supports[contextual]--> CAP.CONTINUITY_ASSESSMENT :: Distributed memory can support continuity but is not continuity.
@@ -243,6 +249,16 @@ Aucune capability n’est automatiquement établie par sa présence ici.
 - CAP.COERCIVE_CAPACITY_MAPPING --uses[critical]--> CAP.FIELD_CAPACITY_ASSESSMENT :: Coercive capacity is field-dependent.
 - CAP.CENTER_DETECTION --uses[contextual]--> CAP.CHAIN_TRACING :: Centers may be detected through dependency chains.
 - CAP.USER_AGENCY_PRESERVATION --uses[contextual]--> CAP.METHOD_EFFECT_AUDIT :: Interaction method may replace user agency.
+
+## Runtime gate — asymétrie capacité directe / inverse
+
+Activer `FAM.REVERSAL_ASYMMETRY` quand une requête compare l'établissement d'une capacité à la suppression, restitution, neutralisation ou restauration de ses effets.
+
+Invariant : `DIRECT_CAPACITY_ESTABLISHED != INVERSE_CAPACITY_ESTABLISHED`.
+
+Compiler séparément : `direct_goal`, `inverse_goal`, `scope`, `intervention_class`, `direct_profile`, `inverse_profile`, `carriers`, `channels`, `field_dependencies`, `costs`, `residual_traces`, `reactivation`, `recourse`, `remainder`, `reversal_condition`.
+
+Une comparaison non appariée sur la portée ou la classe d'intervention doit déclarer ces écarts ; elle ne peut pas les attribuer à l'asymétrie seule. La famille route vers les capabilities pertinentes mais n'en rend aucune obligatoire hors scène. Elle compile des appuis déjà présents dans M03 (`field_capacity`), M04 (`access_restitution`), M05 (`difference_remainder`, `local_irreversibility`) et M14–M15 (mémoire distribuée) ; elle n'ajoute pas de capability.
 
 ## Règle runtime — fiction inédite
 

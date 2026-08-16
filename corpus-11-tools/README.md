@@ -6,6 +6,7 @@ Plugin supplémentaire construit à partir de l’architecture 11.x fournie. Il 
 
 - 1 skill de routage 11.x.
 - 31 skills centrés sur les capabilities du graphe.
+- 4 familles descriptives de routage, dont une comparaison capacité directe/inverse sans nouvelle capability.
 - 1 procédure conditionnelle `explore-first`.
 - 1 procédure de génération fictionnelle extérieure au corpus.
 - 1 skill de provenance/backlinks 10.x.
@@ -15,6 +16,8 @@ Plugin supplémentaire construit à partir de l’architecture 11.x fournie. Il 
 - Outils déterministes de validation de paquet, contrôle de graphe et lecture de provenance.
 
 Les capabilities restent des possibles comportementaux sous conditions. Les fichiers `SKILL.md` sont des wrappers d’invocation : ils ne redéfinissent pas une capability comme algorithme.
+
+La famille `FAM.REVERSAL_ASYMMETRY` relie les briques existantes lorsque l'établissement d'une capacité est comparé à l'annulation de ses effets. Elle impose deux profils séparés et interdit de conclure qu'une capacité inverse est acquise parce que la capacité directe l'est.
 
 ## Installation locale
 

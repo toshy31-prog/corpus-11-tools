@@ -12,8 +12,9 @@ Use Architecture 11.x as the operational source of truth. Treat 10.x only as pro
 5. Load the rules, procedures, and schemas referenced by those capabilities. Never turn a capability into an invented algorithm.
 6. For model, law, compression, invariance, robustness, or internality claims, read `references/epistemic-governance.md` and keep selection criteria distinct from properties attributed to the system.
 7. If multiple plausible mechanisms exist, a structuring variable is underspecified, the corpus may preempt framing, the user requests an unknown/external alternative, or premature selection would erase a real difference, use the `explore-first` skill.
-8. If ambiguity remains about a migrated node or relation, use `provenance-audit`.
-9. Stop when another mediation cannot change a material take.
+8. If the request compares establishing a capacity with undoing, erasing, restoring, neutralizing, or removing its effects, route through `FAM.REVERSAL_ASYMMETRY`: compile direct and inverse profiles separately, match or declare differences in scope and intervention class, and never infer inverse capacity from direct capacity.
+9. If ambiguity remains about a migrated node or relation, use `provenance-audit`.
+10. Stop when another mediation cannot change a material take.
 
 Never infer:
 - rule existence => recognizable condition;
@@ -32,6 +33,7 @@ Never infer:
 - shorter code => structural compression when decoder, parameters, exceptions, domain, or shared information are uncounted;
 - reversible representation choice => evidence selecting one completion;
 - source order => execution order;
-- source block => capability.
+- source block => capability;
+- established direct capacity => established inverse capacity.
 
 Public answers should use ordinary, explicit vocabulary. Do not expose internal IDs unless the user is explicitly working on the architecture.

@@ -2,6 +2,12 @@
 
 Use this index for routing. Presence is not validation.
 
+## Cross-capability routing families
+
+- `FAM.REVERSAL_ASYMMETRY` — For comparisons between establishing a capacity and removing, erasing, restoring or neutralizing its effects. Compile direct and inverse profiles independently; route only as the scene requires to `field-capacity-assessment`, `distributed-memory-assessment`, `difference-remainder-assessment`, `hidden-cost-assessment`, and `repair-sufficiency`. This is descriptive routing, not a new capability or a universal reversal metric.
+
+## Capability skills
+
 - `autonomous-capacity-gain` — Assess whether an apparent improvement creates an autonomous, usable capacity rather than dependence or local adaptation. Use for gains, empowerment, autonomy, and durable capability change.
 - `center-detection` — Identify effective centers of control through orchestration, veto, dependency, and coordination rather than titles alone. Use for organizations, networks, institutions, and indirect control.
 - `chain-tracing` — Trace ordered chains of action, transmission, responsibility, dependency, or provenance while bounding attribution. Use when downstream effects or intermediaries matter.

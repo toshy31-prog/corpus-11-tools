@@ -17,11 +17,31 @@ INSTANCE, EDGE, ID, TYPE, PROVENANCE, STATUS ne sont pas des primitives cognitiv
 - FAM.DISCRIMINANT_COMPARISON
 - FAM.ATTRIBUTION_GROUNDING
 - FAM.INDIRECT_POWER_ANALYSIS
+- FAM.REVERSAL_ASYMMETRY
 
 ## Règles de routage
 Charger d’abord les capabilities pertinentes, puis leurs dépendances critiques.
 Ajouter les dépendances contextuelles seulement lorsque la scène les active.
 Ne pas optimiser pour un pourcentage fixe du corpus : optimiser pour le plus petit sous-graphe causalement suffisant.
+
+## Asymétrie entre capacité directe et capacité inverse
+
+Lorsqu'une scène compare l'établissement d'une capacité (accéder, récupérer, transmettre, transformer) à l'annulation de ses effets (retirer, effacer, restituer, neutraliser), compiler deux profils séparés. Ne jamais déduire le second du premier.
+
+Invariant :
+
+`DIRECT_CAPACITY_ESTABLISHED != INVERSE_CAPACITY_ESTABLISHED`
+
+Le schéma comparatif minimal contient :
+
+- objectifs direct et inverse ;
+- même portée et même classe d'intervention, ou différences explicitement déclarées ;
+- profils de capacité directe et inverse ;
+- porteurs, canaux et dépendances de champ ;
+- coûts, traces résiduelles et voies de réactivation ;
+- recours, reste et condition de renversement.
+
+`FAM.REVERSAL_ASYMMETRY` est une famille descriptive de routage, non une capability. Elle compose conditionnellement des mécanismes déjà distincts ; elle ne crée ni mesure universelle de l'irréversibilité ni algorithme d'effacement. Ses appuis de provenance sont `field_capacity` (M03), `access_restitution` (M04), `difference_remainder` et `local_irreversibility` (M05), ainsi que les blocs de mémoire distribuée (M14–M15).
 
 ## Provenance
 Tout objet ou relation dérivé doit rester retraçable jusqu’au fragment source 10.x.
