@@ -3,5 +3,4 @@ interface:
   short_description: "Assess debt, obligation, repair, or responsibility beyond immediate proximity by tracing carriers and consequences across distance or time."
   default_prompt: "Apply non-local-debt-assessment to this request."
 policy:
-  products: ["CHAT", "CODEX"]
   allow_implicit_invocation: true

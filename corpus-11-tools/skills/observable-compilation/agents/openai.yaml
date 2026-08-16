@@ -3,5 +3,4 @@ interface:
   short_description: "Translate abstract claims into concrete observables, channels, windows, thresholds, and discriminating outcomes without treating the schema as proof."
   default_prompt: "Apply observable-compilation to this request."
 policy:
-  products: ["CHAT", "CODEX"]
   allow_implicit_invocation: true

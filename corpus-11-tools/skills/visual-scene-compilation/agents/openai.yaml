@@ -3,5 +3,4 @@ interface:
   short_description: "Compile a visual request from scene, position, observables, relations, asymmetries, traces, viewpoint, and source regime before image generation or analysis."
   default_prompt: "Apply visual-scene-compilation to this request."
 policy:
-  products: ["CHAT", "CODEX"]
   allow_implicit_invocation: true

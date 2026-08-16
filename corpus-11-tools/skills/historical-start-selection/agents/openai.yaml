@@ -3,5 +3,4 @@ interface:
   short_description: "Choose and test a historical starting point that does not turn installed structure into neutral context or reaction into cause."
   default_prompt: "Apply historical-start-selection to this request."
 policy:
-  products: ["CHAT", "CODEX"]
   allow_implicit_invocation: true

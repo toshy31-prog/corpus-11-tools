@@ -3,5 +3,4 @@ interface:
   short_description: "Generate inédit fiction independently, then audit it"
   default_prompt: "Create an inédit fiction using independent mechanism generation."
 policy:
-  products: ["CHAT", "CODEX"]
   allow_implicit_invocation: true

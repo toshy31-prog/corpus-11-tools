@@ -3,5 +3,4 @@ interface:
   short_description: "Assess a capacity as dependent on field, device, environment, history, load, or counterparty rather than as an isolated trait."
   default_prompt: "Apply field-capacity-assessment to this request."
 policy:
-  products: ["CHAT", "CODEX"]
   allow_implicit_invocation: true

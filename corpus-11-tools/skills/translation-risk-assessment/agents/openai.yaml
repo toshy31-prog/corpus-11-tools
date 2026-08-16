@@ -3,5 +3,4 @@ interface:
   short_description: "Assess loss, semantic drift, status change, hierarchy, and pivot-language effects introduced by translation."
   default_prompt: "Apply translation-risk-assessment to this request."
 policy:
-  products: ["CHAT", "CODEX"]
   allow_implicit_invocation: true

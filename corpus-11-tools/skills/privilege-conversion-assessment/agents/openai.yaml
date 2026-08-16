@@ -3,5 +3,4 @@ interface:
   short_description: "Assess whether a reduced or reformed privilege has been converted into a new renewable capacity of control rather than actually removed."
   default_prompt: "Apply privilege-conversion-assessment to this request."
 policy:
-  products: ["CHAT", "CODEX"]
   allow_implicit_invocation: true

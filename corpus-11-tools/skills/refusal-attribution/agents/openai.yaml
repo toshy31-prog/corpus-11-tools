@@ -3,5 +3,4 @@ interface:
   short_description: "Assess whether an observed refusal is attributable as a real refusal rather than protocol failure, incapacity, noise, coercion, or imposed interpretation."
   default_prompt: "Apply refusal-attribution to this request."
 policy:
-  products: ["CHAT", "CODEX"]
   allow_implicit_invocation: true

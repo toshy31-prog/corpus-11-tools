@@ -3,5 +3,4 @@ interface:
   short_description: "Detect costs, compensation, burden, risk, or effort hidden behind apparently stable performance or output."
   default_prompt: "Apply hidden-cost-assessment to this request."
 policy:
-  products: ["CHAT", "CODEX"]
   allow_implicit_invocation: true

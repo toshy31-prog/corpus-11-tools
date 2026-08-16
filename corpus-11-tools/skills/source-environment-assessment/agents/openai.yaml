@@ -3,5 +3,4 @@ interface:
   short_description: "Assess source provenance, institutional setting, financing, language, translation, format, indexing, contestability, and chains of reuse."
   default_prompt: "Apply source-environment-assessment to this request."
 policy:
-  products: ["CHAT", "CODEX"]
   allow_implicit_invocation: true

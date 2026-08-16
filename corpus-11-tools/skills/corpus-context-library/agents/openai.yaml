@@ -3,5 +3,4 @@ interface:
   short_description: "Explicit access to the two long-form corpus works"
   default_prompt: "Use the corpus context library for this task."
 policy:
-  products: ["CHAT", "CODEX"]
   allow_implicit_invocation: false

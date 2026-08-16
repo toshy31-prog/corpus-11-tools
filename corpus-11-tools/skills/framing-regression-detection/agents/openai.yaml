@@ -3,5 +3,4 @@ interface:
   short_description: "Detect when a structuring cause, population, or asymmetry appears too late and changes attribution, protection, or interpretation. Use for narratives, history, analysis, and source"
   default_prompt: "Apply framing-regression-detection to this request."
 policy:
-  products: ["CHAT", "CODEX"]
   allow_implicit_invocation: true

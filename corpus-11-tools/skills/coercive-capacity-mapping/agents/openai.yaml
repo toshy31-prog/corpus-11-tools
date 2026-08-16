@@ -3,5 +3,4 @@ interface:
   short_description: "Map effective coercive capacities, constraints, losses, and field dependence. Use for conflict, security, force, occupation, sanctions, or asymmetric coercion."
   default_prompt: "Apply coercive-capacity-mapping to this request."
 policy:
-  products: ["CHAT", "CODEX"]
   allow_implicit_invocation: true

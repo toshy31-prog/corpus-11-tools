@@ -197,8 +197,6 @@ for skill in sorted(path for path in skill_root.iterdir() if path.is_dir()):
             for key in ("display_name", "short_description", "default_prompt"):
                 if not isinstance(interface.get(key), str) or not interface[key].strip():
                     errors.append(f"{skill.name}: agents/openai.yaml missing interface.{key}")
-        if not isinstance(policy, dict) or not isinstance(policy.get("products"), list):
-            errors.append(f"{skill.name}: agents/openai.yaml missing policy.products list")
         if not isinstance(policy, dict) or not isinstance(policy.get("allow_implicit_invocation"), bool):
             errors.append(
                 f"{skill.name}: agents/openai.yaml missing boolean policy.allow_implicit_invocation"

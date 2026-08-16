@@ -3,5 +3,4 @@ interface:
   short_description: "Map extraction circuits, beneficiaries, carriers, dependencies, veto points, and costs. Use for class, resources, platforms, institutions, labor, and structural extraction."
   default_prompt: "Apply extraction-mapping to this request."
 policy:
-  products: ["CHAT", "CODEX"]
   allow_implicit_invocation: true

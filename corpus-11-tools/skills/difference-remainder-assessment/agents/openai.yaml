@@ -3,5 +3,4 @@ interface:
   short_description: "Test whether two states, worlds, repairs, transformations, or representations are genuinely equivalent or leave a consequential remainder."
   default_prompt: "Apply difference-remainder-assessment to this request."
 policy:
-  products: ["CHAT", "CODEX"]
   allow_implicit_invocation: true

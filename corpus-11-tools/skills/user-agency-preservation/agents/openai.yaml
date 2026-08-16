@@ -3,5 +3,4 @@ interface:
   short_description: "Preserve the user's actual question, scene, terms, choices, and room to decide; detect when method or taxonomy replaces the user's agency."
   default_prompt: "Apply user-agency-preservation to this request."
 policy:
-  products: ["CHAT", "CODEX"]
   allow_implicit_invocation: true
