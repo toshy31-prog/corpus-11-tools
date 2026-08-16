@@ -1,0 +1,6 @@
+interface:
+  display_name: "Temporal Power Assessment"
+  short_description: "Assess delay, cadence, suspension, unequal loss"
+  default_prompt: "Use $temporal-power-assessment to assess how timing and delay distribute power and loss."
+policy:
+  allow_implicit_invocation: true

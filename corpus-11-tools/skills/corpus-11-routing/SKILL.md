@@ -14,7 +14,11 @@ Use Architecture 11.x as the operational source of truth. Treat 10.x only as pro
 7. If multiple plausible mechanisms exist, a structuring variable is underspecified, the corpus may preempt framing, the user requests an unknown/external alternative, or premature selection would erase a real difference, use the `explore-first` skill.
 8. If the request compares establishing a capacity with undoing, erasing, restoring, neutralizing, or removing its effects, route through `FAM.REVERSAL_ASYMMETRY`: compile direct and inverse profiles separately, match or declare differences in scope and intervention class, and never infer inverse capacity from direct capacity.
 9. If ambiguity remains about a migrated node or relation, use `provenance-audit`.
-10. Stop when another mediation cannot change a material take.
+10. Route command-to-effect claims through `command-effect-verification`; availability claims through `effective-presence-assessment`; stop/rollback claims through `terminal-recovery-assessment`.
+11. Route secrecy-versus-control through `defense-accountability-boundary`; timing as allocated loss through `temporal-power-assessment`; surviving objects with broken access or reconnection through `relation-loss-assessment`.
+12. Route distributed maintenance authority through `co-maintenance-governance`; testimony or identity used for recourse through `privacy-recourse-boundary`; global keep/stop choices over separable functions through `functional-decoupling-assessment`.
+13. Use `confidence-convention` for precision-looking confidence and `conclusion-discipline` when an answer risks not concluding. Use `expand-then-audit` only explicitly or when its separate two-pass form is itself discriminating.
+14. Stop when another mediation cannot change a material take.
 
 Never infer:
 - rule existence => recognizable condition;
@@ -35,5 +39,9 @@ Never infer:
 - source order => execution order;
 - source block => capability;
 - established direct capacity => established inverse capacity.
+- packaged resource => executable resource.
+- command received => command executed.
+- object persistence => relation persistence.
+- permission for bounded recourse => permission to disclose.
 
 Public answers should use ordinary, explicit vocabulary. Do not expose internal IDs unless the user is explicitly working on the architecture.

@@ -156,6 +156,51 @@
   passC.action: retain_composite;
 }
 
+@cap CAP.COMMAND_EFFECT_VERIFICATION {
+  status.capability: recovered_candidate_unvalidated;
+  passC.action: recovered_distinct;
+}
+
+@cap CAP.EFFECTIVE_PRESENCE_ASSESSMENT {
+  status.capability: recovered_candidate_unvalidated;
+  passC.action: recovered_distinct;
+}
+
+@cap CAP.TERMINAL_RECOVERY_ASSESSMENT {
+  status.capability: recovered_candidate_unvalidated;
+  passC.action: recovered_composite;
+}
+
+@cap CAP.DEFENSE_ACCOUNTABILITY_BOUNDARY {
+  status.capability: recovered_candidate_unvalidated;
+  passC.action: recovered_boundary;
+}
+
+@cap CAP.TEMPORAL_POWER_ASSESSMENT {
+  status.capability: recovered_candidate_unvalidated;
+  passC.action: recovered_distinct;
+}
+
+@cap CAP.RELATION_LOSS_ASSESSMENT {
+  status.capability: recovered_candidate_unvalidated;
+  passC.action: recovered_distinct;
+}
+
+@cap CAP.CO_MAINTENANCE_GOVERNANCE {
+  status.capability: recovered_candidate_unvalidated;
+  passC.action: recovered_governance;
+}
+
+@cap CAP.PRIVACY_RECOURSE_BOUNDARY {
+  status.capability: recovered_candidate_unvalidated;
+  passC.action: recovered_boundary;
+}
+
+@cap CAP.FUNCTIONAL_DECOUPLING_ASSESSMENT {
+  status.capability: recovered_candidate_unvalidated;
+  passC.action: recovered_composite;
+}
+
 // Descriptive families (not capabilities)
 // FAM.DISCRIMINANT_COMPARISON: Groups capabilities involving discriminant comparison without asserting one executable mechanism.
 // FAM.ATTRIBUTION_GROUNDING: Groups attribution-related capabilities while preserving distinct constitutive criteria.
@@ -208,6 +253,36 @@ CAP.PRIVILEGE_CONVERSION_ASSESSMENT uses -> CAP.REAL_TRANSFORMATION_ASSESSMENT {
 CAP.COERCIVE_CAPACITY_MAPPING uses -> CAP.FIELD_CAPACITY_ASSESSMENT { criticality: critical; };
 CAP.CENTER_DETECTION uses -> CAP.CHAIN_TRACING { criticality: contextual; };
 CAP.USER_AGENCY_PRESERVATION uses -> CAP.METHOD_EFFECT_AUDIT { criticality: contextual; };
+CAP.COMMAND_EFFECT_VERIFICATION requires -> CAP.CHAIN_TRACING { criticality: critical; };
+CAP.COMMAND_EFFECT_VERIFICATION uses -> CAP.EFFECTIVE_PRESENCE_ASSESSMENT { criticality: critical; };
+CAP.EFFECTIVE_PRESENCE_ASSESSMENT supports -> CAP.CHANGE_VALIDATION { criticality: critical; };
+CAP.TERMINAL_RECOVERY_ASSESSMENT requires -> CAP.FIELD_CAPACITY_ASSESSMENT { criticality: critical; };
+CAP.TERMINAL_RECOVERY_ASSESSMENT uses -> CAP.REPAIR_SUFFICIENCY { criticality: critical; };
+CAP.DEFENSE_ACCOUNTABILITY_BOUNDARY uses -> CAP.COERCIVE_CAPACITY_MAPPING { criticality: critical; };
+CAP.DEFENSE_ACCOUNTABILITY_BOUNDARY uses -> CAP.PRIVACY_RECOURSE_BOUNDARY { criticality: critical; };
+CAP.TEMPORAL_POWER_ASSESSMENT uses -> CAP.HIDDEN_COST_ASSESSMENT { criticality: critical; };
+CAP.TEMPORAL_POWER_ASSESSMENT uses -> CAP.FIELD_CAPACITY_ASSESSMENT { criticality: contextual; };
+CAP.RELATION_LOSS_ASSESSMENT uses -> CAP.DIFFERENCE_REMAINDER_ASSESSMENT { criticality: critical; };
+CAP.RELATION_LOSS_ASSESSMENT uses -> CAP.CHAIN_TRACING { criticality: contextual; };
+CAP.CO_MAINTENANCE_GOVERNANCE supports -> CAP.CHANGE_VALIDATION { criticality: critical; };
+CAP.CO_MAINTENANCE_GOVERNANCE uses -> CAP.EFFECTIVE_PRESENCE_ASSESSMENT { criticality: critical; };
+CAP.PRIVACY_RECOURSE_BOUNDARY uses -> CAP.SOURCE_ENVIRONMENT_ASSESSMENT { criticality: critical; };
+CAP.FUNCTIONAL_DECOUPLING_ASSESSMENT requires -> CAP.FIELD_CAPACITY_ASSESSMENT { criticality: critical; };
+CAP.FUNCTIONAL_DECOUPLING_ASSESSMENT uses -> CAP.TERMINAL_RECOVERY_ASSESSMENT { criticality: critical; };
+
+// Direct/inverse capacity comparison (routing-only composition)
+@schema SCHEMA.REVERSAL_ASYMMETRY_PROFILE {
+  fields: [direct_goal, inverse_goal, scope, intervention_class, direct_profile, inverse_profile, carriers, channels, field_dependencies, costs, residual_traces, reactivation, recourse, remainder, reversal_condition];
+  validity_literal: "same(scope, intervention_class) OR declare_differences(scope, intervention_class)";
+}
+
+@rule RULE.DIRECT_CAPACITY_NOT_INVERSE {
+  mode: prohibition;
+  scope: comparison;
+  when_literal: "direct_capacity_established AND inverse_capacity_not_independently_assessed";
+  then_literal: "forbid(infer_inverse_capacity_from_direct_capacity)";
+  note: "Access, recovery or intervention does not establish erasure, restitution, neutralization or restoration at comparable cost.";
+}
 
 // Direct/inverse capacity comparison (routing-only composition)
 @schema SCHEMA.REVERSAL_ASYMMETRY_PROFILE {

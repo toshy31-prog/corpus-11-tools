@@ -1,6 +1,6 @@
 {
   "name": "corpus-11-tools",
-  "version": "1.0.0",
+  "version": "1.0.0+codex.20260816234659",
   "description": "Additional operational toolkit built from Corpus Architecture 11.x, with capability-focused skills, conditional exploration, fiction isolation, provenance backlinks, and regression checks.",
   "author": {
     "name": "toshy31-prog"
@@ -27,7 +27,7 @@
     "defaultPrompt": [
       "Use Corpus 11 Tools to analyze this problem.",
       "Audit this claim with the relevant Corpus 11 capabilities.",
-      "Create an inédit fiction using the external-generation procedure."
+      "Create an in\u00e9dit fiction using the external-generation procedure."
     ]
   }
 }

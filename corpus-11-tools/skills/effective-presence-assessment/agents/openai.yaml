@@ -1,0 +1,6 @@
+interface:
+  display_name: "Effective Presence Assessment"
+  short_description: "Separate described, available, executed, verified"
+  default_prompt: "Use $effective-presence-assessment to determine what is actually present and verified here."
+policy:
+  allow_implicit_invocation: true

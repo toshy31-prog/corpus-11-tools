@@ -17,6 +17,9 @@ NON_CAPABILITY_SKILLS = {
     "explore-first",
     "fiction-external-generation",
     "provenance-audit",
+    "confidence-convention",
+    "conclusion-discipline",
+    "expand-then-audit",
 }
 
 required_governance_invariants = {
@@ -228,8 +231,8 @@ if len(names) != len(set(names)):
     errors.append("duplicate skill names")
 if len(capability_ids) != len(set(capability_ids)):
     errors.append("duplicate capability IDs in references/capability.md")
-if len(capability_ids) != 31:
-    errors.append(f"expected 31 capability references, found {len(capability_ids)}")
+if len(capability_ids) != 40:
+    errors.append(f"expected 40 capability references, found {len(capability_ids)}")
 
 if errors:
     print("FAIL")

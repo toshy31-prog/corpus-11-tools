@@ -1,0 +1,6 @@
+interface:
+  display_name: "Conclusion Discipline"
+  short_description: "Conclude when sufficient and stop empty extension"
+  default_prompt: "Use $conclusion-discipline to state the strongest supported conclusion and stop extensions that cannot change it."
+policy:
+  allow_implicit_invocation: true
