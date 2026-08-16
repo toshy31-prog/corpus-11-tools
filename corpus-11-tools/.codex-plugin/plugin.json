@@ -2,6 +2,9 @@
   "name": "corpus-11-tools",
   "version": "1.0.0",
   "description": "Additional operational toolkit built from Corpus Architecture 11.x, with capability-focused skills, conditional exploration, fiction isolation, provenance backlinks, and regression checks.",
+  "author": {
+    "name": "toshy31-prog"
+  },
   "skills": "./skills/",
   "keywords": [
     "reasoning",
@@ -14,6 +17,7 @@
   ],
   "interface": {
     "displayName": "Corpus 11 Tools",
+    "developerName": "toshy31-prog",
     "shortDescription": "Additional 11.x analysis, audit, provenance, and fiction tools",
     "longDescription": "A supplementary toolkit that implements the Corpus 11.x operational graph as focused skills while keeping 10.x as provenance/audit material and long-form corpus works as explicit context.",
     "category": "Productivity",
