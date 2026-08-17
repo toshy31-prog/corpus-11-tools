@@ -6,7 +6,9 @@ Use this index for routing. Presence is not validation.
 
 - `FAM.REVERSAL_ASYMMETRY` — For comparisons between establishing a capacity and removing, erasing, restoring or neutralizing its effects. Compile direct and inverse profiles independently; route only as the scene requires to `field-capacity-assessment`, `distributed-memory-assessment`, `difference-remainder-assessment`, `hidden-cost-assessment`, and `repair-sufficiency`. This is descriptive routing, not a new capability or a universal reversal metric.
 
-## Capability skills
+## Capability skills (49)
+
+Each entry below wraps one `CAP.*` node. Its presence makes the behavior routable; it does not establish that capability as robust or universally valid.
 
 - `autonomous-capacity-gain` — Assess whether an apparent improvement creates an autonomous, usable capacity rather than dependence or local adaptation. Use for gains, empowerment, autonomy, and durable capability change.
 - `center-detection` — Identify effective centers of control through orchestration, veto, dependency, and coordination rather than titles alone. Use for organizations, networks, institutions, and indirect control.
@@ -48,9 +50,6 @@ Use this index for routing. Presence is not validation.
 - `co-maintenance-governance` — Map proposal, refusal, test, authorization, activation, rollback, and repair across effective roles.
 - `privacy-recourse-boundary` — Preserve bounded use of sensitive evidence for recourse without expanding permission to disclose or retain it.
 - `functional-decoupling-assessment` — Separate observation, memory, recommendation, command, execution, replication, and deletion before keep/stop decisions.
-- `confidence-convention` — Require an explicit convention before numerical confidence.
-- `conclusion-discipline` — State the strongest supported conclusion and continue only for a named possible change.
-- `expand-then-audit` — Optional two-pass expansion and audit procedure; implicit invocation disabled.
 - `causal-identification` — Determine whether a causal claim is identified, partially identified, or unsupported under explicit contrasts, interventions, structures, and assumptions.
 - `rival-model-discrimination` — Compare serious rival explanations with matched information budgets and outcomes capable of separating them.
 - `construct-validity-assessment` — Test whether a metric, proxy, score, or operational definition supports the construct claimed for it.
@@ -60,3 +59,17 @@ Use this index for routing. Presence is not validation.
 - `strategic-adaptation-assessment` — Assess learning, gaming, avoidance, burden shifting, and counter-response after a metric or rule becomes consequential.
 - `value-of-information` — Rank possible tests by what they can change relative to detectability, cost, delay, risk, and lost options.
 - `capability-interference-audit` — Test whether capability addition, removal, order, or composition causes redundancy, shadowing, conflict, or conclusion drift.
+
+## Operational skills without a CAP node (9)
+
+These skills route, govern, generate, expose context, or run procedures. They must not be counted as capabilities.
+
+- `corpus-11-routing` — Route a request through the smallest causally sufficient 11.x subgraph.
+- `corpus-context-library` — Expose the two long-form corpus works only after explicit invocation.
+- `explore-first` — Generate independent candidates before audit when premature framing could erase a real alternative.
+- `fiction-external-generation` — Generate inédit fiction independently of Corpus conceptual gravity, then permit a separate audit.
+- `provenance-audit` — Trace 11.x objects and relations back to bounded 10.x source fragments.
+- `confidence-convention` — Require an explicit convention before numerical confidence.
+- `conclusion-discipline` — State the strongest supported conclusion and continue only for a named possible change.
+- `expand-then-audit` — Run an optional two-pass expansion and audit procedure; implicit invocation is disabled.
+- `open-experiment-arena` — Compare rival methods in a frozen causal scenario without treating a synthetic result as external evidence.

@@ -1,7 +1,7 @@
 {
   "name": "corpus-11-tools",
-  "version": "1.2.0-alpha.2+codex.20260817152456",
-  "description": "Operational toolkit built from Corpus Architecture 11.x, with causal identification, model discrimination, transfer and scale audits, capability-focused analysis, provenance, and regression checks.",
+  "version": "1.2.0+codex.20260817171315",
+  "description": "Stable Corpus 11.x analysis toolkit with bounded routing, 49 capability wrappers, provenance, non-regression checks, an experiment arena, and a project-yield gate.",
   "author": {
     "name": "toshy31-prog"
   },
@@ -13,13 +13,15 @@
     "history",
     "sources",
     "fiction",
-    "evaluation"
+    "evaluation",
+    "experiments",
+    "non-regression"
   ],
   "interface": {
     "displayName": "Corpus 11 Tools",
     "developerName": "toshy31-prog",
-    "shortDescription": "11.x inference, analysis, audit, and provenance tools",
-    "longDescription": "A supplementary toolkit that implements the Corpus 11.x operational graph as focused skills for causal identification, rival-model discrimination, construct validity, transport, scale transitions, evidence dependence, strategic adaptation, experiment choice, provenance, and non-regression.",
+    "shortDescription": "Bounded analysis, audit, experiments, and provenance",
+    "longDescription": "A stable plugin package implementing the Corpus 11.x operational graph as focused skills. It routes only relevant capabilities, preserves provenance and user agency, tests claims against rival models and protocol changes, and keeps experimental results distinct from deployment or general validity.",
     "category": "Productivity",
     "capabilities": [
       "skills"

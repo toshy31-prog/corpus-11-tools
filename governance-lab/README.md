@@ -28,7 +28,7 @@ python3 run_p005.py
 python3 run_p005.py --config p005_config_v2.json --output results-p005-v2
 ```
 
-Les sorties sont écrites dans `results/` :
+Les sorties sont écrites dans le dossier `results-*` correspondant à chaque protocole :
 
 - `summary.csv` : intervalles et taux de passage pour les 112 cellules ;
 - `verdict.json` : application mécanique de la condition de perte ;
