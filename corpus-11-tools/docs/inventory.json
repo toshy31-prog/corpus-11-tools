@@ -1,9 +1,27 @@
 {
   "plugin": "corpus-11-tools",
-  "planned_release": "v1.2.0",
-  "version": "1.2.0-alpha.2+codex.20260817152456",
+  "release": "v1.2.0",
+  "version": "1.2.0+codex.20260817171315",
   "skill_count": 58,
   "capability_skill_count": 49,
+  "family_count": 4,
+  "relation_count": 88,
+  "capability_status_counts": {
+    "candidate_unvalidated": 31,
+    "recovered_candidate_unvalidated": 9,
+    "design_candidate_unvalidated": 9
+  },
+  "non_capability_skill_roles": {
+    "corpus-11-routing": "routing",
+    "corpus-context-library": "explicit_context",
+    "explore-first": "conditional_procedure",
+    "fiction-external-generation": "generation_procedure",
+    "provenance-audit": "provenance_procedure",
+    "confidence-convention": "rule",
+    "conclusion-discipline": "rule",
+    "expand-then-audit": "explicit_procedure",
+    "open-experiment-arena": "experimental_procedure"
+  },
   "skills": [
     "autonomous-capacity-gain",
     "capability-interference-audit",

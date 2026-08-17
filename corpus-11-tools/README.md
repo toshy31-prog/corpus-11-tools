@@ -8,7 +8,7 @@ Ce plugin supplémentaire repose sur l’architecture 11.x fournie. Il ne rempla
 
 ## État actuel
 
-- version prévue : **v1.2.0** (`1.2.0-alpha.2`) ;
+- version stable du paquet : **v1.2.0** ;
 - 58 skills ;
 - 49 capabilities ;
 - 4 familles descriptives ;
@@ -74,6 +74,7 @@ Pour intégrer le plugin à un autre catalogue local, utiliser `docs/marketplace
 ```bash
 python tools/validate_package.py
 python tools/check_graph.py
+python tools/check_docs.py
 python tools/show_provenance.py CAP.PROTOCOL_ROBUSTNESS
 python tools/project_yield_gate.py chemin/vers/record.json
 sha256sum -c archives/legacy/MANIFEST.sha256
@@ -81,6 +82,8 @@ sha256sum -c archives/legacy/MANIFEST.sha256
 
 ## Statut
 
-Le paquet `1.2.0-alpha.2` contient désormais 58 skills, 49 capabilities, 4 familles, 88 relations et 71 évaluations. `open-experiment-arena` reste une procédure expérimentale candidate : ses tests synthétiques n’établissent ni scénario extérieur indépendant, ni gain de capability, ni usage de terrain. Les neuf nouveaux outils restent `design_candidate_unvalidated`, et les neuf facultés récupérées restent `recovered_candidate_unvalidated`.
+Le paquet `v1.2.0` contient 58 skills, 49 capabilities, 4 familles, 88 relations et 71 évaluations. Sa stabilité désigne la cohérence du paquet, de son installation, de sa taxonomie et de ses tests sur le périmètre déclaré. `open-experiment-arena` reste une procédure expérimentale candidate : ses tests synthétiques n’établissent ni scénario extérieur indépendant, ni gain de capability, ni usage de terrain. Les 31 capabilities natives restent `candidate_unvalidated`, les neuf facultés récupérées `recovered_candidate_unvalidated` et les neuf nouveaux outils `design_candidate_unvalidated`.
+
+Le périmètre et les conditions de retrait de ce statut sont définis dans [`docs/stability-contract.md`](docs/stability-contract.md), et la matrice exécutée dans [`docs/release-validation-v1.2.0.md`](docs/release-validation-v1.2.0.md).
 
 Les lacunes historiques restent documentées dans `docs/legacy-loss-audit.md` et `archives/legacy/STATUS.md` : Atlas 2.7, Corpus 9.8, Corpus 10.2, la release 10.4 complète et la source éditable du manuel n’ont pas été retrouvés ni reconstruits par supposition.

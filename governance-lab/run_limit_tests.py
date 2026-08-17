@@ -19,7 +19,7 @@ def main() -> None:
         by_family[case.family][case.verdict] += 1
 
     with (OUT / "summary.csv").open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(["id", "family", "verdict", "invariants", "scene", "observable", "failure", "finding", "patch"])
         for case in CASES:
             writer.writerow([case.id, case.family, case.verdict, " ".join(case.invariants), case.scene,

@@ -323,7 +323,7 @@ def run_experiment(config_path: str | Path, output_dir: str | Path) -> dict[str,
         csv_fields.extend((f"{metric}_median", f"{metric}_p90"))
     csv_fields.extend(("breached_gates", "pareto_frontier", "dominated_by"))
     with (output_dir / "summary.csv").open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=csv_fields)
+        writer = csv.DictWriter(handle, fieldnames=csv_fields, lineterminator="\n")
         writer.writeheader()
         for scenario_id in config["scenarios"]:
             for regime_id in config["regimes"]:
