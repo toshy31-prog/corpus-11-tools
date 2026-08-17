@@ -1,0 +1,6 @@
+interface:
+  display_name: "Causal Identification"
+  short_description: "Test whether a causal claim is identified"
+  default_prompt: "Use $causal-identification to determine what this causal claim actually establishes."
+policy:
+  allow_implicit_invocation: true

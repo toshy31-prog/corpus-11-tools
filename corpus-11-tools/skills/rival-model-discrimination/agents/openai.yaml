@@ -1,0 +1,6 @@
+interface:
+  display_name: "Rival Model Discrimination"
+  short_description: "Compare serious explanations with decisive tests"
+  default_prompt: "Use $rival-model-discrimination to compare these explanations on matched, discriminating outcomes."
+policy:
+  allow_implicit_invocation: true

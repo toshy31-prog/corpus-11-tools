@@ -1,11 +1,13 @@
 {
   "plugin": "corpus-11-tools",
-  "planned_release": "v1.1.0",
-  "version": "1.0.0+codex.20260816234659",
-  "skill_count": 48,
-  "capability_skill_count": 40,
+  "planned_release": "v1.2.0",
+  "version": "1.2.0-alpha.1+codex.20260817",
+  "skill_count": 57,
+  "capability_skill_count": 49,
   "skills": [
     "autonomous-capacity-gain",
+    "capability-interference-audit",
+    "causal-identification",
     "center-detection",
     "chain-tracing",
     "change-validation",
@@ -13,6 +15,7 @@
     "coercive-capacity-mapping",
     "consciousness-evidence-assessment",
     "continuity-assessment",
+    "construct-validity-assessment",
     "command-effect-verification",
     "confidence-convention",
     "conclusion-discipline",
@@ -23,6 +26,7 @@
     "difference-remainder-assessment",
     "distributed-memory-assessment",
     "effective-presence-assessment",
+    "evidence-dependence-audit",
     "expand-then-audit",
     "explore-first",
     "extraction-mapping",
@@ -46,13 +50,18 @@
     "real-transformation-assessment",
     "refusal-attribution",
     "repair-sufficiency",
+    "rival-model-discrimination",
     "relation-loss-assessment",
+    "scale-transition-assessment",
     "source-environment-assessment",
+    "strategic-adaptation-assessment",
     "translation-risk-assessment",
+    "transportability-assessment",
     "temporal-power-assessment",
     "terminal-recovery-assessment",
     "user-agency-preservation",
+    "value-of-information",
     "visual-scene-compilation"
   ],
-  "eval_count": 51
+  "eval_count": 69
 }
