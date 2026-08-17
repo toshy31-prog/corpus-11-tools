@@ -16,5 +16,6 @@ Une recherche peut utiliser les skills et laboratoires de Corpus. Elle ne devien
 | [`active/corpus-hypotheses/`](active/corpus-hypotheses/) | active | hypothèses mathématiques et temporelles, protocoles, sources et rapports |
 | [`active/cct/`](active/cct/) | active | modèle CCT, simulations, prototype institutionnel et publications |
 | [`completed/food-access-paris/`](completed/food-access-paris/) | terminée | prototype privé d’orientation alimentaire, journal et clôture sans effet bénéficiaire établi |
+| [`completed/corpus-ui-workspace/`](completed/corpus-ui-workspace/) | abandonnée | prototype d’interface Corpus gelé, archive Git et acquis conversationnels candidats |
 
 Les moteurs génériques utilisés par ces projets se trouvent dans [`../corpus-11-tools/labs/`](../corpus-11-tools/labs/).
