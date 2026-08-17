@@ -1,0 +1,11 @@
+{
+  "proposal": ["arena evaluator", "maintainer", "user"],
+  "review": ["user", "designated maintainer"],
+  "refusal": ["user", "designated maintainer"],
+  "authorization": ["user", "designated maintainer"],
+  "activation": ["runtime reading an authorized registry entry"],
+  "rollback": ["user", "designated maintainer"],
+  "repair": ["maintainer"],
+  "unowned": ["independent replication", "external authorship verification"],
+  "invariant": "The model and evaluator may propose but cannot self-authorize activation."
+}

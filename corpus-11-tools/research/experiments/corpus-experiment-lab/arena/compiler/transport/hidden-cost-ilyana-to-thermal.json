@@ -1,0 +1,28 @@
+{
+  "capabilityId": "CAP.HIDDEN_COST_ASSESSMENT",
+  "source": {
+    "population": "one fictional ceramic bell",
+    "mechanism": "filing, wet wrapping, weather drift and glaze craze",
+    "intervention": "file, wet-wrap, or leave alone",
+    "outcomes": ["pitch_error", "craze", "clay_removed", "sleep"]
+  },
+  "target": {
+    "population": "three coupled simulated thermal cells",
+    "mechanism": "local heating or cooling, delayed coupling and outside forcing",
+    "intervention": "warm, cool, or hold",
+    "outcomes": ["cell_band_time", "energy_used", "overshoot_events", "terminal_gradient"]
+  },
+  "bridgeEvidence": [],
+  "invarianceClaims": [
+    "An intervention count is a meaningful hidden-cost proxy in both domains."
+  ],
+  "blockingDifferences": [
+    "Different units, mechanisms, measurements and outcome meanings.",
+    "Both worlds are internal simulations.",
+    "No independent target observation exists."
+  ],
+  "preregisteredVerdictCeiling": "conditionally_transportable",
+  "observedTargetFinding": "The compiled target binding is exactly equivalent to the always-hold negative control in actions and outcomes.",
+  "verdict": "transport_not_established",
+  "reversalCondition": "Independent target observations and a tested bridge establish that the mapped costs and outputs have comparable decision meaning."
+}
