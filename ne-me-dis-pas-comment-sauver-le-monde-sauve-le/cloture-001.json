@@ -1,0 +1,21 @@
+{
+  "project": "Manger aujourd'hui à Paris",
+  "best_existing_alternative_checked": true,
+  "distinct_delta_established": false,
+  "decision_changing_outcome": true,
+  "artifact_written": true,
+  "tested": true,
+  "authorized": true,
+  "deployed": true,
+  "reobserved": false,
+  "external_effect_verified": false,
+  "maintenance_owner_identified": false,
+  "stop_condition_triggered": true,
+  "retained_assets": [
+    "distinction des stades de changement",
+    "tests-limites déterministes",
+    "péremption explicite des données",
+    "comparaison au meilleur existant avant externalisation",
+    "découplage des composants à la clôture"
+  ]
+}
