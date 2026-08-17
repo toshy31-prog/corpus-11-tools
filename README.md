@@ -4,12 +4,12 @@ Corpus 11 Tools est un ensemble d’outils pour aider Codex à analyser une ques
 
 ## État actuel
 
-- version prévue : **v1.2.0** (`1.2.0-alpha.1`) ;
-- 57 skills ;
+- version prévue : **v1.2.0** (`1.2.0-alpha.2`) ;
+- 58 skills ;
 - 49 capabilities ;
 - 4 familles descriptives ;
 - 88 relations ;
-- 69 évaluations.
+- 71 évaluations.
 
 ## Ce qui change dans v1.2.0
 
@@ -73,11 +73,11 @@ Le projet emploie ensuite quelques termes techniques :
 
 La version actuelle contient :
 
-- 57 skills ;
+- 58 skills ;
 - 49 capabilities ;
 - 4 familles descriptives ;
 - 88 relations ;
-- 69 évaluations.
+- 71 évaluations.
 
 La présence d’une capability dans le projet ne signifie pas que cette capacité est scientifiquement établie. Elle décrit seulement un comportement que le système peut tenter de produire sous certaines conditions.
 

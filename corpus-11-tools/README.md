@@ -8,7 +8,7 @@ Ce plugin supplémentaire repose sur l’architecture 11.x fournie. Il ne rempla
 
 ## État actuel
 
-- version prévue : **v1.2.0** (`1.2.0-alpha.1`) ;
+- version prévue : **v1.2.0** (`1.2.0-alpha.2`) ;
 - 58 skills ;
 - 49 capabilities ;
 - 4 familles descriptives ;
@@ -81,6 +81,6 @@ sha256sum -c archives/legacy/MANIFEST.sha256
 
 ## Statut
 
-Le paquet `1.2.0-alpha.1` contient désormais 58 skills, 49 capabilities, 4 familles, 88 relations et 71 évaluations. `open-experiment-arena` reste une procédure expérimentale candidate : ses tests synthétiques n’établissent ni scénario extérieur indépendant, ni gain de capability, ni usage de terrain. Les neuf nouveaux outils restent `design_candidate_unvalidated`, et les neuf facultés récupérées restent `recovered_candidate_unvalidated`.
+Le paquet `1.2.0-alpha.2` contient désormais 58 skills, 49 capabilities, 4 familles, 88 relations et 71 évaluations. `open-experiment-arena` reste une procédure expérimentale candidate : ses tests synthétiques n’établissent ni scénario extérieur indépendant, ni gain de capability, ni usage de terrain. Les neuf nouveaux outils restent `design_candidate_unvalidated`, et les neuf facultés récupérées restent `recovered_candidate_unvalidated`.
 
 Les lacunes historiques restent documentées dans `docs/legacy-loss-audit.md` et `archives/legacy/STATUS.md` : Atlas 2.7, Corpus 9.8, Corpus 10.2, la release 10.4 complète et la source éditable du manuel n’ont pas été retrouvés ni reconstruits par supposition.
