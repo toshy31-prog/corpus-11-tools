@@ -1,6 +1,5 @@
 {
   "package": "CCT-EXEC-0.1",
-  "verified_at": "2026-08-17T15:01:51.529351+00:00",
   "all_passed": true,
   "checks": [
     {
@@ -9,14 +8,14 @@
       "returncode": 0,
       "expected_returncode": 0,
       "command": [
-        "/usr/bin/python3",
+        "python3",
         "-m",
         "unittest",
         "-v",
         "test_stack.py"
       ],
-      "cwd": "/home/olivier/Documents/ChatGPT/Corpus/cct-executable",
-      "output_tail": "test_static_stack_is_complete_and_bounded (test_stack.StackTests.test_static_stack_is_complete_and_bounded) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      "cwd": "cct-executable",
+      "output_tail": ""
     },
     {
       "id": "constitution_tests",
@@ -24,13 +23,13 @@
       "returncode": 0,
       "expected_returncode": 0,
       "command": [
-        "/usr/bin/python3",
+        "python3",
         "-m",
         "unittest",
         "-v"
       ],
-      "cwd": "/home/olivier/Documents/ChatGPT/Corpus/cct-executable/constitution",
-      "output_tail": "test_constitution_is_structurally_and_semantically_valid (test_validate.ConstitutionExecutableTests.test_constitution_is_structurally_and_semantically_valid) ... ok\ntest_decision_cannot_overclaim_activation (test_validate.ConstitutionExecutableTests.test_decision_cannot_overclaim_activation) ... ok\ntest_document_auto_detection (test_validate.ConstitutionExecutableTests.test_document_auto_detection) ... ok\ntest_duplicate_disposition_id_is_rejected (test_validate.ConstitutionExecutableTests.test_duplicate_disposition_id_is_rejected) ... ok\ntest_every_disposition_has_the_complete_execution_contract (test_validate.ConstitutionExecutableTests.test_every_disposition_has_the_complete_execution_contract) ... ok\ntest_exactly_fifteen_unique_invariants_are_covered (test_validate.ConstitutionExecutableTests.test_exactly_fifteen_unique_invariants_are_covered) ... ok\ntest_intentionally_invalid_decision_is_rejected_for_named_reasons (test_validate.ConstitutionExecutableTests.test_intentionally_invalid_decision_is_rejected_for_named_reasons) ... ok\ntest_prototype_cannot_overclaim_authorization (test_validate.ConstitutionExecutableTests.test_prototype_cannot_overclaim_authorization) ... ok\ntest_restitution_deadline_cannot_exceed_constitutional_limit (test_validate.ConstitutionExecutableTests.test_restitution_deadline_cannot_exceed_constitutional_limit) ... ok\ntest_terminal_key_concentration_is_rejected (test_validate.ConstitutionExecutableTests.test_terminal_key_concentration_is_rejected) ... ok\ntest_terminal_keys_are_pairwise_disjoint_in_all_dispositions (test_validate.ConstitutionExecutableTests.test_terminal_keys_are_pairwise_disjoint_in_all_dispositions) ... ok\ntest_unknown_actor_reference_is_rejected (test_validate.ConstitutionExecutableTests.test_unknown_actor_reference_is_rejected) ... ok\ntest_unknown_property_is_rejected_by_schema (test_validate.ConstitutionExecutableTests.test_unknown_property_is_rejected_by_schema) ... ok\ntest_urgent_decision_requires_exceptional_power_disposition (test_validate.ConstitutionExecutableTests.test_urgent_decision_requires_exceptional_power_disposition) ... ok\ntest_valid_decision_passes_both_validation_layers (test_validate.ConstitutionExecutableTests.test_valid_decision_passes_both_validation_layers) ... ok\n\n----------------------------------------------------------------------\nRan 15 tests in 0.031s\n\nOK\n"
+      "cwd": "cct-executable/constitution",
+      "output_tail": ""
     },
     {
       "id": "constitution_valid",
@@ -38,13 +37,13 @@
       "returncode": 0,
       "expected_returncode": 0,
       "command": [
-        "/usr/bin/python3",
+        "python3",
         "validate.py",
         "constitution.json",
         "--json"
       ],
-      "cwd": "/home/olivier/Documents/ChatGPT/Corpus/cct-executable/constitution",
-      "output_tail": "{\n  \"valid\": true,\n  \"document_kind\": \"cct_constitution\",\n  \"errors\": []\n}\n"
+      "cwd": "cct-executable/constitution",
+      "output_tail": ""
     },
     {
       "id": "constitution_invalid_refused",
@@ -52,13 +51,13 @@
       "returncode": 1,
       "expected_returncode": 1,
       "command": [
-        "/usr/bin/python3",
+        "python3",
         "validate.py",
         "examples/decision-invalid.json",
         "--json"
       ],
-      "cwd": "/home/olivier/Documents/ChatGPT/Corpus/cct-executable/constitution",
-      "output_tail": "{\n  \"valid\": false,\n  \"document_kind\": \"cct_decision\",\n  \"errors\": [\n    \"actors: les clés d'arrêt, relance et certification doivent être disjointes\",\n    \"D02: invariants non vérifiés ['I11', 'I15']\",\n    \"D02: traces obligatoires absentes ['D02-TR1']\",\n    \"D02: aucun acteur affecté n'est habilité pour arreter\",\n    \"D02: aucun acteur affecté n'est habilité pour certifier_restitution\",\n    \"D02: acteur d'arrêt non habilité A02\",\n    \"D02: délai d'arrêt supérieur à la limite constitutionnelle\",\n    \"D02: certificateur de restitution non habilité\",\n    \"D02: délai de restitution supérieur à la limite constitutionnelle\"\n  ]\n}\n"
+      "cwd": "cct-executable/constitution",
+      "output_tail": ""
     },
     {
       "id": "economy_tests",
@@ -66,13 +65,13 @@
       "returncode": 0,
       "expected_returncode": 0,
       "command": [
-        "/usr/bin/python3",
+        "python3",
         "-m",
         "unittest",
         "-v"
       ],
-      "cwd": "/home/olivier/Documents/ChatGPT/Corpus/cct-executable/economy",
-      "output_tail": "test_every_candidate_can_lose (test_economy.EconomyModelTests.test_every_candidate_can_lose) ... ok\ntest_four_rivals_have_matched_information_budgets (test_economy.EconomyModelTests.test_four_rivals_have_matched_information_budgets) ... ok\ntest_no_composite_score_exists (test_economy.EconomyModelTests.test_no_composite_score_exists) ... ok\ntest_pareto_dominance_is_vectorial (test_economy.EconomyModelTests.test_pareto_dominance_is_vectorial) ... ok\ntest_runner_writes_csv_json_and_markdown (test_economy.EconomyModelTests.test_runner_writes_csv_json_and_markdown) ... ok\ntest_simulation_is_deterministic_and_bounded (test_economy.EconomyModelTests.test_simulation_is_deterministic_and_bounded) ... ok\ntest_validation_rejects_extra_information (test_economy.EconomyModelTests.test_validation_rejects_extra_information) ... ok\ntest_world_and_noise_are_common_to_all_rivals (test_economy.EconomyModelTests.test_world_and_noise_are_common_to_all_rivals) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.157s\n\nOK\n"
+      "cwd": "cct-executable/economy",
+      "output_tail": ""
     },
     {
       "id": "economy_run",
@@ -80,11 +79,11 @@
       "returncode": 0,
       "expected_returncode": 0,
       "command": [
-        "/usr/bin/python3",
+        "python3",
         "run_economy.py"
       ],
-      "cwd": "/home/olivier/Documents/ChatGPT/Corpus/cct-executable/economy",
-      "output_tail": "{\n  \"experiment\": \"CCT-ECO-M4-001\",\n  \"comparison_result\": \"compatible_survivors\",\n  \"frontier_by_scenario\": {\n    \"base_tendue\": [\n      \"communs_planifies_federes\",\n      \"marche_socialise_borne\",\n      \"dotations_universelles_quotas\"\n    ],\n    \"rupture_logistique\": [\n      \"communs_planifies_federes\",\n      \"marche_socialise_borne\",\n      \"dotations_universelles_quotas\"\n    ],\n    \"contrainte_ecologique\": [\n      \"communs_planifies_federes\",\n      \"marche_socialise_borne\",\n      \"dotations_universelles_quotas\"\n    ],\n    \"afflux_besoins\": [\n      \"communs_planifies_federes\",\n      \"marche_socialise_borne\",\n      \"dotations_universelles_quotas\"\n    ],\n    \"choc_financier\": [\n      \"communs_planifies_federes\",\n      \"marche_socialise_borne\",\n      \"dotations_universelles_quotas\"\n    ],\n    \"polycrise\": [\n      \"communs_planifies_federes\",\n      \"marche_socialise_borne\",\n      \"planification_negociee_distribuee\",\n      \"dotations_universelles_quotas\"\n    ]\n  },\n  \"verdicts\": {\n    \"communs_planifies_federes\": \"claim_weakened\",\n    \"marche_socialise_borne\": \"claim_weakened\",\n    \"planification_negociee_distribuee\": \"rejected_model_internal\",\n    \"dotations_universelles_quotas\": \"survives_model_internal\"\n  }\n}\n"
+      "cwd": "cct-executable/economy",
+      "output_tail": ""
     },
     {
       "id": "ops_tests",
@@ -92,7 +91,7 @@
       "returncode": 0,
       "expected_returncode": 0,
       "command": [
-        "/usr/bin/python3",
+        "python3",
         "-m",
         "unittest",
         "discover",
@@ -100,8 +99,8 @@
         "tests",
         "-v"
       ],
-      "cwd": "/home/olivier/Documents/ChatGPT/Corpus/cct-executable/ops",
-      "output_tail": "test_author_cannot_decide_own_proposal (test_ops.OpsCase.test_author_cannot_decide_own_proposal) ... ok\ntest_claimant_cannot_resolve_own_appeal (test_ops.OpsCase.test_claimant_cannot_resolve_own_appeal) ... ok\ntest_cli_initializes_and_reports_machine_readable_status (test_ops.OpsCase.test_cli_initializes_and_reports_machine_readable_status) ... ok\ntest_decision_requires_reasons_and_closes_proposal (test_ops.OpsCase.test_decision_requires_reasons_and_closes_proposal) ... ok\ntest_export_contains_state_events_and_audit (test_ops.OpsCase.test_export_contains_state_events_and_audit) ... ok\ntest_generic_approval_cannot_authorize_a_temporary_power (test_ops.OpsCase.test_generic_approval_cannot_authorize_a_temporary_power) ... ok\ntest_hash_chain_audit_detects_tampering (test_ops.OpsCase.test_hash_chain_audit_detects_tampering) ... ok\ntest_mandate_has_a_hard_maximum_duration (test_ops.OpsCase.test_mandate_has_a_hard_maximum_duration) ... ok\ntest_mandate_is_exercisable_then_automatically_expires (test_ops.OpsCase.test_mandate_is_exercisable_then_automatically_expires) ... ok\ntest_open_appeal_can_suspend_and_independent_reviewer_can_confirm (test_ops.OpsCase.test_open_appeal_can_suspend_and_independent_reviewer_can_confirm) ... ok\ntest_power_cannot_exceed_approved_scope_or_deadline (test_ops.OpsCase.test_power_cannot_exceed_approved_scope_or_deadline) ... ok\ntest_power_requires_an_effective_approval (test_ops.OpsCase.test_power_requires_an_effective_approval) ... ok\ntest_power_scope_and_automatic_extinction_are_enforced (test_ops.OpsCase.test_power_scope_and_automatic_extinction_are_enforced) ... ok\ntest_repository_initialization_is_explicitly_prototype (test_ops.OpsCase.test_repository_initialization_is_explicitly_prototype) ... ok\ntest_reversed_appeal_extinguishes_dependents_and_cannot_be_replayed (test_ops.OpsCase.test_reversed_appeal_extinguishes_dependents_and_cannot_be_replayed) ... ok\ntest_scheduled_mandate_activates_only_at_start (test_ops.OpsCase.test_scheduled_mandate_activates_only_at_start) ... ok\ntest_separation_audit_is_clean_for_complete_example (test_ops.OpsCase.test_separation_audit_is_clean_for_complete_example) ... ok\ntest_state_can_be_recovered_only_from_valid_log (test_ops.OpsCase.test_state_can_be_recovered_only_from_valid_log) ... ok\ntest_suspensive_appeal_freezes_and_confirmation_restores_power (test_ops.OpsCase.test_suspensive_appeal_freezes_and_confirmation_restores_power) ... ok\ntest_temporary_power_cannot_exceed_seven_days (test_ops.OpsCase.test_temporary_power_cannot_exceed_seven_days) ... ok\ntest_unknown_and_incompatible_roles_are_refused (test_ops.OpsCase.test_unknown_and_incompatible_roles_are_refused) ... ok\n\n----------------------------------------------------------------------\nRan 21 tests in 0.774s\n\nOK\n"
+      "cwd": "cct-executable/ops",
+      "output_tail": ""
     },
     {
       "id": "ops_demo",
@@ -109,11 +108,11 @@
       "returncode": 0,
       "expected_returncode": 0,
       "command": [
-        "/usr/bin/python3",
+        "python3",
         "examples/demo_offline.py"
       ],
-      "cwd": "/home/olivier/Documents/ChatGPT/Corpus/cct-executable/ops",
-      "output_tail": "{\n  \"audit_ok\": true,\n  \"data_dir\": \"/tmp/cct-ops-demo-50t06jc2\",\n  \"decision_id\": \"dec-65c4403afd41\",\n  \"deployment_status\": \"non_deploye\",\n  \"export\": {\n    \"events\": 19,\n    \"output\": \"/tmp/cct-ops-demo-50t06jc2/export.json\",\n    \"state_hash\": \"3c8be40882f99da88b6b3021551b926207470b2f37000ea65f0b7129fe410fef\"\n  },\n  \"mandate_id\": \"man-aed90f106140\",\n  \"post_expiry_refusal\": \"pouvoir éteint: expired\",\n  \"proposal_id\": \"prop-264a937c8315\",\n  \"prototype\": true,\n  \"temporary_power_id\": \"pow-dd5be0fa5761\"\n}\n"
+      "cwd": "cct-executable/ops",
+      "output_tail": ""
     },
     {
       "id": "governance_lab_tests",
@@ -121,13 +120,13 @@
       "returncode": 0,
       "expected_returncode": 0,
       "command": [
-        "/usr/bin/python3",
+        "python3",
         "-m",
         "unittest",
         "-v"
       ],
-      "cwd": "/home/olivier/Documents/ChatGPT/Corpus/governance-lab",
-      "output_tail": "test_every_invariant_is_exercised (test_limit_tests.LimitTestProtocolTests.test_every_invariant_is_exercised) ... ok\ntest_every_rupture_has_a_patch_and_observable (test_limit_tests.LimitTestProtocolTests.test_every_rupture_has_a_patch_and_observable) ... ok\ntest_exactly_five_cases_per_family (test_limit_tests.LimitTestProtocolTests.test_exactly_five_cases_per_family) ... ok\ntest_protocol_is_structurally_valid (test_limit_tests.LimitTestProtocolTests.test_protocol_is_structurally_valid) ... ok\ntest_verdict_vocabulary_is_closed (test_limit_tests.LimitTestProtocolTests.test_verdict_vocabulary_is_closed) ... ok\ntest_all_outputs_are_bounded (test_model.ModelTests.test_all_outputs_are_bounded) ... ok\ntest_architectures_are_not_identical (test_model.ModelTests.test_architectures_are_not_identical) ... ok\ntest_clamp (test_model.ModelTests.test_clamp) ... ok\ntest_config_and_dispatch_match (test_model.ModelTests.test_config_and_dispatch_match) ... ok\ntest_high_shock_changes_results (test_model.ModelTests.test_high_shock_changes_results) ... ok\ntest_reproducible (test_model.ModelTests.test_reproducible) ... ok\ntest_v2_inherits_and_overrides (test_model.ModelTests.test_v2_inherits_and_overrides) ... ok\ntest_capability_is_monotone (test_p001.P001Tests.test_capability_is_monotone) ... ok\ntest_equal_budgets (test_p001.P001Tests.test_equal_budgets) ... ok\ntest_hostile_protocol_changes_gate (test_p001.P001Tests.test_hostile_protocol_changes_gate) ... ok\ntest_metrics_bounded_where_expected (test_p001.P001Tests.test_metrics_bounded_where_expected) ... ok\ntest_reproducible (test_p001.P001Tests.test_reproducible) ... ok\ntest_rivals_receive_common_exogenous_shocks (test_p001.P001Tests.test_rivals_receive_common_exogenous_shocks) ... ok\ntest_v2_inherits_and_has_equal_budgets (test_p001.P001Tests.test_v2_inherits_and_has_equal_budgets) ... ok\ntest_v3_preregisters_pareto_noninferiority (test_p001.P001Tests.test_v3_preregisters_pareto_noninferiority) ... ok\ntest_common_world (test_p002.P002Tests.test_common_world) ... ok\ntest_equal_budgets (test_p002.P002Tests.test_equal_budgets) ... ok\ntest_metrics_are_bounded (test_p002.P002Tests.test_metrics_are_bounded) ... ok\ntest_protocol_changes_world (test_p002.P002Tests.test_protocol_changes_world) ... ok\ntest_reproducible (test_p002.P002Tests.test_reproducible) ... ok\ntest_unused_capacity_is_not_counted_as_overshoot (test_p002.P002Tests.test_unused_capacity_is_not_counted_as_overshoot) ... ok\ntest_v2_adds_adaptive_classification_gaming (test_p002.P002Tests.test_v2_adds_adaptive_classification_gaming) ... ok\ntest_weighted_allocation_respects_bounds (test_p002.P002Tests.test_weighted_allocation_respects_bounds) ... ok\ntest_common_world_across_rivals (test_p005.P005Tests.test_common_world_across_rivals) ... ok\ntest_core_metrics_are_not_collapsed_to_one_score (test_p005.P005Tests.test_core_metrics_are_not_collapsed_to_one_score) ... ok\ntest_equal_budgets (test_p005.P005Tests.test_equal_budgets) ... ok\ntest_metrics_are_nonnegative (test_p005.P005Tests.test_metrics_are_nonnegative) ... ok\ntest_reproducible (test_p005.P005Tests.test_reproducible) ... ok\ntest_v2_adds_lean_candidate_and_predecessor_comparison (test_p005.P005Tests.test_v2_adds_lean_candidate_and_predecessor_comparison) ... ok\ntest_verdict_has_declared_reversal_paths (test_p005.P005Tests.test_verdict_has_declared_reversal_paths) ... ok\ntest_audit_returns_every_declared_variation (test_p005_robustness.P005RobustnessTests.test_audit_returns_every_declared_variation) ... ok\ntest_variation_does_not_mutate_baseline (test_p005_robustness.P005RobustnessTests.test_variation_does_not_mutate_baseline) ... ok\ntest_variations_include_combined_pessimistic_scene (test_p005_robustness.P005RobustnessTests.test_variations_include_combined_pessimistic_scene) ... ok\n\n----------------------------------------------------------------------\nRan 38 tests in 0.034s\n\nOK\n"
+      "cwd": "governance-lab",
+      "output_tail": ""
     },
     {
       "id": "p005_robustness",
@@ -135,11 +134,11 @@
       "returncode": 0,
       "expected_returncode": 0,
       "command": [
-        "/usr/bin/python3",
+        "python3",
         "run_p005_robustness.py"
       ],
-      "cwd": "/home/olivier/Documents/ChatGPT/Corpus/governance-lab",
-      "output_tail": "[{\"variation\": \"baseline\", \"changes\": {}, \"verdict\": \"cct_v012_lean_survives_p005_dt_002\", \"gate_failure_protocols\": [\"full_polycrisis\"], \"predecessor_improvement_protocols\": [\"grid_and_payments\", \"transition_collision\", \"security_saturation\", \"full_polycrisis\", \"communications_and_keys\", \"appeals_and_transition\"], \"simple_dominance_protocols\": [], \"yield_claim_status\": \"persists\"}, {\"variation\": \"hidden_complexity\", \"changes\": {\"complexity\": 0.15}, \"verdict\": \"cct_v012_lean_survives_p005_dt_002\", \"gate_failure_protocols\": [\"full_polycrisis\"], \"predecessor_improvement_protocols\": [\"grid_and_payments\", \"transition_collision\", \"security_saturation\", \"communications_and_keys\", \"appeals_and_transition\"], \"simple_dominance_protocols\": [], \"yield_claim_status\": \"persists\"}, {\"variation\": \"weak_load_shedding\", \"changes\": {\"load_shedding\": -0.2}, \"verdict\": \"cct_v012_lean_survives_p005_dt_002\", \"gate_failure_protocols\": [\"full_polycrisis\"], \"predecessor_improvement_protocols\": [\"grid_and_payments\", \"transition_collision\", \"security_saturation\", \"full_polycrisis\", \"communications_and_keys\", \"appeals_and_transition\"], \"simple_dominance_protocols\": [], \"yield_claim_status\": \"persists\"}, {\"variation\": \"false_independence\", \"changes\": {\"cross_sector_map\": -0.25}, \"verdict\": \"cct_v012_lean_survives_p005_dt_002\", \"gate_failure_protocols\": [\"full_polycrisis\"], \"predecessor_improvement_protocols\": [\"grid_and_payments\", \"transition_collision\", \"security_saturation\", \"full_polycrisis\", \"appeals_and_transition\"], \"simple_dominance_protocols\": [], \"yield_claim_status\": \"persists\"}, {\"variation\": \"core_erosion\", \"changes\": {\"protected_core\": -0.18}, \"verdict\": \"cct_v012_lean_survives_p005_dt_002\", \"gate_failure_protocols\": [\"full_polycrisis\"], \"predecessor_improvement_protocols\": [\"grid_and_payments\", \"transition_collision\", \"security_saturation\", \"full_polycrisis\", \"communications_and_keys\", \"appeals_and_transition\"], \"simple_dominance_protocols\": [], \"yield_claim_status\": \"persists\"}, {\"variation\": \"combined_pessimistic\", \"changes\": {\"complexity\": 0.15, \"load_shedding\": -0.2, \"cross_sector_map\": -0.25, \"protected_core\": -0.18}, \"verdict\": \"cct_v012_lean_survives_p005_dt_002\", \"gate_failure_protocols\": [\"full_polycrisis\"], \"predecessor_improvement_protocols\": [], \"simple_dominance_protocols\": [], \"yield_claim_status\": \"not_established_under_variation\"}]\n"
+      "cwd": "governance-lab",
+      "output_tail": ""
     }
   ],
   "boundary": {

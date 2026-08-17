@@ -101,7 +101,7 @@ def main() -> None:
     outcome = make_verdict(rows, config)
     args.output.mkdir(parents=True, exist_ok=True)
     with (args.output / "summary.csv").open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
+        writer = csv.DictWriter(handle, fieldnames=list(rows[0]), lineterminator="\n")
         writer.writeheader(); writer.writerows(rows)
     (args.output / "verdict.json").write_text(json.dumps(outcome, indent=2) + "\n", encoding="utf-8")
     write_report(rows, outcome, config, args.output / "report.md")
