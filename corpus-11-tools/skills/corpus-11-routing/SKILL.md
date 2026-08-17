@@ -11,7 +11,7 @@ Use Architecture 11.x as the operational source of truth. Treat 10.x only as pro
 4. Include every critical dependency of an activated capability. Include contextual dependencies only when the scene requires them.
 5. Load the rules, procedures, and schemas referenced by those capabilities. Never turn a capability into an invented algorithm.
 6. For model, law, compression, invariance, robustness, or internality claims, read `references/epistemic-governance.md` and keep selection criteria distinct from properties attributed to the system.
-7. If multiple plausible mechanisms exist, a structuring variable is underspecified, the corpus may preempt framing, the user requests an unknown/external alternative, or premature selection would erase a real difference, use the `explore-first` skill.
+7. If independent candidate generation before taxonomy can materially change the scope or conclusion because a structuring variable is underspecified, the corpus may preempt framing, the user requests an unknown/external alternative, or premature selection would erase a real difference, use the `explore-first` skill before audit. Do not add it merely to enumerate rival explanations that the selected capabilities already preserve.
 8. If the request compares establishing a capacity with undoing, erasing, restoring, neutralizing, or removing its effects, route through `FAM.REVERSAL_ASYMMETRY`: compile direct and inverse profiles separately, match or declare differences in scope and intervention class, and never infer inverse capacity from direct capacity.
 9. If ambiguity remains about a migrated node or relation, use `provenance-audit`.
 10. Route command-to-effect claims through `command-effect-verification`; availability claims through `effective-presence-assessment`; stop/rollback claims through `terminal-recovery-assessment`.
@@ -21,8 +21,8 @@ Use Architecture 11.x as the operational source of truth. Treat 10.x only as pro
 14. Stop when another mediation cannot change a material take.
 15. Route cause-and-effect claims through `causal-identification`; rival explanations or missing baselines through `rival-model-discrimination`; metric-to-phenomenon claims through `construct-validity-assessment`.
 16. Route source-to-target generalization through `transportability-assessment`; micro-to-macro or emergence claims through `scale-transition-assessment`; apparent evidence accumulation through `evidence-dependence-audit`.
-17. Route gaming or response to consequential metrics through `strategic-adaptation-assessment`; next-test selection through `value-of-information`.
-18. Route skill overlap, order effects, semantic shadowing, or conclusion drift through `capability-interference-audit`.
+17. Route gaming or response to consequential metrics through `strategic-adaptation-assessment`; next-test selection through `value-of-information` when concrete alternative observations or experiments differ in possible decision effect, cost, delay, risk, or lost options. Ordering analytical questions in a composite scene is not by itself next-test selection.
+18. Route skill overlap, order effects, semantic shadowing, or conclusion drift through `capability-interference-audit`. Load `change-validation` with it only when the scene concerns an actual or proposed capability addition, removal, patch, test, deployment, or a claim that such a change fixed routing; ordinary overlap among analyses in one unchanged scene does not require lifecycle validation.
 
 Never infer:
 - rule existence => recognizable condition;

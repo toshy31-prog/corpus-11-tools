@@ -10,7 +10,7 @@
 
 ## Relations pertinentes du graphe 11.x
 
-- `CAP.CAPABILITY_INTERFERENCE_AUDIT --requires[critical]--> CAP.CHANGE_VALIDATION`
+- `CAP.CAPABILITY_INTERFERENCE_AUDIT --uses[contextual]--> CAP.CHANGE_VALIDATION` when an actual or proposed capability addition, removal, patch, test, deployment, or claimed routing fix makes lifecycle state material
 - `CAP.CAPABILITY_INTERFERENCE_AUDIT --uses[critical]--> CAP.METHOD_EFFECT_AUDIT`
 - `CAP.CAPABILITY_INTERFERENCE_AUDIT --uses[contextual]--> CAP.EFFECTIVE_PRESENCE_ASSESSMENT`
 
