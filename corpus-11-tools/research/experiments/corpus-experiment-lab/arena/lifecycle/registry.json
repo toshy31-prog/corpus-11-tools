@@ -1,0 +1,33 @@
+{
+  "schema": "corpus-binding-lifecycle/v1",
+  "entries": {
+    "compiled:CAP.HIDDEN_COST_ASSESSMENT:thermal-mosaic-internal-fixture:minimize-action-energy-then-mean-error": {
+      "status": "quarantined_local",
+      "scope": "thermal-mosaic-internal-fixture",
+      "reason": "Exact action and outcome equivalence with the always-hold negative control; no discriminating gain.",
+      "evidence": {
+        "binding": { "cell_band_time": 12, "energy_used": 0, "overshoot_events": 0, "terminal_gradient": 2.786 },
+        "equivalentControl": { "id": "thermal-always-hold", "cell_band_time": 12, "energy_used": 0, "overshoot_events": 0, "terminal_gradient": 2.786 }
+      },
+      "effect": "excluded_from_default_campaigns_in_scope",
+      "rollbackCondition": "A preregistered target protocol produces a distinct action sequence or outcome vector against the same negative control.",
+      "authority": "local-maintainer-experiment",
+      "changeValidationLevel": "tests_passed_local",
+      "notEstablished": ["global_capability_failure", "source_to_target_transport", "deployment", "independent_reobservation"]
+    },
+    "compiled:CAP.FIELD_CAPACITY_ASSESSMENT:ilyana-sorel-wet-bell:minimize-worst-counterfactual-pitch-error-then-craze": {
+      "status": "quarantined_local",
+      "scope": "ilyana-sorel-wet-bell",
+      "reason": "Pareto-dominated by never-wet under the preregistered workshop orientations.",
+      "evidence": {
+        "binding": { "pitch_error": 2, "craze": 12, "clay_removed": 4, "sleep": 0 },
+        "dominator": { "id": "never-wet", "pitch_error": 2, "craze": 11, "clay_removed": 3, "sleep": 1 }
+      },
+      "effect": "excluded_from_default_campaigns_in_scope",
+      "rollbackCondition": "A matched rerun or corrected world model removes strict dominance, or a declared evaluation orientation changes before rerun.",
+      "authority": "local-maintainer-experiment",
+      "changeValidationLevel": "tests_passed_local",
+      "notEstablished": ["global_capability_failure", "deployment", "independent_reobservation"]
+    }
+  }
+}

@@ -15,6 +15,27 @@ Each plugin supplies:
 
 Observers and criteria receive cloned state and a cloned random stream. They cannot silently alter subsequent execution. Operations and perturbations mutate live state and every call is journalled with before/after hashes.
 
+## Open experiment arena candidate
+
+`arena/` adds a first executable bridge from analysis to causal consequence. It runs rival methods on matched frozen trials, requires predictions before action, blinds public identities, preserves outcome vectors, and refuses to call the maintainer-authored fixture external evidence.
+
+```bash
+node --test arena/tests/*.test.mjs
+node arena/run-demo.mjs
+node arena/run-braess.mjs
+node arena/run-declarative.mjs
+```
+
+The thermal fixture is internal. The Braess fixture preserves an independently published causal mechanism but remains `mixed` because Corpus maintainers encoded the world, contenders, and outcome dimensions. Neither is field validation. The next discriminating step remains a scenario supplied and frozen independently before contender inspection.
+
+`arena/declarative/` removes the need for a maintainer-written scenario adapter. An author can name arbitrary state variables, define a bounded expression tree and state mutations in JSON, then freeze the document with SHA-256 before contender inspection:
+
+```bash
+node arena/declarative/freeze-scenario.mjs draft.json frozen.json
+```
+
+The interpreter permits scalar arithmetic and `set`/`add` mutations on `state.*` only. It executes no imported code or free-form expression. `author-template.json` is an unsealed intake template; the included frozen pulse document is an internal execution witness, not external evidence.
+
 ## Implemented plugins
 
 `plugins/recovery-erasure.mjs` migrates the closed recovery/erasure experiments. Run:

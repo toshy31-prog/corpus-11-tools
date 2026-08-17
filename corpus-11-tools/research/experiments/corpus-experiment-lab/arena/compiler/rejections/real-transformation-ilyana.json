@@ -1,0 +1,16 @@
+{
+  "capabilityId": "CAP.REAL_TRANSFORMATION_ASSESSMENT",
+  "capabilityStatus": "candidate_unvalidated",
+  "domain": "ilyana-sorel-wet-bell",
+  "admitted": false,
+  "reason": "The scenario exposes no actors holding dominant capacity, autonomous capacity, recourse, workaround, reactivation path, or return under another name. Compiling a decision policy would invent the capability's object.",
+  "observedFields": ["pitch", "craze", "clay_removed", "sleep", "air"],
+  "missingDiscriminatingFields": [
+    "dominant_capacity_removed",
+    "autonomous_capacity_created",
+    "recourse",
+    "workaround",
+    "reactivation",
+    "reversibility_by_actor"
+  ]
+}
