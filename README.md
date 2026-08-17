@@ -2,6 +2,21 @@
 
 Corpus 11 Tools est un ensemble d’outils pour aider Codex à analyser une question avec davantage de rigueur. Il peut notamment vérifier les sources d’une affirmation, repérer les coûts cachés, distinguer une capacité réelle d’un simple résultat de test et identifier ce qui pourrait invalider une conclusion.
 
+## État actuel
+
+- version prévue : **v1.1.0** ;
+- 48 skills ;
+- 40 capabilities ;
+- 4 familles descriptives ;
+- 61 relations ;
+- 51 évaluations.
+
+## Ce qui change dans v1.1.0
+
+v1.1.0 restaure neuf facultés historiques qui avaient été perdues lors de la migration vers Corpus 11.x, sans remplacer les capacités 11.x existantes. Elles couvrent notamment la vérification de l’effet d’une commande, la présence effective à l’exécution, la récupération terminale, certaines frontières de responsabilité, le pouvoir temporel, la perte relationnelle, la co-maintenance, la confidentialité avec recours et le découplage fonctionnel.
+
+Ces facultés sont récupérées et réobservées localement, mais ne sont pas présentées comme robustes universellement.
+
 ## Qu’est-ce que Corpus 11 Tools ?
 
 Corpus 11 Tools est un plugin pour Codex. Il ajoute des méthodes d’analyse, d’audit et de vérification que Codex peut mobiliser selon la question posée.
@@ -53,11 +68,11 @@ Le projet emploie ensuite quelques termes techniques :
 
 La version actuelle contient :
 
-- 36 skills ;
-- 31 capabilities ;
+- 48 skills ;
+- 40 capabilities ;
 - 4 familles descriptives ;
-- 45 relations ;
-- 39 évaluations.
+- 61 relations ;
+- 51 évaluations.
 
 La présence d’une capability dans le projet ne signifie pas que cette capacité est scientifiquement établie. Elle décrit seulement un comportement que le système peut tenter de produire sous certaines conditions.
 
@@ -77,11 +92,18 @@ La présence d’une capability dans le projet ne signifie pas que cette capacit
    - `.agents/plugins/marketplace.json`, le catalogue local qui indique où trouver le plugin ;
    - `corpus-11-tools/.codex-plugin/plugin.json`, le manifeste qui décrit le plugin.
 
-3. Dans Codex, utiliser ce dépôt comme catalogue local et installer **Corpus 11 Tools**. Le catalogue référence déjà le chemin relatif `./corpus-11-tools` : aucune modification de ce chemin n’est nécessaire lorsque la structure clonée est conservée.
+3. Depuis la racine du dépôt, enregistrer le catalogue local puis installer le plugin :
 
-4. Redémarrer l’application après l’installation ou une actualisation locale.
+   ```bash
+   codex plugin marketplace add .
+   codex plugin add corpus-11-tools@corpus-11-local
+   ```
 
-Le dépôt ne fournit pas de commande CLI d’installation supplémentaire. La sélection du catalogue et l’installation du plugin se font dans l’interface de Codex.
+   Le catalogue référence déjà le chemin relatif `./corpus-11-tools` : aucune modification n’est nécessaire lorsque la structure clonée est conservée.
+
+4. Ouvrir une nouvelle tâche Codex après l’installation ou une actualisation afin de charger la version installée du plugin.
+
+Les mêmes opérations restent accessibles dans l’interface de Codex pour les personnes qui préfèrent ne pas utiliser la CLI.
 
 ### Alternative : intégrer le plugin à un autre catalogue local
 
@@ -97,7 +119,7 @@ python3 tools/validate_package.py
 python3 tools/check_graph.py
 ```
 
-L’état publié attendu indique 36 skills, 31 capabilities, 4 familles descriptives, 45 relations et 39 évaluations.
+L’état publié attendu indique 48 skills, 40 capabilities, 4 familles descriptives, 61 relations et 51 évaluations.
 
 Pour vérifier un exemple de chaîne de provenance :
 
@@ -118,6 +140,7 @@ Ces commandes vérifient la cohérence du paquet et de ses références ; elles 
     ├── skills/                      Outils opérationnels
     ├── tools/                       Validateurs et utilitaires
     ├── evals/                       Scénarios de vérification
+    ├── archives/legacy/             Archives historiques non exécutoires
     ├── research/                    Recherche expérimentale
     ├── docs/                        Inventaires et métadonnées
     └── README.md                    Documentation technique
@@ -140,6 +163,7 @@ Les matériaux historiques 10.x et les références servant à retracer l’orig
 - Corpus 11 Tools n’est pas une preuve de vérité.
 - Une capability déclarée n’est pas automatiquement établie.
 - Un test réussi ne démontre pas une robustesse universelle.
+- Les neuf facultés historiques récupérées restent `recovered_candidate_unvalidated` : leur réobservation locale ne constitue pas une preuve de robustesse universelle.
 - Une expérience de recherche peut rester au statut `unknown`, c’est-à-dire sans conclusion suffisamment établie.
 - Les sorties produites doivent être examinées avec leurs sources, leur protocole et leurs conditions d’observation.
 
