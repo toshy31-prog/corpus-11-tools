@@ -1,6 +1,6 @@
 {
   "name": "corpus-11-tools",
-  "version": "1.2.0-alpha.1+codex.20260817",
+  "version": "1.2.0-alpha.2+codex.20260817152456",
   "description": "Operational toolkit built from Corpus Architecture 11.x, with causal identification, model discrimination, transfer and scale audits, capability-focused analysis, provenance, and regression checks.",
   "author": {
     "name": "toshy31-prog"
