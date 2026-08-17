@@ -126,9 +126,11 @@ for path in current_docs:
 
 for required_path in (
     "corpus-11-tools/",
-    "cct-executable/",
-    "governance-lab/",
-    "ne-me-dis-pas-comment-sauver-le-monde-sauve-le/",
+    "corpus-11-tools/labs/",
+    "research/active/cct/",
+    "research/active/corpus-hypotheses/",
+    "research/completed/food-access-paris/",
+    "transfers/",
 ):
     if required_path not in (repo_root / "README.md").read_text(encoding="utf-8"):
         errors.append(f"README.md: repository map omits {required_path}")

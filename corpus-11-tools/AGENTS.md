@@ -1,4 +1,4 @@
-# Corpus 11 Research Rules
+# Corpus 11 Product Rules
 
 ## Operational architecture
 
@@ -36,29 +36,13 @@ Candidate generation must precede audit.
 
 Audit must not seed candidates.
 
-## Research files
+## Product/research boundary
 
-Never alter files under:
+The installable product contains `skills/`, `tools/`, `evals/`, `labs/`, `docs/` and provenance archives.
 
-research/sources/
+Project-specific hypotheses, parameters, results and conclusions belong under `../research/` and must not be imported by product code.
 
-unless explicitly requested.
-
-Generated reports belong in:
-
-research/reports/
-
-Current synthesized state belongs in:
-
-research/state/current_state.md
-
-Hypothesis records belong in:
-
-research/hypotheses/
-
-Experiments belong in:
-
-research/experiments/
+Reusable mechanisms extracted from a project require an entry under `../transfers/` and tests that do not depend on the source project.
 
 ## Stop rule
 

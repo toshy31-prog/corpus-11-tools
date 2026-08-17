@@ -1,6 +1,6 @@
 # Executable contract
 
-The candidate implementation lives under `research/experiments/corpus-experiment-lab/arena/`.
+The candidate implementation lives under `labs/experiment-lab/arena/`.
 
 ## Entry points
 

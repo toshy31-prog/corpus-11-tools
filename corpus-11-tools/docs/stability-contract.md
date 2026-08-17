@@ -1,4 +1,4 @@
-# Contrat de stabilité v1.2.0
+# Contrat de stabilité v1.3.0
 
 ## Ce qui est stabilisé
 
