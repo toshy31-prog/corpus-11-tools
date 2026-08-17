@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
 import json
 from pathlib import Path
 import subprocess
@@ -26,6 +25,18 @@ CHECKS = [
 ]
 
 
+def portable_command(command: list[str]) -> list[str]:
+    """Remove the host-specific Python executable from a recorded command."""
+    if command and Path(command[0]).resolve() == Path(sys.executable).resolve():
+        return ["python3", *command[1:]]
+    return list(command)
+
+
+def portable_cwd(path: Path) -> str:
+    """Record a workspace-relative directory instead of a maintainer path."""
+    return path.resolve().relative_to(WORKSPACE.resolve()).as_posix()
+
+
 def execute() -> dict[str, object]:
     results = []
     for check in CHECKS:
@@ -39,14 +50,13 @@ def execute() -> dict[str, object]:
             "passed": passed,
             "returncode": completed.returncode,
             "expected_returncode": check["expected"],
-            "command": check["cmd"],
-            "cwd": str(check["cwd"]),
-            "output_tail": completed.stdout[-4000:],
+            "command": portable_command(check["cmd"]),
+            "cwd": portable_cwd(check["cwd"]),
+            "output_tail": "" if passed else completed.stdout[-4000:],
         })
         print(f"{'PASS' if passed else 'FAIL'} {check['id']}")
     return {
         "package": "CCT-EXEC-0.1",
-        "verified_at": datetime.now(timezone.utc).isoformat(),
         "all_passed": all(item["passed"] for item in results),
         "checks": results,
         "boundary": {

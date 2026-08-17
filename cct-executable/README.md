@@ -5,13 +5,13 @@ Ce paquet transforme la CCT v0.12 en artefacts composables et vérifiables. Il n
 ## Exécution unique
 
 ```bash
-cd /home/olivier/Documents/ChatGPT/Corpus/cct-executable
+cd cct-executable
 python3 run_all.py
 ```
 
 La commande exécute constitution, contre-exemple, économie, opérations hors ligne, laboratoire historique et robustesse P-005. Elle écrit `verification-report.json` et `VERIFICATION.md`.
 
-La livraison gelée totalise 83 tests unitaires et 10 contrôles d'intégration. Le détail des résultats et des conclusions de décision est consigné dans `RELEASE_NOTES.md`.
+La livraison gelée totalise 84 tests unitaires et 10 contrôles d'intégration. Le détail des résultats et des conclusions de décision est consigné dans `RELEASE_NOTES.md`.
 
 ## Contenu
 
