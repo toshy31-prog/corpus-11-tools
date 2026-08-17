@@ -1,0 +1,42 @@
+{
+  "verdict": "capacity_gate_rejected",
+  "failed_protocols": [
+    "dense_shocks",
+    "long_supply",
+    "hostile_to_gate"
+  ],
+  "comparisons": [
+    {
+      "protocol": "base",
+      "unserved_improvement": 0.20136126265530363,
+      "time_ratio_to_central": 0.9285714285714286,
+      "rights_gain_vs_central": 12.66415835298232,
+      "rollback_gain_vs_central": 4.182917449178314,
+      "failed": false
+    },
+    {
+      "protocol": "dense_shocks",
+      "unserved_improvement": 0.19415759620930473,
+      "time_ratio_to_central": 0.9545454545454546,
+      "rights_gain_vs_central": 19.58327056723511,
+      "rollback_gain_vs_central": 4.202111367937118,
+      "failed": true
+    },
+    {
+      "protocol": "long_supply",
+      "unserved_improvement": 0.19472316905974651,
+      "time_ratio_to_central": 0.9473684210526315,
+      "rights_gain_vs_central": 17.75024142368777,
+      "rollback_gain_vs_central": 4.203428077323109,
+      "failed": true
+    },
+    {
+      "protocol": "hostile_to_gate",
+      "unserved_improvement": -0.12712242899638482,
+      "time_ratio_to_central": 1.2380952380952381,
+      "rights_gain_vs_central": 13.192543059498007,
+      "rollback_gain_vs_central": 3.029154793976689,
+      "failed": true
+    }
+  ]
+}

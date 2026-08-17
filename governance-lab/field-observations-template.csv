@@ -1,0 +1,5 @@
+prototype_id,site_id,period_id,comparison_arm,metric,unit,value,group,source,collector,window_start,window_end,missing_reason,incident_flag,notes
+P-001,example-site,T0,capacity_gate,unserved_essential_need,percent,,,,,,,,false,
+P-002,example-site,T0,corridor,embedded_ecological_overshoot,physical_unit,,,,,,,,false,
+P-003,example-site,T0,single_entry,time_to_usable_capacity,hours,,,,,,,,false,
+P-004,example-site,T0,layered_command,power_return_time,hours,,,,,,,,false,

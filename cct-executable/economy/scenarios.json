@@ -1,0 +1,311 @@
+{
+  "experiment": "CCT-ECO-M4-001",
+  "version": "1.0.0",
+  "status": "model_internal_preregistered_before_first_execution",
+  "language": "fr",
+  "seed": 20260817,
+  "runs_per_scenario": 240,
+  "scientific_status": "candidate",
+  "law_role": "declared_model_primitive",
+  "selection_basis": "comparaison de quatre régimes CCT sur six sorties séparées, sans score composite",
+  "neutrality": "non_neutral_model_assumptions_declared",
+  "information_added": [
+    "équations de réponse communes",
+    "valeurs des douze paramètres par régime",
+    "six scènes synthétiques",
+    "seuils constitutionnels provisoires"
+  ],
+  "independent_discriminant": "aucun à ce stade; les résultats sont internes au simulateur et doivent être confrontés à des données ou exercices extérieurs",
+  "reversal_condition": "retirer toute préférence de régime si une réplication indépendante avec paramètres observés inverse les frontières de Pareto ou montre qu'un indicateur ne représente pas le construit annoncé",
+  "remaining_ambiguity": "les fonctions de réponse, coûts humains déplacés et dynamiques de pouvoir ne sont pas calibrés empiriquement",
+  "information_budget": {
+    "shared_observed_inputs": [
+      "production_capacity",
+      "ecological_pressure",
+      "essential_demand",
+      "logistics_loss",
+      "coordination_noise",
+      "market_power",
+      "recovery_damage",
+      "civic_capacity"
+    ],
+    "free_parameters_per_regime": 12,
+    "free_parameter_names": [
+      "need_priority",
+      "eco_enforcement",
+      "redistribution",
+      "coordination_capacity",
+      "decentralization",
+      "price_signal",
+      "public_ownership",
+      "anti_rent",
+      "reserve_depth",
+      "adaptive_slack",
+      "admin_complexity",
+      "participation_intensity"
+    ],
+    "training_data": "none",
+    "parameter_fitting": "none",
+    "selection_timing": "candidates_scenarios_thresholds_and_loss_rules_frozen_before_first_run",
+    "common_random_numbers": true
+  },
+  "metrics": {
+    "vital_unmet_pct": {
+      "construct": "privation de besoins vitaux",
+      "operational_definition": "part simulée de la demande essentielle non servie pendant la fenêtre de choc",
+      "unit": "percent",
+      "direction": "lower_is_better",
+      "closest_alternative_construct": "rationnement comptable sans dommage humain",
+      "scope_guard": "ne vaut ni mortalité, ni souffrance, ni accès territorial observé"
+    },
+    "eco_overshoot_pct": {
+      "construct": "dépassement écologique",
+      "operational_definition": "excès simulé de pression matérielle au-delà du plafond normalisé",
+      "unit": "percent_of_normalized_boundary",
+      "direction": "lower_is_better",
+      "closest_alternative_construct": "conformité administrative au quota",
+      "scope_guard": "un plafond agrégé ne prouve pas la protection de chaque écosystème"
+    },
+    "inequality_gini": {
+      "construct": "inégalité de ressources disponibles",
+      "operational_definition": "coefficient de Gini de cinq groupes de taille égale après allocation, transferts et rente simulés",
+      "unit": "coefficient_0_1",
+      "direction": "lower_is_better",
+      "closest_alternative_construct": "égalité monétaire masquant services, patrimoine ou pouvoir",
+      "scope_guard": "ne mesure ni richesse, ni genre, ni race, ni capacité politique"
+    },
+    "admin_load_hours_per_1000": {
+      "construct": "charge institutionnelle totale",
+      "operational_definition": "heures simulées de coordination, administration et participation par mois et pour mille personnes",
+      "unit": "hours_per_1000_people_month",
+      "direction": "lower_is_better",
+      "closest_alternative_construct": "travail visible seulement",
+      "scope_guard": "les soins, attentes et charges domestiques nécessitent une mesure de terrain séparée"
+    },
+    "rent_capture_pct": {
+      "construct": "captation de rente",
+      "operational_definition": "part simulée du surplus distribuable captée grâce à rareté et pouvoir de marché",
+      "unit": "percent_of_distributable_surplus",
+      "direction": "lower_is_better",
+      "closest_alternative_construct": "profit rémunérant un risque ou un travail réel",
+      "scope_guard": "le modèle ne permet pas d'attribuer causalement une rente observée"
+    },
+    "recovery_days": {
+      "construct": "récupération fonctionnelle",
+      "operational_definition": "jours simulés avant retour des services essentiels au seuil pré-choc déclaré",
+      "unit": "days",
+      "direction": "lower_is_better",
+      "closest_alternative_construct": "restauration nominale sans capacité utilisable",
+      "scope_guard": "ne prouve ni réparation des pertes, ni non-répétition"
+    }
+  },
+  "gates": {
+    "vital_unmet_pct": 8.0,
+    "eco_overshoot_pct": 5.0,
+    "inequality_gini": 0.24,
+    "admin_load_hours_per_1000": 180.0,
+    "rent_capture_pct": 7.0,
+    "recovery_days": 35.0
+  },
+  "loss_rules": {
+    "constitutional_gate_loss": {
+      "minimum_breached_gates_in_one_scenario": 3,
+      "minimum_scenarios": 2,
+      "meaning": "candidate_rejected_inside_this_model_scope"
+    },
+    "pareto_loss": {
+      "minimum_metrics_weakly_worse": 6,
+      "minimum_metrics_strictly_worse": 1,
+      "minimum_scenarios_dominated": 3,
+      "meaning": "candidate_rejected_relative_to_matched_rival_inside_this_model_scope"
+    },
+    "claim_loss": {
+      "rule": "any_prespecified_limit_exceeded_in_any_claimed_scenario",
+      "meaning": "mechanism_claim_weakened_not_whole_regime_refuted"
+    }
+  },
+  "scenarios": {
+    "base_tendue": {
+      "label": "Base tendue",
+      "class": "baseline",
+      "inputs": {
+        "production_capacity": 0.92,
+        "ecological_pressure": 0.52,
+        "essential_demand": 0.70,
+        "logistics_loss": 0.08,
+        "coordination_noise": 0.10,
+        "market_power": 0.25,
+        "recovery_damage": 0.08,
+        "civic_capacity": 0.80
+      }
+    },
+    "rupture_logistique": {
+      "label": "Rupture logistique",
+      "class": "stress",
+      "inputs": {
+        "production_capacity": 0.62,
+        "ecological_pressure": 0.60,
+        "essential_demand": 0.78,
+        "logistics_loss": 0.48,
+        "coordination_noise": 0.25,
+        "market_power": 0.42,
+        "recovery_damage": 0.35,
+        "civic_capacity": 0.72
+      }
+    },
+    "contrainte_ecologique": {
+      "label": "Contrainte écologique dure",
+      "class": "stress",
+      "inputs": {
+        "production_capacity": 0.78,
+        "ecological_pressure": 0.92,
+        "essential_demand": 0.72,
+        "logistics_loss": 0.22,
+        "coordination_noise": 0.18,
+        "market_power": 0.36,
+        "recovery_damage": 0.22,
+        "civic_capacity": 0.76
+      }
+    },
+    "afflux_besoins": {
+      "label": "Afflux rapide de besoins",
+      "class": "stress",
+      "inputs": {
+        "production_capacity": 0.80,
+        "ecological_pressure": 0.68,
+        "essential_demand": 0.93,
+        "logistics_loss": 0.30,
+        "coordination_noise": 0.42,
+        "market_power": 0.48,
+        "recovery_damage": 0.24,
+        "civic_capacity": 0.74
+      }
+    },
+    "choc_financier": {
+      "label": "Grève du crédit et pouvoir de marché",
+      "class": "stress",
+      "inputs": {
+        "production_capacity": 0.84,
+        "ecological_pressure": 0.64,
+        "essential_demand": 0.75,
+        "logistics_loss": 0.18,
+        "coordination_noise": 0.20,
+        "market_power": 0.88,
+        "recovery_damage": 0.28,
+        "civic_capacity": 0.78
+      }
+    },
+    "polycrise": {
+      "label": "Polycrise complète",
+      "class": "stress",
+      "inputs": {
+        "production_capacity": 0.48,
+        "ecological_pressure": 0.94,
+        "essential_demand": 0.96,
+        "logistics_loss": 0.67,
+        "coordination_noise": 0.62,
+        "market_power": 0.70,
+        "recovery_damage": 0.86,
+        "civic_capacity": 0.58
+      }
+    }
+  },
+  "regimes": {
+    "communs_planifies_federes": {
+      "label": "Communs planifiés fédérés",
+      "claim": "la réservation ex ante des capacités vitales protège besoins et surplus contre la rente sous rupture logistique",
+      "mechanism": "propriété d'usage, contrats-plans imbriqués, stocks communs et compensation interterritoriale",
+      "parameters": {
+        "need_priority": 0.94,
+        "eco_enforcement": 0.91,
+        "redistribution": 0.86,
+        "coordination_capacity": 0.84,
+        "decentralization": 0.72,
+        "price_signal": 0.28,
+        "public_ownership": 0.88,
+        "anti_rent": 0.90,
+        "reserve_depth": 0.78,
+        "adaptive_slack": 0.60,
+        "admin_complexity": 0.70,
+        "participation_intensity": 0.72
+      },
+      "prediction": {
+        "scenarios": ["rupture_logistique", "polycrise"],
+        "limits": {"vital_unmet_pct": 25.0, "rent_capture_pct": 7.0}
+      },
+      "failure_outcome": "perd sa revendication si un plafond prédit est dépassé dans l'une des deux scènes; perd le régime selon les règles globales"
+    },
+    "marche_socialise_borne": {
+      "label": "Marché socialisé borné",
+      "claim": "des prix écologiques sous services publics et antitrust conservent une adaptation rapide avec une charge moindre",
+      "mechanism": "marchés d'échange, entreprises socialisées, services essentiels hors marché, crédit public et plafonds opposables",
+      "parameters": {
+        "need_priority": 0.75,
+        "eco_enforcement": 0.82,
+        "redistribution": 0.72,
+        "coordination_capacity": 0.67,
+        "decentralization": 0.76,
+        "price_signal": 0.92,
+        "public_ownership": 0.58,
+        "anti_rent": 0.76,
+        "reserve_depth": 0.65,
+        "adaptive_slack": 0.84,
+        "admin_complexity": 0.44,
+        "participation_intensity": 0.46
+      },
+      "prediction": {
+        "scenarios": ["base_tendue", "choc_financier"],
+        "limits": {"admin_load_hours_per_1000": 130.0, "recovery_days": 35.0, "rent_capture_pct": 10.0}
+      },
+      "failure_outcome": "perd sa revendication si l'adaptation légère s'accompagne de charge, récupération ou rente au-delà d'un plafond prédit"
+    },
+    "planification_negociee_distribuee": {
+      "label": "Planification négociée distribuée",
+      "claim": "la négociation pair-à-pair conserve égalité et récupération quand l'information centrale est dégradée",
+      "mechanism": "propositions itératives entre unités, conseils de filière, facilitation publique et arbitrage fédéral résiduel",
+      "parameters": {
+        "need_priority": 0.88,
+        "eco_enforcement": 0.86,
+        "redistribution": 0.82,
+        "coordination_capacity": 0.78,
+        "decentralization": 0.94,
+        "price_signal": 0.48,
+        "public_ownership": 0.73,
+        "anti_rent": 0.81,
+        "reserve_depth": 0.70,
+        "adaptive_slack": 0.76,
+        "admin_complexity": 0.88,
+        "participation_intensity": 0.94
+      },
+      "prediction": {
+        "scenarios": ["afflux_besoins", "polycrise"],
+        "limits": {"inequality_gini": 0.24, "recovery_days": 55.0}
+      },
+      "failure_outcome": "perd sa revendication si la décentralisation négociée ne tient ni l'égalité ni la récupération dans les scènes annoncées"
+    },
+    "dotations_universelles_quotas": {
+      "label": "Dotations universelles et quotas",
+      "claim": "des droits de tirage universels et quotas matériels négociables protègent simultanément plancher et plafond",
+      "mechanism": "dotation inconditionnelle, services universels, quotas personnels et productifs, chambre de compensation et fonds de convergence",
+      "parameters": {
+        "need_priority": 0.91,
+        "eco_enforcement": 0.94,
+        "redistribution": 0.93,
+        "coordination_capacity": 0.68,
+        "decentralization": 0.82,
+        "price_signal": 0.62,
+        "public_ownership": 0.61,
+        "anti_rent": 0.86,
+        "reserve_depth": 0.72,
+        "adaptive_slack": 0.71,
+        "admin_complexity": 0.58,
+        "participation_intensity": 0.65
+      },
+      "prediction": {
+        "scenarios": ["contrainte_ecologique", "afflux_besoins"],
+        "limits": {"eco_overshoot_pct": 15.0, "inequality_gini": 0.23, "vital_unmet_pct": 15.0}
+      },
+      "failure_outcome": "perd sa revendication si le double plancher-plafond préspécifié cède dans l'une des scènes annoncées"
+    }
+  }
+}

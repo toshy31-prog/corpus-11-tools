@@ -1,0 +1,146 @@
+{
+  "$schema": "../decision.schema.json",
+  "document_kind": "cct_decision",
+  "id": "DEC-2026-001",
+  "constitution_id": "CCT-CONSTITUTION-EXEC-0.1.0",
+  "title": "Allocation temporaire d’eau sous pénurie et charge administrative",
+  "status": "proposee",
+  "classification": ["distributive_majeure"],
+  "jurisdiction": {
+    "level": "bioregion",
+    "competence_basis": "Bassin versant partagé et continuité des besoins biologiques.",
+    "escalation_reason": "ressource_partagee"
+  },
+  "actors": {
+    "proposer_regle": ["A01"],
+    "decider": ["A02"],
+    "executer": ["A04"],
+    "controler": ["A05"],
+    "arreter": ["A06"],
+    "relancer": ["A02"],
+    "certifier_restitution": ["A09"],
+    "reparer": ["A10"],
+    "collecter_donnees": ["A14"],
+    "evaluer": ["A05", "A07"],
+    "sanctionner": ["A06"]
+  },
+  "beneficiaries": ["habitants du bassin", "services de santé", "écosystèmes aquatiques critiques"],
+  "cost_bearers": ["usages discrétionnaires", "forts consommateurs", "agents de distribution"],
+  "duration": {
+    "starts_at": "2026-09-02T00:00:00+02:00",
+    "expires_at": "2026-09-05T00:00:00+02:00",
+    "review_at": "2026-09-03T00:00:00+02:00"
+  },
+  "budget": {
+    "currency": "EUR",
+    "maximum": 250000,
+    "funding_source": "réserve biorégionale de continuité",
+    "civic_load_hours": 480
+  },
+  "measures": [
+    "garantir le minimum biologique individuel",
+    "suspendre les usages discrétionnaires par ordre public préétabli",
+    "publier chaque jour stocks, plafond, incertitude et files de recours"
+  ],
+  "indicators": [
+    "part des personnes recevant le minimum biologique",
+    "prélèvement total comparé au plafond critique",
+    "délai médian et maximal des recours",
+    "heures de charge déplacées vers les ménages"
+  ],
+  "success_condition": "Minimum biologique servi, plafond critique respecté et régime ordinaire restauré avant expiration.",
+  "compliance": [
+    {
+      "disposition_id": "D02",
+      "trigger_evidence": [
+        {
+          "trigger_id": "D02-T1",
+          "observed_at": "2026-09-01T08:00:00+02:00",
+          "value": "stock compatible égal à 88 % du minimum biologique prévu",
+          "source": "deux inventaires physiques et contre-mesure territoriale",
+          "method_limit": "stocks privés et pertes de réseau partiellement estimés"
+        }
+      ],
+      "invariants_checked": ["I02", "I11", "I15"],
+      "trace_plan": ["D02-TR1"],
+      "appeal_plan": ["D02-R1"],
+      "stop_plan": {
+        "authorized_actor": "A06",
+        "condition": "priorité cachée, plafond dépassé ou minimum individuel refusé",
+        "safe_state": "minimum uniforme puis rotation publique entre besoins équivalents",
+        "dependency_check": "voie logistique hors réseau et comptes physiques alternatifs testés",
+        "deadline_hours": 4
+      },
+      "restitution_plan": {
+        "responsible": "A04",
+        "certifier": "A09",
+        "evidence_plan": ["accès ordinaire testé", "rationnement temporaire supprimé et journaux réconciliés"],
+        "reactivation_guard": "nouveau bulletin physique et nouvelle autorisation requis",
+        "deadline_hours": 48
+      }
+    },
+    {
+      "disposition_id": "D03",
+      "trigger_evidence": [
+        {
+          "trigger_id": "D03-T1",
+          "observed_at": "2026-09-01T10:00:00+02:00",
+          "value": "projet distributif affectant une ressource vitale partagée",
+          "source": "registre préalable des décisions de la biorégion",
+          "method_limit": "les consignes informelles ne sont visibles que par signalement"
+        }
+      ],
+      "invariants_checked": ["I03", "I10", "I13"],
+      "trace_plan": ["D03-TR1"],
+      "appeal_plan": ["D03-R1"],
+      "stop_plan": {
+        "authorized_actor": "A06",
+        "condition": "fiche absente, classification fausse ou acteur non habilité",
+        "safe_state": "maintien du seul minimum vital dans le cadre antérieur",
+        "dependency_check": "registre public et greffe hors ligne disponibles",
+        "deadline_hours": 12
+      },
+      "restitution_plan": {
+        "responsible": "A04",
+        "certifier": "A09",
+        "evidence_plan": ["acte retiré des systèmes", "effets résiduels et classement final publiés"],
+        "reactivation_guard": "nouvelle fiche et nouvelle instruction requises",
+        "deadline_hours": 48
+      }
+    },
+    {
+      "disposition_id": "D10",
+      "trigger_evidence": [
+        {
+          "trigger_id": "D10-T1",
+          "observed_at": "2026-09-01T12:00:00+02:00",
+          "value": "traduction et greffe à 120 % de capacité pendant deux contrôles renforcés",
+          "source": "tableau de charge et échantillon des abandons avant saisine",
+          "method_limit": "travail familial invisible estimé par échantillon réduit"
+        }
+      ],
+      "invariants_checked": ["I06", "I15"],
+      "trace_plan": ["D10-TR1"],
+      "appeal_plan": ["D10-R1"],
+      "stop_plan": {
+        "authorized_actor": "A06",
+        "condition": "un délestage réduit une porte non compensable",
+        "safe_state": "noyau frugal maintenu et rapports secondaires différés",
+        "dependency_check": "ordre public de délestage et file papier vérifiés",
+        "deadline_hours": 2
+      },
+      "restitution_plan": {
+        "responsible": "A04",
+        "certifier": "A09",
+        "evidence_plan": ["files sous seuil durable", "réactivation séparée des formalités utiles"],
+        "reactivation_guard": "chaque formalité doit publier sa fonction et sa charge",
+        "deadline_hours": 72
+      }
+    }
+  ],
+  "lifecycle": {
+    "state": "proposee",
+    "evidence": ["dossier structurel complet sans vote ni activation"],
+    "not_established": ["autorisation_reelle", "activation_reelle", "effet_territorial", "restitution_effective", "reobservation_independante"]
+  }
+}

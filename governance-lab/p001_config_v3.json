@@ -1,0 +1,14 @@
+{
+  "inherits": "p001_config_v2.json",
+  "experiment": "P001-DT-003",
+  "status": "preregistered_construct-corrected_synthetic_twin",
+  "reversal_rule": {
+    "type": "pareto_noninferiority",
+    "unserved_ratio_to_best_rival_max": 1.05,
+    "unserved_improvement_over_calendar_min": 0.10,
+    "time_ratio_to_central_max": 1.30,
+    "rights_gain_required": 4.0,
+    "rollback_gain_required": 2.0,
+    "failed_protocols_for_rejection": 2
+  }
+}
