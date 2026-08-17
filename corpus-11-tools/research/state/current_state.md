@@ -18,6 +18,8 @@ Corpus 11 Tools sert de jeu d'audit et de discrimination. Il ne fournit ni donn�
 
 ## Évolution de l'outillage opérationnel
 
+Un retour d’application négatif est désormais conservé : un annuaire alimentaire local a été écrit, testé et déployé avant que sa faible valeur distincte face à Soliguide soit pleinement qualifiée. Aucun effet bénéficiaire n’a été réobservé ; le produit est abandonné. Cette trace motive une porte de rendement avant externalisation, sans nouvelle capability : comparaison au meilleur existant, delta réfutable, résultat capable de changer une décision, responsable de maintenance, séparation stricte entre déploiement et effet, puis découplage des composants à la clôture. Le vérificateur associé passe 5/5 tests locaux et requalifie le cas source en `abandon_and_harvest`. Son influence réelle sur les futures décisions de Corpus reste non réobservée.
+
 Neuf candidats de conception ont été ajoutés au carquois 11.x : identification
 causale, discrimination de modèles rivaux, validité des construits,
 transportabilité, transition d'échelle, dépendance des preuves, adaptation
@@ -138,3 +140,5 @@ choisir par valeur d'information le plus petit test discriminant, puis qualifier
 séparément transition d'échelle et transport. Auditer l'interférence entre
 capabilities avant toute promotion des neuf candidats au-delà de leur portée
 locale testée.
+
+Avant d’externaliser un nouveau prototype, appliquer aussi la porte décrite dans `docs/project-yield-gate.md`. Elle n’est pas un score de mérite : elle interdit les promotions non tracées et peut déclencher l’abandon d’un doublon. Réobserver sur le prochain projet si elle modifie effectivement la décision ou évite une charge externe ; sinon la retirer.
