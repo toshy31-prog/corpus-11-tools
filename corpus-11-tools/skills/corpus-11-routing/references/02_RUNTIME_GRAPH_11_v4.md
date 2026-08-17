@@ -397,7 +397,7 @@ Aucune capability n’est automatiquement établie par sa présence ici.
 - CAP.VALUE_OF_INFORMATION --requires[critical]--> CAP.RIVAL_MODEL_DISCRIMINATION :: La valeur d'un test dépend des rivaux qu'il peut séparer.
 - CAP.VALUE_OF_INFORMATION --uses[critical]--> CAP.DETECTABILITY_ASSESSMENT :: Un test incapable de voir la différence n'a pas de valeur établie.
 - CAP.VALUE_OF_INFORMATION --uses[contextual]--> CAP.HIDDEN_COST_ASSESSMENT :: Coûts, charges et pertes d'options modifient le portefeuille.
-- CAP.CAPABILITY_INTERFERENCE_AUDIT --requires[critical]--> CAP.CHANGE_VALIDATION :: L'ajout d'une capacité doit être séparé de son test et de son déploiement.
+- CAP.CAPABILITY_INTERFERENCE_AUDIT --uses[contextual]--> CAP.CHANGE_VALIDATION :: Charger le cycle de changement seulement si la scène porte sur un ajout, retrait, patch, test, déploiement ou correctif de routage; une composition analytique inchangée n'en a pas besoin.
 - CAP.CAPABILITY_INTERFERENCE_AUDIT --uses[critical]--> CAP.METHOD_EFFECT_AUDIT :: L'outil d'audit peut lui-même modifier la scène et le verdict.
 - CAP.CAPABILITY_INTERFERENCE_AUDIT --uses[contextual]--> CAP.EFFECTIVE_PRESENCE_ASSESSMENT :: Il faut distinguer capacité empaquetée, accessible, invoquée et vérifiée.
 
