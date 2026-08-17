@@ -1,0 +1,6 @@
+interface:
+  display_name: "Command Effect Verification"
+  short_description: "Trace commands through verified material effects"
+  default_prompt: "Use $command-effect-verification to trace this instruction from request through verified effect."
+policy:
+  allow_implicit_invocation: true

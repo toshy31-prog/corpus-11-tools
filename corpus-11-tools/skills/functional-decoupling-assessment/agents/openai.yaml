@@ -1,0 +1,6 @@
+interface:
+  display_name: "Functional Decoupling Assessment"
+  short_description: "Separate useful functions before global keep-stop"
+  default_prompt: "Use $functional-decoupling-assessment to separate observation, memory, command, execution, replication, and deletion before deciding what to keep or stop."
+policy:
+  allow_implicit_invocation: true

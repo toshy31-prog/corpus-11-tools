@@ -9,17 +9,21 @@ Ce plugin supplémentaire repose sur l’architecture 11.x fournie. Il ne rempla
 ## Contenu
 
 - 1 skill de routage 11.x.
-- 31 skills centrés sur les capabilities du graphe.
+- 40 skills centrés sur les capabilities du graphe, dont 9 récupérations locales bornées.
 - 4 familles descriptives de routage, dont une comparaison capacité directe/inverse sans nouvelle capability.
 - 1 procédure conditionnelle `explore-first`.
 - 1 procédure de génération fictionnelle extérieure au corpus.
 - 1 skill de provenance/backlinks 10.x.
 - 1 bibliothèque contextuelle explicite pour les deux ouvrages PDF.
+- 3 règles/procédures compactes récupérées : convention de confiance, discipline de conclusion et expansion puis audit.
+- 1 dépôt non exécutoire des archives 9.2, Atlas 3.0, 10.0, 10.1, correctif 10.3 et manuel visuel, avec empreintes et lacunes explicites.
 - Evals de routage et de non-régression.
 - Garde de gouvernance épistémique séparant critères de sélection, rôles des lois, frontière de neutralité et propriétés attribuées au système.
 - Outils déterministes de validation de paquet, contrôle de graphe et lecture de provenance.
 
 Les capabilities restent des possibles comportementaux sous conditions. Les fichiers `SKILL.md` sont des wrappers d’invocation : ils ne redéfinissent pas une capability comme algorithme.
+
+Les facultés anciennes récupérées sont marquées `recovered_candidate_unvalidated`. Elles complètent l'architecture sans rétablir le routage obligatoire, la constitution monolithique, l'ordre fixe de réponse ni les interdits fictionnels absolus des anciennes versions.
 
 La famille `FAM.REVERSAL_ASYMMETRY` relie les briques existantes lorsque l'établissement d'une capacité est comparé à l'annulation de ses effets. Elle impose deux profils séparés et interdit de conclure qu'une capacité inverse est acquise parce que la capacité directe l'est.
 
@@ -35,6 +39,7 @@ Pour un marketplace local, utiliser `docs/marketplace.example.json` comme modèl
 python tools/validate_package.py
 python tools/check_graph.py
 python tools/show_provenance.py CAP.PROTOCOL_ROBUSTNESS
+sha256sum -c archives/legacy/MANIFEST.sha256
 ```
 
 ## Statut

@@ -1,34 +1,19 @@
 {
-  "01_CONTRAT_SEMANTIQUE_11_v4.md": {
-    "sha256": "63bd9bc48aab991d6845bbd9e4b0737a2525266ef3118836216fe091e2d4a769",
-    "bytes": 6337
-  },
-  "02_RUNTIME_GRAPH_11_v4.md": {
-    "sha256": "778d7d166d1a67732396d6d430c8737881933067b62616b64b9507f49f3e2363",
-    "bytes": 18780
-  },
-  "03_SOURCES_10x_01-09.md": {
-    "sha256": "98c04949aa220870920c2a51be01168e1a9c9141db073391e04b489cbd1cb736",
-    "bytes": 34863
-  },
-  "04_SOURCES_10x_10-18.md": {
-    "sha256": "59cf4d518f328b3034d8d56c448b670e132b606a9bbe375f823407ef8a7f3383",
-    "bytes": 38486
-  },
-  "05_PROVENANCE_CAPABILITIES_11.csv": {
-    "sha256": "528d70c9f4730d59227896d452e00f19f1b9c1e9e874b63edff0f3408adae416",
-    "bytes": 58503
-  },
-  "06_GRAPH_11_OPTIMIZED_v4.dsl": {
-    "sha256": "ceb8696523ca4862b6dea65fe0531b04a980858fbfb880f0df901555b7e2111d",
-    "bytes": 12497
-  },
-  "sommaire_histoire_humaine_non_centree.pdf": {
-    "sha256": "f0a86333beba6a502b5c1e62d9a0b7c82a04ab42fafcdb5c2d4e123b2545a7e1",
-    "bytes": 67646
-  },
-  "Ce_qui_ne_doit_appartenir_a_personne_seul.pdf": {
-    "sha256": "59759a8659e4c26a4b3e94ec4db11e5c264975f11ce491d282093e226cc04c7e",
-    "bytes": 163522
-  }
+  "01_CONTRAT_SEMANTIQUE_11_v4.md": {"sha256": "e5d44fd8f1191b132da36995d60fe47ecaee5073dd3a83cac80cec0f0158e12c", "bytes": 7057},
+  "02_RUNTIME_GRAPH_11_v4.md": {"sha256": "7d55ebcc93839d8cf5f44f1f0b99634034fd2304748759bbd3e990f2cf0d655b", "bytes": 24457},
+  "03_SOURCES_10x_01-09.md": {"sha256": "98c04949aa220870920c2a51be01168e1a9c9141db073391e04b489cbd1cb736", "bytes": 34863},
+  "04_SOURCES_10x_10-18.md": {"sha256": "59cf4d518f328b3034d8d56c448b670e132b606a9bbe375f823407ef8a7f3383", "bytes": 38486},
+  "05_PROVENANCE_CAPABILITIES_11.csv": {"sha256": "528d70c9f4730d59227896d452e00f19f1b9c1e9e874b63edff0f3408adae416", "bytes": 58503},
+  "06_GRAPH_11_OPTIMIZED_v4.dsl": {"sha256": "fb32c50c55178e600f28c2ddc7e780012f26a0ab9487e213f26f3baed6211b8f", "bytes": 16083},
+  "07_PROVENANCE_RECOVERED_LEGACY.csv": {"sha256": "3f4fb459920f6a0cb0325003d65e83b6587bfde3bc05fe870caa3115786f8fc4", "bytes": 2940},
+  "sommaire_histoire_humaine_non_centree.pdf": {"sha256": "f0a86333beba6a502b5c1e62d9a0b7c82a04ab42fafcdb5c2d4e123b2545a7e1", "bytes": 67646},
+  "Ce_qui_ne_doit_appartenir_a_personne_seul.pdf": {"sha256": "59759a8659e4c26a4b3e94ec4db11e5c264975f11ce491d282093e226cc04c7e", "bytes": 163522},
+  "archives/legacy/MANIFEST.sha256": {"sha256": "c48465b7445d984170296392e2384730a082f272cae52a3120658b38a7a49dba", "bytes": 565},
+  "archives/legacy/STATUS.md": {"sha256": "e427af1d4e957b7627503795d6e1fab127e91d6fa264e54d455e144025c61d32", "bytes": 1115},
+  "archives/legacy/Atlas_3_0_final.zip": {"sha256": "dbd91ee1e2589c6cbe45ea0325bdc19a2c5fe257037e7d64e42d0c43fa06cbbc", "bytes": 19206},
+  "archives/legacy/CORPUS_10_0_DEPLOY.zip": {"sha256": "d7fdc91a4b429ede8098fb91f29024d4407f905ac6ef6b975df32661680f6314", "bytes": 39662},
+  "archives/legacy/CORPUS_10_1_DEPLOY.zip": {"sha256": "b8a99ad3defb5d6155e350dfb6dd4937608258cab1b6ec7eb08e56b99fb3c4dc", "bytes": 257491},
+  "archives/legacy/CORPUS_10_3_CORRECTIF_FICTION.zip": {"sha256": "88556dcea10a382c3b8b444898d554ba5f301a04eb0d271ed18a354af9875fad", "bytes": 18519},
+  "archives/legacy/DOSSIER_SUR_MODELE_9_2.zip": {"sha256": "ade0be273e89c7c8e80e731aa0230dc2b9b4b4d5988cc1b869effbbabaea2ab4", "bytes": 13548},
+  "archives/legacy/Manuel_visuel_noyau_routage_10_3_10_4.png": {"sha256": "3e5561c61a2896e2cc7b8a752162d0517923c955c4b00a61bcc336d9192539c3", "bytes": 2051531}
 }

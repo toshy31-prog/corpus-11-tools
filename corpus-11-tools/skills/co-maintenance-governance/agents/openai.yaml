@@ -1,0 +1,6 @@
+interface:
+  display_name: "Co-maintenance Governance"
+  short_description: "Map authority across model, host, user, runtime"
+  default_prompt: "Use $co-maintenance-governance to map who may propose, write, authorize, deploy, refuse, and roll back this change."
+policy:
+  allow_implicit_invocation: true

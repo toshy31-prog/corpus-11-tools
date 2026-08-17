@@ -39,3 +39,15 @@ Use this index for routing. Presence is not validation.
 - `translation-risk-assessment` — Assess loss, semantic drift, status change, hierarchy, and pivot-language effects introduced by translation.
 - `user-agency-preservation` — Preserve the user's actual question, scene, terms, choices, and room to decide; detect when method or taxonomy replaces the user's agency.
 - `visual-scene-compilation` — Compile a visual request from scene, position, observables, relations, asymmetries, traces, viewpoint, and source regime before image generation or analysis.
+- `command-effect-verification` — Verify request, authority, receipt, execution, effect, and interruption as separate links.
+- `effective-presence-assessment` — Distinguish described, packaged, context-accessible, executable, and verified presence.
+- `terminal-recovery-assessment` — Test thresholds, capable actors, terminal action, lost options, loss bearers, rollback, and recovery.
+- `defense-accountability-boundary` — Preserve operational secrecy while retaining non-sensitive proof of authorization, oversight, recourse, and repair.
+- `temporal-power-assessment` — Assess delay, cadence, queues, deadlines, pauses, and speed as allocations of power and loss.
+- `relation-loss-assessment` — Detect lost access, transmission, synchronization, or reconnection despite object persistence.
+- `co-maintenance-governance` — Map proposal, refusal, test, authorization, activation, rollback, and repair across effective roles.
+- `privacy-recourse-boundary` — Preserve bounded use of sensitive evidence for recourse without expanding permission to disclose or retain it.
+- `functional-decoupling-assessment` — Separate observation, memory, recommendation, command, execution, replication, and deletion before keep/stop decisions.
+- `confidence-convention` — Require an explicit convention before numerical confidence.
+- `conclusion-discipline` — State the strongest supported conclusion and continue only for a named possible change.
+- `expand-then-audit` — Optional two-pass expansion and audit procedure; implicit invocation disabled.

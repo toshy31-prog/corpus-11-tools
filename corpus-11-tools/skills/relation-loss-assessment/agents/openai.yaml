@@ -1,0 +1,6 @@
+interface:
+  display_name: "Relation Loss Assessment"
+  short_description: "Detect loss of relation without object disappearance"
+  default_prompt: "Use $relation-loss-assessment to test whether a relation or reconnection capacity was lost even though objects remain."
+policy:
+  allow_implicit_invocation: true
