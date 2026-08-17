@@ -137,7 +137,31 @@ python3 tools/show_provenance.py CAP.PROTOCOL_ROBUSTNESS
 
 Ces commandes vérifient la cohérence du paquet et de ses références ; elles ne démontrent pas la vérité générale de ses contenus.
 
-## Structure du projet
+## Que contient réellement ce dépôt ?
+
+Le dépôt rassemble plusieurs objets liés, mais ils ne servent pas tous directement à l’utilisateur :
+
+- **Le catalogue local** (`.agents/plugins/`) est l’adresse donnée à Codex pour qu’il puisse trouver et installer Corpus. Un utilisateur ne l’invoque pas directement.
+- **Le plugin Corpus** (`corpus-11-tools/`) est le produit principal. Une fois installé, il permet à Codex de sélectionner des méthodes d’analyse adaptées à la question posée.
+- **Le manifeste du plugin** (`.codex-plugin/`) est sa fiche d’identité technique : nom, version et point d’entrée.
+- **Les skills** (`skills/`) sont les méthodes que Codex peut invoquer. Les 49 wrappers de capability traitent chacun un problème analytique précis ; les 9 autres skills organisent le routage, le contexte, les règles de conclusion ou les expériences.
+- **Les outils de contrôle** (`tools/`) vérifient que le paquet est cohérent. Ils servent principalement aux personnes qui maintiennent Corpus.
+- **Les évaluations** (`evals/`) sont 71 situations-test. Elles permettent de détecter certaines régressions, mais ne prouvent pas que Corpus aura raison dans toutes les situations réelles.
+- **La recherche expérimentale** (`research/experiments/`) sert à essayer des idées sans les présenter prématurément comme des capacités établies. Elle contient notamment l’Arena, qui soumet plusieurs méthodes au même scénario pour comparer leurs résultats.
+- **Les archives historiques** (`archives/legacy/`) conservent les versions et documents dont Corpus est issu. Elles servent à retracer l’origine d’une règle ; Codex ne les exécute pas comme des outils actuels.
+- **La documentation interne** (`docs/`) contient l’inventaire, la taxonomie et les contrats qui définissent ce que la version affirme réellement.
+- **Le prototype CCT** (`cct-executable/`) est une maquette exécutable d’un système de gouvernance. Il peut être testé localement, mais il ne constitue ni une institution réelle ni une fonction ordinaire du plugin Corpus.
+- **Le laboratoire de gouvernance** (`governance-lab/`) simule des décisions et des situations CCT afin d’en rechercher les incohérences, les limites et les échecs possibles.
+- **Le laboratoire de crise** (`cct-crisis-lab/`) décrit comment éprouver la CCT sous contrainte ou en situation d’urgence. C’est un plan expérimental, pas un dispositif déployé.
+- **Les livrables et sorties** (`livrables/` et `output/`) regroupent les sources et les rendus du livre blanc CCT. Ce sont des documents produits, pas des commandes de Corpus.
+- **L’intervention alimentaire archivée** (`ne-me-dis-pas-comment-sauver-le-monde-sauve-le/`) est un ancien projet concret conservé avec son historique. Il est terminé et n’est pas activé lorsqu’un utilisateur invoque Corpus.
+- **Ce README** explique l’ensemble du dépôt et les limites à conserver entre produit, recherche, prototypes, résultats et archives.
+
+Pour un usage ordinaire, il suffit donc d’installer le plugin puis de poser sa question à Codex. Le reste du dépôt permet surtout d’inspecter, tester, comprendre ou retracer ce que fait le plugin.
+
+## Arborescence technique
+
+Cette vue sert d’index aux personnes qui souhaitent retrouver les fichiers correspondants :
 
 ```text
 .
