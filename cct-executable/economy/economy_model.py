@@ -297,4 +297,3 @@ def dominates(left: Mapping[str, float], right: Mapping[str, float]) -> bool:
     return all(left[key] <= right[key] for key in METRICS) and any(
         left[key] < right[key] for key in METRICS
     )
-

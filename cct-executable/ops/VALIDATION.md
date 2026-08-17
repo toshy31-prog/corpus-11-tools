@@ -1,8 +1,8 @@
 # Validation locale — CCT Ops 0.1
 
-Date : 17 août 2026  
-Environnement : Python 3.12.3, Linux x86_64  
-Statut maximal établi : **patch inscrit, exécutable et tests locaux passés**  
+Date : 17 août 2026
+Environnement : Python 3.12.3, Linux x86_64
+Statut maximal établi : **patch inscrit, exécutable et tests locaux passés**
 Statuts non établis : **autorisé, déployé, réobservé, robuste en institution réelle**
 
 ## Commandes exécutées

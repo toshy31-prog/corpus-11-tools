@@ -1,7 +1,7 @@
 # CCT Crisis Lab — blueprint de conception v0.1
 
-Statut : **conception gelable, aucune implémentation commencée**  
-Scène initiale : **P-000 — 72 heures de crise simulées**  
+Statut : **conception gelable, aucune implémentation commencée**
+Scène initiale : **P-000 — 72 heures de crise simulées**
 Mode prioritaire : **solo hors ligne, 45 à 90 minutes, IA pour les autres rôles**
 
 ## 1. Décision de produit
