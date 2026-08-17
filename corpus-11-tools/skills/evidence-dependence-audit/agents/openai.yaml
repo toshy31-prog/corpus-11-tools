@@ -1,0 +1,6 @@
+interface:
+  display_name: "Evidence Dependence Audit"
+  short_description: "Detect shared roots across apparent evidence"
+  default_prompt: "Use $evidence-dependence-audit to determine how independent these results really are."
+policy:
+  allow_implicit_invocation: true

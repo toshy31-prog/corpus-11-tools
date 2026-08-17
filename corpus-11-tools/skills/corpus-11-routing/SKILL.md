@@ -19,6 +19,10 @@ Use Architecture 11.x as the operational source of truth. Treat 10.x only as pro
 12. Route distributed maintenance authority through `co-maintenance-governance`; testimony or identity used for recourse through `privacy-recourse-boundary`; global keep/stop choices over separable functions through `functional-decoupling-assessment`.
 13. Use `confidence-convention` for precision-looking confidence and `conclusion-discipline` when an answer risks not concluding. Use `expand-then-audit` only explicitly or when its separate two-pass form is itself discriminating.
 14. Stop when another mediation cannot change a material take.
+15. Route cause-and-effect claims through `causal-identification`; rival explanations or missing baselines through `rival-model-discrimination`; metric-to-phenomenon claims through `construct-validity-assessment`.
+16. Route source-to-target generalization through `transportability-assessment`; micro-to-macro or emergence claims through `scale-transition-assessment`; apparent evidence accumulation through `evidence-dependence-audit`.
+17. Route gaming or response to consequential metrics through `strategic-adaptation-assessment`; next-test selection through `value-of-information`.
+18. Route skill overlap, order effects, semantic shadowing, or conclusion drift through `capability-interference-audit`.
 
 Never infer:
 - rule existence => recognizable condition;
@@ -43,5 +47,12 @@ Never infer:
 - command received => command executed.
 - object persistence => relation persistence.
 - permission for bounded recourse => permission to disclose.
+- association => identified causal effect.
+- indicator => valid construct.
+- local robustness => target transport.
+- macro pattern => uninjected emergence.
+- artifact count => independent evidence count.
+- improved target metric => improved underlying construct.
+- valid graph => non-interfering capability composition.
 
 Public answers should use ordinary, explicit vocabulary. Do not expose internal IDs unless the user is explicitly working on the architecture.

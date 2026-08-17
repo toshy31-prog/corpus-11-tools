@@ -1,7 +1,7 @@
 {
   "name": "corpus-11-tools",
-  "version": "1.0.0+codex.20260816234659",
-  "description": "Additional operational toolkit built from Corpus Architecture 11.x, with capability-focused skills, conditional exploration, fiction isolation, provenance backlinks, and regression checks.",
+  "version": "1.2.0-alpha.1+codex.20260817",
+  "description": "Operational toolkit built from Corpus Architecture 11.x, with causal identification, model discrimination, transfer and scale audits, capability-focused analysis, provenance, and regression checks.",
   "author": {
     "name": "toshy31-prog"
   },
@@ -18,8 +18,8 @@
   "interface": {
     "displayName": "Corpus 11 Tools",
     "developerName": "toshy31-prog",
-    "shortDescription": "Additional 11.x analysis, audit, provenance, and fiction tools",
-    "longDescription": "A supplementary toolkit that implements the Corpus 11.x operational graph as focused skills while keeping 10.x as provenance/audit material and long-form corpus works as explicit context.",
+    "shortDescription": "11.x inference, analysis, audit, and provenance tools",
+    "longDescription": "A supplementary toolkit that implements the Corpus 11.x operational graph as focused skills for causal identification, rival-model discrimination, construct validity, transport, scale transitions, evidence dependence, strategic adaptation, experiment choice, provenance, and non-regression.",
     "category": "Productivity",
     "capabilities": [
       "skills"

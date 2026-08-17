@@ -1,0 +1,6 @@
+interface:
+  display_name: "Capability Interference Audit"
+  short_description: "Detect routing and conclusion drift across skills"
+  default_prompt: "Use $capability-interference-audit to test whether this capability changes routing or conclusions improperly."
+policy:
+  allow_implicit_invocation: true

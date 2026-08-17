@@ -4,18 +4,18 @@ Corpus 11 Tools est un ensemble d’outils pour aider Codex à analyser une ques
 
 ## État actuel
 
-- version prévue : **v1.1.0** ;
-- 48 skills ;
-- 40 capabilities ;
+- version prévue : **v1.2.0** (`1.2.0-alpha.1`) ;
+- 57 skills ;
+- 49 capabilities ;
 - 4 familles descriptives ;
-- 61 relations ;
-- 51 évaluations.
+- 88 relations ;
+- 69 évaluations.
 
-## Ce qui change dans v1.1.0
+## Ce qui change dans v1.2.0
 
-v1.1.0 restaure neuf facultés historiques qui avaient été perdues lors de la migration vers Corpus 11.x, sans remplacer les capacités 11.x existantes. Elles couvrent notamment la vérification de l’effet d’une commande, la présence effective à l’exécution, la récupération terminale, certaines frontières de responsabilité, le pouvoir temporel, la perte relationnelle, la co-maintenance, la confidentialité avec recours et le découplage fonctionnel.
+v1.2.0 ajoute neuf candidats opérationnels pour l’identification causale, la discrimination entre modèles rivaux, la validité des construits, le transport entre contextes, les transitions d’échelle, la dépendance entre preuves, l’adaptation stratégique aux métriques, la valeur de l’information et l’interférence entre capabilities.
 
-Ces facultés sont récupérées et réobservées localement, mais ne sont pas présentées comme robustes universellement.
+Ils complètent les neuf facultés historiques restaurées en v1.1.0. Les nouveaux outils sont des `design_candidate_unvalidated` : leur écriture et leurs tests locaux ne les rendent ni universels ni scientifiquement établis.
 
 ## Qu’est-ce que Corpus 11 Tools ?
 
@@ -28,9 +28,14 @@ Ce projet n’est ni une intelligence artificielle séparée, ni une théorie sc
 Le projet aide notamment à :
 
 - vérifier si plusieurs affirmations reposent réellement sur des sources indépendantes ;
+- déterminer si une relation causale est identifiée ou seulement compatible avec les observations ;
+- comparer une hypothèse à des modèles rivaux et à un baseline standard ;
+- vérifier qu’un score mesure bien le phénomène qu’on lui attribue ;
 - distinguer un résultat observé de l’interprétation qu’on lui donne ;
 - repérer les coûts ou dépendances cachés derrière une performance ;
 - tester si une conclusion résiste à un changement de protocole ou de contexte ;
+- tester si un résultat se transporte vers une autre population ou une autre échelle ;
+- choisir le plus petit ensemble d’expériences capable de changer une décision ;
 - formuler ce qui obligerait à réviser ou abandonner une conclusion ;
 - conserver la question de l’utilisateur sans la remplacer par le vocabulaire de la méthode.
 
@@ -68,11 +73,11 @@ Le projet emploie ensuite quelques termes techniques :
 
 La version actuelle contient :
 
-- 48 skills ;
-- 40 capabilities ;
+- 57 skills ;
+- 49 capabilities ;
 - 4 familles descriptives ;
-- 61 relations ;
-- 51 évaluations.
+- 88 relations ;
+- 69 évaluations.
 
 La présence d’une capability dans le projet ne signifie pas que cette capacité est scientifiquement établie. Elle décrit seulement un comportement que le système peut tenter de produire sous certaines conditions.
 
@@ -119,7 +124,7 @@ python3 tools/validate_package.py
 python3 tools/check_graph.py
 ```
 
-L’état publié attendu indique 48 skills, 40 capabilities, 4 familles descriptives, 61 relations et 51 évaluations.
+L’état attendu pour l’alpha v1.2.0 indique 57 skills, 49 capabilities, 4 familles descriptives, 88 relations et 69 évaluations.
 
 Pour vérifier un exemple de chaîne de provenance :
 
@@ -164,6 +169,7 @@ Les matériaux historiques 10.x et les références servant à retracer l’orig
 - Une capability déclarée n’est pas automatiquement établie.
 - Un test réussi ne démontre pas une robustesse universelle.
 - Les neuf facultés historiques récupérées restent `recovered_candidate_unvalidated` : leur réobservation locale ne constitue pas une preuve de robustesse universelle.
+- Les neuf outils d’inférence et de non-interférence ajoutés en v1.2.0 restent `design_candidate_unvalidated` tant qu’ils n’ont pas été réobservés sur des tâches indépendantes.
 - Une expérience de recherche peut rester au statut `unknown`, c’est-à-dire sans conclusion suffisamment établie.
 - Les sorties produites doivent être examinées avec leurs sources, leur protocole et leurs conditions d’observation.
 

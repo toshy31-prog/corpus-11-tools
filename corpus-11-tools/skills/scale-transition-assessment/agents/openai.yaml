@@ -1,0 +1,6 @@
+interface:
+  display_name: "Scale Transition Assessment"
+  short_description: "Audit micro-to-macro and emergence claims"
+  default_prompt: "Use $scale-transition-assessment to test whether this macro property emerges or was injected."
+policy:
+  allow_implicit_invocation: true
