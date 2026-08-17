@@ -1,0 +1,6 @@
+# Generated Python caches
+__pycache__/
+*.py[cod]
+
+# Independent local repository; its complete history is preserved as a bundle.
+/ne-me-dis-pas-comment-sauver-le-monde-sauve-le/site/
