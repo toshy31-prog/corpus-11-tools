@@ -6,12 +6,12 @@ import { fileURLToPath } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
 export const scenarioCommands = {
-  thermal: "run-demo.mjs",
-  braess: "run-braess.mjs",
-  ilyana: "run-ilyana-bell.mjs",
-  campaign: "run-capability-campaign.mjs",
-  transport: "run-hidden-cost-transport.mjs",
-  declarative: "run-declarative.mjs",
+  thermal: { script: "run-demo.mjs", regime: "internal_synthetic" },
+  braess: { script: "run-braess.mjs", regime: "mixed" },
+  ilyana: { script: "run-ilyana-bell.mjs", regime: "internal_synthetic" },
+  campaign: { script: "run-capability-campaign.mjs", regime: "internal_synthetic" },
+  transport: { script: "run-hidden-cost-transport.mjs", regime: "internal_synthetic" },
+  declarative: { script: "run-declarative.mjs", regime: "internal_synthetic" },
 };
 
 function usage() {
@@ -19,16 +19,20 @@ function usage() {
 
 Usage:
   node arena/cli.mjs list
-  node arena/cli.mjs run <scenario>
+  node arena/cli.mjs demo <fixture>
   node arena/cli.mjs status
   node arena/cli.mjs test
 
-Scenarios: ${Object.keys(scenarioCommands).join(", ")}
+Fixtures: ${Object.keys(scenarioCommands).join(", ")}
+
+These are developer demonstrations, not user cases or external evidence.
 `;
 }
 
 export function formatScenarioList() {
-  return `${Object.entries(scenarioCommands).map(([id, script]) => `${id}\t${script}`).join("\n")}\n`;
+  return `${Object.entries(scenarioCommands).map(([id, fixture]) => (
+    `${id}\t${fixture.regime}\t${fixture.script}`
+  )).join("\n")}\n`;
 }
 
 export function formatLifecycleStatus(registry) {
@@ -50,12 +54,12 @@ if (resolve(process.argv[1] ?? "") === fileURLToPath(import.meta.url)) {
     process.stdout.write(usage());
   } else if (command === "list") {
     process.stdout.write(formatScenarioList());
-  } else if (command === "run") {
+  } else if (command === "demo") {
     if (!scenarioCommands[argument]) {
-      process.stderr.write(`Unknown scenario: ${argument ?? "(missing)"}\n${usage()}`);
+      process.stderr.write(`Unknown fixture: ${argument ?? "(missing)"}\n${usage()}`);
       process.exitCode = 2;
     } else {
-      runNode([resolve(here, scenarioCommands[argument])]);
+      runNode([resolve(here, scenarioCommands[argument].script)]);
     }
   } else if (command === "status") {
     const registry = JSON.parse(readFileSync(resolve(here, "lifecycle/registry.json"), "utf8"));
