@@ -1,0 +1,47 @@
+{
+  "schema": "corpus-open-world/v1",
+  "manifest": {
+    "id": "replace-with-your-scenario-id",
+    "version": "1.0.0",
+    "title": "Replace with your title",
+    "rounds": 2,
+    "dimensions": ["replace_dimension_a", "replace_dimension_b"],
+    "reversalConditions": ["State what would invalidate this scenario or its interpretation."]
+  },
+  "source": {
+    "regime": "external_supplied",
+    "authorId": "replace-with-author-or-pseudonym",
+    "authorRelationToCorpus": "independent",
+    "frozenBeforeContenders": true,
+    "authorshipTrace": "replace-with-a-trace-the-author-controls"
+  },
+  "initialState": {
+    "replace": 0
+  },
+  "exogenous": [
+    { "replace": 0 },
+    { "replace": 0 }
+  ],
+  "view": {
+    "replace_visible_name": { "path": "state.replace" }
+  },
+  "actions": {
+    "replace_action_a": [
+      { "op": "add", "path": "state.replace", "value": 1 }
+    ],
+    "replace_action_b": []
+  },
+  "transition": [
+    { "op": "add", "path": "state.replace", "value": { "path": "event.replace" } }
+  ],
+  "observation": {
+    "replace_observed_name": { "path": "state.replace" }
+  },
+  "predictionTargets": {
+    "replace_prediction_name": "replace_observed_name"
+  },
+  "outcomes": {
+    "replace_dimension_a": { "path": "state.replace" },
+    "replace_dimension_b": { "op": "abs", "args": [{ "path": "state.replace" }] }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "corpus-binding-lifecycle-policy/v1",
+  "version": "1.0.0",
+  "scope": "binding-in-one-scenario",
+  "rules": {
+    "strictParetoDominance": "propose_quarantine_local",
+    "exactNegativeControlEquivalence": "propose_quarantine_local",
+    "otherwise": "retain_for_more_evidence"
+  },
+  "boundaries": [
+    "A local binding decision never changes the source capability.",
+    "The evaluator proposes; it does not authorize or edit the registry.",
+    "Outcome orientations and negative-control identities must be declared by the caller.",
+    "One scenario cannot establish transport or global failure."
+  ]
+}

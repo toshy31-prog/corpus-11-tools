@@ -1,0 +1,6 @@
+interface:
+  display_name: "Open Experiment Arena"
+  short_description: "Pit rival methods against a frozen causal world"
+  default_prompt: "Use $open-experiment-arena to compare rival methods in a blinded, replayable causal experiment."
+policy:
+  allow_implicit_invocation: true
