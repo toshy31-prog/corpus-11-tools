@@ -1,0 +1,40 @@
+{
+  "extends": "experiment.json",
+  "experiment": "CCT-7X-002",
+  "status": "preregistered_after_001_ceiling_failure",
+  "design_note": "Version nouvelle créée après observation du pilote 001. Elle réduit l'avantage de capacité total de la CCT, rapproche les budgets des architectures et relève les planchers. Elle ne remplace pas rétroactivement 001.",
+  "runs_per_cell": 3000,
+  "architectures": {
+    "cct_v08": {
+      "traits": {
+        "decision_speed": 0.58,
+        "accountability": 0.74,
+        "counter_expertise": 0.72,
+        "local_autonomy": 0.75,
+        "rights_portability": 0.80,
+        "planning_adaptivity": 0.68,
+        "audit_independence": 0.74,
+        "ecological_enforcement": 0.82,
+        "discovery_diversity": 0.62,
+        "reserve_capacity": 0.60,
+        "defense_coordination": 0.58,
+        "coercive_checks": 0.80,
+        "transition_readiness": 0.62,
+        "capital_flight_control": 0.58,
+        "interface_simplicity": 0.58,
+        "participation_access": 0.70,
+        "redundancy": 0.62,
+        "monopoly_controls": 0.72,
+        "competence_clarity": 0.60,
+        "rollback_capacity": 0.70
+      }
+    }
+  },
+  "core_metrics": {
+    "needs": 70.0,
+    "ecology": 70.0,
+    "rights": 70.0,
+    "democracy": 65.0,
+    "recovery": 65.0
+  }
+}

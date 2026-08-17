@@ -1,0 +1,59 @@
+{
+  "verdict": "weakened_by_synthetic_model",
+  "losses": {
+    "base": [
+      {
+        "scenario": "transition_sabotage",
+        "rival": "central_state",
+        "gap": 0.376
+      }
+    ],
+    "broad_uncertainty": [
+      {
+        "scenario": "transition_sabotage",
+        "rival": "central_state",
+        "gap": 0.17566666666666667
+      }
+    ],
+    "high_shock": [
+      {
+        "scenario": "transition_sabotage",
+        "rival": "central_state",
+        "gap": 0.14266666666666666
+      },
+      {
+        "scenario": "institutional_complexity",
+        "rival": "market_federation",
+        "gap": 0.15366666666666662
+      }
+    ],
+    "hostile_to_cct": [
+      {
+        "scenario": "planning_gaming",
+        "rival": "market_federation",
+        "gap": 0.27166666666666667
+      },
+      {
+        "scenario": "external_attack",
+        "rival": "market_federation",
+        "gap": 0.44866666666666666
+      },
+      {
+        "scenario": "transition_sabotage",
+        "rival": "central_state",
+        "gap": 0.477
+      },
+      {
+        "scenario": "institutional_complexity",
+        "rival": "market_federation",
+        "gap": 0.41233333333333333
+      }
+    ]
+  },
+  "catastrophic": {
+    "base": [],
+    "broad_uncertainty": [],
+    "high_shock": [],
+    "hostile_to_cct": []
+  }
+}

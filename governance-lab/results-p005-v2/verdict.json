@@ -1,0 +1,83 @@
+{
+  "verdict": "cct_v012_lean_survives_p005_dt_002",
+  "gate_failure_protocols": [
+    "full_polycrisis"
+  ],
+  "simple_dominance_protocols": [],
+  "predecessor_improvement_protocols": [
+    "grid_and_payments",
+    "transition_collision",
+    "security_saturation",
+    "full_polycrisis",
+    "communications_and_keys",
+    "appeals_and_transition"
+  ],
+  "comparisons": [
+    {
+      "protocol": "grid_and_payments",
+      "candidate_gate_failure": false,
+      "simple_protects_as_well": false,
+      "simple_is_15pct_cheaper": false,
+      "simple_dominates": false,
+      "predecessor_comparison": {
+        "core_noninferior": true,
+        "load_reduction": 0.27330666508231405
+      }
+    },
+    {
+      "protocol": "transition_collision",
+      "candidate_gate_failure": false,
+      "simple_protects_as_well": false,
+      "simple_is_15pct_cheaper": false,
+      "simple_dominates": false,
+      "predecessor_comparison": {
+        "core_noninferior": true,
+        "load_reduction": 0.2694551321305124
+      }
+    },
+    {
+      "protocol": "security_saturation",
+      "candidate_gate_failure": false,
+      "simple_protects_as_well": false,
+      "simple_is_15pct_cheaper": false,
+      "simple_dominates": false,
+      "predecessor_comparison": {
+        "core_noninferior": true,
+        "load_reduction": 0.2814383080982026
+      }
+    },
+    {
+      "protocol": "full_polycrisis",
+      "candidate_gate_failure": true,
+      "simple_protects_as_well": false,
+      "simple_is_15pct_cheaper": true,
+      "simple_dominates": false,
+      "predecessor_comparison": {
+        "core_noninferior": true,
+        "load_reduction": 0.2317773129112537
+      }
+    },
+    {
+      "protocol": "communications_and_keys",
+      "candidate_gate_failure": false,
+      "simple_protects_as_well": false,
+      "simple_is_15pct_cheaper": false,
+      "simple_dominates": false,
+      "predecessor_comparison": {
+        "core_noninferior": true,
+        "load_reduction": 0.275264566202277
+      }
+    },
+    {
+      "protocol": "appeals_and_transition",
+      "candidate_gate_failure": false,
+      "simple_protects_as_well": false,
+      "simple_is_15pct_cheaper": false,
+      "simple_dominates": false,
+      "predecessor_comparison": {
+        "core_noninferior": true,
+        "load_reduction": 0.30113106806542367
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "registry": "CCT-EVIDENCE-001",
+  "entries": [
+    {"id": "E001", "claim": "les cinquante tests-limites ont une structure complète", "status": "tested", "evidence": "../../governance-lab/test_limit_tests.py", "not_established": ["efficacité", "terrain"]},
+    {"id": "E002", "claim": "P001-DT-003 est reproductible dans son modèle", "status": "tested", "evidence": "../../governance-lab/results-p001-v3", "not_established": ["transport territorial"]},
+    {"id": "E003", "claim": "P002-DT-002 est reproductible dans son modèle", "status": "tested", "evidence": "../../governance-lab/results-p002-v2", "not_established": ["validité des paramètres"]},
+    {"id": "E004", "claim": "la candidate frugale survit P005-DT-002", "status": "tested", "evidence": "../../governance-lab/results-p005-v2", "not_established": ["baisse réelle de charge", "efficacité causale"]},
+    {"id": "E005", "claim": "les douze paramètres critiques sont observés indépendamment", "status": "described", "evidence": "../calibration/parameters.json", "not_established": ["collecte", "analyse", "réobservation"]},
+    {"id": "E006", "claim": "la constitution candidate refuse neuf violations dans le contre-exemple", "status": "tested", "evidence": "../constitution/test_validate.py", "not_established": ["effet juridique", "usage institutionnel"]},
+    {"id": "E007", "claim": "CCT Ops applique localement séparations et extinction", "status": "tested", "evidence": "../ops/tests/test_ops.py", "not_established": ["authentification", "sécurité hostile", "déploiement"]},
+    {"id": "E008", "claim": "trois régimes économiques survivent comme candidats compatibles", "status": "tested", "evidence": "../economy/results/verdict.json", "not_established": ["vainqueur unique", "validité territoriale"]}
+  ]
+}

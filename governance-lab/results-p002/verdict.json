@@ -1,0 +1,32 @@
+{
+  "verdict": "corridor_survives_synthetic_twin",
+  "dominated_protocols": [],
+  "hard_failures": [],
+  "comparisons": [
+    {
+      "protocol": "base",
+      "dominating_rivals": [],
+      "hard_failure": false
+    },
+    {
+      "protocol": "supply_break",
+      "dominating_rivals": [],
+      "hard_failure": false
+    },
+    {
+      "protocol": "high_volatility",
+      "dominating_rivals": [],
+      "hard_failure": false
+    },
+    {
+      "protocol": "coordinated_gaming",
+      "dominating_rivals": [],
+      "hard_failure": false
+    },
+    {
+      "protocol": "dirty_imports",
+      "dominating_rivals": [],
+      "hard_failure": false
+    }
+  ]
+}
