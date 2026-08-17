@@ -1,0 +1,45 @@
+{
+  "experiment": "P005-DT-001",
+  "status": "preregistered_compound-crisis_synthetic_twin",
+  "seed": "cct-p005-dt-001",
+  "runs_per_cell": 600,
+  "horizon_days": 42,
+  "protocols": {
+    "grid_and_payments": {"energy_loss": 0.58, "communications_loss": 0.28, "appeal_surge": 0.25, "security_pressure": 0.15, "transition_collision": 0.20},
+    "transition_collision": {"energy_loss": 0.24, "communications_loss": 0.18, "appeal_surge": 0.34, "security_pressure": 0.12, "transition_collision": 0.78},
+    "security_saturation": {"energy_loss": 0.18, "communications_loss": 0.42, "appeal_surge": 0.72, "security_pressure": 0.82, "transition_collision": 0.32},
+    "full_polycrisis": {"energy_loss": 0.66, "communications_loss": 0.57, "appeal_surge": 0.76, "security_pressure": 0.70, "transition_collision": 0.75}
+  },
+  "modes": {
+    "cct_v011": {
+      "label": "CCT v0.11 — charge bornée",
+      "budget": {"continuity": 0.24, "rights": 0.17, "trace": 0.14, "recovery": 0.17, "coordination": 0.13, "independence": 0.15},
+      "complexity": 0.72, "load_shedding": 0.78, "protected_core": 0.90, "concentration": 0.25, "cross_sector_map": 0.78
+    },
+    "cct_v010": {
+      "label": "CCT v0.10 — contrôles sectoriels",
+      "budget": {"continuity": 0.22, "rights": 0.18, "trace": 0.16, "recovery": 0.15, "coordination": 0.16, "independence": 0.13},
+      "complexity": 0.78, "load_shedding": 0.15, "protected_core": 0.62, "concentration": 0.24, "cross_sector_map": 0.24
+    },
+    "simple_emergency": {
+      "label": "Urgence centralisée simple",
+      "budget": {"continuity": 0.33, "rights": 0.08, "trace": 0.09, "recovery": 0.12, "coordination": 0.28, "independence": 0.10},
+      "complexity": 0.36, "load_shedding": 0.64, "protected_core": 0.52, "concentration": 0.78, "cross_sector_map": 0.52
+    }
+  },
+  "gates": {
+    "vital_unmet_max": 18.0,
+    "eco_overshoot_max": 8.0,
+    "rights_suspended_max": 12.0,
+    "untraced_decisions_max": 8.0,
+    "recovery_days_max": 18.0,
+    "common_failure_max": 0.22
+  },
+  "reversal_rule": {
+    "candidate": "cct_v011",
+    "simple_rival": "simple_emergency",
+    "admin_reduction_required": 0.15,
+    "dominated_protocols_for_rejection": 3,
+    "gate_failures_for_rejection": 2
+  }
+}

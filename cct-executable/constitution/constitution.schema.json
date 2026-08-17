@@ -1,0 +1,234 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cct.invalid/schemas/constitution.schema.json",
+  "title": "CCT — constitution exécutable candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "document_kind",
+    "id",
+    "version",
+    "title",
+    "language",
+    "artifact_status",
+    "scope",
+    "lifecycle_states",
+    "actors",
+    "invariants",
+    "dispositions"
+  ],
+  "properties": {
+    "$schema": {"type": "string"},
+    "document_kind": {"const": "cct_constitution"},
+    "id": {"type": "string", "pattern": "^CCT-CONSTITUTION-EXEC-[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "title": {"type": "string", "minLength": 8},
+    "language": {"const": "fr"},
+    "artifact_status": {"$ref": "#/$defs/artifactStatus"},
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["purpose", "legal_effect", "exclusions"],
+      "properties": {
+        "purpose": {"type": "string", "minLength": 20},
+        "legal_effect": {"const": "prototype_non_autorise_sans_effet_juridique"},
+        "exclusions": {"type": "array", "minItems": 3, "uniqueItems": true, "items": {"type": "string", "minLength": 3}}
+      }
+    },
+    "lifecycle_states": {
+      "type": "array",
+      "minItems": 6,
+      "uniqueItems": true,
+      "items": {"enum": ["proposee", "ecrite", "tests_statiques_passes", "autorisee", "deployee", "reobservee"]}
+    },
+    "actors": {
+      "type": "array",
+      "minItems": 10,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/actor"}
+    },
+    "invariants": {
+      "type": "array",
+      "minItems": 15,
+      "maxItems": 15,
+      "items": {"$ref": "#/$defs/invariant"}
+    },
+    "dispositions": {
+      "type": "array",
+      "minItems": 10,
+      "items": {"$ref": "#/$defs/disposition"}
+    }
+  },
+  "$defs": {
+    "stringArray": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "actorIdArray": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^A[0-9]{2}$"}
+    },
+    "artifactStatus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "evidence", "not_established"],
+      "properties": {
+        "state": {"enum": ["proposee", "ecrite", "tests_statiques_passes", "autorisee", "deployee", "reobservee"]},
+        "evidence": {"$ref": "#/$defs/stringArray"},
+        "not_established": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["autorisee", "deployee", "reobservee", "efficacite_territoriale", "robustesse_independante"]}}
+      }
+    },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "kind", "mandate", "independence_requirements", "field_dependencies"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^A[0-9]{2}$"},
+        "label": {"type": "string", "minLength": 3},
+        "kind": {"enum": ["personnes", "organe_democratique", "service_public", "juridiction", "organe_independant", "operateur", "collectif"]},
+        "mandate": {"type": "string", "minLength": 12},
+        "independence_requirements": {"$ref": "#/$defs/stringArray"},
+        "field_dependencies": {"$ref": "#/$defs/stringArray"}
+      }
+    },
+    "invariant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "statement", "gate", "observables", "failure_condition"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^I(0[1-9]|1[0-5])$"},
+        "title": {"type": "string", "minLength": 3},
+        "statement": {"type": "string", "minLength": 20},
+        "gate": {"enum": ["besoins_vitaux", "plafond_ecologique", "droits", "trace", "recuperation", "transversal"]},
+        "observables": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"type": "string", "minLength": 8}},
+        "failure_condition": {"type": "string", "minLength": 12}
+      }
+    },
+    "actorRoles": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["proposer_regle", "decider", "executer", "controler", "arreter", "relancer", "certifier_restitution", "reparer", "collecter_donnees", "evaluer", "sanctionner"],
+      "properties": {
+        "proposer_regle": {"$ref": "#/$defs/actorIdArray"},
+        "decider": {"$ref": "#/$defs/actorIdArray"},
+        "executer": {"$ref": "#/$defs/actorIdArray"},
+        "controler": {"$ref": "#/$defs/actorIdArray"},
+        "arreter": {"$ref": "#/$defs/actorIdArray"},
+        "relancer": {"$ref": "#/$defs/actorIdArray"},
+        "certifier_restitution": {"$ref": "#/$defs/actorIdArray"},
+        "reparer": {"$ref": "#/$defs/actorIdArray"},
+        "collecter_donnees": {"$ref": "#/$defs/actorIdArray"},
+        "evaluer": {"$ref": "#/$defs/actorIdArray"},
+        "sanctionner": {"$ref": "#/$defs/actorIdArray"}
+      }
+    },
+    "trigger": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "observable", "channel", "window_hours", "threshold", "observer", "detection_limit"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^D[0-9]{2}-T[0-9]+$"},
+        "observable": {"type": "string", "minLength": 10},
+        "channel": {"type": "string", "minLength": 3},
+        "window_hours": {"type": "integer", "minimum": 1},
+        "threshold": {"type": "string", "minLength": 5},
+        "observer": {"type": "string", "pattern": "^A[0-9]{2}$"},
+        "detection_limit": {"type": "string", "minLength": 8}
+      }
+    },
+    "trace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "producer", "content", "channel", "deadline_hours", "retention_days", "publicity", "offline_copy", "detectability"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^D[0-9]{2}-TR[0-9]+$"},
+        "producer": {"type": "string", "pattern": "^A[0-9]{2}$"},
+        "content": {"type": "string", "minLength": 8},
+        "channel": {"type": "string", "minLength": 3},
+        "deadline_hours": {"type": "integer", "minimum": 0},
+        "retention_days": {"type": "integer", "minimum": 30},
+        "publicity": {"enum": ["publique", "publique_redigee", "confidentielle_controlee"]},
+        "offline_copy": {"type": "boolean"},
+        "detectability": {"type": "string", "minLength": 8}
+      }
+    },
+    "appeal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "eligible", "recipient", "deadline_hours", "suspensive_scope", "protective_default", "accessible_channels"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^D[0-9]{2}-R[0-9]+$"},
+        "eligible": {"type": "string", "minLength": 5},
+        "recipient": {"$ref": "#/$defs/actorIdArray"},
+        "deadline_hours": {"type": "integer", "minimum": 1},
+        "suspensive_scope": {"type": "string", "minLength": 8},
+        "protective_default": {"type": "string", "minLength": 8},
+        "accessible_channels": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"type": "string", "minLength": 3}}
+      }
+    },
+    "stop": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["failure_threshold", "observers", "authorized_actors", "dependencies", "lost_options", "loss_bearers", "safe_state", "deadline_hours"],
+      "properties": {
+        "failure_threshold": {"type": "string", "minLength": 12},
+        "observers": {"$ref": "#/$defs/actorIdArray"},
+        "authorized_actors": {"$ref": "#/$defs/actorIdArray"},
+        "dependencies": {"$ref": "#/$defs/stringArray"},
+        "lost_options": {"$ref": "#/$defs/stringArray"},
+        "loss_bearers": {"$ref": "#/$defs/stringArray"},
+        "safe_state": {"type": "string", "minLength": 12},
+        "deadline_hours": {"type": "integer", "minimum": 1}
+      }
+    },
+    "restitution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["responsible", "certifier", "evidence", "deadline_hours", "reactivation_guard", "residual_debt", "repair_route"],
+      "properties": {
+        "responsible": {"$ref": "#/$defs/actorIdArray"},
+        "certifier": {"$ref": "#/$defs/actorIdArray"},
+        "evidence": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"type": "string", "minLength": 8}},
+        "deadline_hours": {"type": "integer", "minimum": 1},
+        "reactivation_guard": {"type": "string", "minLength": 12},
+        "residual_debt": {"type": "string", "minLength": 8},
+        "repair_route": {"type": "string", "minLength": 8}
+      }
+    },
+    "lifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "evidence", "allowed_next", "not_established", "reversal_condition"],
+      "properties": {
+        "state": {"enum": ["proposee", "ecrite", "tests_statiques_passes", "autorisee", "deployee", "reobservee"]},
+        "evidence": {"$ref": "#/$defs/stringArray"},
+        "allowed_next": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["ecrite", "tests_statiques_passes", "autorisee", "deployee", "reobservee"]}},
+        "not_established": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["autorisee", "deployee", "reobservee", "efficacite_territoriale", "robustesse_independante"]}},
+        "reversal_condition": {"type": "string", "minLength": 12}
+      }
+    },
+    "disposition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "purpose", "normative_level", "actors", "triggers", "invariants", "required_traces", "appeals", "stop", "restitution", "lifecycle"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^D[0-9]{2}$"},
+        "title": {"type": "string", "minLength": 5},
+        "purpose": {"type": "string", "minLength": 20},
+        "normative_level": {"enum": ["non_derogeable", "renforcee", "ordinaire_bornee"]},
+        "actors": {"$ref": "#/$defs/actorRoles"},
+        "triggers": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/trigger"}},
+        "invariants": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^I(0[1-9]|1[0-5])$"}},
+        "required_traces": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/trace"}},
+        "appeals": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/appeal"}},
+        "stop": {"$ref": "#/$defs/stop"},
+        "restitution": {"$ref": "#/$defs/restitution"},
+        "lifecycle": {"$ref": "#/$defs/lifecycle"}
+      }
+    }
+  }
+}

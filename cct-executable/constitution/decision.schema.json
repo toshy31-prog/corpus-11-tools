@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cct.invalid/schemas/decision.schema.json",
+  "title": "CCT — décision candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "document_kind", "id", "constitution_id", "title", "status", "classification",
+    "jurisdiction", "actors", "beneficiaries", "cost_bearers", "duration", "budget",
+    "measures", "indicators", "success_condition", "compliance", "lifecycle"
+  ],
+  "properties": {
+    "$schema": {"type": "string"},
+    "document_kind": {"const": "cct_decision"},
+    "id": {"type": "string", "pattern": "^DEC-[0-9]{4}-[0-9]{3}$"},
+    "constitution_id": {"type": "string", "pattern": "^CCT-CONSTITUTION-EXEC-[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "title": {"type": "string", "minLength": 8},
+    "status": {"enum": ["brouillon", "proposee", "autorisee", "active", "arretee", "restituee"]},
+    "classification": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": {"enum": ["ordinaire", "distributive_majeure", "irreversible", "coercitive", "secrete", "urgente"]}
+    },
+    "jurisdiction": {
+      "type": "object", "additionalProperties": false,
+      "required": ["level", "competence_basis", "escalation_reason"],
+      "properties": {
+        "level": {"enum": ["commune", "bioregion", "federation_regionale", "confederation_planetaire", "commun_fonctionnel"]},
+        "competence_basis": {"type": "string", "minLength": 12},
+        "escalation_reason": {"enum": ["aucune", "dommage_exporte", "ressource_partagee", "incapacite_locale", "droit_universel_menace", "mutualisation_etablie"]}
+      }
+    },
+    "actors": {"$ref": "#/$defs/actorAssignments"},
+    "beneficiaries": {"$ref": "#/$defs/stringArray"},
+    "cost_bearers": {"$ref": "#/$defs/stringArray"},
+    "duration": {
+      "type": "object", "additionalProperties": false,
+      "required": ["starts_at", "expires_at", "review_at"],
+      "properties": {
+        "starts_at": {"type": "string", "format": "date-time"},
+        "expires_at": {"type": "string", "format": "date-time"},
+        "review_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "budget": {
+      "type": "object", "additionalProperties": false,
+      "required": ["currency", "maximum", "funding_source", "civic_load_hours"],
+      "properties": {
+        "currency": {"type": "string", "minLength": 3},
+        "maximum": {"type": "number", "minimum": 0},
+        "funding_source": {"type": "string", "minLength": 5},
+        "civic_load_hours": {"type": "number", "minimum": 0}
+      }
+    },
+    "measures": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 8}},
+    "indicators": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"type": "string", "minLength": 8}},
+    "success_condition": {"type": "string", "minLength": 12},
+    "compliance": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/compliance"}},
+    "lifecycle": {
+      "type": "object", "additionalProperties": false,
+      "required": ["state", "evidence", "not_established"],
+      "properties": {
+        "state": {"enum": ["brouillon", "proposee", "autorisee", "active", "arretee", "restituee"]},
+        "evidence": {"$ref": "#/$defs/stringArray"},
+        "not_established": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["autorisation_reelle", "activation_reelle", "effet_territorial", "restitution_effective", "reobservation_independante"]}}
+      }
+    }
+  },
+  "$defs": {
+    "stringArray": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "actorIdArray": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^A[0-9]{2}$"}},
+    "actorAssignments": {
+      "type": "object", "additionalProperties": false,
+      "required": ["proposer_regle", "decider", "executer", "controler", "arreter", "relancer", "certifier_restitution", "reparer", "collecter_donnees", "evaluer", "sanctionner"],
+      "properties": {
+        "proposer_regle": {"$ref": "#/$defs/actorIdArray"}, "decider": {"$ref": "#/$defs/actorIdArray"},
+        "executer": {"$ref": "#/$defs/actorIdArray"}, "controler": {"$ref": "#/$defs/actorIdArray"},
+        "arreter": {"$ref": "#/$defs/actorIdArray"}, "relancer": {"$ref": "#/$defs/actorIdArray"},
+        "certifier_restitution": {"$ref": "#/$defs/actorIdArray"}, "reparer": {"$ref": "#/$defs/actorIdArray"},
+        "collecter_donnees": {"$ref": "#/$defs/actorIdArray"}, "evaluer": {"$ref": "#/$defs/actorIdArray"},
+        "sanctionner": {"$ref": "#/$defs/actorIdArray"}
+      }
+    },
+    "triggerEvidence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["trigger_id", "observed_at", "value", "source", "method_limit"],
+      "properties": {
+        "trigger_id": {"type": "string", "pattern": "^D[0-9]{2}-T[0-9]+$"},
+        "observed_at": {"type": "string", "format": "date-time"},
+        "value": {"type": "string", "minLength": 1},
+        "source": {"type": "string", "minLength": 5},
+        "method_limit": {"type": "string", "minLength": 8}
+      }
+    },
+    "stopPlan": {
+      "type": "object", "additionalProperties": false,
+      "required": ["authorized_actor", "condition", "safe_state", "dependency_check", "deadline_hours"],
+      "properties": {
+        "authorized_actor": {"type": "string", "pattern": "^A[0-9]{2}$"},
+        "condition": {"type": "string", "minLength": 8},
+        "safe_state": {"type": "string", "minLength": 8},
+        "dependency_check": {"type": "string", "minLength": 8},
+        "deadline_hours": {"type": "integer", "minimum": 1}
+      }
+    },
+    "restitutionPlan": {
+      "type": "object", "additionalProperties": false,
+      "required": ["responsible", "certifier", "evidence_plan", "reactivation_guard", "deadline_hours"],
+      "properties": {
+        "responsible": {"type": "string", "pattern": "^A[0-9]{2}$"},
+        "certifier": {"type": "string", "pattern": "^A[0-9]{2}$"},
+        "evidence_plan": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"type": "string", "minLength": 8}},
+        "reactivation_guard": {"type": "string", "minLength": 8},
+        "deadline_hours": {"type": "integer", "minimum": 1}
+      }
+    },
+    "compliance": {
+      "type": "object", "additionalProperties": false,
+      "required": ["disposition_id", "trigger_evidence", "invariants_checked", "trace_plan", "appeal_plan", "stop_plan", "restitution_plan"],
+      "properties": {
+        "disposition_id": {"type": "string", "pattern": "^D[0-9]{2}$"},
+        "trigger_evidence": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/triggerEvidence"}},
+        "invariants_checked": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^I(0[1-9]|1[0-5])$"}},
+        "trace_plan": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^D[0-9]{2}-TR[0-9]+$"}},
+        "appeal_plan": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^D[0-9]{2}-R[0-9]+$"}},
+        "stop_plan": {"$ref": "#/$defs/stopPlan"},
+        "restitution_plan": {"$ref": "#/$defs/restitutionPlan"}
+      }
+    }
+  }
+}

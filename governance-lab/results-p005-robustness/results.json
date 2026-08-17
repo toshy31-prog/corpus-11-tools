@@ -1,0 +1,114 @@
+[
+  {
+    "variation": "baseline",
+    "changes": {},
+    "verdict": "cct_v012_lean_survives_p005_dt_002",
+    "gate_failure_protocols": [
+      "full_polycrisis"
+    ],
+    "predecessor_improvement_protocols": [
+      "grid_and_payments",
+      "transition_collision",
+      "security_saturation",
+      "full_polycrisis",
+      "communications_and_keys",
+      "appeals_and_transition"
+    ],
+    "simple_dominance_protocols": [],
+    "yield_claim_status": "persists"
+  },
+  {
+    "variation": "hidden_complexity",
+    "changes": {
+      "complexity": 0.15
+    },
+    "verdict": "cct_v012_lean_survives_p005_dt_002",
+    "gate_failure_protocols": [
+      "full_polycrisis"
+    ],
+    "predecessor_improvement_protocols": [
+      "grid_and_payments",
+      "transition_collision",
+      "security_saturation",
+      "communications_and_keys",
+      "appeals_and_transition"
+    ],
+    "simple_dominance_protocols": [],
+    "yield_claim_status": "persists"
+  },
+  {
+    "variation": "weak_load_shedding",
+    "changes": {
+      "load_shedding": -0.2
+    },
+    "verdict": "cct_v012_lean_survives_p005_dt_002",
+    "gate_failure_protocols": [
+      "full_polycrisis"
+    ],
+    "predecessor_improvement_protocols": [
+      "grid_and_payments",
+      "transition_collision",
+      "security_saturation",
+      "full_polycrisis",
+      "communications_and_keys",
+      "appeals_and_transition"
+    ],
+    "simple_dominance_protocols": [],
+    "yield_claim_status": "persists"
+  },
+  {
+    "variation": "false_independence",
+    "changes": {
+      "cross_sector_map": -0.25
+    },
+    "verdict": "cct_v012_lean_survives_p005_dt_002",
+    "gate_failure_protocols": [
+      "full_polycrisis"
+    ],
+    "predecessor_improvement_protocols": [
+      "grid_and_payments",
+      "transition_collision",
+      "security_saturation",
+      "full_polycrisis",
+      "appeals_and_transition"
+    ],
+    "simple_dominance_protocols": [],
+    "yield_claim_status": "persists"
+  },
+  {
+    "variation": "core_erosion",
+    "changes": {
+      "protected_core": -0.18
+    },
+    "verdict": "cct_v012_lean_survives_p005_dt_002",
+    "gate_failure_protocols": [
+      "full_polycrisis"
+    ],
+    "predecessor_improvement_protocols": [
+      "grid_and_payments",
+      "transition_collision",
+      "security_saturation",
+      "full_polycrisis",
+      "communications_and_keys",
+      "appeals_and_transition"
+    ],
+    "simple_dominance_protocols": [],
+    "yield_claim_status": "persists"
+  },
+  {
+    "variation": "combined_pessimistic",
+    "changes": {
+      "complexity": 0.15,
+      "load_shedding": -0.2,
+      "cross_sector_map": -0.25,
+      "protected_core": -0.18
+    },
+    "verdict": "cct_v012_lean_survives_p005_dt_002",
+    "gate_failure_protocols": [
+      "full_polycrisis"
+    ],
+    "predecessor_improvement_protocols": [],
+    "simple_dominance_protocols": [],
+    "yield_claim_status": "not_established_under_variation"
+  }
+]

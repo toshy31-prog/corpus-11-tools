@@ -1,0 +1,45 @@
+{
+  "verdict": "bounded_continuity_cell_survives_synthetic_twin",
+  "candidate": "bounded_continuity_cell",
+  "failed_protocols": [
+    "hostile_to_gate"
+  ],
+  "comparisons": [
+    {
+      "protocol": "base",
+      "unserved_improvement": 0.19828878206055278,
+      "unserved_ratio_to_best_rival": 1.0038471469653052,
+      "time_ratio_to_central": 1.0,
+      "rights_gain_vs_central": 9.619654361711504,
+      "rollback_gain_vs_central": 2.8124824967875424,
+      "failed": false
+    },
+    {
+      "protocol": "dense_shocks",
+      "unserved_improvement": 0.19503678409426717,
+      "unserved_ratio_to_best_rival": 0.9989089828472334,
+      "time_ratio_to_central": 1.0,
+      "rights_gain_vs_central": 15.15597193609659,
+      "rollback_gain_vs_central": 2.8193960615672684,
+      "failed": false
+    },
+    {
+      "protocol": "long_supply",
+      "unserved_improvement": 0.18095643651582383,
+      "unserved_ratio_to_best_rival": 1.0170956520974885,
+      "time_ratio_to_central": 1.0,
+      "rights_gain_vs_central": 13.63707914214214,
+      "rollback_gain_vs_central": 2.8223358910856176,
+      "failed": false
+    },
+    {
+      "protocol": "hostile_to_gate",
+      "unserved_improvement": 0.054280957440447364,
+      "unserved_ratio_to_best_rival": 1.1519144801096637,
+      "time_ratio_to_central": 1.0952380952380953,
+      "rights_gain_vs_central": 10.880793138427832,
+      "rollback_gain_vs_central": 2.0702077564753836,
+      "failed": true
+    }
+  ]
+}
