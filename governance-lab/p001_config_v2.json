@@ -1,0 +1,24 @@
+{
+  "inherits": "p001_config.json",
+  "experiment": "P001-DT-002",
+  "status": "preregistered_synthetic_digital_twin",
+  "candidate_mode": "bounded_continuity_cell",
+  "baseline_mode": "calendar_transfer",
+  "speed_reference_mode": "central_command",
+  "modes": {
+    "bounded_continuity_cell": {
+      "label": "Porte CCT + cellule de continuité bornée",
+      "budget": {
+        "mapping": 0.18,
+        "stocks": 0.17,
+        "substitution": 0.18,
+        "speed": 0.22,
+        "rights": 0.13,
+        "rollback": 0.12
+      },
+      "coordination_bonus": 0.16,
+      "concentration": 0.50,
+      "gate_exposure": 0.45
+    }
+  }
+}

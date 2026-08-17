@@ -1,0 +1,21 @@
+{
+  "verdict": "not_rejected_by_synthetic_model",
+  "losses": {
+    "base": [],
+    "broad_uncertainty": [],
+    "high_shock": [],
+    "hostile_to_cct": [
+      {
+        "scenario": "transition_sabotage",
+        "rival": "central_state",
+        "gap": 0.15849999999999997
+      }
+    ]
+  },
+  "catastrophic": {
+    "base": [],
+    "broad_uncertainty": [],
+    "high_shock": [],
+    "hostile_to_cct": []
+  }
+}

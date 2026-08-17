@@ -1,0 +1,37 @@
+{
+  "verdict": "cct_v011_survives_p005_dt001",
+  "gate_failure_protocols": [
+    "full_polycrisis"
+  ],
+  "simple_dominance_protocols": [],
+  "comparisons": [
+    {
+      "protocol": "grid_and_payments",
+      "candidate_gate_failure": false,
+      "simple_protects_as_well": false,
+      "simple_is_15pct_cheaper": true,
+      "simple_dominates": false
+    },
+    {
+      "protocol": "transition_collision",
+      "candidate_gate_failure": false,
+      "simple_protects_as_well": false,
+      "simple_is_15pct_cheaper": true,
+      "simple_dominates": false
+    },
+    {
+      "protocol": "security_saturation",
+      "candidate_gate_failure": false,
+      "simple_protects_as_well": false,
+      "simple_is_15pct_cheaper": true,
+      "simple_dominates": false
+    },
+    {
+      "protocol": "full_polycrisis",
+      "candidate_gate_failure": true,
+      "simple_protects_as_well": false,
+      "simple_is_15pct_cheaper": true,
+      "simple_dominates": false
+    }
+  ]
+}

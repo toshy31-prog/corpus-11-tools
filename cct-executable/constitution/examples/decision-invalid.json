@@ -1,0 +1,79 @@
+{
+  "$schema": "../decision.schema.json",
+  "document_kind": "cct_decision",
+  "id": "DEC-2026-002",
+  "constitution_id": "CCT-CONSTITUTION-EXEC-0.1.0",
+  "title": "Rationnement proposé sans garanties suffisantes",
+  "status": "proposee",
+  "classification": ["distributive_majeure"],
+  "jurisdiction": {
+    "level": "bioregion",
+    "competence_basis": "Bassin versant partagé par plusieurs communes.",
+    "escalation_reason": "ressource_partagee"
+  },
+  "actors": {
+    "proposer_regle": ["A01"],
+    "decider": ["A02"],
+    "executer": ["A04"],
+    "controler": ["A05"],
+    "arreter": ["A02"],
+    "relancer": ["A02"],
+    "certifier_restitution": ["A06"],
+    "reparer": ["A10"],
+    "collecter_donnees": ["A14"],
+    "evaluer": ["A07"],
+    "sanctionner": ["A06"]
+  },
+  "beneficiaries": ["habitants du bassin"],
+  "cost_bearers": ["usagers rationnés"],
+  "duration": {
+    "starts_at": "2026-09-02T00:00:00+02:00",
+    "expires_at": "2026-09-05T00:00:00+02:00",
+    "review_at": "2026-09-03T00:00:00+02:00"
+  },
+  "budget": {
+    "currency": "EUR",
+    "maximum": 100000,
+    "funding_source": "budget ordinaire",
+    "civic_load_hours": 80
+  },
+  "measures": ["réduire les volumes distribués selon une liste administrative"],
+  "indicators": ["volume total distribué", "nombre de dossiers traités"],
+  "success_condition": "Réduire le volume sans condition explicite sur les droits.",
+  "compliance": [
+    {
+      "disposition_id": "D02",
+      "trigger_evidence": [
+        {
+          "trigger_id": "D02-T1",
+          "observed_at": "2026-09-01T08:00:00+02:00",
+          "value": "déficit déclaré sans contre-mesure",
+          "source": "inventaire de l’opérateur unique",
+          "method_limit": "aucune mesure rivale disponible"
+        }
+      ],
+      "invariants_checked": ["I02"],
+      "trace_plan": ["D03-TR1"],
+      "appeal_plan": ["D02-R1"],
+      "stop_plan": {
+        "authorized_actor": "A02",
+        "condition": "arrêt décidé par l’assemblée qui relance aussi",
+        "safe_state": "aucun état sûr distinct documenté",
+        "dependency_check": "aucune dépendance indépendante testée",
+        "deadline_hours": 12
+      },
+      "restitution_plan": {
+        "responsible": "A04",
+        "certifier": "A06",
+        "evidence_plan": ["déclaration de fin", "fermeture administrative des dossiers"],
+        "reactivation_guard": "aucune protection contre réactivation solitaire",
+        "deadline_hours": 96
+      }
+    }
+  ],
+  "lifecycle": {
+    "state": "proposee",
+    "evidence": ["exemple intentionnellement invalide pour tests"],
+    "not_established": ["autorisation_reelle", "activation_reelle"]
+  }
+}
