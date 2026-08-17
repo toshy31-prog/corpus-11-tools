@@ -1,0 +1,6 @@
+interface:
+  display_name: "Value of Information"
+  short_description: "Choose the smallest decision-changing test"
+  default_prompt: "Use $value-of-information to rank the next tests by what they could actually change."
+policy:
+  allow_implicit_invocation: true
