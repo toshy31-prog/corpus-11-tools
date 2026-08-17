@@ -195,6 +195,60 @@ Aucune capability n’est automatiquement établie par sa présence ici.
 - modules sources: 9
 - rationale: Compilation de scène vers IR visuel avec position/source/observables; distincte de l'IR lui-même.
 
+### CAP.COMMAND_EFFECT_VERIFICATION
+- statut: recovered_candidate_unvalidated
+- classe: recovered_distinct
+- sources: Atlas 3.0 `command_contract`; module 04
+- rationale: Empêche d'assimiler demande, réception, exécution et effet vérifié.
+
+### CAP.EFFECTIVE_PRESENCE_ASSESSMENT
+- statut: recovered_candidate_unvalidated
+- classe: recovered_distinct
+- sources: Atlas 3.0 `self_model`
+- rationale: Distingue décrit, empaqueté, accessible en contexte, exécutable et vérifié.
+
+### CAP.TERMINAL_RECOVERY_ASSESSMENT
+- statut: recovered_candidate_unvalidated
+- classe: recovered_composite
+- sources: Atlas 3.0 `terminal`, `reaction_recovery`
+- rationale: Réunit seuil, acteur capable, pertes, terminal et récupération testée.
+
+### CAP.DEFENSE_ACCOUNTABILITY_BOUNDARY
+- statut: recovered_candidate_unvalidated
+- classe: recovered_boundary
+- sources: Sur-modèle 9.2; module 03 `defense_boundary`
+- rationale: Sépare secret opérationnel et preuve non sensible de contrôle et recours.
+
+### CAP.TEMPORAL_POWER_ASSESSMENT
+- statut: recovered_candidate_unvalidated
+- classe: recovered_distinct
+- sources: Sur-modèle 9.2; module 03
+- rationale: Traite cadence, délai, pause et expiration comme capacités distribuées.
+
+### CAP.RELATION_LOSS_ASSESSMENT
+- statut: recovered_candidate_unvalidated
+- classe: recovered_distinct
+- sources: Sur-modèle 9.2; module 04 `relation_loss`
+- rationale: Détecte la perte de relations quand les objets persistent.
+
+### CAP.CO_MAINTENANCE_GOVERNANCE
+- statut: recovered_candidate_unvalidated
+- classe: recovered_governance
+- sources: modules 12-13
+- rationale: Sépare proposition, refus, test, autorisation, déploiement, rollback et réparation.
+
+### CAP.PRIVACY_RECOURSE_BOUNDARY
+- statut: recovered_candidate_unvalidated
+- classe: recovered_boundary
+- sources: Sur-modèle 9.2; module 04 `privacy`
+- rationale: Distingue usage borné pour recours, diffusion, réemploi et rétention.
+
+### CAP.FUNCTIONAL_DECOUPLING_ASSESSMENT
+- statut: recovered_candidate_unvalidated
+- classe: recovered_composite
+- sources: Atlas 3.0 `patchbay`
+- rationale: Sépare les fonctions avant une décision globale de conservation ou d'arrêt.
+
 ## Familles descriptives — non exécutables
 
 - FAM.DISCRIMINANT_COMPARISON: Groups capabilities involving discriminant comparison without asserting one executable mechanism.
@@ -249,6 +303,32 @@ Aucune capability n’est automatiquement établie par sa présence ici.
 - CAP.COERCIVE_CAPACITY_MAPPING --uses[critical]--> CAP.FIELD_CAPACITY_ASSESSMENT :: Coercive capacity is field-dependent.
 - CAP.CENTER_DETECTION --uses[contextual]--> CAP.CHAIN_TRACING :: Centers may be detected through dependency chains.
 - CAP.USER_AGENCY_PRESERVATION --uses[contextual]--> CAP.METHOD_EFFECT_AUDIT :: Interaction method may replace user agency.
+- CAP.COMMAND_EFFECT_VERIFICATION --requires[critical]--> CAP.CHAIN_TRACING :: Une chaîne est nécessaire sans suffire à prouver l'effet.
+- CAP.COMMAND_EFFECT_VERIFICATION --uses[critical]--> CAP.EFFECTIVE_PRESENCE_ASSESSMENT :: L'acteur et le mécanisme d'exécution doivent être effectivement disponibles.
+- CAP.EFFECTIVE_PRESENCE_ASSESSMENT --supports[critical]--> CAP.CHANGE_VALIDATION :: Le déploiement déclaré doit être distingué de la présence exécutable et vérifiée.
+- CAP.TERMINAL_RECOVERY_ASSESSMENT --requires[critical]--> CAP.FIELD_CAPACITY_ASSESSMENT :: Stop et reprise dépendent du champ et des porteurs.
+- CAP.TERMINAL_RECOVERY_ASSESSMENT --uses[critical]--> CAP.REPAIR_SUFFICIENCY :: Une reprise nominale ne prouve pas une réparation suffisante.
+- CAP.DEFENSE_ACCOUNTABILITY_BOUNDARY --uses[critical]--> CAP.COERCIVE_CAPACITY_MAPPING :: Le risque de divulgation dépend des capacités coercitives effectives.
+- CAP.DEFENSE_ACCOUNTABILITY_BOUNDARY --uses[critical]--> CAP.PRIVACY_RECOURSE_BOUNDARY :: Les canaux de preuve doivent préserver confidentialité et recours.
+- CAP.TEMPORAL_POWER_ASSESSMENT --uses[critical]--> CAP.HIDDEN_COST_ASSESSMENT :: Les délais identiques peuvent cacher des pertes inégales.
+- CAP.TEMPORAL_POWER_ASSESSMENT --uses[contextual]--> CAP.FIELD_CAPACITY_ASSESSMENT :: Cadence et expiration changent les capacités utilisables.
+- CAP.RELATION_LOSS_ASSESSMENT --uses[critical]--> CAP.DIFFERENCE_REMAINDER_ASSESSMENT :: La persistance des objets peut laisser un reste relationnel.
+- CAP.RELATION_LOSS_ASSESSMENT --uses[contextual]--> CAP.CHAIN_TRACING :: Les relations perdues peuvent dépendre d'une chaîne de porteurs.
+- CAP.CO_MAINTENANCE_GOVERNANCE --supports[critical]--> CAP.CHANGE_VALIDATION :: Les niveaux de changement exigent une autorité assignée.
+- CAP.CO_MAINTENANCE_GOVERNANCE --uses[critical]--> CAP.EFFECTIVE_PRESENCE_ASSESSMENT :: Chaque rôle doit avoir une capacité effective et non nominale.
+- CAP.PRIVACY_RECOURSE_BOUNDARY --uses[critical]--> CAP.SOURCE_ENVIRONMENT_ASSESSMENT :: Permission, chaîne de réemploi et contexte de source doivent être établis.
+- CAP.FUNCTIONAL_DECOUPLING_ASSESSMENT --requires[critical]--> CAP.FIELD_CAPACITY_ASSESSMENT :: Le découplage doit être matériellement possible dans le champ.
+- CAP.FUNCTIONAL_DECOUPLING_ASSESSMENT --uses[critical]--> CAP.TERMINAL_RECOVERY_ASSESSMENT :: Les fonctions arrêtées exigent terminal et reprise séparés.
+
+## Runtime gate — asymétrie capacité directe / inverse
+
+Activer `FAM.REVERSAL_ASYMMETRY` quand une requête compare l'établissement d'une capacité à la suppression, restitution, neutralisation ou restauration de ses effets.
+
+Invariant : `DIRECT_CAPACITY_ESTABLISHED != INVERSE_CAPACITY_ESTABLISHED`.
+
+Compiler séparément : `direct_goal`, `inverse_goal`, `scope`, `intervention_class`, `direct_profile`, `inverse_profile`, `carriers`, `channels`, `field_dependencies`, `costs`, `residual_traces`, `reactivation`, `recourse`, `remainder`, `reversal_condition`.
+
+Une comparaison non appariée sur la portée ou la classe d'intervention doit déclarer ces écarts ; elle ne peut pas les attribuer à l'asymétrie seule. La famille route vers les capabilities pertinentes mais n'en rend aucune obligatoire hors scène. Elle compile des appuis déjà présents dans M03 (`field_capacity`), M04 (`access_restitution`), M05 (`difference_remainder`, `local_irreversibility`) et M14–M15 (mémoire distribuée) ; elle n'ajoute pas de capability.
 
 ## Runtime gate — asymétrie capacité directe / inverse
 

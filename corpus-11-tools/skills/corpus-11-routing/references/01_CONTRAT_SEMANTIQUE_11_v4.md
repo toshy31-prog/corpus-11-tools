@@ -44,8 +44,14 @@ Le schéma comparatif minimal contient :
 `FAM.REVERSAL_ASYMMETRY` est une famille descriptive de routage, non une capability. Elle compose conditionnellement des mécanismes déjà distincts ; elle ne crée ni mesure universelle de l'irréversibilité ni algorithme d'effacement. Ses appuis de provenance sont `field_capacity` (M03), `access_restitution` (M04), `difference_remainder` et `local_irreversibility` (M05), ainsi que les blocs de mémoire distribuée (M14–M15).
 
 ## Provenance
-Tout objet ou relation dérivé doit rester retraçable jusqu’au fragment source 10.x.
+Tout objet ou relation dérivé de la migration principale doit rester retraçable jusqu’au fragment source 10.x.
 Une capability déclarée ou candidate n’est jamais considérée comme établie par sa seule présence dans le graphe.
+
+## Voie bornée de récupération antérieure
+
+Une faculté d'Atlas 3.0 ou du Sur-modèle 9.2 peut entrer comme `recovered_candidate_unvalidated` seulement si son absence laisse un reste discriminant, si sa source est conservée avec empreinte, si ses conditions d'échec sont explicites et si elle ne rétablit pas l'ancienne constitution globale.
+
+La récupération est locale et additive : elle ne remplace ni les nouveautés 11.x, ni le routage minimal, ni l'isolation générative de la fiction. Un paquet archivé n'est jamais une capacité exécutée. Une capacité récupérée ne peut être dite restaurée qu'après inscription, tests, autorisation, déploiement et réobservation.
 
 ## Migration
 Pass A: lowering sans perte.

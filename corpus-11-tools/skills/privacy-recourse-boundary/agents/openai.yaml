@@ -1,0 +1,6 @@
+interface:
+  display_name: "Privacy Recourse Boundary"
+  short_description: "Preserve recourse without expanding disclosure"
+  default_prompt: "Use $privacy-recourse-boundary to preserve evidence for recourse without treating it as permission to disclose."
+policy:
+  allow_implicit_invocation: true

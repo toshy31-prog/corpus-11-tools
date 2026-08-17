@@ -1,0 +1,6 @@
+interface:
+  display_name: "Terminal Recovery Assessment"
+  short_description: "Test suspension, terminal, loss, and recovery"
+  default_prompt: "Use $terminal-recovery-assessment to test whether this stop or suspension has a real terminal and recovery path."
+policy:
+  allow_implicit_invocation: true

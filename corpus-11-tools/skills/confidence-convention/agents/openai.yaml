@@ -1,0 +1,6 @@
+interface:
+  display_name: "Confidence Convention"
+  short_description: "Reject unsupported precision and confidence scales"
+  default_prompt: "Use $confidence-convention to check whether this confidence claim has a defined scale, anchors, method, and scope."
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Expand Then Audit"
+  short_description: "Expand options before auditing and compressing"
+  default_prompt: "Use $expand-then-audit to expand the decision space, audit it, and compress only after discriminating checks."
+policy:
+  allow_implicit_invocation: false

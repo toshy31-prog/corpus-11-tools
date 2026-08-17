@@ -1,0 +1,6 @@
+interface:
+  display_name: "Defense Accountability Boundary"
+  short_description: "Protect sensitive detail while preserving control"
+  default_prompt: "Use $defense-accountability-boundary to separate legitimate secrecy from evidence needed for accountability."
+policy:
+  allow_implicit_invocation: true
