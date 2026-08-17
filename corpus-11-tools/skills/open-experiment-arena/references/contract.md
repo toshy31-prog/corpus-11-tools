@@ -4,7 +4,7 @@ The candidate implementation lives under `research/experiments/corpus-experiment
 
 ## Entry points
 
-- `cli.mjs`: single user surface for `list`, `run <scenario>`, `status`, and `test`
+- `cli.mjs`: developer demonstration surface for `list`, `demo <fixture>`, `status`, and `test`; fixture aliases are not user cases
 - `runner.mjs`: `runBlindArena({ arenaId, scenario, contenders, seed, blindKey, claimExternal })`
 - `contracts.mjs`: scenario and contender validation
 - `fixtures/thermal-mosaic.mjs`: internal synthetic fixture; never external evidence
