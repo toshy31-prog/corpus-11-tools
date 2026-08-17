@@ -1,0 +1,72 @@
+{
+  "registry": "CCT-PILOTS-001",
+  "status": "written_not_authorized",
+  "pilots": [
+    {
+      "id": "P-000",
+      "name": "Journée constitutionnelle hors ligne",
+      "mode": "tabletop_then_shadow",
+      "coercive": false,
+      "decision": "les cinq noyaux restent-ils accessibles sans identité, réseau ni paiement centraux ?",
+      "minimum_scene": "72 heures simulées de panne réseau avec eau, soins, alimentation, trace et recours",
+      "gates": ["aucun refus vital faute d'identité", "toute décision attribuable", "réconciliation sans sanction automatique"],
+      "authorization_required": "opérateur local et comité éthique",
+      "rollback_owner": "responsable de continuité indépendant"
+    },
+    {
+      "id": "P-003",
+      "name": "Droits portables",
+      "mode": "shadow",
+      "coercive": false,
+      "decision": "une personne peut-elle sortir sans perdre logement, revenu, soins, données ou recours ?",
+      "minimum_scene": "dossiers fictifs et volontaires entre deux territoires",
+      "gates": ["confidentialité", "droit de rester", "délai jusqu'à usage", "absence de représailles"],
+      "authorization_required": "territoires volontaires et protection des données",
+      "rollback_owner": "défenseur extérieur"
+    },
+    {
+      "id": "P-004",
+      "name": "Retour au civil",
+      "mode": "tabletop_only",
+      "coercive": true,
+      "decision": "chaque capacité temporaire peut-elle être éteinte et sa perte prouvée ?",
+      "minimum_scene": "commandement fictif, aucune capacité réelle de force",
+      "gates": ["arrêt multi-origine", "relance séparée", "copies inventoriées", "preuve de restitution"],
+      "authorization_required": "revue juridique, éthique et civile renforcée",
+      "rollback_owner": "autorité civile extérieure à l'exercice"
+    },
+    {
+      "id": "P-005",
+      "name": "Polycrise physique",
+      "mode": "synthetic_then_tabletop",
+      "coercive": false,
+      "decision": "les cinq noyaux survivent-ils à des ressources partagées dégradées ?",
+      "minimum_scene": "énergie, paiements, communications, recours et transition en contention",
+      "gates": ["besoins", "plafond", "droits", "trace", "récupération", "cause commune"],
+      "authorization_required": "opérateurs de services et arrêt extérieur",
+      "rollback_owner": "coordinateur de reprise distinct"
+    },
+    {
+      "id": "P-006",
+      "name": "Économies concurrentes",
+      "mode": "synthetic_then_shadow",
+      "coercive": false,
+      "decision": "quel régime économique reste non dominé sous mêmes chocs et informations ?",
+      "minimum_scene": "allocation fictive sans effet sur droits ni ressources réelles",
+      "gates": ["besoins vitaux", "plafond écologique", "inégalité", "rente", "charge", "récupération"],
+      "authorization_required": "comité de données et organisations volontaires",
+      "rollback_owner": "responsable du pilote"
+    },
+    {
+      "id": "P-007",
+      "name": "Fédération de laboratoires",
+      "mode": "design_only",
+      "coercive": false,
+      "decision": "des territoires différents peuvent-ils mutualiser sans centre irrévocable ?",
+      "minimum_scene": "trois laboratoires volontaires avec péréquation et droit de sortie fictifs",
+      "gates": ["subsidiarité réversible", "dette de sortie bornée", "droits portables", "recours extérieur"],
+      "authorization_required": "accord explicite de chaque laboratoire",
+      "rollback_owner": "chaque territoire pour ses fonctions, arbitre pour les communs"
+    }
+  ]
+}

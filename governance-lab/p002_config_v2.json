@@ -1,0 +1,15 @@
+{
+  "inherits": "p002_config.json",
+  "experiment": "P002-DT-002",
+  "status": "preregistered_adaptive-adversary_synthetic_twin",
+  "classification_gaming": true,
+  "protocols": {
+    "adaptive_gaming": {
+      "volatility": 0.10,
+      "supply_shock": 0.15,
+      "gaming": 0.30,
+      "import_impact": 1.0,
+      "learning_rate": 2.2
+    }
+  }
+}

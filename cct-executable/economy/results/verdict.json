@@ -1,0 +1,1013 @@
+{
+  "experiment": "CCT-ECO-M4-001",
+  "config_sha256": "02069215479a640767ffb1a8f0b75d73a81086d45cb089b3176b15cc09514ccd",
+  "runs_per_scenario": 240,
+  "non_composite_metrics": true,
+  "comparison_result": "compatible_survivors",
+  "candidate_set_incomplete": true,
+  "detectability_warnings": [
+    {
+      "scenario": "base_tendue",
+      "metric": "eco_overshoot_pct",
+      "reason": "saturation exacte à la borne inférieure du simulateur",
+      "observed_medians": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "interpretation": "no_difference_is_not_equivalence"
+    },
+    {
+      "scenario": "base_tendue",
+      "metric": "recovery_days",
+      "reason": "saturation exacte à la borne inférieure du simulateur",
+      "observed_medians": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "interpretation": "no_difference_is_not_equivalence"
+    },
+    {
+      "scenario": "rupture_logistique",
+      "metric": "eco_overshoot_pct",
+      "reason": "saturation exacte à la borne inférieure du simulateur",
+      "observed_medians": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "interpretation": "no_difference_is_not_equivalence"
+    },
+    {
+      "scenario": "rupture_logistique",
+      "metric": "recovery_days",
+      "reason": "saturation exacte à la borne inférieure du simulateur",
+      "observed_medians": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "interpretation": "no_difference_is_not_equivalence"
+    },
+    {
+      "scenario": "contrainte_ecologique",
+      "metric": "recovery_days",
+      "reason": "saturation exacte à la borne inférieure du simulateur",
+      "observed_medians": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "interpretation": "no_difference_is_not_equivalence"
+    },
+    {
+      "scenario": "afflux_besoins",
+      "metric": "eco_overshoot_pct",
+      "reason": "saturation exacte à la borne inférieure du simulateur",
+      "observed_medians": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "interpretation": "no_difference_is_not_equivalence"
+    },
+    {
+      "scenario": "afflux_besoins",
+      "metric": "recovery_days",
+      "reason": "saturation exacte à la borne inférieure du simulateur",
+      "observed_medians": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "interpretation": "no_difference_is_not_equivalence"
+    },
+    {
+      "scenario": "choc_financier",
+      "metric": "vital_unmet_pct",
+      "reason": "saturation exacte à la borne inférieure du simulateur",
+      "observed_medians": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "interpretation": "no_difference_is_not_equivalence"
+    },
+    {
+      "scenario": "choc_financier",
+      "metric": "eco_overshoot_pct",
+      "reason": "saturation exacte à la borne inférieure du simulateur",
+      "observed_medians": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "interpretation": "no_difference_is_not_equivalence"
+    },
+    {
+      "scenario": "choc_financier",
+      "metric": "recovery_days",
+      "reason": "saturation exacte à la borne inférieure du simulateur",
+      "observed_medians": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "interpretation": "no_difference_is_not_equivalence"
+    }
+  ],
+  "frontier_by_scenario": {
+    "base_tendue": [
+      "communs_planifies_federes",
+      "marche_socialise_borne",
+      "dotations_universelles_quotas"
+    ],
+    "rupture_logistique": [
+      "communs_planifies_federes",
+      "marche_socialise_borne",
+      "dotations_universelles_quotas"
+    ],
+    "contrainte_ecologique": [
+      "communs_planifies_federes",
+      "marche_socialise_borne",
+      "dotations_universelles_quotas"
+    ],
+    "afflux_besoins": [
+      "communs_planifies_federes",
+      "marche_socialise_borne",
+      "dotations_universelles_quotas"
+    ],
+    "choc_financier": [
+      "communs_planifies_federes",
+      "marche_socialise_borne",
+      "dotations_universelles_quotas"
+    ],
+    "polycrise": [
+      "communs_planifies_federes",
+      "marche_socialise_borne",
+      "planification_negociee_distribuee",
+      "dotations_universelles_quotas"
+    ]
+  },
+  "summaries": {
+    "base_tendue": {
+      "communs_planifies_federes": {
+        "metrics": {
+          "vital_unmet_pct": {
+            "median": 0.002734201985664623,
+            "p90": 1.273572308662779
+          },
+          "eco_overshoot_pct": {
+            "median": 0.0,
+            "p90": 0.0
+          },
+          "inequality_gini": {
+            "median": 0.1703677721567648,
+            "p90": 0.17396429509935157
+          },
+          "admin_load_hours_per_1000": {
+            "median": 149.42248167191264,
+            "p90": 153.70041293369715
+          },
+          "rent_capture_pct": {
+            "median": 2.102703943987653,
+            "p90": 2.5711256006107113
+          },
+          "recovery_days": {
+            "median": 0.0,
+            "p90": 0.0
+          }
+        },
+        "breached_gates": [],
+        "dominated_by": [],
+        "pareto_frontier": true
+      },
+      "marche_socialise_borne": {
+        "metrics": {
+          "vital_unmet_pct": {
+            "median": 0.002734201985664623,
+            "p90": 1.273572308662779
+          },
+          "eco_overshoot_pct": {
+            "median": 0.0,
+            "p90": 0.0
+          },
+          "inequality_gini": {
+            "median": 0.2209921445105988,
+            "p90": 0.22464863265400933
+          },
+          "admin_load_hours_per_1000": {
+            "median": 75.97472571208567,
+            "p90": 80.25660542288963
+          },
+          "rent_capture_pct": {
+            "median": 5.313817268478667,
+            "p90": 5.79719330333026
+          },
+          "recovery_days": {
+            "median": 0.0,
+            "p90": 0.0
+          }
+        },
+        "breached_gates": [],
+        "dominated_by": [],
+        "pareto_frontier": true
+      },
+      "planification_negociee_distribuee": {
+        "metrics": {
+          "vital_unmet_pct": {
+            "median": 0.002734201985664623,
+            "p90": 1.273572308662779
+          },
+          "eco_overshoot_pct": {
+            "median": 0.0,
+            "p90": 0.0
+          },
+          "inequality_gini": {
+            "median": 0.1901242859805639,
+            "p90": 0.193815355948273
+          },
+          "admin_load_hours_per_1000": {
+            "median": 159.64482389286422,
+            "p90": 163.94447162425584
+          },
+          "rent_capture_pct": {
+            "median": 3.4566903615502222,
+            "p90": 3.933281005250607
+          },
+          "recovery_days": {
+            "median": 0.0,
+            "p90": 0.0
+          }
+        },
+        "breached_gates": [],
+        "dominated_by": [
+          "communs_planifies_federes"
+        ],
+        "pareto_frontier": false
+      },
+      "dotations_universelles_quotas": {
+        "metrics": {
+          "vital_unmet_pct": {
+            "median": 0.002734201985664623,
+            "p90": 1.273572308662779
+          },
+          "eco_overshoot_pct": {
+            "median": 0.0,
+            "p90": 0.0
+          },
+          "inequality_gini": {
+            "median": 0.1834786756435925,
+            "p90": 0.18716685834330446
+          },
+          "admin_load_hours_per_1000": {
+            "median": 115.3580917723452,
+            "p90": 119.64589415667837
+          },
+          "rent_capture_pct": {
+            "median": 3.6040580515114105,
+            "p90": 4.0743490263455735
+          },
+          "recovery_days": {
+            "median": 0.0,
+            "p90": 0.0
+          }
+        },
+        "breached_gates": [],
+        "dominated_by": [],
+        "pareto_frontier": true
+      }
+    },
+    "rupture_logistique": {
+      "communs_planifies_federes": {
+        "metrics": {
+          "vital_unmet_pct": {
+            "median": 6.15446809752794,
+            "p90": 8.069210167158307
+          },
+          "eco_overshoot_pct": {
+            "median": 0.0,
+            "p90": 0.0
+          },
+          "inequality_gini": {
+            "median": 0.17790975095399142,
+            "p90": 0.1814187422112363
+          },
+          "admin_load_hours_per_1000": {
+            "median": 168.29969613693362,
+            "p90": 172.3379804690625
+          },
+          "rent_capture_pct": {
+            "median": 3.746372416473627,
+            "p90": 4.2674943893191335
+          },
+          "recovery_days": {
+            "median": 0.0,
+            "p90": 0.0
+          }
+        },
+        "breached_gates": [],
+        "dominated_by": [],
+        "pareto_frontier": true
+      },
+      "marche_socialise_borne": {
+        "metrics": {
+          "vital_unmet_pct": {
+            "median": 9.468026468486352,
+            "p90": 11.549948665874762
+          },
+          "eco_overshoot_pct": {
+            "median": 0.0,
+            "p90": 0.0
+          },
+          "inequality_gini": {
+            "median": 0.23612904284749536,
+            "p90": 0.23960264654924385
+          },
+          "admin_load_hours_per_1000": {
+            "median": 95.22959407804251,
+            "p90": 99.28457027252871
+          },
+          "rent_capture_pct": {
+            "median": 8.392668250629242,
+            "p90": 8.957159721724214
+          },
+          "recovery_days": {
+            "median": 0.0,
+            "p90": 0.3894707303908935
+          }
+        },
+        "breached_gates": [
+          "vital_unmet_pct",
+          "rent_capture_pct"
+        ],
+        "dominated_by": [],
+        "pareto_frontier": true
+      },
+      "planification_negociee_distribuee": {
+        "metrics": {
+          "vital_unmet_pct": {
+            "median": 6.754791705618235,
+            "p90": 8.676037400118934
+          },
+          "eco_overshoot_pct": {
+            "median": 0.0,
+            "p90": 0.0
+          },
+          "inequality_gini": {
+            "median": 0.20143855646854164,
+            "p90": 0.20490511828885138
+          },
+          "admin_load_hours_per_1000": {
+            "median": 180.6204711278084,
+            "p90": 184.72367722432728
+          },
+          "rent_capture_pct": {
+            "median": 5.881315162608093,
+            "p90": 6.414103743056174
+          },
+          "recovery_days": {
+            "median": 0.0,
+            "p90": 0.0
+          }
+        },
+        "breached_gates": [
+          "admin_load_hours_per_1000"
+        ],
+        "dominated_by": [
+          "communs_planifies_federes"
+        ],
+        "pareto_frontier": false
+      },
+      "dotations_universelles_quotas": {
+        "metrics": {
+          "vital_unmet_pct": {
+            "median": 6.753590809602564,
+            "p90": 8.666891673845967
+          },
+          "eco_overshoot_pct": {
+            "median": 0.0,
+            "p90": 0.0
+          },
+          "inequality_gini": {
+            "median": 0.19437323110374344,
+            "p90": 0.19785815370162216
+          },
+          "admin_load_hours_per_1000": {
+            "median": 135.1818733275856,
+            "p90": 139.24044654398574
+          },
+          "rent_capture_pct": {
+            "median": 6.008710667659862,
+            "p90": 6.543923028751148
+          },
+          "recovery_days": {
+            "median": 0.0,
+            "p90": 0.0
+          }
+        },
+        "breached_gates": [],
+        "dominated_by": [],
+        "pareto_frontier": true
+      }
+    },
+    "contrainte_ecologique": {
+      "communs_planifies_federes": {
+        "metrics": {
+          "vital_unmet_pct": {
+            "median": 0.020567714709306018,
+            "p90": 1.4339359420930802
+          },
+          "eco_overshoot_pct": {
+            "median": 3.233267360087378,
+            "p90": 5.870334389915581
+          },
+          "inequality_gini": {
+            "median": 0.17260840215777984,
+            "p90": 0.1763215779902738
+          },
+          "admin_load_hours_per_1000": {
+            "median": 156.86145411942863,
+            "p90": 160.91483051556617
+          },
+          "rent_capture_pct": {
+            "median": 2.667454322198699,
+            "p90": 3.1482525595252566
+          },
+          "recovery_days": {
+            "median": 0.0,
+            "p90": 0.0
+          }
+        },
+        "breached_gates": [],
+        "dominated_by": [],
+        "pareto_frontier": true
+      },
+      "marche_socialise_borne": {
+        "metrics": {
+          "vital_unmet_pct": {
+            "median": 0.020567714709306018,
+            "p90": 1.4339359420930802
+          },
+          "eco_overshoot_pct": {
+            "median": 6.225988470392775,
+            "p90": 8.876070875799986
+          },
+          "inequality_gini": {
+            "median": 0.22551289498563515,
+            "p90": 0.22930452245649896
+          },
+          "admin_load_hours_per_1000": {
+            "median": 83.57708119403819,
+            "p90": 87.63116281925286
+          },
+          "rent_capture_pct": {
+            "median": 6.4115445274886,
+            "p90": 6.919738772061779
+          },
+          "recovery_days": {
+            "median": 0.0,
+            "p90": 0.0
+          }
+        },
+        "breached_gates": [
+          "eco_overshoot_pct"
+        ],
+        "dominated_by": [],
+        "pareto_frontier": true
+      },
+      "planification_negociee_distribuee": {
+        "metrics": {
+          "vital_unmet_pct": {
+            "median": 0.020567714709306018,
+            "p90": 1.4339359420930802
+          },
+          "eco_overshoot_pct": {
+            "median": 4.702476590760566,
+            "p90": 7.345976139208943
+          },
+          "inequality_gini": {
+            "median": 0.19353070336411038,
+            "p90": 0.19732523144863562
+          },
+          "admin_load_hours_per_1000": {
+            "median": 167.9824030297812,
+            "p90": 172.02321695705976
+          },
+          "rent_capture_pct": {
+            "median": 4.311942718837783,
+            "p90": 4.794874835305836
+          },
+          "recovery_days": {
+            "median": 0.0,
+            "p90": 0.0
+          }
+        },
+        "breached_gates": [],
+        "dominated_by": [
+          "communs_planifies_federes"
+        ],
+        "pareto_frontier": false
+      },
+      "dotations_universelles_quotas": {
+        "metrics": {
+          "vital_unmet_pct": {
+            "median": 0.020567714709306018,
+            "p90": 1.4339359420930802
+          },
+          "eco_overshoot_pct": {
+            "median": 2.4143833272255835,
+            "p90": 5.061848627756159
+          },
+          "inequality_gini": {
+            "median": 0.1868541672825217,
+            "p90": 0.1906667471355001
+          },
+          "admin_load_hours_per_1000": {
+            "median": 123.20552180595251,
+            "p90": 127.2464884596692
+          },
+          "rent_capture_pct": {
+            "median": 4.464099827618099,
+            "p90": 4.953888749206958
+          },
+          "recovery_days": {
+            "median": 0.0,
+            "p90": 0.0
+          }
+        },
+        "breached_gates": [],
+        "dominated_by": [],
+        "pareto_frontier": true
+      }
+    },
+    "afflux_besoins": {
+      "communs_planifies_federes": {
+        "metrics": {
+          "vital_unmet_pct": {
+            "median": 1.7531947383826427,
+            "p90": 3.9513109089841527
+          },
+          "eco_overshoot_pct": {
+            "median": 0.0,
+            "p90": 0.0
+          },
+          "inequality_gini": {
+            "median": 0.17802236993436696,
+            "p90": 0.18171670092162592
+          },
+          "admin_load_hours_per_1000": {
+            "median": 165.2590526636994,
+            "p90": 169.2081268934432
+          },
+          "rent_capture_pct": {
+            "median": 3.8392479094112533,
+            "p90": 4.384537859551142
+          },
+          "recovery_days": {
+            "median": 0.0,
+            "p90": 0.0
+          }
+        },
+        "breached_gates": [],
+        "dominated_by": [],
+        "pareto_frontier": true
+      },
+      "marche_socialise_borne": {
+        "metrics": {
+          "vital_unmet_pct": {
+            "median": 5.545162109789005,
+            "p90": 7.854865201714569
+          },
+          "eco_overshoot_pct": {
+            "median": 0.0,
+            "p90": 0.0
+          },
+          "inequality_gini": {
+            "median": 0.23681408882940252,
+            "p90": 0.2406726398966388
+          },
+          "admin_load_hours_per_1000": {
+            "median": 92.13484337169646,
+            "p90": 96.09412321122244
+          },
+          "rent_capture_pct": {
+            "median": 8.727473135615366,
+            "p90": 9.312460396966781
+          },
+          "recovery_days": {
+            "median": 0.0,
+            "p90": 0.0
+          }
+        },
+        "breached_gates": [
+          "rent_capture_pct"
+        ],
+        "dominated_by": [],
+        "pareto_frontier": true
+      },
+      "planification_negociee_distribuee": {
+        "metrics": {
+          "vital_unmet_pct": {
+            "median": 2.5781908699721967,
+            "p90": 4.807045645487946
+          },
+          "eco_overshoot_pct": {
+            "median": 0.0,
+            "p90": 0.0
+          },
+          "inequality_gini": {
+            "median": 0.2018883500666377,
+            "p90": 0.2056872152711632
+          },
+          "admin_load_hours_per_1000": {
+            "median": 177.2620140845705,
+            "p90": 181.27170788203213
+          },
+          "rent_capture_pct": {
+            "median": 6.101356478017309,
+            "p90": 6.649716315036764
+          },
+          "recovery_days": {
+            "median": 0.0,
+            "p90": 0.0
+          }
+        },
+        "breached_gates": [],
+        "dominated_by": [
+          "communs_planifies_federes"
+        ],
+        "pareto_frontier": false
+      },
+      "dotations_universelles_quotas": {
+        "metrics": {
+          "vital_unmet_pct": {
+            "median": 2.469845913287166,
+            "p90": 4.688624273429133
+          },
+          "eco_overshoot_pct": {
+            "median": 0.0,
+            "p90": 0.0
+          },
+          "inequality_gini": {
+            "median": 0.1952510491195778,
+            "p90": 0.19897705545436575
+          },
+          "admin_load_hours_per_1000": {
+            "median": 132.0035294336921,
+            "p90": 135.97811768789128
+          },
+          "rent_capture_pct": {
+            "median": 6.308435070363096,
+            "p90": 6.861073956002321
+          },
+          "recovery_days": {
+            "median": 0.0,
+            "p90": 0.0
+          }
+        },
+        "breached_gates": [],
+        "dominated_by": [],
+        "pareto_frontier": true
+      }
+    },
+    "choc_financier": {
+      "communs_planifies_federes": {
+        "metrics": {
+          "vital_unmet_pct": {
+            "median": 0.0,
+            "p90": 1.184546325184234
+          },
+          "eco_overshoot_pct": {
+            "median": 0.0,
+            "p90": 0.0
+          },
+          "inequality_gini": {
+            "median": 0.18105592315990482,
+            "p90": 0.18420685051206342
+          },
+          "admin_load_hours_per_1000": {
+            "median": 157.7191440212709,
+            "p90": 161.75421541323206
+          },
+          "rent_capture_pct": {
+            "median": 4.7976980619710865,
+            "p90": 5.240169742056243
+          },
+          "recovery_days": {
+            "median": 0.0,
+            "p90": 0.0
+          }
+        },
+        "breached_gates": [],
+        "dominated_by": [],
+        "pareto_frontier": true
+      },
+      "marche_socialise_borne": {
+        "metrics": {
+          "vital_unmet_pct": {
+            "median": 0.0,
+            "p90": 1.184546325184234
+          },
+          "eco_overshoot_pct": {
+            "median": 0.0,
+            "p90": 0.0
+          },
+          "inequality_gini": {
+            "median": 0.24058199710815847,
+            "p90": 0.2439851629412467
+          },
+          "admin_load_hours_per_1000": {
+            "median": 84.44751121443721,
+            "p90": 88.47155313019594
+          },
+          "rent_capture_pct": {
+            "median": 10.264826190472167,
+            "p90": 10.737190046728346
+          },
+          "recovery_days": {
+            "median": 0.0,
+            "p90": 0.0
+          }
+        },
+        "breached_gates": [
+          "inequality_gini",
+          "rent_capture_pct"
+        ],
+        "dominated_by": [],
+        "pareto_frontier": true
+      },
+      "planification_negociee_distribuee": {
+        "metrics": {
+          "vital_unmet_pct": {
+            "median": 0.0,
+            "p90": 1.184546325184234
+          },
+          "eco_overshoot_pct": {
+            "median": 0.0,
+            "p90": 0.0
+          },
+          "inequality_gini": {
+            "median": 0.20574662612080305,
+            "p90": 0.2089624584160482
+          },
+          "admin_load_hours_per_1000": {
+            "median": 168.86436769993918,
+            "p90": 172.93126447176635
+          },
+          "rent_capture_pct": {
+            "median": 7.390302957026375,
+            "p90": 7.859591013806212
+          },
+          "recovery_days": {
+            "median": 0.0,
+            "p90": 0.0
+          }
+        },
+        "breached_gates": [
+          "rent_capture_pct"
+        ],
+        "dominated_by": [
+          "communs_planifies_federes"
+        ],
+        "pareto_frontier": false
+      },
+      "dotations_universelles_quotas": {
+        "metrics": {
+          "vital_unmet_pct": {
+            "median": 0.0,
+            "p90": 1.184546325184234
+          },
+          "eco_overshoot_pct": {
+            "median": 0.0,
+            "p90": 0.0
+          },
+          "inequality_gini": {
+            "median": 0.19867439528038333,
+            "p90": 0.20192059266200746
+          },
+          "admin_load_hours_per_1000": {
+            "median": 124.09506200418667,
+            "p90": 128.12662970839477
+          },
+          "rent_capture_pct": {
+            "median": 7.438201671984649,
+            "p90": 7.90157885945563
+          },
+          "recovery_days": {
+            "median": 0.0,
+            "p90": 0.0
+          }
+        },
+        "breached_gates": [
+          "rent_capture_pct"
+        ],
+        "dominated_by": [],
+        "pareto_frontier": true
+      }
+    },
+    "polycrise": {
+      "communs_planifies_federes": {
+        "metrics": {
+          "vital_unmet_pct": {
+            "median": 32.63873495457699,
+            "p90": 35.15290271744272
+          },
+          "eco_overshoot_pct": {
+            "median": 24.838184740433462,
+            "p90": 27.626677423728687
+          },
+          "inequality_gini": {
+            "median": 0.18732034127515929,
+            "p90": 0.19080780151110419
+          },
+          "admin_load_hours_per_1000": {
+            "median": 190.1744124086846,
+            "p90": 194.70633796865755
+          },
+          "rent_capture_pct": {
+            "median": 6.054479134378774,
+            "p90": 6.498850310662458
+          },
+          "recovery_days": {
+            "median": 52.43682883647057,
+            "p90": 54.95799570048818
+          }
+        },
+        "breached_gates": [
+          "vital_unmet_pct",
+          "eco_overshoot_pct",
+          "admin_load_hours_per_1000",
+          "recovery_days"
+        ],
+        "dominated_by": [],
+        "pareto_frontier": true
+      },
+      "marche_socialise_borne": {
+        "metrics": {
+          "vital_unmet_pct": {
+            "median": 38.060304127961615,
+            "p90": 40.64761371729943
+          },
+          "eco_overshoot_pct": {
+            "median": 27.185770701594375,
+            "p90": 29.99358525173647
+          },
+          "inequality_gini": {
+            "median": 0.2562023985019839,
+            "p90": 0.25976199160483116
+          },
+          "admin_load_hours_per_1000": {
+            "median": 117.57621163542035,
+            "p90": 122.1015410522362
+          },
+          "rent_capture_pct": {
+            "median": 12.845329812821245,
+            "p90": 13.32024381610524
+          },
+          "recovery_days": {
+            "median": 55.2925802973993,
+            "p90": 57.845083677198986
+          }
+        },
+        "breached_gates": [
+          "vital_unmet_pct",
+          "eco_overshoot_pct",
+          "inequality_gini",
+          "rent_capture_pct",
+          "recovery_days"
+        ],
+        "dominated_by": [],
+        "pareto_frontier": true
+      },
+      "planification_negociee_distribuee": {
+        "metrics": {
+          "vital_unmet_pct": {
+            "median": 34.21952931444265,
+            "p90": 36.74578621994962
+          },
+          "eco_overshoot_pct": {
+            "median": 26.229359349761502,
+            "p90": 29.033121298215132
+          },
+          "inequality_gini": {
+            "median": 0.21610956718292396,
+            "p90": 0.21966525436405898
+          },
+          "admin_load_hours_per_1000": {
+            "median": 205.10413390088905,
+            "p90": 209.60178989246114
+          },
+          "rent_capture_pct": {
+            "median": 9.3576144247541,
+            "p90": 9.809655420248422
+          },
+          "recovery_days": {
+            "median": 51.83499592323273,
+            "p90": 54.3889529738065
+          }
+        },
+        "breached_gates": [
+          "vital_unmet_pct",
+          "eco_overshoot_pct",
+          "admin_load_hours_per_1000",
+          "rent_capture_pct",
+          "recovery_days"
+        ],
+        "dominated_by": [],
+        "pareto_frontier": true
+      },
+      "dotations_universelles_quotas": {
+        "metrics": {
+          "vital_unmet_pct": {
+            "median": 33.63773200374139,
+            "p90": 36.15218303758057
+          },
+          "eco_overshoot_pct": {
+            "median": 23.454313909712766,
+            "p90": 26.264697180168024
+          },
+          "inequality_gini": {
+            "median": 0.20901894166177204,
+            "p90": 0.21256708428325777
+          },
+          "admin_load_hours_per_1000": {
+            "median": 158.23808977441985,
+            "p90": 162.7493456776042
+          },
+          "rent_capture_pct": {
+            "median": 9.549784757500497,
+            "p90": 9.979633949231703
+          },
+          "recovery_days": {
+            "median": 54.29974812631027,
+            "p90": 56.834583395743884
+          }
+        },
+        "breached_gates": [
+          "vital_unmet_pct",
+          "eco_overshoot_pct",
+          "rent_capture_pct",
+          "recovery_days"
+        ],
+        "dominated_by": [],
+        "pareto_frontier": true
+      }
+    }
+  },
+  "verdicts": {
+    "communs_planifies_federes": {
+      "status": "claim_weakened",
+      "constitutional_gate_loss_scenarios": [
+        "polycrise"
+      ],
+      "pareto_dominated_scenarios": [],
+      "claim_failures": [
+        "polycrise:vital_unmet_pct"
+      ]
+    },
+    "marche_socialise_borne": {
+      "status": "claim_weakened",
+      "constitutional_gate_loss_scenarios": [
+        "polycrise"
+      ],
+      "pareto_dominated_scenarios": [],
+      "claim_failures": [
+        "choc_financier:rent_capture_pct"
+      ]
+    },
+    "planification_negociee_distribuee": {
+      "status": "rejected_model_internal",
+      "constitutional_gate_loss_scenarios": [
+        "polycrise"
+      ],
+      "pareto_dominated_scenarios": [
+        "base_tendue",
+        "rupture_logistique",
+        "contrainte_ecologique",
+        "afflux_besoins",
+        "choc_financier"
+      ],
+      "claim_failures": []
+    },
+    "dotations_universelles_quotas": {
+      "status": "survives_model_internal",
+      "constitutional_gate_loss_scenarios": [
+        "polycrise"
+      ],
+      "pareto_dominated_scenarios": [],
+      "claim_failures": []
+    }
+  }
+}

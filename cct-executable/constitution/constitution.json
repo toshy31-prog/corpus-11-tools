@@ -1,0 +1,341 @@
+{
+  "$schema": "./constitution.schema.json",
+  "document_kind": "cct_constitution",
+  "id": "CCT-CONSTITUTION-EXEC-0.1.0",
+  "version": "0.1.0",
+  "title": "Noyau constitutionnel exécutable candidat de la CCT",
+  "language": "fr",
+  "artifact_status": {
+    "state": "tests_statiques_passes",
+    "evidence": [
+      "Validation structurelle par constitution.schema.json",
+      "Validation sémantique et tests unitaires locaux"
+    ],
+    "not_established": [
+      "autorisee",
+      "deployee",
+      "reobservee",
+      "efficacite_territoriale",
+      "robustesse_independante"
+    ]
+  },
+  "scope": {
+    "purpose": "Rendre les invariants CCT contrôlables dans des décisions candidates sans fixer une politique économique unique.",
+    "legal_effect": "prototype_non_autorise_sans_effet_juridique",
+    "exclusions": [
+      "aucune autorisation politique réelle",
+      "aucune exécution coercitive",
+      "aucune preuve de viabilité territoriale",
+      "aucune délégation à un système automatisé"
+    ]
+  },
+  "lifecycle_states": [
+    "proposee",
+    "ecrite",
+    "tests_statiques_passes",
+    "autorisee",
+    "deployee",
+    "reobservee"
+  ],
+  "actors": [
+    {
+      "id": "A01",
+      "label": "Personnes et communautés concernées",
+      "kind": "personnes",
+      "mandate": "Saisir, contester, témoigner, refuser et demander réparation.",
+      "independence_requirements": ["accès sans identité numérique unique", "canal confidentiel et canal hors ligne"],
+      "field_dependencies": ["information intelligible", "temps disponible", "protection contre les représailles"]
+    },
+    {
+      "id": "A02",
+      "label": "Assemblée démocratique compétente",
+      "kind": "organe_democratique",
+      "mandate": "Autoriser les règles et décisions dans la compétence attribuée.",
+      "independence_requirements": ["pluralisme politique", "publicité des intérêts"],
+      "field_dependencies": ["quorum", "traduction", "données contradictoires"]
+    },
+    {
+      "id": "A03",
+      "label": "Conseil citoyen temporaire",
+      "kind": "organe_democratique",
+      "mandate": "Contrôler les irréversibilités, urgences durables et conflits systémiques.",
+      "independence_requirements": ["tirage stratifié", "formation contradictoire financée"],
+      "field_dependencies": ["indemnisation", "accessibilité", "temps de délibération"]
+    },
+    {
+      "id": "A04",
+      "label": "Service public opérateur",
+      "kind": "operateur",
+      "mandate": "Exécuter et maintenir les services sans définir seul leurs finalités.",
+      "independence_requirements": ["mandat borné", "journalisation des actes"],
+      "field_dependencies": ["personnel", "énergie", "réseau", "stocks", "maintenance"]
+    },
+    {
+      "id": "A05",
+      "label": "Service public contradicteur",
+      "kind": "organe_independant",
+      "mandate": "Reproduire les calculs et instruire les options écartées.",
+      "independence_requirements": ["budget pluriannuel autonome", "nomination distincte de l’opérateur"],
+      "field_dependencies": ["accès aux données", "compétences indépendantes", "archive des options"]
+    },
+    {
+      "id": "A06",
+      "label": "Juridiction des droits",
+      "kind": "juridiction",
+      "mandate": "Suspendre les atteintes graves, juger les recours et imposer réparation.",
+      "independence_requirements": ["inamovibilité bornée", "saisine directe"],
+      "field_dependencies": ["greffe accessible", "force d’exécution distincte", "délais garantis"]
+    },
+    {
+      "id": "A07",
+      "label": "Autorité écologique indépendante",
+      "kind": "organe_independant",
+      "mandate": "Publier les comptes physiques et signaler les franchissements de plafond.",
+      "independence_requirements": ["méthodes publiques", "sources multiples"],
+      "field_dependencies": ["capteurs", "inventaires", "contre-mesures", "archives physiques"]
+    },
+    {
+      "id": "A08",
+      "label": "Cellule de continuité bornée",
+      "kind": "service_public",
+      "mandate": "Maintenir temporairement les services vitaux sous défaillance composée.",
+      "independence_requirements": ["double clé d’activation", "expiration automatique"],
+      "field_dependencies": ["réserves", "voies analogiques", "équipes de remplacement"]
+    },
+    {
+      "id": "A09",
+      "label": "Inspecteur indépendant de restitution",
+      "kind": "organe_independant",
+      "mandate": "Tester la perte de capacité exceptionnelle et certifier la récupération ordinaire.",
+      "independence_requirements": ["aucune clé d’activation", "accès technique autonome"],
+      "field_dependencies": ["journaux", "inventaire des copies", "tests de restauration"]
+    },
+    {
+      "id": "A10",
+      "label": "Fonds public de réparation",
+      "kind": "service_public",
+      "mandate": "Assurer la réparation de dernier ressort sans éteindre la responsabilité.",
+      "independence_requirements": ["financement protégé", "gouvernance par les porteurs de pertes"],
+      "field_dependencies": ["réserves financières", "prestataires", "registre des dettes"]
+    },
+    {
+      "id": "A11",
+      "label": "Chambre des territoires",
+      "kind": "organe_democratique",
+      "mandate": "Contrôler transferts de compétence, péréquation et dommages exportés.",
+      "independence_requirements": ["représentation dégressive", "mandats publics"],
+      "field_dependencies": ["données territoriales", "traduction", "capacité de conciliation"]
+    },
+    {
+      "id": "A12",
+      "label": "Défenseur public à porte unique",
+      "kind": "service_public",
+      "mandate": "Recevoir toute demande et absorber le routage institutionnel.",
+      "independence_requirements": ["gratuité", "secret professionnel"],
+      "field_dependencies": ["guichets locaux", "téléphone", "papier", "interprétariat"]
+    },
+    {
+      "id": "A13",
+      "label": "Archive publique distribuée",
+      "kind": "service_public",
+      "mandate": "Conserver des traces réconciliables sur supports et juridictions distincts.",
+      "independence_requirements": ["clés partagées", "copie hors ligne"],
+      "field_dependencies": ["supports hétérogènes", "conservateurs multiples", "énergie minimale"]
+    },
+    {
+      "id": "A14",
+      "label": "Office statistique pluraliste",
+      "kind": "organe_independant",
+      "mandate": "Collecter les mesures primaires sans décider seul des seuils ni des sanctions.",
+      "independence_requirements": ["méthodes versionnées", "audit externe"],
+      "field_dependencies": ["échantillons", "capteurs", "personnel", "protection des sources"]
+    }
+  ],
+  "invariants": [
+    {"id": "I01", "title": "Droits sans point unique", "statement": "Les droits vitaux restent utilisables sans identité, réseau, langue ou guichet uniques.", "gate": "droits", "observables": ["taux de service hors ligne", "nombre de voies réellement indépendantes"], "failure_condition": "Un canal unique indisponible empêche l’accès vital."},
+    {"id": "I02", "title": "Double borne et pénurie juste", "statement": "Plancher social et plafond écologique sont opposables et l’incompatibilité physique active une règle publique.", "gate": "transversal", "observables": ["écart physique publié", "ordre de rationnement observé"], "failure_condition": "Le plafond ou le minimum biologique est sacrifié sans règle publique."},
+    {"id": "I03", "title": "Séparation épistémique et coercitive", "statement": "Aucun acteur ne contrôle simultanément règle, données, évaluation et sanction.", "gate": "trace", "observables": ["intersection des rôles critiques", "contre-calcul indépendant disponible"], "failure_condition": "Un même acteur cumule les quatre fonctions critiques."},
+    {"id": "I04", "title": "Cycle complet du pouvoir", "statement": "Toute capacité exceptionnelle possède détenteur, durée, arrêt, extinction et preuve de restitution.", "gate": "recuperation", "observables": ["échéance atomique renseignée", "test de perte de capacité exécuté"], "failure_condition": "Une capacité temporaire persiste sans échéance ou preuve de retrait."},
+    {"id": "I05", "title": "Clés terminales distinctes", "statement": "Arrêter, relancer et certifier la récupération relèvent d’acteurs distincts.", "gate": "recuperation", "observables": ["intersection des détenteurs de clés", "essai de relance refusée"], "failure_condition": "Un acteur détient deux clés terminales incompatibles."},
+    {"id": "I06", "title": "Complexité absorbée et plafonnée", "statement": "L’institution absorbe la complexité même lorsque plusieurs protections s’activent ensemble.", "gate": "droits", "observables": ["heures civiques imposées", "délai de routage au bon organe"], "failure_condition": "La charge administrative exclut ou épuise les personnes concernées."},
+    {"id": "I07", "title": "Subsidiarité réversible", "statement": "Toute montée d’échelle est motivée et possède une voie praticable de redescente.", "gate": "transversal", "observables": ["motif de montée documenté", "test de restitution de compétence"], "failure_condition": "Une compétence transférée ne peut redescendre sans accord du bénéficiaire du transfert."},
+    {"id": "I08", "title": "Mesure contestable", "statement": "Tout indicateur conséquent conserve une mesure rivale, une observation hors cible et un recours.", "gate": "trace", "observables": ["mesure rivale publiée", "taux de recours aux catégories"], "failure_condition": "Un score unique déclenche seul une sanction ou une priorité vitale."},
+    {"id": "I09", "title": "Redondance indépendante", "statement": "Toute fonction vitale possède plusieurs voies sans cause de panne critique commune.", "gate": "besoins_vitaux", "observables": ["causes communes recensées", "service sous perte simultanée"], "failure_condition": "Les secours partagent une clé, énergie, compétence ou route critique."},
+    {"id": "I10", "title": "Attribution en mode dégradé", "statement": "Une décision reste attribuable et contestable avec données ou communications partielles.", "gate": "trace", "observables": ["actes signés hors ligne", "délai de réconciliation des journaux"], "failure_condition": "Une décision affectant les droits ne peut être attribuée après la panne."},
+    {"id": "I11", "title": "Réparation de capacité", "statement": "Réparer rend une capacité d’usage, réduit la répétition et nomme le reste irréparable.", "gate": "recuperation", "observables": ["capacité d’usage retrouvée", "réduction du mécanisme de répétition"], "failure_condition": "Une indemnité clôt le dossier sans restaurer ni compenser l’usage."},
+    {"id": "I12", "title": "Anticoncentration fonctionnelle", "statement": "Le contrôle suit bénéficiaires, dépendances, clés, agendas et réactivation, pas seulement les titres.", "gate": "transversal", "observables": ["bénéficiaires effectifs reliés", "dépendances communes détectées"], "failure_condition": "Des entités séparées juridiquement coordonnent un contrôle équivalent au monopole."},
+    {"id": "I13", "title": "Alternance sans abolition du sujet", "statement": "Une majorité peut changer les politiques sans supprimer dignité, droits vitaux, opposition ou recours.", "gate": "droits", "observables": ["droits non dérogeables disponibles", "opposition financée après alternance"], "failure_condition": "Une majorité ordinaire neutralise un droit vital ou sa voie de recours."},
+    {"id": "I14", "title": "Pluralisme réfutable", "statement": "Toute généralisation conserve un rival crédible, une condition de perte et les résultats négatifs.", "gate": "transversal", "observables": ["rival préspécifié comparé", "résultats négatifs accessibles"], "failure_condition": "Un mécanisme est généralisé sur son seul succès endogène."},
+    {"id": "I15", "title": "Robustesse composée", "statement": "Les chocs simultanés ne doivent pas sacrifier silencieusement droits, plafond, trace ou retour au civil.", "gate": "transversal", "observables": ["cinq portes mesurées séparément", "défaillances communes sous charge"], "failure_condition": "Deux protections réputées distinctes échouent par une dépendance partagée non publiée."}
+  ],
+  "dispositions": [
+    {
+      "id": "D01",
+      "title": "Accès vital en mode dégradé",
+      "purpose": "Maintenir eau, alimentation, soins, énergie vitale et recours malgré la perte des guichets numériques.",
+      "normative_level": "non_derogeable",
+      "actors": {"proposer_regle": ["A01", "A12"], "decider": ["A02"], "executer": ["A04", "A08"], "controler": ["A05", "A06"], "arreter": ["A06"], "relancer": ["A02"], "certifier_restitution": ["A09"], "reparer": ["A10"], "collecter_donnees": ["A14"], "evaluer": ["A05"], "sanctionner": ["A06"]},
+      "triggers": [{"id": "D01-T1", "observable": "indisponibilité d’un canal central d’identité, paiement ou communication", "channel": "tests locaux et signalements", "window_hours": 2, "threshold": "un service vital refusé ou canal central indisponible plus de deux heures", "observer": "A12", "detection_limit": "les refus non déclarés exigent échantillonnage et présence locale"}],
+      "invariants": ["I01", "I10", "I15"],
+      "required_traces": [{"id": "D01-TR1", "producer": "A04", "content": "service demandé, service rendu ou refus motivé et canal utilisé", "channel": "registre papier réconciliable", "deadline_hours": 0, "retention_days": 365, "publicity": "confidentielle_controlee", "offline_copy": true, "detectability": "numéro de reçu remis à la personne et copie territoriale"}],
+      "appeals": [{"id": "D01-R1", "eligible": "toute personne privée ou menacée de privation", "recipient": ["A12", "A06"], "deadline_hours": 2, "suspensive_scope": "suspension du refus, jamais du service vital collectif", "protective_default": "accorder provisoirement le minimum vital puis réconcilier", "accessible_channels": ["guichet local", "téléphone", "papier"]}],
+      "stop": {"failure_threshold": "la procédure dégradée crée un risque supérieur au service ou discrimine systématiquement", "observers": ["A01", "A05"], "authorized_actors": ["A06"], "dependencies": ["juge joignable hors ligne", "voie sûre de substitution"], "lost_options": ["réconciliation immédiate", "contrôle automatisé antifraude"], "loss_bearers": ["usagers", "agents de première ligne"], "safe_state": "service minimal présumé avec journal papier et revue différée", "deadline_hours": 2},
+      "restitution": {"responsible": ["A04"], "certifier": ["A09"], "evidence": ["test d’accès ordinaire réussi sans dette automatique", "journaux réconciliés et divergences conservées"], "deadline_hours": 48, "reactivation_guard": "les jetons temporaires expirent et leurs copies sont inventoriées", "residual_debt": "refus et retards restent réparables après reprise", "repair_route": "A12 saisit A10 ou A06 selon la perte"},
+      "lifecycle": {"state": "tests_statiques_passes", "evidence": ["schéma complet", "exemple de décision validé"], "allowed_next": ["autorisee"], "not_established": ["autorisee", "deployee", "reobservee", "efficacite_territoriale"], "reversal_condition": "retirer le mécanisme si une voie plus simple maintient mieux les droits sous panne"}
+    },
+    {
+      "id": "D02",
+      "title": "Double borne et pénurie physiquement impossible",
+      "purpose": "Arbitrer publiquement quand les stocks compatibles avec le plafond ne couvrent plus les minima déclarés.",
+      "normative_level": "non_derogeable",
+      "actors": {"proposer_regle": ["A01", "A07"], "decider": ["A02", "A11"], "executer": ["A04", "A08"], "controler": ["A05", "A07"], "arreter": ["A06"], "relancer": ["A02", "A11"], "certifier_restitution": ["A09"], "reparer": ["A10"], "collecter_donnees": ["A14"], "evaluer": ["A07"], "sanctionner": ["A06"]},
+      "triggers": [{"id": "D02-T1", "observable": "écart entre besoins biologiques agrégés, stocks utilisables et plafond critique", "channel": "comptes physiques contradictoires", "window_hours": 24, "threshold": "stock compatible inférieur au minimum biologique préspécifié", "observer": "A07", "detection_limit": "stocks cachés et données tardives rendent l’écart partiellement identifié"}],
+      "invariants": ["I02", "I11", "I15"],
+      "required_traces": [{"id": "D02-TR1", "producer": "A07", "content": "écart physique, hypothèses, incertitude, ordre d’allocation et groupes privés", "channel": "bulletin public multicanal", "deadline_hours": 4, "retention_days": 1825, "publicity": "publique", "offline_copy": true, "detectability": "affichage local et archive distribuée horodatée"}],
+      "appeals": [{"id": "D02-R1", "eligible": "personne ou territoire dont le minimum est réduit", "recipient": ["A12", "A06"], "deadline_hours": 4, "suspensive_scope": "correction individuelle protectrice sans dépasser silencieusement le plafond agrégé", "protective_default": "minimum biologique individuel et absence de priorité des dirigeants", "accessible_channels": ["guichet local", "radio", "papier"]}],
+      "stop": {"failure_threshold": "l’allocation privilégie un statut ou dépasse le plafond critique sans justification physique", "observers": ["A01", "A05", "A07"], "authorized_actors": ["A06"], "dependencies": ["comptes physiques alternatifs", "route logistique de remplacement"], "lost_options": ["optimisation fine de confort", "allocation discrétionnaire rapide"], "loss_bearers": ["usagers discrétionnaires", "forts consommateurs", "opérateurs"], "safe_state": "minimum biologique uniforme puis allocation par besoin et rotation documentée", "deadline_hours": 4},
+      "restitution": {"responsible": ["A04", "A08"], "certifier": ["A09"], "evidence": ["stocks revenus au-dessus du seuil durant la fenêtre publiée", "rations temporaires supprimées et accès ordinaire testé"], "deadline_hours": 72, "reactivation_guard": "toute nouvelle activation exige un nouveau bulletin physique", "residual_debt": "privations et dommages sanitaires restent inscrits", "repair_route": "A10 restaure la capacité et A06 tranche les contestations"},
+      "lifecycle": {"state": "tests_statiques_passes", "evidence": ["déclencheur et ordre d’allocation compilés", "séparation des comptes et sanctions vérifiée"], "allowed_next": ["autorisee"], "not_established": ["autorisee", "deployee", "reobservee", "robustesse_independante"], "reversal_condition": "remplacer si les minima ou seuils ne sont pas détectables à temps dans deux exercices distincts"}
+    },
+    {
+      "id": "D03",
+      "title": "Classification et fiche minimale de décision",
+      "purpose": "Empêcher qu’une décision coercitive, urgente ou irréversible soit déguisée en opération ordinaire.",
+      "normative_level": "renforcee",
+      "actors": {"proposer_regle": ["A01", "A02"], "decider": ["A02"], "executer": ["A04"], "controler": ["A05", "A06"], "arreter": ["A06"], "relancer": ["A02"], "certifier_restitution": ["A09"], "reparer": ["A10"], "collecter_donnees": ["A14"], "evaluer": ["A05"], "sanctionner": ["A06"]},
+      "triggers": [{"id": "D03-T1", "observable": "projet de décision affectant budget, droit, compétence, ressource ou durée publique", "channel": "registre préalable des décisions", "window_hours": 168, "threshold": "tout acte public non purement matériel", "observer": "A05", "detection_limit": "les instructions orales ou actes fragmentés exigent audit hors registre"}],
+      "invariants": ["I03", "I10", "I13"],
+      "required_traces": [{"id": "D03-TR1", "producer": "A02", "content": "compétence, classification, responsables, bénéficiaires, coûts, durée, indicateurs, recours et arrêt", "channel": "registre public des décisions", "deadline_hours": 24, "retention_days": 3650, "publicity": "publique", "offline_copy": true, "detectability": "absence de fiche bloque l’autorisation dans le validateur"}],
+      "appeals": [{"id": "D03-R1", "eligible": "toute personne concernée ou contrôleur public", "recipient": ["A12", "A06"], "deadline_hours": 48, "suspensive_scope": "partie irréversible ou gravement attentatoire", "protective_default": "reclassement vers le niveau de contrôle le plus protecteur", "accessible_channels": ["portail public", "guichet local", "papier"]}],
+      "stop": {"failure_threshold": "fiche absente, acteur non habilité ou classification matériellement fausse", "observers": ["A01", "A05"], "authorized_actors": ["A06"], "dependencies": ["registre accessible", "voie conservatoire"], "lost_options": ["mise en œuvre immédiate", "secret non motivé"], "loss_bearers": ["promoteurs de la décision", "bénéficiaires différés"], "safe_state": "mesure conservatoire strictement réversible ou retour au régime antérieur", "deadline_hours": 24},
+      "restitution": {"responsible": ["A04"], "certifier": ["A09"], "evidence": ["acte suspendu dans les systèmes opérateurs", "classement corrigé et effets résiduels publiés"], "deadline_hours": 72, "reactivation_guard": "nouvelle autorisation distincte après instruction complète", "residual_debt": "effets produits avant suspension restent contestables", "repair_route": "A06 ordonne et A10 finance la restauration utile"},
+      "lifecycle": {"state": "tests_statiques_passes", "evidence": ["champs obligatoires inscrits dans decision.schema.json", "contraintes croisées testées"], "allowed_next": ["autorisee"], "not_established": ["autorisee", "deployee", "reobservee"], "reversal_condition": "simplifier si la fiche n’améliore aucune décision tout en dépassant le budget de charge"}
+    },
+    {
+      "id": "D04",
+      "title": "Cycle atomique des pouvoirs exceptionnels",
+      "purpose": "Borner chaque capacité d’urgence séparément et prouver sa disparition après usage.",
+      "normative_level": "non_derogeable",
+      "actors": {"proposer_regle": ["A02", "A03"], "decider": ["A02", "A03"], "executer": ["A08"], "controler": ["A05", "A06"], "arreter": ["A06"], "relancer": ["A02"], "certifier_restitution": ["A09"], "reparer": ["A10"], "collecter_donnees": ["A14"], "evaluer": ["A05"], "sanctionner": ["A06"]},
+      "triggers": [{"id": "D04-T1", "observable": "dommage grave imminent impossible à contenir par la procédure ordinaire", "channel": "alerte contradictoire documentée", "window_hours": 6, "threshold": "perte vitale ou irréversible attendue avant le délai ordinaire", "observer": "A05", "detection_limit": "secret opérationnel peut réduire la publicité mais non le contrôle habilité"}],
+      "invariants": ["I04", "I05", "I13", "I15"],
+      "required_traces": [{"id": "D04-TR1", "producer": "A08", "content": "capacité activée, détenteur, actes, copies, dépendances, échéance et pertes", "channel": "journal append-only à copies séparées", "deadline_hours": 1, "retention_days": 3650, "publicity": "publique_redigee", "offline_copy": true, "detectability": "chaque capacité dispose d’un identifiant et d’un compteur d’échéance"}],
+      "appeals": [{"id": "D04-R1", "eligible": "toute personne affectée, opposition ou inspecteur", "recipient": ["A06"], "deadline_hours": 6, "suspensive_scope": "capacité contestée sans arrêter les secours distincts", "protective_default": "expiration à l’échéance et interdiction de prorogation silencieuse", "accessible_channels": ["greffe d’urgence", "téléphone sécurisé", "papier scellé"]}],
+      "stop": {"failure_threshold": "échéance atteinte, déclencheur disparu, droit non dérogeable atteint ou acte hors liste", "observers": ["A05", "A09"], "authorized_actors": ["A06"], "dependencies": ["canal d’ordre indépendant", "contrôle de paie et logistique séparé"], "lost_options": ["vitesse exceptionnelle", "accès temporaire aux données"], "loss_bearers": ["opérateurs de crise", "personnes encore exposées au danger"], "safe_state": "secours vitaux maintenus sous droit ordinaire sans capacité coercitive temporaire", "deadline_hours": 1},
+      "restitution": {"responsible": ["A08"], "certifier": ["A09"], "evidence": ["clés et accès révoqués avec test négatif", "paie, logistique, données et ordres revenus au régime ordinaire"], "deadline_hours": 24, "reactivation_guard": "aucune réactivation sans nouveau déclencheur et nouvelle double autorisation", "residual_debt": "copies inconnues, pertes et abus restent explicitement ouverts", "repair_route": "A06 qualifie les abus et A10 restaure les capacités lésées"},
+      "lifecycle": {"state": "tests_statiques_passes", "evidence": ["clés terminales distinctes imposées", "expiration et preuves de restitution obligatoires"], "allowed_next": ["autorisee"], "not_established": ["autorisee", "deployee", "reobservee", "efficacite_territoriale"], "reversal_condition": "rejeter si l’arrêt ne retire pas matériellement la capacité lors d’un exercice représentatif"}
+    },
+    {
+      "id": "D05",
+      "title": "Séparation des règles, données, évaluations et sanctions",
+      "purpose": "Empêcher un centre épistémique de produire seul la mesure qui justifie son propre pouvoir.",
+      "normative_level": "renforcee",
+      "actors": {"proposer_regle": ["A01", "A02"], "decider": ["A02"], "executer": ["A04"], "controler": ["A05"], "arreter": ["A06"], "relancer": ["A02"], "certifier_restitution": ["A09"], "reparer": ["A10"], "collecter_donnees": ["A14"], "evaluer": ["A05", "A07"], "sanctionner": ["A06"]},
+      "triggers": [{"id": "D05-T1", "observable": "indicateur déclenchant allocation, restriction, sanction ou généralisation", "channel": "catalogue public des métriques", "window_hours": 720, "threshold": "effet matériel ou juridique sur au moins une personne", "observer": "A05", "detection_limit": "les décisions informelles fondées sur un score nécessitent enquête qualitative"}],
+      "invariants": ["I03", "I08", "I14"],
+      "required_traces": [{"id": "D05-TR1", "producer": "A14", "content": "définition, source, fenêtre, seuil, bruit, exclusions et versions de chaque mesure", "channel": "registre méthodologique public", "deadline_hours": 168, "retention_days": 3650, "publicity": "publique", "offline_copy": true, "detectability": "chaque décision cite une version immuable de la métrique"}],
+      "appeals": [{"id": "D05-R1", "eligible": "personne mesurée, minorité, chercheur ou contrôleur", "recipient": ["A05", "A06"], "deadline_hours": 168, "suspensive_scope": "sanction ou généralisation fondée sur la mesure contestée", "protective_default": "conserver la pluralité des mesures et la décision la moins irréversible", "accessible_channels": ["dossier public", "audition", "papier"]}],
+      "stop": {"failure_threshold": "mesure unique, source indétectable, jeu stratégique établi ou cumul des quatre fonctions", "observers": ["A01", "A05"], "authorized_actors": ["A06"], "dependencies": ["mesure rivale", "archive des versions"], "lost_options": ["automatisation du classement", "comparabilité immédiate"], "loss_bearers": ["administrations", "bénéficiaires d’une allocation différée"], "safe_state": "décision protectrice provisoire sans sanction automatique", "deadline_hours": 24},
+      "restitution": {"responsible": ["A04", "A14"], "certifier": ["A09"], "evidence": ["seuil retiré des automatismes", "personnes reclassées et décisions réexaminées"], "deadline_hours": 720, "reactivation_guard": "nouvelle version exige mesure rivale et condition de perte", "residual_debt": "préjudices de classement restent réparables", "repair_route": "A12 route les cas vers A06 et A10"},
+      "lifecycle": {"state": "tests_statiques_passes", "evidence": ["séparation fonctionnelle contrôlée", "observables de détectabilité imposés"], "allowed_next": ["autorisee"], "not_established": ["autorisee", "deployee", "reobservee"], "reversal_condition": "retirer une métrique si sa cible détruit durablement sa validité de construit"}
+    },
+    {
+      "id": "D06",
+      "title": "Subsidiarité et restitution de compétence",
+      "purpose": "Limiter toute montée d’échelle à la capacité nécessaire et rendre la redescente praticable.",
+      "normative_level": "renforcee",
+      "actors": {"proposer_regle": ["A01", "A11"], "decider": ["A02", "A11"], "executer": ["A04"], "controler": ["A05", "A06"], "arreter": ["A06"], "relancer": ["A02", "A11"], "certifier_restitution": ["A09"], "reparer": ["A10"], "collecter_donnees": ["A14"], "evaluer": ["A05"], "sanctionner": ["A06"]},
+      "triggers": [{"id": "D06-T1", "observable": "dommage exporté, ressource partagée, incapacité locale ou droit universel menacé", "channel": "registre de montée en échelle", "window_hours": 720, "threshold": "au moins un critère établi avec rival sans transfert permanent", "observer": "A11", "detection_limit": "les dommages lents ou hors territoire peuvent apparaître après la fenêtre"}],
+      "invariants": ["I07", "I13", "I14"],
+      "required_traces": [{"id": "D06-TR1", "producer": "A11", "content": "compétence transférée, motif, ressources, durée, rival et plan de redescente", "channel": "registre fédéral public", "deadline_hours": 168, "retention_days": 3650, "publicity": "publique", "offline_copy": true, "detectability": "inventaire annuel des compétences et dépendances acquises"}],
+      "appeals": [{"id": "D06-R1", "eligible": "territoire, commun ou personne affectée", "recipient": ["A06"], "deadline_hours": 720, "suspensive_scope": "transfert irréversible et actifs non nécessaires", "protective_default": "compétence reste au niveau inférieur sauf mesure conservatoire bornée", "accessible_channels": ["assemblée locale", "greffe", "papier"]}],
+      "stop": {"failure_threshold": "motif disparu, dommage déplacé, centre devenu dépendance unique ou échéance atteinte", "observers": ["A01", "A05", "A11"], "authorized_actors": ["A06"], "dependencies": ["capacité locale maintenue", "inventaire des actifs et données"], "lost_options": ["économie d’échelle temporaire", "uniformité de procédure"], "loss_bearers": ["service mutualisé", "territoires dépendants"], "safe_state": "continuité partagée pendant transfert vers des unités capables", "deadline_hours": 168},
+      "restitution": {"responsible": ["A04", "A11"], "certifier": ["A09"], "evidence": ["actifs, données et financement remis", "service local réussi sous charge représentative"], "deadline_hours": 2160, "reactivation_guard": "nouveau transfert exige une nouvelle ratification et un nouveau motif", "residual_debt": "dépendances et relations perdues sont nommées", "repair_route": "A10 finance la capacité locale et A06 tranche les actifs"},
+      "lifecycle": {"state": "tests_statiques_passes", "evidence": ["motifs fermés et restitution exigée", "rival sans transfert conservé"], "allowed_next": ["autorisee"], "not_established": ["autorisee", "deployee", "reobservee"], "reversal_condition": "abandonner le transfert si la capacité locale restaurée protège autant avec moins de domination"}
+    },
+    {
+      "id": "D07",
+      "title": "Continuité et redondance réellement indépendante",
+      "purpose": "Maintenir les services vitaux lorsque énergie, paiement, réseau ou équipes échouent ensemble.",
+      "normative_level": "non_derogeable",
+      "actors": {"proposer_regle": ["A01", "A08"], "decider": ["A02"], "executer": ["A04", "A08"], "controler": ["A05", "A09"], "arreter": ["A06"], "relancer": ["A02"], "certifier_restitution": ["A09"], "reparer": ["A10"], "collecter_donnees": ["A14"], "evaluer": ["A05"], "sanctionner": ["A06"]},
+      "triggers": [{"id": "D07-T1", "observable": "perte simultanée ou cause commune critique de deux voies de service vital", "channel": "registre des dépendances et exercices", "window_hours": 24, "threshold": "une cause unique peut interrompre toutes les voies", "observer": "A09", "detection_limit": "les dépendances fournisseurs de rang supérieur peuvent rester inconnues"}],
+      "invariants": ["I09", "I15"],
+      "required_traces": [{"id": "D07-TR1", "producer": "A08", "content": "clés, énergies, logiciels, compétences, routes, fournisseurs et résultats d’exercice", "channel": "registre public avec annexe protégée", "deadline_hours": 168, "retention_days": 1825, "publicity": "publique_redigee", "offline_copy": true, "detectability": "test annuel de retrait d’une cause critique non annoncé à l’opérateur"}],
+      "appeals": [{"id": "D07-R1", "eligible": "usager, travailleur ou territoire dépendant", "recipient": ["A12", "A06"], "deadline_hours": 24, "suspensive_scope": "fermeture d’une voie indépendante ou transfert vers cause commune", "protective_default": "maintenir au moins deux voies jusqu’à preuve d’indépendance", "accessible_channels": ["guichet", "alerte travailleur", "papier"]}],
+      "stop": {"failure_threshold": "le secours échoue ou augmente le dommage au-delà de l’état sûr", "observers": ["A01", "A09"], "authorized_actors": ["A06"], "dependencies": ["voie de secours hétérogène", "stock minimal"], "lost_options": ["capacité nominale complète", "efficacité centralisée"], "loss_bearers": ["usagers", "travailleurs", "écosystèmes affectés"], "safe_state": "niveau vital réduit mais universel sur voie hétérogène", "deadline_hours": 2},
+      "restitution": {"responsible": ["A04", "A08"], "certifier": ["A09"], "evidence": ["service nominal restauré puis secours testé séparément", "cause commune supprimée ou explicitement bornée"], "deadline_hours": 168, "reactivation_guard": "la voie primaire ne peut désactiver automatiquement le secours", "residual_debt": "interruptions et charges de maintenance restent attribuées", "repair_route": "A10 compense et finance la diversification"},
+      "lifecycle": {"state": "tests_statiques_passes", "evidence": ["dimensions de cause commune inscrites", "preuve de restauration séparée de la continuité"], "allowed_next": ["autorisee"], "not_established": ["autorisee", "deployee", "reobservee", "robustesse_independante"], "reversal_condition": "requalifier toute redondance échouant sous retrait simultané de dépendances préspécifiées"}
+    },
+    {
+      "id": "D08",
+      "title": "Réparation de capacité et dernier ressort",
+      "purpose": "Restaurer ou compenser l’usage, réduire la répétition et reconnaître les pertes restantes.",
+      "normative_level": "non_derogeable",
+      "actors": {"proposer_regle": ["A01", "A10"], "decider": ["A06"], "executer": ["A04", "A10"], "controler": ["A05", "A01"], "arreter": ["A06"], "relancer": ["A02"], "certifier_restitution": ["A09"], "reparer": ["A10"], "collecter_donnees": ["A14"], "evaluer": ["A05"], "sanctionner": ["A06"]},
+      "triggers": [{"id": "D08-T1", "observable": "perte de capacité, accès, santé, territoire, relation ou droit attribuable", "channel": "saisine et observation indépendante", "window_hours": 8760, "threshold": "perte non négligeable ou risque de répétition", "observer": "A12", "detection_limit": "les pertes différées ou collectives peuvent dépasser la fenêtre individuelle"}],
+      "invariants": ["I11", "I13"],
+      "required_traces": [{"id": "D08-TR1", "producer": "A10", "content": "perte, porteurs, responsable ou bénéficiaire, transfert, recours, clôture et reste irréparable", "channel": "registre de réparation protégé", "deadline_hours": 720, "retention_days": 3650, "publicity": "publique_redigee", "offline_copy": true, "detectability": "chaque clôture cite une capacité retrouvée ou compensation acceptée"}],
+      "appeals": [{"id": "D08-R1", "eligible": "porteur de perte ou représentant choisi", "recipient": ["A06"], "deadline_hours": 2160, "suspensive_scope": "clôture du dossier, jamais l’aide provisoire", "protective_default": "maintenir aide et recours tant que la capacité d’usage manque", "accessible_channels": ["défenseur public", "greffe", "papier"]}],
+      "stop": {"failure_threshold": "réparation imposée, dette infinie sans clôture ou indemnité substituée à l’usage sans accord", "observers": ["A01", "A05"], "authorized_actors": ["A06"], "dependencies": ["aide provisoire maintenue", "expertise des porteurs de pertes"], "lost_options": ["clôture rapide", "accord standardisé"], "loss_bearers": ["porteurs de pertes", "fonds public", "responsables"], "safe_state": "aide protectrice continue et négociation de réparation rouverte", "deadline_hours": 72},
+      "restitution": {"responsible": ["A10"], "certifier": ["A09"], "evidence": ["capacité d’usage observée ou compensation utilisable", "mécanisme de répétition réduit et reste irréparable nommé"], "deadline_hours": 2160, "reactivation_guard": "réouverture possible sur perte nouvelle ou preuve cachée", "residual_debt": "l’irréparable reconnu n’est pas effacé par la clôture", "repair_route": "A06 garantit l’exécution contre responsable et A10 assure le dernier ressort"},
+      "lifecycle": {"state": "tests_statiques_passes", "evidence": ["usage séparé de l’objet restitué", "insolvabilité couverte sans extinction de responsabilité"], "allowed_next": ["autorisee"], "not_established": ["autorisee", "deployee", "reobservee"], "reversal_condition": "réviser si la procédure aggrave durablement la charge ou la dépendance des porteurs de pertes"}
+    },
+    {
+      "id": "D09",
+      "title": "Anticoncentration fonctionnelle",
+      "purpose": "Détecter et réduire le contrôle coordonné même lorsque les titres juridiques restent fragmentés.",
+      "normative_level": "renforcee",
+      "actors": {"proposer_regle": ["A01", "A05"], "decider": ["A02"], "executer": ["A04"], "controler": ["A05", "A11"], "arreter": ["A06"], "relancer": ["A02"], "certifier_restitution": ["A09"], "reparer": ["A10"], "collecter_donnees": ["A14"], "evaluer": ["A05"], "sanctionner": ["A06"]},
+      "triggers": [{"id": "D09-T1", "observable": "bénéficiaires, clés, fournisseurs, agendas ou financements communs entre entités", "channel": "registre des dépendances effectives", "window_hours": 2160, "threshold": "contrôle coordonné d’une fonction vitale ou d’un seuil public", "observer": "A05", "detection_limit": "accords informels et bénéficiaires cachés limitent l’attribution"}],
+      "invariants": ["I12", "I14"],
+      "required_traces": [{"id": "D09-TR1", "producer": "A14", "content": "propriété, bénéficiaires, clés, dépendances, veto, agenda et canaux de réactivation", "channel": "graphe public de contrôle", "deadline_hours": 720, "retention_days": 3650, "publicity": "publique_redigee", "offline_copy": true, "detectability": "déclarations croisées avec flux, contrats et tests de dépendance"}],
+      "appeals": [{"id": "D09-R1", "eligible": "entité visée, travailleur, usager ou concurrent coopératif", "recipient": ["A06"], "deadline_hours": 720, "suspensive_scope": "sanction irréversible mais non mesure conservatoire d’accès", "protective_default": "interopérabilité et accès temporaire plutôt que fermeture brutale", "accessible_channels": ["greffe", "audition contradictoire", "papier"]}],
+      "stop": {"failure_threshold": "mesure anticoncentration interrompt un droit vital ou renforce un autre centre unique", "observers": ["A01", "A05"], "authorized_actors": ["A06"], "dependencies": ["opérateur de remplacement", "portabilité des données et compétences"], "lost_options": ["démantèlement immédiat", "standard unique"], "loss_bearers": ["usagers", "travailleurs", "entités visées"], "safe_state": "accès ouvert sous mandat transitoire et contrôle séparé", "deadline_hours": 72},
+      "restitution": {"responsible": ["A04"], "certifier": ["A09"], "evidence": ["capacité dominante devenue indisponible ou plus coûteuse", "alternatives utilisables sans dépendance au centre initial"], "deadline_hours": 2160, "reactivation_guard": "bénéficiaires et clés restent suivis après changement de nom", "residual_debt": "coûts de migration et pertes de relation sont publiés", "repair_route": "A10 soutient la portabilité et A06 sanctionne la reconstitution"},
+      "lifecycle": {"state": "tests_statiques_passes", "evidence": ["contrôle distinct des titres juridiques", "réactivation et dépendances incluses"], "allowed_next": ["autorisee"], "not_established": ["autorisee", "deployee", "reobservee"], "reversal_condition": "retirer une mesure qui déplace le monopole sans réduire la capacité dominante"}
+    },
+    {
+      "id": "D10",
+      "title": "Budget global de charge constitutionnelle",
+      "purpose": "Préserver les cinq portes du noyau quand plusieurs contrôles consomment les mêmes ressources.",
+      "normative_level": "non_derogeable",
+      "actors": {"proposer_regle": ["A01", "A12"], "decider": ["A02", "A03"], "executer": ["A04"], "controler": ["A05"], "arreter": ["A06"], "relancer": ["A02"], "certifier_restitution": ["A09"], "reparer": ["A10"], "collecter_donnees": ["A14"], "evaluer": ["A05"], "sanctionner": ["A06"]},
+      "triggers": [{"id": "D10-T1", "observable": "temps, juges, traduction, énergie ou canaux requis au-delà de la capacité disponible", "channel": "tableau de charge multi-services", "window_hours": 24, "threshold": "deux contrôles renforcés en contention ou délai vital menacé", "observer": "A12", "detection_limit": "le travail invisible et les abandons avant saisine sont sous-détectés"}],
+      "invariants": ["I06", "I15"],
+      "required_traces": [{"id": "D10-TR1", "producer": "A14", "content": "ressource saturée, file, porteurs de charge, délestage, durée et cinq portes", "channel": "tableau public de charge", "deadline_hours": 4, "retention_days": 1825, "publicity": "publique", "offline_copy": true, "detectability": "abandons et exclusions du dénominateur sont échantillonnés"}],
+      "appeals": [{"id": "D10-R1", "eligible": "personne retardée, agent surchargé ou organe privé de ressource", "recipient": ["A12", "A06"], "deadline_hours": 4, "suspensive_scope": "délestage d’un noyau non compensable", "protective_default": "besoin vital, plafond critique, droit, trace minimale et restitution prioritaires", "accessible_channels": ["porte unique", "téléphone", "papier"]}],
+      "stop": {"failure_threshold": "un délestage réduit l’une des cinq portes ou déplace une charge grave sans trace", "observers": ["A01", "A05", "A12"], "authorized_actors": ["A06"], "dependencies": ["ordre de délestage prépublié", "file alternative"], "lost_options": ["rapport secondaire", "double saisie", "formalité réversible"], "loss_bearers": ["administrations", "auditeurs", "participants"], "safe_state": "noyau frugal maintenu et formalités secondaires suspendues à échéance courte", "deadline_hours": 2},
+      "restitution": {"responsible": ["A04"], "certifier": ["A09"], "evidence": ["files revenues sous seuil durable", "formalités utiles réactivées séparément après test"], "deadline_hours": 168, "reactivation_guard": "aucune formalité n’est réactivée sans fonction et charge publiées", "residual_debt": "retards, abandons et travail invisible restent réparables", "repair_route": "A12 identifie les pertes et A10 finance la remise en capacité"},
+      "lifecycle": {"state": "tests_statiques_passes", "evidence": ["cinq portes non compensables codées", "charge et délestage rendus traçables"], "allowed_next": ["autorisee"], "not_established": ["autorisee", "deployee", "reobservee", "efficacite_territoriale"], "reversal_condition": "simplifier si le contrôle de charge consomme plus de capacité qu’il ne libère sur trois protocoles"}
+    },
+    {
+      "id": "D11",
+      "title": "Maintenance et modification constitutionnelles",
+      "purpose": "Séparer proposition, test, autorisation, déploiement et réobservation de toute modification.",
+      "normative_level": "renforcee",
+      "actors": {"proposer_regle": ["A01", "A02", "A11"], "decider": ["A02", "A03", "A11"], "executer": ["A04"], "controler": ["A05", "A06"], "arreter": ["A06"], "relancer": ["A02", "A11"], "certifier_restitution": ["A09"], "reparer": ["A10"], "collecter_donnees": ["A14"], "evaluer": ["A05"], "sanctionner": ["A06"]},
+      "triggers": [{"id": "D11-T1", "observable": "proposition de modifier une disposition, un invariant ou une compétence", "channel": "registre public des versions", "window_hours": 2160, "threshold": "tout diff normatif ou changement d’effet", "observer": "A05", "detection_limit": "les changements d’interface ou d’implémentation peuvent modifier l’effet sans diff normatif"}],
+      "invariants": ["I04", "I05", "I14"],
+      "required_traces": [{"id": "D11-TR1", "producer": "A05", "content": "diff, échec justifiant, rival, tests, autorité, migration, retour et résultat négatif", "channel": "registre public versionné", "deadline_hours": 168, "retention_days": 3650, "publicity": "publique", "offline_copy": true, "detectability": "empreinte du texte et des schémas comparée avant autorisation"}],
+      "appeals": [{"id": "D11-R1", "eligible": "personne, territoire, opposition ou équipe d’évaluation", "recipient": ["A06"], "deadline_hours": 720, "suspensive_scope": "déploiement ou généralisation, jamais publication du test", "protective_default": "version antérieure demeure active jusqu’à autorisation distincte", "accessible_channels": ["registre public", "greffe", "papier"]}],
+      "stop": {"failure_threshold": "test perdu, effet non déclaré, violation d’invariant ou absence de voie de retour", "observers": ["A01", "A05", "A09"], "authorized_actors": ["A06"], "dependencies": ["version antérieure conservée", "migration réversible"], "lost_options": ["fonction nouvelle", "gain de rendement attendu"], "loss_bearers": ["usagers de la nouvelle version", "opérateurs", "territoires pilotes"], "safe_state": "retour à la dernière version autorisée avec conservation des divergences", "deadline_hours": 24},
+      "restitution": {"responsible": ["A04"], "certifier": ["A09"], "evidence": ["ancienne version remise en service et testée", "données nouvelles migrées sans effacer les divergences"], "deadline_hours": 168, "reactivation_guard": "nouvelle tentative reçoit un identifiant et une autorisation distincts", "residual_debt": "pertes de la période expérimentale restent documentées", "repair_route": "A10 restaure les capacités et A06 garde le recours ouvert"},
+      "lifecycle": {"state": "tests_statiques_passes", "evidence": ["états de changement fermés", "surclassement de statut interdit par le validateur"], "allowed_next": ["autorisee"], "not_established": ["autorisee", "deployee", "reobservee"], "reversal_condition": "annuler toute modification qui ne bat pas un rival plus simple à protections égales"}
+    },
+    {
+      "id": "D12",
+      "title": "Portabilité des droits, sortie et retour",
+      "purpose": "Permettre de quitter une institution ou un territoire sans perdre les capacités matérielles d’exercer ses droits.",
+      "normative_level": "non_derogeable",
+      "actors": {"proposer_regle": ["A01", "A12"], "decider": ["A02", "A11"], "executer": ["A04", "A12"], "controler": ["A05", "A06"], "arreter": ["A06"], "relancer": ["A02", "A11"], "certifier_restitution": ["A09"], "reparer": ["A10"], "collecter_donnees": ["A14"], "evaluer": ["A05"], "sanctionner": ["A06"]},
+      "triggers": [{"id": "D12-T1", "observable": "demande de sortie, changement de statut ou interruption d’un droit portable", "channel": "porte unique confidentielle", "window_hours": 24, "threshold": "demande exprimée ou perte imminente d’un service fondamental", "observer": "A12", "detection_limit": "la peur des représailles réduit les demandes observables"}],
+      "invariants": ["I01", "I07", "I10", "I11", "I13"],
+      "required_traces": [{"id": "D12-TR1", "producer": "A12", "content": "consentement, droits à maintenir, données transférées, dettes contestées, délais et protection", "channel": "dossier portable chiffré et reçu papier", "deadline_hours": 2, "retention_days": 1825, "publicity": "confidentielle_controlee", "offline_copy": true, "detectability": "reçu contrôlé par la personne et journal externe des accès"}],
+      "appeals": [{"id": "D12-R1", "eligible": "personne sortante, proche autorisé ou défenseur choisi", "recipient": ["A12", "A06"], "deadline_hours": 2, "suspensive_scope": "expulsion, coupure de revenu, soin, logement ou données", "protective_default": "continuité provisoire des droits et absence de représailles", "accessible_channels": ["guichet extérieur", "téléphone", "papier"]}],
+      "stop": {"failure_threshold": "sortie forcée, consentement douteux, perte vitale ou transfert de données non maîtrisé", "observers": ["A01", "A05", "A12"], "authorized_actors": ["A06"], "dependencies": ["hébergement sûr", "revenu-pont", "soins continus"], "lost_options": ["transfert immédiat", "clôture administrative"], "loss_bearers": ["personne sortante", "proches", "services d’accueil"], "safe_state": "droits maintenus dans la situation la plus protectrice choisie par la personne", "deadline_hours": 2},
+      "restitution": {"responsible": ["A04", "A12"], "certifier": ["A09"], "evidence": ["logement, revenu, soins, données et recours effectivement accessibles", "option de retour testée sans représailles ni dette automatique"], "deadline_hours": 720, "reactivation_guard": "aucune ancienne autorité ne récupère seule accès ou dossier", "residual_debt": "relations, voisinage ou pertes irréversibles restent reconnus", "repair_route": "A10 finance le pont et A06 protège sortie ou retour"},
+      "lifecycle": {"state": "tests_statiques_passes", "evidence": ["droits matériels et données couplés", "sortie et retour possèdent des observables"], "allowed_next": ["autorisee"], "not_established": ["autorisee", "deployee", "reobservee", "efficacite_territoriale"], "reversal_condition": "reconstruire si les droits deviennent moins utilisables après retrait de l’équipe fondatrice"}
+    }
+  ]
+}
