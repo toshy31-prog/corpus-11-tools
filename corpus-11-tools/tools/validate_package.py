@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from pathlib import Path
+import csv
 import json
 import re
 import sys
@@ -7,10 +8,12 @@ import sys
 root = Path(__file__).resolve().parents[1]
 errors: list[str] = []
 manifest = root / ".codex-plugin" / "plugin.json"
+manifest_data: dict = {}
 governance = root / "skills" / "corpus-11-routing" / "references" / "epistemic-governance.md"
 routing_skill = root / "skills" / "corpus-11-routing" / "SKILL.md"
 eval_file = root / "evals" / "routing-and-nonregression.jsonl"
 inventory_file = root / "docs" / "inventory.json"
+inventory: dict = {}
 NON_CAPABILITY_SKILLS = {
     "corpus-11-routing",
     "corpus-context-library",
@@ -20,6 +23,32 @@ NON_CAPABILITY_SKILLS = {
     "confidence-convention",
     "conclusion-discipline",
     "expand-then-audit",
+}
+DESIGN_CANDIDATE_SKILLS = {
+    "causal-identification",
+    "rival-model-discrimination",
+    "construct-validity-assessment",
+    "transportability-assessment",
+    "scale-transition-assessment",
+    "evidence-dependence-audit",
+    "strategic-adaptation-assessment",
+    "value-of-information",
+    "capability-interference-audit",
+}
+required_inference_evals = {
+    f"inference-{family}-{number:02d}"
+    for family in (
+        "causal",
+        "rival",
+        "construct",
+        "transport",
+        "scale",
+        "evidence",
+        "strategy",
+        "voi",
+        "interference",
+    )
+    for number in (1, 2)
 }
 
 required_governance_invariants = {
@@ -69,6 +98,9 @@ if len(eval_ids) != len(set(eval_ids)):
 missing_epistemic_evals = required_epistemic_evals - set(eval_ids)
 if missing_epistemic_evals:
     errors.append(f"missing epistemic evals: {sorted(missing_epistemic_evals)}")
+missing_inference_evals = required_inference_evals - set(eval_ids)
+if missing_inference_evals:
+    errors.append(f"missing inference evals: {sorted(missing_inference_evals)}")
 
 if not inventory_file.is_file():
     errors.append("missing package inventory")
@@ -137,9 +169,9 @@ if not manifest.exists():
     errors.append("missing .codex-plugin/plugin.json")
 else:
     try:
-        data = json.loads(manifest.read_text(encoding="utf-8"))
+        manifest_data = json.loads(manifest.read_text(encoding="utf-8"))
         for key in ("name", "version", "description", "skills"):
-            if not data.get(key):
+            if not manifest_data.get(key):
                 errors.append(f"manifest missing {key}")
     except Exception as exc:
         errors.append(f"invalid manifest JSON: {exc}")
@@ -212,9 +244,10 @@ for skill in sorted(path for path in skill_root.iterdir() if path.is_dir()):
     elif not capability_md.is_file():
         errors.append(f"{skill.name}: missing references/capability.md")
     else:
+        capability_text = capability_md.read_text(encoding="utf-8")
         heading = re.search(
             r"^#\s+(CAP\.[A-Z0-9_]+)\s+—\s+provenance opérationnelle$",
-            capability_md.read_text(encoding="utf-8"),
+            capability_text,
             re.M,
         )
         if not heading:
@@ -226,13 +259,47 @@ for skill in sorted(path for path in skill_root.iterdir() if path.is_dir()):
             )
         else:
             capability_ids.append(heading.group(1))
+        if skill.name in DESIGN_CANDIDATE_SKILLS and "design_candidate_unvalidated" not in capability_text:
+            errors.append(f"{skill.name}: missing design-candidate status")
+
+design_provenance = root / "skills" / "provenance-audit" / "references" / "08_PROVENANCE_DESIGN_CANDIDATES.csv"
+if not design_provenance.is_file():
+    errors.append("missing design-candidate provenance register")
+else:
+    with design_provenance.open(encoding="utf-8", newline="") as handle:
+        design_rows = list(csv.DictReader(handle))
+    design_ids = {row.get("object_id") for row in design_rows}
+    expected_design_ids = {
+        "CAP." + name.replace("-", "_").upper() for name in DESIGN_CANDIDATE_SKILLS
+    }
+    if design_ids != expected_design_ids:
+        errors.append(
+            f"design provenance mismatch: {sorted(design_ids ^ expected_design_ids)}"
+        )
 
 if len(names) != len(set(names)):
     errors.append("duplicate skill names")
 if len(capability_ids) != len(set(capability_ids)):
     errors.append("duplicate capability IDs in references/capability.md")
-if len(capability_ids) != 40:
-    errors.append(f"expected 40 capability references, found {len(capability_ids)}")
+expected_skill_count = inventory.get("skill_count")
+expected_capability_count = inventory.get("capability_skill_count")
+inventory_skills = inventory.get("skills")
+if expected_skill_count != len(names):
+    errors.append(
+        f"inventory expects {expected_skill_count} skills, found {len(names)}"
+    )
+if expected_capability_count != len(capability_ids):
+    errors.append(
+        f"inventory expects {expected_capability_count} capability references, "
+        f"found {len(capability_ids)}"
+    )
+if not isinstance(inventory_skills, list) or set(inventory_skills) != set(names):
+    inventory_skill_set = set(inventory_skills) if isinstance(inventory_skills, list) else set()
+    errors.append(f"inventory skill list mismatch: {sorted(inventory_skill_set ^ set(names))}")
+elif len(inventory_skills) != len(set(inventory_skills)):
+    errors.append("duplicate skill names in inventory")
+if manifest_data.get("version") != inventory.get("version"):
+    errors.append("manifest version does not match inventory version")
 
 if errors:
     print("FAIL")

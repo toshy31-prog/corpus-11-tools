@@ -249,6 +249,60 @@ Aucune capability n’est automatiquement établie par sa présence ici.
 - sources: Atlas 3.0 `patchbay`
 - rationale: Sépare les fonctions avant une décision globale de conservation ou d'arrêt.
 
+### CAP.CAUSAL_IDENTIFICATION
+- statut: design_candidate_unvalidated
+- classe: new_inference_composite
+- source: lacune positive entre corrélation et attribution causale, audit 2026-08-17
+- rationale: Qualifie l'identification d'un effet sous contraste, structure, intervention et hypothèses explicites.
+
+### CAP.RIVAL_MODEL_DISCRIMINATION
+- statut: design_candidate_unvalidated
+- classe: new_discrimination_procedure
+- source: absence de comparaison exclusive avec concurrents standards, audit 2026-08-17
+- rationale: Compare des prédictions appariées et conserve les survivants observationnellement équivalents.
+
+### CAP.CONSTRUCT_VALIDITY_ASSESSMENT
+- statut: design_candidate_unvalidated
+- classe: new_measurement_boundary
+- source: lacune entre observable, mesure et phénomène revendiqué, audit 2026-08-17
+- rationale: Empêche qu'un proxy, score ou définition opératoire remplace silencieusement le construit.
+
+### CAP.TRANSPORTABILITY_ASSESSMENT
+- statut: design_candidate_unvalidated
+- classe: new_external_validity_boundary
+- source: besoin de transfert source-cible, audit 2026-08-17
+- rationale: Sépare validité locale, différences de cible et preuve du pont de transport.
+
+### CAP.SCALE_TRANSITION_ASSESSMENT
+- statut: design_candidate_unvalidated
+- classe: new_scale_bridge_assessment
+- source: question micro-macro de la recherche, audit 2026-08-17
+- rationale: Trace information ajoutée, perdue ou injectée entre règles micro et prétention macro.
+
+### CAP.EVIDENCE_DEPENDENCE_AUDIT
+- statut: design_candidate_unvalidated
+- classe: new_evidence_synthesis_boundary
+- source: risque de faux cumul probant, audit 2026-08-17
+- rationale: Regroupe les preuves par racines et modes d'échec partagés plutôt que par nombre d'artefacts.
+
+### CAP.STRATEGIC_ADAPTATION_ASSESSMENT
+- statut: design_candidate_unvalidated
+- classe: new_reflexive_system_assessment
+- source: angle mort des systèmes réactifs aux métriques, audit 2026-08-17
+- rationale: Évalue apprentissage, contournement, déplacement et boucle de contre-réponse après exposition d'une règle.
+
+### CAP.VALUE_OF_INFORMATION
+- statut: design_candidate_unvalidated
+- classe: new_test_portfolio_procedure
+- source: besoin de choisir les tests qui peuvent changer la prise, audit 2026-08-17
+- rationale: Classe les expériences par conséquences décisionnelles, détectabilité, coût, délai, risque et options perdues.
+
+### CAP.CAPABILITY_INTERFERENCE_AUDIT
+- statut: design_candidate_unvalidated
+- classe: new_meta_nonregression_assessment
+- source: garde de croissance du carquois, audit 2026-08-17
+- rationale: Détecte redondance, ombrage, conflits, inflation de routage et effets d'ordre sans nouvelle preuve.
+
 ## Familles descriptives — non exécutables
 
 - FAM.DISCRIMINANT_COMPARISON: Groups capabilities involving discriminant comparison without asserting one executable mechanism.
@@ -319,6 +373,33 @@ Aucune capability n’est automatiquement établie par sa présence ici.
 - CAP.PRIVACY_RECOURSE_BOUNDARY --uses[critical]--> CAP.SOURCE_ENVIRONMENT_ASSESSMENT :: Permission, chaîne de réemploi et contexte de source doivent être établis.
 - CAP.FUNCTIONAL_DECOUPLING_ASSESSMENT --requires[critical]--> CAP.FIELD_CAPACITY_ASSESSMENT :: Le découplage doit être matériellement possible dans le champ.
 - CAP.FUNCTIONAL_DECOUPLING_ASSESSMENT --uses[critical]--> CAP.TERMINAL_RECOVERY_ASSESSMENT :: Les fonctions arrêtées exigent terminal et reprise séparés.
+- FAM.DISCRIMINANT_COMPARISON --related_specialization[contextual]--> CAP.RIVAL_MODEL_DISCRIMINATION :: La comparaison de rivaux est une procédure discriminante distincte des conditions de renversement.
+- CAP.CAUSAL_IDENTIFICATION --requires[critical]--> CAP.CONSTRUCT_VALIDITY_ASSESSMENT :: Une cause et un résultat doivent être valides dans la portée revendiquée.
+- CAP.CAUSAL_IDENTIFICATION --uses[critical]--> CAP.RIVAL_MODEL_DISCRIMINATION :: L'identification exige de traiter les structures causales concurrentes.
+- CAP.CAUSAL_IDENTIFICATION --uses[contextual]--> CAP.CHAIN_TRACING :: Les médiateurs et porteurs peuvent exiger un traçage ordonné.
+- CAP.RIVAL_MODEL_DISCRIMINATION --requires[critical]--> CAP.OBSERVABLE_COMPILATION :: Les prédictions rivales doivent être compilées en résultats discriminants.
+- CAP.RIVAL_MODEL_DISCRIMINATION --uses[critical]--> CAP.IDENTIFY_REVERSAL_CONDITION :: Chaque candidat doit avoir un résultat qui le ferait perdre.
+- CAP.CONSTRUCT_VALIDITY_ASSESSMENT --requires[critical]--> CAP.OBSERVABLE_COMPILATION :: La relation construit-indicateur doit être explicitée en observables.
+- CAP.CONSTRUCT_VALIDITY_ASSESSMENT --uses[critical]--> CAP.METHOD_EFFECT_AUDIT :: Le dispositif peut produire le signal attribué au construit.
+- CAP.CONSTRUCT_VALIDITY_ASSESSMENT --uses[contextual]--> CAP.DETECTABILITY_ASSESSMENT :: Les limites du canal bornent la validité possible.
+- CAP.TRANSPORTABILITY_ASSESSMENT --requires[critical]--> CAP.PROTOCOL_ROBUSTNESS :: Un résultat local non robuste ne peut soutenir un transfert plus large.
+- CAP.TRANSPORTABILITY_ASSESSMENT --uses[critical]--> CAP.FIELD_CAPACITY_ASSESSMENT :: La capacité peut dépendre différemment des champs source et cible.
+- CAP.TRANSPORTABILITY_ASSESSMENT --uses[contextual]--> CAP.CAUSAL_IDENTIFICATION :: Le transport d'un effet causal peut exiger un mécanisme identifié.
+- CAP.SCALE_TRANSITION_ASSESSMENT --requires[critical]--> CAP.CONSTRUCT_VALIDITY_ASSESSMENT :: La variable macro doit être distincte de son proxy calculé.
+- CAP.SCALE_TRANSITION_ASSESSMENT --uses[critical]--> CAP.METHOD_EFFECT_AUDIT :: Agrégation et coarse-graining peuvent produire le phénomène annoncé.
+- CAP.SCALE_TRANSITION_ASSESSMENT --uses[contextual]--> CAP.DIFFERENCE_REMAINDER_ASSESSMENT :: Des agrégations réputées équivalentes peuvent laisser un reste.
+- CAP.EVIDENCE_DEPENDENCE_AUDIT --requires[critical]--> CAP.CHAIN_TRACING :: L'indépendance exige de remonter les chaînes de réemploi aux racines.
+- CAP.EVIDENCE_DEPENDENCE_AUDIT --uses[contextual]--> CAP.SOURCE_ENVIRONMENT_ASSESSMENT :: Institutions et financements peuvent créer des dépendances communes.
+- CAP.EVIDENCE_DEPENDENCE_AUDIT --uses[contextual]--> CAP.METHOD_EFFECT_AUDIT :: Des protocoles communs peuvent partager un même artefact.
+- CAP.STRATEGIC_ADAPTATION_ASSESSMENT --requires[critical]--> CAP.METHOD_EFFECT_AUDIT :: La métrique ou la règle fait partie du système observé après exposition.
+- CAP.STRATEGIC_ADAPTATION_ASSESSMENT --uses[contextual]--> CAP.CENTER_DETECTION :: Les acteurs capables de modifier ou contourner la règle peuvent être indirects.
+- CAP.STRATEGIC_ADAPTATION_ASSESSMENT --uses[contextual]--> CAP.HIDDEN_COST_ASSESSMENT :: L'adaptation peut déplacer les coûts sans changer le score.
+- CAP.VALUE_OF_INFORMATION --requires[critical]--> CAP.RIVAL_MODEL_DISCRIMINATION :: La valeur d'un test dépend des rivaux qu'il peut séparer.
+- CAP.VALUE_OF_INFORMATION --uses[critical]--> CAP.DETECTABILITY_ASSESSMENT :: Un test incapable de voir la différence n'a pas de valeur établie.
+- CAP.VALUE_OF_INFORMATION --uses[contextual]--> CAP.HIDDEN_COST_ASSESSMENT :: Coûts, charges et pertes d'options modifient le portefeuille.
+- CAP.CAPABILITY_INTERFERENCE_AUDIT --uses[contextual]--> CAP.CHANGE_VALIDATION :: Charger le cycle de changement seulement si la scène porte sur un ajout, retrait, patch, test, déploiement ou correctif de routage; une composition analytique inchangée n'en a pas besoin.
+- CAP.CAPABILITY_INTERFERENCE_AUDIT --uses[critical]--> CAP.METHOD_EFFECT_AUDIT :: L'outil d'audit peut lui-même modifier la scène et le verdict.
+- CAP.CAPABILITY_INTERFERENCE_AUDIT --uses[contextual]--> CAP.EFFECTIVE_PRESENCE_ASSESSMENT :: Il faut distinguer capacité empaquetée, accessible, invoquée et vérifiée.
 
 ## Runtime gate — asymétrie capacité directe / inverse
 

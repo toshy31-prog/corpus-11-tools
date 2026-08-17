@@ -1,6 +1,6 @@
 # État courant de la recherche
 
-Dernière mise à jour : 2026-08-16
+Dernière mise à jour : 2026-08-17
 
 ## Question centrale
 
@@ -15,6 +15,21 @@ Quelles structures minimales permettent de distinguer récupération et désinsc
 - **Démonstration** : conséquence formelle de définitions explicites, dont la portée reste celle du modèle.
 
 Corpus 11 Tools sert de jeu d'audit et de discrimination. Il ne fournit ni données physiques ni validation d'une nouvelle physique.
+
+## Évolution de l'outillage opérationnel
+
+Neuf candidats de conception ont été ajoutés au carquois 11.x : identification
+causale, discrimination de modèles rivaux, validité des construits,
+transportabilité, transition d'échelle, dépendance des preuves, adaptation
+stratégique, valeur de l'information et interférence entre capabilities.
+
+Ils restent `design_candidate_unvalidated`. Leur présence, la validation du
+paquet et les évaluations de routage n'établissent ni leur robustesse générale
+ni une nouvelle observation scientifique. Aucun statut d'hypothèse n'est changé
+par cet ajout. Le gain opérationnel attendu est de rendre explicites les ponts
+qui manquaient entre observable et construit, association et cause, ajustement
+et discrimination, validité locale et transport, règles micro et lecture macro,
+ainsi que test disponible et test décisionnellement utile.
 
 La gouvernance distingue désormais trois axes indépendants : statut scientifique
 d'une proposition, rôle épistémique d'une loi et cycle de vie d'un changement.
@@ -116,3 +131,10 @@ une famille sans ordre générateur. Pour récupération/désinscription, branch
 ensuite le même contrat sur un petit réseau matériel. Ne modifier le cœur que
 face à un besoin générique observé, notamment l'asynchronie matérielle. Maintenir
 inconnue toute portée physique sans canal de détection.
+
+Appliquer désormais la chaîne minimale suivante aux expériences prioritaires :
+valider le construit, figer les modèles rivaux, vérifier l'identification,
+choisir par valeur d'information le plus petit test discriminant, puis qualifier
+séparément transition d'échelle et transport. Auditer l'interférence entre
+capabilities avant toute promotion des neuf candidats au-delà de leur portée
+locale testée.

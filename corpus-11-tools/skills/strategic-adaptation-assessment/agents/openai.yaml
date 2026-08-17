@@ -1,0 +1,6 @@
+interface:
+  display_name: "Strategic Adaptation Assessment"
+  short_description: "Audit gaming and adaptation to metrics"
+  default_prompt: "Use $strategic-adaptation-assessment to assess how actors may change once this rule becomes consequential."
+policy:
+  allow_implicit_invocation: true

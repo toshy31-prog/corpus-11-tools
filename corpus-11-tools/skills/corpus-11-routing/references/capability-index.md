@@ -51,3 +51,12 @@ Use this index for routing. Presence is not validation.
 - `confidence-convention` — Require an explicit convention before numerical confidence.
 - `conclusion-discipline` — State the strongest supported conclusion and continue only for a named possible change.
 - `expand-then-audit` — Optional two-pass expansion and audit procedure; implicit invocation disabled.
+- `causal-identification` — Determine whether a causal claim is identified, partially identified, or unsupported under explicit contrasts, interventions, structures, and assumptions.
+- `rival-model-discrimination` — Compare serious rival explanations with matched information budgets and outcomes capable of separating them.
+- `construct-validity-assessment` — Test whether a metric, proxy, score, or operational definition supports the construct claimed for it.
+- `transportability-assessment` — Assess whether a result or effect can move from a source setting to a distinct target population, environment, protocol, or domain.
+- `scale-transition-assessment` — Audit micro-to-macro and emergence claims by tracing aggregation, discarded information, and injected structure.
+- `evidence-dependence-audit` — Determine whether apparent evidence units share data, sources, generators, assumptions, or failure modes.
+- `strategic-adaptation-assessment` — Assess learning, gaming, avoidance, burden shifting, and counter-response after a metric or rule becomes consequential.
+- `value-of-information` — Rank possible tests by what they can change relative to detectability, cost, delay, risk, and lost options.
+- `capability-interference-audit` — Test whether capability addition, removal, order, or composition causes redundancy, shadowing, conflict, or conclusion drift.

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Transportability Assessment"
+  short_description: "Test transfer from source setting to target"
+  default_prompt: "Use $transportability-assessment to test whether this result transfers to the target setting."
+policy:
+  allow_implicit_invocation: true

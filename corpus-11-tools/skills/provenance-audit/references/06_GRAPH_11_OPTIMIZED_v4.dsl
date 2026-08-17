@@ -201,6 +201,51 @@
   passC.action: recovered_composite;
 }
 
+@cap CAP.CAUSAL_IDENTIFICATION {
+  status.capability: design_candidate_unvalidated;
+  passC.action: add_inference_composite;
+}
+
+@cap CAP.RIVAL_MODEL_DISCRIMINATION {
+  status.capability: design_candidate_unvalidated;
+  passC.action: add_discrimination_procedure;
+}
+
+@cap CAP.CONSTRUCT_VALIDITY_ASSESSMENT {
+  status.capability: design_candidate_unvalidated;
+  passC.action: add_measurement_boundary;
+}
+
+@cap CAP.TRANSPORTABILITY_ASSESSMENT {
+  status.capability: design_candidate_unvalidated;
+  passC.action: add_external_validity_boundary;
+}
+
+@cap CAP.SCALE_TRANSITION_ASSESSMENT {
+  status.capability: design_candidate_unvalidated;
+  passC.action: add_scale_bridge;
+}
+
+@cap CAP.EVIDENCE_DEPENDENCE_AUDIT {
+  status.capability: design_candidate_unvalidated;
+  passC.action: add_evidence_synthesis_boundary;
+}
+
+@cap CAP.STRATEGIC_ADAPTATION_ASSESSMENT {
+  status.capability: design_candidate_unvalidated;
+  passC.action: add_reflexive_system_assessment;
+}
+
+@cap CAP.VALUE_OF_INFORMATION {
+  status.capability: design_candidate_unvalidated;
+  passC.action: add_test_portfolio_procedure;
+}
+
+@cap CAP.CAPABILITY_INTERFERENCE_AUDIT {
+  status.capability: design_candidate_unvalidated;
+  passC.action: add_meta_nonregression_assessment;
+}
+
 // Descriptive families (not capabilities)
 // FAM.DISCRIMINANT_COMPARISON: Groups capabilities involving discriminant comparison without asserting one executable mechanism.
 // FAM.ATTRIBUTION_GROUNDING: Groups attribution-related capabilities while preserving distinct constitutive criteria.
@@ -269,6 +314,33 @@ CAP.CO_MAINTENANCE_GOVERNANCE uses -> CAP.EFFECTIVE_PRESENCE_ASSESSMENT { critic
 CAP.PRIVACY_RECOURSE_BOUNDARY uses -> CAP.SOURCE_ENVIRONMENT_ASSESSMENT { criticality: critical; };
 CAP.FUNCTIONAL_DECOUPLING_ASSESSMENT requires -> CAP.FIELD_CAPACITY_ASSESSMENT { criticality: critical; };
 CAP.FUNCTIONAL_DECOUPLING_ASSESSMENT uses -> CAP.TERMINAL_RECOVERY_ASSESSMENT { criticality: critical; };
+FAM.DISCRIMINANT_COMPARISON related_specialization -> CAP.RIVAL_MODEL_DISCRIMINATION { criticality: contextual; };
+CAP.CAUSAL_IDENTIFICATION requires -> CAP.CONSTRUCT_VALIDITY_ASSESSMENT { criticality: critical; };
+CAP.CAUSAL_IDENTIFICATION uses -> CAP.RIVAL_MODEL_DISCRIMINATION { criticality: critical; };
+CAP.CAUSAL_IDENTIFICATION uses -> CAP.CHAIN_TRACING { criticality: contextual; };
+CAP.RIVAL_MODEL_DISCRIMINATION requires -> CAP.OBSERVABLE_COMPILATION { criticality: critical; };
+CAP.RIVAL_MODEL_DISCRIMINATION uses -> CAP.IDENTIFY_REVERSAL_CONDITION { criticality: critical; };
+CAP.CONSTRUCT_VALIDITY_ASSESSMENT requires -> CAP.OBSERVABLE_COMPILATION { criticality: critical; };
+CAP.CONSTRUCT_VALIDITY_ASSESSMENT uses -> CAP.METHOD_EFFECT_AUDIT { criticality: critical; };
+CAP.CONSTRUCT_VALIDITY_ASSESSMENT uses -> CAP.DETECTABILITY_ASSESSMENT { criticality: contextual; };
+CAP.TRANSPORTABILITY_ASSESSMENT requires -> CAP.PROTOCOL_ROBUSTNESS { criticality: critical; };
+CAP.TRANSPORTABILITY_ASSESSMENT uses -> CAP.FIELD_CAPACITY_ASSESSMENT { criticality: critical; };
+CAP.TRANSPORTABILITY_ASSESSMENT uses -> CAP.CAUSAL_IDENTIFICATION { criticality: contextual; };
+CAP.SCALE_TRANSITION_ASSESSMENT requires -> CAP.CONSTRUCT_VALIDITY_ASSESSMENT { criticality: critical; };
+CAP.SCALE_TRANSITION_ASSESSMENT uses -> CAP.METHOD_EFFECT_AUDIT { criticality: critical; };
+CAP.SCALE_TRANSITION_ASSESSMENT uses -> CAP.DIFFERENCE_REMAINDER_ASSESSMENT { criticality: contextual; };
+CAP.EVIDENCE_DEPENDENCE_AUDIT requires -> CAP.CHAIN_TRACING { criticality: critical; };
+CAP.EVIDENCE_DEPENDENCE_AUDIT uses -> CAP.SOURCE_ENVIRONMENT_ASSESSMENT { criticality: contextual; };
+CAP.EVIDENCE_DEPENDENCE_AUDIT uses -> CAP.METHOD_EFFECT_AUDIT { criticality: contextual; };
+CAP.STRATEGIC_ADAPTATION_ASSESSMENT requires -> CAP.METHOD_EFFECT_AUDIT { criticality: critical; };
+CAP.STRATEGIC_ADAPTATION_ASSESSMENT uses -> CAP.CENTER_DETECTION { criticality: contextual; };
+CAP.STRATEGIC_ADAPTATION_ASSESSMENT uses -> CAP.HIDDEN_COST_ASSESSMENT { criticality: contextual; };
+CAP.VALUE_OF_INFORMATION requires -> CAP.RIVAL_MODEL_DISCRIMINATION { criticality: critical; };
+CAP.VALUE_OF_INFORMATION uses -> CAP.DETECTABILITY_ASSESSMENT { criticality: critical; };
+CAP.VALUE_OF_INFORMATION uses -> CAP.HIDDEN_COST_ASSESSMENT { criticality: contextual; };
+CAP.CAPABILITY_INTERFERENCE_AUDIT uses -> CAP.CHANGE_VALIDATION { criticality: contextual; };
+CAP.CAPABILITY_INTERFERENCE_AUDIT uses -> CAP.METHOD_EFFECT_AUDIT { criticality: critical; };
+CAP.CAPABILITY_INTERFERENCE_AUDIT uses -> CAP.EFFECTIVE_PRESENCE_ASSESSMENT { criticality: contextual; };
 
 // Direct/inverse capacity comparison (routing-only composition)
 @schema SCHEMA.REVERSAL_ASYMMETRY_PROFILE {
