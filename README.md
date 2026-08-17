@@ -159,6 +159,7 @@ Le dépôt contient un produit, ses instruments génériques et plusieurs recher
 - **La recherche CCT** (`research/active/cct/`) regroupe son modèle, son prototype, ses simulations, son blueprint de crise et ses publications. Les moteurs génériques extraits vivent côté Corpus ; les architectures et conclusions CCT restent côté recherche.
 - **La recherche sur les hypothèses Corpus** (`research/active/corpus-hypotheses/`) conserve les questions scientifiques, sources, expériences de domaine et rapports. Son moteur neutre est désormais dans les laboratoires Corpus.
 - **Les recherches terminées** (`research/completed/`) restent consultables sans être chargées ni présentées comme actives.
+- **Corpus Workspace** (`research/completed/corpus-ui-workspace/`) conserve le prototype d’interface abandonné et ses acquis conversationnels sans maintenir une application parallèle.
 - **Le cycle alimentaire parisien** (`research/completed/food-access-paris/`) est une recherche terminée avec un prototype privé gelé. Aucun utilisateur extérieur ni effet bénéficiaire n’a été réobservé.
 - **Le registre de transfert** (`transfers/`) documente chaque mécanisme extrait d’une recherche avant son intégration à Corpus.
 - **Ce README** explique l’ensemble du dépôt et les limites à conserver entre produit, recherche, prototypes, résultats et archives.
