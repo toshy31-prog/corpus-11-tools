@@ -8,12 +8,16 @@ Ce plugin supplémentaire repose sur l’architecture 11.x fournie. Il ne rempla
 
 ## État actuel
 
-- version stable du paquet : **v1.2.0** ;
+- version stable du paquet : **v1.3.0** ;
 - 58 skills ;
 - 49 capabilities ;
 - 4 familles descriptives ;
 - 88 relations ;
 - 71 évaluations.
+
+## Changement public de v1.3.0
+
+v1.3.0 établit une cloison physique entre le produit et les recherches. Les moteurs génériques sont livrés sous `labs/`, tandis que les hypothèses, paramètres, résultats et interprétations vivent à la racine du dépôt sous `research/`. Le registre `transfers/` documente chaque mécanisme extrait et `tools/check_boundaries.py` empêche une dépendance inverse.
 
 ## Changement public de v1.2.0
 
@@ -48,9 +52,12 @@ Les 49 capabilities correspondent donc aux 31 natives, aux 9 facultés récupér
 - Evals de routage et de non-régression.
 - Garde de gouvernance épistémique séparant critères de sélection, rôles des lois, frontière de neutralité et propriétés attribuées au système.
 - Outils déterministes de validation de paquet, contrôle de graphe et lecture de provenance.
+- Laboratoires génériques pour exécuter des expériences, comparer des méthodes dans l’Arena et conduire des campagnes de simulation appariées sans importer les conclusions d’une recherche particulière.
 - 88 relations et 71 évaluations de routage/non-régression.
 
 Les capabilities restent des possibles comportementaux sous conditions. Les fichiers `SKILL.md` sont des wrappers d’invocation : ils ne redéfinissent pas une capability comme algorithme.
+
+Les projets scientifiques et institutionnels utilisant ces outils vivent hors du paquet, sous [`../research/`](../research/). Les transferts acceptés sont consignés dans [`../transfers/`](../transfers/) afin qu’aucune conclusion locale ne devienne silencieusement une fonction Corpus.
 
 Les facultés anciennes récupérées sont marquées `recovered_candidate_unvalidated`. Elles complètent l'architecture sans rétablir le routage obligatoire, la constitution monolithique, l'ordre fixe de réponse ni les interdits fictionnels absolus des anciennes versions.
 
@@ -75,6 +82,7 @@ Pour intégrer le plugin à un autre catalogue local, utiliser `docs/marketplace
 python tools/validate_package.py
 python tools/check_graph.py
 python tools/check_docs.py
+python tools/check_boundaries.py
 python tools/show_provenance.py CAP.PROTOCOL_ROBUSTNESS
 python tools/project_yield_gate.py chemin/vers/record.json
 sha256sum -c archives/legacy/MANIFEST.sha256
@@ -82,8 +90,8 @@ sha256sum -c archives/legacy/MANIFEST.sha256
 
 ## Statut
 
-Le paquet `v1.2.0` contient 58 skills, 49 capabilities, 4 familles, 88 relations et 71 évaluations. Sa stabilité désigne la cohérence du paquet, de son installation, de sa taxonomie et de ses tests sur le périmètre déclaré. `open-experiment-arena` reste une procédure expérimentale candidate : ses tests synthétiques n’établissent ni scénario extérieur indépendant, ni gain de capability, ni usage de terrain. Les 31 capabilities natives restent `candidate_unvalidated`, les neuf facultés récupérées `recovered_candidate_unvalidated` et les neuf nouveaux outils `design_candidate_unvalidated`.
+Le paquet `v1.3.0` contient 58 skills, 49 capabilities, 4 familles, 88 relations et 71 évaluations. Sa stabilité désigne la cohérence du paquet, de son installation, de sa taxonomie, de sa frontière avec la recherche et de ses tests sur le périmètre déclaré. `open-experiment-arena` reste une procédure expérimentale candidate : ses tests synthétiques n’établissent ni scénario extérieur indépendant, ni gain de capability, ni usage de terrain. Les 31 capabilities natives restent `candidate_unvalidated`, les neuf facultés récupérées `recovered_candidate_unvalidated` et les neuf nouveaux outils `design_candidate_unvalidated`.
 
-Le périmètre et les conditions de retrait de ce statut sont définis dans [`docs/stability-contract.md`](docs/stability-contract.md), et la matrice exécutée dans [`docs/release-validation-v1.2.0.md`](docs/release-validation-v1.2.0.md).
+Le périmètre et les conditions de retrait de ce statut sont définis dans [`docs/stability-contract.md`](docs/stability-contract.md), et la matrice exécutée dans [`docs/release-validation-v1.3.0.md`](docs/release-validation-v1.3.0.md).
 
 Les lacunes historiques restent documentées dans `docs/legacy-loss-audit.md` et `archives/legacy/STATUS.md` : Atlas 2.7, Corpus 9.8, Corpus 10.2, la release 10.4 complète et la source éditable du manuel n’ont pas été retrouvés ni reconstruits par supposition.

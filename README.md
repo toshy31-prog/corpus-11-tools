@@ -4,14 +4,18 @@ Corpus 11 Tools est un ensemble d’outils pour aider Codex à analyser une ques
 
 ## État actuel
 
-- version stable du paquet : **v1.2.0** ;
+- version stable du paquet : **v1.3.0** ;
 - 58 skills ;
 - 49 capabilities ;
 - 4 familles descriptives ;
 - 88 relations ;
 - 71 évaluations.
 
-## Ce qui change dans v1.2.0
+## Ce qui change dans v1.3.0
+
+v1.3.0 sépare physiquement le produit Corpus des recherches qui l’utilisent. Les moteurs génériques — Arena, protocoles reproductibles et primitives de simulation — vivent dans `corpus-11-tools/labs/`. Les hypothèses, configurations, résultats et conclusions restent dans `research/`. Le registre `transfers/` rend visible chaque extraction d’un projet vers le produit et un contrôle automatique interdit les dépendances dans le mauvais sens.
+
+## Ce qui avait changé dans v1.2.0
 
 v1.2.0 ajoute neuf candidats opérationnels pour l’identification causale, la discrimination entre modèles rivaux, la validité des construits, le transport entre contextes, les transitions d’échelle, la dépendance entre preuves, l’adaptation stratégique aux métriques, la valeur de l’information et l’interférence entre capabilities.
 
@@ -125,9 +129,10 @@ cd corpus-11-tools
 python3 tools/validate_package.py
 python3 tools/check_graph.py
 python3 tools/check_docs.py
+python3 tools/check_boundaries.py
 ```
 
-L’état attendu pour v1.2.0 indique 58 skills, 49 capabilities, 4 familles descriptives, 88 relations et 71 évaluations.
+L’état attendu pour v1.3.0 indique 58 skills, 49 capabilities, 4 familles descriptives, 88 relations et 71 évaluations.
 
 Pour vérifier un exemple de chaîne de provenance :
 
@@ -139,25 +144,26 @@ Ces commandes vérifient la cohérence du paquet et de ses références ; elles 
 
 ## Que contient réellement ce dépôt ?
 
-Le dépôt rassemble plusieurs objets liés, mais ils ne servent pas tous directement à l’utilisateur :
+Le dépôt contient un produit, ses instruments génériques et plusieurs recherches qui les utilisent. Ces espaces sont désormais séparés :
 
 - **Le catalogue local** (`.agents/plugins/`) est l’adresse donnée à Codex pour qu’il puisse trouver et installer Corpus. Un utilisateur ne l’invoque pas directement.
-- **Le plugin Corpus** (`corpus-11-tools/`) est le produit principal. Une fois installé, il permet à Codex de sélectionner des méthodes d’analyse adaptées à la question posée.
+- **Le plugin Corpus** (`corpus-11-tools/`) est le produit stable. Une fois installé, il permet à Codex de sélectionner des méthodes d’analyse adaptées à la question posée.
 - **Le manifeste du plugin** (`.codex-plugin/`) est sa fiche d’identité technique : nom, version et point d’entrée.
 - **Les skills** (`skills/`) sont les méthodes que Codex peut invoquer. Les 49 wrappers de capability traitent chacun un problème analytique précis ; les 9 autres skills organisent le routage, le contexte, les règles de conclusion ou les expériences.
 - **Les outils de contrôle** (`tools/`) vérifient que le paquet est cohérent. Ils servent principalement aux personnes qui maintiennent Corpus.
 - **Les évaluations** (`evals/`) sont 71 situations-test. Elles permettent de détecter certaines régressions, mais ne prouvent pas que Corpus aura raison dans toutes les situations réelles.
-- **La recherche expérimentale** (`research/experiments/`) sert à essayer des idées sans les présenter prématurément comme des capacités établies. Elle contient notamment l’Arena, qui soumet plusieurs méthodes au même scénario pour comparer leurs résultats.
+- **Les laboratoires Corpus** (`corpus-11-tools/labs/`) sont des moteurs génériques : expériences reproductibles, protocoles gelés, Arena, campagnes appariées et comparaisons vectorielles. Ils font partie des outils Corpus, mais leurs fixtures ne constituent pas des preuves extérieures.
 - **Les archives historiques** (`archives/legacy/`) conservent les versions et documents dont Corpus est issu. Elles servent à retracer l’origine d’une règle ; Codex ne les exécute pas comme des outils actuels.
 - **La documentation interne** (`docs/`) contient l’inventaire, la taxonomie et les contrats qui définissent ce que la version affirme réellement.
-- **Le prototype CCT** (`cct-executable/`) est une maquette exécutable d’un système de gouvernance. Il peut être testé localement, mais il ne constitue ni une institution réelle ni une fonction ordinaire du plugin Corpus.
-- **Le laboratoire de gouvernance** (`governance-lab/`) simule des décisions et des situations CCT afin d’en rechercher les incohérences, les limites et les échecs possibles.
-- **Le laboratoire de crise** (`cct-crisis-lab/`) décrit comment éprouver la CCT sous contrainte ou en situation d’urgence. C’est un plan expérimental, pas un dispositif déployé.
-- **Les livrables et sorties** (`livrables/` et `output/`) regroupent les sources et les rendus du livre blanc CCT. Ce sont des documents produits, pas des commandes de Corpus.
-- **L’intervention alimentaire archivée** (`ne-me-dis-pas-comment-sauver-le-monde-sauve-le/`) est un ancien projet concret conservé avec son historique. Il est terminé et n’est pas activé lorsqu’un utilisateur invoque Corpus.
+- **Les recherches actives** (`research/active/`) conservent leurs hypothèses, configurations, résultats et conclusions propres. Elles peuvent utiliser Corpus sans devenir une partie du plugin.
+- **La recherche CCT** (`research/active/cct/`) regroupe son modèle, son prototype, ses simulations, son blueprint de crise et ses publications. Les moteurs génériques extraits vivent côté Corpus ; les architectures et conclusions CCT restent côté recherche.
+- **La recherche sur les hypothèses Corpus** (`research/active/corpus-hypotheses/`) conserve les questions scientifiques, sources, expériences de domaine et rapports. Son moteur neutre est désormais dans les laboratoires Corpus.
+- **Les recherches terminées** (`research/completed/`) restent consultables sans être chargées ni présentées comme actives.
+- **Le cycle alimentaire parisien** (`research/completed/food-access-paris/`) est une recherche terminée avec un prototype privé gelé. Aucun utilisateur extérieur ni effet bénéficiaire n’a été réobservé.
+- **Le registre de transfert** (`transfers/`) documente chaque mécanisme extrait d’une recherche avant son intégration à Corpus.
 - **Ce README** explique l’ensemble du dépôt et les limites à conserver entre produit, recherche, prototypes, résultats et archives.
 
-Pour un usage ordinaire, il suffit donc d’installer le plugin puis de poser sa question à Codex. Le reste du dépôt permet surtout d’inspecter, tester, comprendre ou retracer ce que fait le plugin.
+Pour un usage ordinaire, il suffit d’installer le plugin puis de poser sa question à Codex. Les recherches ne sont ni installées ni chargées avec lui.
 
 ## Arborescence technique
 
@@ -166,41 +172,41 @@ Cette vue sert d’index aux personnes qui souhaitent retrouver les fichiers cor
 ```text
 .
 ├── .agents/plugins/                  Catalogue local pour Codex
-├── corpus-11-tools/                  Plugin utilisateur et recherche Corpus
+├── corpus-11-tools/                  Produit Corpus installable
 │   ├── .codex-plugin/                Manifeste du plugin
 │   ├── skills/                       49 wrappers de capability + 9 skills opérationnels
 │   ├── tools/                        Validateurs, provenance et porte de rendement
 │   ├── evals/                        71 scénarios de routage/non-régression
-│   ├── research/experiments/         Laboratoire générique et Open Experiment Arena
+│   ├── labs/                         Moteurs génériques, Arena et campagnes de simulation
 │   ├── archives/legacy/              Archives historiques non exécutoires
 │   └── docs/                         Inventaire, taxonomie et intégrité des sources
-├── cct-executable/                   Prototype CCT local, écrit et testé
-├── governance-lab/                   Simulations et tests synthétiques CCT
-├── cct-crisis-lab/                   Blueprint de crise non déployé
-├── livrables/ et output/             Sources et rendus du livre blanc CCT
-├── ne-me-dis-pas-comment-sauver-le-monde-sauve-le/
-│                                       Intervention alimentaire clôturée et archivée
+├── research/
+│   ├── active/corpus-hypotheses/     Recherche mathématique et temporelle ouverte
+│   ├── active/cct/                   Recherche institutionnelle CCT complète
+│   └── completed/food-access-paris/  Cycle terminé, prototype privé gelé
+├── transfers/                        Sas documenté recherche → Corpus
 └── README.md                         Présentation générale et frontières de statut
 ```
 
 ## Surfaces à ne pas confondre
 
 - **Plugin utilisateur** : `corpus-11-tools/skills/`, chargé par Codex après installation.
-- **Infrastructure de test** : Arena, évaluations et validateurs ; elle vérifie un périmètre fini sans prouver une validité générale.
-- **Recherche de gouvernance** : CCT et son laboratoire ; ils ne gouvernent pas les réponses ordinaires de Corpus et ne possèdent aucune autorité institutionnelle.
-- **Archives** : sources historiques et intervention alimentaire clôturée ; leur présence conserve une trace, pas une capacité active.
+- **Laboratoires Corpus** : moteurs génériques testés ; ils ne donnent pas aux résultats des recherches le statut de capacité établie.
+- **Recherches** : projets qui consomment les outils Corpus et gardent leurs propres conclusions, statuts et critères d’arrêt.
+- **Transferts** : seules voies autorisées pour décontextualiser un mécanisme et l’intégrer au produit.
+- **Archives** : sources historiques et recherches clôturées ; leur présence conserve une trace, pas une capacité active.
 
-La stabilité de v1.2.0 signifie que le paquet, sa taxonomie, sa documentation, son installation et ses tests de non-régression sont cohérents sur le périmètre déclaré. Elle ne transforme pas les capabilities candidates en résultats scientifiques établis.
+La stabilité de v1.3.0 signifie que le paquet, sa taxonomie, sa documentation, sa frontière avec la recherche, son installation et ses tests de non-régression sont cohérents sur le périmètre déclaré. Elle ne transforme pas les capabilities candidates en résultats scientifiques établis.
 
 ## Où trouver les outils ?
 
-Les instructions utilisables par Codex se trouvent dans [`corpus-11-tools/skills/`](corpus-11-tools/skills/). Les validateurs et utilitaires se trouvent dans [`corpus-11-tools/tools/`](corpus-11-tools/tools/).
+Les instructions utilisables par Codex se trouvent dans [`corpus-11-tools/skills/`](corpus-11-tools/skills/), les validateurs dans [`corpus-11-tools/tools/`](corpus-11-tools/tools/) et les moteurs expérimentaux génériques dans [`corpus-11-tools/labs/`](corpus-11-tools/labs/).
 
 Ces deux dossiers constituent la partie opérationnelle, parfois appelée le **cortex** du projet : ce terme désigne ici l’organisation des outils, pas une intelligence séparée.
 
 ## Où trouver la recherche ?
 
-La recherche expérimentale se trouve dans [`corpus-11-tools/research/`](corpus-11-tools/research/). Elle contient notamment les expériences, hypothèses, rapports et états de travail.
+La carte des recherches se trouve dans [`research/`](research/). Les projets ouverts sont sous `research/active/`, les cycles terminés sous `research/completed/`, et leur passage éventuel vers le produit est documenté dans [`transfers/`](transfers/).
 
 Les matériaux historiques 10.x et les références servant à retracer l’origine des éléments sont des archives de provenance. Une expérience de recherche n’est pas automatiquement une règle du cortex : son résultat doit conserver son statut propre et passer les étapes de validation prévues avant toute intégration opérationnelle.
 
@@ -220,7 +226,7 @@ Le projet maintient également une **frontière de neutralité** : une séparati
 
 La documentation détaillée du plugin, de son contenu et de ses validations se trouve dans [`corpus-11-tools/README.md`](corpus-11-tools/README.md).
 
-Le détail de la release se trouve dans [`CHANGELOG.md`](CHANGELOG.md), son périmètre exact dans le [`contrat de stabilité`](corpus-11-tools/docs/stability-contract.md) et ses contrôles dans la [`validation de release`](corpus-11-tools/docs/release-validation-v1.2.0.md).
+Le détail de la release se trouve dans [`CHANGELOG.md`](CHANGELOG.md), son périmètre exact dans le [`contrat de stabilité`](corpus-11-tools/docs/stability-contract.md) et ses contrôles dans la [`validation de release`](corpus-11-tools/docs/release-validation-v1.3.0.md).
 
 Les personnes qui souhaitent inspecter la structure peuvent aussi consulter :
 
