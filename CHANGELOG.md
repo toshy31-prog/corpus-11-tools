@@ -1,5 +1,22 @@
 # Journal des versions
 
+## v1.3.0 — 2026-08-17
+
+### Architecture
+
+- séparation physique entre le produit `corpus-11-tools/` et les projets `research/` ;
+- création de `corpus-11-tools/labs/` pour les moteurs génériques d’expérimentation et de simulation ;
+- déplacement des configurations, résultats et conclusions propres aux projets vers `research/active/` ou `research/completed/` ;
+- registre `transfers/` pour documenter les mécanismes acceptés, candidats ou refusés ;
+- contrôle automatique interdisant aux outils Corpus de dépendre des recherches particulières.
+
+### Extractions
+
+- primitives Python réutilisables pour aléa commun, budgets appariés, dominance de Pareto et sensibilités bornées ;
+- moteur générique de l’Open Experiment Arena et verrouillage des protocoles ;
+- conservation des adaptateurs scientifiques et résultats dans leur recherche d’origine ;
+- reclassement du prototype alimentaire comme recherche terminée sans effet bénéficiaire établi.
+
 ## v1.2.0 — 2026-08-17
 
 Première version stable du paquet Corpus 11 Tools. « Stable » qualifie ici le packaging, la taxonomie, la documentation, l’installation et les tests de non-régression ; ce terme ne valide pas scientifiquement les capabilities.
