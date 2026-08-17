@@ -40,12 +40,12 @@ For ordinary use, the arena now has one command surface:
 
 ```bash
 node arena/cli.mjs list
-node arena/cli.mjs run ilyana
+node arena/cli.mjs demo ilyana
 node arena/cli.mjs status
 node arena/cli.mjs test
 ```
 
-`run` prints the complete replayable report. `status` lists local lifecycle decisions without promoting them into global capability verdicts.
+These commands are a developer demonstration harness. `ilyana`, `thermal`, and the other aliases are fixtures, not user cases or external evidence. `demo` prints their complete replayable reports. `status` lists local lifecycle decisions without promoting them into global capability verdicts. An ordinary user invokes the `open-experiment-arena` skill in natural language and supplies the real situation to compare.
 
 ## Implemented plugins
 
