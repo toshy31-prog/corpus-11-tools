@@ -23,6 +23,7 @@ NON_CAPABILITY_SKILLS = {
     "confidence-convention",
     "conclusion-discipline",
     "expand-then-audit",
+    "open-experiment-arena",
 }
 DESIGN_CANDIDATE_SKILLS = {
     "causal-identification",

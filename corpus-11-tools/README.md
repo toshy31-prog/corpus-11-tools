@@ -9,11 +9,11 @@ Ce plugin supplémentaire repose sur l’architecture 11.x fournie. Il ne rempla
 ## État actuel
 
 - version prévue : **v1.2.0** (`1.2.0-alpha.1`) ;
-- 57 skills ;
+- 58 skills ;
 - 49 capabilities ;
 - 4 familles descriptives ;
 - 88 relations ;
-- 69 évaluations.
+- 70 évaluations.
 
 ## Changement public de v1.2.0
 
@@ -31,7 +31,7 @@ Ils répondent à des lacunes explicites de l’architecture et de la recherche 
 | Wrapper explicit-only | 3 | Mode d’invocation avec `allow_implicit_invocation: false` : `fiction-mechanism-transformation`, `expand-then-audit` et `corpus-context-library` ne sont chargés qu’après désignation explicite complète. Ce mode n’est pas un statut de capability. |
 | Famille descriptive | 4 | Regroupement de routage non exécutable ; une famille ne devient jamais une capability. |
 
-Les 49 capabilities correspondent donc aux 31 natives, aux 9 facultés récupérées et aux 9 candidats de conception. Les 57 skills comprennent ces 49 wrappers de capability et 8 skills de routage, procédure, génération, provenance, règle ou contexte.
+Les 49 capabilities correspondent donc aux 31 natives, aux 9 facultés récupérées et aux 9 candidats de conception. Les 58 skills comprennent ces 49 wrappers de capability et 9 skills de routage, procédure, génération, provenance, règle, contexte ou expérimentation.
 
 ## Contenu
 
@@ -39,6 +39,7 @@ Les 49 capabilities correspondent donc aux 31 natives, aux 9 facultés récupér
 - 49 skills centrés sur les capabilities du graphe : 31 natives, 9 récupérations locales bornées et 9 candidats de conception.
 - 4 familles descriptives de routage, dont une comparaison capacité directe/inverse sans nouvelle capability.
 - 1 procédure conditionnelle `explore-first`.
+- 1 procédure candidate `open-experiment-arena` reliant méthodes rivales, prédictions, actions et conséquences dans un monde causal gelé.
 - 1 procédure de génération fictionnelle extérieure au corpus.
 - 1 skill de provenance/backlinks 10.x.
 - 1 bibliothèque contextuelle explicite pour les deux ouvrages PDF.
@@ -47,7 +48,7 @@ Les 49 capabilities correspondent donc aux 31 natives, aux 9 facultés récupér
 - Evals de routage et de non-régression.
 - Garde de gouvernance épistémique séparant critères de sélection, rôles des lois, frontière de neutralité et propriétés attribuées au système.
 - Outils déterministes de validation de paquet, contrôle de graphe et lecture de provenance.
-- 88 relations et 69 évaluations de routage/non-régression.
+- 88 relations et 70 évaluations de routage/non-régression.
 
 Les capabilities restent des possibles comportementaux sous conditions. Les fichiers `SKILL.md` sont des wrappers d’invocation : ils ne redéfinissent pas une capability comme algorithme.
 
@@ -79,6 +80,6 @@ sha256sum -c archives/legacy/MANIFEST.sha256
 
 ## Statut
 
-Le paquet `1.2.0-alpha.1` a été validé statiquement et installé localement avec 57 skills, 49 capabilities, 4 familles, 88 relations et 69 évaluations. Les neuf nouveaux outils restent `design_candidate_unvalidated`, même après validation statique et tests locaux. Les neuf facultés récupérées restent `recovered_candidate_unvalidated`. Aucun de ces statuts n’établit une robustesse universelle ni une portabilité dans tous les hôtes.
+Le paquet `1.2.0-alpha.1` contient désormais 58 skills, 49 capabilities, 4 familles, 88 relations et 70 évaluations. `open-experiment-arena` reste une procédure expérimentale candidate : ses tests synthétiques n’établissent ni scénario extérieur indépendant, ni gain de capability, ni usage de terrain. Les neuf nouveaux outils restent `design_candidate_unvalidated`, et les neuf facultés récupérées restent `recovered_candidate_unvalidated`.
 
 Les lacunes historiques restent documentées dans `docs/legacy-loss-audit.md` et `archives/legacy/STATUS.md` : Atlas 2.7, Corpus 9.8, Corpus 10.2, la release 10.4 complète et la source éditable du manuel n’ont pas été retrouvés ni reconstruits par supposition.

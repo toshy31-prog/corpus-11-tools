@@ -1,0 +1,94 @@
+{
+  "schema": "corpus-open-world/v1",
+  "manifest": {
+    "id": "declarative-pulse-internal-witness",
+    "version": "1.0.0",
+    "title": "Declarative pulse witness",
+    "rounds": 3,
+    "dimensions": [
+      "terminal_stock",
+      "distance_from_target"
+    ],
+    "reversalConditions": [
+      "The frozen document can be changed without detection.",
+      "The interpreter executes code or an unsupported operator.",
+      "An author must rename domain variables into Corpus vocabulary."
+    ]
+  },
+  "source": {
+    "regime": "internal_synthetic",
+    "authorId": "corpus-maintainers",
+    "authorRelationToCorpus": "maintainer",
+    "frozenBeforeContenders": true,
+    "authorshipTrace": "declarative-interpreter-witness-2026-08-17"
+  },
+  "initialState": {
+    "stock": 2
+  },
+  "exogenous": [
+    {
+      "pulse": 4
+    },
+    {
+      "pulse": -1
+    },
+    {
+      "pulse": 3
+    }
+  ],
+  "view": {
+    "stock": {
+      "path": "state.stock"
+    }
+  },
+  "actions": {
+    "hold": [],
+    "release_two": [
+      {
+        "op": "add",
+        "path": "state.stock",
+        "value": -2
+      }
+    ]
+  },
+  "transition": [
+    {
+      "op": "add",
+      "path": "state.stock",
+      "value": {
+        "path": "event.pulse"
+      }
+    }
+  ],
+  "observation": {
+    "stock": {
+      "path": "state.stock"
+    }
+  },
+  "predictionTargets": {
+    "nextStock": "stock"
+  },
+  "outcomes": {
+    "terminal_stock": {
+      "path": "state.stock"
+    },
+    "distance_from_target": {
+      "op": "abs",
+      "args": [
+        {
+          "op": "sub",
+          "args": [
+            {
+              "path": "state.stock"
+            },
+            5
+          ]
+        }
+      ]
+    }
+  },
+  "freeze": {
+    "algorithm": "sha256",
+    "contentHash": "sha256:9df2d637021f59e1ed6b9b8064e2cbb7a7fc1a3210866b1db8798894e2664071"
+  }
+}

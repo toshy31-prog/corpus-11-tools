@@ -1,0 +1,177 @@
+{
+  "schema": "corpus-open-world/v1",
+  "manifest": {
+    "id": "ilyana-sorel-wet-bell",
+    "version": "1.0.0",
+    "title": "Four mornings with a wet ceramic bell",
+    "rounds": 4,
+    "dimensions": [
+      "pitch_error",
+      "craze",
+      "clay_removed",
+      "sleep"
+    ],
+    "reversalConditions": [
+      "A physical ceramic trial shows that the encoded direction of filing or wet wrapping is systematically wrong.",
+      "Repeated matched trials show no coupling between wet wrapping and craze under the stated weather sequence.",
+      "The result changes when contender labels or execution order change."
+    ]
+  },
+  "source": {
+    "regime": "internal_synthetic",
+    "authorId": "ilyana-sorel-fictional-proxy",
+    "authorRelationToCorpus": "synthetic_adversarial_proxy",
+    "frozenBeforeContenders": true,
+    "authorshipTrace": "arena/authors/ilyana-sorel.md"
+  },
+  "initialState": {
+    "pitch": 112,
+    "craze": 0,
+    "clay": 0,
+    "sleep": 0
+  },
+  "exogenous": [
+    {
+      "air": 2
+    },
+    {
+      "air": -1
+    },
+    {
+      "air": 3
+    },
+    {
+      "air": -2
+    }
+  ],
+  "view": {
+    "pitch": {
+      "path": "state.pitch"
+    },
+    "craze": {
+      "path": "state.craze"
+    },
+    "clay": {
+      "path": "state.clay"
+    },
+    "sleep": {
+      "path": "state.sleep"
+    },
+    "air": {
+      "path": "event.air"
+    }
+  },
+  "actions": {
+    "file_lip": [
+      {
+        "op": "add",
+        "path": "state.pitch",
+        "value": -4
+      },
+      {
+        "op": "add",
+        "path": "state.clay",
+        "value": 1
+      },
+      {
+        "op": "add",
+        "path": "state.craze",
+        "value": 1
+      }
+    ],
+    "wet_wrap": [
+      {
+        "op": "add",
+        "path": "state.pitch",
+        "value": -2
+      },
+      {
+        "op": "add",
+        "path": "state.craze",
+        "value": {
+          "op": "add",
+          "args": [
+            {
+              "op": "abs",
+              "args": [
+                {
+                  "path": "event.air"
+                }
+              ]
+            },
+            1
+          ]
+        }
+      }
+    ],
+    "leave_alone": [
+      {
+        "op": "add",
+        "path": "state.sleep",
+        "value": 1
+      }
+    ]
+  },
+  "transition": [
+    {
+      "op": "add",
+      "path": "state.pitch",
+      "value": {
+        "path": "event.air"
+      }
+    },
+    {
+      "op": "add",
+      "path": "state.craze",
+      "value": {
+        "op": "abs",
+        "args": [
+          {
+            "path": "event.air"
+          }
+        ]
+      }
+    }
+  ],
+  "observation": {
+    "pitch": {
+      "path": "state.pitch"
+    },
+    "craze": {
+      "path": "state.craze"
+    }
+  },
+  "predictionTargets": {
+    "nextPitch": "pitch",
+    "nextCraze": "craze"
+  },
+  "outcomes": {
+    "pitch_error": {
+      "op": "abs",
+      "args": [
+        {
+          "op": "sub",
+          "args": [
+            {
+              "path": "state.pitch"
+            },
+            100
+          ]
+        }
+      ]
+    },
+    "craze": {
+      "path": "state.craze"
+    },
+    "clay_removed": {
+      "path": "state.clay"
+    },
+    "sleep": {
+      "path": "state.sleep"
+    }
+  },
+  "freeze": {
+    "algorithm": "sha256",
+    "contentHash": "sha256:31e7a4467dc2fdd4a9b9a20e6d06c9b1760350ca4c08469a68433124d3709e71"
+  }
+}
