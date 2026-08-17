@@ -1,0 +1,57 @@
+{
+  "experiment": "P001-DT-001",
+  "status": "preregistered_synthetic_digital_twin",
+  "seed": 8172026,
+  "runs_per_cell": 5000,
+  "horizon_days": 45,
+  "service": {
+    "daily_demand": 100.0,
+    "resources": {
+      "power": {"weight": 0.22, "base_restore_days": 5.0, "stockable": true},
+      "payments": {"weight": 0.13, "base_restore_days": 4.0, "stockable": false},
+      "data": {"weight": 0.16, "base_restore_days": 7.0, "stockable": false},
+      "staff": {"weight": 0.21, "base_restore_days": 12.0, "stockable": false},
+      "parts": {"weight": 0.16, "base_restore_days": 16.0, "stockable": true},
+      "logistics": {"weight": 0.12, "base_restore_days": 10.0, "stockable": true}
+    }
+  },
+  "modes": {
+    "capacity_gate": {
+      "label": "Porte de capacité CCT",
+      "budget": {"mapping": 0.22, "stocks": 0.18, "substitution": 0.20, "speed": 0.12, "rights": 0.14, "rollback": 0.14},
+      "coordination_bonus": 0.08,
+      "concentration": 0.34
+    },
+    "calendar_transfer": {
+      "label": "Transfert à calendrier fixe",
+      "budget": {"mapping": 0.10, "stocks": 0.14, "substitution": 0.13, "speed": 0.28, "rights": 0.18, "rollback": 0.17},
+      "coordination_bonus": 0.02,
+      "concentration": 0.46
+    },
+    "central_command": {
+      "label": "Commandement central temporaire",
+      "budget": {"mapping": 0.15, "stocks": 0.18, "substitution": 0.17, "speed": 0.30, "rights": 0.08, "rollback": 0.12},
+      "coordination_bonus": 0.22,
+      "concentration": 0.88
+    }
+  },
+  "protocols": {
+    "base": {"shock_count": 4, "severity_delta": 0.0, "lead_multiplier": 1.0, "gate_penalty": 0.0},
+    "dense_shocks": {"shock_count": 7, "severity_delta": 0.08, "lead_multiplier": 1.0, "gate_penalty": 0.0},
+    "long_supply": {"shock_count": 4, "severity_delta": 0.02, "lead_multiplier": 1.7, "gate_penalty": 0.0},
+    "hostile_to_gate": {"shock_count": 5, "severity_delta": 0.08, "lead_multiplier": 1.25, "gate_penalty": 0.10}
+  },
+  "pass_thresholds": {
+    "mean_service": 82.0,
+    "worst_service": 45.0,
+    "rights_burden_max": 18.0,
+    "rollback_days_max": 12.0
+  },
+  "reversal_rule": {
+    "unserved_improvement_over_calendar": 0.20,
+    "time_ratio_to_central_max": 1.30,
+    "rights_gain_required": 4.0,
+    "rollback_gain_required": 2.0,
+    "failed_protocols_for_rejection": 2
+  }
+}

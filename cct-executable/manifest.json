@@ -1,0 +1,24 @@
+{
+  "package": "CCT-EXEC-0.1",
+  "model_basis": "CCT v0.12",
+  "date": "2026-08-17",
+  "purpose": "Premier paquet local composable de constitution, économie, opérations et pilotes CCT",
+  "lifecycle_scale": ["described", "written", "tested", "authorized", "deployed", "reobserved"],
+  "components": [
+    {"id": "constitution", "path": "constitution", "status": "tested", "scope": "spécification et validation locales"},
+    {"id": "economy", "path": "economy", "status": "tested", "scope": "modèles synthétiques concurrents"},
+    {"id": "ops", "path": "ops", "status": "tested", "scope": "prototype hors ligne local"},
+    {"id": "calibration", "path": "calibration", "status": "written", "scope": "protocole de collecte non exécuté"},
+    {"id": "pilots", "path": "pilots", "status": "written", "scope": "protocoles, non autorisés sur terrain"},
+    {"id": "evidence", "path": "evidence", "status": "written", "scope": "registre local de preuves"},
+    {"id": "integration", "path": "integration", "status": "tested", "scope": "orchestration de tests locale"}
+  ],
+  "explicitly_not_established": [
+    "autorisation institutionnelle",
+    "déploiement territorial",
+    "efficacité causale",
+    "acceptabilité politique",
+    "transport entre populations",
+    "réobservation indépendante"
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "experiment": "CCT-7X-001",
+  "status": "preregistered_synthetic_comparison",
+  "seed": 20260817,
+  "runs_per_cell": 2000,
+  "trait_concentration": 24.0,
+  "architectures": {
+    "cct_v08": {
+      "label": "Confédération des communs terrestres v0.8",
+      "traits": {
+        "decision_speed": 0.72,
+        "accountability": 0.84,
+        "counter_expertise": 0.82,
+        "local_autonomy": 0.82,
+        "rights_portability": 0.90,
+        "planning_adaptivity": 0.82,
+        "audit_independence": 0.84,
+        "ecological_enforcement": 0.90,
+        "discovery_diversity": 0.72,
+        "reserve_capacity": 0.76,
+        "defense_coordination": 0.72,
+        "coercive_checks": 0.88,
+        "transition_readiness": 0.80,
+        "capital_flight_control": 0.74,
+        "interface_simplicity": 0.78,
+        "participation_access": 0.80,
+        "redundancy": 0.78,
+        "monopoly_controls": 0.86,
+        "competence_clarity": 0.78,
+        "rollback_capacity": 0.84
+      }
+    },
+    "cct_v01": {
+      "label": "Confédération des communs terrestres v0.1",
+      "traits": {
+        "decision_speed": 0.44,
+        "accountability": 0.76,
+        "counter_expertise": 0.38,
+        "local_autonomy": 0.82,
+        "rights_portability": 0.56,
+        "planning_adaptivity": 0.56,
+        "audit_independence": 0.66,
+        "ecological_enforcement": 0.90,
+        "discovery_diversity": 0.50,
+        "reserve_capacity": 0.46,
+        "defense_coordination": 0.44,
+        "coercive_checks": 0.80,
+        "transition_readiness": 0.48,
+        "capital_flight_control": 0.62,
+        "interface_simplicity": 0.38,
+        "participation_access": 0.46,
+        "redundancy": 0.48,
+        "monopoly_controls": 0.76,
+        "competence_clarity": 0.46,
+        "rollback_capacity": 0.60
+      }
+    },
+    "central_state": {
+      "label": "État central planificateur",
+      "traits": {
+        "decision_speed": 0.90,
+        "accountability": 0.46,
+        "counter_expertise": 0.28,
+        "local_autonomy": 0.22,
+        "rights_portability": 0.68,
+        "planning_adaptivity": 0.54,
+        "audit_independence": 0.44,
+        "ecological_enforcement": 0.74,
+        "discovery_diversity": 0.38,
+        "reserve_capacity": 0.72,
+        "defense_coordination": 0.92,
+        "coercive_checks": 0.46,
+        "transition_readiness": 0.76,
+        "capital_flight_control": 0.88,
+        "interface_simplicity": 0.70,
+        "participation_access": 0.42,
+        "redundancy": 0.56,
+        "monopoly_controls": 0.66,
+        "competence_clarity": 0.82,
+        "rollback_capacity": 0.46
+      }
+    },
+    "market_federation": {
+      "label": "Fédération sociale de marché",
+      "traits": {
+        "decision_speed": 0.78,
+        "accountability": 0.62,
+        "counter_expertise": 0.52,
+        "local_autonomy": 0.84,
+        "rights_portability": 0.74,
+        "planning_adaptivity": 0.84,
+        "audit_independence": 0.56,
+        "ecological_enforcement": 0.48,
+        "discovery_diversity": 0.94,
+        "reserve_capacity": 0.56,
+        "defense_coordination": 0.58,
+        "coercive_checks": 0.66,
+        "transition_readiness": 0.58,
+        "capital_flight_control": 0.18,
+        "interface_simplicity": 0.84,
+        "participation_access": 0.66,
+        "redundancy": 0.72,
+        "monopoly_controls": 0.38,
+        "competence_clarity": 0.72,
+        "rollback_capacity": 0.68
+      }
+    }
+  },
+  "scenarios": {
+    "water_coordination": {"label": "Sécheresse multi-biorégionale", "severity": 0.82},
+    "administrative_capture": {"label": "Capture par les permanents", "severity": 0.78},
+    "planning_gaming": {"label": "Jeu des indicateurs et pénuries", "severity": 0.84},
+    "local_tyranny": {"label": "Domination locale", "severity": 0.76},
+    "external_attack": {"label": "Agression hybride extérieure", "severity": 0.86},
+    "transition_sabotage": {"label": "Fuite et sabotage de transition", "severity": 0.88},
+    "institutional_complexity": {"label": "Surcharge procédurale", "severity": 0.74}
+  },
+  "core_metrics": {
+    "needs": 65.0,
+    "ecology": 65.0,
+    "rights": 65.0,
+    "democracy": 60.0,
+    "recovery": 60.0
+  },
+  "protocols": {
+    "base": {"trait_concentration": 24.0, "shock_delta": 0.0, "cct_penalty": 0.0, "rival_bonus": 0.0},
+    "broad_uncertainty": {"trait_concentration": 8.0, "shock_delta": 0.0, "cct_penalty": 0.0, "rival_bonus": 0.0},
+    "high_shock": {"trait_concentration": 24.0, "shock_delta": 0.12, "cct_penalty": 0.0, "rival_bonus": 0.0},
+    "hostile_to_cct": {"trait_concentration": 18.0, "shock_delta": 0.05, "cct_penalty": 0.08, "rival_bonus": 0.04}
+  },
+  "reversal_rule": {
+    "rival_margin": 0.10,
+    "weakened_scenarios": 2,
+    "rejected_scenarios": 4,
+    "catastrophic_threshold": 40.0,
+    "catastrophic_rate": 0.15,
+    "catastrophic_scenarios": 2
+  }
+}

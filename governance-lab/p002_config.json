@@ -1,0 +1,52 @@
+{
+  "experiment": "P002-DT-001",
+  "status": "preregistered_synthetic_digital_twin",
+  "seed": 17082026,
+  "runs_per_cell": 3000,
+  "horizon_weeks": 26,
+  "ecological_cap": 100.0,
+  "groups": {
+    "vital_low": {"demand": 34.0, "essential": 1.0, "low_income": 1.0, "purchasing_power": 0.45, "strategic": 0.15},
+    "ordinary_low": {"demand": 22.0, "essential": 0.25, "low_income": 1.0, "purchasing_power": 0.55, "strategic": 0.30},
+    "vital_high": {"demand": 25.0, "essential": 0.85, "low_income": 0.0, "purchasing_power": 1.25, "strategic": 0.45},
+    "luxury_high": {"demand": 27.0, "essential": 0.05, "low_income": 0.0, "purchasing_power": 1.75, "strategic": 0.85}
+  },
+  "modes": {
+    "corridor": {
+      "label": "Corridor CCT",
+      "budget": {"forecast": 0.16, "adaptation": 0.20, "audit": 0.18, "reserve": 0.18, "equity": 0.18, "simplicity": 0.10},
+      "priority_strength": 1.0, "price_weight": 0.0, "quota_inertia": 0.0,
+      "rule_visibility": 0.90, "cap_enforcement": 0.98, "import_flexibility": 0.28, "rent_factor": 0.05
+    },
+    "annual_plan": {
+      "label": "Plan annuel de quantités",
+      "budget": {"forecast": 0.23, "adaptation": 0.08, "audit": 0.10, "reserve": 0.14, "equity": 0.22, "simplicity": 0.23},
+      "priority_strength": 0.45, "price_weight": 0.0, "quota_inertia": 0.88,
+      "rule_visibility": 0.72, "cap_enforcement": 0.96, "import_flexibility": 0.16, "rent_factor": 0.03
+    },
+    "eco_market": {
+      "label": "Marché sous prix écologique",
+      "budget": {"forecast": 0.12, "adaptation": 0.26, "audit": 0.08, "reserve": 0.06, "equity": 0.10, "simplicity": 0.38},
+      "priority_strength": 0.12, "price_weight": 1.0, "quota_inertia": 0.0,
+      "rule_visibility": 0.35, "cap_enforcement": 0.72, "import_flexibility": 0.62, "rent_factor": 0.22
+    }
+  },
+  "protocols": {
+    "base": {"volatility": 0.08, "supply_shock": 0.05, "gaming": 0.10, "import_impact": 1.0},
+    "supply_break": {"volatility": 0.10, "supply_shock": 0.35, "gaming": 0.12, "import_impact": 1.1},
+    "high_volatility": {"volatility": 0.24, "supply_shock": 0.18, "gaming": 0.15, "import_impact": 1.0},
+    "coordinated_gaming": {"volatility": 0.10, "supply_shock": 0.12, "gaming": 0.55, "import_impact": 1.0},
+    "dirty_imports": {"volatility": 0.12, "supply_shock": 0.28, "gaming": 0.15, "import_impact": 1.8}
+  },
+  "reversal_rule": {
+    "essential_noninferiority_points": 2.0,
+    "low_income_noninferiority_points": 2.0,
+    "eco_overshoot_tolerance": 0.5,
+    "imported_harm_ratio_max": 1.10,
+    "imported_harm_slack": 0.5,
+    "admin_reduction_required": 0.15,
+    "dominated_protocols_for_rejection": 3,
+    "absolute_essential_unmet_max": 30.0,
+    "absolute_eco_overshoot_max": 5.0
+  }
+}

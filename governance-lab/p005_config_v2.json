@@ -1,0 +1,29 @@
+{
+  "inherits": "p005_config.json",
+  "experiment": "P005-DT-002",
+  "status": "preregistered_lean-cct_compound-crisis_synthetic_twin",
+  "protocols": {
+    "communications_and_keys": {"energy_loss": 0.38, "communications_loss": 0.72, "appeal_surge": 0.44, "security_pressure": 0.48, "transition_collision": 0.36},
+    "appeals_and_transition": {"energy_loss": 0.34, "communications_loss": 0.31, "appeal_surge": 0.82, "security_pressure": 0.39, "transition_collision": 0.72}
+  },
+  "modes": {
+    "cct_v012_lean": {
+      "label": "CCT v0.12 — noyau frugal",
+      "budget": {"continuity": 0.25, "rights": 0.17, "trace": 0.15, "recovery": 0.18, "coordination": 0.10, "independence": 0.15},
+      "complexity": 0.52,
+      "load_shedding": 0.91,
+      "protected_core": 0.93,
+      "concentration": 0.23,
+      "cross_sector_map": 0.82
+    }
+  },
+  "reversal_rule": {
+    "candidate": "cct_v012_lean",
+    "predecessor": "cct_v011",
+    "simple_rival": "simple_emergency",
+    "predecessor_load_reduction_min": 0.10,
+    "admin_reduction_required": 0.15,
+    "dominated_protocols_for_rejection": 3,
+    "gate_failures_for_rejection": 2
+  }
+}
