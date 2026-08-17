@@ -43,11 +43,11 @@ Un statut d'archive ne prouve pas qu'une fonction mérite d'être restaurée. Un
 | P0 | Corpus 10.4 | Des fragments et un statut visuel existent, mais pas de release complète. | Impossible de distinguer exactement patch, activation et reconstruction ultérieure. |
 | P1 | Source du manuel visuel | Seul le PNG aplati est disponible. | Les composants, textes éditables et la provenance de rendu sont perdus. |
 
-## Sources préservées mais fragiles
+## Sources préservées et limites restantes
 
-- Atlas 3.0 et Sur-modèle 9.2 existent dans les ZIP externes fournis, mais pas dans le dépôt ni son historique Git.
-- Corpus 10.0 est récupérable comme archive imbriquée dans le paquet 10.1.
-- Corpus 10.1 et le correctif 10.3 existent dans les ZIP externes.
+- Atlas 3.0 et Sur-modèle 9.2 sont conservés dans `archives/legacy/` avec leurs empreintes.
+- Corpus 10.0 a été extrait de l’archive imbriquée du paquet 10.1 et conservé séparément, sans modifier son contenu.
+- Corpus 10.1 et le correctif partiel 10.3 sont conservés dans `archives/legacy/`.
 - Les deux PDF contextuels sont conservés dans `skills/corpus-context-library/references/` et couverts par `docs/source-integrity.json`.
 - Les modules 10.x 01-18 sont conservés comme sources concaténées de provenance. Cette conservation n'est pas équivalente aux releases originales : module 00, manifestes, validations, hashes, archives imbriquées et frontières de paquet ne sont pas tous reproduits.
 
@@ -86,7 +86,7 @@ Un statut d'archive ne prouve pas qu'une fonction mérite d'être restaurée. Un
 - distinction de confidentialité entre témoignage pour recours et autorisation de diffusion ;
 - découplage fonctionnel avant une décision globale de conservation ou d'arrêt.
 
-Ces objets ne doivent passer à `patch_proposed` qu'après production d'un schéma, de règles typées, de cas d'échec et de tests capables de les faire perdre.
+Ces objets ont été récupérés sous forme de skills bornés et testés. Leur réobservation locale ne les promeut pas comme robustes : les neuf facultés récupérées restent `recovered_candidate_unvalidated`.
 
 ## Éléments à ne pas restaurer comme autorité globale
 
@@ -99,13 +99,12 @@ Ces objets ne doivent passer à `patch_proposed` qu'après production d'un sché
 
 Leur fonction utile est soit absorbée par le routage minimal 11.x, soit conservée comme garde contextuelle. Leur restauration globale recréerait le risque que la méthode remplace la scène.
 
-## Ordre d'action recommandé
+## État des actions
 
-1. Récupérer ou déclarer irrécupérables Atlas 2.7, Corpus 9.8, Corpus 10.2 et la release 10.4 complète.
-2. Importer Atlas 3.0, Sur-modèle 9.2, Corpus 10.0, 10.1 et le patch 10.3 dans une archive non exécutoire avec hashes.
-3. Reconstituer la provenance des cinq capacités P0 sans les activer : contrat de commande, présence effective, terminal-récupération, défense-contrôle et pouvoir temporel.
-4. Produire des tests discriminants avant toute inscription dans le graphe.
-5. N'appeler une capacité restaurée qu'après inscription, tests, autorisation, déploiement et réobservation.
+1. Atlas 3.0, Sur-modèle 9.2, Corpus 10.0, 10.1 et le correctif 10.3 sont importés comme archives non exécutoires avec empreintes.
+2. Les neuf facultés récupérées disposent d’une provenance, de dépendances et de tests discriminants.
+3. Leur invocation et leur cohabitation avec 11.x ont été réobservées localement sans promotion de robustesse.
+4. Atlas 2.7, Corpus 9.8, Corpus 10.2, la release 10.4 complète et la source éditable du manuel restent à récupérer si des originaux authentifiables réapparaissent.
 
 ## Condition de renversement
 
