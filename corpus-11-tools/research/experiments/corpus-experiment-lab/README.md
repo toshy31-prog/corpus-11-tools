@@ -36,6 +36,17 @@ node arena/declarative/freeze-scenario.mjs draft.json frozen.json
 
 The interpreter permits scalar arithmetic and `set`/`add` mutations on `state.*` only. It executes no imported code or free-form expression. `author-template.json` is an unsealed intake template; the included frozen pulse document is an internal execution witness, not external evidence.
 
+For ordinary use, the arena now has one command surface:
+
+```bash
+node arena/cli.mjs list
+node arena/cli.mjs run ilyana
+node arena/cli.mjs status
+node arena/cli.mjs test
+```
+
+`run` prints the complete replayable report. `status` lists local lifecycle decisions without promoting them into global capability verdicts.
+
 ## Implemented plugins
 
 `plugins/recovery-erasure.mjs` migrates the closed recovery/erasure experiments. Run:
