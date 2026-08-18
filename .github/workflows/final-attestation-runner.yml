@@ -2,6 +2,9 @@ name: Final attestation runner
 
 # Temporary bootstrap-only runner. Removed after the attested PASS.
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - agent/final-post-merge-attestation
