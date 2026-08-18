@@ -6,7 +6,7 @@
 
 ## Statut
 
-active — **phénomène mathématique renforcé, lecture objectale toujours spéculative**. Le reste d'intersection d'ordre trois survit maintenant dans deux familles finies distinctes, dont la représentation naturelle non signée de `S4` sur `Q^4`. Aucun lien au monde physique n'est établi.
+active — **phénomène mathématique robuste d'ordre trois, stabilité prospective non établie**. Le reste d'intersection triple survit dans deux familles finies distinctes, mais son premier test prospectif sous ajout d'une quatrième factorisation dans la représentation naturelle de `S4` est négatif après contrôle géométrique bas ordre. La lecture objectale reste spéculative.
 
 ## Observations favorables
 
@@ -15,39 +15,47 @@ active — **phénomène mathématique renforcé, lecture objectale toujours sp�
 - **Premier test exhaustif :** deux triplets de matrices de permutations signées en dimension 3 ont les mêmes dimensions fixes marginales `(2,2,2)` et deux à deux `(1,1,1)`, mais des intersections triples de dimensions `0` et `1`.
 - **Portabilité architecturale :** ce contrôle est réobservé comme troisième module, sans modifier `core/`, avec 17/17 attentes conformes sur les `17 296` triplets du catalogue signé.
 - **Audit de représentation :** réordonner les factorisations et conjuguer tous les transports par un changement de base inversible préservent exactement les profils et le reste triple.
-- **Réplication prospective dans une seconde famille naturelle :** les 24 matrices de permutation ordinaires de `S4` sur `Q^4` donnent 2024 triplets et 26 clés basses. La clé marginale `(3,3,3)` / deux-à-deux `(2,2,2)` réalise des dimensions triples `1` et `2` : 16 triplets à dimension 1 et 4 à dimension 2. Classification préenregistrée : `transported_remainder`.
-- **Inférence bornée :** les données d'intersection jusqu'à l'ordre deux ne déterminent pas en général l'intersection d'ordre trois dans au moins deux familles finies naturelles distinctes.
+- **Réplication prospective dans une seconde famille naturelle :** les 24 matrices de permutation ordinaires de `S4` sur `Q^4` donnent 2024 triplets. La clé marginale `(3,3,3)` / deux-à-deux `(2,2,2)` réalise des dimensions triples `1` et `2` : 16 triplets à dimension 1 et 4 à dimension 2. Classification préenregistrée : `transported_remainder`.
+- **Inférence bornée :** les données d'intersection jusqu'à l'ordre deux ne déterminent pas en général l'intersection d'ordre trois dans au moins deux familles finies distinctes.
 
 ## Observations défavorables
 
 - Le choix des transports `U_F` peut fabriquer l'invariant.
-- Le premier jouet aurait maintenu `D_I = 1` indépendamment de l'orientation ; ces valeurs restent à reproduire.
 - Stabilité sous factorisation peut être une symétrie ordinaire renommée.
 - Les deux familles testées restent des représentations matricielles finies choisies pour leur calculabilité ; aucune nécessité physique de ces transports n'est établie.
-- Le résultat `S4` renforce la généralité mathématique du reste, pas l'identification de l'intersection à un objet.
-- La migration démontre que le moteur peut porter ce calcul sans traces ni séquence temporelle ; elle ne fournit aucun canal empirique.
+- **H4 non satisfaite :** dans la famille `S4`, après ajout prospectif de chacune des 21 matrices restantes à chaque triplet de la clé `(3,3,3)/(2,2,2)`, seules 1 des 4 strates géométriques appariées a `Delta_D4>0`, trois ont `Delta_D4=0`, médiane exacte `0`. Classification : `not_supported`.
+- Toutes les matrices de permutation de `S4` fixent la droite constante `span((1,1,1,1))`. Les triplets à `D3=1` sont déjà sur ce plancher commun et restent à `D4=1` sous tout ajout ; les triplets à `D3=2` perdent leur dimension supplémentaire pour tout ajout non trivial dans les strates appariées et retombent à `D4=1`.
+- La survie positive `D4>0` est donc triviale dans cette représentation et ne constitue pas un signal de stabilité objectale.
+- Le résultat `transported_remainder` renforce la généralité mathématique du reste triple, mais H4 montre que ce reste ne transporte pas ici la stabilité prospective recherchée.
+- Aucun canal empirique, aucune dynamique matérielle et aucun passage d'échelle ne sont fournis.
 
 ## Hypothèses concurrentes
 
-- Les objets sont des excitations ou secteurs de super-sélection standard.
 - Le reste d'intersection est un phénomène ordinaire de géométrie des sous-espaces fixes, sans statut objectal privilégié.
-- L'invariant provient d'un couplage ad hoc aux contraintes temporelles.
-- La robustesse pertinente est dynamique, non une intersection statique de points fixes.
+- Le contraste `D3=1/2` de `S4` reflète la présence d'un sous-espace fixe commun forcé et une dimension supplémentaire fragile, pas une stabilité intrinsèque.
+- Les objets sont des excitations ou secteurs de super-sélection standard.
+- L'invariant provient d'un choix ad hoc de factorisations/transports.
+- La robustesse pertinente est dynamique ou quotientée par les invariants communs de la famille, non la dimension brute de l'intersection.
 
 ## Prédictions discriminantes
 
-- Des factorisations nouvellement ajoutées, fixées avant calcul, doivent réduire `I` de façon calculable sans redéfinir les transports après observation.
-- Un reste objectal robuste devrait survivre à l'ajout prospectif de factorisations selon une règle non triviale et dépasser des contrôles appariés de géométrie de sous-espaces.
+- Ne pas prolonger la même représentation `S4` à cinq factorisations avec la survie positive brute : la droite constante rendrait ce critère trivial.
+- Une prochaine famille admissible doit être fixée avant calcul et retirer ou quotienter le sous-espace fixe commun forcé ; alors un reste robuste devrait prédire une survie non triviale sous ajout prospectif mieux que des contrôles géométriques appariés.
+- Des factorisations nouvellement ajoutées doivent réduire `I` de façon calculable sans redéfinir les transports après observation.
 - Des exemples finis doivent réaliser séparément les quatre phases proposées.
 - Une co-émergence non artificielle exige un mécanisme commun fixé en amont et une relation entre `F_T` et `D_I` absente de contrôles appariés.
 
 ## Condition de renversement
 
-La simple existence d'un reste d'ordre trois n'est plus fragile face au changement de la première famille : elle survit dans `S4`. En revanche, requalifier comme géométrie statique ordinaire si la stabilité sous ajout de nouvelles factorisations est entièrement prédite par les dimensions/intersections standards des sous-espaces et si aucun résidu prospectif ne subsiste face à des contrôles appariés. Aucun rejet de la classe entière sans ce test.
+La simple existence d'un reste d'ordre trois est robuste face au changement de la première famille : elle survit dans `S4`.
+
+En revanche, le premier test de stabilité prospective est négatif (`not_supported`) et possède une explication géométrique standard par la droite fixe commune. Affaiblir davantage puis requalifier la lecture objectale comme géométrie statique ordinaire si, après retrait préenregistré des sous-espaces fixes communs ou dans une famille sans tel plancher, la survie reste entièrement déterminée par les dimensions/intersections standards et aucun résidu prospectif ne subsiste.
+
+Ne pas rejeter la classe mathématique entière à partir du seul échec H4 dans `S4`.
 
 ## Méthodes nécessaires
 
-Fixer factorisations et foncteurs de transport avant calcul ; algèbre linéaire exacte ; tests de changement de base ; contrôles randomisés et ablations ; comparer la survie de `I` sous ajout de nouvelles factorisations à des familles de sous-espaces appariées ; comparaison aux invariants de jauge et secteurs connus. Le module utilise les mineurs entiers exacts et traite ordre de présentation et journal d'exécution comme provenance seulement.
+Fixer factorisations et foncteurs de transport avant calcul ; algèbre linéaire exacte ; contrôler explicitement l'intersection fixe commune de toute famille ; utiliser au besoin le quotient par ce sous-espace avant de définir une survie ; tests de changement de base ; contrôles appariés ; comparaison aux invariants de jauge et secteurs connus. Ne pas adapter la famille de transports après lecture d'un résultat.
 
 ## Sources
 
@@ -55,8 +63,10 @@ Fixer factorisations et foncteurs de transport avant calcul ; algèbre linéaire
 - `research/experiments/enumerate_higher_order_fixed_intersections.py`.
 - `research/experiments/factorization-s4-permutation-preregistration-2026-08-18.md`.
 - `research/experiments/factorization-s4-permutation-results-2026-08-18.md`.
+- `research/experiments/factorization-fourth-extension-preregistration-2026-08-18.md`.
+- `research/experiments/factorization-fourth-extension-results-2026-08-18.md`.
 - Corpus 11 Tools : audit des dépendances et des attributions.
 
 ## Dernière mise à jour
 
-2026-08-18 — reste d'ordre trois transporté prospectivement vers les matrices de permutation ordinaires de `S4` sur `Q^4`
+2026-08-18 — reste triple transporté vers `S4`, mais H4 de survie sous quatrième factorisation `not_supported`; plancher fixe commun identifié
