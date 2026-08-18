@@ -7,12 +7,14 @@ Le cœur connaît seulement un état opaque, des transformations nommées, des p
 ## Composants génériques
 
 - `core/` : moteur, contrôles, classification et reproductibilité ;
-- `governance/` : gel de protocole, verrou d’exécution et garde contre l’accès anticipé aux résultats ;
+- `governance/` : gel de protocole, verrou d’exécution, clôture avec attestation des artefacts et garde contre l’accès anticipé aux résultats ;
 - `arena/` : comparaison aveugle de méthodes rivales sur des essais causaux appariés ;
 - `schemas/` : contrat déclaratif d’expérience ;
 - `tests/` : tests propres au cœur.
 
 Les adaptateurs scientifiques auparavant mélangés au moteur vivent maintenant sous [`../../../research/active/corpus-hypotheses/lab-adapters/`](../../../research/active/corpus-hypotheses/lab-adapters/). Ils importent ce laboratoire ; le laboratoire ne les importe pas.
+
+`governance/execution-closure.mjs` vérifie le protocole et le chemin de calcul verrouillés avant exécution, exige un nouveau dossier de sortie, hache les artefacts déclarés et écrit une attestation sans écrasement. L’adaptateur choisit la fonction d’exécution, son descripteur et la liste des artefacts ; la primitive ne connaît ni domaine scientifique, ni seuil, ni conclusion.
 
 ## Contrat du cœur
 
@@ -38,4 +40,4 @@ node corpus-11-tools/labs/experiment-lab/arena/cli.mjs test
 
 ## Statut
 
-Le cœur, la gouvernance de protocole et l’Arena sont écrits et testés. Cela n’établit ni universalité de l’abstraction, ni validité scientifique des adaptateurs, ni transport terrain.
+Le cœur, la gouvernance de protocole, la clôture attestée et l’Arena sont écrits et testés. Cela n’établit ni universalité de l’abstraction, ni validité scientifique des adaptateurs, ni transport terrain.
