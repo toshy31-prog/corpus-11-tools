@@ -1,95 +1,74 @@
 # État courant de la recherche
 
-Dernière mise à jour : 2026-08-18
+Dernière mise à jour : 2026-08-18 — clôture quotidienne
 
-## Question centrale
+## Discipline
 
-Quelles structures minimales permettent de distinguer récupération et désinscription puis, éventuellement, de faire émerger orientation temporelle et invariants objectaux sans les injecter dans les définitions ?
+Observation, attribution, inférence, hypothèse et démonstration restent séparées. Les sorties finies et logicielles ne sont pas des observations physiques. `core/` et `sources/` restent gelés.
 
-## Discipline épistémique
+## État des branches
 
-- **Observation** : contenu directement constaté dans les fichiers ou sortie reproductible.
-- **Attribution** : proposition rapportée à la source, sans adoption automatique.
-- **Inférence** : conséquence argumentée mais non démontrée.
-- **Hypothèse** : mécanisme réfutable à tester contre des concurrentes.
-- **Démonstration** : conséquence formelle de définitions explicites, dont la portée reste celle du modèle.
+### Récupération contre désinscription — active, arrêt logiciel local
 
-Corpus 11 Tools sert de jeu d'audit et de discrimination. Il ne fournit ni données physiques ni validation d'une nouvelle physique.
+La séparation opérationnelle est reproduite dans le modèle exact, transportée vers `asyncio`, puis vers cinq processus OS persistants. Aucun mismatch modèle/runtime conditionné par l'ordre observé.
 
-## Hypothèses actives
+Résultats principaux :
 
-1. **Récupération contre désinscription** : séparation opérationnelle reproduite dans le modèle exact, transportée vers `asyncio`, puis vers cinq processus OS persistants sur le même hôte. Aucune divergence n'apparaît entre runtime et modèle conditionné par l'ordre observé. Le profil reste cependant standard : `C_erase_1 = 1 + tau(G_int)` exactement dans la famille finie. **Condition d'arrêt locale atteinte : pas de nouveau banc logiciel du même mécanisme.**
-2. **Frustration temporelle** : `F_T` sépare certains tournois localement appariés, mais l'ablation prospective montre que `96,03 %` de l'avantage prédictif disparaît sans ordre latent commun. Toute lecture d'émergence est retirée ; comparaison à des estimateurs standards encore requise.
-3. **Invariants de factorisation** : reste triple robuste dans deux familles, mais H4 à quatre factorisations est `not_supported`; le plancher `span((1,1,1,1))` explique la survie brute dans `S4`.
+- famille n=6 : `32768` architectures brutes, `9765` atteignables, `176` strates appariées séparant `C_erase_1` ;
+- identité exacte sans exception : `C_erase_1 = 1 + tau(G_int)` ;
+- asyncio : A `360/360`, B `180/360`, zéro mismatch ;
+- cinq processus : A `240/240`, B `120/240`, zéro mismatch ; 16 réordonnancements runtime sans rupture du modèle.
 
-## Hypothèses affaiblies
+Conclusion : récupération, effacement à convergence et effacement sous deadline sont des axes opérationnels distincts, mais la nouvelle coordonnée reste absorbée par un invariant standard. **Ne plus prolonger ce mécanisme en logiciel local.** Réouverture empirique seulement avec plusieurs machines, réseau externe ou matériel réel.
 
-### Orientation compositionnelle
+### Frustration temporelle — weakened, condition de requalification atteinte
 
-Statut : **weakened — voie P1/P2 close à l'ordre 3**.
+`F_T` reste le minimum exact d'arêtes de retour et un descripteur mathématique valide. Sa lecture comme prédicteur autonome ou indice d'émergence temporelle est retirée dans le programme actuel.
 
-P1 `too_common`; P2 `not_transported` / `no_predictive_transport`; H3 `standard_absorption`; `I2+A2` suffit à annuler les résidus P1/P2/joint. Aucun P3 adaptatif.
+Bornes successives :
 
-### Autres formulations affaiblies
+- succès historique avec ordre latent commun : avantage `913` violations face à un ordre aléatoire ;
+- ablation : avantage face à l'aléatoire `983` avec ordre commun contre `39` sans ordre commun, soit `3,97 %` conservé ;
+- test concurrent exhaustif du 2026-08-18 : `32768` tournois, `2932` strates de vecteur de degrés étiqueté dont `2212` non triviales, `1 343 184` couples train/test distincts sans ordre latent généré ;
+- `Delta_total = L_Borda-L_FT = -472112`, moyenne `-0,351487` violation par test ;
+- F_T meilleur/égal/pire : `301248 / 370240 / 671696` ;
+- **avantage moyen F_T négatif dans `2212/2212` strates non triviales** ;
+- classification préenregistrée : **`borda_better`**.
 
-- « Les traces font le temps » : insuffisamment discriminant.
-- Profondeur d'inscription comme horloge : non monotone en général.
-- Premier couplage direct temps–objet : risque de programmer la co-émergence.
-- Attribution de la co-augmentation `S3` à la non-commutativité : contrôle abélien positif.
-- Co-émergence par holonomie `S3` : aucun mécanisme propre à `S3` établi.
+Conclusion : la condition de requalification de la fiche est satisfaite. Ne pas concevoir un nouveau protocole pour sauver adaptativement `F_T`. Réouverture seulement sur prédiction indépendante avec concurrent standard préenregistré.
 
-## Hypothèses suspendues
+### Invariants de factorisation — active mais bornée
 
-Le complexe de distinctions compatibles reste suspendu : les modèles finis exécutés suivent directement les entrées et ne fournissent pas encore de relation exclusive face aux contrôles.
+Le reste triple est robuste dans deux familles : catalogue signé dimension 3 (`0/1`) et permutation naturelle `S4` (`1/2`, `transported_remainder`). Mais H4 sous ajout d'une quatrième factorisation est `not_supported` : contrastes appariés `+1,0,0,0`, médiane `0`, avec explication par la droite fixe commune `span((1,1,1,1))`.
 
-## Observations établies principales
+Réouverture seulement avec quotient préenregistré du sous-espace fixe commun ou famille sans plancher commun.
 
-### Récupération / désinscription
+### Orientation compositionnelle — weakened, voie P1/P2 close
 
-- copies terminales : même `C_info=1`, effacement `1` vs `N`, réductible à Hamming ;
-- à Hamming fixé : profondeur `2/3`, réductible à l'excentricité ;
-- à excentricité fixée : résidu `9/5` vs `10/5`, réductible au profil de coupes ;
-- aucun reste à deux pertes jusqu'à huit sommets sous le contrôle préenregistré ;
-- réplication n=6 : `32768` architectures brutes, `9765` atteignables, `685` strates, `176` strates séparant `C_erase_1`, zéro violation de `C_erase_1=1+tau` ;
-- runtime `asyncio` : A `360/360`, B `180/360`, zéro mismatch sur `720` runs ; `runtime_transport` ;
-- multi-processus : A `240/240`, B `120/240`, zéro mismatch sur `480` runs ; `multiprocess_transport` ;
-- les 120 ordres réels sont réalisés dans chaque architecture ; le noyau réordonne 16 cibles au total dans le banc multi-processus sans casser le modèle.
+P1 `too_common`; P2 `not_transported` / `no_predictive_transport`; H3 `standard_absorption`; `I2+A2` suffit à déterminer P1/P2 à l'ordre 3. Aucun P3 adaptatif.
 
-### Factorisation
+### Complexe de distinctions compatibles — suspended
 
-- catalogue signé : reste triple `0/1` à données d'ordre 1/2 appariées ;
-- `S4` : reste triple `1/2` pour clé `(3,3,3)/(2,2,2)`, `transported_remainder` ;
-- H4 : quatre strates appariées, contrastes `+1,0,0,0`, médiane `0`, `not_supported`; droite constante commune comme explication géométrique.
+Les modèles finis exécutés suivent directement les entrées et n'ont pas produit de relation exclusive face aux contrôles. Maintenir la suspension.
 
-### Frustration temporelle
+### Holonomie S3 — weakened/arrêt du fil P_I
 
-- paire `F_T=1/15` vs `2/15` ;
-- avantage prospectif initial `913` violations face à ordre aléatoire ;
-- ablation : `983` vs `39`, soit `3,97 %` conservé ; aucune émergence établie.
+Les contrôles abéliens et d'incidence expliquent les effets étudiés ; ne rouvrir qu'avec observable indépendant et prédiction spécifique.
 
-### Orientation compositionnelle
+## Décisions de fin de journée
 
-- `3330` classes d'isomorphisme d'ordre 3, `3192` chirales ;
-- P1 trop commun ; partition non transportée vers P2 ;
-- `I2+A2` rend les deux profils statiquement déterminés sur la population ; voie close.
+1. **F_T est requalifié** comme score descriptif/optimiseur standard dans le programme actuel après `borda_better`.
+2. **Récupération/désinscription** conserve une distinction opérationnelle robuste mais atteint sa condition d'arrêt logicielle locale.
+3. **Factorisation** conserve un phénomène mathématique d'ordre trois, mais aucune stabilité prospective non triviale n'est établie.
+4. **Orientation compositionnelle** reste close pour P1/P2.
+5. Aucun résultat du jour n'établit temps émergent, objet physique nouveau ou nouvelle loi fondamentale.
 
-## Tests discriminants prioritaires
+## Prochaine action à la reprise
 
-1. **Frustration — priorité A immédiate si aucun vrai banc distribué n'est disponible** : comparer prospectivement `F_T` à un estimateur standard de degrés/Borda puis à une famille sans ordre latent commun.
-2. **Récupération/désinscription — priorité A conditionnelle au matériel/réseau** : prochaine promotion uniquement vers plusieurs machines, réseau externe, microcontrôleurs ou composants réellement séparés. Réutiliser le même contrat sans réajuster les critères.
-3. **Factorisation — priorité B conditionnelle** : reprise uniquement avec quotient du sous-espace fixe commun ou famille sans plancher commun préenregistrée.
-4. **Distinctions compatibles** : maintenir la suspension sans relation non injectée discriminante.
-5. **Orientation compositionnelle** : aucune nouvelle sonde P3 ; réouverture seulement sur prédiction indépendante.
-6. **Holonomie S3** : ne rouvrir qu'avec observable indépendant de `P_I`.
+Ne pas reprendre automatiquement la piste la plus récente. Refaire une allocation par valeur d'information parmi :
 
-## Blocages
+- banc distribué/matériel récupération-désinscription si un vrai dispositif devient accessible ;
+- factorisation quotientée par le sous-espace fixe commun, seulement avec préenregistrement indépendant ;
+- complexe de distinctions compatibles uniquement si une relation non injectée et un contrôle apparié peuvent être spécifiés avant calcul.
 
-Aucun dispositif matériel ou réseau externe n'est actuellement mesuré. Les bancs récupération/désinscription locaux transportent parfaitement un mécanisme déjà expliqué par un invariant standard. `F_T` dépend principalement d'un ordre injecté. Factorisation n'a pas montré de stabilité prospective non triviale sous H4. Le complexe compatible reste non discriminant.
-
-## Prochaine action
-
-**Ne plus prolonger récupération/désinscription en local.** En l'absence de plusieurs machines ou matériel, basculer le prochain cycle vers `F_T` : préenregistrer une comparaison directe contre un estimateur de degrés/Borda dans une famille où aucun ordre latent commun n'est partagé entre train et test.
-
-Si un vrai banc distribué devient accessible, revenir à récupération/désinscription avec le contrat déjà gelé.
-
-Garder `core/`, `sources/` et la gouvernance gelés.
+Éviter toute nouvelle sonde destinée à sauver chiralité ou `F_T` après leurs conditions d'arrêt respectives.
