@@ -18,9 +18,9 @@ Corpus 11 Tools sert de jeu d'audit et de discrimination. Il ne fournit ni donn�
 
 ## Hypothèses actives
 
-1. **Récupération contre désinscription** : séparation opérationnelle désormais reproduite sous plusieurs régimes, dont une réplication prospective asynchrone multi-port `n=6`. `C_info=1` et `C_erase_inf=1` peuvent rester identiques alors que `C_erase_1` diffère dans 176 strates appariées. Mais chaque coordonnée connue reste absorbée par un invariant standard ; dans le nouveau test, `C_erase_1 = 1 + tau(G_int)` exactement. Priorité : transport vers un système avec latences/ordres mesurés, pas extension combinatoire brute.
+1. **Récupération contre désinscription** : séparation opérationnelle reproduite sous plusieurs régimes et transportée jusqu'à une event loop réelle horodatée. Une réplication prospective `n=6` donne 176 strates où `C_info=C_erase_inf=1` mais `C_erase_1` diffère ; un banc `asyncio` sur deux architectures appariées donne A `360/360` effacements et B `180/360`, avec zéro divergence par rapport au modèle discret. Le profil reste toutefois entièrement expliqué par des invariants standards ; `C_erase_1 = 1 + tau(G_int)` exactement dans la famille finie. Aucune donnée matérielle.
 2. **Frustration temporelle** : `F_T` sépare certains tournois localement appariés, mais l'ablation prospective montre que `96,03 %` de l'avantage prédictif disparaît sans ordre latent commun. Toute lecture d'émergence est retirée ; comparaison à des estimateurs standards encore requise.
-3. **Invariants de factorisation** : le reste d'intersection d'ordre trois est robuste dans deux familles finies distinctes, mais H4 à quatre factorisations dans `S4` est `not_supported`. Le plancher fixe commun `span((1,1,1,1))` explique la survie brute. La lecture objectale reste spéculative.
+3. **Invariants de factorisation** : reste triple robuste dans deux familles, mais H4 à quatre factorisations est `not_supported`; le plancher `span((1,1,1,1))` explique la survie brute dans `S4`.
 
 ## Hypothèses affaiblies
 
@@ -28,80 +28,67 @@ Corpus 11 Tools sert de jeu d'audit et de discrimination. Il ne fournit ni donn�
 
 Statut : **weakened — voie P1/P2 close à l'ordre 3**.
 
-- H1 : `too_common` — `1690/3192 = 52,94 %` de classes chirales fortes dans P1 ;
-- H2 : `not_transported` / `no_predictive_transport` ;
-- H3 : `standard_absorption` ;
-- autopsie : `I2 + A2` suffit à rendre P1/P2/joint constants sur les cellules statiques ; aucun P3 adaptatif.
+P1 `too_common`; P2 `not_transported` / `no_predictive_transport`; H3 `standard_absorption`; `I2+A2` suffit à annuler les résidus P1/P2/joint. Aucun P3 adaptatif.
 
 ### Autres formulations affaiblies
 
-- « Les traces font le temps » : trop proche de cadres connus et insuffisamment discriminant.
+- « Les traces font le temps » : insuffisamment discriminant.
 - Profondeur d'inscription comme horloge : non monotone en général.
 - Premier couplage direct temps–objet : risque de programmer la co-émergence.
-- Attribution de la co-augmentation qualitative du jouet `S3` à la non-commutativité : contrôle abélien `C6` apparié positif.
-- Co-émergence par holonomie `S3` : illustration de l'incidence des sous-espaces fixes, sans mécanisme propre à `S3` établi.
+- Attribution de la co-augmentation `S3` à la non-commutativité : contrôle abélien positif.
+- Co-émergence par holonomie `S3` : aucun mécanisme propre à `S3` établi.
 
 ## Hypothèses suspendues
 
-Le complexe de distinctions compatibles reste spéculatif et suspendu. Un premier modèle fini complet est exécuté, mais ses différences suivent directement les entrées et ne sont pas exclusives face aux contrôles concurrents.
+Le complexe de distinctions compatibles reste suspendu : les modèles finis exécutés suivent directement les entrées et ne fournissent pas encore de relation exclusive face aux contrôles.
 
 ## Observations établies principales
 
 ### Récupération / désinscription
 
-- circuits appariés : même `C_info=1`, désinscriptions `1` et `N`, différence réductible à Hamming ;
-- à Hamming fixé : profondeur d'effacement `2/3`, réductible à l'excentricité ;
-- à excentricité fixée : charge résiduelle `9/5` vs `10/5`, réductible au profil de coupes ;
-- aucun reste à deux pertes à profil d'une perte fixé jusqu'à huit sommets ;
-- **réplication prospective asynchrone multi-port `n=6`** : `32768` architectures brutes, `9765` atteignables, `685` strates de contrôle, **176 strates séparant `C_erase_1`** alors que `C_info=C_erase_inf=1` et les contrôles gelés sont identiques ;
-- distribution `C_erase_1` : `1:1`, `2:276`, `3:4824`, `4:4648`, `5:16` ;
-- zéro violation de `C_erase_1 = 1 + couverture_minimale_de_sommets` ; classification `standard_profile_separation`.
+- copies terminales : même `C_info=1`, effacement `1` vs `N`, réductible à Hamming ;
+- à Hamming fixé : profondeur `2/3`, réductible à l'excentricité ;
+- à excentricité fixée : résidu `9/5` vs `10/5`, réductible au profil de coupes ;
+- aucun reste à deux pertes jusqu'à huit sommets sous le contrôle préenregistré ;
+- **réplication n=6** : `32768` architectures brutes, `9765` atteignables, `685` strates, `176` strates séparant `C_erase_1`, zéro violation de `C_erase_1=1+tau` ; classification `standard_profile_separation` ;
+- **transport runtime** : 720 runs `asyncio`, 120 ordres réalisés par architecture ; A `360/360` effacements, B `180/360`, zéro mismatch modèle/runtime ; classification `runtime_transport` ;
+- le runtime confirme la robustesse logicielle du profil mais n'ajoute pas de mécanisme au modèle discret.
 
 ### Factorisation
 
-- catalogue signé dimension 3 : profils `(2,2,2)/(1,1,1)` compatibles avec intersections triples `0/1` ;
-- test prospectif `S4` : clé `(3,3,3)/(2,2,2)` avec dimension triple `1` pour 16 triplets et `2` pour 4 ; `transported_remainder` ;
-- H4 : 420 extensions par une quatrième matrice, quatre strates appariées, contrastes `+1,0,0,0`, médiane `0`, décision `not_supported` ;
-- la droite constante commune explique le plancher de survie.
+- catalogue signé : reste triple `0/1` à données d'ordre 1/2 appariées ;
+- `S4` : reste triple `1/2` pour clé `(3,3,3)/(2,2,2)`, `transported_remainder` ;
+- H4 : quatre strates appariées, contrastes `+1,0,0,0`, médiane `0`, `not_supported`; droite constante commune comme explication géométrique.
 
 ### Frustration temporelle
 
-- paire appariée `F_T=1/15` vs `2/15` ;
+- paire `F_T=1/15` vs `2/15` ;
 - avantage prospectif initial `913` violations face à ordre aléatoire ;
-- ablation ordre latent : `983` vs `39`, soit `3,97 %` de l'avantage conservé ; aucune émergence établie.
+- ablation : `983` vs `39`, soit `3,97 %` conservé ; aucune émergence établie.
 
 ### Orientation compositionnelle
 
 - `3330` classes d'isomorphisme d'ordre 3, `3192` chirales ;
-- P1 trop commun, P1 ne transporte pas sa partition vers P2 ;
-- `I2+A2` produit zéro résidu P1/P2/joint ; voie P1/P2 close.
+- P1 trop commun ; partition non transportée vers P2 ;
+- `I2+A2` rend les deux profils statiquement déterminés sur la population ; voie close.
 
 ## Tests discriminants prioritaires
 
-1. **Récupération/désinscription — priorité A** : transporter le profil `(C_info,C_erase_inf,C_erase_deadline)` vers un banc avec latences, pertes et ordres de mise à jour réellement observés. Geler ports, deadline, règle de convergence, coût et détectabilité avant acquisition.
-2. **Factorisation — priorité B conditionnelle** : reprise uniquement avec quotient explicite du sous-espace fixe commun ou famille sans plancher commun préenregistrée.
-3. **Frustration — priorité B** : comparer `F_T` à des estimateurs standards dans une famille sans ordre latent commun.
-4. **Distinctions compatibles — priorité conditionnelle** : maintenir la suspension sans relation non injectée discriminante.
+1. **Récupération/désinscription — priorité A conditionnelle au banc** : prochain transport uniquement vers processus/conteneurs/machines/composants réellement séparés. Geler avant acquisition ports, deadline, règle de convergence, pertes, détectabilité, coût messages/opérations/temps et condition de renversement.
+2. **Frustration — priorité A si aucun banc distribué n'est disponible** : comparer prospectivement `F_T` à un estimateur standard de degrés puis à une famille sans ordre générateur.
+3. **Factorisation — priorité B conditionnelle** : reprise uniquement avec quotient du sous-espace fixe commun ou famille sans plancher commun préenregistrée.
+4. **Distinctions compatibles** : maintenir la suspension sans relation non injectée discriminante.
 5. **Orientation compositionnelle** : aucune nouvelle sonde P3 ; réouverture seulement sur prédiction indépendante.
 6. **Holonomie S3** : ne rouvrir qu'avec observable indépendant de `P_I`.
 
 ## Blocages
 
-Aucune mesure matérielle n'existe encore pour récupération/désinscription. Les sorties actuelles sont algébriques ou simulées. Les profils de désinscription connus sont des compilations d'invariants standards. `F_T` dépend principalement d'un ordre injecté dans le modèle testé. Le reste factoriel n'a pas montré de stabilité prospective non triviale sous H4. Le complexe compatible reste non discriminant. La voie chiralité P1/P2 est statiquement absorbée à l'ordre 3.
+Aucune mesure matérielle n'existe encore. Le banc runtime actuel utilise une seule event loop locale. Les profils de désinscription connus sont toujours des compilations d'invariants standards. `F_T` dépend principalement d'un ordre injecté. Factorisation n'a pas montré de stabilité prospective non triviale sous H4. Le complexe compatible reste non discriminant.
 
 ## Prochaine action
 
-**Construire un banc quasi-matériel de récupération/désinscription asynchrone**, reproductible et versionné, avec nœuds/processus séparés, délais mesurés, ordre effectif des mises à jour, pertes contrôlées et plusieurs ports de reset. Avant toute acquisition, fixer :
+**Si un banc distribué local est techniquement disponible, construire deux topologies avec processus ou conteneurs séparés et réutiliser sans modification le contrat de récupération/désinscription.** Ne pas appeler ce banc « matériel » s'il reste sur une seule machine.
 
-- topologies A/B ;
-- ports de lecture/reset ;
-- `C_info` ;
-- critère d'effacement à convergence ;
-- deadline ou nombre maximal de passes ;
-- taux de trace résiduelle ;
-- coûts messages/opérations/temps ;
-- condition de renversement.
-
-Ne pas présenter l'émulation comme matériel réel. Si un dispositif réel est ensuite disponible, réutiliser le même contrat sans réajuster les critères.
+Sinon, arrêter ici la montée empirique de cette branche et affecter le prochain test à la comparaison standard de `F_T`.
 
 Garder `core/`, `sources/` et la gouvernance gelés.
