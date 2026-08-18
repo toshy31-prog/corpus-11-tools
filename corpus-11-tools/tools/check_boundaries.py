@@ -68,16 +68,23 @@ for project in projects:
     if not readme.is_file():
         errors.append(f"research project lacks README: {project.relative_to(repo_root)}")
 
-# Accepted transfers are part of the product/research firewall.  A transfer is
-# only accepted when it is falsifiable: it must name where the genericized
-# mechanism lands, how it is checked, and the condition that would revoke the
-# acceptance.  Checking mere substring presence is intentionally avoided so a
-# prose mention cannot satisfy the contract accidentally.
+# Accepted transfers are part of the product/research firewall. A transfer is
+# accepted only when it is falsifiable: it must name where the genericized
+# mechanism lands, how it is checked, and what would revoke acceptance.
+#
+# Records legitimately use both plain and Markdown-bold labels, and some values
+# continue on the following indented line. "Vérification produit" is a more
+# specific verification field and therefore satisfies the generic contract.
+_value = r"\s*(?:\S.*|\n[ \t]+\S.*)"
 required_transfer_fields = {
-    "Destination": re.compile(r"(?mi)^\s*-\s*Destination\s*:\s*\S.+$"),
-    "Vérification": re.compile(r"(?mi)^\s*-\s*Vérification\s*:\s*\S.+$"),
+    "Destination": re.compile(
+        rf"(?mi)^\s*-\s*(?:\*\*)?Destination(?:\*\*)?\s*:{_value}"
+    ),
+    "Vérification": re.compile(
+        rf"(?mi)^\s*-\s*(?:\*\*)?Vérification(?:\s+[^*:\n]+)?(?:\*\*)?\s*:{_value}"
+    ),
     "Condition de retrait": re.compile(
-        r"(?mi)^\s*-\s*Condition de retrait\s*:\s*\S.+$"
+        rf"(?mi)^\s*-\s*(?:\*\*)?Condition de retrait(?:\*\*)?\s*:{_value}"
     ),
 }
 for record in sorted((transfer_root / "accepted").glob("*.md")):
