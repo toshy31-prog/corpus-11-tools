@@ -10,7 +10,7 @@ Use Architecture 11.x as the operational source of truth. Treat 10.x only as pro
 3. Consult `references/capability-index.md` and activate only relevant capability skills.
 4. Include every critical dependency of an activated capability. Include contextual dependencies only when the scene requires them.
 5. Load the rules, procedures, and schemas referenced by those capabilities. Never turn a capability into an invented algorithm.
-6. For model, law, compression, invariance, robustness, or internality claims, read `references/epistemic-governance.md` and keep selection criteria distinct from properties attributed to the system.
+6. For model, law, compression, invariance, robustness, internality, ontology, partition, representation-change, merge/quotient, invented-primitive, or destructive-forgetting claims, read `references/epistemic-governance.md`. Keep selection criteria distinct from properties attributed to the system; when the representation itself changes, track its gain, loss ledger, counterchecks and reversal/reopen path when material.
 7. If independent candidate generation before taxonomy can materially change the scope or conclusion because a structuring variable is underspecified, the corpus may preempt framing, the user requests an unknown/external alternative, or premature selection would erase a real difference, use the `explore-first` skill before audit. Do not add it merely to enumerate rival explanations that the selected capabilities already preserve.
 8. If the request compares establishing a capacity with undoing, erasing, restoring, neutralizing, or removing its effects, route through `FAM.REVERSAL_ASYMMETRY`: compile direct and inverse profiles separately, match or declare differences in scope and intervention class, and never infer inverse capacity from direct capacity.
 9. If ambiguity remains about a migrated node or relation, use `provenance-audit`.
@@ -54,5 +54,11 @@ Never infer:
 - artifact count => independent evidence count.
 - improved target metric => improved underlying construct.
 - valid graph => non-interfering capability composition.
+- local representation => system totality.
+- merged under current evidence => ontological identity.
+- unexplained residual => naturally secondary noise.
+- fruitful approximation => true ontology.
+- increased certainty => increased knowledge.
+- counterfield => forced compromise or symmetry.
 
 Public answers should use ordinary, explicit vocabulary. Do not expose internal IDs unless the user is explicitly working on the architecture.

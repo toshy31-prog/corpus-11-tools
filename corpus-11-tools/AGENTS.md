@@ -23,6 +23,21 @@ test passed => deployment
 deployment => robustness
 source exists => independent source
 
+## Epistemic trajectory discipline
+
+Do not let a successful local representation silently become the system itself.
+
+For material changes of representation, ontology, scale, compression, partition, primitive set, merge, quotient, or forgetting:
+- record what the move gains and what it hides, identifies, or destroys;
+- distinguish the criterion that selected a representation from evidence that the represented property belongs to the system;
+- attempt dissolution before reifying an invented primitive;
+- keep mergers provisional when a future discriminant could reopen them;
+- make destructive forgetting reconstructible when feasible, and declare irreversibility when it is not;
+- preserve alternative representations when they can change the conclusion;
+- let field and counterfield correct each other through independent discriminants rather than forcing a midpoint or symmetry.
+
+A method may be rejected together with its counter-method. Recursive self-audit must stop when another layer cannot change a material take or an explicit reversal condition.
+
 ## Exploration
 
 Use explore-first only when:
