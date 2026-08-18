@@ -130,6 +130,10 @@ python3 tools/validate_package.py
 python3 tools/check_graph.py
 python3 tools/check_docs.py
 python3 tools/check_boundaries.py
+python3 tools/check_integrity.py
+python3 tools/check_release_identity.py
+python3 tools/check_evals.py
+python3 tools/test_validation_guards.py
 ```
 
 L’état attendu pour v1.3.0 indique 58 skills, 49 capabilities, 4 familles descriptives, 88 relations et 77 évaluations.
