@@ -18,7 +18,7 @@ Corpus 11 Tools sert de jeu d'audit et de discrimination. Il ne fournit ni donn�
 
 ## Hypothèses actives
 
-1. **Récupération contre désinscription** : séparation opérationnelle reproduite sous plusieurs régimes et transportée jusqu'à une event loop réelle horodatée. Une réplication prospective `n=6` donne 176 strates où `C_info=C_erase_inf=1` mais `C_erase_1` diffère ; un banc `asyncio` sur deux architectures appariées donne A `360/360` effacements et B `180/360`, avec zéro divergence par rapport au modèle discret. Le profil reste toutefois entièrement expliqué par des invariants standards ; `C_erase_1 = 1 + tau(G_int)` exactement dans la famille finie. Aucune donnée matérielle.
+1. **Récupération contre désinscription** : séparation opérationnelle reproduite dans le modèle exact, transportée vers `asyncio`, puis vers cinq processus OS persistants sur le même hôte. Aucune divergence n'apparaît entre runtime et modèle conditionné par l'ordre observé. Le profil reste cependant standard : `C_erase_1 = 1 + tau(G_int)` exactement dans la famille finie. **Condition d'arrêt locale atteinte : pas de nouveau banc logiciel du même mécanisme.**
 2. **Frustration temporelle** : `F_T` sépare certains tournois localement appariés, mais l'ablation prospective montre que `96,03 %` de l'avantage prédictif disparaît sans ordre latent commun. Toute lecture d'émergence est retirée ; comparaison à des estimateurs standards encore requise.
 3. **Invariants de factorisation** : reste triple robuste dans deux familles, mais H4 à quatre factorisations est `not_supported`; le plancher `span((1,1,1,1))` explique la survie brute dans `S4`.
 
@@ -50,9 +50,10 @@ Le complexe de distinctions compatibles reste suspendu : les modèles finis exé
 - à Hamming fixé : profondeur `2/3`, réductible à l'excentricité ;
 - à excentricité fixée : résidu `9/5` vs `10/5`, réductible au profil de coupes ;
 - aucun reste à deux pertes jusqu'à huit sommets sous le contrôle préenregistré ;
-- **réplication n=6** : `32768` architectures brutes, `9765` atteignables, `685` strates, `176` strates séparant `C_erase_1`, zéro violation de `C_erase_1=1+tau` ; classification `standard_profile_separation` ;
-- **transport runtime** : 720 runs `asyncio`, 120 ordres réalisés par architecture ; A `360/360` effacements, B `180/360`, zéro mismatch modèle/runtime ; classification `runtime_transport` ;
-- le runtime confirme la robustesse logicielle du profil mais n'ajoute pas de mécanisme au modèle discret.
+- réplication n=6 : `32768` architectures brutes, `9765` atteignables, `685` strates, `176` strates séparant `C_erase_1`, zéro violation de `C_erase_1=1+tau` ;
+- runtime `asyncio` : A `360/360`, B `180/360`, zéro mismatch sur `720` runs ; `runtime_transport` ;
+- multi-processus : A `240/240`, B `120/240`, zéro mismatch sur `480` runs ; `multiprocess_transport` ;
+- les 120 ordres réels sont réalisés dans chaque architecture ; le noyau réordonne 16 cibles au total dans le banc multi-processus sans casser le modèle.
 
 ### Factorisation
 
@@ -74,8 +75,8 @@ Le complexe de distinctions compatibles reste suspendu : les modèles finis exé
 
 ## Tests discriminants prioritaires
 
-1. **Récupération/désinscription — priorité A conditionnelle au banc** : prochain transport uniquement vers processus/conteneurs/machines/composants réellement séparés. Geler avant acquisition ports, deadline, règle de convergence, pertes, détectabilité, coût messages/opérations/temps et condition de renversement.
-2. **Frustration — priorité A si aucun banc distribué n'est disponible** : comparer prospectivement `F_T` à un estimateur standard de degrés puis à une famille sans ordre générateur.
+1. **Frustration — priorité A immédiate si aucun vrai banc distribué n'est disponible** : comparer prospectivement `F_T` à un estimateur standard de degrés/Borda puis à une famille sans ordre latent commun.
+2. **Récupération/désinscription — priorité A conditionnelle au matériel/réseau** : prochaine promotion uniquement vers plusieurs machines, réseau externe, microcontrôleurs ou composants réellement séparés. Réutiliser le même contrat sans réajuster les critères.
 3. **Factorisation — priorité B conditionnelle** : reprise uniquement avec quotient du sous-espace fixe commun ou famille sans plancher commun préenregistrée.
 4. **Distinctions compatibles** : maintenir la suspension sans relation non injectée discriminante.
 5. **Orientation compositionnelle** : aucune nouvelle sonde P3 ; réouverture seulement sur prédiction indépendante.
@@ -83,12 +84,12 @@ Le complexe de distinctions compatibles reste suspendu : les modèles finis exé
 
 ## Blocages
 
-Aucune mesure matérielle n'existe encore. Le banc runtime actuel utilise une seule event loop locale. Les profils de désinscription connus sont toujours des compilations d'invariants standards. `F_T` dépend principalement d'un ordre injecté. Factorisation n'a pas montré de stabilité prospective non triviale sous H4. Le complexe compatible reste non discriminant.
+Aucun dispositif matériel ou réseau externe n'est actuellement mesuré. Les bancs récupération/désinscription locaux transportent parfaitement un mécanisme déjà expliqué par un invariant standard. `F_T` dépend principalement d'un ordre injecté. Factorisation n'a pas montré de stabilité prospective non triviale sous H4. Le complexe compatible reste non discriminant.
 
 ## Prochaine action
 
-**Si un banc distribué local est techniquement disponible, construire deux topologies avec processus ou conteneurs séparés et réutiliser sans modification le contrat de récupération/désinscription.** Ne pas appeler ce banc « matériel » s'il reste sur une seule machine.
+**Ne plus prolonger récupération/désinscription en local.** En l'absence de plusieurs machines ou matériel, basculer le prochain cycle vers `F_T` : préenregistrer une comparaison directe contre un estimateur de degrés/Borda dans une famille où aucun ordre latent commun n'est partagé entre train et test.
 
-Sinon, arrêter ici la montée empirique de cette branche et affecter le prochain test à la comparaison standard de `F_T`.
+Si un vrai banc distribué devient accessible, revenir à récupération/désinscription avec le contrat déjà gelé.
 
 Garder `core/`, `sources/` et la gouvernance gelés.
