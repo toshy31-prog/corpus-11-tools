@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Adversarial tests for validation gates: invalid states must be rejected."""
+"""Adversarially prove that validation gates reject corrupted repository states."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -10,85 +10,218 @@ import sys
 import tempfile
 
 HERE = Path(__file__).resolve().parent
+SOURCE_REPO = HERE.parents[1]
 
 
-def run(script: Path, cwd: Path) -> subprocess.CompletedProcess[str]:
-    return subprocess.run([sys.executable, str(script)], cwd=cwd, text=True, capture_output=True)
+def copy_repo(destination: Path) -> Path:
+    shutil.copytree(
+        SOURCE_REPO,
+        destination,
+        ignore=shutil.ignore_patterns(
+            ".git", "node_modules", ".next", "__pycache__", ".pytest_cache"
+        ),
+    )
+    return destination
+
+
+def run_validator(repo: Path, script: str) -> subprocess.CompletedProcess[str]:
+    plugin = repo / "corpus-11-tools"
+    return subprocess.run(
+        [sys.executable, str(plugin / "tools" / script)],
+        cwd=plugin,
+        text=True,
+        capture_output=True,
+    )
+
+
+def require_success(proc: subprocess.CompletedProcess[str], label: str) -> None:
+    if proc.returncode != 0:
+        raise AssertionError(
+            f"baseline validator failed for {label}:\n{proc.stdout}\n{proc.stderr}"
+        )
 
 
 def require_failure(proc: subprocess.CompletedProcess[str], label: str) -> None:
     if proc.returncode == 0:
-        raise AssertionError(f"validator false-negative for {label}:\n{proc.stdout}\n{proc.stderr}")
+        raise AssertionError(
+            f"validator false-negative for {label}:\n{proc.stdout}\n{proc.stderr}"
+        )
 
 
-def test_boundary_rejects_missing_withdrawal_condition(tmp: Path) -> None:
-    repo = tmp / "repo"
+def mutate_missing_withdrawal(repo: Path) -> tuple[str, str]:
+    path = repo / "transfers" / "accepted" / "project-yield-gate.md"
+    text = path.read_text(encoding="utf-8")
+    lines = [line for line in text.splitlines() if "Condition de retrait" not in line]
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return "check_boundaries.py", "accepted transfer without withdrawal condition"
+
+
+def mutate_reverse_research_dependency(repo: Path) -> tuple[str, str]:
+    path = repo / "corpus-11-tools" / "labs" / "python" / "corpus_labs" / "event_store.py"
+    path.write_text(
+        path.read_text(encoding="utf-8") + "\n# forbidden dependency: research/active/cct\n",
+        encoding="utf-8",
+    )
+    return "check_boundaries.py", "product runtime referencing project research"
+
+
+def mutate_missing_capability_folder(repo: Path) -> tuple[str, str]:
+    path = repo / "corpus-11-tools" / "skills" / "protocol-robustness"
+    shutil.rmtree(path)
+    return "check_graph.py", "declared capability folder removed"
+
+
+def mutate_duplicate_eval_id(repo: Path) -> tuple[str, str]:
     plugin = repo / "corpus-11-tools"
-    (plugin / "tools").mkdir(parents=True)
-    shutil.copy2(HERE / "check_boundaries.py", plugin / "tools" / "check_boundaries.py")
-    (plugin / "labs" / "experiment-lab").mkdir(parents=True)
-    (plugin / "skills").mkdir(parents=True)
-    for path in (
-        repo / "research" / "active" / "cct",
-        repo / "research" / "active" / "corpus-hypotheses",
-        repo / "research" / "completed" / "food-access-paris",
-    ):
-        path.mkdir(parents=True)
-        (path / "README.md").write_text("ok\n", encoding="utf-8")
-    for kind in ("accepted", "candidates", "rejected"):
-        (repo / "transfers" / kind).mkdir(parents=True)
-    (repo / "transfers" / "accepted" / "bad.md").write_text(
-        "- Destination : product\n- Vérification : tests\n", encoding="utf-8"
+    eval_path = plugin / "evals" / "routing-and-nonregression.jsonl"
+    records = [json.loads(line) for line in eval_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    duplicate = dict(records[-1])
+    duplicate["id"] = records[0]["id"]
+    with eval_path.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(duplicate, ensure_ascii=False) + "\n")
+    inventory_path = plugin / "docs" / "inventory.json"
+    inventory = json.loads(inventory_path.read_text(encoding="utf-8"))
+    inventory["eval_count"] += 1
+    inventory_path.write_text(json.dumps(inventory, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return "check_evals.py", "duplicate eval id with matching declared cardinality"
+
+
+def mutate_unknown_expected_skill(repo: Path) -> tuple[str, str]:
+    plugin = repo / "corpus-11-tools"
+    eval_path = plugin / "evals" / "routing-and-nonregression.jsonl"
+    records = [json.loads(line) for line in eval_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    records[0]["expect"] = ["ghost-skill-does-not-exist"]
+    eval_path.write_text(
+        "\n".join(json.dumps(record, ensure_ascii=False) for record in records) + "\n",
+        encoding="utf-8",
     )
-    require_failure(run(plugin / "tools" / "check_boundaries.py", repo), "accepted transfer without withdrawal condition")
+    return "check_evals.py", "eval expecting nonexistent skill"
 
 
-def test_eval_gate_rejects_unknown_expected_skill(tmp: Path) -> None:
-    plugin = tmp / "corpus-11-tools"
-    (plugin / "tools").mkdir(parents=True)
-    shutil.copy2(HERE / "check_evals.py", plugin / "tools" / "check_evals.py")
-    (plugin / "evals").mkdir()
-    (plugin / "docs").mkdir()
-    skill = plugin / "skills" / "known" / "references"
-    skill.mkdir(parents=True)
-    (skill.parent / "SKILL.md").write_text("---\nname: known\ndescription: x\n---\n", encoding="utf-8")
-    (skill / "capability.md").write_text("# CAP.KNOWN — provenance opérationnelle\n", encoding="utf-8")
-    record = {"id": "x", "prompt": "p", "expect": ["ghost"]}
-    (plugin / "evals" / "routing-and-nonregression.jsonl").write_text(json.dumps(record) + "\n", encoding="utf-8")
-    (plugin / "docs" / "inventory.json").write_text(json.dumps({"eval_count": 1}), encoding="utf-8")
-    require_failure(run(plugin / "tools" / "check_evals.py", plugin), "eval expecting nonexistent skill")
-
-
-def test_integrity_gate_rejects_tampering(tmp: Path) -> None:
-    plugin = tmp / "corpus-11-tools"
-    (plugin / "tools").mkdir(parents=True)
-    shutil.copy2(HERE / "check_integrity.py", plugin / "tools" / "check_integrity.py")
-    (plugin / "docs").mkdir()
-    (plugin / "archives" / "legacy").mkdir(parents=True)
-    (plugin / "skills" / "provenance-audit" / "references").mkdir(parents=True)
-    target = plugin / "probe.txt"
-    target.write_text("tampered", encoding="utf-8")
-    (plugin / "docs" / "source-integrity.json").write_text(
-        json.dumps({"probe.txt": {"sha256": "0" * 64, "bytes": 8}}), encoding="utf-8"
+def mutate_remove_unique_positive_coverage(repo: Path) -> tuple[str, str]:
+    plugin = repo / "corpus-11-tools"
+    eval_path = plugin / "evals" / "routing-and-nonregression.jsonl"
+    records = [json.loads(line) for line in eval_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    for record in records:
+        if record.get("id") == "coverage-media-power-01":
+            record.pop("expect", None)
+            record["must_not"] = ["route nowhere"]
+            break
+    eval_path.write_text(
+        "\n".join(json.dumps(record, ensure_ascii=False) for record in records) + "\n",
+        encoding="utf-8",
     )
-    (plugin / "archives" / "legacy" / "MANIFEST.sha256").write_text("", encoding="utf-8")
-    require_failure(run(plugin / "tools" / "check_integrity.py", plugin), "source-integrity tampering")
+    return "check_evals.py", "capability losing all positive routing coverage"
+
+
+def mutate_eval_without_oracle(repo: Path) -> tuple[str, str]:
+    plugin = repo / "corpus-11-tools"
+    eval_path = plugin / "evals" / "routing-and-nonregression.jsonl"
+    records = [json.loads(line) for line in eval_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    records[0] = {"id": records[0]["id"], "prompt": records[0]["prompt"], "may": ["chain-tracing"]}
+    eval_path.write_text(
+        "\n".join(json.dumps(record, ensure_ascii=False) for record in records) + "\n",
+        encoding="utf-8",
+    )
+    return "check_evals.py", "eval with no hard oracle"
+
+
+def mutate_integrity_target(repo: Path) -> tuple[str, str]:
+    path = (
+        repo
+        / "corpus-11-tools"
+        / "skills"
+        / "provenance-audit"
+        / "references"
+        / "01_CONTRAT_SEMANTIQUE_11_v4.md"
+    )
+    path.write_text(path.read_text(encoding="utf-8") + "\nTAMPERED\n", encoding="utf-8")
+    return "check_integrity.py", "cryptographic source tampering"
+
+
+def mutate_missing_integrity_target(repo: Path) -> tuple[str, str]:
+    path = (
+        repo
+        / "corpus-11-tools"
+        / "skills"
+        / "provenance-audit"
+        / "references"
+        / "07_PROVENANCE_RECOVERED_LEGACY.csv"
+    )
+    path.unlink()
+    return "check_integrity.py", "registered integrity target removed"
+
+
+def mutate_manifest_inventory_version_drift(repo: Path) -> tuple[str, str]:
+    path = repo / "corpus-11-tools" / "docs" / "inventory.json"
+    inventory = json.loads(path.read_text(encoding="utf-8"))
+    inventory["version"] = "9.9.9+mutated"
+    path.write_text(json.dumps(inventory, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return "validate_package.py", "manifest/inventory version drift"
+
+
+def mutate_documented_eval_count(repo: Path) -> tuple[str, str]:
+    path = repo / "README.md"
+    path.write_text(path.read_text(encoding="utf-8").replace("77 évaluations", "76 évaluations"), encoding="utf-8")
+    return "check_docs.py", "public README eval-count drift"
+
+
+def mutate_graph_copy_drift(repo: Path) -> tuple[str, str]:
+    path = (
+        repo
+        / "corpus-11-tools"
+        / "skills"
+        / "provenance-audit"
+        / "references"
+        / "06_GRAPH_11_OPTIMIZED_v4.dsl"
+    )
+    text = path.read_text(encoding="utf-8")
+    marker = "REL "
+    index = text.find(marker)
+    if index < 0:
+        raise AssertionError("mutation fixture cannot find a REL line")
+    end = text.find("\n", index)
+    path.write_text(text[:index] + text[end + 1 :], encoding="utf-8")
+    return "check_graph.py", "one canonical graph copy losing a relation"
+
+
+MUTATIONS = [
+    mutate_missing_withdrawal,
+    mutate_reverse_research_dependency,
+    mutate_missing_capability_folder,
+    mutate_duplicate_eval_id,
+    mutate_unknown_expected_skill,
+    mutate_remove_unique_positive_coverage,
+    mutate_eval_without_oracle,
+    mutate_integrity_target,
+    mutate_missing_integrity_target,
+    mutate_manifest_inventory_version_drift,
+    mutate_documented_eval_count,
+    mutate_graph_copy_drift,
+]
 
 
 def main() -> int:
-    tests = [
-        test_boundary_rejects_missing_withdrawal_condition,
-        test_eval_gate_rejects_unknown_expected_skill,
-        test_integrity_gate_rejects_tampering,
-    ]
+    # First prove that the validators under test accept the untouched branch.
+    for validator in (
+        "validate_package.py",
+        "check_graph.py",
+        "check_docs.py",
+        "check_boundaries.py",
+        "check_integrity.py",
+        "check_evals.py",
+    ):
+        require_success(run_validator(SOURCE_REPO, validator), f"untouched {validator}")
+
     with tempfile.TemporaryDirectory() as raw:
         base = Path(raw)
-        for index, test in enumerate(tests):
-            case = base / str(index)
-            case.mkdir()
-            test(case)
-            print(f"PASS mutation: {test.__name__}")
-    print(f"PASS: {len(tests)} adversarial validator mutations rejected")
+        for index, mutation in enumerate(MUTATIONS, 1):
+            repo = copy_repo(base / f"case-{index:02d}")
+            validator, label = mutation(repo)
+            require_failure(run_validator(repo, validator), label)
+            print(f"PASS mutation {index:02d}: {label}")
+
+    print(f"PASS: {len(MUTATIONS)} adversarial repository mutations rejected")
     return 0
 
 
