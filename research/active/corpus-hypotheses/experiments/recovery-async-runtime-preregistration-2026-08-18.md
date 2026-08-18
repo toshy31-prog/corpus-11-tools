@@ -41,15 +41,17 @@ Ce choix est gelé avant exécution runtime.
 
 Les nœuds de reset sont mis à `0` avant lancement de la passe.
 
-Chaque nœud interne non clampé est une tâche `asyncio` distincte. Il :
+**Les cinq nœuds internes ont chacun une tâche `asyncio`, y compris le nœud interne clampé.** Cette précision est gelée avant exécution afin que les `5!` plans de latence portent réellement sur cinq tâches dans les deux architectures.
+
+Chaque tâche :
 
 1. attend un délai cible ;
 2. enregistre `perf_counter_ns()` ;
-3. lit l'état courant de ses prédécesseurs ;
-4. remplace son état par leur OR (`0` si aucun prédécesseur) ;
+3. si le nœud est clampé, il reste forcé à `0` ;
+4. sinon, il lit l'état courant de ses prédécesseurs et remplace son état par leur OR (`0` si aucun prédécesseur) ;
 5. enregistre son état final.
 
-Chaque nœud est activé exactement une fois.
+Chaque nœud interne est activé exactement une fois.
 
 ## Plans de latence
 
@@ -88,6 +90,8 @@ Cette prédiction suit le modèle fini, mais son transport vers l'ordre effectiv
 ## H2 cohérence mécaniste
 
 Pour chaque run A/B, le résultat final doit être identique à celui du simulateur discret exact lorsqu'on lui fournit **l'ordre runtime réellement observé**.
+
+Le simulateur discret applique la même convention : un nœud clampé peut apparaître dans l'ordre d'activation mais son état reste `0`.
 
 Tolérance : zéro divergence.
 
