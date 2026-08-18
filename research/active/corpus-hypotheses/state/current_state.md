@@ -20,7 +20,7 @@ Corpus 11 Tools sert de jeu d'audit et de discrimination. Il ne fournit ni donn�
 
 1. **Récupération contre désinscription** : séparation structurelle-topologique reproduite sous protocole, mais les résidus connus se réduisent encore à des invariants standards (Hamming, excentricité, profils de coupes). Le test à deux pertes reste négatif jusqu'à huit sommets. Prochaine étape pertinente : asynchronie/ports multiples ou canal matériel, pas extension brute de la même recherche.
 2. **Frustration temporelle** : `F_T` sépare exactement certains tournois localement appariés, mais l'ablation prospective montre que `96,03 %` de l'avantage prédictif disparaît sans ordre latent commun. Toute lecture d'émergence est retirée ; comparaison à des estimateurs standards encore requise.
-3. **Invariants de factorisation** : reste d'intersection d'ordre trois reproduit et maintenant **transporté prospectivement** vers une seconde famille naturelle, les matrices de permutation ordinaires de `S4` sur `Q^4`. La robustesse mathématique est renforcée ; la lecture objectale reste spéculative.
+3. **Invariants de factorisation** : le reste d'intersection d'ordre trois est robuste dans deux familles finies distinctes, mais le premier test prospectif sous ajout d'une quatrième factorisation dans la représentation naturelle de `S4` est `not_supported`. La lecture objectale reste spéculative.
 
 ## Hypothèses affaiblies
 
@@ -33,7 +33,7 @@ Résultats gelés :
 - H1 : `too_common` — `1 690 / 3 192 = 52,94 %` des classes chirales dépassent le seuil fort P1, contre la fenêtre préenregistrée `1–25 %` ;
 - H2 : `not_transported` et `no_predictive_transport` — sur 42 strates P1 gelées, P2 donne 14 contrastes positifs, 11 nuls, 17 négatifs, médiane 0 ; prédiction P1->P2 : 11 succès, 14 égalités, 17 échecs ;
 - H3 : `standard_absorption` — les résidus P1/P2 deviennent nuls sous une hiérarchie statique cumulative ;
-- autopsie finale : le premier raffinement testé suffisant est **`I2 + A2`**, où `A2` est l'histogramme canonique des couples de sorties `((a*b)*c, a*(b*c))`. `A3` (orbites `S3`) et `A4` (défaut complet) ne sont pas nécessaires.
+- autopsie finale : le premier raffinement testé suffisant est **`I2 + A2`**, où `A2` est l'histogramme canonique des couples de sorties `((a*b)*c, a*(b*c))`. `A3` et `A4` ne sont pas nécessaires.
 
 Formulation bornée : P1 et P2 sont déterminés, à l'ordre 3, par une compression statique fondée sur les translations/semigroupes `I2` et l'histogramme des sorties du défaut associatif. Cela n'est pas un théorème sur toutes les dynamiques neutres possibles.
 
@@ -83,7 +83,9 @@ Aucune hypothèse du registre courant n'est rejetée comme classe entière. La p
 
 - catalogue signé dimension 3 : profils marginaux `(2,2,2)` et deux-à-deux `(1,1,1)` compatibles avec intersections triples `0` et `1` ;
 - invariance sous réordonnancement et conjugaison exacte ;
-- **nouveau test prospectif S4** : 24 matrices de permutation ordinaires `4x4`, 2024 triplets, 26 clés basses ; clé `(3,3,3)/(2,2,2)` avec dimension triple `1` pour 16 triplets et `2` pour 4 triplets ; décision `transported_remainder`.
+- test prospectif `S4` à trois factorisations : 24 matrices de permutation ordinaires `4x4`, 2024 triplets ; clé `(3,3,3)/(2,2,2)` avec dimension triple `1` pour 16 triplets et `2` pour 4 triplets ; décision `transported_remainder` ;
+- **H4 à quatre factorisations :** 420 extensions des 20 triplets discriminants par les 21 matrices restantes ; 4 strates géométriques appariées ; `Delta_D4` positif dans 1 strate, nul dans 3, médiane `0` ; décision `not_supported` ;
+- toutes les matrices de la représentation fixent `span((1,1,1,1))`. Les triplets `D3=1` restent à `D4=1` sous tout ajout ; les `D3=2` retombent à `D4=1` sous les ajouts non triviaux appariés. La survie positive brute est donc forcée par un plancher géométrique commun.
 
 ### Holonomie S3
 
@@ -105,8 +107,8 @@ Aucune hypothèse du registre courant n'est rejetée comme classe entière. La p
 
 ## Tests discriminants prioritaires
 
-1. **Factorisation — priorité A** : préenregistrer la stabilité du reste sous ajout d'une quatrième factorisation et comparer la survie à des contrôles géométriques appariés. Ne pas identifier `D_I` à un objet avant résidu prospectif non trivial.
-2. **Récupération/désinscription — priorité A matérielle** : brancher le contrat sur un petit réseau matériel ou une dynamique asynchrone/ports multiples ; définir détectabilité et coût avant résultat.
+1. **Récupération/désinscription — priorité A opérationnelle** : tester une dynamique asynchrone/ports multiples ou un petit réseau matériel, avec détectabilité, coût et critères de renversement gelés avant résultat.
+2. **Factorisation — priorité A conditionnelle** : ne pas prolonger `S4` avec la survie brute. Une nouvelle expérience n'est justifiée qu'après préenregistrement d'une famille sans sous-espace fixe commun forcé, ou d'un quotient explicite par l'intersection commune de la famille.
 3. **Frustration — priorité B** : comparer prospectivement `F_T` à un prédicteur standard de degrés puis à une famille sans ordre générateur ; ne plus utiliser le premier succès hors ajustement comme argument d'émergence.
 4. **Distinctions compatibles — priorité conditionnelle** : rechercher un second complexe fini avec une relation non injectée qui échoue dans un contrôle apparié ; maintenir la suspension sinon.
 5. **Orientation compositionnelle** : aucune nouvelle sonde P3 ; réouverture seulement sur prédiction indépendante.
@@ -116,10 +118,12 @@ Aucune hypothèse du registre courant n'est rejetée comme classe entière. La p
 
 Absence de données matérielles, de mesure énergétique étalonnée, de canal reliant les observables au temps physique et de comparaison quantitative exclusive. Les sorties simulées et algébriques ne sont pas des observations physiques.
 
-Le profil de désinscription connu reste une compilation d'invariants standards. `F_T` reste un minimum standard d'arêtes de retour dans le modèle testé et son avantage dépend principalement d'un ordre injecté. Le reste factoriel est robuste mathématiquement dans deux familles, mais peut encore n'être qu'une géométrie ordinaire d'intersections de sous-espaces. Le complexe compatible reste non discriminant. La voie chiralité P1/P2 est statiquement absorbée à l'ordre 3.
+Le profil de désinscription connu reste une compilation d'invariants standards. `F_T` reste un minimum standard d'arêtes de retour dans le modèle testé et son avantage dépend principalement d'un ordre injecté. Le reste factoriel est robuste mathématiquement à l'ordre trois dans deux familles, mais son premier test de stabilité prospective échoue dans `S4` et est expliqué par un sous-espace fixe commun forcé. Le complexe compatible reste non discriminant. La voie chiralité P1/P2 est statiquement absorbée à l'ordre 3.
 
 ## Prochaine action
 
-**Priorité immédiate : factorisation.** Tester prospectivement l'effet de l'ajout d'une quatrième factorisation dans la famille `S4` ou une famille appariée fixée avant calcul, avec une règle de survie et des contrôles géométriques gelés. Le but est de distinguer une stabilité d'ordre supérieur non triviale d'une conséquence ordinaire des dimensions de sous-espaces.
+**Priorité immédiate : récupération/désinscription.** Préenregistrer un test asynchrone ou multi-port qui ne se réduise pas par construction à Hamming/excentricité/profils de coupes ; si un petit canal matériel est disponible, y brancher le même contrat avec mesure de détectabilité et coût avant résultat.
 
-En parallèle seulement, préparer le protocole matériel récupération/désinscription. Garder `core/`, `sources/` et la gouvernance gelés ; ne modifier le cœur qu'en présence d'un besoin générique observé.
+Pour factorisation, suspendre les extensions supplémentaires dans la représentation naturelle de `S4`. Une reprise doit d'abord retirer le plancher `span((1,1,1,1))` par quotient préenregistré ou choisir une famille sans intersection fixe commune imposée.
+
+Garder `core/`, `sources/` et la gouvernance gelés ; ne modifier le cœur qu'en présence d'un besoin générique observé.
