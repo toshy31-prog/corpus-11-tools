@@ -26,24 +26,33 @@ for line_no, line in enumerate(eval_path.read_text(encoding="utf-8").splitlines(
     records.append(record)
     eval_id = record.get("id")
     prompt = record.get("prompt")
-    expect = record.get("expect")
     if not isinstance(eval_id, str) or not eval_id.strip():
         errors.append(f"line {line_no}: missing non-empty id")
     if not isinstance(prompt, str) or not prompt.strip():
         errors.append(f"line {line_no}: missing non-empty prompt")
-    if not isinstance(expect, list) or not expect or not all(isinstance(x, str) and x for x in expect):
-        errors.append(f"line {line_no}: expect must be a non-empty string list")
-        expect = []
-    for field in ("must", "must_not", "may"):
+
+    values: dict[str, list[str]] = {}
+    for field in ("expect", "must", "must_not", "may"):
         value = record.get(field, [])
         if not isinstance(value, list) or not all(isinstance(x, str) and x for x in value):
             errors.append(f"line {line_no}: {field} must be a string list when present")
-    for skill in expect:
+            values[field] = []
+        else:
+            values[field] = value
+
+    # An eval may be purely negative (for example, "do not force explore-first"),
+    # but it must still contain at least one hard oracle.  `may` alone never
+    # turns a scenario into an executable test.
+    if not (values["expect"] or values["must"] or values["must_not"]):
+        errors.append(
+            f"line {line_no}: eval has no hard assertion (expect, must, or must_not)"
+        )
+
+    for skill in values["expect"]:
         if not (skill_root / skill / "SKILL.md").is_file():
             errors.append(f"line {line_no}: expected skill does not exist: {skill}")
-    may = record.get("may", [])
-    for skill in may if isinstance(may, list) else []:
-        if isinstance(skill, str) and not (skill_root / skill / "SKILL.md").is_file():
+    for skill in values["may"]:
+        if not (skill_root / skill / "SKILL.md").is_file():
             errors.append(f"line {line_no}: optional skill does not exist: {skill}")
 
 ids = [record.get("id") for record in records if isinstance(record.get("id"), str)]
@@ -54,7 +63,8 @@ inventory = json.loads((root / "docs" / "inventory.json").read_text(encoding="ut
 if len(records) != inventory.get("eval_count"):
     errors.append(f"eval cardinality mismatch: {len(records)} != {inventory.get('eval_count')}")
 
-# Every capability wrapper must be exercised by at least one hard expectation.
+# Every capability wrapper must be exercised by at least one positive routing
+# oracle. Negative tests complement this; they cannot substitute for coverage.
 capability_skills = {
     path.parent.parent.name
     for path in skill_root.glob("*/references/capability.md")
@@ -74,4 +84,7 @@ if errors:
     for error in errors:
         print(" -", error)
     sys.exit(1)
-print(f"PASS: {len(records)} eval contracts valid; {len(capability_skills)} capability skills positively covered")
+print(
+    f"PASS: {len(records)} eval contracts valid; "
+    f"{len(capability_skills)} capability skills positively covered"
+)
