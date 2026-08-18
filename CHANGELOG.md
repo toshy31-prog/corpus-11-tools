@@ -14,6 +14,10 @@
 
 - primitives Python réutilisables pour aléa commun, budgets appariés, dominance de Pareto et sensibilités bornées ;
 - moteur générique de l’Open Experiment Arena et verrouillage des protocoles ;
+- clôture d'exécution avec attestation d'artefacts, sortie sans écrasement et
+  vérification du chemin de calcul verrouillé ;
+- journal append-only récupérable et protocole institutionnel configurable,
+  avec CCT Ops réduit à une politique et une façade de compatibilité ;
 - conservation des adaptateurs scientifiques et résultats dans leur recherche d’origine ;
 - reclassement du prototype alimentaire comme recherche terminée sans effet bénéficiaire établi.
 

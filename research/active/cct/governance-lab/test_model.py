@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+from copy import deepcopy
 import json
 from pathlib import Path
+import statistics
 import unittest
 
 from model import CORE_METRICS, DIAGNOSTICS, SCENARIO_FUNCTIONS, clamp, simulate_once
-from run_experiment import load_config
+from run_experiment import load_config, run_all
 
 
 ROOT = Path(__file__).resolve().parent
@@ -83,6 +85,63 @@ class ModelTests(unittest.TestCase):
         self.assertEqual(v2["experiment"], "CCT-7X-002")
         self.assertEqual(v2["architectures"]["central_state"], CONFIG["architectures"]["central_state"])
         self.assertEqual(v2["core_metrics"]["needs"], 70.0)
+
+    def test_generic_campaign_matches_the_previous_small_loop_exactly(self) -> None:
+        config = deepcopy(CONFIG)
+        config["protocols"] = {"base": config["protocols"]["base"]}
+        config["scenarios"] = {
+            "water_coordination": config["scenarios"]["water_coordination"]
+        }
+        config["architectures"] = {
+            key: config["architectures"][key] for key in ("cct_v08", "central_state")
+        }
+        runs = 11
+        expected = []
+        for protocol, protocol_config in config["protocols"].items():
+            for scenario, scenario_config in config["scenarios"].items():
+                for architecture, architecture_config in config["architectures"].items():
+                    results = [
+                        simulate_once(
+                            architecture,
+                            architecture_config["traits"],
+                            scenario,
+                            scenario_config["severity"],
+                            protocol,
+                            protocol_config,
+                            repetition,
+                            config["seed"],
+                        )
+                        for repetition in range(runs)
+                    ]
+                    row = {
+                        "protocol": protocol,
+                        "scenario": scenario,
+                        "architecture": architecture,
+                    }
+                    for metric in (*CORE_METRICS, *DIAGNOSTICS):
+                        values = sorted(result.metrics[metric] for result in results)
+                        for label, fraction in (("p10", 0.10), ("p90", 0.90)):
+                            position = (len(values) - 1) * fraction
+                            lower = int(position)
+                            upper = min(lower + 1, len(values) - 1)
+                            weight = position - lower
+                            row[f"{metric}_{label}"] = (
+                                values[lower] * (1 - weight) + values[upper] * weight
+                            )
+                        row[f"{metric}_median"] = statistics.median(values)
+                    row["joint_pass_rate"] = sum(
+                        all(
+                            result.metrics[name] >= floor
+                            for name, floor in config["core_metrics"].items()
+                        )
+                        for result in results
+                    ) / runs
+                    row["catastrophic_rate"] = sum(
+                        any(result.metrics[name] < 40.0 for name in CORE_METRICS)
+                        for result in results
+                    ) / runs
+                    expected.append(row)
+        self.assertEqual(run_all(config, runs), expected)
 
 
 if __name__ == "__main__":

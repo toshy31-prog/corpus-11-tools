@@ -6,7 +6,8 @@ import { fileURLToPath } from "node:url";
 import { createEngine } from "../../../../../corpus-11-tools/labs/experiment-lab/core/engine.mjs";
 import { temporalFrustrationPlugin } from "../plugins/temporal-frustration.mjs";
 import { createAccessGuard, evaluateLockedReversals, prepareExecution, sealRawResults } from "../../../../../corpus-11-tools/labs/experiment-lab/governance/protocol-lock.mjs";
-import { buildExecutionDescriptor, createExecutionLock, verifyExecutionLock } from "../../../../../corpus-11-tools/labs/experiment-lab/governance/execution-lock.mjs";
+import { buildExecutionDescriptor, createExecutionLock } from "../../../../../corpus-11-tools/labs/experiment-lab/governance/execution-lock.mjs";
+import { closeLockedExecution } from "../../../../../corpus-11-tools/labs/experiment-lab/governance/execution-closure.mjs";
 import { makeNoisyTournament } from "./temporal-predictive-validation.mjs";
 
 const runnerPath = fileURLToPath(import.meta.url);
@@ -15,9 +16,10 @@ const corpusLabDirectory = resolve(labDirectory, "../../../../corpus-11-tools/la
 const pluginPath = resolve(labDirectory, "plugins/temporal-frustration.mjs");
 const engineFiles = [
   "core/contracts.mjs", "core/engine.mjs", "core/reproducibility.mjs",
-  "governance/execution-lock.mjs", "governance/protocol-lock.mjs",
+  "governance/execution-closure.mjs", "governance/execution-lock.mjs", "governance/protocol-lock.mjs",
   "scientific/temporal-predictive-validation.mjs", "scientific/temporal-latent-ablation.mjs",
 ];
+const artifactNames = ["raw_results.json", "computed_output.json", "comparison.json", "classification.json"];
 
 function pairs(width) {
   const output = [];
@@ -130,9 +132,7 @@ function score(width, mask, order, observer, seed) {
   return { instance, violations: instance.observe("candidate_order_score").violations };
 }
 
-export async function executeLatentAblation(protocolLock, executionLock, outputDirectory) {
-  const descriptor = await captureLatentAblationDescriptor();
-  verifyExecutionLock(protocolLock, executionLock, descriptor);
+async function executeLatentAblationArtifacts(protocolLock, executionLock, outputDirectory) {
   const configuration = protocolLock.protocol.model.configuration;
   validateConfiguration(configuration);
   const execution = prepareExecution(protocolLock, {
@@ -242,15 +242,20 @@ export async function executeLatentAblation(protocolLock, executionLock, outputD
     "comparison.json": comparison, "classification.json": classification })) {
     await writeFile(resolve(outputDirectory, name), JSON.stringify(value, null, 2) + "\n", { flag: "wx" });
   }
-  const artifactHashes = {};
-  for (const name of ["raw_results.json", "computed_output.json", "comparison.json", "classification.json"]) {
-    artifactHashes[name] = `sha256:${createHash("sha256").update(await readFile(resolve(outputDirectory, name))).digest("hex")}`;
-  }
-  const attestation = { schema: "corpus-experiment-execution-attestation/v1", protocolHash: protocolLock.protocolHash,
-    experimentFingerprint: executionLock.experimentFingerprint, rawHash: raw.rawHash,
-    classificationHash: classification.classificationHash, artifactHashes };
-  await writeFile(resolve(outputDirectory, "execution_attestation.json"), JSON.stringify(attestation, null, 2) + "\n", { flag: "wx" });
-  return { raw, computed, comparison, classification, attestation };
+  return { raw, computed, comparison, classification };
+}
+
+export async function executeLatentAblation(protocolLock, executionLock, outputDirectory) {
+  return closeLockedExecution({
+    protocolLock,
+    executionLock,
+    captureExecutionDescriptor: captureLatentAblationDescriptor,
+    execute: (lockedProtocol, targetDirectory) => (
+      executeLatentAblationArtifacts(lockedProtocol, executionLock, targetDirectory)
+    ),
+    outputDirectory,
+    artifactNames,
+  });
 }
 
 async function main() {

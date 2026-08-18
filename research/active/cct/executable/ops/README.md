@@ -1,5 +1,14 @@
 # CCT Ops — prototype institutionnel local hors ligne
 
+Le stockage append-only et la machine de protocole sont fournis par Corpus sous
+`corpus-11-tools/labs/python/corpus_labs/`. Ce dossier conserve la politique CCT,
+sa CLI, sa démonstration et ses tests de non-régression ; il n'est plus le
+propriétaire du moteur générique.
+
+L'adaptateur `cct_ops/core.py` injecte explicitement les rôles CCT, ses trois
+incompatibilités et ses plafonds de 366 jours et 168 heures. Corpus ne fournit
+aucune de ces valeurs par défaut.
+
 > **Statut : prototype exécutable, testé localement, non autorisé, non déployé et non réobservé.**
 >
 > Ce logiciel n'est ni une autorité publique, ni un système de vote sécurisé, ni

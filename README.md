@@ -13,7 +13,7 @@ Corpus 11 Tools est un ensemble d’outils pour aider Codex à analyser une ques
 
 ## Ce qui change dans v1.3.0
 
-v1.3.0 sépare physiquement le produit Corpus des recherches qui l’utilisent. Les moteurs génériques — Arena, protocoles reproductibles et primitives de simulation — vivent dans `corpus-11-tools/labs/`. Les hypothèses, configurations, résultats et conclusions restent dans `research/`. Le registre `transfers/` rend visible chaque extraction d’un projet vers le produit et un contrôle automatique interdit les dépendances dans le mauvais sens.
+v1.3.0 sépare physiquement le produit Corpus des recherches qui l’utilisent. Les moteurs génériques — Arena, protocoles reproductibles, exploration de possibilités et protocole institutionnel append-only — vivent dans `corpus-11-tools/labs/`. Les hypothèses, configurations, résultats et conclusions restent dans `research/`. Le registre `transfers/` rend visible chaque extraction d’un projet vers le produit et un contrôle automatique interdit les dépendances dans le mauvais sens.
 
 ## Ce qui avait changé dans v1.2.0
 

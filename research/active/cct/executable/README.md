@@ -17,7 +17,7 @@ La livraison gelée totalise 84 tests unitaires et 10 contrôles d'intégration.
 
 - `constitution/` — constitution JSON, schémas, 12 dispositions, validateur et exemples ;
 - `economy/` — quatre économies rivales, 5 760 mondes synthétiques et frontières de Pareto ;
-- `ops/` — CLI hors ligne, journal append-only, mandats, recours et pouvoirs temporaires ;
+- `ops/` — adaptateur et CLI CCT sur le journal et le protocole institutionnel de Corpus ;
 - `calibration/` — douze paramètres à mesurer indépendamment ;
 - `pilots/` — six protocoles gradués de P-000 à P-007 ;
 - `evidence/` — revendications avec niveau et limites ;

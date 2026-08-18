@@ -23,10 +23,25 @@ python3 run_p001.py --config p001_config_v2.json --output results-p001-v2
 python3 run_p001.py --config p001_config_v3.json --output results-p001-v3
 python3 run_p002.py
 python3 run_p002.py --config p002_config_v2.json --output results-p002-v2
+python3 -m unittest -v test_p001_p002_campaign_runner.py
 python3 run_limit_tests.py
 python3 run_p005.py
 python3 run_p005.py --config p005_config_v2.json --output results-p005-v2
+python3 -m unittest -v test_p005_campaign_runner.py
 ```
+
+`run_experiment.py`, `run_p001.py`, `run_p002.py` et `run_p005.py` utilisent
+directement l'exécuteur générique de Corpus pour l'énumération, les répétitions,
+la collecte et les quantiles. Les modèles, orientations de métriques, seuils,
+verdicts et rapports restent dans CCT. La robustesse P005 appelle ce même chemin,
+sans adaptateur ni second moteur.
+
+Les tests reproduisent exactement les artefacts CCT-7X-001/002, les cinq CSV
+P001/P002, les deux CSV P005 et les six variations P005 à 180 répétitions. Les
+anciens verdicts/rapports P001-DT-001/002 et P005-DT-001 précèdent la logique
+actuelle : ils restent des archives, tandis que les tests figent séparément la
+logique qui existait avant l'extraction. Cette non-régression ne valide pas les
+modèles territorialement.
 
 Les sorties sont écrites dans le dossier `results-*` correspondant à chaque protocole :
 

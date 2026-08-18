@@ -7,37 +7,56 @@ import argparse
 import csv
 import json
 from pathlib import Path
-import statistics
+import sys
 from typing import Mapping
 
+ROOT = Path(__file__).resolve().parent
+for parent in Path(__file__).resolve().parents:
+    labs = parent / "corpus-11-tools" / "labs" / "python"
+    if labs.is_dir():
+        sys.path.insert(0, str(labs))
+        break
+else:  # pragma: no cover - repository layout failure
+    raise RuntimeError("Corpus generic labs are unavailable")
+
+from corpus_labs import PossibilityRunContext, run_possibility_space
 from p002_model import simulate_p002_once
 from run_p001 import load_config
 
-ROOT = Path(__file__).resolve().parent
+
 METRICS = ("essential_unmet", "low_income_unmet", "overall_unmet", "eco_overshoot", "imported_harm", "rent", "admin_hours", "gaming_capture", "recovery_weeks")
-
-
-def percentile(values: list[float], fraction: float) -> float:
-    values = sorted(values)
-    position = (len(values) - 1) * fraction
-    lower = int(position)
-    upper = min(lower + 1, len(values) - 1)
-    weight = position - lower
-    return values[lower] * (1 - weight) + values[upper] * weight
 
 
 def execute(config: Mapping[str, object], runs: int | None = None) -> list[dict[str, object]]:
     count = runs or int(config["runs_per_cell"])
+
+    def run_once(_possibility, _scenario, _rng, context: PossibilityRunContext):
+        return simulate_p002_once(
+            config,
+            context["scenario_id"],
+            context["possibility_id"],
+            context["repetition"],
+        )
+
+    campaign = run_possibility_space(
+        config["modes"],
+        config["protocols"],
+        repetitions=count,
+        seed=config["seed"],
+        orientations={metric: "min" for metric in METRICS},
+        run=run_once,
+        quantiles={"p10": 0.10, "p90": 0.90},
+        quantile_method="linear",
+    )
     rows = []
     for protocol in config["protocols"]:
         for mode in config["modes"]:
-            results = [simulate_p002_once(config, protocol, mode, run) for run in range(count)]
+            summary = campaign["summaries"][mode][protocol]
             row: dict[str, object] = {"protocol": protocol, "mode": mode}
             for metric in METRICS:
-                values = [result[metric] for result in results]
-                row[f"{metric}_p10"] = percentile(values, 0.10)
-                row[f"{metric}_median"] = statistics.median(values)
-                row[f"{metric}_p90"] = percentile(values, 0.90)
+                row[f"{metric}_p10"] = summary[metric]["p10"]
+                row[f"{metric}_median"] = summary[metric]["median"]
+                row[f"{metric}_p90"] = summary[metric]["p90"]
             rows.append(row)
     return rows
 

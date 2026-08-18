@@ -6,30 +6,64 @@ import argparse
 import csv
 import hashlib
 import json
-import math
-import statistics
 from pathlib import Path
-from typing import Any, Iterable, Mapping
+import random
+import sys
+from typing import Any, Mapping, cast
 
-from economy_model import METRICS, dominates, load_config, simulate_once
-
-
-def percentile(values: Iterable[float], probability: float) -> float:
-    ordered = sorted(values)
-    if not ordered:
-        raise ValueError("percentile sur série vide")
-    index = max(0, min(len(ordered) - 1, math.ceil(probability * len(ordered)) - 1))
-    return ordered[index]
+from economy_model import METRICS, load_config, simulate_once
 
 
-def summarize_runs(runs: list[Mapping[str, float]]) -> dict[str, dict[str, float]]:
-    return {
+for _parent in Path(__file__).resolve().parents:
+    _labs = _parent / "corpus-11-tools" / "labs" / "python"
+    if _labs.is_dir():
+        sys.path.insert(0, str(_labs))
+        break
+else:  # pragma: no cover - repository layout failure
+    raise RuntimeError("Corpus generic labs are unavailable")
+
+from corpus_labs import PossibilityRunContext, run_possibility_space
+
+
+def _run_possibility_campaign(config: Mapping[str, Any]) -> dict[str, Any]:
+    """Adapter les objets CCT au moteur de campagnes générique de Corpus."""
+
+    def run_once(
+        _regime: Mapping[str, Any],
+        _scenario: Mapping[str, Any],
+        _rng: random.Random,
+        context: PossibilityRunContext,
+    ) -> Mapping[str, float]:
+        return simulate_once(
+            config,
+            context["scenario_id"],
+            context["possibility_id"],
+            context["repetition"],
+        )
+
+    boundary_rules = {
         metric: {
-            "median": statistics.median(run[metric] for run in runs),
-            "p90": percentile((run[metric] for run in runs), 0.90),
+            "metric": metric,
+            "statistic": "median",
+            "operator": ">",
+            "threshold": config["gates"][metric],
         }
         for metric in METRICS
     }
+    return cast(
+        dict[str, Any],
+        run_possibility_space(
+            config["regimes"],
+            config["scenarios"],
+            repetitions=config["runs_per_scenario"],
+            seed=config["seed"],
+            orientations={metric: "min" for metric in METRICS},
+            run=run_once,
+            boundary_rules=boundary_rules,
+            quantiles={"p90": 0.90},
+            quantile_method="nearest_rank",
+        ),
+    )
 
 
 def _median_vector(summary: Mapping[str, Mapping[str, float]]) -> dict[str, float]:
@@ -196,23 +230,15 @@ def run_experiment(config_path: str | Path, output_dir: str | Path) -> dict[str,
     output_dir = Path(output_dir)
     config = load_config(config_path)
     output_dir.mkdir(parents=True, exist_ok=True)
+    campaign = _run_possibility_campaign(config)
 
     summaries: dict[str, dict[str, Any]] = {}
     for scenario_id in config["scenarios"]:
         summaries[scenario_id] = {}
         for regime_id in config["regimes"]:
-            runs = [
-                simulate_once(config, scenario_id, regime_id, run)
-                for run in range(config["runs_per_scenario"])
-            ]
-            metric_summary = summarize_runs(runs)
-            median_vector = _median_vector(metric_summary)
-            breached = [
-                metric for metric in METRICS if median_vector[metric] > config["gates"][metric]
-            ]
             summaries[scenario_id][regime_id] = {
-                "metrics": metric_summary,
-                "breached_gates": breached,
+                "metrics": campaign["summaries"][regime_id][scenario_id],
+                "breached_gates": campaign["boundary_events"][regime_id][scenario_id],
             }
 
     detectability_warnings: list[dict[str, Any]] = []
@@ -235,21 +261,12 @@ def run_experiment(config_path: str | Path, output_dir: str | Path) -> dict[str,
 
     frontier_by_scenario: dict[str, list[str]] = {}
     for scenario_id in config["scenarios"]:
-        frontier: list[str] = []
+        space = campaign["possibility_spaces"][scenario_id]
+        frontier_by_scenario[scenario_id] = list(space["nondominated"])
         for regime_id in config["regimes"]:
-            current = _median_vector(summaries[scenario_id][regime_id]["metrics"])
-            dominators = []
-            for rival_id in config["regimes"]:
-                if rival_id == regime_id:
-                    continue
-                rival = _median_vector(summaries[scenario_id][rival_id]["metrics"])
-                if dominates(rival, current):
-                    dominators.append(rival_id)
+            dominators = list(space["bounded_by"].get(regime_id, []))
             summaries[scenario_id][regime_id]["dominated_by"] = dominators
             summaries[scenario_id][regime_id]["pareto_frontier"] = not dominators
-            if not dominators:
-                frontier.append(regime_id)
-        frontier_by_scenario[scenario_id] = frontier
 
     gate_rule = config["loss_rules"]["constitutional_gate_loss"]
     pareto_rule = config["loss_rules"]["pareto_loss"]

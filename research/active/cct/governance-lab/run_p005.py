@@ -7,33 +7,68 @@ import argparse
 import csv
 import json
 from pathlib import Path
-import statistics
+import sys
 from typing import Mapping
 
-from p005_model import CORE_METRICS, simulate_p005_once
-from run_p001 import load_config, percentile
-
 ROOT = Path(__file__).resolve().parent
+for parent in Path(__file__).resolve().parents:
+    labs = parent / "corpus-11-tools" / "labs" / "python"
+    if labs.is_dir():
+        sys.path.insert(0, str(labs))
+        break
+else:  # pragma: no cover - repository layout failure
+    raise RuntimeError("Corpus generic labs are unavailable")
+
+from corpus_labs import PossibilityRunContext, run_possibility_space
+from p005_model import CORE_METRICS, simulate_p005_once
+from run_p001 import load_config
+
+
 METRICS = CORE_METRICS + (
     "administrative_load", "displaced_loss", "power_concentration",
     "common_failure_rate", "gate_failures",
 )
 
 
-def execute(config: Mapping[str, object], runs: int | None = None) -> list[dict[str, object]]:
-    count = runs or int(config["runs_per_cell"])
+def run_campaign(config: Mapping[str, object], runs: int | None = None) -> dict[str, object]:
+    repetitions = runs or int(config["runs_per_cell"])
+
+    def run_once(_possibility, _scenario, _rng, context: PossibilityRunContext):
+        return simulate_p005_once(
+            config,
+            context["scenario_id"],
+            context["possibility_id"],
+            context["repetition"],
+        )
+
+    return run_possibility_space(
+        config["modes"],
+        config["protocols"],
+        repetitions=repetitions,
+        seed=config["seed"],
+        orientations={metric: "min" for metric in METRICS},
+        run=run_once,
+        quantiles={"p10": 0.10, "p90": 0.90},
+        quantile_method="linear",
+    )
+
+
+def rows_from_campaign(report: Mapping[str, object]) -> list[dict[str, object]]:
+    summaries = report["summaries"]
     rows = []
-    for protocol in config["protocols"]:
-        for mode in config["modes"]:
-            results = [simulate_p005_once(config, protocol, mode, run) for run in range(count)]
+    for protocol in report["possibility_spaces"]:
+        for mode in summaries:
             row: dict[str, object] = {"protocol": protocol, "mode": mode}
             for metric in METRICS:
-                values = [result[metric] for result in results]
-                row[f"{metric}_p10"] = percentile(values, 0.10)
-                row[f"{metric}_median"] = statistics.median(values)
-                row[f"{metric}_p90"] = percentile(values, 0.90)
+                row[f"{metric}_p10"] = summaries[mode][protocol][metric]["p10"]
+                row[f"{metric}_median"] = summaries[mode][protocol][metric]["median"]
+                row[f"{metric}_p90"] = summaries[mode][protocol][metric]["p90"]
             rows.append(row)
     return rows
+
+
+def execute(config: Mapping[str, object], runs: int | None = None) -> list[dict[str, object]]:
+    return rows_from_campaign(run_campaign(config, runs))
 
 
 def make_verdict(rows: list[dict[str, object]], config: Mapping[str, object]) -> dict[str, object]:

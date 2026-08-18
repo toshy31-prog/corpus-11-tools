@@ -4,11 +4,21 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createAccessGuard, evaluateLockedReversals, prepareExecution, sealRawResults } from "../../../../../corpus-11-tools/labs/experiment-lab/governance/protocol-lock.mjs";
-import { buildExecutionDescriptor, createExecutionLock, verifyExecutionLock } from "../../../../../corpus-11-tools/labs/experiment-lab/governance/execution-lock.mjs";
+import { buildExecutionDescriptor, createExecutionLock } from "../../../../../corpus-11-tools/labs/experiment-lab/governance/execution-lock.mjs";
+import { closeLockedExecution } from "../../../../../corpus-11-tools/labs/experiment-lab/governance/execution-closure.mjs";
 
 const runnerPath = fileURLToPath(import.meta.url);
-const labDirectory = resolve(dirname(runnerPath), "..");
-const engineFiles = ["governance/execution-lock.mjs", "governance/protocol-lock.mjs", "scientific/compatible-constraint-order.mjs"];
+const scientificDirectory = dirname(runnerPath);
+const experimentLabDirectory = resolve(scientificDirectory, "../../../../../corpus-11-tools/labs/experiment-lab");
+const engineFiles = [
+  { id: "corpus/governance/execution-closure.mjs", path: resolve(experimentLabDirectory, "governance/execution-closure.mjs") },
+  { id: "corpus/governance/execution-lock.mjs", path: resolve(experimentLabDirectory, "governance/execution-lock.mjs") },
+  { id: "corpus/governance/protocol-lock.mjs", path: resolve(experimentLabDirectory, "governance/protocol-lock.mjs") },
+];
+const moduleFiles = [
+  { id: "research/scientific/compatible-constraint-order.mjs", path: runnerPath },
+];
+const artifactNames = ["raw_results.json", "classification.json"];
 
 function edges(width) {
   const output = [];
@@ -109,14 +119,12 @@ export async function computeCompatibleOrderModelHash() {
 
 export async function captureCompatibleOrderDescriptor() {
   return buildExecutionDescriptor({
-    engine: { id: "compatible-constraint-order-runner", version: "1.0.0", files: engineFiles.map((id) => ({ id, path: resolve(labDirectory, id) })) },
-    module: { id: "compatible-constraint-order-model", version: "1.0.0", files: [{ id: "scientific/compatible-constraint-order.mjs", path: runnerPath }] },
+    engine: { id: "corpus-experiment-lab-governance", version: "1.0.0", files: engineFiles },
+    module: { id: "compatible-constraint-order-model", version: "1.0.0", files: moduleFiles },
   });
 }
 
-export async function executeCompatibleOrder(protocolLock, executionLock, outputDirectory) {
-  const descriptor = await captureCompatibleOrderDescriptor();
-  verifyExecutionLock(protocolLock, executionLock, descriptor);
+async function executeCompatibleOrderArtifacts(protocolLock, outputDirectory) {
   const config = protocolLock.protocol.model.configuration;
   if (config?.experimentKind !== "exhaustive_compatible_constraint_order" || config.width !== 6) throw new Error("Unsupported configuration");
   const execution = prepareExecution(protocolLock, { protocolHash: protocolLock.protocolHash,
@@ -146,6 +154,17 @@ export async function executeCompatibleOrder(protocolLock, executionLock, output
   await mkdir(outputDirectory, { recursive: false });
   for (const [name, value] of Object.entries({ "raw_results.json": raw, "classification.json": classification })) await writeFile(resolve(outputDirectory, name), JSON.stringify(value, null, 2) + "\n", { flag: "wx" });
   return { raw, classification };
+}
+
+export async function executeCompatibleOrder(protocolLock, executionLock, outputDirectory) {
+  return closeLockedExecution({
+    protocolLock,
+    executionLock,
+    captureExecutionDescriptor: captureCompatibleOrderDescriptor,
+    execute: executeCompatibleOrderArtifacts,
+    outputDirectory,
+    artifactNames,
+  });
 }
 
 async function main() {

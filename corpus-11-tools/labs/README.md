@@ -4,8 +4,26 @@ Ce dossier contient les instruments génériques d’expérimentation livrés av
 
 ## Instruments
 
-- `experiment-lab/` : moteur neutre d’expériences, verrouillage de protocoles, contrôles, reproductibilité et Open Experiment Arena ;
-- `python/corpus_labs/simulation_campaign.py` : primitives de campagnes appariées — aléa commun, budgets comparables, dominance vectorielle et variations de sensibilité bornées.
+- `experiment-lab/` : moteur neutre d’expériences, verrouillage et attestation d’exécutions, contrôles, reproductibilité et Open Experiment Arena ;
+- `python/corpus_labs/simulation_campaign.py` : moteur d'exploration appariée — possibilités × scénarios × répétitions, aléa commun, budgets comparables, quantiles déclarés, règles de frontière, relations vectorielles et variations de sensibilité bornées.
+- `python/corpus_labs/event_store.py` et `institutional_protocol.py` : journal
+  append-only récupérable et machine configurable de propositions, décisions,
+  recours, mandats et pouvoirs temporaires ; aucun rôle, conflit de rôles ou
+  plafond de durée institutionnel n'est fourni par défaut : l'adaptateur doit
+  injecter explicitement toute sa politique.
+- `python/corpus_labs/json_schema_subset.py` : validateur sans dépendance d'un
+  sous-ensemble JSON Schema explicitement borné ; tout mot-clé hors contrat est
+  refusé au lieu d'être silencieusement ignoré.
+
+L’exécuteur reçoit les possibilités, scénarios, orientations des métriques,
+quantiles et règles de perte depuis la recherche appelante. Chaque appel reçoit
+un contexte explicite contenant les identifiants de la possibilité, du scénario
+et de la répétition. Le moteur conserve chaque exécution, résume séparément
+chaque dimension. Pour chaque paire, il conserve l'équivalence, la relation de
+borne locale ou l'incomparabilité ; plusieurs possibilités peuvent donc rester
+simultanément non éliminées. Il ne produit aucun score composite, vainqueur ou
+interprétation des métriques. `run_campaign` reste un adaptateur de vocabulaire
+pour les consommateurs antérieurs.
 
 Les fixtures et démonstrations servent à tester les instruments. Elles ne sont ni des utilisateurs, ni des observations extérieures, ni des conclusions de recherche.
 

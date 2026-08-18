@@ -118,6 +118,15 @@ class ConstitutionExecutableTests(unittest.TestCase):
         errors = validate_schema(candidate, self.decision_schema)
         self.assertTrue(any("propriété non autorisée" in error for error in errors))
 
+    def test_historical_schema_signature_keeps_root_and_path_arguments(self) -> None:
+        errors = validate_schema(
+            "inconnu",
+            {"$ref": "#/$defs/stringArray"},
+            self.decision_schema,
+            "$.status",
+        )
+        self.assertTrue(any(error.startswith("$.status:") for error in errors))
+
     def test_document_auto_detection(self) -> None:
         kind, errors = validate_document(HERE / "examples" / "decision-valid.json")
         self.assertEqual("cct_decision", kind)

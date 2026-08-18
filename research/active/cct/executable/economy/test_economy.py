@@ -17,7 +17,7 @@ from economy_model import (
     simulate_once,
     validate_config,
 )
-from run_economy import run_experiment
+from run_economy import _run_possibility_campaign, run_experiment
 
 
 BASE = Path(__file__).resolve().parent
@@ -101,7 +101,7 @@ class EconomyModelTests(unittest.TestCase):
         left["recovery_days"] = 3.0
         self.assertFalse(dominates(left, right))
 
-    def test_runner_writes_csv_json_and_markdown(self) -> None:
+    def test_generic_runner_preserves_historical_artifacts_byte_for_byte(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             result = run_experiment(CONFIG_PATH, temp_dir)
             destination = Path(temp_dir)
@@ -126,6 +126,31 @@ class EconomyModelTests(unittest.TestCase):
             self.assertIn("Aucun score composite", report)
             self.assertIn("Condition de renversement", report)
             self.assertIn("Limites de détectabilité", report)
+            for name in ("summary.csv", "verdict.json", "report.md"):
+                self.assertEqual(
+                    (destination / name).read_bytes(),
+                    (BASE / "results" / name).read_bytes(),
+                    f"régression de l'artefact historique {name}",
+                )
+
+    def test_generic_runner_exposes_every_pair_as_a_partial_relation(self) -> None:
+        campaign = _run_possibility_campaign(self.config)
+        expected_pairs = len(self.config["regimes"]) * (len(self.config["regimes"]) - 1) // 2
+        for scenario_id in self.config["scenarios"]:
+            space = campaign["possibility_spaces"][scenario_id]
+            self.assertEqual(len(space["relations"]), expected_pairs)
+            self.assertTrue(
+                all(
+                    relation["relation"]
+                    in {
+                        "equivalent",
+                        "left_bounded_right",
+                        "right_bounded_left",
+                        "incomparable",
+                    }
+                    for relation in space["relations"]
+                )
+            )
 
 
 if __name__ == "__main__":
