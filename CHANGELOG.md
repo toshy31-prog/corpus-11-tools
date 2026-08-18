@@ -9,6 +9,14 @@
 - étend le routage sans créer de nouvelle capability : une représentation locale ne peut pas être attribuée silencieusement au système entier, et un contrechamp ne vaut ni preuve ni compromis automatique ;
 - documente le transfert recherche → Corpus sans importer les objets, paramètres ou résultats des expériences du 2026-08-18.
 
+### Moteurs génériques et clôture d’exécution
+
+- ajoute une clôture d’exécution attestée qui vérifie les verrous de protocole et d’exécution, exige un dossier de sortie neuf, hache les artefacts déclarés et produit une attestation non écrasable ;
+- étend `simulation_campaign.py` à l’exploration appariée possibilités × scénarios × répétitions avec quantiles déclarés, frontières explicites et relations vectorielles sans score composite caché ;
+- ajoute un event store append-only récupérable et des primitives de protocole institutionnel configurables pour propositions, décisions, recours, mandats et pouvoirs temporaires, sans politique CCT implicite ;
+- ajoute un validateur sans dépendance d’un sous-ensemble JSON Schema explicitement borné, qui refuse les mots-clés hors contrat plutôt que de les ignorer ;
+- enregistre les transferts recherche → Corpus correspondants avec tests indépendants du projet source et conditions explicites de retrait.
+
 ## v1.3.0 — 2026-08-17
 
 ### Architecture

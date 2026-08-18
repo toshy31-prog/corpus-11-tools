@@ -1,0 +1,110 @@
+name: Post-merge full validation
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Python test runner
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Validate package
+        working-directory: corpus-11-tools
+        run: python3 tools/validate_package.py
+
+      - name: Validate graph
+        working-directory: corpus-11-tools
+        run: python3 tools/check_graph.py
+
+      - name: Validate documentation
+        working-directory: corpus-11-tools
+        run: python3 tools/check_docs.py
+
+      - name: Validate product-research boundaries
+        working-directory: corpus-11-tools
+        run: python3 tools/check_boundaries.py
+
+      - name: Run Python test discovery
+        run: PYTHONPATH=corpus-11-tools/labs/python pytest -q
+
+      - name: Run Node test discovery outside archived food site
+        shell: bash
+        run: |
+          mapfile -d '' tests < <(find corpus-11-tools research \
+            -path 'research/completed/food-access-paris/site' -prune -o \
+            -type f \( -name '*.test.mjs' -o -name '*.test.js' -o -name 'test-*.mjs' -o -name 'test-*.js' \) -print0)
+          if (( ${#tests[@]} == 0 )); then
+            echo 'No Node test modules found'
+          else
+            printf 'Running %d Node test modules\n' "${#tests[@]}"
+            node --test "${tests[@]}"
+          fi
+
+      - name: Run CCT integration controls
+        run: PYTHONPATH=corpus-11-tools/labs/python python3 research/active/cct/executable/run_all.py
+
+      - name: Run completed food-access prototype tests
+        working-directory: research/completed/food-access-paris/site
+        run: |
+          npm ci --ignore-scripts
+          npm test
+
+      - name: Validate tracked JSON and JSONL
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          import subprocess
+          from pathlib import Path
+
+          paths = subprocess.check_output(
+              ['git', 'ls-files', '*.json', '*.jsonl'], text=True
+          ).splitlines()
+          checked = 0
+          for raw in paths:
+              path = Path(raw)
+              if path.suffix == '.json':
+                  json.loads(path.read_text(encoding='utf-8'))
+              else:
+                  for line_no, line in enumerate(path.read_text(encoding='utf-8').splitlines(), 1):
+                      if line.strip():
+                          try:
+                              json.loads(line)
+                          except Exception as exc:
+                              raise RuntimeError(f'{path}:{line_no}: {exc}') from exc
+              checked += 1
+          print(f'Validated {checked} tracked JSON/JSONL files')
+          PY
+
+      - name: Check patch whitespace integrity
+        run: git diff --check origin/main...HEAD
+
+      - name: Record validated commit
+        run: echo "Validated commit: $(git rev-parse HEAD)"
