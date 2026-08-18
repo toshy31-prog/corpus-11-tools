@@ -84,6 +84,7 @@ python tools/check_graph.py
 python tools/check_docs.py
 python tools/check_boundaries.py
 python tools/check_integrity.py
+python tools/check_release_identity.py
 python tools/check_evals.py
 python tools/test_validation_guards.py
 python tools/show_provenance.py CAP.PROTOCOL_ROBUSTNESS
