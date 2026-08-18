@@ -4,9 +4,11 @@ Ce dossier contient les instruments génériques d’expérimentation livrés av
 
 ## Instruments
 
-- `experiment-lab/` : moteur neutre d’expériences, verrouillage de protocoles, contrôles, reproductibilité et Open Experiment Arena ;
+- `experiment-lab/` : moteur neutre d’expériences, verrouillage de protocoles, clôture attestée des exécutions, contrôles, reproductibilité et Open Experiment Arena ;
 - `epistemic-trajectory/` : garde générique des changements de représentation — registre des gains/pertes, dissolution des primitives, réouverture après fusion, oubli reconstructible et séparation entre critère de sélection et propriété attribuée au système ;
-- `python/corpus_labs/simulation_campaign.py` : primitives de campagnes appariées — aléa commun, budgets comparables, dominance vectorielle et variations de sensibilité bornées.
+- `python/corpus_labs/simulation_campaign.py` : exploration appariée de possibilités × scénarios × répétitions avec aléa commun, budgets comparables, quantiles déclarés, frontières explicites et relations vectorielles sans score composite caché ;
+- `python/corpus_labs/event_store.py` et `institutional_protocol.py` : journal append-only récupérable et primitives configurables de propositions, décisions, recours, mandats et pouvoirs temporaires ; aucune politique institutionnelle particulière n’est fournie par défaut ;
+- `python/corpus_labs/json_schema_subset.py` : validateur sans dépendance d’un sous-ensemble JSON Schema explicitement borné ; les mots-clés hors contrat sont refusés plutôt qu’ignorés.
 
 Les fixtures et démonstrations servent à tester les instruments. Elles ne sont ni des utilisateurs, ni des observations extérieures, ni des conclusions de recherche.
 
