@@ -6,7 +6,7 @@
 
 ## Statut
 
-active — **séparation opérationnelle renforcée jusqu'à une émulation runtime horodatée, mais profils toujours absorbés par des invariants standards**. Aucun statut fondamental, matériel ou thermodynamique n'est établi.
+active — **séparation opérationnelle renforcée jusqu'à une event loop réelle puis cinq processus OS séparés, mais profils toujours absorbés par des invariants standards**. Aucun statut fondamental, matériel ou thermodynamique n'est établi.
 
 ## Observations favorables
 
@@ -14,18 +14,18 @@ active — **séparation opérationnelle renforcée jusqu'à une émulation runt
 - **Jouet copies :** `C_info=1` tandis que l'effacement terminal local peut demander `N` resets.
 - **Topologie :** à Hamming fixé, des arbres appariés ont des profondeurs d'effacement `2/3`; à excentricité fixée, des charges résiduelles `9/5` et `10/5` persistent après perte d'une arête.
 - **Réplication prospective asynchrone multi-port `n=6` :** `32768` architectures brutes, `9765` atteignables, `685` strates de contrôle et **176 strates** où `C_info=C_erase_inf=1` mais `C_erase_1` diffère. Classification : `replicated_profile_separation`.
-- **Transport runtime prospectif :** sur deux architectures appariées gelées, budget de deux resets et 120 ordres de latence visés trois fois chacun, l'architecture A s'efface `360/360` fois tandis que B échoue `180/360` fois. Classification : **`runtime_transport`**.
-- **Cohérence mécaniste runtime :** zéro divergence sur `720` runs entre l'état produit par l'event loop `asyncio` et le simulateur discret conditionné par l'ordre réellement horodaté.
-- Les `120` ordres d'activation ont tous été effectivement réalisés dans chaque architecture au cours de cette exécution.
+- **Transport runtime `asyncio` :** sur deux architectures appariées, A s'efface `360/360` fois tandis que B échoue `180/360` fois ; zéro divergence sur `720` runs avec le simulateur discret conditionné par l'ordre réellement horodaté. Classification : `runtime_transport`.
+- **Transport multi-processus :** avec cinq workers OS persistants sur le même hôte, A s'efface `240/240` fois et B échoue `120/240` fois ; zéro divergence sur `480` runs. Classification : `multiprocess_transport`.
+- Le scheduling noyau a modifié l'ordre cible dans 16 runs multi-processus, mais la prédiction conditionnée par l'ordre réellement observé reste exacte.
 
 ## Observations défavorables
 
-- **Aucune mesure matérielle indépendante** n'est encore fournie ; le banc runtime reste une émulation logicielle dans un seul processus/event loop.
+- **Aucune mesure matérielle indépendante** n'est fournie ; les deux bancs restent logiciels et le multi-processus reste sur un seul hôte.
 - La séparation dépend de la famille d'entrées, des accès permis, de la deadline et du critère d'indiscernabilité ; ces choix sont opérationnels, non universels.
 - Les résidus historiques restent réductibles successivement à Hamming, excentricité et profils de coupes.
 - Dans la réplication asynchrone, zéro violation est observée de `C_erase_1 = 1 + tau(G_int)`, où `tau` est la couverture minimale de sommets. Le nouvel axe est donc entièrement expliqué par un invariant standard dans cette famille.
 - `C_erase_inf=1` dans toute la famille DAG ; cet axe est volontairement trivial ici.
-- Le succès runtime n'ajoute aucun mécanisme nouveau : la cohérence parfaite avec le simulateur discret montre que l'effet observé est celui attendu de la structure du graphe et de l'ordre d'activation.
+- Les transports runtime ne montrent aucun mécanisme nouveau : leur cohérence parfaite avec le modèle discret confirme que l'effet est celui attendu de la structure de graphe et de l'ordre d'activation.
 
 ## Hypothèses concurrentes
 
@@ -35,9 +35,9 @@ active — **séparation opérationnelle renforcée jusqu'à une émulation runt
 
 ## Prédictions discriminantes restantes
 
-- Une variation contrôlée du budget temporel ou du nombre de ports peut déplacer `C_erase` sans déplacer `C_info` — désormais reproduit algébriquement et dans une event loop réelle.
+- Une variation contrôlée du budget temporel ou du nombre de ports peut déplacer `C_erase` sans déplacer `C_info` — reproduit algébriquement, dans une event loop et avec processus OS séparés.
 - Pour établir un contenu propre au-delà d'une compilation d'invariants standards, un futur test doit produire un résidu non absorbé par un invariant classique déclaré avant résultat.
-- Le prochain transport significatif doit utiliser des composants ou processus réellement séparés, avec latences/pertes/ordres produits par la pile d'exécution et non seulement par une temporisation `asyncio` locale.
+- Le prochain transport significatif doit utiliser un système réellement distinct : plusieurs machines, réseau externe, microcontrôleurs ou autre dispositif où communications et resets ne sont pas seulement des opérations locales sur le même hôte.
 - Le même contrat `(C_info,C_erase_inf,C_erase_deadline,residual_count,cost)` doit être conservé sans réajustement des critères.
 
 ## Condition de renversement
@@ -48,7 +48,7 @@ L'énoncé faible — récupération et désinscription sous contraintes différ
 
 ## Méthodes nécessaires
 
-Passer désormais à un banc distribué ou matériel ; définir avant acquisition ports, deadline, règle de convergence, pertes, détectabilité, coût messages/opérations/temps et condition de renversement. Ne plus multiplier les émulations du même mécanisme dans une seule event loop.
+Conserver désormais une condition d'arrêt sur les bancs logiciels locaux. La prochaine montée d'échelle exige un dispositif réellement distinct ; avant acquisition, fixer ports, deadline, règle de convergence, pertes, détectabilité, coût messages/opérations/temps et condition de renversement.
 
 ## Sources
 
@@ -57,8 +57,10 @@ Passer désormais à un banc distribué ou matériel ; définir avant acquisitio
 - `research/experiments/recovery-async-multiport-results-2026-08-18.md`.
 - `research/experiments/recovery-async-runtime-preregistration-2026-08-18.md`.
 - `research/experiments/recovery-async-runtime-results-2026-08-18.md`.
+- `research/experiments/recovery-multiprocess-preregistration-2026-08-18.md`.
+- `research/experiments/recovery-multiprocess-results-2026-08-18.md`.
 - Corpus 11 Tools : architecture d'audit et de discrimination, non source de physique.
 
 ## Dernière mise à jour
 
-2026-08-18 — `runtime_transport` sur 720 runs ; séparation opérationnelle confirmée en émulation runtime, sans résidu non standard ni donnée matérielle
+2026-08-18 — `multiprocess_transport` sur 480 runs ; robustesse logicielle renforcée, condition d'arrêt locale atteinte, aucune donnée matérielle
