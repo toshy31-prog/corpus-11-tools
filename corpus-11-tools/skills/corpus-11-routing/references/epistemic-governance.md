@@ -131,6 +131,87 @@ restent équivalentes sous toutes les observations accessibles, préserver la
 pluralité ou classer la différence comme conventionnelle ; ne pas fabriquer un
 vainqueur.
 
+## Gouvernance des trajectoires de représentation
+
+Une conclusion n'est pas seulement auditée à l'état final. Lorsque l'analyse
+change de représentation, de primitive, d'échelle, de partition ou de niveau
+d'agrégation, conserver la trajectoire de ce changement.
+
+Principe directeur : une prise locale sur un phénomène ne doit pas devenir
+silencieusement une totalisation. Le contrechamp n'est pas un vote symétrique :
+il sert à exposer la déformation possible de la prise initiale et doit lui-même
+pouvoir perdre sous un discriminant indépendant.
+
+Pour chaque transformation matérielle, déclarer lorsque pertinent :
+
+- `operation` — compression, fusion, quotient, invention de primitive,
+  reclassification, changement d'échelle, oubli, etc. ;
+- `representation` — cadre dans lequel le gain est obtenu ;
+- `gain` — prédiction, intervention, compression ou discrimination acquise ;
+- `losses` — informations, distinctions, cas limites ou voies causales masqués,
+  identifiés ou détruits par l'opération ;
+- `counterchecks` — tentatives de dissolution et alternatives concurrentes ;
+- `independent_discriminant` — observation qui ne réutilise pas le critère de
+  sélection comme preuve de la propriété attribuée ;
+- `reversal_condition` — résultat qui force la révision ;
+- `reopen_condition` — pour une fusion provisoire, condition qui restaure la
+  distinction ;
+- `recovery_path` — pour une perte volontaire, voie permettant de reconstruire
+  ce qui importe.
+
+### Opérations destructives
+
+Compression, fusion, quotient, coarsening et oubli exigent un registre des
+pertes. Un résidu n'est pas traité comme naturellement secondaire : il est
+relatif au modèle qui l'a produit.
+
+Une fusion empirique établit au plus `A ~_E B` dans l'espace expérimental `E` ;
+elle n'établit pas `A = B`. Maintenir une condition de réouverture lorsqu'un
+futur test pourrait les séparer.
+
+Un oubli n'est justifié comme `earned_forgetting` que si ce qui importe reste
+reconstructible par une voie indépendante ou adressable. Si la perte est
+irréversible, la déclarer comme telle avec son coût ; ne pas la rebaptiser
+compression neutre.
+
+### Primitives inventées
+
+Avant de réifier une variable ou primitive latente :
+
+1. tenter de la dissoudre dans des invariants ou variables déjà déclarés ;
+2. construire au moins une explication où elle est un artefact de mesure,
+   représentation ou sélection ;
+3. chercher un discriminant indépendant ou un transport hors du dispositif qui
+   l'a générée ;
+4. conserver son rôle comme `candidate` tant que ces alternatives survivent.
+
+### Ouverture et fermeture
+
+Réduire l'incertitude n'est pas toujours un progrès : une observation correcte
+peut ouvrir des possibilités auparavant exclues par une fausse certitude.
+L'ouverture gagnée doit toutefois rester discriminable ; elle ne justifie pas
+une prolifération sans condition d'arrêt.
+
+Inversement, fermer une famille d'hypothèses est justifié seulement lorsque la
+fermeture survit aux contrôles déclarés. Une falsification ne doit pas devenir
+une recherche adaptative illimitée d'un protocole favorable.
+
+### Audit de la méthode elle-même
+
+Les mêmes gardes s'appliquent aux méthodes de recherche : une méthode peut
+induire ses propres objets naturels, erreurs préférées, angles morts et
+attracteurs. Lorsque plusieurs procédures sont comparées, mesurer si leurs
+conclusions changent avec l'ordre d'observation, le langage, l'échelle, la
+métrique ou l'espace de modèles.
+
+Le but n'est pas de construire une méthode extérieure à tout point de vue, mais
+de conserver une carte explicite des dépendances du résultat au point de vue et
+de tester lesquelles transportent.
+
+La récursion s'arrête lorsqu'un audit supplémentaire ne peut plus changer une
+conclusion, une attribution, une condition de renversement, un test futur ou la
+trajectoire retenue.
+
 ## Sortie minimale d'un audit de loi
 
 Lorsque ces distinctions peuvent changer la conclusion, rendre explicitement :
@@ -143,6 +224,16 @@ Lorsque ces distinctions peuvent changer la conclusion, rendre explicitement :
 - `independent_discriminant` ;
 - `reversal_condition` ;
 - `remaining_ambiguity`.
+
+Pour une transformation matérielle de représentation, ajouter si nécessaire :
+
+- `representation` ;
+- `operation` ;
+- `gain` ;
+- `loss_ledger` ;
+- `counterchecks` ;
+- `reopen_condition` ;
+- `recovery_path`.
 
 Un champ inconnu reste `unknown` ; il n'est pas complété par préférence.
 
@@ -164,11 +255,30 @@ Un champ inconnu reste `unknown` ; il n'est pas complété par préférence.
 
 `AUDIT_CAN_REJECT != AUDIT_CAN_SEED_LAW`
 
+`LOCAL_REPRESENTATION != SYSTEM_TOTALITY`
+
+`RESIDUAL != NATURALLY_SECONDARY`
+
+`MERGED_UNDER_EVIDENCE != IDENTICAL`
+
+`FRUITFUL_ERROR != TRUE_THEORY`
+
+`FAILED_THEORY != USELESS_TRANSFORMATION`
+
+`MORE_CERTAINTY != MORE_KNOWLEDGE`
+
+`COUNTERFIELD != AUTOMATIC_BALANCE`
+
+`SELF_AUDIT != INFINITE_RECURSION`
+
 ## Provenance et statut de cette garde
 
 La garde consolide des contraintes déjà portées par les audits d'effet de
 méthode, de reste, de coût caché, de robustesse, de renversement et de validation
 du changement. La frontière de neutralité, l'échelle de rôle des lois et la
 comptabilité totale de compression sont une synthèse de gouvernance 11.x issue
-des échecs et sous-déterminations documentés par le laboratoire. Elles ne sont
-pas présentées comme des lois scientifiques ni comme des fragments 10.x.
+des échecs et sous-déterminations documentés par le laboratoire. La gouvernance
+de trajectoire généralise des patterns réobservés dans plusieurs expériences
+(préenregistrement, absorption standard, transport, requalification et arrêt)
+sans importer leurs objets ou résultats. Ces règles ne sont pas présentées comme
+des lois scientifiques ni comme des fragments 10.x.

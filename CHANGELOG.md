@@ -1,5 +1,14 @@
 # Journal des versions
 
+## Unreleased
+
+### Gouvernance épistémique
+
+- ajoute une gouvernance de **trajectoire de représentation** : chaque changement matériel peut déclarer son gain, son registre de pertes, ses contre-épreuves, sa condition de renversement/réouverture et sa voie de reconstruction ;
+- ajoute `labs/epistemic-trajectory/`, un auditeur générique et testé pour compression, fusion, invention de primitive, oubli reconstructible et dérive de rôle d'une représentation ;
+- étend le routage sans créer de nouvelle capability : une représentation locale ne peut pas être attribuée silencieusement au système entier, et un contrechamp ne vaut ni preuve ni compromis automatique ;
+- documente le transfert recherche → Corpus sans importer les objets, paramètres ou résultats des expériences du 2026-08-18.
+
 ## v1.3.0 — 2026-08-17
 
 ### Architecture
