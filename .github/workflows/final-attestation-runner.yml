@@ -1,5 +1,6 @@
 name: Final attestation runner
 
+# Temporary bootstrap-only runner. Removed after the attested PASS.
 on:
   push:
     branches:
