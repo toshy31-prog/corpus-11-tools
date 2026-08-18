@@ -12,12 +12,20 @@ Cette release stabilise la frontière entre le produit Corpus, les laboratoires 
 | Graphe | `python3 tools/check_graph.py` | PASS |
 | Documentation | `python3 tools/check_docs.py` | PASS |
 | Frontières | `python3 tools/check_boundaries.py` | PASS |
-| Laboratoires Python | tests `corpus_labs` | 6/6 |
-| Moteur expérimental | tests génériques Node | 8/8 |
-| Adaptateurs de recherche et simulateur de domaine | tests Node | 10/10 |
+| Intégrité sources/archives | `python3 tools/check_integrity.py` | PASS |
+| Identité release/tag | `python3 tools/check_release_identity.py` | PASS |
+| Contrats et couverture des evals | `python3 tools/check_evals.py` | 77/77 contrats ; 49/49 capabilities couvertes positivement |
+| Métavalidation | `python3 tools/test_validation_guards.py` | toutes les mutations adversariales rejetées |
+| Installation plugin | installation clean-room Codex + `codex plugin list` | plugin détecté |
+| Laboratoires Python | tests `corpus_labs` | tous les tests collectés doivent passer ; cardinalité figée par la gate totale |
+| Moteur expérimental | tests génériques Node | tous les tests déclarés doivent passer ; zéro test interdit |
+| Adaptateurs de recherche et simulateur de domaine | tests Node | tous les tests déclarés doivent passer ; zéro test interdit |
 | Recherche CCT | `executable/run_all.py` | 10/10 contrôles |
 | Recherche alimentaire terminée | `npm test` | 51/51 |
-| Non-régression scientifique | récupération, temporalité, factorisation | 80/80 |
+| Non-régression scientifique | récupération, temporalité, factorisation | toutes les unités déclarées doivent passer sans dérive matérielle inexpliquée |
+| Routage comportemental | `tools/run_behavioral_evals.py` | 77/77 en ordre forward et reverse |
+
+Les anciennes mentions `6/6`, `8/8`, `10/10` et `80/80` ne doivent pas être conservées comme nombres historiques si les suites auxquelles elles se rapportaient ont évolué. La gate totale doit compter les unités présentes, exécuter l’ensemble déclaré, refuser une découverte vide et rendre explicite toute modification de cardinalité. Les nombres qui restent intrinsèques au protocole — 10 contrôles CCT, 51 tests du prototype alimentaire et 77 evals de routage — restent des invariants explicites.
 
 ## Frontières vérifiées
 
@@ -27,4 +35,4 @@ Cette release stabilise la frontière entre le produit Corpus, les laboratoires 
 - les prototypes et recherches terminés restent hors du produit utilisateur ;
 - les fixtures démontrent le fonctionnement des instruments, pas une validation extérieure.
 
-Les résultats réellement observés lors de la validation finale sont consignés dans le commit de release et doivent correspondre à cette matrice avant publication.
+Les résultats réellement observés lors de la validation finale sont consignés dans le commit de release et doivent correspondre à cette matrice avant publication. Un contrôle non exécuté, une authentification absente, une découverte vide ou un résultat non comparable interdit un verdict `PASS total`.
