@@ -18,6 +18,7 @@ jobs:
     timeout-minutes: 120
     env:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      CODEX_HOME: ${{ runner.temp }}/corpus-codex-home
 
     steps:
       - name: Checkout
@@ -37,10 +38,13 @@ jobs:
 
       - name: Install pinned validation dependencies
         run: |
-          python -m pip install --disable-pip-version-check pytest==8.4.1
+          python -m pip install --disable-pip-version-check \
+            pytest==8.4.1 iniconfig==2.3.0 packaging==26.3 pluggy==1.6.0 pygments==2.21.0
           npm install --global @openai/codex@0.137.0
           python --version
+          python -m pip --version
           node --version
+          npm --version
           pytest --version
           codex --version
 
@@ -75,8 +79,8 @@ jobs:
       - name: Clean-room Codex plugin installation
         shell: bash
         run: |
-          tmp_home="$(mktemp -d)"
-          export CODEX_HOME="$tmp_home"
+          rm -rf "$CODEX_HOME"
+          mkdir -p "$CODEX_HOME"
           codex plugin marketplace add .
           codex plugin add corpus-11-tools@corpus-11-local
           codex plugin list > "$RUNNER_TEMP/corpus-plugin-list.txt"
@@ -148,6 +152,8 @@ jobs:
           echo "Validated commit: $(git rev-parse HEAD)"
           echo "Runner: ubuntu-24.04"
           python --version
+          python -m pip --version
           node --version
+          npm --version
           pytest --version
           codex --version
