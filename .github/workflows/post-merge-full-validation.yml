@@ -68,6 +68,10 @@ jobs:
         working-directory: corpus-11-tools
         run: python3 tools/check_integrity.py
 
+      - name: Validate release identity and tag ancestry
+        working-directory: corpus-11-tools
+        run: python3 tools/check_release_identity.py
+
       - name: Validate eval contracts and coverage
         working-directory: corpus-11-tools
         run: python3 tools/check_evals.py
