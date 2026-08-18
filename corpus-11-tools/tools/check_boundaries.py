@@ -68,11 +68,27 @@ for project in projects:
     if not readme.is_file():
         errors.append(f"research project lacks README: {project.relative_to(repo_root)}")
 
-for record in (transfer_root / "accepted").glob("*.md"):
+# Accepted transfers are part of the product/research firewall.  A transfer is
+# only accepted when it is falsifiable: it must name where the genericized
+# mechanism lands, how it is checked, and the condition that would revoke the
+# acceptance.  Checking mere substring presence is intentionally avoided so a
+# prose mention cannot satisfy the contract accidentally.
+required_transfer_fields = {
+    "Destination": re.compile(r"(?mi)^\s*-\s*Destination\s*:\s*\S.+$"),
+    "Vérification": re.compile(r"(?mi)^\s*-\s*Vérification\s*:\s*\S.+$"),
+    "Condition de retrait": re.compile(
+        r"(?mi)^\s*-\s*Condition de retrait\s*:\s*\S.+$"
+    ),
+}
+for record in sorted((transfer_root / "accepted").glob("*.md")):
     text = record.read_text(encoding="utf-8")
-    if "Destination" not in text or "Vérification" not in text:
+    missing = [
+        field for field, pattern in required_transfer_fields.items() if not pattern.search(text)
+    ]
+    if missing:
         errors.append(
-            f"accepted transfer lacks Destination or Vérification: {record.relative_to(repo_root)}"
+            "accepted transfer lacks required field(s) "
+            f"{', '.join(missing)}: {record.relative_to(repo_root)}"
         )
 
 cct_consumers = (
