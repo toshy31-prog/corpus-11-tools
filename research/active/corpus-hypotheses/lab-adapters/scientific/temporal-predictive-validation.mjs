@@ -14,8 +14,8 @@ import {
 import {
   buildExecutionDescriptor,
   createExecutionLock,
-  verifyExecutionLock,
 } from "../../../../../corpus-11-tools/labs/experiment-lab/governance/execution-lock.mjs";
+import { closeLockedExecution } from "../../../../../corpus-11-tools/labs/experiment-lab/governance/execution-closure.mjs";
 
 const runnerPath = fileURLToPath(import.meta.url);
 const labDirectory = resolve(dirname(runnerPath), "..");
@@ -25,9 +25,16 @@ const engineFiles = [
   "core/contracts.mjs",
   "core/engine.mjs",
   "core/reproducibility.mjs",
+  "governance/execution-closure.mjs",
   "governance/execution-lock.mjs",
   "governance/protocol-lock.mjs",
   "scientific/temporal-predictive-validation.mjs",
+];
+const artifactNames = [
+  "raw_results.json",
+  "computed_output.json",
+  "comparison.json",
+  "classification.json",
 ];
 
 function pairs(width) {
@@ -134,9 +141,7 @@ function scoreOrder(width, mask, order, observer, seed) {
   return { engine, score: engine.observe("candidate_order_score").violations };
 }
 
-export async function executePredictiveValidation(protocolLock, executionLock, outputDirectory) {
-  const descriptor = await capturePredictiveExecutionDescriptor();
-  verifyExecutionLock(protocolLock, executionLock, descriptor);
+async function executePredictiveArtifacts(protocolLock, executionLock, outputDirectory) {
   const configuration = protocolLock.protocol.model.configuration;
   validateConfiguration(configuration);
   const modelContentHash = await computeScientificModelHash();
@@ -265,20 +270,20 @@ export async function executePredictiveValidation(protocolLock, executionLock, o
   })) {
     await writeFile(resolve(outputDirectory, name), JSON.stringify(value, null, 2) + "\n", { flag: "wx" });
   }
-  const artifactHashes = {};
-  for (const name of ["raw_results.json", "computed_output.json", "comparison.json", "classification.json"]) {
-    artifactHashes[name] = `sha256:${createHash("sha256").update(await readFile(resolve(outputDirectory, name))).digest("hex")}`;
-  }
-  const attestation = {
-    schema: "corpus-experiment-execution-attestation/v1",
-    protocolHash: protocolLock.protocolHash,
-    experimentFingerprint: executionLock.experimentFingerprint,
-    rawHash: raw.rawHash,
-    classificationHash: classification.classificationHash,
-    artifactHashes,
-  };
-  await writeFile(resolve(outputDirectory, "execution_attestation.json"), JSON.stringify(attestation, null, 2) + "\n", { flag: "wx" });
-  return { raw, computed, comparison, classification, attestation };
+  return { raw, computed, comparison, classification };
+}
+
+export async function executePredictiveValidation(protocolLock, executionLock, outputDirectory) {
+  return closeLockedExecution({
+    protocolLock,
+    executionLock,
+    captureExecutionDescriptor: capturePredictiveExecutionDescriptor,
+    execute: (lockedProtocol, targetDirectory) => (
+      executePredictiveArtifacts(lockedProtocol, executionLock, targetDirectory)
+    ),
+    outputDirectory,
+    artifactNames,
+  });
 }
 
 async function main() {

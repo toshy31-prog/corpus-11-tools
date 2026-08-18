@@ -1,36 +1,45 @@
 #!/usr/bin/env node
-import { createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { temporalFrustrationPlugin } from "../plugins/temporal-frustration.mjs";
 import { executeLockedTemporalSample } from "./adapters/temporal-seeded-sample.mjs";
+import { closeLockedExecution } from "../../../../../corpus-11-tools/labs/experiment-lab/governance/execution-closure.mjs";
 import {
   buildExecutionDescriptor,
   createExecutionLock,
   verifyExecutionLock,
-} from "./execution-lock.mjs";
+} from "../../../../../corpus-11-tools/labs/experiment-lab/governance/execution-lock.mjs";
 
 const runnerPath = fileURLToPath(import.meta.url);
 const governanceDirectory = dirname(runnerPath);
 const labDirectory = resolve(governanceDirectory, "..");
+const experimentLabDirectory = resolve(governanceDirectory, "../../../../../corpus-11-tools/labs/experiment-lab");
 
 const engineFiles = [
-  "core/contracts.mjs",
-  "core/engine.mjs",
-  "core/reproducibility.mjs",
-  "governance/adapters/temporal-seeded-sample.mjs",
-  "governance/closed-temporal-runner.mjs",
-  "governance/execution-lock.mjs",
-  "governance/protocol-lock.mjs",
+  { id: "corpus/core/contracts.mjs", path: resolve(experimentLabDirectory, "core/contracts.mjs") },
+  { id: "corpus/core/engine.mjs", path: resolve(experimentLabDirectory, "core/engine.mjs") },
+  { id: "corpus/core/reproducibility.mjs", path: resolve(experimentLabDirectory, "core/reproducibility.mjs") },
+  { id: "corpus/governance/execution-closure.mjs", path: resolve(experimentLabDirectory, "governance/execution-closure.mjs") },
+  { id: "corpus/governance/execution-lock.mjs", path: resolve(experimentLabDirectory, "governance/execution-lock.mjs") },
+  { id: "corpus/governance/protocol-lock.mjs", path: resolve(experimentLabDirectory, "governance/protocol-lock.mjs") },
+  { id: "research/governance/adapters/temporal-seeded-sample.mjs", path: resolve(labDirectory, "governance/adapters/temporal-seeded-sample.mjs") },
+  { id: "research/governance/closed-temporal-runner.mjs", path: runnerPath },
+];
+
+const temporalArtifactNames = [
+  "raw_results.json",
+  "computed_output.json",
+  "comparison.json",
+  "classification.json",
 ];
 
 export async function captureTemporalExecutionDescriptor() {
   return buildExecutionDescriptor({
     engine: {
       id: "corpus-experiment-lab-temporal-runner",
-      version: "1.0.0",
-      files: engineFiles.map((id) => ({ id, path: resolve(labDirectory, id) })),
+      version: "2.0.0",
+      files: engineFiles,
     },
     module: {
       id: temporalFrustrationPlugin.manifest.id,
@@ -40,28 +49,15 @@ export async function captureTemporalExecutionDescriptor() {
   });
 }
 
-async function fileHash(path) {
-  return `sha256:${createHash("sha256").update(await readFile(path)).digest("hex")}`;
-}
-
 export async function runClosedTemporalExperiment(protocolLock, executionLock, outputDirectory) {
-  const actual = await captureTemporalExecutionDescriptor();
-  verifyExecutionLock(protocolLock, executionLock, actual);
-  const result = await executeLockedTemporalSample(protocolLock, outputDirectory);
-  const artifactHashes = {};
-  for (const name of ["raw_results.json", "computed_output.json", "comparison.json", "classification.json"]) {
-    artifactHashes[name] = await fileHash(resolve(outputDirectory, name));
-  }
-  const attestation = {
-    schema: "corpus-experiment-execution-attestation/v1",
-    protocolHash: protocolLock.protocolHash,
-    experimentFingerprint: executionLock.experimentFingerprint,
-    rawHash: result.raw.rawHash,
-    classificationHash: result.classification.classificationHash,
-    artifactHashes,
-  };
-  await writeFile(resolve(outputDirectory, "execution_attestation.json"), JSON.stringify(attestation, null, 2) + "\n", { flag: "wx" });
-  return { ...result, attestation };
+  return closeLockedExecution({
+    protocolLock,
+    executionLock,
+    captureExecutionDescriptor: captureTemporalExecutionDescriptor,
+    execute: executeLockedTemporalSample,
+    outputDirectory,
+    artifactNames: temporalArtifactNames,
+  });
 }
 
 async function main() {

@@ -141,7 +141,7 @@ class OpsCase(unittest.TestCase):
             "mandate_authorization", "delegate", ["Mandat perpétuel"]
         )
         now = self.at()
-        with self.assertRaisesRegex(CCTError, "366"):
+        with self.assertRaises(CCTError) as raised:
             self.service.grant_mandate(
                 "mandator",
                 "delegate",
@@ -150,6 +150,10 @@ class OpsCase(unittest.TestCase):
                 (BASE + timedelta(days=367)).isoformat().replace("+00:00", "Z"),
                 at=now,
             )
+        self.assertEqual(
+            str(raised.exception),
+            "durée maximale d'un mandat prototype: 366 jours",
+        )
 
     def test_open_appeal_can_suspend_and_independent_reviewer_can_confirm(self) -> None:
         _, decision = self.approved_decision()
@@ -224,7 +228,7 @@ class OpsCase(unittest.TestCase):
             "temporary_power_authorization", "crisis-team", ["action"], 20000
         )
         now = self.at()
-        with self.assertRaisesRegex(CCTError, "168"):
+        with self.assertRaises(CCTError) as raised:
             self.service.grant_temporary_power(
                 "crisis-board",
                 "crisis-team",
@@ -234,6 +238,10 @@ class OpsCase(unittest.TestCase):
                 (BASE + timedelta(days=8)).isoformat().replace("+00:00", "Z"),
                 now,
             )
+        self.assertEqual(
+            str(raised.exception),
+            "durée maximale d'un pouvoir temporaire prototype: 168 heures",
+        )
 
     def test_power_requires_an_effective_approval(self) -> None:
         proposal = self.service.create_proposal(
@@ -422,6 +430,14 @@ class OpsCase(unittest.TestCase):
         self.assertTrue(result["ok"], result["errors"])
         self.assertEqual(result["errors"], [])
         self.assertFalse(any("fonction non pourvue" in item for item in result["warnings"]))
+
+    def test_uninitialized_audit_keeps_cct_metadata(self) -> None:
+        missing = Path(self.temp.name) / "missing"
+        result = InstitutionalService(EventStore(missing)).separation_audit(self.at())
+        self.assertFalse(result["ok"])
+        self.assertIs(result["prototype"], True)
+        self.assertEqual(result["deployment_status"], "non_deploye")
+        self.assertTrue(any("absent" in item or "vide" in item for item in result["errors"]))
 
     def test_cli_initializes_and_reports_machine_readable_status(self) -> None:
         cli_root = self.root / "cli"

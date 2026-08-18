@@ -1,20 +1,30 @@
 #!/usr/bin/env python3
-"""Validateur sans dépendance externe pour la constitution et les décisions CCT.
+"""Validateur de la constitution et des décisions CCT.
 
-Le moteur implémente le sous-ensemble de JSON Schema utilisé dans ce module, puis
-ajoute les contraintes croisées qu'un schéma structurel n'exprime pas simplement.
-Il ne constitue ni une autorisation juridique, ni une preuve de performance réelle.
+Le module importe le sous-ensemble JSON Schema borné de Corpus, puis ajoute les
+contraintes croisées CCT qu'un schéma structurel n'exprime pas simplement. Il ne
+constitue ni une autorisation juridique, ni une preuve de performance réelle.
 """
 
 from __future__ import annotations
 
 import argparse
 import json
-import re
 import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Iterable
+
+
+for _parent in Path(__file__).resolve().parents:
+    _labs = _parent / "corpus-11-tools" / "labs" / "python"
+    if _labs.is_dir():
+        sys.path.insert(0, str(_labs))
+        break
+else:  # pragma: no cover - repository layout failure
+    raise RuntimeError("Corpus generic labs are unavailable")
+
+from corpus_labs import validate_json_schema_subset  # noqa: E402
 
 
 MODULE_DIR = Path(__file__).resolve().parent
@@ -22,111 +32,25 @@ CONSTITUTION_SCHEMA = MODULE_DIR / "constitution.schema.json"
 DECISION_SCHEMA = MODULE_DIR / "decision.schema.json"
 DEFAULT_CONSTITUTION = MODULE_DIR / "constitution.json"
 
-
-def load_json(path: Path | str) -> Any:
-    with Path(path).open("r", encoding="utf-8") as handle:
-        return json.load(handle)
-
-
-def _json_type_matches(value: Any, expected: str) -> bool:
-    if expected == "object":
-        return isinstance(value, dict)
-    if expected == "array":
-        return isinstance(value, list)
-    if expected == "string":
-        return isinstance(value, str)
-    if expected == "integer":
-        return isinstance(value, int) and not isinstance(value, bool)
-    if expected == "number":
-        return isinstance(value, (int, float)) and not isinstance(value, bool)
-    if expected == "boolean":
-        return isinstance(value, bool)
-    if expected == "null":
-        return value is None
-    return False
-
-
-def _resolve_ref(root_schema: dict[str, Any], ref: str) -> dict[str, Any]:
-    if not ref.startswith("#/"):
-        raise ValueError(f"Référence externe non prise en charge: {ref}")
-    node: Any = root_schema
-    for raw_part in ref[2:].split("/"):
-        part = raw_part.replace("~1", "/").replace("~0", "~")
-        node = node[part]
-    if not isinstance(node, dict):
-        raise ValueError(f"La référence ne cible pas un schéma: {ref}")
-    return node
-
-
-def _is_datetime(value: str) -> bool:
-    try:
-        datetime.fromisoformat(value.replace("Z", "+00:00"))
-    except ValueError:
-        return False
-    return "T" in value
-
-
 def validate_schema(
     value: Any,
     schema: dict[str, Any],
     root_schema: dict[str, Any] | None = None,
     path: str = "$",
 ) -> list[str]:
-    """Valide le sous-ensemble JSON Schema effectivement employé ici."""
+    """Conserve l'ancienne surface CCT en déléguant le moteur à Corpus."""
 
-    root = root_schema or schema
-    if "$ref" in schema:
-        return validate_schema(value, _resolve_ref(root, schema["$ref"]), root, path)
+    return validate_json_schema_subset(
+        value,
+        schema,
+        root_schema=root_schema,
+        path=path,
+    )
 
-    errors: list[str] = []
-    expected = schema.get("type")
-    if expected and not _json_type_matches(value, expected):
-        return [f"{path}: type attendu {expected}, reçu {type(value).__name__}"]
 
-    if "const" in schema and value != schema["const"]:
-        errors.append(f"{path}: valeur attendue {schema['const']!r}")
-    if "enum" in schema and value not in schema["enum"]:
-        errors.append(f"{path}: valeur {value!r} hors vocabulaire fermé")
-
-    if isinstance(value, str):
-        if len(value) < schema.get("minLength", 0):
-            errors.append(f"{path}: chaîne trop courte")
-        pattern = schema.get("pattern")
-        if pattern and re.search(pattern, value) is None:
-            errors.append(f"{path}: ne respecte pas le motif {pattern}")
-        if schema.get("format") == "date-time" and not _is_datetime(value):
-            errors.append(f"{path}: date-heure ISO 8601 invalide")
-
-    if isinstance(value, (int, float)) and not isinstance(value, bool):
-        if "minimum" in schema and value < schema["minimum"]:
-            errors.append(f"{path}: valeur inférieure au minimum {schema['minimum']}")
-
-    if isinstance(value, list):
-        if len(value) < schema.get("minItems", 0):
-            errors.append(f"{path}: nombre d'éléments inférieur à {schema['minItems']}")
-        if "maxItems" in schema and len(value) > schema["maxItems"]:
-            errors.append(f"{path}: nombre d'éléments supérieur à {schema['maxItems']}")
-        if schema.get("uniqueItems"):
-            rendered = [json.dumps(item, ensure_ascii=False, sort_keys=True) for item in value]
-            if len(rendered) != len(set(rendered)):
-                errors.append(f"{path}: éléments dupliqués interdits")
-        item_schema = schema.get("items")
-        if item_schema:
-            for index, item in enumerate(value):
-                errors.extend(validate_schema(item, item_schema, root, f"{path}[{index}]"))
-
-    if isinstance(value, dict):
-        required = schema.get("required", [])
-        for key in required:
-            if key not in value:
-                errors.append(f"{path}: propriété obligatoire absente: {key}")
-        properties = schema.get("properties", {})
-        for key, item in value.items():
-            if key in properties:
-                errors.extend(validate_schema(item, properties[key], root, f"{path}.{key}"))
-            elif schema.get("additionalProperties") is False:
-                errors.append(f"{path}: propriété non autorisée: {key}")
-    return errors
+def load_json(path: Path | str) -> Any:
+    with Path(path).open("r", encoding="utf-8") as handle:
+        return json.load(handle)
 
 
 def _duplicates(values: Iterable[str]) -> set[str]:

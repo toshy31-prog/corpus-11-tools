@@ -13,6 +13,13 @@ scènes × quatre régimes × 240 répétitions. Tous les candidats reçoivent l
 mondes, huit entrées observées et douze paramètres libres. Les seuils et règles
 de perte sont dans `scenarios.json`.
 
+L'orchestration des possibilités, les répétitions, les quantiles et les
+relations vectorielles sont fournis par le moteur générique
+`corpus_labs.run_possibility_space`. CCT conserve uniquement ses régimes,
+équations, métriques, seuils, revendications, verdicts et son rapport. Le test de
+non-régression exige que les trois artefacts historiques restent identiques
+octet par octet.
+
 ## Exécuter
 
 Depuis ce répertoire, avec Python 3.10 ou ultérieur et sans dépendance externe :
@@ -60,8 +67,10 @@ n'est pas une preuve contre un régime réel.
 - `scenarios.json` — budget d'information apparié, scènes, paramètres,
   métriques, portes et garde épistémique ;
 - `economy_model.py` — monde commun, équations et dominance vectorielle ;
-- `run_economy.py` — exécution, synthèse CSV/JSON et rapport ;
-- `test_economy.py` — tests d'appariement, déterminisme, bornes et artefacts.
+- `run_economy.py` — adaptateur CCT vers le moteur Corpus, verdicts, synthèse
+  CSV/JSON et rapport ;
+- `test_economy.py` — tests d'appariement, déterminisme, bornes, relations et
+  non-régression exacte des artefacts.
 
 ## Limite active
 

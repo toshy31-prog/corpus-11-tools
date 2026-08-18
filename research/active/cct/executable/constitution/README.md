@@ -7,7 +7,8 @@ Ce module transforme le noyau constitutionnel CCT v0.12 en objets contrôlables 
 - `constitution.json` : registre de 14 acteurs, 15 invariants et 12 dispositions ;
 - `constitution.schema.json` : schéma JSON de la constitution ;
 - `decision.schema.json` : schéma d’une décision candidate ;
-- `validate.py` : validateur Python sans dépendance externe ;
+- `validate.py` : contraintes constitutionnelles CCT, appuyées sur le validateur
+  structurel borné fourni par Corpus ;
 - `examples/decision-valid.json` : allocation temporaire d’eau conforme au contrat écrit ;
 - `examples/decision-invalid.json` : contre-exemple syntaxiquement recevable mais constitutionnellement rejeté ;
 - `test_validate.py` : tests de structure, références, séparation des clés et discipline de statut.
@@ -43,7 +44,11 @@ Le contre-exemple doit sortir avec le code `1`. Il est rejeté notamment parce q
 
 ## Deux étages de validation
 
-Le premier étage applique le sous-ensemble de JSON Schema utilisé par les deux schémas : types, propriétés obligatoires ou interdites, références locales, vocabulaires fermés, motifs, bornes, unicité et dates ISO 8601.
+Le premier étage importe `corpus_labs.validate_json_schema_subset` et applique le
+sous-ensemble de JSON Schema utilisé par les deux schémas : types, propriétés
+obligatoires ou interdites, références locales, vocabulaires fermés, motifs,
+bornes, unicité et dates ISO 8601. Corpus refuse les mots-clés hors de ce contrat ;
+il ne prétend pas fournir une implémentation complète de JSON Schema.
 
 Le second étage applique les relations constitutionnelles :
 

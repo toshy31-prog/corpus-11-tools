@@ -52,7 +52,7 @@ Les 49 capabilities correspondent donc aux 31 natives, aux 9 facultés récupér
 - Evals de routage et de non-régression.
 - Garde de gouvernance épistémique séparant critères de sélection, rôles des lois, frontière de neutralité et propriétés attribuées au système.
 - Outils déterministes de validation de paquet, contrôle de graphe et lecture de provenance.
-- Laboratoires génériques pour exécuter des expériences, comparer des méthodes dans l’Arena et conduire des campagnes de simulation appariées sans importer les conclusions d’une recherche particulière.
+- Laboratoires génériques pour exécuter des expériences, comparer des méthodes dans l’Arena, explorer des possibilités appariées, appliquer un protocole institutionnel append-only configurable et valider un sous-ensemble JSON Schema explicitement borné sans importer les conclusions d’une recherche particulière.
 - 88 relations et 71 évaluations de routage/non-régression.
 
 Les capabilities restent des possibles comportementaux sous conditions. Les fichiers `SKILL.md` sont des wrappers d’invocation : ils ne redéfinissent pas une capability comme algorithme.

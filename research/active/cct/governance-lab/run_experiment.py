@@ -7,10 +7,23 @@ import argparse
 import csv
 import json
 from pathlib import Path
+import random
 import statistics
-from typing import Iterable, Mapping
+import sys
+from typing import Iterable, Mapping, cast
 
-from model import CORE_METRICS, DIAGNOSTICS, RunResult, simulate_once
+from model import CORE_METRICS, DIAGNOSTICS, simulate_once
+
+
+for _parent in Path(__file__).resolve().parents:
+    _labs = _parent / "corpus-11-tools" / "labs" / "python"
+    if _labs.is_dir():
+        sys.path.insert(0, str(_labs))
+        break
+else:  # pragma: no cover - repository layout failure
+    raise RuntimeError("Corpus generic labs are unavailable")
+
+from corpus_labs import PossibilityRunContext, run_possibility_space  # noqa: E402
 
 
 ROOT = Path(__file__).resolve().parent
@@ -35,58 +48,100 @@ def load_config(path: Path) -> dict[str, object]:
     return deep_merge(load_config(parent_path), payload)
 
 
-def percentile(values: list[float], fraction: float) -> float:
-    ordered = sorted(values)
-    position = (len(ordered) - 1) * fraction
-    lower = int(position)
-    upper = min(lower + 1, len(ordered) - 1)
-    weight = position - lower
-    return ordered[lower] * (1 - weight) + ordered[upper] * weight
+METRIC_ORIENTATIONS = {
+    **{metric: "max" for metric in CORE_METRICS},
+    **{metric: "min" for metric in DIAGNOSTICS},
+}
 
 
-def cell_summary(results: list[RunResult], floors: Mapping[str, float]) -> dict[str, float]:
-    summary: dict[str, float] = {}
-    for metric in (*CORE_METRICS, *DIAGNOSTICS):
-        values = [result.metrics[metric] for result in results]
-        summary[f"{metric}_p10"] = percentile(values, 0.10)
-        summary[f"{metric}_median"] = statistics.median(values)
-        summary[f"{metric}_p90"] = percentile(values, 0.90)
-    passes = [all(result.metrics[key] >= floor for key, floor in floors.items()) for result in results]
-    summary["joint_pass_rate"] = sum(passes) / len(passes)
-    catastrophic = [any(result.metrics[key] < 40.0 for key in CORE_METRICS) for result in results]
-    summary["catastrophic_rate"] = sum(catastrophic) / len(catastrophic)
-    return summary
+def _campaign_scenarios(config: Mapping[str, object]) -> dict[str, dict[str, object]]:
+    return {
+        f"{protocol}:{scenario}": {
+            "protocol_id": protocol,
+            "protocol": protocol_config,
+            "scenario_id": scenario,
+            "scenario": scenario_config,
+        }
+        for protocol, protocol_config in config["protocols"].items()
+        for scenario, scenario_config in config["scenarios"].items()
+    }
+
+
+def _run_campaign(config: Mapping[str, object], runs: int) -> dict[str, object]:
+    def run_once(
+        architecture_config: Mapping[str, object],
+        campaign_scenario: Mapping[str, object],
+        _rng: random.Random,
+        context: PossibilityRunContext,
+    ) -> Mapping[str, float]:
+        return simulate_once(
+            context["possibility_id"],
+            architecture_config["traits"],
+            str(campaign_scenario["scenario_id"]),
+            float(campaign_scenario["scenario"]["severity"]),
+            str(campaign_scenario["protocol_id"]),
+            campaign_scenario["protocol"],
+            context["repetition"],
+            int(config["seed"]),
+        ).metrics
+
+    return cast(
+        dict[str, object],
+        run_possibility_space(
+            config["architectures"],
+            _campaign_scenarios(config),
+            repetitions=runs,
+            seed=config["seed"],
+            orientations=METRIC_ORIENTATIONS,
+            run=run_once,
+            quantiles={"p10": 0.10, "p90": 0.90},
+            quantile_method="linear",
+        ),
+    )
+
+
+def _cell_rates(
+    campaign: Mapping[str, object], floors: Mapping[str, float]
+) -> dict[tuple[str, str], tuple[float, float]]:
+    outcomes: dict[tuple[str, str], list[tuple[bool, bool]]] = {}
+    for item in campaign["runs"]:
+        key = (str(item["scenario"]), str(item["possibility"]))
+        metrics = item["metrics"]
+        passed = all(metrics[name] >= floor for name, floor in floors.items())
+        catastrophic = any(metrics[name] < 40.0 for name in CORE_METRICS)
+        outcomes.setdefault(key, []).append((passed, catastrophic))
+    return {
+        key: (
+            sum(passed for passed, _ in values) / len(values),
+            sum(catastrophic for _, catastrophic in values) / len(values),
+        )
+        for key, values in outcomes.items()
+    }
 
 
 def run_all(config: Mapping[str, object], run_override: int | None = None) -> list[dict[str, object]]:
     runs = run_override or int(config["runs_per_cell"])
-    seed = int(config["seed"])
-    floors = config["core_metrics"]
+    campaign = _run_campaign(config, runs)
+    rates = _cell_rates(campaign, config["core_metrics"])
     grouped: list[dict[str, object]] = []
-    for protocol, protocol_config in config["protocols"].items():
-        for scenario, scenario_config in config["scenarios"].items():
-            for architecture, architecture_config in config["architectures"].items():
-                results = [
-                    simulate_once(
-                        architecture,
-                        architecture_config["traits"],
-                        scenario,
-                        float(scenario_config["severity"]),
-                        protocol,
-                        protocol_config,
-                        run,
-                        seed,
-                    )
-                    for run in range(runs)
+    for protocol in config["protocols"]:
+        for scenario in config["scenarios"]:
+            campaign_scenario = f"{protocol}:{scenario}"
+            for architecture in config["architectures"]:
+                summary = campaign["summaries"][architecture][campaign_scenario]
+                row: dict[str, object] = {
+                    "protocol": protocol,
+                    "scenario": scenario,
+                    "architecture": architecture,
+                }
+                for metric in (*CORE_METRICS, *DIAGNOSTICS):
+                    row[f"{metric}_p10"] = summary[metric]["p10"]
+                    row[f"{metric}_median"] = summary[metric]["median"]
+                    row[f"{metric}_p90"] = summary[metric]["p90"]
+                row["joint_pass_rate"], row["catastrophic_rate"] = rates[
+                    (campaign_scenario, architecture)
                 ]
-                grouped.append(
-                    {
-                        "protocol": protocol,
-                        "scenario": scenario,
-                        "architecture": architecture,
-                        **cell_summary(results, floors),
-                    }
-                )
+                grouped.append(row)
     return grouped
 
 

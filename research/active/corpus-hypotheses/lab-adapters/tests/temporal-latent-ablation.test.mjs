@@ -1,12 +1,18 @@
 import assert from "node:assert/strict";
-import { mkdtemp } from "node:fs/promises";
+import { mkdtemp, readFile, readdir } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 import { lockProtocol } from "../../../../../corpus-11-tools/labs/experiment-lab/governance/protocol-lock.mjs";
 import { createExecutionLock } from "../../../../../corpus-11-tools/labs/experiment-lab/governance/execution-lock.mjs";
+import {
+  hashExecutionArtifacts,
+  verifyExecutionAttestation,
+} from "../../../../../corpus-11-tools/labs/experiment-lab/governance/execution-closure.mjs";
 import { buildDegreeMatchedNull, captureLatentAblationDescriptor, computeLatentAblationModelHash,
   degreeMultiset, executeLatentAblation } from "../scientific/temporal-latent-ablation.mjs";
+
+const artifactNames = ["raw_results.json", "computed_output.json", "comparison.json", "classification.json"];
 
 test("matched null preserves the exact degree multiset", () => {
   const nullModel = buildDegreeMatchedNull(5);
@@ -15,6 +21,14 @@ test("matched null preserves the exact degree multiset", () => {
   for (const mask of [0, 1, 37, 511, 1023]) {
     assert.deepEqual(degreeMultiset(5, nullModel.sample(mask, random)), degreeMultiset(5, mask));
   }
+});
+
+test("latent ablation delegates execution closure to Corpus", async () => {
+  const descriptor = await captureLatentAblationDescriptor();
+  assert.ok(descriptor.engine.files.some(({ id }) => id === "governance/execution-closure.mjs"));
+  const source = await readFile(new URL("../scientific/temporal-latent-ablation.mjs", import.meta.url), "utf8");
+  assert.match(source, /closeLockedExecution/);
+  assert.doesNotMatch(source, /verifyExecutionLock|corpus-experiment-execution-attestation\/v1|execution_attestation\.json|artifactHashes/);
 });
 
 test("closed ablation runner produces sealed A/B/C output", async () => {
@@ -44,8 +58,49 @@ test("closed ablation runner produces sealed A/B/C output", async () => {
   const protocolLock = lockProtocol(manifest);
   const executionLock = createExecutionLock(protocolLock, await captureLatentAblationDescriptor());
   const directory = await mkdtemp(join(tmpdir(), "temporal-ablation-test-"));
-  const result = await executeLatentAblation(protocolLock, executionLock, join(directory, "results"));
+  const outputDirectory = join(directory, "results");
+  const result = await executeLatentAblation(protocolLock, executionLock, outputDirectory);
   assert.equal(result.raw.access.used, 32);
   assert.equal(result.raw.observables.local_statistic_mismatches, 0);
   assert.equal(result.attestation.experimentFingerprint, executionLock.experimentFingerprint);
+  assert.deepEqual({
+    sampleCount: result.computed.sampleCount,
+    edgeCount: result.computed.edgeCount,
+    aViolations: result.computed.aViolations,
+    bViolations: result.computed.bViolations,
+    aAdvantageDoubled: result.computed.aAdvantageDoubled,
+    bAdvantageDoubled: result.computed.bAdvantageDoubled,
+    dependenceContrastDoubled: result.computed.dependenceContrastDoubled,
+    bResidualQuarterTest: result.computed.bResidualQuarterTest,
+    totalsByNoise: result.computed.totalsByNoise,
+  }, {
+    sampleCount: 4,
+    edgeCount: 10,
+    aViolations: 8,
+    bViolations: 24,
+    aAdvantageDoubled: 24,
+    bAdvantageDoubled: -8,
+    dependenceContrastDoubled: 32,
+    bResidualQuarterTest: -56,
+    totalsByNoise: {
+      0: { samples: 2, aViolations: 0, bViolations: 13 },
+      2: { samples: 2, aViolations: 8, bViolations: 11 },
+    },
+  });
+  for (const [name, key] of [
+    ["raw_results.json", "raw"],
+    ["computed_output.json", "computed"],
+    ["comparison.json", "comparison"],
+    ["classification.json", "classification"],
+  ]) {
+    assert.deepEqual(JSON.parse(await readFile(join(outputDirectory, name), "utf8")), result[key]);
+  }
+  const storedAttestation = JSON.parse(await readFile(join(outputDirectory, "execution_attestation.json"), "utf8"));
+  const artifactHashes = await hashExecutionArtifacts(outputDirectory, artifactNames);
+  assert.deepEqual(storedAttestation, result.attestation);
+  assert.equal(verifyExecutionAttestation(protocolLock, executionLock, storedAttestation, artifactHashes), true);
+  assert.deepEqual(
+    (await readdir(outputDirectory)).sort(),
+    [...artifactNames, "execution_attestation.json"].sort(),
+  );
 });

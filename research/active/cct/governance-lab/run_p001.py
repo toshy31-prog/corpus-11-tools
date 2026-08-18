@@ -7,18 +7,39 @@ import argparse
 import csv
 import json
 from pathlib import Path
-import statistics
+import sys
 from typing import Mapping
 
-from p001_model import P001Result, simulate_p001_once
-
-
 ROOT = Path(__file__).resolve().parent
+for parent in Path(__file__).resolve().parents:
+    labs = parent / "corpus-11-tools" / "labs" / "python"
+    if labs.is_dir():
+        sys.path.insert(0, str(labs))
+        break
+else:  # pragma: no cover - repository layout failure
+    raise RuntimeError("Corpus generic labs are unavailable")
+
+from corpus_labs import PossibilityRunContext, run_possibility_space
+from p001_model import simulate_p001_once
+
+
 METRICS = (
     "mean_service", "worst_service", "unserved_need", "time_to_safe",
     "rights_burden", "power_concentration", "rollback_days",
     "dependency_detection_rate", "hidden_dependencies", "decision_delay",
 )
+ORIENTATIONS = {
+    "mean_service": "max",
+    "worst_service": "max",
+    "unserved_need": "min",
+    "time_to_safe": "min",
+    "rights_burden": "min",
+    "power_concentration": "min",
+    "rollback_days": "min",
+    "dependency_detection_rate": "max",
+    "hidden_dependencies": "min",
+    "decision_delay": "min",
+}
 
 
 def deep_merge(base: dict[str, object], override: Mapping[str, object]) -> dict[str, object]:
@@ -39,41 +60,60 @@ def load_config(path: Path) -> dict[str, object]:
     return deep_merge(load_config(path.parent / str(inherited)), config)
 
 
-def percentile(values: list[float], fraction: float) -> float:
-    values = sorted(values)
-    position = (len(values) - 1) * fraction
-    lower = int(position)
-    upper = min(lower + 1, len(values) - 1)
-    weight = position - lower
-    return values[lower] * (1 - weight) + values[upper] * weight
-
-
-def summarize(results: list[P001Result], config: Mapping[str, object]) -> dict[str, float]:
-    row: dict[str, float] = {}
-    for metric in METRICS:
-        values = [result.metrics[metric] for result in results]
-        row[f"{metric}_p10"] = percentile(values, 0.10)
-        row[f"{metric}_median"] = statistics.median(values)
-        row[f"{metric}_p90"] = percentile(values, 0.90)
+def _joint_pass_rates(report: Mapping[str, object], config: Mapping[str, object]) -> dict[tuple[str, str], float]:
     thresholds = config["pass_thresholds"]
-    passes = [
-        result.metrics["mean_service"] >= float(thresholds["mean_service"])
-        and result.metrics["worst_service"] >= float(thresholds["worst_service"])
-        and result.metrics["rights_burden"] <= float(thresholds["rights_burden_max"])
-        and result.metrics["rollback_days"] <= float(thresholds["rollback_days_max"])
-        for result in results
-    ]
-    row["joint_pass_rate"] = sum(passes) / len(passes)
-    return row
+    counts: dict[tuple[str, str], list[int]] = {}
+    for item in report["runs"]:
+        key = (str(item["scenario"]), str(item["possibility"]))
+        metrics = item["metrics"]
+        passed = (
+            metrics["mean_service"] >= float(thresholds["mean_service"])
+            and metrics["worst_service"] >= float(thresholds["worst_service"])
+            and metrics["rights_burden"] <= float(thresholds["rights_burden_max"])
+            and metrics["rollback_days"] <= float(thresholds["rollback_days_max"])
+        )
+        passed_and_total = counts.setdefault(key, [0, 0])
+        passed_and_total[0] += int(passed)
+        passed_and_total[1] += 1
+    return {
+        key: passed_and_total[0] / passed_and_total[1]
+        for key, passed_and_total in counts.items()
+    }
 
 
 def execute(config: Mapping[str, object], runs: int | None = None) -> list[dict[str, object]]:
     count = runs or int(config["runs_per_cell"])
+
+    def run_once(_possibility, _scenario, _rng, context: PossibilityRunContext):
+        return simulate_p001_once(
+            config,
+            context["scenario_id"],
+            context["possibility_id"],
+            context["repetition"],
+        ).metrics
+
+    campaign = run_possibility_space(
+        config["modes"],
+        config["protocols"],
+        repetitions=count,
+        seed=config["seed"],
+        orientations=ORIENTATIONS,
+        run=run_once,
+        quantiles={"p10": 0.10, "p90": 0.90},
+        quantile_method="linear",
+    )
+    pass_rates = _joint_pass_rates(campaign, config)
     rows = []
     for protocol in config["protocols"]:
         for mode in config["modes"]:
-            results = [simulate_p001_once(config, protocol, mode, run) for run in range(count)]
-            rows.append({"protocol": protocol, "mode": mode, **summarize(results, config)})
+            summary = campaign["summaries"][mode][protocol]
+            row: dict[str, object] = {"protocol": protocol, "mode": mode}
+            for metric in METRICS:
+                row[f"{metric}_p10"] = summary[metric]["p10"]
+                row[f"{metric}_median"] = summary[metric]["median"]
+                row[f"{metric}_p90"] = summary[metric]["p90"]
+            row["joint_pass_rate"] = pass_rates[(protocol, mode)]
+            rows.append(row)
     return rows
 
 

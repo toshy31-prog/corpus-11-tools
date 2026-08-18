@@ -1,6 +1,27 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { RULE_FAMILY, enumerateRuleFamily, evaluateRuleFamily } from "../scientific/compatible-rule-family.mjs";
+import {
+  RULE_FAMILY,
+  captureRuleFamilyDescriptor,
+  computeRuleFamilyModelHash,
+  enumerateRuleFamily,
+  evaluateRuleFamily,
+  executeRuleFamily,
+} from "../scientific/compatible-rule-family.mjs";
+import { verifyClosedCompatibleRun } from "./closed-compatible-fixture.mjs";
+
+test("the rule-family descriptor separates Corpus governance from research modules", async () => {
+  const descriptor = await captureRuleFamilyDescriptor();
+  assert.deepEqual(descriptor.engine.files.map(({ id }) => id), [
+    "corpus/governance/execution-closure.mjs",
+    "corpus/governance/execution-lock.mjs",
+    "corpus/governance/protocol-lock.mjs",
+  ]);
+  assert.deepEqual(descriptor.module.files.map(({ id }) => id), [
+    "research/scientific/compatible-constraint-order.mjs",
+    "research/scientific/compatible-rule-family.mjs",
+  ]);
+});
 
 test("simplicity selects all-maximal without results", () => {
   const selected = [...RULE_FAMILY].sort((a, b) => a.primitiveCount - b.primitiveCount || a.id.localeCompare(b.id))[0];
@@ -22,4 +43,17 @@ test("small family universe passes controls", () => {
   assert.equal(result.randomMatchingMismatches, 0);
   assert.equal(result.extremeControlMismatches, 0);
   assert.ok(Number.isInteger(result.commonCoreAdvantage));
+});
+
+test("closed rule-family execution preserves archived science and uses Corpus closure", async () => {
+  const result = await verifyClosedCompatibleRun({
+    prospectiveDirectory: "compatible-rule-family-001",
+    sourceUrl: new URL("../scientific/compatible-rule-family.mjs", import.meta.url),
+    computeModelHash: computeRuleFamilyModelHash,
+    captureDescriptor: captureRuleFamilyDescriptor,
+    execute: executeRuleFamily,
+  });
+  assert.equal(result.raw.observables.common_core_pairs_total, 3990);
+  assert.equal(result.raw.observables.common_core_advantage_over_random, -501);
+  assert.deepEqual(result.classification.outcomes, ["unknown"]);
 });
