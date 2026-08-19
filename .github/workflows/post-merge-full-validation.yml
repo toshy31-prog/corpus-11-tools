@@ -17,8 +17,6 @@ jobs:
   validate:
     runs-on: ubuntu-24.04
     timeout-minutes: 120
-    env:
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
     steps:
       - name: Checkout
@@ -153,6 +151,7 @@ jobs:
         working-directory: corpus-11-tools
         env:
           CODEX_HOME: ${{ runner.temp }}/corpus-codex-home
+          CODEX_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: python3 tools/run_behavioral_evals.py
 
       - name: Check patch whitespace integrity
