@@ -7,7 +7,7 @@
     {"path": "corpus-11-tools/labs/experiment-lab/governance/tests", "git_object": "35a406d5f8214d8286307248d08b4dae8240cf7e", "kind": "tree"},
     {"path": "corpus-11-tools/labs/experiment-lab/tests", "git_object": "38a66d87194a18c29850d1ed37292847113dc401", "kind": "tree"},
     {"path": "corpus-11-tools/labs/python/tests", "git_object": "31a4df1a96be8cc5c0c96907724535fe66aac862", "kind": "tree"},
-    {"path": "corpus-11-tools/tools/test_offline_router.py", "git_object": "e9a53e2394dfb16e6cda829bfe0ea8c9cae5636b", "kind": "blob"},
+    {"path": "corpus-11-tools/tools/test_offline_router.py", "git_object": "a97daf895210267760b100b7cc15e62b8a8dd66c", "kind": "blob"},
     {"path": "corpus-11-tools/tools/test_project_yield_gate.py", "git_object": "b9465c90daa1ec5ac895967c2595602dd0531def", "kind": "blob"},
     {"path": "corpus-11-tools/tools/test_validation_guards.py", "git_object": "02ec44cfdfd5a2058973ed0f83eeddc372d84dd2", "kind": "blob"},
     {"path": "research/active/corpus-hypotheses/experiments/memory-erasure-lab/test-simulator.mjs", "git_object": "85eac26b83b8976e3fd35cd9637874154a4a7e84", "kind": "blob"},
