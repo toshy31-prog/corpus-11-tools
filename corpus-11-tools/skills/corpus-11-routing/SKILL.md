@@ -5,6 +5,25 @@ description: Route analytical requests through the Corpus 11.x operational archi
 
 Use Architecture 11.x as the operational source of truth. Treat 10.x only as provenance, audit, ambiguity resolution, and non-regression material.
 
+## Deterministic routing discipline
+
+Candidate presentation order is never evidence and must never affect a material routing decision.
+
+Before choosing capabilities:
+
+1. Treat the candidate set as an unordered set. Canonicalize it by exact skill name (lexicographic order) before comparing candidates.
+2. Determine direct activation from the user's scene and each skill's declared description/reference conditions, not from adjacency, prominence, source order, or the order in which names were presented.
+3. Build the routing closure in three separate passes:
+   - direct capabilities whose activation condition is materially present;
+   - critical dependencies of those direct capabilities;
+   - contextual dependencies only where the scene independently makes them material.
+4. Prefer the narrowest capability that directly captures the material question; add a broader capability only when it changes conclusion, attribution, confidence, protection, recourse, capacity, trajectory, form, or reversal.
+5. Do not add a skill merely because its name is semantically nearby, because it appeared early, or because another candidate was considered immediately before it.
+6. Re-evaluate the completed set once with candidate order ignored. If removing or permuting presentation order changes a non-optional material skill, the route is not stable and must be recomputed from activation conditions.
+7. When a machine-readable list of selected skills is requested, emit exact skill folder names, unique and lexicographically sorted. Output ordering is presentation only; membership is the routing decision.
+
+Then apply the architecture:
+
 1. Preserve the user's scene, question, terms, point of departure, unresolved tension, and freedom of choice.
 2. Identify what could materially change the conclusion, attribution, confidence, protection, recourse, capacity, trajectory, form, or reversal.
 3. Consult `references/capability-index.md` and activate only relevant capability skills.
