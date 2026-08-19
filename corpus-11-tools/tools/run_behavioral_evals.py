@@ -14,6 +14,7 @@ import os
 import shlex
 import subprocess
 import sys
+import tempfile
 
 root = Path(__file__).resolve().parents[1]
 eval_path = root / "evals" / "routing-and-nonregression.jsonl"
@@ -38,11 +39,14 @@ if not (os.environ.get("OPENAI_API_KEY") or has_auth_file):
     sys.exit(2)
 
 codex = os.environ.get("CORPUS_CODEX_COMMAND", "codex")
+# In codex-cli 0.137.0, approval policy is a global flag and must precede the
+# `exec` subcommand. The sandbox remains read-only and the run remains
+# non-interactive; moving this flag does not weaken either boundary.
 base_cmd = shlex.split(codex) + [
+    "--ask-for-approval", "never",
     "exec",
     "--ephemeral",
     "--sandbox", "read-only",
-    "--ask-for-approval", "never",
     "--skip-git-repo-check",
 ]
 
@@ -61,16 +65,26 @@ def run_one(record: dict, ordering: list[str]) -> dict:
         f"{json.dumps(ordering, ensure_ascii=False)}. "
         "User request: " + record["prompt"]
     )
-    proc = subprocess.run(
-        base_cmd + [prompt],
-        cwd=root,
-        text=True,
-        capture_output=True,
-        timeout=int(os.environ.get("CORPUS_EVAL_TIMEOUT", "180")),
-    )
-    if proc.returncode != 0:
-        raise RuntimeError(f"codex exit {proc.returncode}: {proc.stderr[-2000:]}")
-    return json.loads(proc.stdout.strip())
+    # Use Codex's final-message file instead of assuming stdout contains only
+    # the model result. This keeps the parser strict while remaining robust to
+    # CLI progress/event output.
+    with tempfile.TemporaryDirectory(prefix="corpus-eval-") as raw:
+        output_path = Path(raw) / "last-message.json"
+        proc = subprocess.run(
+            base_cmd + ["--output-last-message", str(output_path), prompt],
+            cwd=root,
+            text=True,
+            capture_output=True,
+            timeout=int(os.environ.get("CORPUS_EVAL_TIMEOUT", "180")),
+        )
+        if proc.returncode != 0:
+            raise RuntimeError(f"codex exit {proc.returncode}: {proc.stderr[-2000:]}")
+        if not output_path.is_file():
+            raise RuntimeError(
+                "codex exited successfully but did not write --output-last-message; "
+                f"stderr={proc.stderr[-2000:]}"
+            )
+        return json.loads(output_path.read_text(encoding="utf-8").strip())
 
 
 for index, record in enumerate(records, 1):
