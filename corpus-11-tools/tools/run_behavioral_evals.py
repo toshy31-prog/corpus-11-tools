@@ -3,8 +3,8 @@
 
 This is intentionally a behavioral gate, not a JSON-shape check. It invokes
 Codex twice per eval with opposite candidate ordering and requires the hard
-routing expectations to survive both runs. Missing authentication is a hard
-failure rather than an implicit skip.
+routing expectations to survive both runs. Missing or rejected authentication
+is a hard failure rather than an implicit skip.
 """
 from __future__ import annotations
 
@@ -26,17 +26,25 @@ records = [
 ]
 errors: list[str] = []
 
-# A fresh CODEX_HOME proves only isolation, not authentication. In CI the
-# behavioral gate therefore requires an explicit API credential. Locally an
-# already-authenticated CODEX_HOME is accepted only when auth.json is present.
+# `codex exec` headless authentication uses CODEX_API_KEY. Keep compatibility
+# with callers that still provide OPENAI_API_KEY by normalizing it explicitly,
+# then remove OPENAI_API_KEY from the child environment to avoid ambiguous auth
+# precedence. An already-authenticated local CODEX_HOME remains valid when
+# auth.json is present.
 codex_home = Path(os.environ.get("CODEX_HOME", Path.home() / ".codex"))
 has_auth_file = (codex_home / "auth.json").is_file()
-if not (os.environ.get("OPENAI_API_KEY") or has_auth_file):
+api_key = os.environ.get("CODEX_API_KEY") or os.environ.get("OPENAI_API_KEY")
+if not (api_key or has_auth_file):
     print(
-        "FAIL: behavioral evals require OPENAI_API_KEY or an authenticated "
-        "CODEX_HOME containing auth.json"
+        "FAIL: behavioral evals require CODEX_API_KEY (or OPENAI_API_KEY for "
+        "compatibility) or an authenticated CODEX_HOME containing auth.json"
     )
     sys.exit(2)
+
+codex_env = os.environ.copy()
+if api_key:
+    codex_env["CODEX_API_KEY"] = api_key
+    codex_env.pop("OPENAI_API_KEY", None)
 
 codex = os.environ.get("CORPUS_CODEX_COMMAND", "codex")
 # In codex-cli 0.137.0, approval policy is a global flag and must precede the
@@ -49,6 +57,10 @@ base_cmd = shlex.split(codex) + [
     "--sandbox", "read-only",
     "--skip-git-repo-check",
 ]
+
+
+class AuthenticationError(RuntimeError):
+    """Codex could not authenticate to the model endpoint."""
 
 
 def run_one(record: dict, ordering: list[str]) -> dict:
@@ -76,9 +88,15 @@ def run_one(record: dict, ordering: list[str]) -> dict:
             text=True,
             capture_output=True,
             timeout=int(os.environ.get("CORPUS_EVAL_TIMEOUT", "180")),
+            env=codex_env,
         )
         if proc.returncode != 0:
-            raise RuntimeError(f"codex exit {proc.returncode}: {proc.stderr[-2000:]}")
+            stderr = proc.stderr[-4000:]
+            if "401 Unauthorized" in stderr or "Missing bearer or basic authentication" in stderr:
+                raise AuthenticationError(
+                    "Codex API authentication rejected; verify CODEX_API_KEY secret wiring"
+                )
+            raise RuntimeError(f"codex exit {proc.returncode}: {stderr[-2000:]}")
         if not output_path.is_file():
             raise RuntimeError(
                 "codex exited successfully but did not write --output-last-message; "
@@ -92,6 +110,9 @@ for index, record in enumerate(records, 1):
     for label, ordering in (("forward", skills), ("reverse", list(reversed(skills)))):
         try:
             output = run_one(record, ordering)
+        except AuthenticationError as exc:
+            print(f"FAIL: {record.get('id', index)} {label}: {exc}")
+            sys.exit(2)
         except Exception as exc:
             errors.append(
                 f"{record.get('id', index)} {label}: execution/parsing failed: {exc}"
