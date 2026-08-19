@@ -175,13 +175,21 @@ def mutate_graph_copy_drift(repo: Path) -> tuple[str, str]:
         / "references"
         / "06_GRAPH_11_OPTIMIZED_v4.dsl"
     )
-    text = path.read_text(encoding="utf-8")
-    marker = "REL "
-    index = text.find(marker)
-    if index < 0:
-        raise AssertionError("mutation fixture cannot find a REL line")
-    end = text.find("\n", index)
-    path.write_text(text[:index] + text[end + 1 :], encoding="utf-8")
+    lines = path.read_text(encoding="utf-8").splitlines(keepends=True)
+    relation_index = next(
+        (
+            index
+            for index, line in enumerate(lines)
+            if line.startswith(("CAP.", "FAM."))
+            and " -> " in line
+            and "{ criticality:" in line
+        ),
+        None,
+    )
+    if relation_index is None:
+        raise AssertionError("mutation fixture cannot find a canonical relation line")
+    del lines[relation_index]
+    path.write_text("".join(lines), encoding="utf-8")
     return "check_graph.py", "one canonical graph copy losing a relation"
 
 
