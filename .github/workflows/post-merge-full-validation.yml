@@ -25,6 +25,7 @@ jobs:
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: '3.12.11'
+          pip-version: '26.2.1'
       - name: Validate CI pinning policy
         working-directory: corpus-11-tools
         run: python3 tools/check_ci_pinning.py
@@ -38,6 +39,7 @@ jobs:
           python3 tools/check_integrity.py
           python3 tools/check_release_identity.py
           python3 tools/check_evals.py
+          python3 tools/check_behavioral_surfaces.py
           python3 tools/check_test_inventory.py --self-test
           python3 tools/test_validation_guards.py
       - name: Validate tracked JSON and JSONL
@@ -75,6 +77,7 @@ jobs:
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: '3.12.11'
+          pip-version: '26.2.1'
       - name: Install hash-pinned validation environment
         working-directory: corpus-11-tools
         run: |
@@ -118,6 +121,7 @@ jobs:
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: '3.12.11'
+          pip-version: '26.2.1'
       - name: Run CCT integration controls
         run: PYTHONPATH=corpus-11-tools/labs/python python3 research/active/cct/executable/run_all.py
 
@@ -154,19 +158,24 @@ jobs:
         with:
           node-version: '22.18.0'
           package-manager-cache: false
-      - name: Install exact Codex CLI
-        run: npm install --global @openai/codex@0.137.0
+      - name: Install repository-locked Codex CLI
+        working-directory: corpus-11-tools/tools/codex-cli-lock
+        run: |
+          npm ci --ignore-scripts
+          npm audit --audit-level=high
+          ./node_modules/.bin/codex --version | grep -F 'codex-cli 0.137.0'
       - name: Clean-room Codex plugin installation
         env:
           CODEX_HOME: ${{ runner.temp }}/corpus-codex-home
         run: |
+          CODEX_BIN="$GITHUB_WORKSPACE/corpus-11-tools/tools/codex-cli-lock/node_modules/.bin/codex"
           rm -rf "$CODEX_HOME"
           mkdir -p "$CODEX_HOME"
-          codex plugin marketplace add .
-          codex plugin add corpus-11-tools@corpus-11-local
-          codex plugin list | tee "$RUNNER_TEMP/corpus-plugin-list.txt"
+          "$CODEX_BIN" plugin marketplace add .
+          "$CODEX_BIN" plugin add corpus-11-tools@corpus-11-local
+          "$CODEX_BIN" plugin list | tee "$RUNNER_TEMP/corpus-plugin-list.txt"
           grep -F 'corpus-11-tools' "$RUNNER_TEMP/corpus-plugin-list.txt"
-          codex --version
+          "$CODEX_BIN" --version | grep -F 'codex-cli 0.137.0'
 
   head-attestation:
     name: exact-pr-head
@@ -182,6 +191,7 @@ jobs:
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: '3.12.11'
+          pip-version: '26.2.1'
       - name: Prove exact head identity
         run: test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
       - name: Validate exact head independently
@@ -194,6 +204,7 @@ jobs:
           python3 tools/check_boundaries.py
           python3 tools/check_integrity.py
           python3 tools/check_evals.py
+          python3 tools/check_behavioral_surfaces.py
           python3 tools/check_test_inventory.py --self-test
 
   behavioral:
@@ -209,21 +220,27 @@ jobs:
         with:
           node-version: '22.18.0'
           package-manager-cache: false
-      - name: Install exact Codex CLI
-        run: npm install --global @openai/codex@0.137.0
+      - name: Install repository-locked Codex CLI
+        working-directory: corpus-11-tools/tools/codex-cli-lock
+        run: |
+          npm ci --ignore-scripts
+          npm audit --audit-level=high
+          ./node_modules/.bin/codex --version | grep -F 'codex-cli 0.137.0'
       - name: Install plugin into isolated Codex home
         env:
           CODEX_HOME: ${{ runner.temp }}/corpus-codex-home
         run: |
+          CODEX_BIN="$GITHUB_WORKSPACE/corpus-11-tools/tools/codex-cli-lock/node_modules/.bin/codex"
           rm -rf "$CODEX_HOME"
           mkdir -p "$CODEX_HOME"
-          codex plugin marketplace add .
-          codex plugin add corpus-11-tools@corpus-11-local
+          "$CODEX_BIN" plugin marketplace add .
+          "$CODEX_BIN" plugin add corpus-11-tools@corpus-11-local
       - name: Run behavioral routing replicas
         working-directory: corpus-11-tools
         env:
           CODEX_HOME: ${{ runner.temp }}/corpus-codex-home
           CODEX_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          CORPUS_CODEX_COMMAND: ${{ github.workspace }}/corpus-11-tools/tools/codex-cli-lock/node_modules/.bin/codex
         run: python3 tools/run_behavioral_evals.py --fresh
 
   total:
