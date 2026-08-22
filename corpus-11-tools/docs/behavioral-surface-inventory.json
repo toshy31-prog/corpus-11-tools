@@ -3,7 +3,7 @@
   "description": "Exact Git objects whose contents define the behavioral routing gate. Any change requires explicit re-attestation.",
   "surfaces": [
     {"path": "corpus-11-tools/tools/run_behavioral_evals.py", "git_object": "1370b6c9d139bdd5afe84f9660b879b2b914e89c", "kind": "blob"},
-    {"path": "corpus-11-tools/tools/offline_router.py", "git_object": "3914b2114472412bcf83230fed338ae30c1bb44e", "kind": "blob"},
+    {"path": "corpus-11-tools/tools/offline_router.py", "git_object": "38c04985b2bf9b0c374969a232b66816dea45319", "kind": "blob"},
     {"path": "corpus-11-tools/evals/routing-and-nonregression.jsonl", "git_object": "4a21c16b9a516e3e26029f16606b325761a4fbd9", "kind": "blob"},
     {"path": "corpus-11-tools/skills/corpus-11-routing/SKILL.md", "git_object": "ee9b033b556ba7042cce36bdea0055893a0d8971", "kind": "blob"}
   ]
