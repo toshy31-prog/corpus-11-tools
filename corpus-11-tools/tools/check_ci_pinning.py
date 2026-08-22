@@ -98,10 +98,20 @@ else:
 if "npm install --global @openai/codex" in text:
     errors.append("global Codex npm resolution remains in workflow")
 local_codex = "tools/codex-cli-lock/node_modules/.bin/codex"
-if local_codex not in text:
-    errors.append("workflow does not execute repository-locked Codex binary")
-if text.count("working-directory: corpus-11-tools/tools/codex-cli-lock") < 2:
-    errors.append("clean-room and behavioral jobs do not both install locked Codex environment")
+# There are exactly three absolute/repository-relative references to the locked
+# binary: clean-room CODEX_BIN, behavioral CODEX_BIN, and CORPUS_CODEX_COMMAND.
+# Requiring the exact cardinality makes a one-site mutation fail closed rather
+# than being masked by another still-correct occurrence.
+local_codex_count = text.count(local_codex)
+if local_codex_count != 3:
+    errors.append(
+        f"workflow must reference the repository-locked Codex binary exactly 3 times, got {local_codex_count}"
+    )
+for match in re.finditer(r"codex-cli-lock/node_modules/\.bin/([^\s\"']+)", text):
+    if match.group(1) != "codex":
+        errors.append(f"unapproved Codex binary path: {match.group(1)}")
+if text.count("working-directory: corpus-11-tools/tools/codex-cli-lock") != 2:
+    errors.append("clean-room and behavioral jobs must both install locked Codex environment")
 if text.count("npm audit --audit-level=high") < 3:
     errors.append("security audit missing from food or locked Codex gates")
 
