@@ -1,0 +1,1539 @@
+{
+  "description": "Content-addressed traceability registry for hard eval principles. Live routing does not consume this registry.",
+  "entries": [
+    {
+      "eval_ids": [
+        "inference-evidence-01"
+      ],
+      "id": "P-03029d88098ede53",
+      "kind": "must",
+      "source_paths": [
+        "skills/chain-tracing/SKILL.md",
+        "skills/evidence-dependence-audit/SKILL.md"
+      ],
+      "source_skills": [
+        "chain-tracing",
+        "evidence-dependence-audit"
+      ],
+      "text": "artifact count != independent evidence count"
+    },
+    {
+      "eval_ids": [
+        "inference-voi-01"
+      ],
+      "id": "P-054d1fd94b950575",
+      "kind": "must",
+      "source_paths": [
+        "skills/detectability-assessment/SKILL.md",
+        "skills/rival-model-discrimination/SKILL.md",
+        "skills/value-of-information/SKILL.md"
+      ],
+      "source_skills": [
+        "detectability-assessment",
+        "rival-model-discrimination",
+        "value-of-information"
+      ],
+      "text": "outcome-to-decision branches"
+    },
+    {
+      "eval_ids": [
+        "inference-scale-02"
+      ],
+      "id": "P-09b2e40c2b3f6a72",
+      "kind": "must",
+      "source_paths": [
+        "skills/scale-transition-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "scale-transition-assessment"
+      ],
+      "text": "derived by definition != established emergence"
+    },
+    {
+      "eval_ids": [
+        "routing-02"
+      ],
+      "id": "P-0a151128f85d0c7e",
+      "kind": "must",
+      "source_paths": [
+        "skills/detectability-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "detectability-assessment"
+      ],
+      "text": "absence without established detectability remains unknown"
+    },
+    {
+      "eval_ids": [
+        "routing-26"
+      ],
+      "id": "P-0a5370acf0e6dbf0",
+      "kind": "must",
+      "source_paths": [
+        "skills/difference-remainder-assessment/SKILL.md",
+        "skills/distributed-memory-assessment/SKILL.md",
+        "skills/field-capacity-assessment/SKILL.md",
+        "skills/hidden-cost-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "difference-remainder-assessment",
+        "distributed-memory-assessment",
+        "field-capacity-assessment",
+        "hidden-cost-assessment"
+      ],
+      "text": "direct capacity != inverse capacity"
+    },
+    {
+      "eval_ids": [
+        "epistemic-01"
+      ],
+      "id": "P-0a87a499ca977522",
+      "kind": "must",
+      "source_paths": [
+        "skills/corpus-11-routing/SKILL.md"
+      ],
+      "source_skills": [
+        "corpus-11-routing"
+      ],
+      "text": "simplicity is model preference unless independently established"
+    },
+    {
+      "eval_ids": [
+        "legacy-terminal-01"
+      ],
+      "id": "P-0f3602a949f3c08c",
+      "kind": "must",
+      "source_paths": [
+        "skills/terminal-recovery-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "terminal-recovery-assessment"
+      ],
+      "text": "capable actor"
+    },
+    {
+      "eval_ids": [
+        "inference-strategy-02"
+      ],
+      "id": "P-14ccf0d52d2d4eaa",
+      "kind": "must",
+      "source_paths": [
+        "skills/strategic-adaptation-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "strategic-adaptation-assessment"
+      ],
+      "text": "metric improvement != construct improvement"
+    },
+    {
+      "eval_ids": [
+        "fiction-02"
+      ],
+      "id": "P-199f66a381b55d6b",
+      "kind": "must",
+      "source_paths": [
+        "skills/fiction-mechanism-transformation/SKILL.md"
+      ],
+      "source_skills": [
+        "fiction-mechanism-transformation"
+      ],
+      "text": "no replacement content"
+    },
+    {
+      "eval_ids": [
+        "fiction-01"
+      ],
+      "id": "P-1b3878613fe9ac74",
+      "kind": "must_not",
+      "source_paths": [
+        "skills/fiction-external-generation/SKILL.md"
+      ],
+      "source_skills": [
+        "fiction-external-generation"
+      ],
+      "text": "use corpus as generative seed"
+    },
+    {
+      "eval_ids": [
+        "inference-voi-02"
+      ],
+      "id": "P-1c261508dddebd7d",
+      "kind": "must",
+      "source_paths": [
+        "skills/value-of-information/SKILL.md"
+      ],
+      "source_skills": [
+        "value-of-information"
+      ],
+      "text": "low information value"
+    },
+    {
+      "eval_ids": [
+        "epistemic-03"
+      ],
+      "id": "P-21f5c29e5de97410",
+      "kind": "must",
+      "source_paths": [
+        "skills/corpus-11-routing/SKILL.md"
+      ],
+      "source_skills": [
+        "corpus-11-routing"
+      ],
+      "text": "model primitive != system internal"
+    },
+    {
+      "eval_ids": [
+        "inference-voi-01"
+      ],
+      "id": "P-24adc92301348b2d",
+      "kind": "must",
+      "source_paths": [
+        "skills/detectability-assessment/SKILL.md",
+        "skills/rival-model-discrimination/SKILL.md",
+        "skills/value-of-information/SKILL.md"
+      ],
+      "source_skills": [
+        "detectability-assessment",
+        "rival-model-discrimination",
+        "value-of-information"
+      ],
+      "text": "remove dominated tests"
+    },
+    {
+      "eval_ids": [
+        "epistemic-05"
+      ],
+      "id": "P-29cd2e3f608fd13d",
+      "kind": "must",
+      "source_paths": [
+        "skills/corpus-11-routing/SKILL.md"
+      ],
+      "source_skills": [
+        "corpus-11-routing"
+      ],
+      "text": "preserve equivalent survivors"
+    },
+    {
+      "eval_ids": [
+        "routing-26"
+      ],
+      "id": "P-2b4b396af20869de",
+      "kind": "must",
+      "source_paths": [
+        "skills/difference-remainder-assessment/SKILL.md",
+        "skills/distributed-memory-assessment/SKILL.md",
+        "skills/field-capacity-assessment/SKILL.md",
+        "skills/hidden-cost-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "difference-remainder-assessment",
+        "distributed-memory-assessment",
+        "field-capacity-assessment",
+        "hidden-cost-assessment"
+      ],
+      "text": "track residual traces and reactivation channels"
+    },
+    {
+      "eval_ids": [
+        "inference-construct-02"
+      ],
+      "id": "P-2be03ed1dd33197c",
+      "kind": "must_not",
+      "source_paths": [
+        "skills/construct-validity-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "construct-validity-assessment"
+      ],
+      "text": "promote proxy to construct"
+    },
+    {
+      "eval_ids": [
+        "inference-evidence-01"
+      ],
+      "id": "P-2c8ec6261eefe1e7",
+      "kind": "must",
+      "source_paths": [
+        "skills/chain-tracing/SKILL.md",
+        "skills/evidence-dependence-audit/SKILL.md"
+      ],
+      "source_skills": [
+        "chain-tracing",
+        "evidence-dependence-audit"
+      ],
+      "text": "trace common roots"
+    },
+    {
+      "eval_ids": [
+        "inference-scale-02"
+      ],
+      "id": "P-2ca75504c54a0af3",
+      "kind": "must_not",
+      "source_paths": [
+        "skills/scale-transition-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "scale-transition-assessment"
+      ],
+      "text": "claim uninjected emergence"
+    },
+    {
+      "eval_ids": [
+        "inference-rival-01"
+      ],
+      "id": "P-2e93721859f8ec5f",
+      "kind": "must",
+      "source_paths": [
+        "skills/rival-model-discrimination/SKILL.md"
+      ],
+      "source_skills": [
+        "rival-model-discrimination"
+      ],
+      "text": "matched information budgets"
+    },
+    {
+      "eval_ids": [
+        "inference-strategy-01"
+      ],
+      "id": "P-3505fd4150393dea",
+      "kind": "must",
+      "source_paths": [
+        "skills/method-effect-audit/SKILL.md",
+        "skills/strategic-adaptation-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "method-effect-audit",
+        "strategic-adaptation-assessment"
+      ],
+      "text": "separate proxy optimization from construct improvement"
+    },
+    {
+      "eval_ids": [
+        "epistemic-04"
+      ],
+      "id": "P-389f1a78e8445068",
+      "kind": "must",
+      "source_paths": [
+        "skills/corpus-11-routing/SKILL.md"
+      ],
+      "source_skills": [
+        "corpus-11-routing"
+      ],
+      "text": "reversible choice != structural evidence"
+    },
+    {
+      "eval_ids": [
+        "inference-transport-01"
+      ],
+      "id": "P-39116416975a8527",
+      "kind": "must",
+      "source_paths": [
+        "skills/field-capacity-assessment/SKILL.md",
+        "skills/protocol-robustness/SKILL.md",
+        "skills/transportability-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "field-capacity-assessment",
+        "protocol-robustness",
+        "transportability-assessment"
+      ],
+      "text": "source-target differences"
+    },
+    {
+      "eval_ids": [
+        "legacy-expand-01"
+      ],
+      "id": "P-3adbd73963933b37",
+      "kind": "must_not",
+      "source_paths": [
+        "skills/expand-then-audit/SKILL.md"
+      ],
+      "source_skills": [
+        "expand-then-audit"
+      ],
+      "text": "implicit universal procedure"
+    },
+    {
+      "eval_ids": [
+        "epistemic-03"
+      ],
+      "id": "P-3b17af82592a2c50",
+      "kind": "must",
+      "source_paths": [
+        "skills/corpus-11-routing/SKILL.md"
+      ],
+      "source_skills": [
+        "corpus-11-routing"
+      ],
+      "text": "report law role separately from scientific status"
+    },
+    {
+      "eval_ids": [
+        "inference-transport-02"
+      ],
+      "id": "P-3c5a6c2dfa714d32",
+      "kind": "must_not",
+      "source_paths": [
+        "skills/transportability-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "transportability-assessment"
+      ],
+      "text": "universal transfer claim"
+    },
+    {
+      "eval_ids": [
+        "routing-06"
+      ],
+      "id": "P-3f3b604ecdece5c9",
+      "kind": "must",
+      "source_paths": [
+        "skills/repair-sufficiency/SKILL.md"
+      ],
+      "source_skills": [
+        "repair-sufficiency"
+      ],
+      "text": "repair != simple restoration"
+    },
+    {
+      "eval_ids": [
+        "legacy-time-01"
+      ],
+      "id": "P-3f846b625b049023",
+      "kind": "must",
+      "source_paths": [
+        "skills/temporal-power-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "temporal-power-assessment"
+      ],
+      "text": "unequal loss under equal delay"
+    },
+    {
+      "eval_ids": [
+        "routing-19"
+      ],
+      "id": "P-446322b6af4dc2df",
+      "kind": "must",
+      "source_paths": [
+        "skills/chain-tracing/SKILL.md",
+        "skills/source-environment-assessment/SKILL.md",
+        "skills/translation-risk-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "chain-tracing",
+        "source-environment-assessment",
+        "translation-risk-assessment"
+      ],
+      "text": "bound source independence across reuse chain"
+    },
+    {
+      "eval_ids": [
+        "routing-25"
+      ],
+      "id": "P-48180fca4a308ef2",
+      "kind": "must",
+      "source_paths": [
+        "skills/observable-compilation/SKILL.md",
+        "skills/visual-scene-compilation/SKILL.md"
+      ],
+      "source_skills": [
+        "observable-compilation",
+        "visual-scene-compilation"
+      ],
+      "text": "compile claims into visual observables"
+    },
+    {
+      "eval_ids": [
+        "explore-02"
+      ],
+      "id": "P-4c95cd4f525e64cf",
+      "kind": "must_not",
+      "source_paths": [
+        "skills/corpus-11-routing/SKILL.md"
+      ],
+      "source_skills": [
+        "corpus-11-routing"
+      ],
+      "text": "force explore-first"
+    },
+    {
+      "eval_ids": [
+        "routing-05"
+      ],
+      "id": "P-54f9db9819f04f7e",
+      "kind": "must",
+      "source_paths": [
+        "skills/change-validation/SKILL.md"
+      ],
+      "source_skills": [
+        "change-validation"
+      ],
+      "text": "test passed != deployment"
+    },
+    {
+      "eval_ids": [
+        "routing-18"
+      ],
+      "id": "P-57777a1c3e1ee087",
+      "kind": "must",
+      "source_paths": [
+        "skills/fiction-external-generation/SKILL.md"
+      ],
+      "source_skills": [
+        "fiction-external-generation"
+      ],
+      "text": "audit only after draft"
+    },
+    {
+      "eval_ids": [
+        "inference-rival-02"
+      ],
+      "id": "P-585c899e0bc024c8",
+      "kind": "must",
+      "source_paths": [
+        "skills/rival-model-discrimination/SKILL.md"
+      ],
+      "source_skills": [
+        "rival-model-discrimination"
+      ],
+      "text": "preserve compatible survivors"
+    },
+    {
+      "eval_ids": [
+        "routing-19"
+      ],
+      "id": "P-5ff3744cf89f408a",
+      "kind": "must",
+      "source_paths": [
+        "skills/chain-tracing/SKILL.md",
+        "skills/source-environment-assessment/SKILL.md",
+        "skills/translation-risk-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "chain-tracing",
+        "source-environment-assessment",
+        "translation-risk-assessment"
+      ],
+      "text": "assess translation drift"
+    },
+    {
+      "eval_ids": [
+        "routing-18"
+      ],
+      "id": "P-6058afcb771cba1f",
+      "kind": "must",
+      "source_paths": [
+        "skills/fiction-external-generation/SKILL.md"
+      ],
+      "source_skills": [
+        "fiction-external-generation"
+      ],
+      "text": "fiction-external-generation invoked"
+    },
+    {
+      "eval_ids": [
+        "inference-interference-01"
+      ],
+      "id": "P-6066a10c1b59438e",
+      "kind": "must",
+      "source_paths": [
+        "skills/capability-interference-audit/SKILL.md",
+        "skills/change-validation/SKILL.md",
+        "skills/method-effect-audit/SKILL.md"
+      ],
+      "source_skills": [
+        "capability-interference-audit",
+        "change-validation",
+        "method-effect-audit"
+      ],
+      "text": "classify conclusion drift"
+    },
+    {
+      "eval_ids": [
+        "legacy-decouple-01"
+      ],
+      "id": "P-61164f7d433faafc",
+      "kind": "must",
+      "source_paths": [
+        "skills/functional-decoupling-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "functional-decoupling-assessment"
+      ],
+      "text": "separate functions before global decision"
+    },
+    {
+      "eval_ids": [
+        "epistemic-04"
+      ],
+      "id": "P-62019928b0b52e4c",
+      "kind": "must",
+      "source_paths": [
+        "skills/corpus-11-routing/SKILL.md"
+      ],
+      "source_skills": [
+        "corpus-11-routing"
+      ],
+      "text": "apply reversibility and completion-space preservation test"
+    },
+    {
+      "eval_ids": [
+        "epistemic-02"
+      ],
+      "id": "P-6205697dd71ef712",
+      "kind": "must",
+      "source_paths": [
+        "skills/corpus-11-routing/SKILL.md"
+      ],
+      "source_skills": [
+        "corpus-11-routing"
+      ],
+      "text": "short code != structural compression"
+    },
+    {
+      "eval_ids": [
+        "routing-22"
+      ],
+      "id": "P-65a3d13a50be498f",
+      "kind": "must",
+      "source_paths": [
+        "skills/change-validation/SKILL.md",
+        "skills/method-effect-audit/SKILL.md",
+        "skills/protocol-robustness/SKILL.md"
+      ],
+      "source_skills": [
+        "change-validation",
+        "method-effect-audit",
+        "protocol-robustness"
+      ],
+      "text": "assess method-produced effect"
+    },
+    {
+      "eval_ids": [
+        "inference-construct-02"
+      ],
+      "id": "P-693871c361446fdc",
+      "kind": "must",
+      "source_paths": [
+        "skills/construct-validity-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "construct-validity-assessment"
+      ],
+      "text": "definition != construct validity"
+    },
+    {
+      "eval_ids": [
+        "inference-interference-02"
+      ],
+      "id": "P-6a1bc696f2d9ff7c",
+      "kind": "must_not",
+      "source_paths": [
+        "skills/capability-interference-audit/SKILL.md"
+      ],
+      "source_skills": [
+        "capability-interference-audit"
+      ],
+      "text": "claim universal non-interference"
+    },
+    {
+      "eval_ids": [
+        "inference-interference-01"
+      ],
+      "id": "P-7995bfe6df7be5b3",
+      "kind": "must",
+      "source_paths": [
+        "skills/capability-interference-audit/SKILL.md",
+        "skills/change-validation/SKILL.md",
+        "skills/method-effect-audit/SKILL.md"
+      ],
+      "source_skills": [
+        "capability-interference-audit",
+        "change-validation",
+        "method-effect-audit"
+      ],
+      "text": "compare baseline and permutations"
+    },
+    {
+      "eval_ids": [
+        "open-arena-01"
+      ],
+      "id": "P-7a69d10945e77347",
+      "kind": "must",
+      "source_paths": [
+        "skills/open-experiment-arena/SKILL.md"
+      ],
+      "source_skills": [
+        "open-experiment-arena"
+      ],
+      "text": "matched information and action budgets"
+    },
+    {
+      "eval_ids": [
+        "legacy-confidence-01"
+      ],
+      "id": "P-81dfd41a48a56fe6",
+      "kind": "must",
+      "source_paths": [
+        "skills/confidence-convention/SKILL.md"
+      ],
+      "source_skills": [
+        "confidence-convention"
+      ],
+      "text": "reject unsupported precision"
+    },
+    {
+      "eval_ids": [
+        "inference-evidence-02"
+      ],
+      "id": "P-8314e171e0c7f527",
+      "kind": "must",
+      "source_paths": [
+        "skills/evidence-dependence-audit/SKILL.md"
+      ],
+      "source_skills": [
+        "evidence-dependence-audit"
+      ],
+      "text": "unknown lineage means independence unknown"
+    },
+    {
+      "eval_ids": [
+        "routing-01"
+      ],
+      "id": "P-88cf1bb4195cfb86",
+      "kind": "must_not",
+      "source_paths": [
+        "skills/real-transformation-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "real-transformation-assessment"
+      ],
+      "text": "claim capability established because present"
+    },
+    {
+      "eval_ids": [
+        "routing-21"
+      ],
+      "id": "P-8b071dd7c63c4454",
+      "kind": "must",
+      "source_paths": [
+        "skills/privilege-conversion-assessment/SKILL.md",
+        "skills/real-transformation-assessment/SKILL.md",
+        "skills/repair-sufficiency/SKILL.md"
+      ],
+      "source_skills": [
+        "privilege-conversion-assessment",
+        "real-transformation-assessment",
+        "repair-sufficiency"
+      ],
+      "text": "formal privilege removal != real transformation"
+    },
+    {
+      "eval_ids": [
+        "routing-23"
+      ],
+      "id": "P-8d7f68f30d1067f8",
+      "kind": "must",
+      "source_paths": [
+        "skills/continuity-assessment/SKILL.md",
+        "skills/distributed-memory-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "continuity-assessment",
+        "distributed-memory-assessment"
+      ],
+      "text": "distributed memory != subjective continuity"
+    },
+    {
+      "eval_ids": [
+        "routing-21"
+      ],
+      "id": "P-8f414b12877a0c3f",
+      "kind": "must",
+      "source_paths": [
+        "skills/privilege-conversion-assessment/SKILL.md",
+        "skills/real-transformation-assessment/SKILL.md",
+        "skills/repair-sufficiency/SKILL.md"
+      ],
+      "source_skills": [
+        "privilege-conversion-assessment",
+        "real-transformation-assessment",
+        "repair-sufficiency"
+      ],
+      "text": "assess repair independently from reform"
+    },
+    {
+      "eval_ids": [
+        "project-yield-01"
+      ],
+      "id": "P-8f56e3519f63c178",
+      "kind": "must",
+      "source_paths": [
+        "skills/change-validation/SKILL.md",
+        "skills/functional-decoupling-assessment/SKILL.md",
+        "skills/value-of-information/SKILL.md"
+      ],
+      "source_skills": [
+        "change-validation",
+        "functional-decoupling-assessment",
+        "value-of-information"
+      ],
+      "text": "deployment != external effect"
+    },
+    {
+      "eval_ids": [
+        "open-arena-01"
+      ],
+      "id": "P-905458ea1db822f3",
+      "kind": "must",
+      "source_paths": [
+        "skills/open-experiment-arena/SKILL.md"
+      ],
+      "source_skills": [
+        "open-experiment-arena"
+      ],
+      "text": "freeze scenario before outcomes"
+    },
+    {
+      "eval_ids": [
+        "epistemic-06",
+        "fiction-02"
+      ],
+      "id": "P-98ac65c38802cb29",
+      "kind": "must",
+      "source_paths": [
+        "skills/corpus-11-routing/SKILL.md",
+        "skills/fiction-mechanism-transformation/SKILL.md",
+        "skills/method-effect-audit/SKILL.md"
+      ],
+      "source_skills": [
+        "corpus-11-routing",
+        "fiction-mechanism-transformation",
+        "method-effect-audit"
+      ],
+      "text": "audit only"
+    },
+    {
+      "eval_ids": [
+        "epistemic-02"
+      ],
+      "id": "P-9a6b066abd721617",
+      "kind": "must",
+      "source_paths": [
+        "skills/corpus-11-routing/SKILL.md"
+      ],
+      "source_skills": [
+        "corpus-11-routing"
+      ],
+      "text": "count decoder, parameters, exceptions, domain, shared information and completeness certificate"
+    },
+    {
+      "eval_ids": [
+        "inference-evidence-02"
+      ],
+      "id": "P-9acbccec69544aaf",
+      "kind": "must_not",
+      "source_paths": [
+        "skills/evidence-dependence-audit/SKILL.md"
+      ],
+      "source_skills": [
+        "evidence-dependence-audit"
+      ],
+      "text": "assume independence from format diversity"
+    },
+    {
+      "eval_ids": [
+        "inference-rival-02"
+      ],
+      "id": "P-9bf1b8f6fc0f3521",
+      "kind": "must",
+      "source_paths": [
+        "skills/rival-model-discrimination/SKILL.md"
+      ],
+      "source_skills": [
+        "rival-model-discrimination"
+      ],
+      "text": "same prediction means no discrimination"
+    },
+    {
+      "eval_ids": [
+        "routing-24"
+      ],
+      "id": "P-9bfd0b8dc2754a9c",
+      "kind": "must",
+      "source_paths": [
+        "skills/framing-regression-detection/SKILL.md",
+        "skills/historical-start-selection/SKILL.md"
+      ],
+      "source_skills": [
+        "framing-regression-detection",
+        "historical-start-selection"
+      ],
+      "text": "test earlier structuring cause"
+    },
+    {
+      "eval_ids": [
+        "inference-causal-01"
+      ],
+      "id": "P-9f484eac1756fa22",
+      "kind": "must",
+      "source_paths": [
+        "skills/causal-identification/SKILL.md",
+        "skills/construct-validity-assessment/SKILL.md",
+        "skills/rival-model-discrimination/SKILL.md"
+      ],
+      "source_skills": [
+        "causal-identification",
+        "construct-validity-assessment",
+        "rival-model-discrimination"
+      ],
+      "text": "define counterfactual contrast"
+    },
+    {
+      "eval_ids": [
+        "inference-rival-01"
+      ],
+      "id": "P-a33cd3726390a3f5",
+      "kind": "must",
+      "source_paths": [
+        "skills/rival-model-discrimination/SKILL.md"
+      ],
+      "source_skills": [
+        "rival-model-discrimination"
+      ],
+      "text": "held-out discriminating outcome"
+    },
+    {
+      "eval_ids": [
+        "inference-transport-01"
+      ],
+      "id": "P-a4475d2cf1e1b598",
+      "kind": "must",
+      "source_paths": [
+        "skills/field-capacity-assessment/SKILL.md",
+        "skills/protocol-robustness/SKILL.md",
+        "skills/transportability-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "field-capacity-assessment",
+        "protocol-robustness",
+        "transportability-assessment"
+      ],
+      "text": "bridge evidence"
+    },
+    {
+      "eval_ids": [
+        "project-yield-01"
+      ],
+      "id": "P-a51db6c7cc384082",
+      "kind": "must",
+      "source_paths": [
+        "skills/change-validation/SKILL.md",
+        "skills/functional-decoupling-assessment/SKILL.md",
+        "skills/value-of-information/SKILL.md"
+      ],
+      "source_skills": [
+        "change-validation",
+        "functional-decoupling-assessment",
+        "value-of-information"
+      ],
+      "text": "retain independently useful functions only"
+    },
+    {
+      "eval_ids": [
+        "inference-causal-02"
+      ],
+      "id": "P-aa86c8f5f3b232c7",
+      "kind": "must",
+      "source_paths": [
+        "skills/causal-identification/SKILL.md"
+      ],
+      "source_skills": [
+        "causal-identification"
+      ],
+      "text": "association != identified causal effect"
+    },
+    {
+      "eval_ids": [
+        "epistemic-01"
+      ],
+      "id": "P-ab1d7a189bbaf4dd",
+      "kind": "must",
+      "source_paths": [
+        "skills/corpus-11-routing/SKILL.md"
+      ],
+      "source_skills": [
+        "corpus-11-routing"
+      ],
+      "text": "selection criterion != system property"
+    },
+    {
+      "eval_ids": [
+        "legacy-conclusion-01"
+      ],
+      "id": "P-ad7c41240fa4f846",
+      "kind": "must",
+      "source_paths": [
+        "skills/conclusion-discipline/SKILL.md"
+      ],
+      "source_skills": [
+        "conclusion-discipline"
+      ],
+      "text": "strongest supported conclusion"
+    },
+    {
+      "eval_ids": [
+        "routing-05"
+      ],
+      "id": "P-ae7cb6d6a8caf94e",
+      "kind": "must",
+      "source_paths": [
+        "skills/change-validation/SKILL.md"
+      ],
+      "source_skills": [
+        "change-validation"
+      ],
+      "text": "deployment != robustness"
+    },
+    {
+      "eval_ids": [
+        "routing-24"
+      ],
+      "id": "P-aff724aa24ec432c",
+      "kind": "must",
+      "source_paths": [
+        "skills/framing-regression-detection/SKILL.md",
+        "skills/historical-start-selection/SKILL.md"
+      ],
+      "source_skills": [
+        "framing-regression-detection",
+        "historical-start-selection"
+      ],
+      "text": "assess attribution shift"
+    },
+    {
+      "eval_ids": [
+        "project-yield-01"
+      ],
+      "id": "P-b0620a92a896d9c3",
+      "kind": "must",
+      "source_paths": [
+        "skills/change-validation/SKILL.md",
+        "skills/functional-decoupling-assessment/SKILL.md",
+        "skills/value-of-information/SKILL.md"
+      ],
+      "source_skills": [
+        "change-validation",
+        "functional-decoupling-assessment",
+        "value-of-information"
+      ],
+      "text": "abandon duplicate product"
+    },
+    {
+      "eval_ids": [
+        "inference-transport-02"
+      ],
+      "id": "P-b18faddebef147a0",
+      "kind": "must",
+      "source_paths": [
+        "skills/transportability-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "transportability-assessment"
+      ],
+      "text": "local robustness != target transport"
+    },
+    {
+      "eval_ids": [
+        "inference-scale-01"
+      ],
+      "id": "P-b23c4ea6015a34d1",
+      "kind": "must",
+      "source_paths": [
+        "skills/construct-validity-assessment/SKILL.md",
+        "skills/method-effect-audit/SKILL.md",
+        "skills/scale-transition-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "construct-validity-assessment",
+        "method-effect-audit",
+        "scale-transition-assessment"
+      ],
+      "text": "test injected order"
+    },
+    {
+      "eval_ids": [
+        "inference-voi-02"
+      ],
+      "id": "P-b5202449ca4218c0",
+      "kind": "must",
+      "source_paths": [
+        "skills/value-of-information/SKILL.md"
+      ],
+      "source_skills": [
+        "value-of-information"
+      ],
+      "text": "stop or defer"
+    },
+    {
+      "eval_ids": [
+        "inference-interference-02"
+      ],
+      "id": "P-b6019422929fdb8c",
+      "kind": "must",
+      "source_paths": [
+        "skills/capability-interference-audit/SKILL.md"
+      ],
+      "source_skills": [
+        "capability-interference-audit"
+      ],
+      "text": "finite tests bound scope"
+    },
+    {
+      "eval_ids": [
+        "inference-strategy-02"
+      ],
+      "id": "P-bb1dca8153089a33",
+      "kind": "must_not",
+      "source_paths": [
+        "skills/strategic-adaptation-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "strategic-adaptation-assessment"
+      ],
+      "text": "ignore adaptation"
+    },
+    {
+      "eval_ids": [
+        "routing-22"
+      ],
+      "id": "P-c0f6ae3c74f036c4",
+      "kind": "must",
+      "source_paths": [
+        "skills/change-validation/SKILL.md",
+        "skills/method-effect-audit/SKILL.md",
+        "skills/protocol-robustness/SKILL.md"
+      ],
+      "source_skills": [
+        "change-validation",
+        "method-effect-audit",
+        "protocol-robustness"
+      ],
+      "text": "tested != deployed"
+    },
+    {
+      "eval_ids": [
+        "epistemic-05"
+      ],
+      "id": "P-c546af61e5679c02",
+      "kind": "must",
+      "source_paths": [
+        "skills/corpus-11-routing/SKILL.md"
+      ],
+      "source_skills": [
+        "corpus-11-routing"
+      ],
+      "text": "pairwise or conventional preference != unique system law"
+    },
+    {
+      "eval_ids": [
+        "routing-18"
+      ],
+      "id": "P-c85fed9ef262d51b",
+      "kind": "must",
+      "source_paths": [
+        "skills/fiction-external-generation/SKILL.md"
+      ],
+      "source_skills": [
+        "fiction-external-generation"
+      ],
+      "text": "audit provides no replacement content"
+    },
+    {
+      "eval_ids": [
+        "inference-construct-01"
+      ],
+      "id": "P-c91e0b2be7f46eb8",
+      "kind": "must",
+      "source_paths": [
+        "skills/construct-validity-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "construct-validity-assessment"
+      ],
+      "text": "test alternative constructs"
+    },
+    {
+      "eval_ids": [
+        "routing-18"
+      ],
+      "id": "P-ca1167bd42f07741",
+      "kind": "must",
+      "source_paths": [
+        "skills/fiction-external-generation/SKILL.md"
+      ],
+      "source_skills": [
+        "fiction-external-generation"
+      ],
+      "text": "no audit used as generative seed"
+    },
+    {
+      "eval_ids": [
+        "open-arena-01"
+      ],
+      "id": "P-ca82a89327b61b3a",
+      "kind": "must",
+      "source_paths": [
+        "skills/open-experiment-arena/SKILL.md"
+      ],
+      "source_skills": [
+        "open-experiment-arena"
+      ],
+      "text": "internal scenario != external evidence"
+    },
+    {
+      "eval_ids": [
+        "routing-22"
+      ],
+      "id": "P-cb878188a0f9b0e0",
+      "kind": "must",
+      "source_paths": [
+        "skills/change-validation/SKILL.md",
+        "skills/method-effect-audit/SKILL.md",
+        "skills/protocol-robustness/SKILL.md"
+      ],
+      "source_skills": [
+        "change-validation",
+        "method-effect-audit",
+        "protocol-robustness"
+      ],
+      "text": "vary protocol"
+    },
+    {
+      "eval_ids": [
+        "epistemic-06"
+      ],
+      "id": "P-cf429d98fcc5bf8d",
+      "kind": "must",
+      "source_paths": [
+        "skills/corpus-11-routing/SKILL.md",
+        "skills/method-effect-audit/SKILL.md"
+      ],
+      "source_skills": [
+        "corpus-11-routing",
+        "method-effect-audit"
+      ],
+      "text": "no candidate law seeded by audit"
+    },
+    {
+      "eval_ids": [
+        "inference-scale-01"
+      ],
+      "id": "P-d2fb6871f7d22f23",
+      "kind": "must",
+      "source_paths": [
+        "skills/construct-validity-assessment/SKILL.md",
+        "skills/method-effect-audit/SKILL.md",
+        "skills/scale-transition-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "construct-validity-assessment",
+        "method-effect-audit",
+        "scale-transition-assessment"
+      ],
+      "text": "trace added information"
+    },
+    {
+      "eval_ids": [
+        "routing-26"
+      ],
+      "id": "P-d6681d6771c1c3c6",
+      "kind": "must",
+      "source_paths": [
+        "skills/difference-remainder-assessment/SKILL.md",
+        "skills/distributed-memory-assessment/SKILL.md",
+        "skills/field-capacity-assessment/SKILL.md",
+        "skills/hidden-cost-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "difference-remainder-assessment",
+        "distributed-memory-assessment",
+        "field-capacity-assessment",
+        "hidden-cost-assessment"
+      ],
+      "text": "compare direct and inverse profiles"
+    },
+    {
+      "eval_ids": [
+        "legacy-relation-01"
+      ],
+      "id": "P-dab8fdf3fda9b903",
+      "kind": "must",
+      "source_paths": [
+        "skills/relation-loss-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "relation-loss-assessment"
+      ],
+      "text": "object persistence != relation persistence"
+    },
+    {
+      "eval_ids": [
+        "legacy-maintenance-01"
+      ],
+      "id": "P-dc79fad4e9ec92f7",
+      "kind": "must",
+      "source_paths": [
+        "skills/co-maintenance-governance/SKILL.md"
+      ],
+      "source_skills": [
+        "co-maintenance-governance"
+      ],
+      "text": "separate authorities"
+    },
+    {
+      "eval_ids": [
+        "inference-causal-01"
+      ],
+      "id": "P-dca6ca4b9c39f078",
+      "kind": "must",
+      "source_paths": [
+        "skills/causal-identification/SKILL.md",
+        "skills/construct-validity-assessment/SKILL.md",
+        "skills/rival-model-discrimination/SKILL.md"
+      ],
+      "source_skills": [
+        "causal-identification",
+        "construct-validity-assessment",
+        "rival-model-discrimination"
+      ],
+      "text": "assess confounding"
+    },
+    {
+      "eval_ids": [
+        "explore-01",
+        "legacy-expand-01"
+      ],
+      "id": "P-e205593e854b94f1",
+      "kind": "must",
+      "source_paths": [
+        "skills/expand-then-audit/SKILL.md",
+        "skills/explore-first/SKILL.md"
+      ],
+      "source_skills": [
+        "expand-then-audit",
+        "explore-first"
+      ],
+      "text": "independent candidates before audit"
+    },
+    {
+      "eval_ids": [
+        "legacy-command-01"
+      ],
+      "id": "P-e3e5fdac04ed9d0a",
+      "kind": "must",
+      "source_paths": [
+        "skills/command-effect-verification/SKILL.md"
+      ],
+      "source_skills": [
+        "command-effect-verification"
+      ],
+      "text": "separate receipt, execution, effect"
+    },
+    {
+      "eval_ids": [
+        "inference-interference-02"
+      ],
+      "id": "P-e4e9dca37058cf67",
+      "kind": "must",
+      "source_paths": [
+        "skills/capability-interference-audit/SKILL.md"
+      ],
+      "source_skills": [
+        "capability-interference-audit"
+      ],
+      "text": "valid graph != non-interference"
+    },
+    {
+      "eval_ids": [
+        "inference-causal-02"
+      ],
+      "id": "P-e71e0b4e37f2d376",
+      "kind": "must_not",
+      "source_paths": [
+        "skills/causal-identification/SKILL.md"
+      ],
+      "source_skills": [
+        "causal-identification"
+      ],
+      "text": "claim identified without assumptions"
+    },
+    {
+      "eval_ids": [
+        "legacy-terminal-01"
+      ],
+      "id": "P-e9a47130f7c6ef06",
+      "kind": "must",
+      "source_paths": [
+        "skills/terminal-recovery-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "terminal-recovery-assessment"
+      ],
+      "text": "tested recovery"
+    },
+    {
+      "eval_ids": [
+        "inference-construct-01"
+      ],
+      "id": "P-ebfabf5091725376",
+      "kind": "must",
+      "source_paths": [
+        "skills/construct-validity-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "construct-validity-assessment"
+      ],
+      "text": "indicator != construct"
+    },
+    {
+      "eval_ids": [
+        "inference-causal-01"
+      ],
+      "id": "P-ee6656443d3f4c58",
+      "kind": "must",
+      "source_paths": [
+        "skills/causal-identification/SKILL.md",
+        "skills/construct-validity-assessment/SKILL.md",
+        "skills/rival-model-discrimination/SKILL.md"
+      ],
+      "source_skills": [
+        "causal-identification",
+        "construct-validity-assessment",
+        "rival-model-discrimination"
+      ],
+      "text": "identification != estimation"
+    },
+    {
+      "eval_ids": [
+        "routing-20"
+      ],
+      "id": "P-f5058133921547c4",
+      "kind": "must",
+      "source_paths": [
+        "skills/center-detection/SKILL.md",
+        "skills/extraction-mapping/SKILL.md"
+      ],
+      "source_skills": [
+        "center-detection",
+        "extraction-mapping"
+      ],
+      "text": "control center != extraction beneficiary"
+    },
+    {
+      "eval_ids": [
+        "routing-25"
+      ],
+      "id": "P-f615c82b1261639b",
+      "kind": "must",
+      "source_paths": [
+        "skills/observable-compilation/SKILL.md",
+        "skills/visual-scene-compilation/SKILL.md"
+      ],
+      "source_skills": [
+        "observable-compilation",
+        "visual-scene-compilation"
+      ],
+      "text": "preserve scene relations"
+    },
+    {
+      "eval_ids": [
+        "open-arena-01"
+      ],
+      "id": "P-f7bd79a506b45e84",
+      "kind": "must",
+      "source_paths": [
+        "skills/open-experiment-arena/SKILL.md"
+      ],
+      "source_skills": [
+        "open-experiment-arena"
+      ],
+      "text": "predictions before transitions"
+    },
+    {
+      "eval_ids": [
+        "legacy-presence-01"
+      ],
+      "id": "P-f80d98a35e988d6e",
+      "kind": "must",
+      "source_paths": [
+        "skills/effective-presence-assessment/SKILL.md"
+      ],
+      "source_skills": [
+        "effective-presence-assessment"
+      ],
+      "text": "highest verified presence level"
+    },
+    {
+      "eval_ids": [
+        "open-arena-01"
+      ],
+      "id": "P-f8df70d7e5c3560d",
+      "kind": "must",
+      "source_paths": [
+        "skills/open-experiment-arena/SKILL.md"
+      ],
+      "source_skills": [
+        "open-experiment-arena"
+      ],
+      "text": "vector outcomes without hidden winner"
+    },
+    {
+      "eval_ids": [
+        "epistemic-05",
+        "inference-rival-02"
+      ],
+      "id": "P-f94ccf5bfa607946",
+      "kind": "must_not",
+      "source_paths": [
+        "skills/corpus-11-routing/SKILL.md",
+        "skills/rival-model-discrimination/SKILL.md"
+      ],
+      "source_skills": [
+        "corpus-11-routing",
+        "rival-model-discrimination"
+      ],
+      "text": "manufacture unique winner"
+    },
+    {
+      "eval_ids": [
+        "legacy-privacy-01"
+      ],
+      "id": "P-fa63476d3016b5b5",
+      "kind": "must",
+      "source_paths": [
+        "skills/privacy-recourse-boundary/SKILL.md"
+      ],
+      "source_skills": [
+        "privacy-recourse-boundary"
+      ],
+      "text": "bounded recourse permission != disclosure permission"
+    },
+    {
+      "eval_ids": [
+        "legacy-defense-01"
+      ],
+      "id": "P-ffdce76bb73b1433",
+      "kind": "must",
+      "source_paths": [
+        "skills/defense-accountability-boundary/SKILL.md"
+      ],
+      "source_skills": [
+        "defense-accountability-boundary"
+      ],
+      "text": "separate secrecy from accountability evidence"
+    }
+  ],
+  "schema_version": 1
+}

@@ -1,0 +1,9 @@
+{
+  "name": "corpus-codex-cli-lock",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Repository-controlled lock environment for the Codex CLI used by total validation.",
+  "dependencies": {
+    "@openai/codex": "0.137.0"
+  }
+}

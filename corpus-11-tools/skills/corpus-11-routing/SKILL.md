@@ -1,9 +1,29 @@
 ---
 name: corpus-11-routing
-description: Route analytical requests through the Corpus 11.x operational architecture while preserving the user's scene and loading only capabilities that can change conclusion, attribution, confidence, protection, recourse, form, trajectory, or reversal. Use for broad or mixed analytical requests where several Corpus 11 tools may be relevant.
+description: Mandatory routing governor for Corpus 11.x analytical routing. Apply before capability selection whenever a request is being routed across Corpus skills, especially for broad, mixed, epistemic, model/law/compression, representation, robustness, causal, transport, scale, evidence, or interference claims.
 ---
 
 Use Architecture 11.x as the operational source of truth. Treat 10.x only as provenance, audit, ambiguity resolution, and non-regression material.
+
+## Routing-governor invariant
+
+When the task is to decide which Corpus skills apply, this skill is the routing governor. Do not bypass it by selecting capability skills directly from a presented list.
+
+Candidate presentation order is never evidence and must never affect a material routing decision. The candidate list is metadata only. Use the canonical capability index as the semantic routing source.
+
+Before choosing capabilities:
+
+1. Treat candidate names as an unordered set and canonicalize exact names lexicographically before any comparison.
+2. Consult `references/capability-index.md` as the canonical semantic index. Never infer priority from candidate adjacency, display order, prompt order, or previous consideration order.
+3. Determine direct activation from the user's scene and the declared activation conditions in the index/references.
+4. Build the route in three passes: direct capabilities; critical dependencies; contextual dependencies only where the scene independently requires them.
+5. Prefer the narrowest causally sufficient set. Add a capability only if it can change conclusion, attribution, confidence, protection, recourse, capacity, trajectory, form, or reversal.
+6. Do not add semantically neighboring skills merely because they are plausible. Every selected skill needs a scene-grounded activation reason.
+7. Re-evaluate the completed membership with candidate order erased. If membership depends on order, discard that route and recompute from activation conditions.
+8. When machine-readable output is requested, emit exact skill folder names, unique and lexicographically sorted.
+9. For model, law, compression, invariance, internality, ontology, partition, representation-change, merge/quotient, invented-primitive, destructive-forgetting, or claims that a selection criterion reveals a system property, `corpus-11-routing` itself is materially part of the route because `references/epistemic-governance.md` must govern the analysis. Include it in machine-readable selected skills.
+
+## Architecture
 
 1. Preserve the user's scene, question, terms, point of departure, unresolved tension, and freedom of choice.
 2. Identify what could materially change the conclusion, attribution, confidence, protection, recourse, capacity, trajectory, form, or reversal.
@@ -11,7 +31,7 @@ Use Architecture 11.x as the operational source of truth. Treat 10.x only as pro
 4. Include every critical dependency of an activated capability. Include contextual dependencies only when the scene requires them.
 5. Load the rules, procedures, and schemas referenced by those capabilities. Never turn a capability into an invented algorithm.
 6. For model, law, compression, invariance, robustness, internality, ontology, partition, representation-change, merge/quotient, invented-primitive, or destructive-forgetting claims, read `references/epistemic-governance.md`. Keep selection criteria distinct from properties attributed to the system; when the representation itself changes, track its gain, loss ledger, counterchecks and reversal/reopen path when material.
-7. If independent candidate generation before taxonomy can materially change the scope or conclusion because a structuring variable is underspecified, the corpus may preempt framing, the user requests an unknown/external alternative, or premature selection would erase a real difference, use the `explore-first` skill before audit. Do not add it merely to enumerate rival explanations that the selected capabilities already preserve.
+7. If independent candidate generation before taxonomy can materially change the scope or conclusion because a structuring variable is underspecified, the corpus may preempt framing, the user requests an unknown/external alternative, or premature selection would erase a real difference, use `explore-first` before audit. Do not add it merely to enumerate rival explanations that selected capabilities already preserve.
 8. If the request compares establishing a capacity with undoing, erasing, restoring, neutralizing, or removing its effects, route through `FAM.REVERSAL_ASYMMETRY`: compile direct and inverse profiles separately, match or declare differences in scope and intervention class, and never infer inverse capacity from direct capacity.
 9. If ambiguity remains about a migrated node or relation, use `provenance-audit`.
 10. Route command-to-effect claims through `command-effect-verification`; availability claims through `effective-presence-assessment`; stop/rollback claims through `terminal-recovery-assessment`.
@@ -42,23 +62,23 @@ Never infer:
 - reversible representation choice => evidence selecting one completion;
 - source order => execution order;
 - source block => capability;
-- established direct capacity => established inverse capacity.
-- packaged resource => executable resource.
-- command received => command executed.
-- object persistence => relation persistence.
-- permission for bounded recourse => permission to disclose.
-- association => identified causal effect.
-- indicator => valid construct.
-- local robustness => target transport.
-- macro pattern => uninjected emergence.
-- artifact count => independent evidence count.
-- improved target metric => improved underlying construct.
-- valid graph => non-interfering capability composition.
-- local representation => system totality.
-- merged under current evidence => ontological identity.
-- unexplained residual => naturally secondary noise.
-- fruitful approximation => true ontology.
-- increased certainty => increased knowledge.
+- established direct capacity => established inverse capacity;
+- packaged resource => executable resource;
+- command received => command executed;
+- object persistence => relation persistence;
+- permission for bounded recourse => permission to disclose;
+- association => identified causal effect;
+- indicator => valid construct;
+- local robustness => target transport;
+- macro pattern => uninjected emergence;
+- artifact count => independent evidence count;
+- improved target metric => improved underlying construct;
+- valid graph => non-interfering capability composition;
+- local representation => system totality;
+- merged under current evidence => ontological identity;
+- unexplained residual => naturally secondary noise;
+- fruitful approximation => true ontology;
+- increased certainty => increased knowledge;
 - counterfield => forced compromise or symmetry.
 
 Public answers should use ordinary, explicit vocabulary. Do not expose internal IDs unless the user is explicitly working on the architecture.

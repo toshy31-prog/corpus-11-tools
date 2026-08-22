@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "description": "Git object identities for every test surface exercised by the total repository gate. Any change requires explicit re-attestation of this inventory.",
+  "surfaces": [
+    {"path": "corpus-11-tools/labs/epistemic-trajectory/tests", "git_object": "569c0e7b99ecfca1a3f52ed03c650756004e68a8", "kind": "tree"},
+    {"path": "corpus-11-tools/labs/experiment-lab/arena/tests", "git_object": "f2b45963fcfc251e51322d703fca311218049c47", "kind": "tree"},
+    {"path": "corpus-11-tools/labs/experiment-lab/governance/tests", "git_object": "35a406d5f8214d8286307248d08b4dae8240cf7e", "kind": "tree"},
+    {"path": "corpus-11-tools/labs/experiment-lab/tests", "git_object": "38a66d87194a18c29850d1ed37292847113dc401", "kind": "tree"},
+    {"path": "corpus-11-tools/labs/python/tests", "git_object": "31a4df1a96be8cc5c0c96907724535fe66aac862", "kind": "tree"},
+    {"path": "corpus-11-tools/tools/test_behavioral_runner.py", "git_object": "36948058f27b8c1e10f203a025539b28587545a4", "kind": "blob"},
+    {"path": "corpus-11-tools/tools/test_behavioral_surfaces.py", "git_object": "739bacfbf9b5868ec2ca0da733b16c80e08e1669", "kind": "blob"},
+    {"path": "corpus-11-tools/tools/test_ci_pinning.py", "git_object": "ecd1759dedafdd4947c9c5591ec7af3118c86149", "kind": "blob"},
+    {"path": "corpus-11-tools/tools/test_offline_router.py", "git_object": "a97daf895210267760b100b7cc15e62b8a8dd66c", "kind": "blob"},
+    {"path": "corpus-11-tools/tools/test_project_yield_gate.py", "git_object": "b9465c90daa1ec5ac895967c2595602dd0531def", "kind": "blob"},
+    {"path": "corpus-11-tools/tools/test_router_generalization.py", "git_object": "2ef1dfa175a85a87cbe92ec5c5a0a549306a75b0", "kind": "blob"},
+    {"path": "corpus-11-tools/tools/test_validation_guards.py", "git_object": "02ec44cfdfd5a2058973ed0f83eeddc372d84dd2", "kind": "blob"},
+    {"path": "research/active/corpus-hypotheses/experiments/memory-erasure-lab/test-simulator.mjs", "git_object": "85eac26b83b8976e3fd35cd9637874154a4a7e84", "kind": "blob"},
+    {"path": "research/active/corpus-hypotheses/lab-adapters/governance/tests", "git_object": "7dee358ef93d3f3626ccaf17ea0e334e7349c27e", "kind": "tree"},
+    {"path": "research/active/corpus-hypotheses/lab-adapters/tests", "git_object": "0aec3d860f577ffa5e964fff593ddf86c9278fba", "kind": "tree"},
+    {"path": "research/active/cct/executable/constitution/test_validate.py", "git_object": "5d27adf250ddf8d02b4194610717c7f9b0b65340", "kind": "blob"},
+    {"path": "research/active/cct/executable/economy/test_economy.py", "git_object": "1a6a79f059f9e408179034b6b7604a92470f0386", "kind": "blob"},
+    {"path": "research/active/cct/executable/ops/tests", "git_object": "4ea7e4de52f1bf68607e90c6f97130d1a5645466", "kind": "tree"},
+    {"path": "research/active/cct/executable/test_stack.py", "git_object": "6799a3538a3c186019cb54b8f6681f09da1aab04", "kind": "blob"},
+    {"path": "research/active/cct/governance-lab/test_limit_tests.py", "git_object": "0ead59fd088126bd357dad693d3f3ade503c7502", "kind": "blob"},
+    {"path": "research/active/cct/governance-lab/test_model.py", "git_object": "57f1c7e587c6066c303bf6b50e8390115ad1b70d", "kind": "blob"},
+    {"path": "research/active/cct/governance-lab/test_p001.py", "git_object": "9e28f87852e8abf69f01ce6b9657cc0ad9c2a47c", "kind": "blob"},
+    {"path": "research/active/cct/governance-lab/test_p002.py", "git_object": "0b33cd623dcd63414adeb7a5b2b13b5da555839c", "kind": "blob"},
+    {"path": "research/active/cct/governance-lab/test_p005.py", "git_object": "626b5381685d82f2724f642ea239671b84151753", "kind": "blob"},
+    {"path": "research/active/cct/governance-lab/test_p005_robustness.py", "git_object": "d8395eb57f8dbf642afec5c2e81cf5948ee813b4", "kind": "blob"},
+    {"path": "research/completed/food-access-paris/site/tests", "git_object": "11860ea8c4d322a54754864472c90b3d19dac3e7", "kind": "tree"}
+  ]
+}
