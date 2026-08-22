@@ -27,6 +27,9 @@ for path in required:
     if not path.is_dir():
         errors.append(f"missing boundary directory: {path.relative_to(repo_root)}")
 
+# Project-research state belongs under the repository-level `research/` tree.
+# Keep a nested `corpus-11-tools/research` forbidden even when its contents are
+# documentation-only: location is part of the product/research firewall.
 for obsolete in (
     plugin_root / "research",
     repo_root / "cct-executable",
