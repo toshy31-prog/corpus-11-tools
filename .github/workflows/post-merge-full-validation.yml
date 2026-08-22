@@ -2,102 +2,100 @@ name: Total repository validation
 
 on:
   pull_request:
-    branches:
-      - main
+    branches: [main]
     types: [opened, synchronize, reopened, ready_for_review]
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  validate:
+  structural:
+    name: structural
     runs-on: ubuntu-24.04
-    timeout-minutes: 120
-
+    timeout-minutes: 20
     steps:
-      - name: Checkout
+      - name: Checkout merge or pushed tree
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
-
       - name: Set up Python
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: '3.12.11'
-
-      - name: Set up Node
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
-        with:
-          node-version: '22.18.0'
-
-      - name: Install pinned validation dependencies
+      - name: Validate CI pinning policy
+        working-directory: corpus-11-tools
+        run: python3 tools/check_ci_pinning.py
+      - name: Validate repository structure
+        working-directory: corpus-11-tools
         run: |
-          python -m pip install --disable-pip-version-check \
-            pytest==8.4.1 iniconfig==2.3.0 packaging==26.3 pluggy==1.6.0 pygments==2.21.0
-          npm install --global @openai/codex@0.137.0
+          python3 tools/validate_package.py
+          python3 tools/check_graph.py
+          python3 tools/check_docs.py
+          python3 tools/check_boundaries.py
+          python3 tools/check_integrity.py
+          python3 tools/check_release_identity.py
+          python3 tools/check_evals.py
+          python3 tools/check_test_inventory.py --self-test
+          python3 tools/test_validation_guards.py
+      - name: Validate tracked JSON and JSONL
+        run: |
+          python3 - <<'PY'
+          import json, subprocess
+          from pathlib import Path
+          paths = subprocess.check_output(['git', 'ls-files', '*.json', '*.jsonl'], text=True).splitlines()
+          for raw in paths:
+              path = Path(raw)
+              if path.suffix == '.json':
+                  json.loads(path.read_text(encoding='utf-8'))
+              else:
+                  for line_no, line in enumerate(path.read_text(encoding='utf-8').splitlines(), 1):
+                      if line.strip():
+                          try:
+                              json.loads(line)
+                          except Exception as exc:
+                              raise RuntimeError(f'{path}:{line_no}: {exc}') from exc
+          print(f'Validated {len(paths)} tracked JSON/JSONL files')
+          PY
+      - name: Check patch whitespace integrity
+        run: git diff --check origin/main...HEAD
+      - name: Record merge/push attestation
+        run: |
+          echo "Validated checkout: $(git rev-parse HEAD)"
+          echo "Event: $GITHUB_EVENT_NAME"
+
+  python-tests:
+    name: python-runtime
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12.11'
+      - name: Install hash-pinned validation environment
+        working-directory: corpus-11-tools
+        run: |
+          python -m pip install --disable-pip-version-check --require-hashes --only-binary=:all: -r tools/requirements-bootstrap.txt
+          python -m pip install --disable-pip-version-check --require-hashes --only-binary=:all: -r tools/requirements-validation.txt
           python --version
           python -m pip --version
-          node --version
-          npm --version
           pytest --version
-          codex --version
-
-      - name: Validate package
-        working-directory: corpus-11-tools
-        run: python3 tools/validate_package.py
-
-      - name: Validate graph
-        working-directory: corpus-11-tools
-        run: python3 tools/check_graph.py
-
-      - name: Validate documentation
-        working-directory: corpus-11-tools
-        run: python3 tools/check_docs.py
-
-      - name: Validate product-research boundaries
-        working-directory: corpus-11-tools
-        run: python3 tools/check_boundaries.py
-
-      - name: Validate source and archive integrity
-        working-directory: corpus-11-tools
-        run: python3 tools/check_integrity.py
-
-      - name: Validate release identity and tag ancestry
-        working-directory: corpus-11-tools
-        run: python3 tools/check_release_identity.py
-
-      - name: Validate eval contracts and coverage
-        working-directory: corpus-11-tools
-        run: python3 tools/check_evals.py
-
-      - name: Validate exact test inventory and its guard
-        working-directory: corpus-11-tools
-        run: python3 tools/check_test_inventory.py --self-test
-
-      - name: Adversarially test the validators
-        working-directory: corpus-11-tools
-        run: python3 tools/test_validation_guards.py
-
-      - name: Clean-room Codex plugin installation
-        shell: bash
-        env:
-          CODEX_HOME: ${{ runner.temp }}/corpus-codex-home
-        run: |
-          rm -rf "$CODEX_HOME"
-          mkdir -p "$CODEX_HOME"
-          codex plugin marketplace add .
-          codex plugin add corpus-11-tools@corpus-11-local
-          codex plugin list > "$RUNNER_TEMP/corpus-plugin-list.txt"
-          cat "$RUNNER_TEMP/corpus-plugin-list.txt"
-          grep -F 'corpus-11-tools' "$RUNNER_TEMP/corpus-plugin-list.txt"
-
       - name: Run Python test discovery
         run: PYTHONPATH=corpus-11-tools/labs/python pytest -q
 
+  node-tests:
+    name: node-runtime
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: '22.18.0'
+          package-manager-cache: false
       - name: Run Node test discovery outside archived food site
         shell: bash
         run: |
@@ -111,60 +109,148 @@ jobs:
           printf 'Running %d Node test modules\n' "${#tests[@]}"
           node --test "${tests[@]}"
 
+  cct:
+    name: cct-integration
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12.11'
       - name: Run CCT integration controls
         run: PYTHONPATH=corpus-11-tools/labs/python python3 research/active/cct/executable/run_all.py
 
-      - name: Run completed food-access prototype tests
+  food:
+    name: food-prototype-security-runtime
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: '22.18.0'
+          package-manager-cache: false
+      - name: Install exact lockfile
         working-directory: research/completed/food-access-paris/site
+        run: npm ci --ignore-scripts
+      - name: Audit all production and build dependencies
+        working-directory: research/completed/food-access-paris/site
+        run: npm audit --audit-level=high
+      - name: Lint completed prototype
+        working-directory: research/completed/food-access-paris/site
+        run: npm run lint
+      - name: Test completed prototype
+        working-directory: research/completed/food-access-paris/site
+        run: npm test
+
+  cleanroom:
+    name: codex-cleanroom-install
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: '22.18.0'
+          package-manager-cache: false
+      - name: Install exact Codex CLI
+        run: npm install --global @openai/codex@0.137.0
+      - name: Clean-room Codex plugin installation
+        env:
+          CODEX_HOME: ${{ runner.temp }}/corpus-codex-home
         run: |
-          npm ci --ignore-scripts
-          npm test
+          rm -rf "$CODEX_HOME"
+          mkdir -p "$CODEX_HOME"
+          codex plugin marketplace add .
+          codex plugin add corpus-11-tools@corpus-11-local
+          codex plugin list | tee "$RUNNER_TEMP/corpus-plugin-list.txt"
+          grep -F 'corpus-11-tools' "$RUNNER_TEMP/corpus-plugin-list.txt"
+          codex --version
 
-      - name: Validate tracked JSON and JSONL
-        shell: bash
+  head-attestation:
+    name: exact-pr-head
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact PR head
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12.11'
+      - name: Prove exact head identity
+        run: test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+      - name: Validate exact head independently
+        working-directory: corpus-11-tools
         run: |
-          python3 - <<'PY'
-          import json
-          import subprocess
-          from pathlib import Path
+          python3 tools/check_ci_pinning.py
+          python3 tools/validate_package.py
+          python3 tools/check_graph.py
+          python3 tools/check_docs.py
+          python3 tools/check_boundaries.py
+          python3 tools/check_integrity.py
+          python3 tools/check_evals.py
+          python3 tools/check_test_inventory.py --self-test
 
-          paths = subprocess.check_output(
-              ['git', 'ls-files', '*.json', '*.jsonl'], text=True
-          ).splitlines()
-          checked = 0
-          for raw in paths:
-              path = Path(raw)
-              if path.suffix == '.json':
-                  json.loads(path.read_text(encoding='utf-8'))
-              else:
-                  for line_no, line in enumerate(path.read_text(encoding='utf-8').splitlines(), 1):
-                      if line.strip():
-                          try:
-                              json.loads(line)
-                          except Exception as exc:
-                              raise RuntimeError(f'{path}:{line_no}: {exc}') from exc
-              checked += 1
-          print(f'Validated {checked} tracked JSON/JSONL files')
-          PY
-
-      - name: Run behavioral routing and order-robustness evals
+  behavioral:
+    name: codex-behavioral
+    needs: [structural, python-tests, node-tests, cct, food, cleanroom]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: '22.18.0'
+          package-manager-cache: false
+      - name: Install exact Codex CLI
+        run: npm install --global @openai/codex@0.137.0
+      - name: Install plugin into isolated Codex home
+        env:
+          CODEX_HOME: ${{ runner.temp }}/corpus-codex-home
+        run: |
+          rm -rf "$CODEX_HOME"
+          mkdir -p "$CODEX_HOME"
+          codex plugin marketplace add .
+          codex plugin add corpus-11-tools@corpus-11-local
+      - name: Run behavioral routing replicas
         working-directory: corpus-11-tools
         env:
           CODEX_HOME: ${{ runner.temp }}/corpus-codex-home
           CODEX_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: python3 tools/run_behavioral_evals.py
+        run: python3 tools/run_behavioral_evals.py --fresh
 
-      - name: Check patch whitespace integrity
-        run: git diff --check origin/main...HEAD
-
-      - name: Record validated commit and environment
+  total:
+    name: total
+    if: always()
+    needs: [structural, python-tests, node-tests, cct, food, cleanroom, head-attestation, behavioral]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Require every applicable gate
         shell: bash
         run: |
-          echo "Validated commit: $(git rev-parse HEAD)"
-          echo "Runner: ubuntu-24.04"
-          python --version
-          python -m pip --version
-          node --version
-          npm --version
-          pytest --version
-          codex --version
+          failures=0
+          for result in \
+            "${{ needs.structural.result }}" \
+            "${{ needs.python-tests.result }}" \
+            "${{ needs.node-tests.result }}" \
+            "${{ needs.cct.result }}" \
+            "${{ needs.food.result }}" \
+            "${{ needs.cleanroom.result }}" \
+            "${{ needs.behavioral.result }}"; do
+            [[ "$result" == success ]] || failures=1
+          done
+          if [[ "$GITHUB_EVENT_NAME" == pull_request ]]; then
+            [[ "${{ needs.head-attestation.result }}" == success ]] || failures=1
+          fi
+          if (( failures )); then
+            echo 'FAIL: at least one required validation gate is not green' >&2
+            exit 1
+          fi
+          echo 'PASS: all applicable independent validation gates are green'
