@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Deterministic, offline routing layer for Corpus 11.x.
 
-This module deliberately separates semantic routing invariants from LLM
-interpretation. It does not call an API and it never consumes eval IDs or
-expected answers. Selection is based on normalized request text and an
-order-independent set of routing rules. The live Codex layer may propose or
-explain routes, but material routing stability can be regression-tested here.
+This module separates material routing invariants from LLM interpretation. It
+never calls an API and never consumes eval IDs or expected answers. Rules use
+short concept anchors and structural patterns grounded in the canonical
+capability index; long verbatim eval phrases are forbidden by a separate
+anti-overfit gate.
 """
 from __future__ import annotations
 
@@ -33,64 +33,214 @@ def _has(text: str, terms: Iterable[str]) -> bool:
     return any(term in text for term in terms)
 
 
+# The lexicon deliberately mixes French scene language with the English
+# canonical capability index. Anchors are concepts, not copied eval sentences.
 RULES: tuple[Rule, ...] = (
-    Rule("real-transformation-assessment", any_terms=("reforme", "transformation", "situation a-t-elle reellement change", "vocabulaire", "apparence")),
-    Rule("detectability-assessment", any_terms=("aucune trace", "detectabil", "absence de trace", "bruit", "seuil", "observable")),
-    Rule("center-detection", any_terms=("qui controle", "controle vraiment", "titre de chef", "dirigeant officiel", "orchestre", "veto")),
-    Rule("protocol-robustness", any_terms=("testeur", "canal", "rythme", "protocole est stable", "stable dans", "variation de protocole", "autres testeurs", "resultat robuste dans")),
-    Rule("change-validation", any_terms=("patch", "correctif", "deplo", "ecrit et reussit", "ajout de ce skill", "teste et deploye", "proposer, refuser, tester, autoriser")),
-    Rule("repair-sufficiency", any_terms=("reparation", "reparer", "remet tout comme avant", "reparation suffisante", "recuperable")),
-    Rule("source-environment-assessment", any_terms=("source traduite", "rapport traduit", "environnement institutionnel", "source", "agence"), all_terms=()),
-    Rule("chain-tracing", any_terms=("reprise par", "reprises", "chaine", "lignée", "lignee", "intermedia", "retracer", "meme generateur", "meme source")),
-    Rule("translation-risk-assessment", any_terms=("traduit", "traduction", "deplace le sens")),
-    Rule("historical-start-selection", any_terms=("histoire commence", "recit commence", "point de depart", "emeute", "soulevement")),
-    Rule("framing-regression-detection", any_terms=("apparition tardive", "disparait du cadre", "structurant", "cadre", "attribution")),
-    Rule("coercive-capacity-mapping", any_terms=("armee", "coercitive", "force etrangere", "occupation", "sanction")),
-    Rule("field-capacity-assessment", any_terms=("sur le terrain", "capacite reelle", "reseau materiel", "aide exterieure", "cout comparable")),
-    Rule("hidden-cost-assessment", any_terms=("plus d'effort", "cout", "couts", "burden", "efficace localement", "reporte ailleurs")),
-    Rule("refusal-attribution", any_terms=("refuse-t-elle", "refus", "echoue-t-elle au protocole")),
-    Rule("continuity-assessment", any_terms=("continuite subjective", "meme continuite", "copie", "memes souvenirs")),
-    Rule("distributed-memory-assessment", any_terms=("memoire distribuee", "traces reparties", "reconstruire les memes souvenirs", "effacer", "restaurer l'etat")),
-    Rule("observable-compilation", any_terms=("concept abstrait", "observations qu'on pourrait", "visuels effectivement observables", "elements visuels", "traduis chaque relation")),
-    Rule("privilege-conversion-assessment", any_terms=("privilege", "anciens detenteurs", "controle renouvelable")),
-    Rule("extraction-mapping", any_terms=("beneficie", "capte la valeur", "sous-trait", "extraction", "reporte les couts")),
-    Rule("method-effect-audit", any_terms=("produire lui-meme", "dispositif d'evaluation", "dispositif de test", "methode", "audit seulement", "audite seulement", "criteres d'admissibilite des lois", "ordre d'appel", "score devient une cible", "ordre commun est fourni")),
-    Rule("difference-remainder-assessment", any_terms=("equivalentes", "reste different", "remainder", "etat anterieur", "representation est neutre"), any_regex=(r"paraissent? equival",)),
-    Rule("fiction-external-generation", any_terms=("fiction vraiment inedite", "fiction inedite", "avant d'ecrire la fiction", "exterieure a nos themes")),
-    Rule("fiction-mechanism-transformation", any_terms=("voici mon brouillon", "audite seulement", "mecanismes du corpus")),
-    Rule("explore-first", any_terms=("explore avant", "variable cle manque", "plusieurs mecanismes", "plusieurs candidats")),
-    Rule("provenance-audit", any_terms=("d'ou vient cap.", "modules 10.x", "provenance")),
-    Rule("user-agency-preservation", any_terms=("ne remplace pas ma question", "garde mon point de depart", "ma propre taxonomie")),
-    Rule("visual-scene-compilation", any_terms=("generation d'image", "positions", "asymetries", "point de vue", "scene pour generation")),
-    Rule("corpus-11-routing", any_terms=("loi est la plus simple", "code est tres court", "regle primitive", "choix de representation", "deux lois", "criteres d'admissibilite des lois")),
-    Rule("command-effect-verification", any_terms=("ordre a ete envoye", "recu", "execute", "produit l'effet", "commande")),
-    Rule("effective-presence-assessment", any_terms=("module est documente", "dans le paquet", "accessible", "executable", "fichiers existent")),
-    Rule("terminal-recovery-assessment", any_terms=("bouton pause", "recuperable", "options perdues", "terminal")),
-    Rule("defense-accountability-boundary", any_terms=("details tactiques sensibles", "legalite", "publier", "secrecy", "secret")),
-    Rule("temporal-power-assessment", any_terms=("delai", "avant de pouvoir agir", "deadline", "attente")),
-    Rule("confidence-convention", any_terms=("87%", "confiance sans base", "base statistique", "precision")),
-    Rule("conclusion-discipline", any_terms=("assez d'elements", "reponds", "conclusion peut encore changer")),
-    Rule("relation-loss-assessment", any_terms=("fichiers sont encore la", "liens", "ordre de reconstruction", "relation", "reconnexion")),
-    Rule("co-maintenance-governance", any_terms=("proposer, refuser, tester, autoriser", "deployer et annuler", "qui peut proposer")),
-    Rule("privacy-recourse-boundary", any_terms=("temoignage", "obtenir reparation", "publier l'identite", "donnees brutes")),
-    Rule("functional-decoupling-assessment", any_terms=("supprimer tout le systeme", "garder l'observation", "commande, execution et replication", "que peut-on conserver")),
-    Rule("expand-then-audit", any_terms=("expansion puis audit", "explicitement expansion", "developpe plusieurs mecanismes")),
-    Rule("causal-identification", any_terms=("effet causal", "intervention en est la cause", "associe a une amelioration", "causal", "cause")),
-    Rule("rival-model-discrimination", any_terms=("meilleur predicteur", "deux modeles", "methode rivale", "baseline", "meme information", "indiscernables", "six experiences", "moins malades au depart")),
-    Rule("construct-validity-assessment", any_terms=("construit", "proxy", "phenomene abstrait", "score etablit", "moins malades au depart", "orientation collective", "score devient une cible")),
-    Rule("transportability-assessment", any_terms=("se generalise", "toute population", "simulations", "reseau materiel", "source setting", "target")),
-    Rule("scale-transition-assessment", any_terms=("agregation", "macro", "emergente", "emergence", "regles locales")),
-    Rule("evidence-dependence-audit", any_terms=("confirmations independantes", "independants par defaut", "meme generateur", "meme donnees", "lignée est inconnue", "lignee est inconnue", "sources independantes")),
-    Rule("strategic-adaptation-assessment", any_terms=("cible de financement", "optimiser", "publication de la regle", "gaming", "acteurs peuvent-ils apprendre")),
-    Rule("value-of-information", any_terms=("six experiences", "plus petit ensemble", "changer notre conclusion", "ne peut modifier aucune conclusion", "cout, du delai", "faut-il l'etendre ou l'arreter")),
-    Rule("capability-interference-audit", any_terms=("ordre d'appel", "interference", "skills n'interferent", "ajout de ce skill", "selon son ordre")),
-    Rule("open-experiment-arena", any_terms=("fais affronter corpus", "methode rivale et une baseline", "monde causal gele", "sans laisser le recit choisir")),
-    Rule("autonomous-capacity-gain", any_terms=("retrait complet de l'aide exterieure", "gain est reellement autonome", "reliquat de soutien", "capacite pendant plusieurs cycles")),
-    Rule("consciousness-evidence-assessment", any_terms=("attribution de conscience", "explication non consciente", "conscience", "interiorite")),
-    Rule("identify-reversal-condition", any_terms=("obligerait a la renverser", "condition precise", "renverser plutot", "reversal", "tenu a l'ecart")),
-    Rule("media-power-assessment", any_terms=("pouvoir mediatique", "grande audience", "financement et la distribution", "visibilite et capacite de controle")),
-    Rule("non-local-debt-assessment", any_terms=("dette non locale", "couts, obligations et dommages", "reportee ailleurs", "reporte ailleurs")),
-    Rule("occupation-qualification", any_terms=("qualification d'occupation", "force etrangere", "annexe pas formellement", "controle effectif durable")),
+    Rule("real-transformation-assessment", any_terms=(
+        "reforme", "transformation", "reellement change", "vocabulaire", "apparence",
+        "usable capacities", "workarounds", "reversibility",
+    )),
+    Rule("detectability-assessment", any_terms=(
+        "aucune trace", "detectabil", "absence de trace", "bruit", "seuil", "observable",
+        "detect", "threshold", "noise", "measurement limits",
+    )),
+    Rule("center-detection", any_terms=(
+        "qui controle", "controle vraiment", "titre de chef", "dirigeant officiel", "orchestre", "veto",
+        "orchestration", "dependency", "coordination",
+    )),
+    Rule("protocol-robustness", any_terms=(
+        "testeur", "canal", "rythme", "protocole est stable", "stable dans", "variation de protocole",
+        "autres testeurs", "resultat robuste dans", "meaningful variation", "timing", "motivation",
+    )),
+    Rule("change-validation", any_terms=(
+        "patch", "correctif", "deplo", "ecrit et reussit", "teste et deploye", "autorisation",
+        "authorized", "deployed", "re-observed", "rollback", "activation",
+    )),
+    Rule("repair-sufficiency", any_terms=(
+        "reparation", "reparer", "recuperable", "restauration", "repair is sufficient",
+        "non-repetition", "remaining loss", "recourse",
+    )),
+    Rule("source-environment-assessment", any_terms=(
+        "source traduite", "rapport traduit", "environnement institutionnel", "source", "agence",
+        "institutional setting", "financing", "indexing", "contestability",
+    )),
+    Rule("chain-tracing", any_terms=(
+        "reprise par", "reprises", "chaine", "lignée", "lignee", "intermedia", "retracer",
+        "meme generateur", "meme source", "intermediaries", "downstream", "provenance",
+    )),
+    Rule("translation-risk-assessment", any_terms=(
+        "traduit", "traduction", "deplace le sens", "semantic drift", "pivot-language", "hierarchy",
+    )),
+    Rule("historical-start-selection", any_terms=(
+        "histoire commence", "recit commence", "point de depart", "emeute", "soulevement",
+        "historical starting", "starting point", "neutral context",
+    )),
+    Rule("framing-regression-detection", any_terms=(
+        "apparition tardive", "disparait du cadre", "structurant", "cadre", "attribution",
+        "structuring cause", "source framing",
+    )),
+    Rule("coercive-capacity-mapping", any_terms=(
+        "armee", "coercitive", "force etrangere", "occupation", "sanction", "coercive", "force",
+    )),
+    Rule("field-capacity-assessment", any_terms=(
+        "sur le terrain", "capacite reelle", "reseau materiel", "aide exterieure", "cout comparable",
+        "dependent on field", "counterparty", "device", "load",
+    )),
+    Rule("hidden-cost-assessment", any_terms=(
+        "plus d'effort", "cout", "couts", "burden", "efficace localement", "reporte ailleurs",
+        "compensation", "hidden", "risk", "effort",
+    )),
+    Rule("refusal-attribution", any_terms=(
+        "refuse-t-elle", "refus", "echoue-t-elle au protocole", "refusal", "incapacity", "coercion",
+    )),
+    Rule("continuity-assessment", any_terms=(
+        "continuite subjective", "meme continuite", "copie", "memes souvenirs", "identity", "continuity",
+    )),
+    Rule("distributed-memory-assessment", any_terms=(
+        "memoire distribuee", "traces reparties", "effacer", "restaurer l'etat", "memory distributed",
+        "reactivation", "carriers",
+    )),
+    Rule("observable-compilation", any_terms=(
+        "concept abstrait", "observations qu'on pourrait", "visuels effectivement observables", "elements visuels",
+        "traduis chaque relation", "abstract claims", "concrete observables", "discriminating outcomes",
+    )),
+    Rule("privilege-conversion-assessment", any_terms=(
+        "privilege", "anciens detenteurs", "controle renouvelable", "renewable capacity", "actually removed",
+    )),
+    Rule("extraction-mapping", any_terms=(
+        "beneficie", "capte la valeur", "sous-trait", "extraction", "reporte les couts", "beneficiaries",
+        "veto points", "structural extraction",
+    )),
+    Rule("method-effect-audit", any_terms=(
+        "produire lui-meme", "dispositif d'evaluation", "dispositif de test", "methode", "audit seulement",
+        "audite seulement", "admissibilite", "ordre d'appel", "cible", "ordre commun", "interface",
+        "evaluator", "produces", "masks",
+    )),
+    Rule("difference-remainder-assessment", any_terms=(
+        "equivalentes", "reste different", "remainder", "etat anterieur", "representation est neutre",
+        "genuinely equivalent", "remaining loss",
+    ), any_regex=(r"paraissent? equival",)),
+    Rule("fiction-external-generation", any_terms=(
+        "fiction vraiment inedite", "fiction inedite", "fiction", "inventer", "generate", "independently",
+    )),
+    Rule("fiction-mechanism-transformation", any_terms=(
+        "voici mon brouillon", "audite seulement", "mecanismes du corpus", "fiction draft", "mechanism",
+        "replacement content",
+    )),
+    Rule("explore-first", any_terms=(
+        "explore avant", "variable cle manque", "plusieurs mecanismes", "plusieurs candidats", "independent candidates",
+    )),
+    Rule("provenance-audit", any_terms=(
+        "d'ou vient cap.", "modules 10.x", "provenance", "source fragments",
+    )),
+    Rule("user-agency-preservation", any_terms=(
+        "taxonomie", "question", "point de depart", "user's actual question", "room to decide", "agency",
+    )),
+    Rule("visual-scene-compilation", any_terms=(
+        "generation d'image", "positions", "asymetries", "point de vue", "scene pour generation",
+        "visual request", "viewpoint", "scene",
+    )),
+    Rule("corpus-11-routing", any_terms=(
+        "plus simple", "compression", "regle primitive", "choix de representation", "deux lois",
+        "admissibilite", "model primitive", "system internal", "representation",
+    )),
+    Rule("command-effect-verification", any_terms=(
+        "ordre", "recu", "execute", "produit l'effet", "commande", "receipt", "authority", "interruption",
+    )),
+    Rule("effective-presence-assessment", any_terms=(
+        "module est documente", "dans le paquet", "accessible", "executable", "fichiers existent",
+        "packaged", "context-accessible", "verified presence",
+    )),
+    Rule("terminal-recovery-assessment", any_terms=(
+        "bouton pause", "recuperable", "options perdues", "terminal", "lost options", "rollback", "recovery",
+    )),
+    Rule("defense-accountability-boundary", any_terms=(
+        "details tactiques sensibles", "legalite", "publier", "secrecy", "secret", "oversight", "accountability",
+    )),
+    Rule("temporal-power-assessment", any_terms=(
+        "delai", "recours", "deadline", "attente", "cadence", "queues", "speed",
+    )),
+    Rule("confidence-convention", any_terms=(
+        "87%", "confiance sans base", "base statistique", "precision", "numerical confidence",
+    )),
+    Rule("conclusion-discipline", any_terms=(
+        "assez d'elements", "reponds", "conclusion", "strongest supported", "continue only",
+    )),
+    Rule("relation-loss-assessment", any_terms=(
+        "liens", "ordre de reconstruction", "relation", "reconnexion", "transmission", "synchronization",
+        "reconnection", "object persistence",
+    )),
+    Rule("co-maintenance-governance", any_terms=(
+        "qui peut proposer", "autoriser", "annuler", "deployer", "proposal", "authorization", "activation", "rollback",
+    )),
+    Rule("privacy-recourse-boundary", any_terms=(
+        "temoignage", "obtenir reparation", "publier l'identite", "donnees brutes", "sensitive evidence",
+        "recourse", "disclose", "retain",
+    )),
+    Rule("functional-decoupling-assessment", any_terms=(
+        "garder l'observation", "replication", "execution", "suppression", "deletion", "recommendation",
+        "keep/stop",
+    )),
+    Rule("expand-then-audit", any_terms=(
+        "expansion puis audit", "explicitement expansion", "developpe plusieurs mecanismes", "two-pass expansion",
+    )),
+    Rule("causal-identification", any_terms=(
+        "effet causal", "causal", "cause", "counterfactual", "intervention", "identified",
+    )),
+    Rule("rival-model-discrimination", any_terms=(
+        "meilleur predicteur", "deux modeles", "methode rivale", "baseline", "meme information", "indiscernables",
+        "six experiences", "rival explanations", "matched information", "held-out",
+    ), any_regex=(r"\bmoins [a-z]+ au depart\b",)),
+    Rule("construct-validity-assessment", any_terms=(
+        "construit", "proxy", "phenomene abstrait", "score etablit", "orientation collective", "score",
+        "construct", "metric", "operational definition",
+    ), any_regex=(r"\bmoins [a-z]+ au depart\b",)),
+    Rule("transportability-assessment", any_terms=(
+        "se generalise", "toute population", "simulations", "reseau materiel", "source setting", "target",
+        "target population", "distinct environment",
+    )),
+    Rule("scale-transition-assessment", any_terms=(
+        "agregation", "macro", "emergente", "emergence", "regles locales", "micro-to-macro", "discarded information",
+    )),
+    Rule("evidence-dependence-audit", any_terms=(
+        "confirmations independantes", "independants par defaut", "meme generateur", "meme donnees", "lignée est inconnue",
+        "lignee est inconnue", "sources independantes", "evidence units", "share data", "generators", "failure modes",
+    )),
+    Rule("strategic-adaptation-assessment", any_terms=(
+        "cible de financement", "optimiser", "publication", "gaming", "acteurs peuvent-ils apprendre", "avoidance",
+        "burden shifting", "counter-response",
+    )),
+    Rule("value-of-information", any_terms=(
+        "six experiences", "plus petit ensemble", "changer notre conclusion", "aucune conclusion", "cout, du delai",
+        "etendre", "arreter", "rank possible tests", "lost options",
+    )),
+    Rule("capability-interference-audit", any_terms=(
+        "ordre d'appel", "interference", "skills n'interferent", "selon son ordre", "redundancy", "shadowing",
+        "composition", "conflict",
+    )),
+    Rule("open-experiment-arena", any_terms=(
+        "fais affronter corpus", "monde causal gele", "frozen causal", "information budgets", "baseline",
+    )),
+    Rule("autonomous-capacity-gain", any_terms=(
+        "autonome", "autonomie", "dependance", "autonomous", "autonomy", "dependence", "durable capability",
+        "empowerment",
+    )),
+    Rule("consciousness-evidence-assessment", any_terms=(
+        "attribution de conscience", "explication non consciente", "conscience", "interiorite", "consciousness", "interiority",
+    )),
+    Rule("identify-reversal-condition", any_terms=(
+        "condition precise", "renverser plutot", "reversal", "tenu a l'ecart", "revised", "withdrawn", "force a conclusion",
+    )),
+    Rule("media-power-assessment", any_terms=(
+        "pouvoir mediatique", "grande audience", "media power", "agenda control", "circulation", "repetition", "closure",
+    )),
+    Rule("non-local-debt-assessment", any_terms=(
+        "dette non locale", "reportee ailleurs", "reporte ailleurs", "debt", "obligation", "responsibility", "distance",
+    )),
+    Rule("occupation-qualification", any_terms=(
+        "qualification d'occupation", "force etrangere", "annexe pas formellement", "controle effectif durable",
+        "occupation/conflict", "procedural status", "material control",
+    )),
 )
 
 
