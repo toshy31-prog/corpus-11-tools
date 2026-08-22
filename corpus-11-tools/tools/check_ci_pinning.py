@@ -36,11 +36,15 @@ for forbidden in ("-latest", "@latest", "==latest", ":latest"):
 
 # setup-node v6 can auto-enable package-manager caching; total validation opts out
 # explicitly so cache behavior cannot silently change with repository metadata.
-if "package-manager-cache: false" not in text:
+cache_values = re.findall(r"(?m)^\s*package-manager-cache:\s*([^\s#]+)", text)
+if not cache_values:
     errors.append("setup-node package-manager-cache is not explicitly disabled")
+for value in cache_values:
+    if value.lower() != "false":
+        errors.append(f"package-manager-cache must be false, got: {value}")
 
 # Python validation dependencies must be installed from repository-controlled,
-# hash-locked requirement files.  Direct ad-hoc installs are prohibited.
+# hash-locked requirement files. Direct ad-hoc installs are prohibited.
 if "--require-hashes --only-binary=:all: -r tools/requirements-bootstrap.txt" not in text:
     errors.append("hash-pinned pip bootstrap is not enforced")
 if "--require-hashes --only-binary=:all: -r tools/requirements-validation.txt" not in text:
