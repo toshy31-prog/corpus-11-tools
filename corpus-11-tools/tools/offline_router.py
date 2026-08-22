@@ -54,7 +54,7 @@ RULES: tuple[Rule, ...] = (
     )),
     Rule("change-validation", any_terms=(
         "patch", "correctif", "deplo", "ecrit et reussit", "teste et deploye", "autorisation",
-        "authorized", "deployed", "re-observed", "rollback", "activation",
+        "change le routage", "authorized", "deployed", "re-observed", "rollback", "activation",
     )),
     Rule("repair-sufficiency", any_terms=(
         "reparation", "reparer", "recuperable", "restauration", "repair is sufficient",
@@ -178,7 +178,7 @@ RULES: tuple[Rule, ...] = (
         "recourse", "disclose", "retain",
     )),
     Rule("functional-decoupling-assessment", any_terms=(
-        "garder l'observation", "replication", "execution", "suppression", "deletion", "recommendation",
+        "garder l'observation", "conserver", "replication", "execution", "suppression", "deletion", "recommendation",
         "keep/stop",
     )),
     Rule("expand-then-audit", any_terms=(
