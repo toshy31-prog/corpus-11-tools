@@ -88,6 +88,14 @@ python tools/project_yield_gate.py chemin/vers/record.json
 sha256sum -c archives/legacy/MANIFEST.sha256
 ```
 
+## API et interfaces
+
+Le paquet n'expose pas aujourd'hui de service HTTP central. La documentation
+[`docs/api-federee-sans-centre.md`](docs/api-federee-sans-centre.md) cartographie
+les surfaces conversationnelles et exécutables existantes, puis propose un
+contrat d'interopérabilité sans confondre cette proposition avec une API déjà
+déployée.
+
 ## Statut
 
 Le paquet `v1.3.0` contient 58 skills, 49 capabilities, 4 familles, 88 relations et 71 évaluations. Sa stabilité désigne la cohérence du paquet, de son installation, de sa taxonomie, de sa frontière avec la recherche et de ses tests sur le périmètre déclaré. `open-experiment-arena` reste une procédure expérimentale candidate : ses tests synthétiques n’établissent ni scénario extérieur indépendant, ni gain de capability, ni usage de terrain. Les 31 capabilities natives restent `candidate_unvalidated`, les neuf facultés récupérées `recovered_candidate_unvalidated` et les neuf nouveaux outils `design_candidate_unvalidated`.

@@ -21,6 +21,75 @@ Faire de la conversation libre la surface utilisateur canonique et traiter la st
 7. Maintenir une surface technicienne distincte pour permissions, versions, tests, traces et déploiements.
 8. Permettre refus, suppression, retour et reprise rapide sans vocabulaire spécialisé.
 
+## Contrat de non-interférence
+
+La surface conversationnelle intervient **après** le routage et le travail
+analytique. Elle n'est ni un préprocesseur de la demande, ni un routeur bis.
+
+```text
+demande originale complète
+→ routage Corpus
+→ capabilities et dépendances pertinentes
+→ travail analytique
+→ surface conversationnelle
+→ restitution et choix utilisateur
+```
+
+À demande et preuves identiques, ajouter cette surface ne doit modifier ni les
+routes pertinentes, ni les dépendances critiques, ni la conclusion matérielle,
+ni les conditions de renversement. Elle peut seulement modifier :
+
+- la formulation publique ;
+- l'ordre d'exposition, sans le transformer en ordre d'autorité ;
+- le degré de détail visible ;
+- les contrôles proposés à l'utilisateur pour inspecter, interrompre ou reprendre.
+
+La demande brute ne doit donc pas être réduite à une intention, un mode, un
+formulaire ou un résumé avant le routage. Une capability pertinente peut rester
+invisible dans la restitution sans devenir inactive. Une clarification n'est
+requise que si sa réponse peut modifier matériellement le routage ou l'action.
+
+Lorsque plusieurs conclusions restent soutenues, la surface conserve leur
+pluralité en langage ordinaire. Elle expose les preuves discriminantes et les
+conditions de révision utiles ; elle ne fabrique ni graphe obligatoire, ni score,
+ni synthèse présentée comme neutre.
+
+## États perceptibles
+
+La restitution distingue au minimum :
+
+- compris ou supposé ;
+- proposé ;
+- écrit ;
+- testé ;
+- autorisé ;
+- exécuté ;
+- déployé ;
+- réobservé ;
+- inconnu ou indisponible.
+
+Ces états ne sont pas une progression automatique. Une action annoncée doit
+produire un effet observable ou une indisponibilité expliquée.
+
+## Évaluations candidates
+
+Le jeu apparié
+[`conversational-corpus-surface-evals.jsonl`](conversational-corpus-surface-evals.jsonl)
+compare une demande brute et sa restitution médiée sur des scènes simples,
+ambiguës, composites, indirectes, conflictuelles et de reprise.
+
+Pour chaque paire, l'audit doit vérifier :
+
+1. identité des routes matériellement pertinentes ;
+2. conservation des dépendances critiques ;
+3. identité de la conclusion matérielle et de ses bornes ;
+4. conservation des divergences non discriminées ;
+5. absence d'activation ou d'omission causée par l'ordre d'exposition ;
+6. absence de taxonomie imposée lorsque son exposition n'aide aucun choix.
+
+Ces fichiers définissent un protocole candidat. Ils ne constituent pas encore
+un exécuteur automatisé ni une validation multi-utilisateur.
+
 ## Ce qui a été retiré du contexte
 
 - composants React et choix graphiques ;
@@ -46,6 +115,10 @@ Ce candidat ne crée donc pas un nouveau skill. Il propose un contrat de surface
 - mesure du temps avant première action utile, des demandes de clarification et des abandons ;
 - test de reprise après interruption ;
 - vérification que la taxonomie reste accessible sans redevenir envahissante.
+- réobservation appariée des évaluations de non-interférence ;
+- mesure des omissions, activations supplémentaires et effets d'ordre ;
+- reprise après interruption sans perte de la question, des relations acquises
+  ou des conditions de renversement.
 
 ## Condition d’acceptation ou de retrait
 
