@@ -1,0 +1,30 @@
+name: Principle registry probe
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+
+jobs:
+  generate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12.11'
+          pip-version: '26.2.1'
+      - name: Generate canonical registry
+        working-directory: corpus-11-tools
+        run: python3 tools/principle_registry.py > docs/principle-registry.json
+      - name: Export registry
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: principle-registry
+          path: corpus-11-tools/docs/principle-registry.json
+          if-no-files-found: error
+          retention-days: 1
