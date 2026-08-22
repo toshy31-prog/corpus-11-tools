@@ -7,6 +7,7 @@
     {"path": "corpus-11-tools/labs/experiment-lab/governance/tests", "git_object": "35a406d5f8214d8286307248d08b4dae8240cf7e", "kind": "tree"},
     {"path": "corpus-11-tools/labs/experiment-lab/tests", "git_object": "38a66d87194a18c29850d1ed37292847113dc401", "kind": "tree"},
     {"path": "corpus-11-tools/labs/python/tests", "git_object": "31a4df1a96be8cc5c0c96907724535fe66aac862", "kind": "tree"},
+    {"path": "corpus-11-tools/tools/test_behavioral_runner.py", "git_object": "36948058f27b8c1e10f203a025539b28587545a4", "kind": "blob"},
     {"path": "corpus-11-tools/tools/test_behavioral_surfaces.py", "git_object": "739bacfbf9b5868ec2ca0da733b16c80e08e1669", "kind": "blob"},
     {"path": "corpus-11-tools/tools/test_ci_pinning.py", "git_object": "ecd1759dedafdd4947c9c5591ec7af3118c86149", "kind": "blob"},
     {"path": "corpus-11-tools/tools/test_offline_router.py", "git_object": "a97daf895210267760b100b7cc15e62b8a8dd66c", "kind": "blob"},
