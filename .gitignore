@@ -2,5 +2,9 @@
 __pycache__/
 *.py[cod]
 
+# Local validation evidence and resumable checkpoints.
+.validation-state/
+**/.validation-state/
+
 # Independent local repository; its complete history is preserved as a bundle.
 /ne-me-dis-pas-comment-sauver-le-monde-sauve-le/site/
