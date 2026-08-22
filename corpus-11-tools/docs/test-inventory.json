@@ -12,6 +12,7 @@
     {"path": "corpus-11-tools/tools/test_ci_pinning.py", "git_object": "ecd1759dedafdd4947c9c5591ec7af3118c86149", "kind": "blob"},
     {"path": "corpus-11-tools/tools/test_offline_router.py", "git_object": "a97daf895210267760b100b7cc15e62b8a8dd66c", "kind": "blob"},
     {"path": "corpus-11-tools/tools/test_project_yield_gate.py", "git_object": "b9465c90daa1ec5ac895967c2595602dd0531def", "kind": "blob"},
+    {"path": "corpus-11-tools/tools/test_router_generalization.py", "git_object": "2ef1dfa175a85a87cbe92ec5c5a0a549306a75b0", "kind": "blob"},
     {"path": "corpus-11-tools/tools/test_validation_guards.py", "git_object": "02ec44cfdfd5a2058973ed0f83eeddc372d84dd2", "kind": "blob"},
     {"path": "research/active/corpus-hypotheses/experiments/memory-erasure-lab/test-simulator.mjs", "git_object": "85eac26b83b8976e3fd35cd9637874154a4a7e84", "kind": "blob"},
     {"path": "research/active/corpus-hypotheses/lab-adapters/governance/tests", "git_object": "7dee358ef93d3f3626ccaf17ea0e334e7349c27e", "kind": "tree"},
