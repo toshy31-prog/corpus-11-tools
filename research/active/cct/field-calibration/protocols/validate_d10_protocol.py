@@ -23,7 +23,7 @@ def validate() -> list[str]:
         errors.append("protocol must remain ready_for_synthetic_campaign")
     if protocol.get("scope") != "fictional_matched_worlds":
         errors.append("the protocol must remain a fictional matched-world campaign")
-    if protocol.get("evidence_scope") != "model_internal_only":
+    if protocol.get("evidence_scope") != "model_internal":
         errors.append("the campaign must not claim external evidence")
 
     decisions = {item["id"]: item for item in constitution["dispositions"]}

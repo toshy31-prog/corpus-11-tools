@@ -5,10 +5,10 @@
       "id": "corpus-hypotheses",
       "path": "active/corpus-hypotheses",
       "mode": "guarded-specialist-cycle",
-      "safe_checks": ["research_workspace", "corpus_factorization_s4_quotient"],
+      "safe_checks": ["research_workspace", "corpus_factorization_s4_quotient", "corpus_factorization_b3"],
       "synthetic_scope": "formal_exact",
-      "next_decision": "Construire une famille fictive indépendante de dispositifs de récupération et chercher une factorisation sans sous-espace fixe commun.",
-      "blocker": "Les pistes F_T et S4 locales ont atteint leur condition d’arrêt ; la suite consiste en une règle de construction interne indépendante."
+      "next_decision": "Réallouer la prochaine recherche interne par valeur d’information hors factorisation ; ne rouvrir ce dossier qu’avec un observable réellement distinct fixé avant calcul.",
+      "blocker": "H4 dans S4 et H5 dans B3 sont not_supported ; aucune nouvelle recherche adaptative de catalogue de factorisations n’est admissible."
     },
     {
       "id": "cct",
@@ -16,8 +16,8 @@
       "mode": "local-model-verification",
       "safe_checks": ["cct_stack"],
       "synthetic_scope": "model_internal",
-      "next_decision": "Cartographier analytiquement le seuil de contestabilité de D10, puis le comparer à un modèle rival continu apparié.",
-      "blocker": "La survie de base est interne au modèle et dépend du protocole ; aucun effet institutionnel réel n’est établi."
+      "next_decision": "Construire un générateur fictif complet O1–O4 et un oracle de recours indépendant avant toute nouvelle revendication de contestabilité D10.",
+      "blocker": "L’artefact actuel substitue un proxy à la trace et ne satisfait pas le contrat d’observation préenregistré."
     },
     {
       "id": "fusion-alpha-feedback",
@@ -61,8 +61,8 @@
       "mode": "synthetic-counterfactual-calibration",
       "safe_checks": ["cct_stack", "cct_d10_campaign"],
       "synthetic_scope": "model_internal",
-      "next_decision": "Cartographier le seuil de contestabilité séparant les mondes survivants et renversés, sans nouveau générateur.",
-      "blocker": "Le recours contraint renverse 24 mondes sur 32 ; cette dépendance reste strictement model_internal."
+      "next_decision": "Générer les traces fictives O1–O4 et fixer un oracle de recours indépendant du proxy avant une nouvelle campagne.",
+      "blocker": "La carte du seuil est exacte, mais le 24/32 n’est qu’un proxy répété et l’artefact est non conforme au contrat d’observation."
     },
     {
       "id": "fusion-f0-data-global-tae-matrix",

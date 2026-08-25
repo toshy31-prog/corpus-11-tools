@@ -1,0 +1,114 @@
+{
+  "above_or_equal_threshold_rows": 8,
+  "below_threshold_rows": 24,
+  "cells": [
+    {
+      "channel": "1/10",
+      "configured_contestability_fraction": "3/5",
+      "margin_decimal": 0.04,
+      "margin_fraction": "1/25",
+      "multiplicity": 8,
+      "perturbation": "1/10",
+      "proxy_passes": true,
+      "threshold_decimal": 0.56,
+      "threshold_fraction": "14/25"
+    },
+    {
+      "channel": "1/10",
+      "configured_contestability_fraction": "3/5",
+      "margin_decimal": -0.056,
+      "margin_fraction": "-7/125",
+      "multiplicity": 8,
+      "perturbation": "1/2",
+      "proxy_passes": false,
+      "threshold_decimal": 0.656,
+      "threshold_fraction": "82/125"
+    },
+    {
+      "channel": "9/20",
+      "configured_contestability_fraction": "3/5",
+      "margin_decimal": -0.086,
+      "margin_fraction": "-43/500",
+      "multiplicity": 8,
+      "perturbation": "1/10",
+      "proxy_passes": false,
+      "threshold_decimal": 0.686,
+      "threshold_fraction": "343/500"
+    },
+    {
+      "channel": "9/20",
+      "configured_contestability_fraction": "3/5",
+      "margin_decimal": -0.182,
+      "margin_fraction": "-91/500",
+      "multiplicity": 8,
+      "perturbation": "1/2",
+      "proxy_passes": false,
+      "threshold_decimal": 0.782,
+      "threshold_fraction": "391/500"
+    }
+  ],
+  "configured_contestability_fraction": "3/5",
+  "construct_validity": "proxy_substitution",
+  "continuous_representation": {
+    "binary_representation": "indicator(margin >= 0)",
+    "id": "contestability_margin",
+    "independent_evidence_gain": "none",
+    "information_retention": "the continuous margin retains distance to threshold",
+    "relationship": "non_discriminating_representation_pair"
+  },
+  "formula": "margin = contestability - 9/25*channel - 6/25*perturbation - 1/2",
+  "inactive_axes_for_proxy": [
+    "load",
+    "rhythm",
+    "environment"
+  ],
+  "multiplicity_distribution": {
+    "8": 4
+  },
+  "protocol": "CCT-SC-D10-001",
+  "relative_comparator_margin_fractions": [
+    "3/25"
+  ],
+  "rows": 32,
+  "scope": {
+    "artifact_reconstruction": "pipeline_verified",
+    "threshold_map": "formal_exact",
+    "trace_or_recourse": "unknown"
+  },
+  "step_intervals": [
+    {
+      "lower_inclusive": null,
+      "passing_cells": 0,
+      "passing_rows": 0,
+      "upper_exclusive": "14/25"
+    },
+    {
+      "lower_inclusive": "14/25",
+      "passing_cells": 1,
+      "passing_rows": 8,
+      "upper_exclusive": "82/125"
+    },
+    {
+      "lower_inclusive": "82/125",
+      "passing_cells": 2,
+      "passing_rows": 16,
+      "upper_exclusive": "343/500"
+    },
+    {
+      "lower_inclusive": "343/500",
+      "passing_cells": 3,
+      "passing_rows": 24,
+      "upper_exclusive": "391/500"
+    },
+    {
+      "lower_inclusive": "391/500",
+      "passing_cells": 4,
+      "passing_rows": 32,
+      "upper_exclusive": null
+    }
+  ],
+  "strongest_conclusion": "The 24/32 count is exactly 3/4 failing channel-perturbation cells, with multiplicities 8 rows in 4 cells. It establishes a configured proxy-threshold event, not an unusable trace or recourse.",
+  "unique_functional_cells": 4,
+  "variation": "d10_constrained_recourse",
+  "withdrawal_condition": "Withdraw the map if any campaign row depends on an inactive axis, an inclusive threshold is implemented differently, or the reconstructed cells no longer match the recorded classifier."
+}

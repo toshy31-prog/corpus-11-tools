@@ -61,6 +61,10 @@ SAFE_CHECKS: dict[str, tuple[Path, list[str]]] = {
         ROOT / "research/active/corpus-hypotheses/experiments",
         [sys.executable, "test_factorization_s4_quotient_audit.py"],
     ),
+    "corpus_factorization_b3": (
+        ROOT / "research/active/corpus-hypotheses/experiments",
+        [sys.executable, "test_b3_fixed_space_orbits.py"],
+    ),
     "cct_stack": (
         ROOT / "research/active/cct/executable",
         [sys.executable, "test_stack.py"],

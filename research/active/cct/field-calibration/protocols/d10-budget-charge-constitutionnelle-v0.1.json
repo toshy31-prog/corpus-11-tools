@@ -2,7 +2,7 @@
   "id": "CCT-SC-D10-001",
   "status": "ready_for_synthetic_campaign",
   "scope": "fictional_matched_worlds",
-  "evidence_scope": "model_internal_only",
+  "evidence_scope": "model_internal",
   "candidate": {
     "constitution_decision": "D10",
     "title": "Budget global de charge constitutionnelle",

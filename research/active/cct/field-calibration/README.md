@@ -34,9 +34,14 @@ de protocole inverse sans explication la conclusion interne, ou si le modèle
 déplace sa charge hors des observables. Un résultat synthétique ne vaut jamais
 validation institutionnelle externe.
 
-La première exécution et sa reconstruction sont dans
-[`results/cct-sc-d10-001/`](results/cct-sc-d10-001/). Le modèle de base ne
-renverse pas D10, mais la sensibilité de recours contraint déclenche un
-renversement dans 24 mondes sur 32 ; la survie est donc dépendante du protocole.
+Le premier artefact numérique et sa reconstruction sont dans
+[`results/cct-sc-d10-001/`](results/cct-sc-d10-001/). L’audit exact montre que
+le `24/32` antérieurement décrit comme un renversement de trace est seulement
+un seuil de proxy dans trois cellules fonctionnelles répétées huit fois. Les
+sorties ne satisfont pas le contrat d’observation O1–O4; elles valent comme
+audit d’implémentation, pas comme exécution conforme de la campagne.
+
+La prochaine construction interne doit générer les traces fictives O1–O4 et
+utiliser un oracle de recours indépendant du proxy contestabilité.
 
 Voir [`state/current_state.md`](state/current_state.md).

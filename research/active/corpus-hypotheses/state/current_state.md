@@ -8,7 +8,7 @@ Observation, attribution, inférence, hypothèse et démonstration restent sépa
 
 ## État des branches
 
-### Récupération contre désinscription — active, arrêt logiciel local
+### Récupération contre désinscription — active, arrêt du mécanisme logiciel local
 
 La séparation opérationnelle est reproduite dans le modèle exact, transportée vers `asyncio`, puis vers cinq processus OS persistants. Aucun mismatch modèle/runtime conditionné par l'ordre observé.
 
@@ -19,7 +19,7 @@ Résultats principaux :
 - asyncio : A `360/360`, B `180/360`, zéro mismatch ;
 - cinq processus : A `240/240`, B `120/240`, zéro mismatch ; 16 réordonnancements runtime sans rupture du modèle.
 
-Conclusion : récupération, effacement à convergence et effacement sous deadline sont des axes opérationnels distincts, mais la nouvelle coordonnée reste absorbée par un invariant standard. **Ne plus prolonger ce mécanisme en logiciel local.** Réouverture empirique seulement avec plusieurs machines, réseau externe ou matériel réel.
+Conclusion : récupération, effacement à convergence et effacement sous deadline sont des axes opérationnels distincts, mais la nouvelle coordonnée reste absorbée par un invariant standard. **Ne plus prolonger ce mécanisme identique en logiciel local.** Une éventuelle reprise autonome doit d’abord spécifier un substitut fictif distribué avec horloges, pannes et versions indépendantes; l’accès à un réseau ou matériel réel n’est ni une prochaine étape ni un blocage.
 
 ### Frustration temporelle — weakened, condition de requalification atteinte
 
@@ -37,13 +37,15 @@ Bornes successives :
 
 Conclusion : la condition de requalification de la fiche est satisfaite. Ne pas concevoir un nouveau protocole pour sauver adaptativement `F_T`. Réouverture seulement sur prédiction indépendante avec concurrent standard fixé avant exécution.
 
-### Invariants de factorisation — active mais bornée
+### Invariants de factorisation — weakened, voie locale close
 
 Le reste triple est robuste dans deux familles : catalogue signé dimension 3 (`0/1`) et permutation naturelle `S4` (`1/2`, `transported_remainder`). Mais H4 sous ajout d'une quatrième factorisation est `not_supported` : contrastes appariés `+1,0,0,0`, médiane `0`, avec explication par la droite fixe commune `span((1,1,1,1))`.
 
 L'audit quotienté exact du 2026-08-25 retire cette droite de tous les espaces fixes : la clé devient `(2,2,2)/(1,1,1)`, avec `Dq3=0/1` pour `16/4` triplets. Dans les trois strates appariées d'ajouts non identitaires, `Dq4=0` pour les deux groupes, `Delta=0` partout et médiane `0`. La même famille `S4`, même quotientée, ne fournit donc plus de test local discriminant de survie.
 
-Réouverture seulement avec une famille de transports justifiée indépendamment, sans plancher fixe commun, et une règle de construction déclarée avant le calcul. Ne pas chercher adaptativement un nouveau catalogue favorable.
+Le catalogue signé `B3`, distinct de `S4` et sans plancher fixe commun forcé, réalise à son tour le contraste d’ordre trois (`68` triplets à dimension `0`, `16` à dimension `1`), mais H5 sous ajout d’une quatrième matrice est `not_supported` : deux des cinq strates appariées ont un contraste positif et la médiane exacte est `0`.
+
+La condition annoncée de requalification est atteinte. Le reste triple demeure un fait mathématique, mais la lecture objectale prospective devient `weakened` et la voie locale est close. Ne pas chercher adaptativement un autre catalogue de factorisations; réouverture seulement avec une prédiction ou un observable réellement distinct, fixé avant calcul.
 
 ### Orientation compositionnelle — weakened, voie P1/P2 close
 
@@ -61,16 +63,18 @@ Les contrôles abéliens et d'incidence expliquent les effets étudiés ; ne rou
 
 1. **F_T est requalifié** comme score descriptif/optimiseur standard dans le programme actuel après `borda_better`.
 2. **Récupération/désinscription** conserve une distinction opérationnelle robuste mais atteint sa condition d'arrêt logicielle locale.
-3. **Factorisation** conserve un phénomène mathématique d'ordre trois, mais aucune stabilité prospective non triviale n'est établie ; l'audit quotienté de `S4` ne lève pas cette borne.
+3. **Factorisation** conserve un phénomène mathématique d'ordre trois, mais H4 et H5 ne soutiennent aucune stabilité prospective non triviale; la lecture objectale locale est requalifiée `weakened` et la piste est close.
 4. **Orientation compositionnelle** reste close pour P1/P2.
 5. Aucun résultat du jour n'établit temps émergent, objet physique nouveau ou nouvelle loi fondamentale.
 
 ## Prochaine action à la reprise
 
-Ne pas reprendre automatiquement la piste la plus récente. Refaire une allocation par valeur d'information parmi :
+Ne pas reprendre automatiquement la piste la plus récente. Les voies locales
+`F_T`, factorisation et mécanisme logiciel récupération/désinscription ont
+atteint leurs conditions d’arrêt. Une reprise autonome doit partir d’une
+prédiction ou d’un observable interne réellement distinct, fixé avant calcul,
+avec modèle rival et condition de renversement; l’absence de terrain ou de
+matériel appelle un meilleur substitut fictif et ne constitue pas un blocage.
 
-- banc distribué/matériel récupération-désinscription si un vrai dispositif devient accessible ;
-- famille de factorisations indépendante sans sous-espace fixe commun, uniquement si sa règle de construction est justifiée avant le calcul ;
-- complexe de distinctions compatibles uniquement si une relation non injectée et un contrôle apparié peuvent être spécifiés avant calcul.
-
-Éviter toute nouvelle sonde destinée à sauver chiralité ou `F_T` après leurs conditions d'arrêt respectives.
+Éviter toute nouvelle sonde destinée à sauver chiralité, `F_T` ou stabilité
+objectale par sélection adaptative de cas favorables.
