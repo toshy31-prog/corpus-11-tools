@@ -36,3 +36,10 @@ les scénarios ne sont pas disponibles, ou si tous les écarts observés se
 réduisent aux paramètres déjà déclarés sans nouvelle prédiction.
 
 Voir [`state/current_state.md`](state/current_state.md).
+
+## Cycle synthétique initial
+
+Le contrôle de modèle à trois nœuds est décrit dans
+[`protocols/initial_synthetic_protocol.md`](protocols/initial_synthetic_protocol.md)
+et s'exécute avec `python3 tests/test_initial_protocol.py`. Son résultat est
+strictement `model_internal` et ne remplace pas le futur banc matériel.

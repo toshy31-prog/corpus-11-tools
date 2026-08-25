@@ -1,6 +1,6 @@
 # Surface conversationnelle Corpus — candidat
 
-Statut : **candidat extrait d’un prototype abandonné ; cohérence interne soutenue, validation multi-utilisateur absente**
+Statut : **candidat extrait d’un prototype abandonné ; protocole de non-interférence exécutable en fixtures, validation multi-utilisateur absente**
 
 Recherche source : `research/completed/corpus-ui-workspace/`
 
@@ -71,24 +71,40 @@ La restitution distingue au minimum :
 Ces états ne sont pas une progression automatique. Une action annoncée doit
 produire un effet observable ou une indisponibilité expliquée.
 
-## Évaluations candidates
+## Protocole exécutable de non-interférence
 
 Le jeu apparié
 [`conversational-corpus-surface-evals.jsonl`](conversational-corpus-surface-evals.jsonl)
-compare une demande brute et sa restitution médiée sur des scènes simples,
-ambiguës, composites, indirectes, conflictuelles et de reprise.
+décrit six scènes simples, ambiguës, composites, indirectes, conflictuelles et
+de reprise. Chaque fixture sépare explicitement :
 
-Pour chaque paire, l'audit doit vérifier :
+- la demande originale (`raw_prompt`), seule entrée admissible au routage ;
+- l’instruction de présentation (`surface_instruction`), conservée hors du
+  routage ;
+- le résultat analytique déjà obtenu : routes, dépendances critiques,
+  conclusion bornée, conditions de renversement et alternatives non
+  départagées ;
+- les seules variations de présentation admises ;
+- les éléments que la surface n’a pas le droit de changer.
 
-1. identité des routes matériellement pertinentes ;
-2. conservation des dépendances critiques ;
-3. identité de la conclusion matérielle et de ses bornes ;
-4. conservation des divergences non discriminées ;
-5. absence d'activation ou d'omission causée par l'ordre d'exposition ;
-6. absence de taxonomie imposée lorsque son exposition n'aide aucun choix.
+Le contrôle autonome s’exécute ainsi depuis la racine du dépôt :
 
-Ces fichiers définissent un protocole candidat. Ils ne constituent pas encore
-un exécuteur automatisé ni une validation multi-utilisateur.
+```bash
+python3 corpus-11-tools/tools/check_conversational_surface.py
+```
+
+Il refuse notamment une route inconnue, une condition de renversement absente,
+un élément analytique absent du contrat de non-interférence, une variation
+publique non autorisée ou une altération du paquet analytique sous permutation
+des variations de présentation. Le paquet est scellé en tuples au point de
+passage : aucun routage, choix de capability, synthèse de conclusion ou
+condition de renversement n’est recalculé par la surface.
+
+Ce test prouve uniquement le contrat déterministe de ces fixtures. Il ne
+prouve ni qu’un modèle de langage restitue fidèlement ce paquet, ni qu’une
+personne comprend mieux la réponse, ni qu’une surface réelle est robuste. Le
+contrôle vit dans `corpus-11-tools/tools/` mais n’est pas chargé par le plugin :
+le candidat reste hors du runtime produit tant qu’il n’est pas accepté.
 
 ## Ce qui a été retiré du contexte
 
@@ -97,6 +113,7 @@ un exécuteur automatisé ni une validation multi-utilisateur.
 - passerelle HTTP locale et protocole de démarrage ;
 - catégories propres au prototype ;
 - hypothèse qu’un tableau de bord autonome est nécessaire.
+- toute adresse web, API publique ou interface autonome à déployer.
 
 ## Appuis déjà présents dans Corpus
 
@@ -115,11 +132,12 @@ Ce candidat ne crée donc pas un nouveau skill. Il propose un contrat de surface
 - mesure du temps avant première action utile, des demandes de clarification et des abandons ;
 - test de reprise après interruption ;
 - vérification que la taxonomie reste accessible sans redevenir envahissante.
-- réobservation appariée des évaluations de non-interférence ;
+- rejeu contre une surface réelle, avec traces séparées de son entrée,
+  routage, paquet analytique et restitution ;
 - mesure des omissions, activations supplémentaires et effets d'ordre ;
 - reprise après interruption sans perte de la question, des relations acquises
   ou des conditions de renversement.
 
 ## Condition d’acceptation ou de retrait
 
-Accepter comme contrat produit seulement si ces observations montrent une réduction reproductible de charge sans perte de contrôle, de traçabilité ou de qualité analytique. Retirer le candidat s’il ne change aucun comportement du routeur ou si l’usage direct de Codex satisfait déjà ces conditions sans couche supplémentaire.
+Accepter comme contrat produit seulement si ces observations montrent une réduction reproductible de charge sans perte de contrôle, de traçabilité ou de qualité analytique. Retirer le candidat si le contrôle de fixtures échoue, s’il modifie le paquet analytique, s’il ne change aucun comportement utile ou si l’usage direct de Codex satisfait déjà ces conditions sans couche supplémentaire.

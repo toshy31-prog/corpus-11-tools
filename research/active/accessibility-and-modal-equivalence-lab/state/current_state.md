@@ -1,4 +1,6 @@
 # État courant
 
-Ouvert le 2026-08-25. Aucun protocole ni canal comparé n’est disponible.
-Prochaine décision : définir une tâche critique et les seuils d’équivalence.
+Le contrat structurel intermodal est exécutable. Il ne remplace pas un test
+avec personnes, technologies d’assistance ou situations de charge.
+
+Prochaine entrée requise : tâche critique et seuils évalués sur des canaux réels.

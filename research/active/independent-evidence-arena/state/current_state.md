@@ -1,11 +1,7 @@
 # État courant
 
-Dernière mise à jour : 2026-08-25
+La porte synthétique d’admissibilité est exécutable et refuse les
+auto-évaluations. L’arène reste sans cas externe ni évaluateur indépendant ;
+aucun effet décisionnel de Corpus n’est établi.
 
-## Statut
-
-Ouvert. Aucun cas, résultat ou promotion de méthode n’est encore enregistré.
-
-## Prochaine décision
-
-Choisir le premier cas externe et sa procédure témoin, puis conserver leur trace avec le résultat.
+Prochaine entrée requise : un cas externe gelé et un évaluateur distinct.

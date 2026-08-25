@@ -1,4 +1,6 @@
 # État courant
 
-Ouvert le 2026-08-25. Aucun protocole, population ou mesure de capacité n’est
-encore défini. Prochaine décision : choisir une tâche et une trace d’autonomie.
+Une trace d’autonomie synthétique est vérifiée à l’intérieur du modèle. Le lab
+reste sans protocole avec population, consentement ou mesure de capacité réelle.
+
+Prochaine entrée requise : tâche, mesure et population admissibles.

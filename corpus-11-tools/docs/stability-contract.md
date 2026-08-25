@@ -28,9 +28,16 @@
 | Skills opérationnels sans nœud `CAP.*` | 9 | routage, règles, procédures, contexte ou expérimentation |
 | Familles descriptives | 4 | non exécutables |
 | Relations | 88 | graphe 11.x |
-| Évaluations | 71 | périmètre fini de routage/non-régression |
+| Évaluations | 77 | périmètre fini de routage/non-régression |
 
 La source machine lisible est [`inventory.json`](inventory.json). L’index destiné au routage est [`capability-index.md`](../skills/corpus-11-routing/references/capability-index.md).
+
+Ces compteurs décrivent le même périmètre courant que l’inventaire : **58
+skills, 49 capabilities, 4 familles, 88 relations et 77 évaluations**. Le
+contrôle `tools/check_docs.py` dérive désormais ces valeurs de
+`docs/inventory.json` et refuse toute divergence dans ce contrat. Les mentions
+de releases antérieures restent historiques ; elles ne redéfinissent pas ce
+contrat v1.3.0.
 
 ## Condition de retrait du statut stable
 

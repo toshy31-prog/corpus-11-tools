@@ -1,0 +1,13 @@
+{
+  "lab_id": "contributor-ecosystem-governance-lab",
+  "synthetic_scope": "pipeline_verified",
+  "events": [
+    {"state": "proposed", "actor": "proposer"},
+    {"state": "reviewed", "actor": "reviewer"},
+    {"state": "contested", "actor": "challenger"},
+    {"state": "amended", "actor": "proposer"},
+    {"state": "accepted", "actor": "reviewer"},
+    {"state": "withdrawn", "actor": "maintainer"}
+  ],
+  "expected": {"trace_complete": true, "contestation_closed_by_proposer": false, "real_governance_claim_allowed": false}
+}

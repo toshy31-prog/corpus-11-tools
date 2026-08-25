@@ -130,6 +130,7 @@ python3 tools/validate_package.py
 python3 tools/check_graph.py
 python3 tools/check_docs.py
 python3 tools/check_boundaries.py
+python3 tools/check_conversational_surface.py
 python3 tools/check_integrity.py
 python3 tools/check_release_identity.py
 python3 tools/check_evals.py

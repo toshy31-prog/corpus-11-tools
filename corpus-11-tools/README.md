@@ -83,6 +83,7 @@ python tools/validate_package.py
 python tools/check_graph.py
 python tools/check_docs.py
 python tools/check_boundaries.py
+python tools/check_conversational_surface.py
 python tools/check_integrity.py
 python tools/check_release_identity.py
 python tools/check_evals.py
@@ -107,3 +108,24 @@ Le paquet `v1.3.0` contient 58 skills, 49 capabilities, 4 familles, 88 relations
 Le périmètre et les conditions de retrait de ce statut sont définis dans [`docs/stability-contract.md`](docs/stability-contract.md), et la matrice exécutée dans [`docs/release-validation-v1.3.0.md`](docs/release-validation-v1.3.0.md).
 
 Les lacunes historiques restent documentées dans `docs/legacy-loss-audit.md` et `archives/legacy/STATUS.md` : Atlas 2.7, Corpus 9.8, Corpus 10.2, la release 10.4 complète et la source éditable du manuel n’ont pas été retrouvés ni reconstruits par supposition.
+
+### Évaluations comportementales en état Codex isolé
+
+Le gate vivant n’écrit plus forcément dans l’état Codex habituel. Avec une clé
+API disponible dans l’environnement, il peut créer son état et installer le
+plugin local dans un répertoire dédié :
+
+```bash
+python tools/run_behavioral_evals.py --fresh \
+  --codex-home .validation-state/behavioral/codex-home \
+  --initialize-codex-home
+```
+
+Le mode isolé ne modifie ni `~/.codex` ni l’installation utilisateur du plugin.
+Sans clé API, une source `auth.json` peut être fournie **explicitement** avec
+`--auth-file /chemin/absolu/vers/auth.json` ; le lanceur en crée une copie 0600
+dans le home isolé, ne l’affiche jamais et la supprime à la fin du run. Une
+interruption forcée peut laisser cette copie dans le répertoire isolé choisi :
+vérifier alors ce seul fichier avant de reprendre. Cette isolation rend le gate
+exécutable ici, mais ne transforme pas son résultat en validation scientifique
+générale.

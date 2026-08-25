@@ -17,3 +17,10 @@ Un échec ou une résistance établit une propriété du scénario, de l’agent
 l’outillage testés ; ce n’est pas une garantie générale de sécurité.
 
 Voir [`state/current_state.md`](state/current_state.md).
+
+## Cycle synthétique initial
+
+Le corpus de quatre entrées et l'oracle de frontière déterministe sont décrits
+dans [`protocols/initial_synthetic_protocol.md`](protocols/initial_synthetic_protocol.md).
+Exécution : `python3 tests/test_initial_protocol.py`. Il ne formule aucune
+garantie de sécurité d'un agent réel.

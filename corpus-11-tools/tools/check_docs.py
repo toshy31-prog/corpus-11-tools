@@ -123,6 +123,74 @@ for path in current_docs:
             errors.append(f"{path.relative_to(repo_root)}: missing current marker {required!r}")
     if "1.2.0-alpha" in text:
         errors.append(f"{path.relative_to(repo_root)}: stale alpha release marker")
+    for match in re.finditer(r"\b(\d+)\s+(?:évaluations|evals?)\b", text, re.I):
+        actual = int(match.group(1))
+        if actual != inventory.get("eval_count"):
+            errors.append(
+                f"{path.relative_to(repo_root)}: stale current eval count {actual}, "
+                f"expected {inventory.get('eval_count')}"
+            )
+
+# The stability contract is current-release documentation, but its canonical
+# counts live in a table rather than prose.  Parse that table explicitly so a
+# historical number cannot survive a release update merely because the prose
+# elsewhere is current.
+stability_contract = plugin_root / "docs" / "stability-contract.md"
+if not stability_contract.is_file():
+    errors.append("missing current stability contract")
+else:
+    stability_text = stability_contract.read_text(encoding="utf-8")
+    if str(release) not in stability_text:
+        errors.append("stability contract: missing current release marker")
+    status_inventory = inventory.get("capability_status_counts")
+    if not isinstance(status_inventory, dict):
+        status_inventory = {}
+    operational_roles = inventory.get("non_capability_skill_roles")
+    if not isinstance(operational_roles, dict):
+        operational_roles = {}
+    contract_counts = {
+        "Skills": inventory.get("skill_count"),
+        "Wrappers de capability natifs": status_inventory.get("candidate_unvalidated"),
+        "Wrappers récupérés": status_inventory.get(
+            "recovered_candidate_unvalidated"
+        ),
+        "Wrappers de conception v1.2": status_inventory.get("design_candidate_unvalidated"),
+        "Skills opérationnels sans nœud `CAP.*`": len(operational_roles),
+        "Familles descriptives": inventory.get("family_count"),
+        "Relations": inventory.get("relation_count"),
+        "Évaluations": inventory.get("eval_count"),
+    }
+    for label, expected in contract_counts.items():
+        match = re.search(
+            rf"^\|\s*{re.escape(label)}\s*\|\s*(\d+)\s*\|",
+            stability_text,
+            re.M,
+        )
+        if not match:
+            errors.append(f"stability contract: missing count row {label!r}")
+            continue
+        actual = int(match.group(1))
+        if actual != expected:
+            errors.append(
+                f"stability contract: {label}={actual}, expected inventory value {expected}"
+            )
+
+release_validation = plugin_root / "docs" / "release-validation-v1.3.0.md"
+if release_validation.is_file():
+    release_text = release_validation.read_text(encoding="utf-8")
+    for marker in (
+        f"{inventory.get('eval_count')}/{inventory.get('eval_count')}",
+        f"{inventory.get('capability_skill_count')}/{inventory.get('capability_skill_count')}",
+    ):
+        if marker not in release_text:
+            errors.append(f"release validation: missing current marker {marker!r}")
+    for match in re.finditer(r"\b(\d+)\s+(?:évaluations|evals?)\b", release_text, re.I):
+        actual = int(match.group(1))
+        if actual != inventory.get("eval_count"):
+            errors.append(
+                f"release validation: stale current eval count {actual}, "
+                f"expected {inventory.get('eval_count')}"
+            )
 
 for required_path in (
     "corpus-11-tools/",

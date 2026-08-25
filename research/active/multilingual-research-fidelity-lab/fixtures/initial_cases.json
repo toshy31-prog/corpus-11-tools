@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "reference_language": "fr",
+  "required_slots": ["evidence_id", "claim_id", "scope", "decision", "attribution", "reversal_id"],
+  "cases": [
+    {
+      "id": "aligned_triplet",
+      "packets": [
+        {
+          "language": "fr",
+          "surface": "Le modèle conserve le noyau déclaré.",
+          "slots": {"evidence_id": "e-syn-1", "claim_id": "c-syn-1", "scope": "pipeline_verified", "decision": "retain", "attribution": "local_adapter", "reversal_id": "r-core-mismatch"}
+        },
+        {
+          "language": "en",
+          "surface": "The model preserves the declared core.",
+          "slots": {"evidence_id": "e-syn-1", "claim_id": "c-syn-1", "scope": "pipeline_verified", "decision": "retain", "attribution": "local_adapter", "reversal_id": "r-core-mismatch"}
+        },
+        {
+          "language": "de",
+          "surface": "Das Modell erhält den deklarierten Kern.",
+          "slots": {"evidence_id": "e-syn-1", "claim_id": "c-syn-1", "scope": "pipeline_verified", "decision": "retain", "attribution": "local_adapter", "reversal_id": "r-core-mismatch"}
+        }
+      ],
+      "expected_divergences": []
+    },
+    {
+      "id": "scope_drift_triplet",
+      "packets": [
+        {
+          "language": "fr",
+          "surface": "Le modèle conserve le noyau déclaré dans le pipeline.",
+          "slots": {"evidence_id": "e-syn-2", "claim_id": "c-syn-2", "scope": "pipeline_verified", "decision": "retain", "attribution": "local_adapter", "reversal_id": "r-core-mismatch"}
+        },
+        {
+          "language": "en",
+          "surface": "The model proves preservation in the real world.",
+          "slots": {"evidence_id": "e-syn-2", "claim_id": "c-syn-2", "scope": "external_equivalent", "decision": "retain", "attribution": "local_adapter", "reversal_id": "r-core-mismatch"}
+        },
+        {
+          "language": "de",
+          "surface": "Das Modell erhält den deklarierten Kern in der Pipeline.",
+          "slots": {"evidence_id": "e-syn-2", "claim_id": "c-syn-2", "scope": "pipeline_verified", "decision": "retain", "attribution": "local_adapter", "reversal_id": "r-core-mismatch"}
+        }
+      ],
+      "expected_divergences": ["scope"]
+    }
+  ]
+}

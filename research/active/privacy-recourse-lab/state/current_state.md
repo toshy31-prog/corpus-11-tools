@@ -1,6 +1,9 @@
 # État courant
 
-Ouvert le 2026-08-25. Aucun cas, menace ni protocole de recours n’est défini.
+Ouvert. Un dossier fictif, trois profils de divulgation et des critères formels
+de minimisation/recours sont exécutés. Aucune menace, donnée sensible ou
+évaluation de canal réel n'est disponible.
 
-Prochaine décision : choisir un cas synthétique non sensible et les critères de
-protection, audit et réparation.
+Prochaine décision : conserver ces contrôles de pipeline, puis définir une
+menace, un canal et une procédure de recours réels avant toute conclusion sur
+la confidentialité ou la réparation effective.

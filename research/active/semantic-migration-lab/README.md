@@ -18,3 +18,10 @@ Une stabilité observée est bornée aux versions et cas rejoués. Une divergenc
 est utile si elle localise le composant et la règle qui l’expliquent.
 
 Voir [`state/current_state.md`](state/current_state.md).
+
+## Cycle synthétique initial
+
+La distinction entre stabilité, règle déclarée et dérive non expliquée est
+rejouable avec `python3 tests/test_initial_protocol.py`; le protocole est dans
+[`protocols/initial_synthetic_protocol.md`](protocols/initial_synthetic_protocol.md).
+Elle est limitée à deux environnements de modèle locaux.

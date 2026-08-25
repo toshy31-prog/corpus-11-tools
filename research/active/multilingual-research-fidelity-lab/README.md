@@ -18,3 +18,11 @@ observés. Une fidélité lexicale ne suffit pas à établir une fidélité de
 conclusion.
 
 Voir [`state/current_state.md`](state/current_state.md).
+
+## Cycle synthétique initial
+
+Le triplet français–anglais–allemand de slots sémantiques et son détecteur de
+dérive sont dans
+[`protocols/initial_synthetic_protocol.md`](protocols/initial_synthetic_protocol.md).
+Exécution : `python3 tests/test_initial_protocol.py`. Il ne teste pas une
+traduction réelle.

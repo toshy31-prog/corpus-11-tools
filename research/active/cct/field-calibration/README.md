@@ -12,6 +12,14 @@ produit un effet de terrain, face à une modalité de référence explicitement 
 > produit le mécanisme CCT choisi sur l’accès, les délais, le recours, la charge
 > et l’acceptabilité, comparé à la pratique existante ?
 
+## Mécanisme actuellement retenu
+
+Le premier mécanisme est **D10 — Budget global de charge constitutionnelle**.
+Sa préparation de comparaison en mode fantôme est dans
+[`protocols/d10-budget-charge-constitutionnelle-v0.1.md`](protocols/d10-budget-charge-constitutionnelle-v0.1.md).
+Elle reste une préparation liée à un site futur : aucune donnée ni effet de
+terrain n'est revendiqué.
+
 ## Préconditions
 
 - responsable et autorisation de terrain identifiés ;

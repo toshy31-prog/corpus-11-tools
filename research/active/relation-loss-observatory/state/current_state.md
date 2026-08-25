@@ -1,11 +1,8 @@
 # État courant
 
-Dernière mise à jour : 2026-08-25
+Une porte de refus des cas non documentables est disponible. L’observatoire ne
+contient toujours aucun cas réel comparable et aucune conclusion de perte
+relationnelle.
 
-## Statut
-
-Ouvert. Aucun cas d’étude n’est sélectionné et aucune conclusion n’est admise.
-
-## Prochaine décision
-
-Choisir un premier duo de cas comparables et vérifier la licéité de la collecte avant toute indexation.
+Entrées requises : deux cas documentables, une base de collecte adéquate et une
+comparaison où la relation est préservée.

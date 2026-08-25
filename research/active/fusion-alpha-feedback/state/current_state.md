@@ -1,6 +1,6 @@
 # État courant — alpha–TAE–zonal flow
 
-Dernière mise à jour : 2026-08-24
+Dernière mise à jour : 2026-08-25 — préparation de la matrice `F0`
 
 ## But final
 
@@ -177,7 +177,7 @@ d'attribuer ce résultat à SPARC, ITER, ou une future centrale.
 
 ## Prochaine action
 
-L'état de l'art est maintenant suffisamment borné : les données publiques ne
+L’état de l'art est maintenant suffisamment borné : les données publiques ne
 permettent pas de calibrer `δ/Lnα`, GENE couvre déjà la dynamique
 gyrocinétique d'orbite mais pas une construction orbit-conditionnée de `F0`
 dans l'article de 2026, et le dernier écran n'a trouvé **aucune** interaction
@@ -192,3 +192,9 @@ changer la décision est donc l'une des deux suivantes :
 
 Sans l'une de ces entrées, continuer à raffiner les écrans analytiques ne
 produirait plus de connaissance susceptible de faire basculer la conclusion.
+
+La convention de matching de la future matrice et ses contrôles de pipeline
+sont désormais prêts (`f0-data-global-tae-matrix/matching-contract.md`). Ils
+garantissent seulement que le futur traitement ne modifie pas silencieusement
+les moments appariés ou la conservation de l'opérateur fourni. Ils ne créent
+aucune donnée alpha, aucune géométrie et aucune conclusion de plasma.

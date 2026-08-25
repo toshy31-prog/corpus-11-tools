@@ -1,7 +1,7 @@
 # État courant
 
-Ouvert le 2026-08-25. Aucune télémétrie de coût ni comparaison de protocole
-n’est disponible.
+La comptabilité de protocole synthétique est exécutable. Elle vérifie le
+pipeline de mesure, sans télémétrie ni comparaison de recherche réelle.
 
-Prochaine décision : déclarer les unités de coût et une première paire de
-protocoles comparables.
+Prochaine entrée requise : journaux comparables avec unités observables et
+porteurs de charge documentés.

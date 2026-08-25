@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "underdetermined_origin",
+      "possible_worlds": ["origin-A", "origin-B"],
+      "reversal_trace": "A trace identifying the origin would leave exactly one possible world.",
+      "claims": [
+        {"id": "origin-A", "worlds_where_true": ["origin-A"]},
+        {"id": "origin-B", "worlds_where_true": ["origin-B"]}
+      ],
+      "expected_statuses": {"origin-A": "compatible_not_established", "origin-B": "compatible_not_established"},
+      "expected_plurality": true
+    },
+    {
+      "id": "correctable_contradiction",
+      "possible_worlds": ["origin-A"],
+      "reversal_trace": "A valid new trace would have to add origin-B to the possible-world set.",
+      "claims": [
+        {"id": "origin-A", "worlds_where_true": ["origin-A"]},
+        {"id": "origin-B", "worlds_where_true": ["origin-B"]}
+      ],
+      "expected_statuses": {"origin-A": "compatible_not_established", "origin-B": "contradicted"},
+      "expected_plurality": false
+    }
+  ]
+}

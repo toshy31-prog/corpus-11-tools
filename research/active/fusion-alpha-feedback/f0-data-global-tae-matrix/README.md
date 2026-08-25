@@ -24,6 +24,15 @@ mode gelés → drive résonant intégré et comparaison bornée.
 La règle d’appariement canonique, notamment pour la cellule FOW de la
 Maxwellienne, doit être déclarée avant toute sortie.
 
+## Convention préparée
+
+La règle est maintenant fixée dans
+[`matching-contract.md`](matching-contract.md) : la Maxwellienne est appariée
+en densité et énergie moyenne dans chaque cellule source `(r,pitch)`, puis le
+même opérateur FOW déclaré est appliqué à SD et M. Le pipeline et ses invariants
+sont dans [`pipeline/`](pipeline/). Cette préparation est interne au modèle et
+ne remplace aucune entrée alpha ni aucun solveur.
+
 ## Préconditions
 
 - une distribution `Falpha(r,E,pitch)` ou une sortie équivalente traçable, rattachée à un équilibre déterminé ;

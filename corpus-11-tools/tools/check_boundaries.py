@@ -53,6 +53,22 @@ for runtime_root in (plugin_root / "labs", plugin_root / "skills"):
                 f"product runtime depends on project research: {path.relative_to(repo_root)}"
             )
 
+# A candidate transfer may have an executable validation protocol, but it is
+# not product runtime until an acceptance record names a generic destination.
+# Keep the current conversational-surface candidate out of skills and labs;
+# its checker deliberately lives under tools/ and only reads transfer fixtures.
+candidate_runtime_markers = ("conversational-corpus-surface", "conversational_surface")
+for runtime_root in (plugin_root / "labs", plugin_root / "skills"):
+    for path in runtime_root.rglob("*"):
+        if not path.is_file() or path.suffix not in runtime_suffixes:
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        if any(marker in text for marker in candidate_runtime_markers):
+            errors.append(
+                "product runtime imports a candidate transfer: "
+                f"{path.relative_to(repo_root)}"
+            )
+
 generic_lab = plugin_root / "labs" / "experiment-lab"
 for path in generic_lab.rglob("*.mjs"):
     text = path.read_text(encoding="utf-8", errors="replace")

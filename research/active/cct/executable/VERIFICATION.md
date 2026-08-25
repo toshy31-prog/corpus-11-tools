@@ -14,5 +14,6 @@ Résultat global : **PASS**
 | ops_demo | PASS | 0/0 |
 | governance_lab_tests | PASS | 0/0 |
 | p005_robustness | PASS | 0/0 |
+| field_calibration_d10 | PASS | 0/0 |
 
 Le niveau maximal établi est `tested` localement. Autorisation, déploiement, efficacité territoriale et réobservation indépendante ne sont pas établis.

@@ -17,9 +17,49 @@ MANIFEST = RESEARCH / "portfolio.json"
 
 
 SAFE_CHECKS: dict[str, tuple[Path, list[str]]] = {
+    "material_trace_initial": (
+        ROOT,
+        [sys.executable, "research/active/material-trace-lab/tests/test_initial_protocol.py"],
+    ),
+    "provenance_interop_initial": (
+        ROOT,
+        [sys.executable, "research/active/provenance-interoperability-lab/tests/test_initial_protocol.py"],
+    ),
+    "multilingual_fidelity_initial": (
+        ROOT,
+        [sys.executable, "research/active/multilingual-research-fidelity-lab/tests/test_initial_protocol.py"],
+    ),
+    "adversarial_boundaries_initial": (
+        ROOT,
+        [sys.executable, "research/active/adversarial-agent-boundaries/tests/test_initial_protocol.py"],
+    ),
+    "semantic_migration_initial": (
+        ROOT,
+        [sys.executable, "research/active/semantic-migration-lab/tests/test_initial_protocol.py"],
+    ),
+    "contested_claims_initial": (
+        ROOT,
+        [sys.executable, "research/active/contested-claims-lab/tests/test_initial_protocol.py"],
+    ),
+    "causal_calibration_initial": (
+        ROOT,
+        [sys.executable, "research/active/causal-claim-calibration-lab/tests/test_initial_protocol.py"],
+    ),
+    "privacy_recourse_initial": (
+        ROOT,
+        [sys.executable, "research/active/privacy-recourse-lab/tests/test_initial_protocol.py"],
+    ),
+    "initial_protocols": (
+        ROOT,
+        [sys.executable, "research/scripts/check_initial_protocols.py"],
+    ),
     "research_workspace": (
         ROOT,
         [sys.executable, "research/active/corpus-hypotheses/scripts/validate_research_workspace.py"],
+    ),
+    "corpus_factorization_s4_quotient": (
+        ROOT / "research/active/corpus-hypotheses/experiments",
+        [sys.executable, "test_factorization_s4_quotient_audit.py"],
     ),
     "cct_stack": (
         ROOT / "research/active/cct/executable",
@@ -36,6 +76,10 @@ SAFE_CHECKS: dict[str, tuple[Path, list[str]]] = {
     "fusion_fow": (
         ROOT / "research/active/fusion-alpha-feedback/experiments",
         [sys.executable, "test_low_compute_fow_screen.py"],
+    ),
+    "fusion_f0_matching": (
+        ROOT / "research/active/fusion-alpha-feedback/f0-data-global-tae-matrix/pipeline",
+        [sys.executable, "test_f0_matching.py"],
     ),
 }
 

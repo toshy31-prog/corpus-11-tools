@@ -1,0 +1,9 @@
+{
+  "lab_id": "portfolio-option-value-lab",
+  "synthetic_scope": "model_internal",
+  "allocations": {
+    "uniform": {"expected_information": 0.4, "expected_reusable_output": 0.3},
+    "option_preserving": {"expected_information": 0.6, "expected_reusable_output": 0.3}
+  },
+  "expected": {"option_preserving_information_delta": 0.2, "real_portfolio_recommendation_allowed": false}
+}

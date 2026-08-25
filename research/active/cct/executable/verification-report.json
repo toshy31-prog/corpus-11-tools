@@ -139,6 +139,21 @@
       ],
       "cwd": "governance-lab",
       "output_tail": ""
+    },
+    {
+      "id": "field_calibration_d10",
+      "passed": true,
+      "returncode": 0,
+      "expected_returncode": 0,
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "-v",
+        "test_validate_d10_protocol.py"
+      ],
+      "cwd": "field-calibration/protocols",
+      "output_tail": ""
     }
   ],
   "boundary": {

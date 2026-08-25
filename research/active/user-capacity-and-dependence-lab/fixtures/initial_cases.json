@@ -1,0 +1,10 @@
+{
+  "lab_id": "user-capacity-and-dependence-lab",
+  "synthetic_scope": "model_internal",
+  "trace": [
+    {"phase": "assisted", "help_available": true, "task_completed": true},
+    {"phase": "autonomous", "help_available": false, "task_completed": false, "recourse_available": true},
+    {"phase": "recovery", "help_available": false, "task_completed": true, "used_recorded_procedure": true}
+  ],
+  "expected": {"autonomy_is_not_inferred_from_assisted_success": true, "real_user_claim_allowed": false}
+}

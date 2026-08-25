@@ -26,3 +26,7 @@ Le test à plus haute fidélité est isolé dans
 [`f0-data-global-tae-matrix/`](f0-data-global-tae-matrix/) : il requiert une
 distribution alpha traçable et un solveur TAE global contrôlé. Il ne prolonge
 pas les écrans analytiques déjà bornés.
+
+La convention de matching et son pipeline interne sont prêts, mais ne lèvent
+pas ces préconditions : voir
+[`f0-data-global-tae-matrix/matching-contract.md`](f0-data-global-tae-matrix/matching-contract.md).

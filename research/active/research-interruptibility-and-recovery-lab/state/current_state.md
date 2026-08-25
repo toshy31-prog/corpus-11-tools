@@ -1,4 +1,6 @@
 # État courant
 
-Ouvert le 2026-08-25. Aucun scénario d’interruption ni résultat de récupération
-n’est disponible. Prochaine décision : définir un premier arrêt et un retour.
+Un arrêt et une reprise de fixture sont vérifiés. Aucun scénario d’interruption
+réelle, de transmission entre acteurs ou de récupération partielle n’est établi.
+
+Prochaine entrée requise : arrêt et retour sur une recherche avec artefacts réels.

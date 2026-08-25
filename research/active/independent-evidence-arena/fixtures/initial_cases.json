@@ -1,0 +1,17 @@
+{
+  "lab_id": "independent-evidence-arena",
+  "synthetic_scope": "pipeline_verified",
+  "case": {
+    "id": "self-linked-synthetic-fixture",
+    "origin": "synthetic",
+    "frozen_before_execution": true,
+    "linked_to_method_creator": true,
+    "executor": "operator-a",
+    "evaluator": "operator-a"
+  },
+  "expected": {
+    "admissible": false,
+    "external_effect_claim_allowed": false,
+    "reasons": ["origin_not_external", "evaluator_not_independent"]
+  }
+}

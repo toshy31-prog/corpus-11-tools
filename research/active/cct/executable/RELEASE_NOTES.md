@@ -4,7 +4,7 @@ Date de gel : 17 août 2026.
 
 ## Résultat vérifié
 
-- 10 contrôles d'intégration sur 10 réussissent ;
+- à la date de gel, 10 contrôles d'intégration sur 10 réussissent ;
 - 83 tests unitaires réussissent : 15 constitution, 8 économie, 21 opérations, 38 laboratoire et 1 cohérence de pile ;
 - 5 760 simulations économiques appariées sont régénérées ;
 - la décision constitutionnelle invalide est refusée pour neuf violations nommées ;
@@ -17,6 +17,13 @@ Commande de reproduction :
 cd research/active/cct/executable
 python3 run_all.py
 ```
+
+## Extension de vérification locale postérieure
+
+La vérification courante comprend un onzième contrôle : la cohérence et les
+limites du protocole préparatoire CCT-FC-D10-001. Il établit seulement que cet
+artefact de préparation reste lié à D10 et borné au mode fantôme ; il ne
+modifie pas le niveau de réalité de la livraison gelée.
 
 ## Conclusions qui changent la décision
 

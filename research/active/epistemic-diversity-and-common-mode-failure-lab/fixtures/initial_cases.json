@@ -1,0 +1,10 @@
+{
+  "lab_id": "epistemic-diversity-and-common-mode-failure-lab",
+  "synthetic_scope": "model_internal",
+  "paths": [
+    {"id": "a", "sources": ["s1", "s2"], "conclusion": "retain"},
+    {"id": "b", "sources": ["s1", "s3"], "conclusion": "retain"},
+    {"id": "c", "sources": ["s4"], "conclusion": "revise"}
+  ],
+  "expected": {"a_b_shared_sources": ["s1"], "a_b_independent": false, "path_count_is_not_independence": true}
+}

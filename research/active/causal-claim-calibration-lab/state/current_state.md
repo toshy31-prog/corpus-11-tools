@@ -1,6 +1,9 @@
 # État courant
 
-Ouvert le 2026-08-25. Aucun scénario causal ni contrôle rival n’est défini.
+Ouvert. Deux mondes causaux synthétiques, leur confondeur et leur contraste
+d'intervention sont exécutés avec fractions exactes. Aucun mécanisme ni effet
+causal externe n'est établi.
 
-Prochaine décision : définir le premier mécanisme, ses confondeurs et son
-intervention discriminante.
+Prochaine décision : conserver les contrôles d'identification internes, puis
+définir un mécanisme, des confondeurs et une intervention discriminante propres
+à un terrain avant toute conclusion extérieure.

@@ -1,0 +1,97 @@
+{
+  "id": "CCT-FC-D10-001",
+  "status": "ready_for_site_binding",
+  "scope": "mode_fantome_observationnel",
+  "evidence_scope": "protocol_preparation_only",
+  "candidate": {
+    "constitution_decision": "D10",
+    "title": "Budget global de charge constitutionnelle",
+    "mechanism": "Lorsque plusieurs contrôles sont en contention, préserver séparément les cinq portes non compensables et suspendre seulement des formalités réversibles, avec une trace, un recours et une restitution.",
+    "invariants": ["I06", "I15"]
+  },
+  "comparator": {
+    "id": "local_existing_incident_routing",
+    "definition": "Le processus d'incident réellement en vigueur, observé sur le même dossier et la même fenêtre, sans modification de l'accès réel, des droits, du personnel ou de l'allocation.",
+    "matching": ["même dossier initial", "même fenêtre", "mêmes contraintes déclarées", "mêmes canaux disponibles", "ordre de présentation alterné lorsque plusieurs sessions existent"]
+  },
+  "site_binding_requirements": [
+    "responsable opérationnel habilité à arrêter l'exercice",
+    "autorisation écrite du périmètre et de la collecte minimale",
+    "participation informée des personnes observées",
+    "évaluateur distinct de l'équipe qui applique la candidate",
+    "voie de recours et protection des données définies",
+    "procédure réelle explicitement séparée du mode fantôme"
+  ],
+  "activation": {
+    "observable": "deux contrôles renforcés en contention ou délai vital menacé",
+    "window_hours": 24,
+    "channel": "tableau de charge multi-services",
+    "detection_limit": "Le travail invisible et les abandons avant saisine sont partiellement sous-détectés ; ils doivent être recherchés par échantillonnage et entretiens volontaires."
+  },
+  "observations": [
+    {
+      "id": "D10-O1",
+      "construct": "préservation du noyau de protections",
+      "operational_definition": "Présence séparée d'un besoin vital, d'un plafond critique, d'un droit, d'une trace minimale et d'une voie de restitution utilisables pendant la contention.",
+      "indicator": "vecteur binaire et récit de chaque porte maintenue, dégradée ou perdue ; aucun score compensatoire",
+      "measurement_process": "audit de cas, journaux d'incident et vérification par une personne affectée ou son représentant",
+      "window": "de l'activation à la restitution",
+      "alternative_construct": "simple tenue documentaire sans capacité réellement utilisable"
+    },
+    {
+      "id": "D10-O2",
+      "construct": "charge administrative et charge cachée",
+      "operational_definition": "Temps, reprises, abandons, fatigue et compensation imposés pour faire fonctionner le contrôle.",
+      "indicator": "heures par rôle, délai de traitement, abandons avant et après recours, heures imprévues déclarées",
+      "measurement_process": "journaux de travail, échantillon volontaire, relevé de paie ou de planning si autorisé",
+      "window": "avant, pendant et après l'exercice",
+      "alternative_construct": "déplacement de charge vers des personnes ou des tâches non mesurées"
+    },
+    {
+      "id": "D10-O3",
+      "construct": "traçabilité contestable sous charge",
+      "operational_definition": "Une décision de délestage peut être attribuée, comprise, contestée et réconciliée après l'incident.",
+      "indicator": "décision horodatée, motif, ressource saturée, porte protégée, voie de recours, correction et restitution",
+      "measurement_process": "lecture croisée du registre, contre-récit d'un échantillon et audit de décisions hors registre",
+      "window": "quatre heures pour la trace initiale, puis jusqu'à la restitution",
+      "alternative_construct": "journal complet mais sans recours utilisable ni correction possible"
+    },
+    {
+      "id": "D10-O4",
+      "construct": "restitution effective",
+      "operational_definition": "Les formalités suspendues sont réactivées séparément et les retards ou pertes créés par le délestage restent réparables.",
+      "indicator": "file revenue sous le seuil local déclaré, réactivation vérifiée, pertes restantes nommées et voies de réparation actives",
+      "measurement_process": "journal de reprise, test d'usage, registre de recours et contrôle par un certificateur sans pouvoir de relance",
+      "window": "jusqu'à sept jours après la fin de l'exercice",
+      "alternative_construct": "retour administratif apparent sans restauration d'usage"
+    }
+  ],
+  "method_effect_controls": [
+    "Le mode fantôme ne peut modifier aucune décision, aucun accès, aucune priorisation réelle ni aucun droit.",
+    "Chaque résultat rapporte séparément le travail créé par l'observation ou la candidate.",
+    "Le comparateur reçoit le même dossier, la même durée et les mêmes chocs documentés.",
+    "Les valeurs manquantes, abandons et décisions hors registre restent visibles ; elles ne sont pas converties en succès.",
+    "Les cinq portes sont analysées séparément ; aucune moyenne ne peut compenser la perte d'une porte."
+  ],
+  "stop_conditions": [
+    "un exercice affecte ou risque d'affecter le service réel, l'accès ou les droits",
+    "une vulnérabilité exploitable n'est pas contenue",
+    "des données personnelles, de sécurité ou de travail sont collectées hors du cadre autorisé",
+    "un délestage dégrade une des cinq portes sans trace ou recours",
+    "la personne habilitée à arrêter l'exercice l'ordonne"
+  ],
+  "reversal_conditions": [
+    "Le comparateur maintient les cinq portes avec une charge moindre dans le même périmètre et les mêmes contraintes.",
+    "Le mécanisme transfère systématiquement une charge grave vers un groupe non observé.",
+    "La trace ou le recours ne sont pas utilisables sous contention.",
+    "La restitution ne rétablit pas les capacités ou les pertes restent sans voie de réparation."
+  ],
+  "not_established": [
+    "autorisation de terrain",
+    "déploiement",
+    "efficacité territoriale",
+    "causalité institutionnelle",
+    "transportabilité",
+    "réobservation indépendante"
+  ]
+}

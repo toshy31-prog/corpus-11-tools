@@ -1,0 +1,11 @@
+{
+  "lab_id": "accessibility-and-modal-equivalence-lab",
+  "synthetic_scope": "pipeline_verified",
+  "critical_task": "contest-decision",
+  "channels": [
+    {"id": "text", "action": "contest-decision", "evidence": "receipt-17", "recourse": "appeal-17"},
+    {"id": "voice", "action": "contest-decision", "evidence": "receipt-17", "recourse": "appeal-17"},
+    {"id": "constrained", "action": "contest-decision", "evidence": "receipt-17", "recourse": "appeal-17"}
+  ],
+  "expected": {"structural_equivalence": true, "real_accessibility_claim_allowed": false}
+}

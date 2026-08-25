@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "critical_fields": ["claim_id", "scope", "attribution", "decision"],
+  "cases": [
+    {
+      "id": "stable_model_case",
+      "input": {"claim_id": "claim-1", "evidence_tier": "model", "attribution": "adapter-A"},
+      "expected_classification": "stable",
+      "expected_changed_fields": []
+    },
+    {
+      "id": "declared_scope_rule_change",
+      "input": {"claim_id": "claim-2", "evidence_tier": "verified_pipeline", "attribution": "adapter-A"},
+      "expected_classification": "declared_rule_change",
+      "expected_changed_fields": ["scope"]
+    },
+    {
+      "id": "unexplained_attribution_drift",
+      "input": {"claim_id": "claim-3", "evidence_tier": "model", "attribution": "adapter-A"},
+      "injected_unexplained_override": {"attribution": "adapter-B"},
+      "expected_classification": "unexplained_drift",
+      "expected_changed_fields": ["attribution"]
+    }
+  ]
+}

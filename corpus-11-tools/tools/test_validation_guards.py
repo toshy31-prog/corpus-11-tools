@@ -65,6 +65,15 @@ def mutate_reverse_research_dependency(repo: Path) -> tuple[str, str]:
     return "check_boundaries.py", "product runtime referencing project research"
 
 
+def mutate_candidate_transfer_runtime_import(repo: Path) -> tuple[str, str]:
+    path = repo / "corpus-11-tools" / "labs" / "python" / "corpus_labs" / "event_store.py"
+    path.write_text(
+        path.read_text(encoding="utf-8") + "\n# candidate transfer: conversational_surface\n",
+        encoding="utf-8",
+    )
+    return "check_boundaries.py", "product runtime importing candidate transfer"
+
+
 def mutate_missing_capability_folder(repo: Path) -> tuple[str, str]:
     path = repo / "corpus-11-tools" / "skills" / "protocol-robustness"
     shutil.rmtree(path)
@@ -162,8 +171,37 @@ def mutate_manifest_inventory_version_drift(repo: Path) -> tuple[str, str]:
 
 def mutate_documented_eval_count(repo: Path) -> tuple[str, str]:
     path = repo / "README.md"
-    path.write_text(path.read_text(encoding="utf-8").replace("77 évaluations", "76 évaluations"), encoding="utf-8")
-    return "check_docs.py", "public README eval-count drift"
+    path.write_text(
+        path.read_text(encoding="utf-8") + "\nCompteur erroné de contrôle : 76 évaluations.\n",
+        encoding="utf-8",
+    )
+    return "check_docs.py", "public README stale eval count alongside current marker"
+
+
+def mutate_stability_contract_eval_count(repo: Path) -> tuple[str, str]:
+    path = repo / "corpus-11-tools" / "docs" / "stability-contract.md"
+    path.write_text(
+        path.read_text(encoding="utf-8").replace(
+            "| Évaluations | 77 |", "| Évaluations | 76 |"
+        ),
+        encoding="utf-8",
+    )
+    return "check_docs.py", "stability-contract eval-count drift"
+
+
+def mutate_surface_contract_omission(repo: Path) -> tuple[str, str]:
+    path = repo / "transfers" / "candidates" / "conversational-corpus-surface-evals.jsonl"
+    records = [
+        json.loads(line)
+        for line in path.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    records[0]["surface_must_not_change"].remove("reversal conditions")
+    path.write_text(
+        "\n".join(json.dumps(record, ensure_ascii=False) for record in records) + "\n",
+        encoding="utf-8",
+    )
+    return "check_conversational_surface.py", "candidate surface missing reversal protection"
 
 
 def mutate_graph_copy_drift(repo: Path) -> tuple[str, str]:
@@ -196,6 +234,7 @@ def mutate_graph_copy_drift(repo: Path) -> tuple[str, str]:
 MUTATIONS = [
     mutate_missing_withdrawal,
     mutate_reverse_research_dependency,
+    mutate_candidate_transfer_runtime_import,
     mutate_missing_capability_folder,
     mutate_duplicate_eval_id,
     mutate_unknown_expected_skill,
@@ -205,6 +244,8 @@ MUTATIONS = [
     mutate_missing_integrity_target,
     mutate_manifest_inventory_version_drift,
     mutate_documented_eval_count,
+    mutate_stability_contract_eval_count,
+    mutate_surface_contract_omission,
     mutate_graph_copy_drift,
 ]
 
@@ -216,6 +257,7 @@ def main() -> int:
         "check_graph.py",
         "check_docs.py",
         "check_boundaries.py",
+        "check_conversational_surface.py",
         "check_integrity.py",
         "check_evals.py",
     ):

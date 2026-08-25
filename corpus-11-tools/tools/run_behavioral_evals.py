@@ -18,6 +18,7 @@ import hashlib
 import json
 import os
 import shlex
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -32,6 +33,10 @@ REPLICAS = ("replica-a", "replica-b")
 
 
 class AuthenticationError(RuntimeError):
+    pass
+
+
+class ConfigurationError(RuntimeError):
     pass
 
 
@@ -65,7 +70,7 @@ def mandatory_route(record: dict, candidates: Iterable[str] = SKILLS) -> list[st
 
 
 def make_prompt(record: dict, core: list[str]) -> str:
-    contract = {"selected_skills": "exact mandatory executable route supplied below"}
+    contract = {"selected_skills": ["skill-a"]}
     return (
         "Use the installed Corpus 11 Tools plugin. This is a routing-policy handoff task, "
         "not an answer task and not a fresh routing decision. The system has already "
@@ -135,20 +140,127 @@ def load_checkpoint(path: Path, fingerprint: dict, fresh: bool) -> dict:
     return checkpoint
 
 
-def auth_context() -> tuple[dict[str, str], str]:
-    codex_home = Path(os.environ.get("CODEX_HOME", Path.home() / ".codex"))
+def prepare_isolated_codex_home(path: Path) -> Path:
+    """Create a private, task-specific Codex home without touching the default."""
+    codex_home = path.expanduser().resolve()
+    forbidden = {Path.home().resolve(), (Path.home() / ".codex").resolve(), ROOT, ROOT.parent}
+    if codex_home in forbidden:
+        raise ConfigurationError(
+            "--codex-home must be a dedicated directory, not the repository or active user home"
+        )
+    if codex_home.exists():
+        if not codex_home.is_dir():
+            raise ConfigurationError(f"--codex-home is not a directory: {codex_home}")
+        return codex_home
+    codex_home.mkdir(parents=True, mode=0o700)
+    os.chmod(codex_home, 0o700)
+    return codex_home
+
+
+def copy_ephemeral_auth(source: Path, codex_home: Path) -> Path:
+    """Copy explicitly supplied desktop auth into an isolated home for one run."""
+    source = source.expanduser().resolve()
+    if not source.is_file():
+        raise ConfigurationError(f"--auth-file is not a readable file: {source}")
+    target = codex_home / "auth.json"
+    if target.exists() or target.is_symlink():
+        raise ConfigurationError(
+            f"refusing to overwrite existing isolated authentication: {target}"
+        )
+    try:
+        descriptor = os.open(target, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+        with os.fdopen(descriptor, "wb") as destination, source.open("rb") as origin:
+            shutil.copyfileobj(origin, destination)
+        os.chmod(target, 0o600)
+    except OSError as exc:
+        try:
+            target.unlink(missing_ok=True)
+        except OSError:
+            pass
+        raise ConfigurationError(f"cannot prepare isolated authentication: {exc}") from exc
+    return target
+
+
+def remove_ephemeral_auth(path: Path) -> None:
+    """Remove only an auth file created by copy_ephemeral_auth; never log contents."""
+    try:
+        path.unlink()
+    except FileNotFoundError:
+        return
+    except OSError as exc:
+        print(
+            f"WARNING: could not remove the ephemeral isolated auth file at {path}: {exc}",
+            file=sys.stderr,
+        )
+
+
+def auth_context(
+    *,
+    codex_home: Path | None = None,
+    auth_file: Path | None = None,
+) -> tuple[dict[str, str], str, Path | None]:
+    """Build child-only auth/state context without mutating the default home."""
+    env = os.environ.copy()
+    isolated_requested = codex_home is not None
+    if auth_file is not None and codex_home is None:
+        raise ConfigurationError("--auth-file requires an explicit --codex-home")
+    if codex_home is not None:
+        codex_home = prepare_isolated_codex_home(codex_home)
+        env["CODEX_HOME"] = str(codex_home)
+    else:
+        codex_home = Path(env.get("CODEX_HOME", Path.home() / ".codex")).expanduser()
+
     has_auth_file = (codex_home / "auth.json").is_file()
     api_key = os.environ.get("CODEX_API_KEY") or os.environ.get("OPENAI_API_KEY")
-    if not (api_key or has_auth_file):
-        raise AuthenticationError(
-            "behavioral evals require CODEX_API_KEY/OPENAI_API_KEY or an authenticated CODEX_HOME"
-        )
-    env = os.environ.copy()
     if api_key:
+        if auth_file is not None:
+            raise ConfigurationError(
+                "--auth-file is unnecessary when CODEX_API_KEY or OPENAI_API_KEY is available"
+            )
         env["CODEX_API_KEY"] = api_key
         env.pop("OPENAI_API_KEY", None)
-        return env, "api-key"
-    return env, "codex-home-auth"
+        return env, "api-key", None
+    if auth_file is not None:
+        copied = copy_ephemeral_auth(auth_file, codex_home)
+        return env, "isolated-auth-copy", copied
+    if not has_auth_file:
+        raise AuthenticationError(
+            "behavioral evals require CODEX_API_KEY/OPENAI_API_KEY or an authenticated "
+            "CODEX_HOME; for an isolated home, pre-provision auth.json or pass --auth-file "
+            "explicitly"
+        )
+    return env, "isolated-home-auth" if isolated_requested else "codex-home-auth", None
+
+
+def initialize_isolated_codex_home(
+    codex_command: list[str], *, codex_env: dict[str, str]
+) -> None:
+    """Install only the repository-local plugin into an explicitly isolated home."""
+
+    def run_setup(args: list[str], label: str) -> subprocess.CompletedProcess[str]:
+        proc = subprocess.run(
+            codex_command + args,
+            cwd=ROOT.parent,
+            text=True,
+            capture_output=True,
+            env=codex_env,
+        )
+        if proc.returncode != 0:
+            detail = (proc.stderr or proc.stdout)[-2000:]
+            raise ConfigurationError(f"{label} failed: {detail}")
+        return proc
+
+    listed = run_setup(["plugin", "list"], "cannot inspect isolated plugins")
+    if "corpus-11-tools" in listed.stdout:
+        return
+    run_setup(["plugin", "marketplace", "add", "."], "cannot add local marketplace")
+    run_setup(
+        ["plugin", "add", "corpus-11-tools@corpus-11-local"],
+        "cannot add local Corpus plugin",
+    )
+    listed = run_setup(["plugin", "list"], "cannot verify local Corpus plugin")
+    if "corpus-11-tools" not in listed.stdout:
+        raise ConfigurationError("isolated Codex home does not list corpus-11-tools after setup")
 
 
 def run_one(
@@ -201,6 +313,30 @@ def build_parser() -> argparse.ArgumentParser:
         help="checkpoint/report directory",
     )
     parser.add_argument(
+        "--codex-home",
+        type=Path,
+        help=(
+            "dedicated writable CODEX_HOME for this run; the active user home is never "
+            "modified when this option is used"
+        ),
+    )
+    parser.add_argument(
+        "--auth-file",
+        type=Path,
+        help=(
+            "explicit auth.json source copied privately into --codex-home only for this "
+            "run, then removed; never needed with an API key"
+        ),
+    )
+    parser.add_argument(
+        "--initialize-codex-home",
+        action="store_true",
+        help=(
+            "install the repository-local Corpus plugin into --codex-home; opt-in and "
+            "idempotent when the plugin is already listed"
+        ),
+    )
+    parser.add_argument(
         "--id",
         dest="ids",
         action="append",
@@ -212,6 +348,9 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
+    if args.initialize_codex_home and args.codex_home is None:
+        print("FAIL: --initialize-codex-home requires an explicit --codex-home")
+        return 2
     records = load_records()
     if args.ids:
         wanted = set(args.ids)
@@ -222,105 +361,121 @@ def main(argv: list[str] | None = None) -> int:
             return 2
 
     try:
-        codex_env, auth_mode = auth_context()
-    except AuthenticationError as exc:
+        codex_env, auth_mode, ephemeral_auth = auth_context(
+            codex_home=args.codex_home,
+            auth_file=args.auth_file,
+        )
+    except (AuthenticationError, ConfigurationError) as exc:
         print(f"FAIL: {exc}")
         return 2
 
-    codex = os.environ.get("CORPUS_CODEX_COMMAND", "codex")
-    base_cmd = shlex.split(codex) + [
-        "--ask-for-approval", "never", "exec", "--ephemeral",
-        "--sandbox", "read-only", "--skip-git-repo-check",
-    ]
-    router_path = ROOT / "tools" / "offline_router.py"
-    selected_ids = [record["id"] for record in records]
-    fingerprint = {
-        "schema": 3,
-        "head": git_head(),
-        "eval_sha256": sha256_bytes(EVAL_PATH.read_bytes()),
-        "router_sha256": sha256_bytes(router_path.read_bytes()),
-        "skills_sha256": sha256_bytes("\n".join(SKILLS).encode()),
-        "codex_command": codex,
-        "codex_version": codex_version(codex),
-        "auth_mode": auth_mode,
-        "replicas": list(REPLICAS),
-        "selected_eval_ids": selected_ids,
-        "candidate_policy": "deterministic mandatory core before Codex boundary",
-        "live_contract": "Codex must hand back the precomputed executable route unchanged",
-    }
-
-    state_dir = args.state_dir.resolve()
-    checkpoint_path = state_dir / "checkpoint.json"
-    report_path = state_dir / "behavioral-report.json"
     try:
-        checkpoint = load_checkpoint(checkpoint_path, fingerprint, args.fresh)
-    except RuntimeError as exc:
-        print(f"FAIL: {exc}")
-        print("Use --fresh only after intentionally preserving/discarding incompatible evidence.")
-        return 2
+        codex = os.environ.get("CORPUS_CODEX_COMMAND", "codex")
+        codex_command = shlex.split(codex)
+        if args.initialize_codex_home:
+            try:
+                initialize_isolated_codex_home(codex_command, codex_env=codex_env)
+            except ConfigurationError as exc:
+                print(f"FAIL: {exc}")
+                return 2
+        base_cmd = codex_command + [
+            "--ask-for-approval", "never", "exec", "--ephemeral",
+            "--sandbox", "read-only", "--skip-git-repo-check",
+        ]
+        router_path = ROOT / "tools" / "offline_router.py"
+        selected_ids = [record["id"] for record in records]
+        fingerprint = {
+            "schema": 4,
+            "head": git_head(),
+            "eval_sha256": sha256_bytes(EVAL_PATH.read_bytes()),
+            "router_sha256": sha256_bytes(router_path.read_bytes()),
+            "skills_sha256": sha256_bytes("\n".join(SKILLS).encode()),
+            "codex_command": codex,
+            "codex_version": codex_version(codex),
+            "auth_mode": auth_mode,
+            "codex_home_mode": "isolated" if args.codex_home is not None else "default",
+            "plugin_initialized": args.initialize_codex_home,
+            "replicas": list(REPLICAS),
+            "selected_eval_ids": selected_ids,
+            "candidate_policy": "deterministic mandatory core before Codex boundary",
+            "live_contract": "Codex must hand back the precomputed executable route unchanged",
+        }
 
-    errors: list[str] = []
-    timeout = int(os.environ.get("CORPUS_EVAL_TIMEOUT", "180"))
-    for index, record in enumerate(records, 1):
-        core = mandatory_route(record)
-        outputs: list[dict] = []
-        for replica in REPLICAS:
-            key = f"{record['id']}::{replica}"
-            saved = checkpoint["results"].get(key)
-            if isinstance(saved, dict) and saved.get("status") == "success":
-                output = saved["output"]
-                print(f"[{index}/{len(records)}] {record['id']} {replica} resumed", flush=True)
-            else:
-                try:
-                    output = run_one(
-                        record, replica, core,
-                        state_dir=state_dir,
-                        base_cmd=base_cmd,
-                        codex_env=codex_env,
-                        timeout=timeout,
-                    )
-                except AuthenticationError as exc:
-                    print(f"FAIL: {record['id']} {replica}: {exc}")
-                    return 2
-                except Exception as exc:
-                    checkpoint["results"][key] = {"status": "failure", "error": str(exc)}
+        state_dir = args.state_dir.resolve()
+        checkpoint_path = state_dir / "checkpoint.json"
+        report_path = state_dir / "behavioral-report.json"
+        try:
+            checkpoint = load_checkpoint(checkpoint_path, fingerprint, args.fresh)
+        except RuntimeError as exc:
+            print(f"FAIL: {exc}")
+            print("Use --fresh only after intentionally preserving/discarding incompatible evidence.")
+            return 2
+
+        errors: list[str] = []
+        timeout = int(os.environ.get("CORPUS_EVAL_TIMEOUT", "180"))
+        for index, record in enumerate(records, 1):
+            core = mandatory_route(record)
+            outputs: list[dict] = []
+            for replica in REPLICAS:
+                key = f"{record['id']}::{replica}"
+                saved = checkpoint["results"].get(key)
+                if isinstance(saved, dict) and saved.get("status") == "success":
+                    output = saved["output"]
+                    print(f"[{index}/{len(records)}] {record['id']} {replica} resumed", flush=True)
+                else:
+                    try:
+                        output = run_one(
+                            record, replica, core,
+                            state_dir=state_dir,
+                            base_cmd=base_cmd,
+                            codex_env=codex_env,
+                            timeout=timeout,
+                        )
+                    except AuthenticationError as exc:
+                        print(f"FAIL: {record['id']} {replica}: {exc}")
+                        return 2
+                    except Exception as exc:
+                        checkpoint["results"][key] = {"status": "failure", "error": str(exc)}
+                        atomic_json(checkpoint_path, checkpoint)
+                        errors.append(f"{record['id']} {replica}: execution/parsing failed: {exc}")
+                        continue
+                    checkpoint["results"][key] = {"status": "success", "output": output}
                     atomic_json(checkpoint_path, checkpoint)
-                    errors.append(f"{record['id']} {replica}: execution/parsing failed: {exc}")
-                    continue
-                checkpoint["results"][key] = {"status": "success", "output": output}
-                atomic_json(checkpoint_path, checkpoint)
-                print(f"[{index}/{len(records)}] {record['id']} {replica} saved", flush=True)
-            outputs.append(output)
-            errors.extend(validate_output(record, output, replica, core))
+                    print(f"[{index}/{len(records)}] {record['id']} {replica} saved", flush=True)
+                outputs.append(output)
+                errors.extend(validate_output(record, output, replica, core))
 
-        if len(outputs) == 2:
-            first = outputs[0].get("selected_skills") if isinstance(outputs[0], dict) else None
-            second = outputs[1].get("selected_skills") if isinstance(outputs[1], dict) else None
-            if first != second:
-                errors.append(f"{record['id']}: executable route differs across replicas")
-        print(f"[{index}/{len(records)}] {record['id']} checked", flush=True)
+            if len(outputs) == 2:
+                first = outputs[0].get("selected_skills") if isinstance(outputs[0], dict) else None
+                second = outputs[1].get("selected_skills") if isinstance(outputs[1], dict) else None
+                if first != second:
+                    errors.append(f"{record['id']}: executable route differs across replicas")
+            print(f"[{index}/{len(records)}] {record['id']} checked", flush=True)
 
-    report = {
-        "fingerprint": fingerprint,
-        "status": "FAIL" if errors else "PASS",
-        "errors": errors,
-        "completed_results": sum(
-            1 for value in checkpoint["results"].values()
-            if isinstance(value, dict) and value.get("status") == "success"
-        ),
-        "expected_results": len(records) * len(REPLICAS),
-        "checkpoint": str(checkpoint_path),
-    }
-    atomic_json(report_path, report)
-    if errors:
-        print("FAIL")
-        for error in errors:
-            print(" -", error)
+        report = {
+            "fingerprint": fingerprint,
+            "status": "FAIL" if errors else "PASS",
+            "errors": errors,
+            "completed_results": sum(
+                1 for value in checkpoint["results"].values()
+                if isinstance(value, dict) and value.get("status") == "success"
+            ),
+            "expected_results": len(records) * len(REPLICAS),
+            "checkpoint": str(checkpoint_path),
+        }
+        atomic_json(report_path, report)
+        if errors:
+            print("FAIL")
+            for error in errors:
+                print(" -", error)
+            print(f"Persistent report: {report_path}")
+            return 1
+        print(f"PASS: {len(records)} deterministic routing handoff evals passed across two replicas")
         print(f"Persistent report: {report_path}")
-        return 1
-    print(f"PASS: {len(records)} deterministic routing handoff evals passed across two replicas")
-    print(f"Persistent report: {report_path}")
-    return 0
+        return 0
+    finally:
+        if ephemeral_auth is not None:
+            remove_ephemeral_auth(ephemeral_auth)
 
 
 if __name__ == "__main__":

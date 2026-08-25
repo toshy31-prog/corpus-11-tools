@@ -1,0 +1,17 @@
+{
+  "lab_id": "relation-loss-observatory",
+  "synthetic_scope": "not_substitutable",
+  "case": {
+    "id": "training-only-migration",
+    "is_real_case": false,
+    "object_verified_present": true,
+    "prior_access_evidence": false,
+    "current_break_observed": false,
+    "comparable_control": false,
+    "collection_basis": "none"
+  },
+  "expected": {
+    "admissible_for_real_conclusion": false,
+    "reasons": ["not_real_case", "no_prior_access_trace", "no_current_break_trace", "no_comparable_control", "no_collection_basis"]
+  }
+}

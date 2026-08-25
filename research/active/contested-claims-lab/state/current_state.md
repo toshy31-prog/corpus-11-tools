@@ -1,7 +1,9 @@
 # État courant
 
-Ouvert le 2026-08-25. Aucun cas de désaccord ni protocole de révision n’est
-encore disponible.
+Ouvert. Un protocole synthétique fini sépare pluralité compatible et erreur
+contradictoire, avec conditions de révision visibles. Aucun cas de désaccord
+réel ni évaluation humaine n'est encore disponible.
 
-Prochaine décision : choisir une famille de désaccords et les traces qui
-permettent de distinguer pluralité légitime et erreur corrigible.
+Prochaine décision : conserver cet oracle de représentation, puis choisir une
+famille de désaccords et des traces réelles avant toute conclusion hors du
+modèle.

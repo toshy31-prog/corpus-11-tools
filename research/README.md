@@ -28,7 +28,7 @@ Une recherche peut utiliser les skills et laboratoires de Corpus. Elle ne devien
 | [`active/fusion-alpha-feedback/`](active/fusion-alpha-feedback/) | active | rétroaction alpha–TAE–zonal flow et conditions du test cinétique global |
 | [`active/material-trace-lab/`](active/material-trace-lab/) | active | traces, récupération et effacement dans un petit système matériel distribué |
 | [`active/relation-loss-observatory/`](active/relation-loss-observatory/) | active | pertes d’accès, de lien et de réactivation dans des migrations ou archives réelles |
-| [`active/independent-evidence-arena/`](active/independent-evidence-arena/) | active | évaluation externe et préenregistrée des méthodes de recherche Corpus |
+| [`active/independent-evidence-arena/`](active/independent-evidence-arena/) | active | évaluation externe des méthodes de recherche Corpus, avec contrat d’essai explicite |
 | [`active/provenance-interoperability-lab/`](active/provenance-interoperability-lab/) | active | interchange vérifiable de preuves, calculs et conclusions entre outils |
 | [`active/multilingual-research-fidelity-lab/`](active/multilingual-research-fidelity-lab/) | active | fidélité des preuves et conclusions à travers les langues |
 | [`active/adversarial-agent-boundaries/`](active/adversarial-agent-boundaries/) | active | résistance du processus de recherche aux entrées et outils adversariaux |

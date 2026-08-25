@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "model": "three-node-trace-replication-v1",
+  "nodes": ["A", "B", "C"],
+  "scenarios": [
+    {
+      "id": "all_nodes_tombstoned",
+      "operations": [
+        {"kind": "write", "node": "A"},
+        {"kind": "replicate", "source": "A", "targets": ["B", "C"]},
+        {"kind": "delete", "nodes": ["A", "B", "C"]}
+      ],
+      "expected": {
+        "physically_present_nodes": [],
+        "normally_accessible": false,
+        "reactivated": false,
+        "recovery_channels": [],
+        "repair_events": 0
+      }
+    },
+    {
+      "id": "stale_replica_reactivates_with_payload_priority",
+      "operations": [
+        {"kind": "write", "node": "A"},
+        {"kind": "replicate", "source": "A", "targets": ["B", "C"]},
+        {"kind": "partition", "nodes": ["C"]},
+        {"kind": "delete", "nodes": ["A", "B"]},
+        {"kind": "reconnect", "nodes": ["C"]},
+        {"kind": "sync", "source": "C", "targets": ["A", "B"], "policy": "payload_wins"}
+      ],
+      "expected": {
+        "physically_present_nodes": ["A", "B", "C"],
+        "normally_accessible": true,
+        "reactivated": true,
+        "recovery_channels": ["C->A", "C->B"],
+        "repair_events": 2
+      }
+    },
+    {
+      "id": "tombstone_propagation_prevents_reactivation",
+      "operations": [
+        {"kind": "write", "node": "A"},
+        {"kind": "replicate", "source": "A", "targets": ["B", "C"]},
+        {"kind": "partition", "nodes": ["C"]},
+        {"kind": "delete", "nodes": ["A", "B"]},
+        {"kind": "reconnect", "nodes": ["C"]},
+        {"kind": "sync", "source": "A", "targets": ["C"], "policy": "tombstone_wins"}
+      ],
+      "expected": {
+        "physically_present_nodes": [],
+        "normally_accessible": false,
+        "reactivated": false,
+        "recovery_channels": [],
+        "repair_events": 0
+      }
+    }
+  ]
+}

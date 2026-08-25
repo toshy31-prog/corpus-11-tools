@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
+from types import SimpleNamespace
 import tempfile
 
 import pytest
@@ -39,6 +41,13 @@ def test_two_replica_prompts_are_byte_identical_for_same_scene() -> None:
     core = runner.mandatory_route(record)
     # Replica identity deliberately never enters make_prompt.
     assert runner.make_prompt(record, core) == runner.make_prompt(record, core)
+
+
+def test_handoff_prompt_exemplifies_an_array_for_selected_skills() -> None:
+    record = sample_record()
+    prompt = runner.make_prompt(record, runner.mandatory_route(record))
+    assert '"selected_skills": ["skill-a"]' in prompt
+    assert '"selected_skills": "exact mandatory executable route supplied below"' not in prompt
 
 
 def test_handoff_requires_exact_core_no_add_remove_or_reorder() -> None:
@@ -92,6 +101,124 @@ def test_atomic_json_writes_valid_complete_json() -> None:
         runner.atomic_json(path, payload)
         assert json.loads(path.read_text(encoding="utf-8")) == payload
         assert not path.with_suffix(".json.tmp").exists()
+
+
+def test_isolated_codex_home_uses_api_key_without_auth_copy(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("CODEX_API_KEY", "test-only-key")
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    home = tmp_path / "isolated-codex"
+
+    env, mode, ephemeral_auth = runner.auth_context(codex_home=home)
+
+    assert mode == "api-key"
+    assert ephemeral_auth is None
+    assert env["CODEX_HOME"] == str(home.resolve())
+    assert env["CODEX_API_KEY"] == "test-only-key"
+    assert "OPENAI_API_KEY" not in env
+    assert not (home / "auth.json").exists()
+    assert os.stat(home).st_mode & 0o077 == 0
+
+
+def test_default_authenticated_codex_home_keeps_legacy_auth_mode(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.delenv("CODEX_API_KEY", raising=False)
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    home = tmp_path / "existing-codex-home"
+    home.mkdir()
+    (home / "auth.json").write_text('{"token":"test-only"}', encoding="utf-8")
+    monkeypatch.setenv("CODEX_HOME", str(home))
+
+    env, mode, ephemeral_auth = runner.auth_context()
+
+    assert mode == "codex-home-auth"
+    assert ephemeral_auth is None
+    assert env["CODEX_HOME"] == str(home)
+
+
+def test_explicit_auth_copy_is_private_and_removed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.delenv("CODEX_API_KEY", raising=False)
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    source = tmp_path / "desktop-auth.json"
+    source.write_text('{"token":"test-only"}', encoding="utf-8")
+    home = tmp_path / "isolated-codex"
+
+    env, mode, ephemeral_auth = runner.auth_context(codex_home=home, auth_file=source)
+
+    assert mode == "isolated-auth-copy"
+    assert env["CODEX_HOME"] == str(home.resolve())
+    assert ephemeral_auth == home / "auth.json"
+    assert ephemeral_auth.read_text(encoding="utf-8") == source.read_text(encoding="utf-8")
+    assert os.stat(ephemeral_auth).st_mode & 0o077 == 0
+
+    runner.remove_ephemeral_auth(ephemeral_auth)
+    assert not ephemeral_auth.exists()
+    assert source.exists()
+
+
+def test_auth_copy_requires_an_explicit_isolated_home(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.delenv("CODEX_API_KEY", raising=False)
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    source = tmp_path / "auth.json"
+    source.write_text('{"token":"test-only"}', encoding="utf-8")
+
+    with pytest.raises(runner.ConfigurationError, match="requires an explicit --codex-home"):
+        runner.auth_context(auth_file=source)
+
+
+def test_isolated_home_rejects_active_home_and_missing_auth(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.delenv("CODEX_API_KEY", raising=False)
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+
+    with pytest.raises(runner.ConfigurationError, match="dedicated directory"):
+        runner.prepare_isolated_codex_home(Path.home() / ".codex")
+    with pytest.raises(runner.AuthenticationError, match="require CODEX_API_KEY"):
+        runner.auth_context(codex_home=tmp_path / "empty-isolated-home")
+
+
+def test_initialize_isolated_home_installs_only_local_plugin(monkeypatch: pytest.MonkeyPatch) -> None:
+    commands: list[list[str]] = []
+
+    def fake_run(command: list[str], **_: object) -> SimpleNamespace:
+        commands.append(command)
+        if command[-2:] == ["plugin", "list"]:
+            # The first listing is empty; the second lists the local plugin.
+            listed = "corpus-11-tools\n" if sum(
+                item[-2:] == ["plugin", "list"] for item in commands
+            ) == 2 else ""
+            return SimpleNamespace(returncode=0, stdout=listed, stderr="")
+        return SimpleNamespace(returncode=0, stdout="", stderr="")
+
+    monkeypatch.setattr(runner.subprocess, "run", fake_run)
+    runner.initialize_isolated_codex_home(["codex"], codex_env={"CODEX_HOME": "/isolated"})
+
+    assert commands == [
+        ["codex", "plugin", "list"],
+        ["codex", "plugin", "marketplace", "add", "."],
+        ["codex", "plugin", "add", "corpus-11-tools@corpus-11-local"],
+        ["codex", "plugin", "list"],
+    ]
+
+
+def test_initialize_isolated_home_skips_install_when_plugin_is_already_listed(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    commands: list[list[str]] = []
+
+    def fake_run(command: list[str], **_: object) -> SimpleNamespace:
+        commands.append(command)
+        return SimpleNamespace(returncode=0, stdout="corpus-11-tools\n", stderr="")
+
+    monkeypatch.setattr(runner.subprocess, "run", fake_run)
+    runner.initialize_isolated_codex_home(["codex"], codex_env={"CODEX_HOME": "/isolated"})
+
+    assert commands == [["codex", "plugin", "list"]]
 
 
 def test_offline_router_has_no_eval_oracle_dependency() -> None:

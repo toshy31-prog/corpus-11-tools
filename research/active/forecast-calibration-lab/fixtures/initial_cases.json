@@ -1,0 +1,12 @@
+{
+  "lab_id": "forecast-calibration-lab",
+  "synthetic_scope": "formal_exact",
+  "horizon": "closed-fixture",
+  "forecasts": [
+    {"id": "f1", "probability": 0.8, "outcome": 1},
+    {"id": "f2", "probability": 0.2, "outcome": 0},
+    {"id": "f3", "probability": 0.6, "outcome": 1},
+    {"id": "f4", "probability": 0.4, "outcome": 0}
+  ],
+  "expected": {"brier_score": 0.1, "external_calibration_claim_allowed": false}
+}

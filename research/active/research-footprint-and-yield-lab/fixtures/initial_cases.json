@@ -1,0 +1,14 @@
+{
+  "lab_id": "research-footprint-and-yield-lab",
+  "synthetic_scope": "pipeline_verified",
+  "protocols": [
+    {"id": "baseline", "simulated_tokens": 900, "simulated_minutes": 30, "simulated_calls": 5, "decisions_changed": 1},
+    {"id": "structured", "simulated_tokens": 900, "simulated_minutes": 32, "simulated_calls": 5, "decisions_changed": 1}
+  ],
+  "expected": {
+    "dimension_order": ["simulated_tokens", "simulated_minutes", "simulated_calls", "decisions_changed"],
+    "aggregate_tokens": 1800,
+    "aggregate_decisions_changed": 2,
+    "external_efficiency_claim_allowed": false
+  }
+}

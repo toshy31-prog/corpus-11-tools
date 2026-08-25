@@ -1,6 +1,6 @@
 # État courant de la recherche
 
-Dernière mise à jour : 2026-08-18 — clôture quotidienne
+Dernière mise à jour : 2026-08-25 — audit formel autonome
 
 ## Discipline
 
@@ -33,15 +33,17 @@ Bornes successives :
 - `Delta_total = L_Borda-L_FT = -472112`, moyenne `-0,351487` violation par test ;
 - F_T meilleur/égal/pire : `301248 / 370240 / 671696` ;
 - **avantage moyen F_T négatif dans `2212/2212` strates non triviales** ;
-- classification préenregistrée : **`borda_better`**.
+- classification fixée avant exécution : **`borda_better`**.
 
-Conclusion : la condition de requalification de la fiche est satisfaite. Ne pas concevoir un nouveau protocole pour sauver adaptativement `F_T`. Réouverture seulement sur prédiction indépendante avec concurrent standard préenregistré.
+Conclusion : la condition de requalification de la fiche est satisfaite. Ne pas concevoir un nouveau protocole pour sauver adaptativement `F_T`. Réouverture seulement sur prédiction indépendante avec concurrent standard fixé avant exécution.
 
 ### Invariants de factorisation — active mais bornée
 
 Le reste triple est robuste dans deux familles : catalogue signé dimension 3 (`0/1`) et permutation naturelle `S4` (`1/2`, `transported_remainder`). Mais H4 sous ajout d'une quatrième factorisation est `not_supported` : contrastes appariés `+1,0,0,0`, médiane `0`, avec explication par la droite fixe commune `span((1,1,1,1))`.
 
-Réouverture seulement avec quotient préenregistré du sous-espace fixe commun ou famille sans plancher commun.
+L'audit quotienté exact du 2026-08-25 retire cette droite de tous les espaces fixes : la clé devient `(2,2,2)/(1,1,1)`, avec `Dq3=0/1` pour `16/4` triplets. Dans les trois strates appariées d'ajouts non identitaires, `Dq4=0` pour les deux groupes, `Delta=0` partout et médiane `0`. La même famille `S4`, même quotientée, ne fournit donc plus de test local discriminant de survie.
+
+Réouverture seulement avec une famille de transports justifiée indépendamment, sans plancher fixe commun, et une règle de construction déclarée avant le calcul. Ne pas chercher adaptativement un nouveau catalogue favorable.
 
 ### Orientation compositionnelle — weakened, voie P1/P2 close
 
@@ -59,7 +61,7 @@ Les contrôles abéliens et d'incidence expliquent les effets étudiés ; ne rou
 
 1. **F_T est requalifié** comme score descriptif/optimiseur standard dans le programme actuel après `borda_better`.
 2. **Récupération/désinscription** conserve une distinction opérationnelle robuste mais atteint sa condition d'arrêt logicielle locale.
-3. **Factorisation** conserve un phénomène mathématique d'ordre trois, mais aucune stabilité prospective non triviale n'est établie.
+3. **Factorisation** conserve un phénomène mathématique d'ordre trois, mais aucune stabilité prospective non triviale n'est établie ; l'audit quotienté de `S4` ne lève pas cette borne.
 4. **Orientation compositionnelle** reste close pour P1/P2.
 5. Aucun résultat du jour n'établit temps émergent, objet physique nouveau ou nouvelle loi fondamentale.
 
@@ -68,7 +70,7 @@ Les contrôles abéliens et d'incidence expliquent les effets étudiés ; ne rou
 Ne pas reprendre automatiquement la piste la plus récente. Refaire une allocation par valeur d'information parmi :
 
 - banc distribué/matériel récupération-désinscription si un vrai dispositif devient accessible ;
-- factorisation quotientée par le sous-espace fixe commun, seulement avec préenregistrement indépendant ;
+- famille de factorisations indépendante sans sous-espace fixe commun, uniquement si sa règle de construction est justifiée avant le calcul ;
 - complexe de distinctions compatibles uniquement si une relation non injectée et un contrôle apparié peuvent être spécifiés avant calcul.
 
 Éviter toute nouvelle sonde destinée à sauver chiralité ou `F_T` après leurs conditions d'arrêt respectives.

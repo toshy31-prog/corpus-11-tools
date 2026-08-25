@@ -19,3 +19,10 @@ adaptateurs et champs effectivement testés. Elle n’établit pas une
 interopérabilité universelle.
 
 Voir [`state/current_state.md`](state/current_state.md).
+
+## Cycle synthétique initial
+
+Le reçu minimal, les deux profils locaux et leur limite sont documentés dans
+[`protocols/initial_synthetic_protocol.md`](protocols/initial_synthetic_protocol.md).
+Exécution : `python3 tests/test_initial_protocol.py`. Le résultat est limité à
+la vérification de pipeline des adaptateurs locaux.

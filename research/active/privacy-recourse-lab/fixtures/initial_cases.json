@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "synthetic_case": {
+    "case_id": "case-synthetic-17",
+    "direct_identifier": "Subject-Quartz",
+    "contact": "subject-quartz@example.invalid",
+    "pseudonym": "recourse-Q17",
+    "raw_testimony": "Synthetic testimony: the declared remedy was not delivered.",
+    "evidence_digest": "sha256:synthetic-evidence-17",
+    "requested_remedy": "review-and-repair",
+    "appeal_token": "appeal-synthetic-17",
+    "aggregate_category": "delivery_dispute"
+  },
+  "profiles": [
+    {
+      "id": "full",
+      "purpose": "adjudication-and-publication",
+      "views": {
+        "adjudication": {"fields": ["case_id", "direct_identifier", "contact", "pseudonym", "raw_testimony", "evidence_digest", "requested_remedy", "appeal_token"], "retention_days": 30},
+        "protected_review": {"fields": ["case_id", "direct_identifier", "contact", "pseudonym", "raw_testimony", "evidence_digest", "appeal_token"], "retention_days": 30},
+        "public_aggregate": {"fields": ["case_id", "direct_identifier", "contact", "pseudonym", "raw_testimony", "evidence_digest", "aggregate_category"], "retention_days": 30}
+      },
+      "expected": {"privacy": false, "recourse": true}
+    },
+    {
+      "id": "minimal",
+      "purpose": "bounded-review",
+      "views": {
+        "adjudication": {"fields": ["case_id", "pseudonym", "evidence_digest", "requested_remedy", "appeal_token"], "retention_days": 7},
+        "protected_review": {"fields": ["case_id", "evidence_digest", "appeal_token"], "retention_days": 7},
+        "public_aggregate": {"fields": ["aggregate_category"], "retention_days": 0}
+      },
+      "expected": {"privacy": true, "recourse": false}
+    },
+    {
+      "id": "graduated",
+      "purpose": "bounded-recourse",
+      "views": {
+        "adjudication": {"fields": ["case_id", "pseudonym", "raw_testimony", "evidence_digest", "requested_remedy", "appeal_token"], "retention_days": 30},
+        "protected_review": {"fields": ["case_id", "evidence_digest", "appeal_token"], "retention_days": 7},
+        "public_aggregate": {"fields": ["aggregate_category"], "retention_days": 0}
+      },
+      "expected": {"privacy": true, "recourse": true}
+    }
+  ]
+}

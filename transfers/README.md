@@ -10,6 +10,12 @@ Ce sas empêche qu’un résultat local devienne silencieusement une capacité d
 
 Chaque transfert doit identifier la recherche source, le mécanisme extrait, ce qui a été retiré du contexte, les tests propres à Corpus, les dépendances restantes et la condition de retrait.
 
+Un candidat peut posséder un protocole exécutable sans devenir un composant du
+produit. La surface conversationnelle candidate est ainsi vérifiée par
+`corpus-11-tools/tools/check_conversational_surface.py` : ce contrôle vérifie
+le contrat de non-interférence de fixtures, sans constituer une acceptation ni
+une validation d’usage.
+
 La direction autorisée est :
 
 ```text

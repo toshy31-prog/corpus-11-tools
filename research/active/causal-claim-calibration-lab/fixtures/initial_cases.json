@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "worlds": [
+    {
+      "id": "confounded_association_without_direct_effect",
+      "design": "observational_confounding",
+      "rows": [
+        {"C": 0, "X": 0, "Y0": 0, "Y1": 0, "count": 45},
+        {"C": 0, "X": 1, "Y0": 0, "Y1": 0, "count": 5},
+        {"C": 1, "X": 0, "Y0": 1, "Y1": 1, "count": 5},
+        {"C": 1, "X": 1, "Y0": 1, "Y1": 1, "count": 45}
+      ],
+      "expected": {
+        "association": "4/5",
+        "do_effect": "0",
+        "adjusted_effect": "0",
+        "naive_verdict": "not_identified",
+        "adjusted_verdict": "identified_under_assumptions"
+      }
+    },
+    {
+      "id": "randomized_direct_effect",
+      "design": "randomized",
+      "rows": [
+        {"C": 0, "X": 0, "Y0": 0, "Y1": 1, "count": 25},
+        {"C": 0, "X": 1, "Y0": 0, "Y1": 1, "count": 25},
+        {"C": 1, "X": 0, "Y0": 1, "Y1": 1, "count": 25},
+        {"C": 1, "X": 1, "Y0": 1, "Y1": 1, "count": 25}
+      ],
+      "expected": {
+        "association": "1/2",
+        "do_effect": "1/2",
+        "adjusted_effect": "1/2",
+        "naive_verdict": "identified_under_assumptions",
+        "adjusted_verdict": "identified_under_assumptions"
+      }
+    }
+  ]
+}

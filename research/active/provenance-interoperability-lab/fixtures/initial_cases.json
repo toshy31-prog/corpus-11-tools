@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "receipt": {
+    "receipt_id": "receipt-synthetic-001",
+    "claim": {
+      "id": "claim-synthetic-001",
+      "text": "A deterministic adapter preserves the declared semantic core.",
+      "scope": "pipeline_verified"
+    },
+    "sources": [
+      {"id": "source-synthetic-A", "digest": "sha256:111"},
+      {"id": "source-synthetic-B", "digest": "sha256:222"}
+    ],
+    "transformations": [
+      {"id": "transform-normalize", "kind": "normalization"},
+      {"id": "transform-compare", "kind": "comparison"}
+    ],
+    "reversal_condition": {
+      "id": "reversal-core-mismatch",
+      "observable": "A round trip changes one declared core field."
+    },
+    "display_note": "Intentionally outside the semantic core."
+  },
+  "expected_profiles": ["prov-shaped-profile-v1", "ro-crate-shaped-profile-v1"]
+}

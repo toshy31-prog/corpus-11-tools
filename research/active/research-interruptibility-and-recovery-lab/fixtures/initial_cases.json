@@ -1,0 +1,8 @@
+{
+  "lab_id": "research-interruptibility-and-recovery-lab",
+  "synthetic_scope": "pipeline_verified",
+  "snapshot": {"research_id": "r-17", "decision": "retain-two-rivals", "artifacts": ["a-hash", "b-hash"], "recourse": "rollback-r-17"},
+  "interruption": {"kind": "simulated-stop", "journaled": true},
+  "restored": {"research_id": "r-17", "decision": "retain-two-rivals", "artifacts": ["a-hash", "b-hash"], "recourse": "rollback-r-17"},
+  "expected": {"lossless_for_declared_fields": true, "universal_recovery_claim_allowed": false}
+}
