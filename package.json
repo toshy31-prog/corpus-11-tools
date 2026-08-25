@@ -1,0 +1,9 @@
+{
+  "name": "corpus-11-workspace",
+  "private": true,
+  "version": "1.4.0",
+  "description": "Corpus 11 workspace; Node tests use only Node built-in modules.",
+  "engines": {
+    "node": ">=18"
+  }
+}

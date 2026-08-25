@@ -2,6 +2,9 @@
 __pycache__/
 *.py[cod]
 
+# Local, hash-pinned validation environment (created by `make bootstrap`).
+.venv/
+
 # Local validation evidence and resumable checkpoints.
 .validation-state/
 **/.validation-state/

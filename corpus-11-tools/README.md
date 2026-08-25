@@ -78,6 +78,16 @@ Pour intégrer le plugin à un autre catalogue local, utiliser `docs/marketplace
 
 ## Validation
 
+Depuis la racine du dépôt, la commande officielle reproductible est :
+
+```bash
+make verify
+```
+
+Elle crée `.venv`, installe les dépendances Python de validation verrouillées par
+empreintes et exécute tous les contrôles locaux non payants. Les laboratoires Node
+n'ont aucune dépendance tierce : ils requièrent Node 18 ou plus récent.
+
 ```bash
 python tools/validate_package.py
 python tools/check_graph.py

@@ -147,6 +147,29 @@ python3 tools/show_provenance.py CAP.PROTOCOL_ROBUSTNESS
 
 Ces commandes vérifient la cohérence du paquet et de ses références ; elles ne démontrent pas la vérité générale de ses contenus.
 
+## Validation locale reproductible
+
+Le dépôt ne dépend d'aucun paquet Node tiers : les laboratoires JavaScript utilisent
+uniquement les modules natifs de Node 18 ou plus récent. Les dépendances Python de
+validation sont verrouillées par empreintes dans
+`corpus-11-tools/tools/requirements-*.txt`.
+
+Depuis la racine, une seule commande crée l'environnement virtuel local `.venv`,
+installe ces dépendances verrouillées, puis exécute les contrôles structurels, les
+tests Python et Node, les protocoles de recherche et l'intégration CCT :
+
+```bash
+make verify
+```
+
+Pour préparer seulement l'environnement :
+
+```bash
+make bootstrap
+```
+
+`make verify` ne lance pas les évaluations comportementales Codex payantes.
+
 ## Que contient réellement ce dépôt ?
 
 Le dépôt contient un produit, ses instruments génériques et plusieurs recherches qui les utilisent. Ces espaces sont désormais séparés :
