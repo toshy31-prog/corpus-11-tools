@@ -15,15 +15,17 @@ fi
 sudo apt-get update
 sudo apt-get install -y --no-install-recommends \
   age bat build-essential ca-certificates curl direnv fd-find flatpak fzf \
-  git git-delta gh jq kitty make neovim nodejs npm ocrmypdf okular pandoc \
-  pipx podman podman-compose python3-venv restic ripgrep shellcheck shfmt \
-  tesseract-ocr tesseract-ocr-fra tmux yq zoxide libreoffice-writer
+  gimp git git-delta gh inkscape jq kitty libreoffice-writer make \
+  meld neovim nodejs npm obs-studio ocrmypdf okular pandoc pipx podman \
+  podman-compose python3-venv rclone restic ripgrep shellcheck shfmt sqlite3 \
+  syncthing tesseract-ocr tesseract-ocr-fra tmux yq zoxide
 
 # Desktop research/code tools. Flatpak keeps their runtime separate from the OS.
 if ! flatpak remotes --user --columns=name | grep -qx 'flathub'; then
   flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 fi
-flatpak install -y --user flathub com.vscodium.codium org.zotero.Zotero
+flatpak install -y --user flathub \
+  com.logseq.Logseq com.vscodium.codium io.dbeaver.DBeaverCommunity org.zotero.Zotero
 
 mkdir -p "${local_bin}"
 
@@ -58,6 +60,10 @@ EOF
 printf 'alias corpus=%q\n' "cd ${workspace_dir}" >> "${tmp_rc}"
 cat >> "${tmp_rc}" <<'EOF'
 
+case ":${PATH}:" in
+  *":${HOME}/.local/bin:"*) ;;
+  *) export PATH="${HOME}/.local/bin:${PATH}" ;;
+esac
 command -v direnv >/dev/null 2>&1 && eval "$(direnv hook bash)"
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init bash)"
 [[ -r /usr/share/doc/fzf/examples/key-bindings.bash ]] && source /usr/share/doc/fzf/examples/key-bindings.bash
