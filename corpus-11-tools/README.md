@@ -8,16 +8,16 @@ Ce plugin supplémentaire repose sur l’architecture 11.x fournie. Il ne rempla
 
 ## État actuel
 
-- version stable du paquet : **v1.3.0** ;
+- version stable du paquet : **v1.3.1** ;
 - 58 skills ;
 - 49 capabilities ;
 - 4 familles descriptives ;
 - 88 relations ;
 - 77 évaluations.
 
-## Changement public de v1.3.0
+## Changement public de v1.3.1
 
-v1.3.0 établit une cloison physique entre le produit et les recherches. Les moteurs génériques sont livrés sous `labs/`, tandis que les hypothèses, paramètres, résultats et interprétations vivent à la racine du dépôt sous `research/`. Le registre `transfers/` documente chaque mécanisme extrait et `tools/check_boundaries.py` empêche une dépendance inverse.
+v1.3.1 publie sur l’histoire courante les garanties introduites par v1.3.0 : une cloison physique entre le produit et les recherches. Les moteurs génériques sont livrés sous `labs/`, tandis que les hypothèses, paramètres, résultats et interprétations vivent à la racine du dépôt sous `research/`. Le registre `transfers/` documente chaque mécanisme extrait et `tools/check_boundaries.py` empêche une dépendance inverse.
 
 ## Changement public de v1.2.0
 
@@ -104,9 +104,9 @@ déployée.
 
 ## Statut
 
-Le paquet `v1.3.0` contient 58 skills, 49 capabilities, 4 familles, 88 relations et 77 évaluations. Sa stabilité désigne la cohérence du paquet, de son installation, de sa taxonomie, de sa frontière avec la recherche et de ses tests sur le périmètre déclaré. `open-experiment-arena` reste une procédure expérimentale candidate : ses tests synthétiques n’établissent ni scénario extérieur indépendant, ni gain de capability, ni usage de terrain. Les 31 capabilities natives restent `candidate_unvalidated`, les neuf facultés récupérées `recovered_candidate_unvalidated` et les neuf nouveaux outils `design_candidate_unvalidated`.
+Le paquet `v1.3.1` contient 58 skills, 49 capabilities, 4 familles, 88 relations et 77 évaluations. Sa stabilité désigne la cohérence du paquet, de son installation, de sa taxonomie, de sa frontière avec la recherche et de ses tests sur le périmètre déclaré. `open-experiment-arena` reste une procédure expérimentale candidate : ses tests synthétiques n’établissent ni scénario extérieur indépendant, ni gain de capability, ni usage de terrain. Les 31 capabilities natives restent `candidate_unvalidated`, les neuf facultés récupérées `recovered_candidate_unvalidated` et les neuf nouveaux outils `design_candidate_unvalidated`.
 
-Le périmètre et les conditions de retrait de ce statut sont définis dans [`docs/stability-contract.md`](docs/stability-contract.md), et la matrice exécutée dans [`docs/release-validation-v1.3.0.md`](docs/release-validation-v1.3.0.md).
+Le périmètre et les conditions de retrait de ce statut sont définis dans [`docs/stability-contract.md`](docs/stability-contract.md), et la matrice exécutée dans [`docs/release-validation-v1.3.1.md`](docs/release-validation-v1.3.1.md).
 
 Les lacunes historiques restent documentées dans `docs/legacy-loss-audit.md` et `archives/legacy/STATUS.md` : Atlas 2.7, Corpus 9.8, Corpus 10.2, la release 10.4 complète et la source éditable du manuel n’ont pas été retrouvés ni reconstruits par supposition.
 

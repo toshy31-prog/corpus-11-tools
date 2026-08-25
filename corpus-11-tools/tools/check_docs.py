@@ -175,7 +175,7 @@ else:
                 f"stability contract: {label}={actual}, expected inventory value {expected}"
             )
 
-release_validation = plugin_root / "docs" / "release-validation-v1.3.0.md"
+release_validation = plugin_root / "docs" / f"release-validation-{release}.md"
 if release_validation.is_file():
     release_text = release_validation.read_text(encoding="utf-8")
     for marker in (
@@ -191,6 +191,11 @@ if release_validation.is_file():
                 f"release validation: stale current eval count {actual}, "
                 f"expected {inventory.get('eval_count')}"
             )
+else:
+    errors.append(
+        "release validation: missing current-release matrix "
+        f"{release_validation.relative_to(repo_root)}"
+    )
 
 for required_path in (
     "corpus-11-tools/",

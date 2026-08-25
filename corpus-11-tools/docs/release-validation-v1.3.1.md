@@ -1,4 +1,4 @@
-# Validation de release v1.3.0
+# Validation de release v1.3.1
 
 ## Périmètre
 

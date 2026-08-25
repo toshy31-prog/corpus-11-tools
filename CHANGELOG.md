@@ -17,6 +17,17 @@
 - ajoute un validateur sans dépendance d’un sous-ensemble JSON Schema explicitement borné, qui refuse les mots-clés hors contrat plutôt que de les ignorer ;
 - enregistre les transferts recherche → Corpus correspondants avec tests indépendants du projet source et conditions explicites de retrait.
 
+## v1.3.1 — 2026-08-25
+
+### Identité de release
+
+- publie l’état courant de `main` sous un nouveau tag immuable, sans déplacer
+  le tag historique divergent `v1.3.0` ;
+- aligne le manifeste, l’inventaire, le contrat de stabilité et la matrice de
+  validation sur cette identité ;
+- dérive le chemin de la matrice de validation depuis l’identité déclarée,
+  afin qu’une future release ne conserve pas une référence de version figée.
+
 ## v1.3.0 — 2026-08-17
 
 ### Architecture

@@ -4,16 +4,16 @@ Corpus 11 Tools est un ensemble d’outils pour aider Codex à analyser une ques
 
 ## État actuel
 
-- version stable du paquet : **v1.3.0** ;
+- version stable du paquet : **v1.3.1** ;
 - 58 skills ;
 - 49 capabilities ;
 - 4 familles descriptives ;
 - 88 relations ;
 - 77 évaluations.
 
-## Ce qui change dans v1.3.0
+## Ce qui change dans v1.3.1
 
-v1.3.0 sépare physiquement le produit Corpus des recherches qui l’utilisent. Les moteurs génériques — Arena, protocoles reproductibles, exploration de possibilités et protocole institutionnel append-only — vivent dans `corpus-11-tools/labs/`. Les hypothèses, configurations, résultats et conclusions restent dans `research/`. Le registre `transfers/` rend visible chaque extraction d’un projet vers le produit et un contrôle automatique interdit les dépendances dans le mauvais sens.
+v1.3.1 publie sur l’histoire courante les garanties introduites par v1.3.0 : le produit Corpus est physiquement séparé des recherches qui l’utilisent. Les moteurs génériques — Arena, protocoles reproductibles, exploration de possibilités et protocole institutionnel append-only — vivent dans `corpus-11-tools/labs/`. Les hypothèses, configurations, résultats et conclusions restent dans `research/`. Le registre `transfers/` rend visible chaque extraction d’un projet vers le produit et un contrôle automatique interdit les dépendances dans le mauvais sens.
 
 ## Ce qui avait changé dans v1.2.0
 
@@ -137,7 +137,7 @@ python3 tools/check_evals.py
 python3 tools/test_validation_guards.py
 ```
 
-L’état attendu pour v1.3.0 indique 58 skills, 49 capabilities, 4 familles descriptives, 88 relations et 77 évaluations.
+L’état attendu pour v1.3.1 indique 58 skills, 49 capabilities, 4 familles descriptives, 88 relations et 77 évaluations.
 
 Pour vérifier un exemple de chaîne de provenance :
 
@@ -200,7 +200,7 @@ Cette vue sert d’index aux personnes qui souhaitent retrouver les fichiers cor
 - **Transferts** : seules voies autorisées pour décontextualiser un mécanisme et l’intégrer au produit.
 - **Archives** : sources historiques et recherches clôturées ; leur présence conserve une trace, pas une capacité active.
 
-La stabilité de v1.3.0 signifie que le paquet, sa taxonomie, sa documentation, sa frontière avec la recherche, son installation et ses tests de non-régression sont cohérents sur le périmètre déclaré. Elle ne transforme pas les capabilities candidates en résultats scientifiques établis.
+La stabilité de v1.3.1 signifie que le paquet, sa taxonomie, sa documentation, sa frontière avec la recherche, son installation et ses tests de non-régression sont cohérents sur le périmètre déclaré. Elle ne transforme pas les capabilities candidates en résultats scientifiques établis.
 
 ## Où trouver les outils ?
 
@@ -230,7 +230,7 @@ Le projet maintient également une **frontière de neutralité** : une séparati
 
 La documentation détaillée du plugin, de son contenu et de ses validations se trouve dans [`corpus-11-tools/README.md`](corpus-11-tools/README.md).
 
-Le détail de la release se trouve dans [`CHANGELOG.md`](CHANGELOG.md), son périmètre exact dans le [`contrat de stabilité`](corpus-11-tools/docs/stability-contract.md) et ses contrôles dans la [`validation de release`](corpus-11-tools/docs/release-validation-v1.3.0.md). L’[attestation comportementale locale](corpus-11-tools/docs/local-behavioral-attestation-2026-08-25.md) est explicitement bornée : elle ne vaut pas validation GitHub ni disponibilité actuelle de l’API.
+Le détail de la release se trouve dans [`CHANGELOG.md`](CHANGELOG.md), son périmètre exact dans le [`contrat de stabilité`](corpus-11-tools/docs/stability-contract.md) et ses contrôles dans la [`validation de release`](corpus-11-tools/docs/release-validation-v1.3.1.md). L’[attestation comportementale locale](corpus-11-tools/docs/local-behavioral-attestation-2026-08-25.md) est explicitement bornée : elle ne vaut pas validation GitHub ni disponibilité actuelle de l’API.
 
 Les personnes qui souhaitent inspecter la structure peuvent aussi consulter :
 
