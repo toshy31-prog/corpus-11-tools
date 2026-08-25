@@ -87,6 +87,7 @@ python tools/check_conversational_surface.py
 python tools/check_integrity.py
 python tools/check_release_identity.py
 python tools/check_evals.py
+python tools/check_research_derived_guards.py
 python tools/test_validation_guards.py
 python tools/show_provenance.py CAP.PROTOCOL_ROBUSTNESS
 python tools/project_yield_gate.py chemin/vers/record.json

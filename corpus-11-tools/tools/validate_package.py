@@ -3,6 +3,7 @@ from pathlib import Path
 import csv
 import json
 import re
+import subprocess
 import sys
 
 root = Path(__file__).resolve().parents[1]
@@ -13,6 +14,7 @@ governance = root / "skills" / "corpus-11-routing" / "references" / "epistemic-g
 routing_skill = root / "skills" / "corpus-11-routing" / "SKILL.md"
 eval_file = root / "evals" / "routing-and-nonregression.jsonl"
 inventory_file = root / "docs" / "inventory.json"
+research_guard_checker = root / "tools" / "check_research_derived_guards.py"
 inventory: dict = {}
 NON_CAPABILITY_SKILLS = {
     "corpus-11-routing",
@@ -115,6 +117,21 @@ else:
             errors.append(
                 "inventory eval_count does not match routing/non-regression eval file"
             )
+
+if not research_guard_checker.is_file():
+    errors.append("missing research-derived guard checker")
+else:
+    guard_check = subprocess.run(
+        [sys.executable, str(research_guard_checker)],
+        cwd=root,
+        text=True,
+        capture_output=True,
+    )
+    if guard_check.returncode != 0:
+        errors.append(
+            "research-derived guard contract failed: "
+            + (guard_check.stdout + guard_check.stderr).strip()
+        )
 
 
 def parse_minimal_scalar(value: str):

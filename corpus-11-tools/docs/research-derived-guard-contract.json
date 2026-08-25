@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "status": "tested_internal_policy",
+  "scope": "Corpus shared analytical artifacts; it does not establish external validity or deployment robustness.",
+  "guards": [
+    {"id": "construct_not_proxy", "rule": "An indicator must not be reported as the construct unless the construct, operation, measurement process, alternative construct, and reversal condition are declared.", "required_fields": ["construct", "operational_definition", "indicator", "measurement_process", "alternative_construct", "reversal_condition"], "forbidden_conclusion": "indicator_equals_construct"},
+    {"id": "lineage_before_evidence_count", "rule": "Artifact count must not be reported as independent evidence without lineage and shared-failure clustering.", "required_fields": ["evidence_units", "lineage", "shared_failure_clusters", "independence_status"], "forbidden_conclusion": "artifact_count_equals_independent_evidence"},
+    {"id": "rival_before_strong_selection", "rule": "A strong selection requires at least two frozen rivals with matched information, a discriminating outcome, and a loss condition for each rival.", "required_fields": ["rivals", "matching_dimensions", "discriminating_outcome", "loss_conditions"], "forbidden_conclusion": "single_model_unique_winner"},
+    {"id": "multiplicity_not_independence", "rule": "Repeated rows, seeds, or executions must expose their functional cells and multiplicities; repetition alone is not independent support.", "required_fields": ["unit_of_analysis", "functional_cells", "multiplicity", "dependence_status"], "forbidden_conclusion": "repetitions_equal_independent_proofs"},
+    {"id": "negative_result_and_version_preservation", "rule": "A failed or inconclusive result remains traceable. A repair is a new version with its own withdrawal condition, not a rewrite of the failed artifact.", "required_fields": ["artifact_version", "prior_result_reference", "result_status", "withdrawal_condition"], "forbidden_conclusion": "repair_erases_prior_failure"}
+  ],
+  "acceptance_cases": [
+    {"id": "complete_construct", "guard": "construct_not_proxy", "fields": ["construct", "operational_definition", "indicator", "measurement_process", "alternative_construct", "reversal_condition"], "conclusion": "partially_supported", "valid": true},
+    {"id": "proxy_substitution", "guard": "construct_not_proxy", "fields": ["indicator"], "conclusion": "indicator_equals_construct", "valid": false},
+    {"id": "clustered_evidence", "guard": "lineage_before_evidence_count", "fields": ["evidence_units", "lineage", "shared_failure_clusters", "independence_status"], "conclusion": "partially_dependent", "valid": true},
+    {"id": "counted_artifacts", "guard": "lineage_before_evidence_count", "fields": ["evidence_units"], "conclusion": "artifact_count_equals_independent_evidence", "valid": false},
+    {"id": "matched_rivals", "guard": "rival_before_strong_selection", "fields": ["rivals", "matching_dimensions", "discriminating_outcome", "loss_conditions"], "conclusion": "compatible_survivors", "valid": true},
+    {"id": "single_winner", "guard": "rival_before_strong_selection", "fields": ["rivals"], "conclusion": "single_model_unique_winner", "valid": false},
+    {"id": "declared_multiplicity", "guard": "multiplicity_not_independence", "fields": ["unit_of_analysis", "functional_cells", "multiplicity", "dependence_status"], "conclusion": "partially_dependent", "valid": true},
+    {"id": "repeated_proofs", "guard": "multiplicity_not_independence", "fields": ["multiplicity"], "conclusion": "repetitions_equal_independent_proofs", "valid": false},
+    {"id": "versioned_repair", "guard": "negative_result_and_version_preservation", "fields": ["artifact_version", "prior_result_reference", "result_status", "withdrawal_condition"], "conclusion": "inconclusive", "valid": true},
+    {"id": "erased_failure", "guard": "negative_result_and_version_preservation", "fields": ["artifact_version"], "conclusion": "repair_erases_prior_failure", "valid": false}
+  ]
+}
