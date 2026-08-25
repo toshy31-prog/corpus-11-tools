@@ -25,3 +25,12 @@ un effet répliqué dans des mondes fictifs distincts, ou une explication de son
 fictif ; aucune observation extérieure n'est sollicitée.
 
 Voir [`state/current_state.md`](state/current_state.md).
+
+## Graphes de lignage v0.2
+
+`python3 tests/test_lineage_graphs.py` classe quatre DAG fictifs par ancêtres et
+empreintes de dépendance déclarées. Une différence de seed, d'identifiant ou
+d'étiquette ne suffit plus à établir une séparation; deux générateurs sous des
+identifiants distincts mais avec la même empreinte restent un mode commun. Les
+empreintes sont des hypothèses de la fixture, pas une preuve d'équivalence; voir
+[`protocols/lineage_graphs_v0.2.md`](protocols/lineage_graphs_v0.2.md).

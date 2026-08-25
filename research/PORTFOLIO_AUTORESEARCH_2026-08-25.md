@@ -1,0 +1,53 @@
+# Passe autonome du portefeuille Corpus — 2026-08-25
+
+## Discipline de la passe
+
+- Aucun test, collecte, contact, déploiement ou instrument IRL.
+- Aucun appel API payant, aucune évaluation comportementale à 77 cas et aucune
+  publication.
+- Les protocoles sont dits « fixés avant exécution » dans les dossiers. Quand
+  aucun verrou temporel indépendant n'existe, cette base auto-déclarée est
+  indiquée explicitement.
+- Les seules portées de résultat sont `formal_exact`, `model_internal` et
+  `pipeline_verified`. Les effets institutionnels, physiques, comportementaux
+  ou externes sont des revendications non soutenues, pas des statuts implicites.
+- Les générateurs, paramètres, invariants, contrôles, effets possibles du
+  protocole et conditions de retrait sont consignés avec chaque campagne.
+
+## Avancées et prochaines actions
+
+| Dossier | Avancée réellement observée | Hypothèse affaiblie ou écartée | Limite restante | Prochaine action la plus utile |
+|---|---|---|---|---|
+| `corpus-hypotheses` | `7680` cellules distribuées, quotient exact de `2160` signatures conditionnelles et identité endogène sans mismatch (`formal_exact`, reconstruction `pipeline_verified`). | La v0.1, son oracle dit indépendant et `C_info=1` sont retirés. La lecture forte récupération/désinscription est `weakened`; H4/H5 de factorisation restent `not_supported`. | Signature, énumération et ablations viennent du même générateur; budgets d'information non appariés. | Arrêter ces familles locales; ne reprendre qu'avec un observable interne distinct et un rival capable de produire un mismatch nommé. |
+| `cct` | D10-003 exerce `32 × 4 = 128` paires. Protection supérieure D10 `70/128`, rival `2/128`, aucune dominance de Pareto (`model_internal`, reconstruction `pipeline_verified`). | D10-002 est retiré: autorité O3, journal O4 et budget y étaient des proxies. | Machines et ressources sont des paquets de règles fictifs; aucun effet institutionnel. | Nouvelle machine d'état et rival construits indépendamment des 128 résultats, avec possibilité explicite de faire perdre D10. |
+| `fusion-alpha-feedback` | F0 v1 conserve l'échec `inconclusive_refinement`; v2 soutient l'interaction de forme pour deux noyaux selon le seul critère `fine→reference` (`model_internal`). | Toute conclusion de stabilité TAE, transport alpha ou pertinence réacteur est écartée. | Les transitions `coarse→fine` dépassent le seuil et le statut temporel est auto-déclaré. | Nouvelle famille fictive et noyau fixés indépendamment, capables de renverser v2. |
+| `material-trace-lab` | `324` exécutions; `12/162` couples dépendent de l'ordre et `12/324` sorties diffèrent de l'oracle simultané (`formal_exact`). | La confluence attachée au seul nom `tombstone_wins` est `weakened`; la présence mesurée est logique, non physique. | Sémantique séquentielle unique sur trois nœuds fictifs. | Comparer une synchronisation atomique rivale sur le même espace fini. |
+| `relation-loss-observatory` | Deux migrations appariées donnent `2/2` discriminants, `2/2` réactivations et quatre contrôles rivaux (`model_internal`). | Une porte de refus seule ne mesure pas la perte relationnelle. | Deux graphes exhaustifs seulement. | Varier refus, permission, coût et compétence dans des mondes où le rival relationnel peut perdre. |
+| `independent-evidence-arena` | Quatre DAG distinguent mode commun, séparation partielle et procédurale; deux IDs avec une même empreinte restent dépendants (`pipeline_verified`). | L'externalité ou la différence d'identifiant ne suffit pas à l'indépendance. | Exhaustivité et exactitude des empreintes déclarées. | Cas fixé avant exécution, témoin et deux lignages complets sans empreinte ni mode d'échec partagé. |
+| `cct/field-calibration` | Autorités O3, contenu O4, budget actif, plafonds de ressources et refus sont vérifiés; 19 tests passent. | Les champs présents et les ledgers auto-cohérents ne suffisent plus. | Verdict `compatible_survivors`, sans vainqueur global. | Même arrêt que CCT: nouveau monde et rival indépendants des résultats courants. |
+| `fusion-alpha-feedback/f0-data-global-tae-matrix` | Provenance des grilles, unités et quadrature hachée; v1/v2 séparées et reconstruites octet-identiques (`pipeline_verified`). | Le déplacement adjacent v1 est un effet de pas de grille. | La v2 reste sensible au seuil et à la séquence de grilles; l'API trace les déclarations sans valider leur sens physique. | Nouvelle famille et nouveau noyau, sans ajuster `core_low` ni le seuil courant. |
+| `provenance-interoperability-lab` | Deux profils × quinze mutations conservent le noyau, dont `receipt_id`, avec registre de la seule note hors noyau (`pipeline_verified`). | Un sous-ensemble implicite du reçu n'est pas un noyau d'interopérabilité. | Deux encodeurs locaux co-conçus. | Collisions, duplications, extensions, puis décodeur écrit depuis un manifest séparé. |
+| `multilingual-research-fidelity-lab` | Cinq triplets exercent surface et slots dans une mini-grammaire contrôlée (`pipeline_verified`). | La comparaison des seuls slots ne détecte pas une négation de surface. | Une grammaire et un parseur déclarés; aucune traduction libre. | Ambiguïtés fictives, second parseur rival et variation de langue pivot. |
+| `adversarial-agent-boundaries` | `11/11` mutations structurelles, portées inconnues et confiance mal typée échouent fermées (`formal_exact`). | Le champ `kind` ou `trusted=true` ne dispense pas du contrat. | Classifieur de structures, sans agent ni effet exécuté. | Simulateur séparant proposition, autorisation, exécution et effet, comparé à un rival naïf. |
+| `semantic-migration-lab` | Quatre transitions comparent champ, source et cible exacts; la promotion illégale de portée est refusée (`pipeline_verified`). | Le seul nom du champ modifié ne prouve pas une migration licite. | Manifest et producteur co-conçus. | Deux interpréteurs séparés, transitions dans les deux directions. |
+| `contested-claims-lab` | Trois espaces finis séparent survie individuelle, pluralité, compatibilité conjointe et révision; IDs dupliqués rejetés (`formal_exact`). | Deux claims possibles séparément ne prouvent pas un monde commun. | Espaces exhaustifs et petits. | Famille non exhaustive et permutation des traces à espace final constant. |
+| `causal-claim-calibration-lab` | Sept SCM binaires, tous états exogènes et quatorze ajustements comparés à l'oracle `do` exact (`model_internal`). | L'identification par étiquette de dessin est écartée; collider, médiateur, latent et positivité sont distingués. | Petit univers SCM déterministe déclaré. | Deux SCM observationnellement équivalents aux effets `do` distincts, puis bornes partielles. |
+| `privacy-recourse-lab` | Trois profils et trois attaques propagent le taint par flux textuel exact et exercent l'automate de recours (`pipeline_verified`). | La présence de noms de champs ou un override fourni par le cas n'établit ni confidentialité ni recours. | Pas de détection sémantique libre. | Collusion d'audiences, expiration, révocation et restauration après échéance. |
+| `research-footprint-and-yield-lab` | Journaux appariés par question, états et sorties; événement à rendement nul conservé et trois composantes de coût comparées (`pipeline_verified`). | L'ancien contrôle à deux champs ne soutenait pas quatre dimensions. | Une comparaison synthétique où un protocole domine les trois coûts. | Rival où économie de calcul augmente délai ou perte de sortie. |
+| `user-capacity-and-dependence-lab` | Trois classes calculées et `5/5` mutations de template, oracle, opération et ancien label discriminées (`model_internal`). | `general_rule=true` et le nom de classe ne mesurent pas une capacité autonome. | Deux opérations et une famille de templates. | Seconde opération apprise et reprise retardée; retirer la classe si le transfert échoue. |
+| `accessibility-and-modal-equivalence-lab` | Base `1/3`, réparations `2/2`, et `4/4` pertes d'exigence rejetées sur cinq opérations (`pipeline_verified`). | L'égalité d'identifiants de sortie est un proxy d'équivalence fonctionnelle. | Canaux et coûts fictifs déclarés. | Frontières de charge, perte, ordre des opérations et coût de réparation. |
+| `forecast-calibration-lab` | Vingt cas datés: règle stratifiée `4/25`, surconfiance `73/400`, base `1/4`, avec décomposition exacte (`formal_exact`). | Le score initial `0,1` ne suffisait pas; l'indépendance du générateur est retirée. | Issues et rivaux co-conçus malgré séparation de code. | Dérive fictive fixée avant exécution, fenêtres appariées et autre règle propre. |
+| `contributor-ecosystem-governance-lab` | Veto utilisable dans `6/6` états actifs; `42/42` mutations de rôle rejetées; recours et veto séparés (`formal_exact`). | `trace_complete` sans temps ni autorité variable est `weakened`. | Automate fictif sans système institutionnel. | Doubles rôles, abandon et éventuelle contestation du veto modélisée séparément. |
+| `epistemic-diversity-and-common-mode-failure-lab` | Quatre voies forment trois grappes de provenance; sources différentes peuvent partager générateur et hypothèse (`model_internal`). | Le comptage des noms de sources est `weakened` comme proxy d'indépendance. | Graphe complet fourni par le générateur. | Lignages incomplets et défaillances multi-niveaux, avec `independence_unknown` si indécidable. |
+| `research-interruptibility-and-recovery-lab` | Reprise exacte à `4/4` coupures; omettre la dépendance d'exécution change hashes et décision (`pipeline_verified`). | L'égalité snapshot/restored seule est `weakened`. | Pipeline sérialisé et journal intact. | Checkpoints partiels, corruption du journal et ordres de reprise rivaux. |
+| `portfolio-option-value-lab` | Option `143/200` contre uniforme `3/5` dans le monde corrélé; uniforme `7/10` contre option `17/40` dans l'indépendant (`model_internal`). | Le delta fourni et le délai facturé seulement en cas de succès étaient des proxies; chaque politique perd un monde. | Classement dépend du ledger `synthetic_decision_utility`. | Frontières exactes des conversions, du délai et de la redondance. |
+
+## Condition d'arrêt de cette passe
+
+Les actions internes qui restaient immédiatement discriminantes ont été
+exécutées ou transformées en mutations négatives. Les prolongements listés
+ci-dessus exigent une nouvelle famille, un nouveau rival ou un nouveau
+protocole fixé indépendamment des résultats de cette passe. Les ajouter
+adaptativement maintenant testerait surtout les artefacts déjà observés. Aucun
+agrandissement de la même fixture n'a donc une valeur d'information suffisante
+pour changer proprement une conclusion pendant cette passe.

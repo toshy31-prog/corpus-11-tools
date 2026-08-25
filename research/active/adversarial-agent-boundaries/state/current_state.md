@@ -2,10 +2,9 @@
 
 Dernière mise à jour : 2026-08-25
 
-Ouvert. Un corpus synthétique de quatre cas et un oracle déterministe des
-invariants de processus sont exécutés. Aucun agent réel ni corpus d'attaque
-externe n'est encore évalué.
+Ouvert. Le corpus initial est conservé et onze mutations structurelles exercent
+`kind`, nesting, alias, fragmentation, portée inconnue et type du marqueur de
+confiance. La conclusion reste celle d'un classifieur de structures fictives.
 
-Prochaine décision : conserver cette frontière comme contrôle unitaire, puis
-choisir un agent, des transformations réalistes et une évaluation indépendante
-avant toute conclusion de résistance.
+Prochaine décision : construire un simulateur fictif séparant proposition,
+autorisation, exécution et effet, puis le comparer à un rival naïf.

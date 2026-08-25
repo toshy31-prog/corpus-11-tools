@@ -8,7 +8,7 @@ Observation, attribution, inférence, hypothèse et démonstration restent sépa
 
 ## État des branches
 
-### Récupération contre désinscription — active, arrêt du mécanisme logiciel local
+### Récupération contre désinscription — weakened, profil opérationnel standard
 
 La séparation opérationnelle est reproduite dans le modèle exact, transportée vers `asyncio`, puis vers cinq processus OS persistants. Aucun mismatch modèle/runtime conditionné par l'ordre observé.
 
@@ -19,7 +19,22 @@ Résultats principaux :
 - asyncio : A `360/360`, B `180/360`, zéro mismatch ;
 - cinq processus : A `240/240`, B `120/240`, zéro mismatch ; 16 réordonnancements runtime sans rupture du modèle.
 
-Conclusion : récupération, effacement à convergence et effacement sous deadline sont des axes opérationnels distincts, mais la nouvelle coordonnée reste absorbée par un invariant standard. **Ne plus prolonger ce mécanisme identique en logiciel local.** Une éventuelle reprise autonome doit d’abord spécifier un substitut fictif distribué avec horloges, pannes et versions indépendantes; l’accès à un réseau ou matériel réel n’est ni une prochaine étape ni un blocage.
+Le substitut fictif distribué demandé a maintenant été construit et exécuté :
+
+- quatre réplicas, versions `A/B/AB`, horloges vectorielles, quatre partitions,
+  crash de `R2/R3`, modes durable/volatile et les `120` horaires exacts ;
+- `7680` cellules, quotientées en `2160` signatures de multiplicité totale
+  `7680`; distribution `C_erase_deadline` :
+  `1:3420`, `2:4020`, `3:240` ;
+- non-vacuité : `1380` strates discriminées par versions, `15` scénarios par
+  ordre et `900` paires par mode de récupération ;
+- `graph_only` exact `2040/7680`, `schedule_artifact` `4820/7680`,
+  `causal_frontier` `7680/7680` ;
+- zéro mismatch entre les deux implémentations endogènes du générateur, pour
+  les ensembles robustes tous horaires, le descendant `AB`, le contrôle
+  négatif `B` et les positions de coupure `2/3/4`.
+
+Conclusion : récupération, effacement à convergence et effacement sous deadline sont des axes opérationnels distincts, mais chaque coordonnée interne testée reste absorbée par la signature déclarée. Le verdict distribué v0.2 est **`endogenous_causal_signature_identity`**, borné à `formal_exact` et `pipeline_verified`. Il ne s'agit ni d'un oracle indépendant ni d'une mesure de `C_info`; `graph_only`, `schedule_artifact` et `causal_frontier` sont des ablations à budgets d'information imbriqués. Le statut « protocole fixé avant exécution » est auto-déclaré dans la configuration sans verrou temporel indépendant. La lecture forte passe à `weakened`; l'énoncé faible demeure reproduit. **Ne plus prolonger cette famille locale.** Une reprise exige une faille interne distincte capable de produire un mismatch entre énumération et signature; aucun réseau, matériel ou terrain n'est une prochaine étape ou un blocage.
 
 ### Frustration temporelle — weakened, condition de requalification atteinte
 
@@ -62,7 +77,7 @@ Les contrôles abéliens et d'incidence expliquent les effets étudiés ; ne rou
 ## Décisions de fin de journée
 
 1. **F_T est requalifié** comme score descriptif/optimiseur standard dans le programme actuel après `borda_better`.
-2. **Récupération/désinscription** conserve une distinction opérationnelle robuste mais atteint sa condition d'arrêt logicielle locale.
+2. **Récupération/désinscription** conserve une distinction opérationnelle robuste, mais l'univers distribué fictif satisfait une identité causale endogène exacte; la lecture forte est requalifiée `weakened` et la voie interne est close.
 3. **Factorisation** conserve un phénomène mathématique d'ordre trois, mais H4 et H5 ne soutiennent aucune stabilité prospective non triviale; la lecture objectale locale est requalifiée `weakened` et la piste est close.
 4. **Orientation compositionnelle** reste close pour P1/P2.
 5. Aucun résultat du jour n'établit temps émergent, objet physique nouveau ou nouvelle loi fondamentale.
@@ -75,6 +90,10 @@ atteint leurs conditions d’arrêt. Une reprise autonome doit partir d’une
 prédiction ou d’un observable interne réellement distinct, fixé avant calcul,
 avec modèle rival et condition de renversement; l’absence de terrain ou de
 matériel appelle un meilleur substitut fictif et ne constitue pas un blocage.
+
+Pour récupération/désinscription, le substitut versions/horloges/partitions/
+crash existe désormais et a lui aussi atteint l'arrêt. Ne pas le grossir sans
+une condition de mismatch causal nommée.
 
 Éviter toute nouvelle sonde destinée à sauver chiralité, `F_T` ou stabilité
 objectale par sélection adaptative de cas favorables.

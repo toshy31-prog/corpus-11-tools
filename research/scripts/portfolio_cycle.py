@@ -14,9 +14,94 @@ import sys
 ROOT = Path(__file__).resolve().parents[2]
 RESEARCH = ROOT / "research"
 MANIFEST = RESEARCH / "portfolio.json"
+ALLOWED_SYNTHETIC_SCOPES = {"formal_exact", "model_internal", "pipeline_verified"}
 
 
 SAFE_CHECKS: dict[str, tuple[Path, list[str]]] = {
+    "portfolio_manifest": (
+        ROOT / "research/scripts",
+        [sys.executable, "test_portfolio_cycle.py"],
+    ),
+    "accessibility_functional_tasks": (
+        ROOT,
+        [sys.executable, "research/active/accessibility-and-modal-equivalence-lab/tests/test_functional_modal_tasks.py"],
+    ),
+    "adversarial_structural_mutations": (
+        ROOT,
+        [sys.executable, "research/active/adversarial-agent-boundaries/tests/test_structural_mutations.py"],
+    ),
+    "causal_scm_campaign": (
+        ROOT,
+        [sys.executable, "research/active/causal-claim-calibration-lab/tests/test_scm_campaign.py"],
+    ),
+    "contested_joint_compatibility": (
+        ROOT,
+        [sys.executable, "research/active/contested-claims-lab/tests/test_joint_compatibility.py"],
+    ),
+    "diversity_provenance_failures": (
+        ROOT,
+        [sys.executable, "research/active/epistemic-diversity-and-common-mode-failure-lab/tests/test_provenance_failures.py"],
+    ),
+    "forecast_fictional_registry": (
+        ROOT,
+        [sys.executable, "research/active/forecast-calibration-lab/tests/test_fictional_forecast_registry.py"],
+    ),
+    "fusion_fictive_tae_matrix": (
+        ROOT,
+        [sys.executable, "research/active/fusion-alpha-feedback/f0-data-global-tae-matrix/pipeline/test_fictive_tae_matrix.py"],
+    ),
+    "governance_state_machine": (
+        ROOT,
+        [sys.executable, "research/active/contributor-ecosystem-governance-lab/tests/test_governance_state_machine.py"],
+    ),
+    "independent_lineage_graphs": (
+        ROOT,
+        [sys.executable, "research/active/independent-evidence-arena/tests/test_lineage_graphs.py"],
+    ),
+    "interruptibility_cutpoints": (
+        ROOT,
+        [sys.executable, "research/active/research-interruptibility-and-recovery-lab/tests/test_cutpoint_recovery.py"],
+    ),
+    "material_order_confluence": (
+        ROOT,
+        [sys.executable, "research/active/material-trace-lab/tests/test_order_confluence.py"],
+    ),
+    "multilingual_controlled_grammar": (
+        ROOT,
+        [sys.executable, "research/active/multilingual-research-fidelity-lab/tests/test_controlled_grammar.py"],
+    ),
+    "option_explicit_tree": (
+        ROOT,
+        [sys.executable, "research/active/portfolio-option-value-lab/tests/test_explicit_option_tree.py"],
+    ),
+    "privacy_taint_recourse": (
+        ROOT,
+        [sys.executable, "research/active/privacy-recourse-lab/tests/test_taint_recourse_model.py"],
+    ),
+    "provenance_core_mutations": (
+        ROOT,
+        [sys.executable, "research/active/provenance-interoperability-lab/tests/test_core_mutations.py"],
+    ),
+    "recovery_distributed_fictional": (
+        ROOT,
+        [sys.executable, "research/active/corpus-hypotheses/experiments/test_recovery_distributed_fictional_v0_1.py"],
+    ),
+    "relation_fictional_migrations": (
+        ROOT,
+        [sys.executable, "research/active/relation-loss-observatory/tests/test_fictional_paired_migrations.py"],
+    ),
+    "footprint_generated_logs": (
+        ROOT,
+        [sys.executable, "research/active/research-footprint-and-yield-lab/tests/test_generated_decision_logs.py"],
+    ),
+    "semantic_transition_manifest": (
+        ROOT,
+        [sys.executable, "research/active/semantic-migration-lab/tests/test_transition_manifest.py"],
+    ),
+    "user_capacity_population": (
+        ROOT,
+        [sys.executable, "research/active/user-capacity-and-dependence-lab/tests/test_fictional_capacity_population.py"],
+    ),
     "material_trace_initial": (
         ROOT,
         [sys.executable, "research/active/material-trace-lab/tests/test_initial_protocol.py"],
@@ -97,6 +182,52 @@ def load_manifest() -> list[dict[str, object]]:
     if data.get("schema_version") != 1 or not isinstance(data.get("projects"), list):
         raise ValueError("invalid research/portfolio.json schema")
     return data["projects"]
+
+
+def manifest_errors(projects: list[dict[str, object]]) -> list[str]:
+    """Reject ambiguous or out-of-scope routing before any record is written."""
+    errors: list[str] = []
+    ids: set[str] = set()
+    paths: set[str] = set()
+    for index, project in enumerate(projects):
+        label = f"project[{index}]"
+        if not isinstance(project, dict):
+            errors.append(f"{label}: project entry must be an object")
+            continue
+        project_id = project.get("id")
+        project_path = project.get("path")
+        if not isinstance(project_id, str) or not project_id:
+            errors.append(f"{label}: invalid id")
+        elif project_id in ids:
+            errors.append(f"{label}: duplicate id {project_id!r}")
+        else:
+            ids.add(project_id)
+        if not isinstance(project_path, str) or not project_path:
+            errors.append(f"{label}: invalid path")
+        else:
+            relative = Path(project_path)
+            if (
+                relative.is_absolute()
+                or not relative.parts
+                or relative.parts[0] != "active"
+                or ".." in relative.parts
+            ):
+                errors.append(f"{label}: path must stay below research/active: {project_path!r}")
+            if project_path in paths:
+                errors.append(f"{label}: duplicate path {project_path!r}")
+            else:
+                paths.add(project_path)
+        scope = project.get("synthetic_scope")
+        if scope not in ALLOWED_SYNTHETIC_SCOPES:
+            errors.append(f"{label}: unsupported synthetic_scope {scope!r}")
+        checks = project.get("safe_checks")
+        if not isinstance(checks, list):
+            errors.append(f"{label}: safe_checks must be a list")
+        else:
+            unknown = sorted({str(check) for check in checks} - set(SAFE_CHECKS))
+            if unknown:
+                errors.append(f"{label}: unknown safe checks {', '.join(unknown)}")
+    return errors
 
 
 def structural_errors(project: dict[str, object]) -> list[str]:
@@ -187,15 +318,21 @@ def main() -> int:
         parser.error("choose at least one of --check, --run-safe-checks, --record or --tree")
 
     projects = load_manifest()
-    expected = {project["path"] for project in projects}
+    schema_errors = manifest_errors(projects)
+    if schema_errors:
+        for error in schema_errors:
+            print(f"FAIL manifest: {error}")
+        return 1
+
+    expected = {str(project["path"]) for project in projects}
     actual = {
-        str(path.relative_to(RESEARCH))
-        for path in (RESEARCH / "active").iterdir()
-        if path.is_dir()
+        str(state.parent.parent.relative_to(RESEARCH))
+        for state in (RESEARCH / "active").rglob("state/current_state.md")
+        if (state.parent.parent / "README.md").is_file()
     }
-    missing = sorted(actual - expected)
-    if missing:
-        print("FAIL uncovered top-level active dossiers: " + ", ".join(missing))
+    uncovered = sorted(actual - expected)
+    if uncovered:
+        print("FAIL uncovered active dossiers: " + ", ".join(uncovered))
         return 1
 
     valid = True

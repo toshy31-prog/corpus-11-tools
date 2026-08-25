@@ -1,6 +1,11 @@
 # État courant
 
-La détection de dépendance commune est exécutable dans un graphe synthétique.
-Elle ne mesure pas encore l’indépendance effective de chaînes réelles.
+Le comptage par noms de sources est `weakened` comme proxy d’indépendance. Le
+graphe fictif à quatre voies forme trois grappes : A et B partagent générateur
+et hypothèse malgré des sources disjointes ; C et D restent séparées malgré une
+conclusion commune. Portée `model_internal`.
 
-Prochaine entrée requise : voies d’analyse appariées avec provenance complète.
+## Prochaine action interne utile
+
+Ajouter lignages incomplets et défaillances multi-niveaux ; conserver
+`independence_unknown` lorsqu’aucun graphe complet ne départage les rivaux.

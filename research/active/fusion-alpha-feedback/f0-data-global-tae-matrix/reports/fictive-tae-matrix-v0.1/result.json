@@ -1,0 +1,584 @@
+{
+  "classification": {
+    "control_failures": [],
+    "reference_nonzero_kernels": [
+      "core_low",
+      "mid_signed",
+      "broad_gradient"
+    ],
+    "refinement": {
+      "broad_gradient": {
+        "coarse": -0.0016828997977095168,
+        "fine": -0.0009298460751168987,
+        "fine_to_reference_relative_change": 0.5763113980287307,
+        "reference": -0.0005898873003644619,
+        "same_sign_fine_reference": true,
+        "stable_nonzero": false
+      },
+      "core_low": {
+        "coarse": -0.0005023821093032689,
+        "fine": -0.000565267139418009,
+        "fine_to_reference_relative_change": 0.26766340571685293,
+        "reference": -0.0004459126427952341,
+        "same_sign_fine_reference": true,
+        "stable_nonzero": false
+      },
+      "mid_signed": {
+        "coarse": -0.005082230494113928,
+        "fine": -0.002738226725777386,
+        "fine_to_reference_relative_change": 0.6168485105845735,
+        "reference": -0.0016935579974572737,
+        "same_sign_fine_reference": true,
+        "stable_nonzero": false
+      }
+    },
+    "stable_nonzero_kernels": [],
+    "verdict": "inconclusive_refinement"
+  },
+  "declared_invariants": [
+    "source values are normalized cell masses with declared quadrature",
+    "SD and M match density and mean energy in every source radius-pitch cell",
+    "the same conservative orbit operator is applied to SD and M",
+    "identity orbit maps recover ZOW exactly",
+    "uniform and affine-moment controls cannot create an interaction",
+    "all three mode kernels are fixed before execution",
+    "the result is reconstructed deterministically"
+  ],
+  "generator": {
+    "birth_cutoff_energy": 8.0,
+    "critical_energy_base": 0.7,
+    "critical_energy_radial_slope": 1.1,
+    "density_decay": 1.2,
+    "energy_range": [
+      0.25,
+      8.25
+    ],
+    "kind": "declared_slowing_down_cell_mass_family",
+    "orbit_operator": {
+      "kind": "adjacent_cell_probability",
+      "strength": 0.28
+    },
+    "pitch_range": [
+      -0.8,
+      0.8
+    ],
+    "radius_range": [
+      0.05,
+      0.95
+    ]
+  },
+  "grid_levels": {
+    "coarse": {
+      "energy_points": 17,
+      "pitch_points": 5,
+      "radius_points": 5
+    },
+    "fine": {
+      "energy_points": 25,
+      "pitch_points": 7,
+      "radius_points": 7
+    },
+    "reference": {
+      "energy_points": 33,
+      "pitch_points": 9,
+      "radius_points": 9
+    }
+  },
+  "levels": {
+    "coarse": {
+      "background_hashes": {
+        "m_fow": "sha256:c2da7a9e3a185d84190123890d7562d93fe3ad5a6685f37a51a5424f6a1d2927",
+        "m_zow": "sha256:543527daf7705849e30eeac35829328bdc19e1fbbe723ba6796e74f80d4f11d0",
+        "sd_fow": "sha256:fbf438c6615d13d6e02a6045c806cf6faf2583b29a27b48528125a6964c0dc39",
+        "sd_zow": "sha256:d9f574bee1877819190630c57dd9656900e79c3282a20a5970946f1b63f45279"
+      },
+      "controls": {
+        "affine_moment_kernel_spread": 0.0,
+        "identity_exact": true,
+        "linearity_abs_error": 0.0,
+        "matching_density_max_abs_error": 6.938893903907228e-18,
+        "matching_mean_energy_max_abs_error": 8.881784197001252e-16,
+        "orbit_conservation_max_abs_error": 0.0,
+        "uniform_kernel_spread": 0.0
+      },
+      "grid": {
+        "energy_hash": "sha256:93b32e683bc2b6fa18268593bb60a145b79be974070df58bd58897cb7c9505a7",
+        "energy_points": 17,
+        "pitch_hash": "sha256:19b415c60acbe5589274a535f6fdd359749e97fa7310e344591c8d9ffff51c8b",
+        "pitch_points": 5,
+        "radius_hash": "sha256:7ccf9f68f9f0f9863d226dd7af04d34884b9c4747fb4ce17f7192328f35eedae",
+        "radius_points": 5
+      },
+      "kernels": {
+        "broad_gradient": {
+          "drives": {
+            "m_fow": 0.24862036119101769,
+            "m_zow": 0.24140647450084646,
+            "sd_fow": 0.237815113988307,
+            "sd_zow": 0.2310196304536906
+          },
+          "interaction": -0.00041840315555483065,
+          "normalized_interaction": -0.0016828997977095168,
+          "shape_gap_fow": -0.0108052472027107,
+          "shape_gap_zow": -0.010386844047155869
+        },
+        "core_low": {
+          "drives": {
+            "m_fow": 0.18767850346052564,
+            "m_zow": 0.1870590460549955,
+            "sd_fow": 0.17805547708775243,
+            "sd_zow": 0.17753030600466166
+          },
+          "interaction": -9.428632243937973e-05,
+          "normalized_interaction": -0.0005023821093032689,
+          "shape_gap_fow": -0.009623026372773208,
+          "shape_gap_zow": -0.009528740050333828
+        },
+        "mid_signed": {
+          "drives": {
+            "m_fow": 0.1816632603503063,
+            "m_zow": 0.17625958505761902,
+            "sd_fow": 0.15926291603756731,
+            "sd_zow": 0.1547824953062925
+          },
+          "interaction": -0.0009232545614124843,
+          "normalized_interaction": -0.005082230494113928,
+          "shape_gap_fow": -0.02240034431273899,
+          "shape_gap_zow": -0.021477089751326506
+        }
+      },
+      "level": "coarse",
+      "metadata": {
+        "energy_grid_hash": "sha256:93b32e683bc2b6fa18268593bb60a145b79be974070df58bd58897cb7c9505a7",
+        "input_schema": "f0-cell-mass-grid/v1",
+        "input_semantics": "nonnegative energy-bin masses with any quadrature already applied",
+        "matching_convention": "match_density_and_mean_energy_per_source_radius_pitch_before_common_fow_operator",
+        "not_established": [
+          "Falpha realism",
+          "equilibrium realism",
+          "TAE eigenmode",
+          "resonant drive",
+          "stability",
+          "reactor relevance"
+        ],
+        "orbit_operator_hash": "sha256:1fa8c029b141bd93689e885b64b139f15d5c44f1b2e01284a4be23ce44d6af24",
+        "orbit_operator_id": "adjacent_cell_probability:F0-TAE-FICT-001:coarse",
+        "pitch_grid_hash": "sha256:19b415c60acbe5589274a535f6fdd359749e97fa7310e344591c8d9ffff51c8b",
+        "provenance_contract_complete": true,
+        "quadrature": {
+          "energy_weights": [
+            0.47058823529411764,
+            0.47058823529411764,
+            0.47058823529411764,
+            0.47058823529411764,
+            0.47058823529411764,
+            0.47058823529411764,
+            0.47058823529411764,
+            0.47058823529411764,
+            0.47058823529411764,
+            0.47058823529411764,
+            0.47058823529411764,
+            0.47058823529411764,
+            0.47058823529411764,
+            0.47058823529411764,
+            0.47058823529411764,
+            0.47058823529411764,
+            0.47058823529411764
+          ],
+          "jacobian_applied": true,
+          "pitch_weights": [
+            0.32,
+            0.32,
+            0.32,
+            0.32,
+            0.32
+          ],
+          "radial_weights": [
+            0.18,
+            0.18,
+            0.18,
+            0.18,
+            0.18
+          ],
+          "representation": "cell_mass"
+        },
+        "quadrature_hash": "sha256:75fc9d8e53b504043bf24740ced2062c69e9c7176d9d3cd1d57167e9652ef914",
+        "radius_grid_hash": "sha256:7ccf9f68f9f0f9863d226dd7af04d34884b9c4747fb4ce17f7192328f35eedae",
+        "scope": "pipeline_verified",
+        "scope_limitations": [
+          "synthetic_or_supplied_input_only"
+        ],
+        "source_content_hash": "sha256:d9f574bee1877819190630c57dd9656900e79c3282a20a5970946f1b63f45279",
+        "source_id": "declared-fictional-source:F0-TAE-FICT-001:coarse",
+        "units": {
+          "cell_mass": "normalized_alpha_number",
+          "energy": "normalized_birth_energy",
+          "pitch": "dimensionless_pitch",
+          "radius": "normalized_radius"
+        },
+        "units_hash": "sha256:a3a73f1d4bf1795cf78e2430280adc1705ee687e3f3ac0c12a88c0bd8f6e7222"
+      },
+      "orbit_operator": {
+        "kind": "adjacent_cell_probability",
+        "strength": 0.28
+      },
+      "source_total_density": 1.0
+    },
+    "fine": {
+      "background_hashes": {
+        "m_fow": "sha256:2cad87ac1563b868d924684f1054c695acef3b3227c833c433f069bd7269eb4f",
+        "m_zow": "sha256:1d52466c3ba42296d3268849b1341bf65754a0d24727df80a05d6af6b1d69b54",
+        "sd_fow": "sha256:51d9382ba24170bf422607dc59685ed03a94f6e3e5d8cf7e7d1916872e42abff",
+        "sd_zow": "sha256:fc6dad480aa390b8adee296f7a4d8f8927894f0533d8f4cbbee3e78a3ecf9f53"
+      },
+      "controls": {
+        "affine_moment_kernel_spread": 0.0,
+        "identity_exact": true,
+        "linearity_abs_error": 0.0,
+        "matching_density_max_abs_error": 6.938893903907228e-18,
+        "matching_mean_energy_max_abs_error": 8.881784197001252e-16,
+        "orbit_conservation_max_abs_error": 0.0,
+        "uniform_kernel_spread": 0.0
+      },
+      "grid": {
+        "energy_hash": "sha256:f6bc992a0b9e7f8d570ce4efb555c8259c2e4f16ce487eb2cbd27e26e7c0ad45",
+        "energy_points": 25,
+        "pitch_hash": "sha256:77be8dc079b7b328689e2bbb5afe7c0f85f83b4cfa90acbdcd5ba098818a480d",
+        "pitch_points": 7,
+        "radius_hash": "sha256:83c6e4d085ff172db317cc7c40024a0b1c7027810a43e159a03e72997d297112",
+        "radius_points": 7
+      },
+      "kernels": {
+        "broad_gradient": {
+          "drives": {
+            "m_fow": 0.24453973532803683,
+            "m_zow": 0.24056074034538538,
+            "sd_fow": 0.23402266231764274,
+            "sd_zow": 0.2302710516480962
+          },
+          "interaction": -0.00022738431310490026,
+          "normalized_interaction": -0.0009298460751168987,
+          "shape_gap_fow": -0.01051707301039409,
+          "shape_gap_zow": -0.01028968869728919
+        },
+        "core_low": {
+          "drives": {
+            "m_fow": 0.18688505836308023,
+            "m_zow": 0.18607477464641445,
+            "sd_fow": 0.17719691567554127,
+            "sd_zow": 0.17649227194121636
+          },
+          "interaction": -0.00010563998234086602,
+          "normalized_interaction": -0.000565267139418009,
+          "shape_gap_fow": -0.009688142687538953,
+          "shape_gap_zow": -0.009582502705198087
+        },
+        "mid_signed": {
+          "drives": {
+            "m_fow": 0.17868755453704685,
+            "m_zow": 0.17590523040911968,
+            "sd_fow": 0.1568172910850388,
+            "sd_zow": 0.15452425399450878
+          },
+          "interaction": -0.0004892870373971459,
+          "normalized_interaction": -0.002738226725777386,
+          "shape_gap_fow": -0.021870263452008043,
+          "shape_gap_zow": -0.021380976414610897
+        }
+      },
+      "level": "fine",
+      "metadata": {
+        "energy_grid_hash": "sha256:f6bc992a0b9e7f8d570ce4efb555c8259c2e4f16ce487eb2cbd27e26e7c0ad45",
+        "input_schema": "f0-cell-mass-grid/v1",
+        "input_semantics": "nonnegative energy-bin masses with any quadrature already applied",
+        "matching_convention": "match_density_and_mean_energy_per_source_radius_pitch_before_common_fow_operator",
+        "not_established": [
+          "Falpha realism",
+          "equilibrium realism",
+          "TAE eigenmode",
+          "resonant drive",
+          "stability",
+          "reactor relevance"
+        ],
+        "orbit_operator_hash": "sha256:3c00839a4a60395ecf1018b15221ad3cd071fc1f9ca14e89f93423e4b0f69f07",
+        "orbit_operator_id": "adjacent_cell_probability:F0-TAE-FICT-001:fine",
+        "pitch_grid_hash": "sha256:77be8dc079b7b328689e2bbb5afe7c0f85f83b4cfa90acbdcd5ba098818a480d",
+        "provenance_contract_complete": true,
+        "quadrature": {
+          "energy_weights": [
+            0.32,
+            0.32,
+            0.32,
+            0.32,
+            0.32,
+            0.32,
+            0.32,
+            0.32,
+            0.32,
+            0.32,
+            0.32,
+            0.32,
+            0.32,
+            0.32,
+            0.32,
+            0.32,
+            0.32,
+            0.32,
+            0.32,
+            0.32,
+            0.32,
+            0.32,
+            0.32,
+            0.32,
+            0.32
+          ],
+          "jacobian_applied": true,
+          "pitch_weights": [
+            0.2285714285714286,
+            0.2285714285714286,
+            0.2285714285714286,
+            0.2285714285714286,
+            0.2285714285714286,
+            0.2285714285714286,
+            0.2285714285714286
+          ],
+          "radial_weights": [
+            0.12857142857142856,
+            0.12857142857142856,
+            0.12857142857142856,
+            0.12857142857142856,
+            0.12857142857142856,
+            0.12857142857142856,
+            0.12857142857142856
+          ],
+          "representation": "cell_mass"
+        },
+        "quadrature_hash": "sha256:9f79b83f7635fc752553c55011a904de250c292745af9ae304de722b667ad11e",
+        "radius_grid_hash": "sha256:83c6e4d085ff172db317cc7c40024a0b1c7027810a43e159a03e72997d297112",
+        "scope": "pipeline_verified",
+        "scope_limitations": [
+          "synthetic_or_supplied_input_only"
+        ],
+        "source_content_hash": "sha256:fc6dad480aa390b8adee296f7a4d8f8927894f0533d8f4cbbee3e78a3ecf9f53",
+        "source_id": "declared-fictional-source:F0-TAE-FICT-001:fine",
+        "units": {
+          "cell_mass": "normalized_alpha_number",
+          "energy": "normalized_birth_energy",
+          "pitch": "dimensionless_pitch",
+          "radius": "normalized_radius"
+        },
+        "units_hash": "sha256:a3a73f1d4bf1795cf78e2430280adc1705ee687e3f3ac0c12a88c0bd8f6e7222"
+      },
+      "orbit_operator": {
+        "kind": "adjacent_cell_probability",
+        "strength": 0.28
+      },
+      "source_total_density": 1.0
+    },
+    "reference": {
+      "background_hashes": {
+        "m_fow": "sha256:a9408d9ef631245534ca36df8114de8581b344bba244c35ebc9ce4d9c650922c",
+        "m_zow": "sha256:c2d05c3a308bd64fc8de23ec910ffcc121f84c445bb2009b9ee6edb5953c6304",
+        "sd_fow": "sha256:b4f5ea87ea95035580d1627e5de0a17a7d9c50d8decbdfd18d7b92dd21010b3e",
+        "sd_zow": "sha256:9ea4636782d845ca61b3256e959db8141eace177efbd41f20699da450145ab9e"
+      },
+      "controls": {
+        "affine_moment_kernel_spread": 0.0,
+        "identity_exact": true,
+        "linearity_abs_error": 0.0,
+        "matching_density_max_abs_error": 1.734723475976807e-18,
+        "matching_mean_energy_max_abs_error": 8.881784197001252e-16,
+        "orbit_conservation_max_abs_error": 0.0,
+        "uniform_kernel_spread": 0.0
+      },
+      "grid": {
+        "energy_hash": "sha256:7c17a33b1a3c786ca7bbe88f7ceb0a15a0c04d92cb1195c042bbfd4a5a11d73d",
+        "energy_points": 33,
+        "pitch_hash": "sha256:13ec803476a5c93f3fbcb60fd98f368d4cbfa683dc3120a8c669b88a335c221b",
+        "pitch_points": 9,
+        "radius_hash": "sha256:81c9629e4cbc038c6f323cd750c4488d120692e6bd48050e6129843e0353600e",
+        "radius_points": 9
+      },
+      "kernels": {
+        "broad_gradient": {
+          "drives": {
+            "m_fow": 0.2427392092291028,
+            "m_zow": 0.24022607382548794,
+            "sd_fow": 0.2323468529044329,
+            "sd_zow": 0.2299769062776428
+          },
+          "interaction": -0.00014318877682475972,
+          "normalized_interaction": -0.0005898873003644619,
+          "shape_gap_fow": -0.010392356324669894,
+          "shape_gap_zow": -0.010249167547845134
+        },
+        "core_low": {
+          "drives": {
+            "m_fow": 0.1863308911394183,
+            "m_zow": 0.18568560893415403,
+            "sd_fow": 0.17665680768967998,
+            "sd_zow": 0.17609461278451807
+          },
+          "interaction": -8.308730010236909e-05,
+          "normalized_interaction": -0.0004459126427952341,
+          "shape_gap_fow": -0.00967408344973833,
+          "shape_gap_zow": -0.00959099614963596
+        },
+        "mid_signed": {
+          "drives": {
+            "m_fow": 0.1774500475293812,
+            "m_zow": 0.17577468699758797,
+            "sd_fow": 0.1558135940157058,
+            "sd_zow": 0.15443875543105512
+          },
+          "interaction": -0.00030052194714255687,
+          "normalized_interaction": -0.0016935579974572737,
+          "shape_gap_fow": -0.021636453513675408,
+          "shape_gap_zow": -0.02133593156653285
+        }
+      },
+      "level": "reference",
+      "metadata": {
+        "energy_grid_hash": "sha256:7c17a33b1a3c786ca7bbe88f7ceb0a15a0c04d92cb1195c042bbfd4a5a11d73d",
+        "input_schema": "f0-cell-mass-grid/v1",
+        "input_semantics": "nonnegative energy-bin masses with any quadrature already applied",
+        "matching_convention": "match_density_and_mean_energy_per_source_radius_pitch_before_common_fow_operator",
+        "not_established": [
+          "Falpha realism",
+          "equilibrium realism",
+          "TAE eigenmode",
+          "resonant drive",
+          "stability",
+          "reactor relevance"
+        ],
+        "orbit_operator_hash": "sha256:28ebe71a4d056096a05f4c723eda8501632e35e70822f44e8e3d53d253493df0",
+        "orbit_operator_id": "adjacent_cell_probability:F0-TAE-FICT-001:reference",
+        "pitch_grid_hash": "sha256:13ec803476a5c93f3fbcb60fd98f368d4cbfa683dc3120a8c669b88a335c221b",
+        "provenance_contract_complete": true,
+        "quadrature": {
+          "energy_weights": [
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243,
+            0.24242424242424243
+          ],
+          "jacobian_applied": true,
+          "pitch_weights": [
+            0.17777777777777778,
+            0.17777777777777778,
+            0.17777777777777778,
+            0.17777777777777778,
+            0.17777777777777778,
+            0.17777777777777778,
+            0.17777777777777778,
+            0.17777777777777778,
+            0.17777777777777778
+          ],
+          "radial_weights": [
+            0.09999999999999999,
+            0.09999999999999999,
+            0.09999999999999999,
+            0.09999999999999999,
+            0.09999999999999999,
+            0.09999999999999999,
+            0.09999999999999999,
+            0.09999999999999999,
+            0.09999999999999999
+          ],
+          "representation": "cell_mass"
+        },
+        "quadrature_hash": "sha256:4e3cf59798abfe63b4e0bf1536b7312a1bc8d23d9b8accf5efd1f0c86191f171",
+        "radius_grid_hash": "sha256:81c9629e4cbc038c6f323cd750c4488d120692e6bd48050e6129843e0353600e",
+        "scope": "pipeline_verified",
+        "scope_limitations": [
+          "synthetic_or_supplied_input_only"
+        ],
+        "source_content_hash": "sha256:9ea4636782d845ca61b3256e959db8141eace177efbd41f20699da450145ab9e",
+        "source_id": "declared-fictional-source:F0-TAE-FICT-001:reference",
+        "units": {
+          "cell_mass": "normalized_alpha_number",
+          "energy": "normalized_birth_energy",
+          "pitch": "dimensionless_pitch",
+          "radius": "normalized_radius"
+        },
+        "units_hash": "sha256:a3a73f1d4bf1795cf78e2430280adc1705ee687e3f3ac0c12a88c0bd8f6e7222"
+      },
+      "orbit_operator": {
+        "kind": "adjacent_cell_probability",
+        "strength": 0.28
+      },
+      "source_total_density": 1.0
+    }
+  },
+  "mode_kernels": {
+    "broad_gradient": {
+      "energy_center": 4.2,
+      "energy_width": 2.1,
+      "radial_center": 0.68,
+      "radial_width": 0.42,
+      "tail_weight": 0.18
+    },
+    "core_low": {
+      "energy_center": 1.7,
+      "energy_width": 0.85,
+      "radial_center": 0.32,
+      "radial_width": 0.28,
+      "tail_weight": 0.22
+    },
+    "mid_signed": {
+      "energy_center": 3.0,
+      "energy_width": 1.25,
+      "radial_center": 0.55,
+      "radial_width": 0.32,
+      "tail_weight": 0.31
+    }
+  },
+  "protocol": "F0-TAE-FICT-001",
+  "protocol_effect": "The fictional source family, radial critical-energy gradient, orbit map and mode kernels create the drive and interaction; none is calibrated to a plasma device.",
+  "protocol_status": "fixed_before_execution",
+  "protocol_status_basis": "self_declared_in_config_no_independent_temporal_lock",
+  "rival_predictions": {
+    "moment_only": "all four drives agree for an affine energy kernel with uniform spatial weight",
+    "shape_only": "SD and M differ, but the SD/M contrast is unchanged by the common orbit operator",
+    "shape_orbit_interaction": "the SD/M contrast changes under the energy-pitch dependent orbit operator"
+  },
+  "scope": {
+    "fictional_linear_drive": "model_internal",
+    "matching_provenance_reconstruction": "pipeline_verified"
+  },
+  "unsupported_claims": [
+    "tae_stability",
+    "alpha_transport",
+    "reactor_relevance"
+  ],
+  "withdrawal_condition": "Withdraw the result if provenance metadata are incomplete, a conservation or negative control fails, fewer than two kernels converge, the interaction disappears under refinement, or deterministic reconstruction changes. A contraction of the represented orbit displacement under grid refinement classifies this version as a method failure."
+}

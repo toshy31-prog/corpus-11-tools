@@ -1,0 +1,51 @@
+{
+  "id": "F0-TAE-FICT-001",
+  "version": "0.1",
+  "scope": "model_internal",
+  "protocol_status": "fixed_before_execution",
+  "generator": {
+    "kind": "declared_slowing_down_cell_mass_family",
+    "radius_range": [0.05, 0.95],
+    "pitch_range": [-0.8, 0.8],
+    "energy_range": [0.25, 8.25],
+    "density_decay": 1.2,
+    "critical_energy_base": 0.7,
+    "critical_energy_radial_slope": 1.1,
+    "birth_cutoff_energy": 8.0,
+    "orbit_operator": {
+      "kind": "adjacent_cell_probability",
+      "strength": 0.28
+    }
+  },
+  "grid_levels": {
+    "coarse": {"radius_points": 5, "pitch_points": 5, "energy_points": 17},
+    "fine": {"radius_points": 7, "pitch_points": 7, "energy_points": 25},
+    "reference": {"radius_points": 9, "pitch_points": 9, "energy_points": 33}
+  },
+  "mode_kernels": {
+    "core_low": {"radial_center": 0.32, "radial_width": 0.28, "energy_center": 1.7, "energy_width": 0.85, "tail_weight": 0.22},
+    "mid_signed": {"radial_center": 0.55, "radial_width": 0.32, "energy_center": 3.0, "energy_width": 1.25, "tail_weight": 0.31},
+    "broad_gradient": {"radial_center": 0.68, "radial_width": 0.42, "energy_center": 4.2, "energy_width": 2.1, "tail_weight": 0.18}
+  },
+  "rival_predictions": {
+    "moment_only": "all four drives agree for an affine energy kernel with uniform spatial weight",
+    "shape_only": "SD and M differ, but the SD/M contrast is unchanged by the common orbit operator",
+    "shape_orbit_interaction": "the SD/M contrast changes under the energy-pitch dependent orbit operator"
+  },
+  "decision": {
+    "numerical_zero_absolute": 1e-10,
+    "refinement_relative_tolerance": 0.2,
+    "minimum_stable_kernels": 2
+  },
+  "declared_invariants": [
+    "source values are normalized cell masses with declared quadrature",
+    "SD and M match density and mean energy in every source radius-pitch cell",
+    "the same conservative orbit operator is applied to SD and M",
+    "identity orbit maps recover ZOW exactly",
+    "uniform and affine-moment controls cannot create an interaction",
+    "all three mode kernels are fixed before execution",
+    "the result is reconstructed deterministically"
+  ],
+  "protocol_effect": "The fictional source family, radial critical-energy gradient, orbit map and mode kernels create the drive and interaction; none is calibrated to a plasma device.",
+  "withdrawal_condition": "Withdraw the result if provenance metadata are incomplete, a conservation or negative control fails, fewer than two kernels converge, the interaction disappears under refinement, or deterministic reconstruction changes. A contraction of the represented orbit displacement under grid refinement classifies this version as a method failure."
+}

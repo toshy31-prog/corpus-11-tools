@@ -4,11 +4,13 @@ Dernière mise à jour : 2026-08-25
 
 ## Statut
 
-Ouvert. Le cycle synthétique déterministe initial est disponible et passe ses
-trois scénarios. Aucun banc matériel ni donnée réelle n'est disponible.
+`weakened`. Les trois séquences initiales restent `model_internal`, mais la
+politique `tombstone_wins` n’est pas confluente dans l’implémentation : 12 des
+162 couples état–source–politique dépendent uniquement de l’ordre des cibles.
+La projection observée est une présence de payload logique, jamais physique.
 
-## Prochaine décision
+## Prochaine action interne utile
 
-Conserver ce contrôle comme oracle de modèle, puis définir un banc minimal non
-sensible avant toute mesure matérielle. Aucun résultat synthétique ne vaut pour
-ce futur banc sans calibration indépendante.
+Versionner une sémantique atomique de synchronisation comme modèle rival, puis
+comparer les deux sémantiques sur le même espace fini. Retirer toute propriété
+de politique qui ne survit pas à ce contraste.

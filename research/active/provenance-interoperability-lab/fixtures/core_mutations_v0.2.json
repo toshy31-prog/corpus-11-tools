@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "protocol_fixed_before_execution": true,
+  "expected_core_scalar_count": 15,
+  "receipt": {
+    "receipt_id": "receipt-synthetic-002",
+    "claim": {
+      "id": "claim-synthetic-002",
+      "text": "The declared core survives the local adapter.",
+      "scope": "pipeline_verified",
+      "attribution": "local_adapter"
+    },
+    "sources": [
+      {"id": "source-A", "digest": "sha256:111"},
+      {"id": "source-B", "digest": "sha256:222"}
+    ],
+    "transformations": [
+      {"id": "normalize", "kind": "normalization"},
+      {"id": "compare", "kind": "comparison"}
+    ],
+    "reversal_condition": {
+      "id": "core-mismatch",
+      "observable": "One declared core field changes."
+    },
+    "display_note": "Outside the core; loss must be declared."
+  }
+}

@@ -1,9 +1,9 @@
 # État courant
 
-Ouvert. Deux mondes causaux synthétiques, leur confondeur et leur contraste
-d'intervention sont exécutés avec fractions exactes. Aucun mécanisme ni effet
-causal externe n'est établi.
+Ouvert. Le cycle initial reste conservé. Une campagne supplémentaire exécute
+sept SCM binaires, tous leurs états exogènes et quatorze sous-ensembles
+d'ajustement. Elle montre qu'un verdict fondé sur la seule étiquette de dessin
+n'est pas admissible. Aucun mécanisme ni effet causal externe n'est établi.
 
-Prochaine décision : conserver les contrôles d'identification internes, puis
-définir un mécanisme, des confondeurs et une intervention discriminante propres
-à un terrain avant toute conclusion extérieure.
+Prochaine décision : ajouter un couple de SCM observationnellement équivalents
+mais aux effets `do` distincts, puis tester des bornes partielles internes.

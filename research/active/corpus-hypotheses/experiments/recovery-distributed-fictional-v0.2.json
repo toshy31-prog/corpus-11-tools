@@ -1,0 +1,73 @@
+{
+  "protocol_id": "recovery-distributed-fictional-v0.2",
+  "protocol_status": "fixed_before_execution",
+  "protocol_status_basis": "self_declared_in_config_no_independent_temporal_lock",
+  "scope": ["formal_exact", "pipeline_verified"],
+  "unsupported_claims": [
+    "independent_oracle",
+    "measured_information_recovery_cost",
+    "external_equivalence",
+    "physical_or_subjective_memory"
+  ],
+  "replicas": [0, 1, 2, 3],
+  "target_component": 0,
+  "cut_position": 3,
+  "cut_position_controls": [2, 3, 4],
+  "reset_semantics": "clear_and_clamp_through_deadline",
+  "network_buffer_semantics": "immutable_envelope_independent_of_sender_reset",
+  "clocks": {
+    "A": [1, 0, 0, 0],
+    "B": [0, 1, 0, 0],
+    "AB": [1, 1, 0, 0]
+  },
+  "envelopes": {
+    "m02": {"source": 0, "destination": 2},
+    "m12": {"source": 1, "destination": 2},
+    "m03": {"source": 0, "destination": 3},
+    "m13": {"source": 1, "destination": 3}
+  },
+  "payload_profiles": {
+    "a_r2": {"m02": "A", "m12": "B", "m03": "B", "m13": "B"},
+    "a_r3": {"m02": "B", "m12": "B", "m03": "A", "m13": "B"},
+    "a_both": {"m02": "A", "m12": "B", "m03": "A", "m13": "B"},
+    "ab_both": {"m02": "AB", "m12": "B", "m03": "AB", "m13": "B"}
+  },
+  "partitions": {
+    "none": [],
+    "isolate_r2": ["m02", "m12"],
+    "isolate_r3": ["m03", "m13"],
+    "diagonal": ["m02", "m13"]
+  },
+  "crash_replicas": [2, 3],
+  "crash_modes": ["durable_recovery", "volatile_loss"],
+  "schedule_policy": "all_permutations_of_four_delivery_attempts_and_one_crash",
+  "reference_enumerator": "exhaustive_reset_subsets_in_the_same_declared_generator",
+  "comparison_kind": "nested_information_ablations",
+  "quotient_key_fields": [
+    "profile",
+    "partition",
+    "crash_replica",
+    "crash_mode",
+    "reference_cost",
+    "reference_minimal_sets",
+    "graph_only_set",
+    "schedule_artifact_set",
+    "causal_frontier_set",
+    "cut_control_costs",
+    "no_reset_dirty_replicas",
+    "no_reset_event_statuses"
+  ],
+  "information_budgets": {
+    "graph_only": ["target_source", "partitioned_topology"],
+    "schedule_artifact": ["target_source", "partitioned_topology", "schedule", "crash_semantics"],
+    "causal_frontier": ["target_source", "partitioned_topology", "schedule", "crash_semantics", "vector_clock_ancestry"]
+  },
+  "verdict_order": [
+    "protocol_invalid",
+    "generator_identity_failed",
+    "graph_ablation_sufficient",
+    "schedule_ablation_sufficient",
+    "endogenous_causal_signature_identity"
+  ],
+  "withdrawal_condition": "withdraw_the_generator_identity_on_any_mismatch_between_exhaustive_transition_enumeration_and_the_declared_causal_signature"
+}

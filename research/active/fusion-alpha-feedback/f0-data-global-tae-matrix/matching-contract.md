@@ -43,9 +43,12 @@ modifier silencieusement le moment cible.
 
 Le code reçoit des **masses de cellules énergie–pitch**, non de simples valeurs
 ponctuelles de `F`. Toute quadrature (largeur de bin, jacobien, mesure de
-pitch) doit donc être appliquée et conservée dans la provenance avant l'appel.
-Sans cette conversion, les moments internes seraient seulement ceux d'un
-maillage arbitraire.
+pitch) doit donc être appliquée avant l'appel. L'API exige maintenant les
+grilles radiale, pitch et énergie, les unités, les trois vecteurs de poids, la
+déclaration `representation=cell_mass` et la confirmation du jacobien. Elle
+refuse les dimensions incohérentes et conserve une empreinte séparée de chaque
+objet. Cela rend la provenance vérifiable ; cela ne prouve pas qu'un appelant
+n'a pas menti sur la sémantique de ses valeurs.
 
 Le matching intervient avant `O` et `O` est le même opérateur déclaré pour SD
 et M. Il n'y a pas de ré-appariement après le déplacement FOW : cette opération
@@ -62,6 +65,8 @@ et orbite.
 - identité de `FOW` et `ZOW` lorsqu'un opérateur identité est fourni ;
 - empreintes de l'entrée, de la grille et de l'opérateur conservées dans les
   métadonnées de sortie.
+- empreintes distinctes des grilles radiale/pitch/énergie, des unités et de la
+  quadrature ; refus d'une représentation autre que `cell_mass`.
 
 ## Ce que ces contrôles ne détectent pas
 

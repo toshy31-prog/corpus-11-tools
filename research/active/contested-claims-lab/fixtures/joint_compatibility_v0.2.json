@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "protocol_fixed_before_execution": true,
+  "cases": [
+    {
+      "id": "exclusive_individual_survivors",
+      "possible_worlds": ["A", "B"],
+      "claims": [{"id": "claim-A", "worlds_where_true": ["A"]}, {"id": "claim-B", "worlds_where_true": ["B"]}],
+      "expected_before": {
+        "statuses": {"claim-A": "individually_compatible", "claim-B": "individually_compatible"},
+        "individual_survivors": ["claim-A", "claim-B"], "plurality": true,
+        "joint_compatibility": false, "joint_worlds": [], "claims_cover_possible_worlds": true
+      },
+      "revision": {
+        "operation": "intersect", "worlds": ["A"],
+        "expected_after": {
+          "statuses": {"claim-A": "individually_compatible", "claim-B": "contradicted"},
+          "individual_survivors": ["claim-A"], "plurality": false,
+          "joint_compatibility": false, "joint_worlds": [], "claims_cover_possible_worlds": true
+        }
+      }
+    },
+    {
+      "id": "overlapping_survivors",
+      "possible_worlds": ["w1", "w2", "w3"],
+      "claims": [{"id": "left", "worlds_where_true": ["w1", "w2"]}, {"id": "right", "worlds_where_true": ["w2", "w3"]}],
+      "expected_before": {
+        "statuses": {"left": "individually_compatible", "right": "individually_compatible"},
+        "individual_survivors": ["left", "right"], "plurality": true,
+        "joint_compatibility": true, "joint_worlds": ["w2"], "claims_cover_possible_worlds": true
+      },
+      "revision": {
+        "operation": "intersect", "worlds": ["w1"],
+        "expected_after": {
+          "statuses": {"left": "individually_compatible", "right": "contradicted"},
+          "individual_survivors": ["left"], "plurality": false,
+          "joint_compatibility": false, "joint_worlds": [], "claims_cover_possible_worlds": true
+        }
+      }
+    },
+    {
+      "id": "contradiction_then_reopen",
+      "possible_worlds": ["A"],
+      "claims": [{"id": "claim-A", "worlds_where_true": ["A"]}, {"id": "claim-B", "worlds_where_true": ["B"]}],
+      "expected_before": {
+        "statuses": {"claim-A": "individually_compatible", "claim-B": "contradicted"},
+        "individual_survivors": ["claim-A"], "plurality": false,
+        "joint_compatibility": false, "joint_worlds": [], "claims_cover_possible_worlds": true
+      },
+      "revision": {
+        "operation": "union", "worlds": ["B"],
+        "expected_after": {
+          "statuses": {"claim-A": "individually_compatible", "claim-B": "individually_compatible"},
+          "individual_survivors": ["claim-A", "claim-B"], "plurality": true,
+          "joint_compatibility": false, "joint_worlds": [], "claims_cover_possible_worlds": true
+        }
+      }
+    }
+  ],
+  "input_mutations": [
+    {
+      "id": "duplicate_claim_identifiers",
+      "possible_worlds": ["A", "B"],
+      "claims": [
+        {"id": "duplicated", "worlds_where_true": ["A"]},
+        {"id": "duplicated", "worlds_where_true": ["B"]}
+      ],
+      "expected_error": "duplicate_claim_ids:duplicated"
+    }
+  ]
+}

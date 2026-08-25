@@ -175,26 +175,26 @@ d'attribuer ce résultat à SPARC, ITER, ou une future centrale.
   possible, M est affaiblie : le prochain calcul doit porter explicitement sur
   `F0_alpha`, pas sur une nouvelle architecture de réacteur.
 
-## Prochaine action
+## Matrice interne et prochaine action
 
-L’état de l'art est maintenant suffisamment borné : les données publiques ne
-permettent pas de calibrer `δ/Lnα`, GENE couvre déjà la dynamique
-gyrocinétique d'orbite mais pas une construction orbit-conditionnée de `F0`
-dans l'article de 2026, et le dernier écran n'a trouvé **aucune** interaction
-FOW×forme dans sa version séparée. La prochaine action qui peut réellement
-changer la décision est donc l'une des deux suivantes :
+La chaîne interne a été épuisée sans entrée extérieure. L'API exige et hache
+maintenant grilles radiale/pitch/énergie, unités et quadrature. Une distribution
+alpha fictive alimente ensuite un solveur linéaire fictif sous trois noyaux.
 
-1. obtenir un `Falpha(r,E,pitch)` pour un équilibre donné (sortie
-   NUBEAM/ASCOT/TRANSP), puis faire le post-traitement léger de `δ/Lnα` et
-   construire quatre `F0` avec une règle de matching **canonique** déclarée ;
-2. exécuter ces quatre `F0` dans un même solveur TAE global avec mode et
-   profils gelés, puis intégrer le drive plutôt que de lire un zéro local.
+`F0-TAE-FICT-001` reste `inconclusive_refinement` : déplacer une probabilité
+vers la cellule adjacente contractait silencieusement le déplacement avec le
+maillage. `F0-TAE-FICT-002`, protocole distinct déclaré, fixe le déplacement en
+rayon normalisé. Deux noyaux sur trois gardent alors une interaction non nulle
+selon le critère fine→référence; coarse reste diagnostique et ses deux
+transitions correspondantes dépassent le seuil. Le statut temporel est
+auto-déclaré, sans verrou indépendant ; verdict
+`shape_orbit_interaction_model_internal`. Le troisième noyau reste non
+convergent et n'est pas compté.
 
-Sans l'une de ces entrées, continuer à raffiner les écrans analytiques ne
-produirait plus de connaissance susceptible de faire basculer la conclusion.
+Cette observation affaiblit `shape_only` uniquement dans le solveur fictif
+déclaré. Elle ne produit ni croissance, ni stabilité TAE, ni effet de fusion.
 
-La convention de matching de la future matrice et ses contrôles de pipeline
-sont désormais prêts (`f0-data-global-tae-matrix/matching-contract.md`). Ils
-garantissent seulement que le futur traitement ne modifie pas silencieusement
-les moments appariés ou la conservation de l'opérateur fourni. Ils ne créent
-aucune donnée alpha, aucune géométrie et aucune conclusion de plasma.
+Arrêt local : ne pas ajuster le troisième noyau, le seuil ou le générateur pour
+obtenir trois succès. Une réouverture doit partir d'une famille fictive et
+d'un noyau distincts fixés avant leur exécution. L'absence d'une distribution
+ou d'un solveur extérieur n'est ni une prochaine étape ni un blocage.

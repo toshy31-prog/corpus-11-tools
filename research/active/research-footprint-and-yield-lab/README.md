@@ -1,7 +1,10 @@
-# Laboratoire empreinte et rendement de recherche
+# Empreinte et rendement de journaux fictifs
 
-Mesure le coût énergétique, matériel, monétaire et temporel d’une recherche
-agentique par décision changée, erreur évitée ou connaissance réutilisable.
+Compte séparément jetons, minutes, appels, changements de décision, sorties
+uniques et porteurs de charge dans des journaux générés. Aucun score global ne
+fusionne ces unités.
 
-Premier test : comparer deux protocoles de recherche à même question et budget
-de preuve, en comptant calcul, temps, sorties et décision réellement modifiée.
+`python3 tests/test_generated_decision_logs.py` conserve un événement à rendement
+nul et compare deux protocoles à `question_id`, états et sorties exactement
+appariés. Des mutations de question et de sortie doivent échouer avant la
+comparaison des coûts. Portée `pipeline_verified`.

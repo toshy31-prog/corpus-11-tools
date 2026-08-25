@@ -1,9 +1,10 @@
 # État courant
 
-Ouvert. Un dossier fictif, trois profils de divulgation et des critères formels
-de minimisation/recours sont exécutés. Aucune menace, donnée sensible ou
-évaluation de canal réel n'est disponible.
+Ouvert. Un dossier fictif, trois profils, une propagation déterministe de taints
+par flux textuel exact et un automate minimal de recours sont exécutés. Le cas
+négatif d'identité renommée ne fournit plus son propre verdict par override.
+La conclusion porte sur la divulgation et le chemin de recours dans ce pipeline
+seulement; la détection sémantique libre reste inconnue.
 
-Prochaine décision : conserver ces contrôles de pipeline, puis définir une
-menace, un canal et une procédure de recours réels avant toute conclusion sur
-la confidentialité ou la réparation effective.
+Prochaine décision : varier fictivement collusion entre audiences, expiration,
+révocation et restauration après échéance.

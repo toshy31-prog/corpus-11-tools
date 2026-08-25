@@ -26,3 +26,10 @@ Le reçu minimal, les deux profils locaux et leur limite sont documentés dans
 [`protocols/initial_synthetic_protocol.md`](protocols/initial_synthetic_protocol.md).
 Exécution : `python3 tests/test_initial_protocol.py`. Le résultat est limité à
 la vérification de pipeline des adaptateurs locaux.
+
+## Mutations du noyau v0.2
+
+`python3 tests/test_core_mutations.py` inclut l'identifiant du reçu et
+l'attribution dans le noyau annoncé, sérialise les documents et mute chacun de
+ses quinze scalaires; voir
+[`protocols/core_mutations_v0.2.md`](protocols/core_mutations_v0.2.md).

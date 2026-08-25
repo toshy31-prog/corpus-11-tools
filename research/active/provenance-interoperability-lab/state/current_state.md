@@ -2,9 +2,9 @@
 
 Dernière mise à jour : 2026-08-25
 
-Ouvert. Un reçu synthétique minimal et deux adaptateurs locaux sont exécutés;
-leur noyau de provenance déclaré est conservé dans le périmètre testé. Aucun
-format externe ni adaptateur indépendant n'est encore exercé.
+Ouvert. Le reçu initial est conservé. Une campagne place `receipt_id` et
+l'attribution dans le noyau, sérialise deux profils locaux et vérifie quinze
+mutations scalaires, avec registre explicite de la seule note hors noyau.
 
-Prochaine décision : conserver l'oracle local, puis choisir un validateur et un
-adaptateur externes avant toute affirmation d'interopérabilité réelle.
+Prochaine décision : injecter collisions, duplications et extensions fictives,
+puis comparer à un décodeur local écrit depuis un manifest séparé.

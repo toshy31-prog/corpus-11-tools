@@ -11,7 +11,7 @@
         {"kind": "delete", "nodes": ["A", "B", "C"]}
       ],
       "expected": {
-        "physically_present_nodes": [],
+        "payload_present_nodes": [],
         "normally_accessible": false,
         "reactivated": false,
         "recovery_channels": [],
@@ -29,7 +29,7 @@
         {"kind": "sync", "source": "C", "targets": ["A", "B"], "policy": "payload_wins"}
       ],
       "expected": {
-        "physically_present_nodes": ["A", "B", "C"],
+        "payload_present_nodes": ["A", "B", "C"],
         "normally_accessible": true,
         "reactivated": true,
         "recovery_channels": ["C->A", "C->B"],
@@ -47,7 +47,7 @@
         {"kind": "sync", "source": "A", "targets": ["C"], "policy": "tombstone_wins"}
       ],
       "expected": {
-        "physically_present_nodes": [],
+        "payload_present_nodes": [],
         "normally_accessible": false,
         "reactivated": false,
         "recovery_channels": [],

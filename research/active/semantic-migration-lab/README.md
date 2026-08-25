@@ -25,3 +25,10 @@ La distinction entre stabilité, règle déclarée et dérive non expliquée est
 rejouable avec `python3 tests/test_initial_protocol.py`; le protocole est dans
 [`protocols/initial_synthetic_protocol.md`](protocols/initial_synthetic_protocol.md).
 Elle est limitée à deux environnements de modèle locaux.
+
+## Manifest exact v0.2
+
+`python3 tests/test_transition_manifest.py` exige désormais le triplet exact
+`(champ, avant, après)` fixé avant exécution. Une valeur non autorisée sur un
+champ déclaré reste une dérive; voir
+[`protocols/transition_manifest_v0.2.md`](protocols/transition_manifest_v0.2.md).

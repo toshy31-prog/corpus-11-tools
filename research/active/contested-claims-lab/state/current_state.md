@@ -1,9 +1,9 @@
 # État courant
 
-Ouvert. Un protocole synthétique fini sépare pluralité compatible et erreur
-contradictoire, avec conditions de révision visibles. Aucun cas de désaccord
-réel ni évaluation humaine n'est encore disponible.
+Ouvert. Le protocole initial est conservé et un contrôle supplémentaire sépare
+survie individuelle, pluralité et compatibilité conjointe. Les conditions de
+révision sont désormais exécutables dans trois espaces finis. Une mutation
+d'entrée confirme que les identifiants dupliqués sont rejetés avant agrégation.
 
-Prochaine décision : conserver cet oracle de représentation, puis choisir une
-famille de désaccords et des traces réelles avant toute conclusion hors du
-modèle.
+Prochaine décision : construire une famille fictive non exhaustive et varier
+l'ordre des traces sans changer l'espace final de mondes.

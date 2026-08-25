@@ -24,3 +24,10 @@ Le corpus de quatre entrées et l'oracle de frontière déterministe sont décri
 dans [`protocols/initial_synthetic_protocol.md`](protocols/initial_synthetic_protocol.md).
 Exécution : `python3 tests/test_initial_protocol.py`. Il ne formule aucune
 garantie de sécurité d'un agent réel.
+
+## Mutations structurelles v0.2
+
+`python3 tests/test_structural_mutations.py` conserve les demandes interdites
+sous changements de `kind`, nesting, alias et fragmentation. Les portées
+inconnues et marqueurs `trusted` non booléens échouent désormais fermés; voir
+[`protocols/structural_mutations_v0.2.md`](protocols/structural_mutations_v0.2.md).

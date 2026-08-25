@@ -1,0 +1,70 @@
+{
+  "id": "CCT-SC-D10-002",
+  "version": "0.2",
+  "scope": "model_internal",
+  "protocol_status": "fixed_before_execution",
+  "protocol_status_basis": "self_declared_in_config_no_independent_temporal_lock",
+  "generator": {
+    "kind": "exhaustive_fictional_state_machine",
+    "seed": "not_used_exhaustive_v0.2",
+    "axes": {
+      "load": ["moderate", "severe"],
+      "channel": ["stable", "degraded"],
+      "registration": ["registered", "off_registry"],
+      "decision": ["correct", "wrong_gate"],
+      "environment": ["redundant", "single_path"]
+    }
+  },
+  "mechanisms": {
+    "d10": {
+      "label": "D10 protected-core state machine",
+      "action_budget": 8,
+      "registered_trace": true,
+      "stable_off_registry_audit": true,
+      "redundant_off_registry_audit": true,
+      "redundant_recourse": true,
+      "visible_work_base": 7,
+      "hidden_work_base": 1,
+      "lost_work_base": 0,
+      "recovery_capacity": 4
+    },
+    "baseline": {
+      "label": "Append-only log with independent recourse",
+      "action_budget": 8,
+      "registered_trace": true,
+      "stable_off_registry_audit": false,
+      "redundant_off_registry_audit": true,
+      "redundant_recourse": true,
+      "visible_work_base": 5,
+      "hidden_work_base": 2,
+      "lost_work_base": 1,
+      "recovery_capacity": 3
+    }
+  },
+  "protocol_variations": {
+    "base": {"observer_visible_work": 1, "recovery_horizon": 7},
+    "observer_cost_doubled": {"observer_visible_work": 2, "recovery_horizon": 7},
+    "short_recovery_horizon": {"observer_visible_work": 1, "recovery_horizon": 3}
+  },
+  "execution_contract": {
+    "activation_observable": "fictional contention event with a protected gate decision",
+    "activation_window_hours": 24,
+    "activation_channel": "generated append-only incident stream",
+    "presentation_order_rule": "mechanism labels are sorted only after both outcomes are computed",
+    "observer_created_work_tracking": true,
+    "missing_values_tracking": true,
+    "abandonment_tracking": true,
+    "off_registry_decision_tracking": true
+  },
+  "declared_invariants": [
+    "same ground-truth world and action budget for both mechanisms",
+    "complete 2^5 factorial traversal for every protocol variation",
+    "all five generator axes affect at least one primary outcome",
+    "five gate capabilities remain separate and non-compensable",
+    "visible hidden and lost work remain separate",
+    "the transition oracle receives no mechanism label or configured score",
+    "no composite success score is computed"
+  ],
+  "protocol_effect": "The state machines, event rules, recovery horizon and oracle semantics fully determine the results; they are not calibrated to an institution.",
+  "withdrawal_condition": "Withdraw the result if a generator axis is functionally inactive, paired worlds or action budgets differ, the oracle reads a mechanism label, reconstruction changes an artifact, or any O1-O4 field is missing."
+}

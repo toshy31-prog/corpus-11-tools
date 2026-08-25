@@ -21,6 +21,16 @@ SOURCE = [
     [[0.48, 0.70, 0.63, 0.42, 0.21, 0.08], [0.35, 0.58, 0.67, 0.48, 0.24, 0.10]],
     [[0.34, 0.55, 0.66, 0.47, 0.25, 0.11], [0.29, 0.50, 0.69, 0.51, 0.27, 0.12]],
 ]
+RADIUS_GRID = [0.25, 0.75]
+PITCH_GRID = [-0.5, 0.5]
+UNITS = {"radius": "normalized_radius", "pitch": "dimensionless", "energy": "normalized_energy", "cell_mass": "normalized_alpha_number"}
+QUADRATURE = {
+    "representation": "cell_mass",
+    "jacobian_applied": True,
+    "radial_weights": [0.5, 0.5],
+    "pitch_weights": [1.0, 1.0],
+    "energy_weights": [0.5, 0.5, 0.8, 1.5, 3.0, 6.0],
+}
 
 
 def make_orbit_map(identity: bool = False):
@@ -32,6 +42,20 @@ def make_orbit_map(identity: bool = False):
         ]
         for _ in range(2)
     ]
+
+
+def build(matrix=None):
+    return build_four_backgrounds(
+        SOURCE,
+        ENERGIES,
+        matrix or make_orbit_map(),
+        source_id="synthetic-fixture",
+        orbit_operator_id="synthetic-map",
+        radius_grid=RADIUS_GRID,
+        pitch_grid=PITCH_GRID,
+        units=UNITS,
+        quadrature=QUADRATURE,
+    )
 
 
 class F0MatchingTests(unittest.TestCase):
@@ -51,7 +75,7 @@ class F0MatchingTests(unittest.TestCase):
 
     def test_common_orbit_operator_conserves_each_background(self) -> None:
         matrix = make_orbit_map()
-        result = build_four_backgrounds(SOURCE, ENERGIES, matrix, source_id="synthetic-fixture", orbit_operator_id="synthetic-map")
+        result = build(matrix)
         backgrounds = result["backgrounds"]
         self.assertTrue(math.isclose(total_density(backgrounds["sd_zow"]), total_density(backgrounds["sd_fow"]), rel_tol=0, abs_tol=1e-10))
         self.assertTrue(math.isclose(total_density(backgrounds["m_zow"]), total_density(backgrounds["m_fow"]), rel_tol=0, abs_tol=1e-10))
@@ -59,7 +83,12 @@ class F0MatchingTests(unittest.TestCase):
         self.assertIn("TAE eigenmode", result["metadata"]["not_established"])
 
     def test_identity_orbit_map_recovers_zow_exactly(self) -> None:
-        result = build_four_backgrounds(SOURCE, ENERGIES, make_orbit_map(identity=True), source_id="synthetic-fixture", orbit_operator_id="identity")
+        result = build_four_backgrounds(
+            SOURCE, ENERGIES, make_orbit_map(identity=True),
+            source_id="synthetic-fixture", orbit_operator_id="identity",
+            radius_grid=RADIUS_GRID, pitch_grid=PITCH_GRID,
+            units=UNITS, quadrature=QUADRATURE,
+        )
         backgrounds = result["backgrounds"]
         self.assertEqual(backgrounds["sd_zow"], backgrounds["sd_fow"])
         self.assertEqual(backgrounds["m_zow"], backgrounds["m_fow"])
@@ -74,6 +103,54 @@ class F0MatchingTests(unittest.TestCase):
         high_energy_source = [[[0.0, 0.0, 0.0, 0.0, 0.0, 1.0]]]
         with self.assertRaisesRegex(ValueError, "positive-temperature"):
             match_canonical_maxwellian(high_energy_source, ENERGIES)
+
+    def test_coordinate_units_and_quadrature_are_hashed(self) -> None:
+        metadata = build()["metadata"]
+        self.assertTrue(metadata["provenance_contract_complete"])
+        self.assertEqual(metadata["scope"], "pipeline_verified")
+        self.assertEqual(metadata["scope_limitations"], ["synthetic_or_supplied_input_only"])
+        self.assertEqual(metadata["input_schema"], "f0-cell-mass-grid/v1")
+        for field in (
+            "radius_grid_hash", "pitch_grid_hash", "energy_grid_hash",
+            "units_hash", "quadrature_hash", "source_content_hash", "orbit_operator_hash",
+        ):
+            self.assertRegex(metadata[field], r"^sha256:[0-9a-f]{64}$")
+
+    def test_missing_or_misrepresented_quadrature_is_refused(self) -> None:
+        invalid = dict(QUADRATURE)
+        invalid["representation"] = "sampled_values"
+        with self.assertRaisesRegex(ValueError, "cell_mass"):
+            build_four_backgrounds(
+                SOURCE, ENERGIES, make_orbit_map(),
+                source_id="synthetic", orbit_operator_id="map",
+                radius_grid=RADIUS_GRID, pitch_grid=PITCH_GRID,
+                units=UNITS, quadrature=invalid,
+            )
+        invalid = dict(QUADRATURE)
+        invalid["energy_weights"] = [1.0]
+        with self.assertRaisesRegex(ValueError, "energy_weights"):
+            build_four_backgrounds(
+                SOURCE, ENERGIES, make_orbit_map(),
+                source_id="synthetic", orbit_operator_id="map",
+                radius_grid=RADIUS_GRID, pitch_grid=PITCH_GRID,
+                units=UNITS, quadrature=invalid,
+            )
+
+    def test_coordinate_shapes_and_units_are_refused_when_incomplete(self) -> None:
+        with self.assertRaisesRegex(ValueError, "grids"):
+            build_four_backgrounds(
+                SOURCE, ENERGIES, make_orbit_map(),
+                source_id="synthetic", orbit_operator_id="map",
+                radius_grid=[0.5], pitch_grid=PITCH_GRID,
+                units=UNITS, quadrature=QUADRATURE,
+            )
+        with self.assertRaisesRegex(ValueError, "units"):
+            build_four_backgrounds(
+                SOURCE, ENERGIES, make_orbit_map(),
+                source_id="synthetic", orbit_operator_id="map",
+                radius_grid=RADIUS_GRID, pitch_grid=PITCH_GRID,
+                units={"energy": "normalized"}, quadrature=QUADRATURE,
+            )
 
 
 if __name__ == "__main__":

@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "protocol_fixed_before_execution": true,
+  "scenarios": [
+    {
+      "id": "measured_confounder", "model": "measured_confounder", "design_label": "observational_confounding",
+      "exogenous": ["U_C", "U_X", "U_V"], "observable_adjustment_variables": ["C"],
+      "edges": [["U_C", "C"], ["U_X", "X"], ["U_V", "X"], ["C", "X"], ["C", "Y"], ["X", "Y"]],
+      "expected": {"do_effect": "1/2", "subsets": {"[]": {"verdict": "not_identified_backdoor_open", "positivity": true, "estimate": "2/3"}, "[C]": {"verdict": "identified_under_assumptions", "positivity": true, "estimate": "1/2"}}}
+    },
+    {
+      "id": "latent_confounder", "model": "latent_confounder", "design_label": "observational_confounding",
+      "exogenous": ["U_L", "U_X", "U_V", "U_Z"], "observable_adjustment_variables": ["Z"],
+      "edges": [["U_L", "X"], ["U_L", "Y"], ["U_X", "X"], ["U_V", "X"], ["U_Z", "Z"], ["X", "Y"]],
+      "expected": {"do_effect": "1/2", "subsets": {"[]": {"verdict": "not_identified_backdoor_open", "positivity": true, "estimate": "2/3"}, "[Z]": {"verdict": "not_identified_backdoor_open", "positivity": true, "estimate": "2/3"}}}
+    },
+    {
+      "id": "collider", "model": "collider", "design_label": "observational",
+      "exogenous": ["U_X", "U_Y"], "observable_adjustment_variables": ["K"],
+      "edges": [["U_X", "X"], ["U_Y", "Y"], ["X", "Y"], ["X", "K"], ["Y", "K"]],
+      "expected": {"do_effect": "1/2", "subsets": {"[]": {"verdict": "identified_under_assumptions", "positivity": true, "estimate": "1/2"}, "[K]": {"verdict": "invalid_descendant_adjustment", "positivity": false, "estimate": null}}}
+    },
+    {
+      "id": "mediator", "model": "mediator", "design_label": "observational",
+      "exogenous": ["U_X", "U_M", "U_Y"], "observable_adjustment_variables": ["M"],
+      "edges": [["U_X", "X"], ["U_M", "M"], ["U_Y", "Y"], ["X", "M"], ["M", "Y"]],
+      "expected": {"do_effect": "1/4", "subsets": {"[]": {"verdict": "identified_under_assumptions", "positivity": true, "estimate": "1/4"}, "[M]": {"verdict": "invalid_descendant_adjustment", "positivity": false, "estimate": null}}}
+    },
+    {
+      "id": "randomized", "model": "randomized", "design_label": "randomized",
+      "exogenous": ["U_C", "U_X"], "observable_adjustment_variables": ["C"],
+      "edges": [["U_C", "C"], ["U_X", "X"], ["C", "Y"], ["X", "Y"]],
+      "expected": {"do_effect": "1/2", "subsets": {"[]": {"verdict": "identified_under_assumptions", "positivity": true, "estimate": "1/2"}, "[C]": {"verdict": "identified_under_assumptions", "positivity": true, "estimate": "1/2"}}}
+    },
+    {
+      "id": "positivity_violated", "model": "positivity_violated", "design_label": "observational_confounding",
+      "exogenous": ["U_C"], "observable_adjustment_variables": ["C"],
+      "edges": [["U_C", "C"], ["C", "X"], ["C", "Y"], ["X", "Y"]],
+      "expected": {"do_effect": "1/2", "subsets": {"[]": {"verdict": "not_identified_backdoor_open", "positivity": true, "estimate": "1"}, "[C]": {"verdict": "not_identified_positivity_violated", "positivity": false, "estimate": null}}}
+    },
+    {
+      "id": "label_rival", "model": "randomized", "design_label": "observational_confounding",
+      "exogenous": ["U_C", "U_X"], "observable_adjustment_variables": ["C"],
+      "edges": [["U_C", "C"], ["U_X", "X"], ["C", "Y"], ["X", "Y"]],
+      "expected": {"do_effect": "1/2", "subsets": {"[]": {"verdict": "identified_under_assumptions", "positivity": true, "estimate": "1/2"}, "[C]": {"verdict": "identified_under_assumptions", "positivity": true, "estimate": "1/2"}}}
+    }
+  ]
+}

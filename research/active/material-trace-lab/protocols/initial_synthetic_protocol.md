@@ -2,7 +2,7 @@
 
 ## Construit et portée
 
-Le construit est la **persistance de trace dans un modèle discret de trois
+Le construit est la **présence de payload dans un modèle discret de trois
 nœuds**, après écriture, réplication, suppression, partition et resynchronisation.
 La conclusion a le statut `model_internal` : elle décrit exactement le modèle
 déclaré dans `fixtures/initial_cases.json`, et ne décrit pas un stockage réel.
@@ -37,5 +37,4 @@ dispositif matériel.
 
 Le résultat doit être retiré si l'oracle et le simulateur divergent, si un
 invariant est violé, ou si une opération non déclarée est nécessaire pour
-obtenir la différence rapportée. Une conclusion sur un système matériel
-nécessiterait ensuite un banc indépendant et une calibration externe.
+obtenir la différence rapportée. Il ne doit pas être promu au-delà du modèle.

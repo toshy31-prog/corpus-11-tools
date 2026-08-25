@@ -14,7 +14,7 @@ from copy import deepcopy
 from hashlib import sha256
 import json
 import math
-from typing import Sequence
+from typing import Mapping, Sequence
 
 
 Distribution = list[list[list[float]]]
@@ -48,6 +48,42 @@ def _validate_distribution(distribution: Distribution, energies: Sequence[float]
             if sum(energy_slice) <= 0:
                 raise ValueError("each radius/pitch cell must contain positive total density")
     return radius_count, pitch_count, energy_count
+
+
+def _validate_coordinate_metadata(
+    radius_grid: Sequence[float],
+    pitch_grid: Sequence[float],
+    energies: Sequence[float],
+    units: Mapping[str, str],
+    quadrature: Mapping[str, object],
+    radius_count: int,
+    pitch_count: int,
+) -> None:
+    if len(radius_grid) != radius_count or len(pitch_grid) != pitch_count:
+        raise ValueError("radius and pitch grids must match the distribution dimensions")
+    for name, values in (("radius", radius_grid), ("pitch", pitch_grid)):
+        if any(not math.isfinite(value) for value in values):
+            raise ValueError(f"{name} grid values must be finite")
+        if any(right <= left for left, right in zip(values, values[1:])):
+            raise ValueError(f"{name} grid values must be strictly increasing")
+    required_units = {"radius", "pitch", "energy", "cell_mass"}
+    if set(units) != required_units or any(not str(value).strip() for value in units.values()):
+        raise ValueError("units must declare radius, pitch, energy, and cell_mass")
+    if quadrature.get("representation") != "cell_mass":
+        raise ValueError("quadrature representation must explicitly be cell_mass")
+    if quadrature.get("jacobian_applied") is not True:
+        raise ValueError("quadrature must confirm that the declared Jacobian is applied")
+    expected = {
+        "radial_weights": len(radius_grid),
+        "pitch_weights": len(pitch_grid),
+        "energy_weights": len(energies),
+    }
+    for field, length in expected.items():
+        weights = quadrature.get(field)
+        if not isinstance(weights, list) or len(weights) != length:
+            raise ValueError(f"quadrature {field} must match its coordinate grid")
+        if any(not isinstance(value, (int, float)) or not math.isfinite(value) or value <= 0 for value in weights):
+            raise ValueError(f"quadrature {field} must contain positive finite values")
 
 
 def density(values: Sequence[float]) -> float:
@@ -189,6 +225,10 @@ def build_four_backgrounds(
     *,
     source_id: str,
     orbit_operator_id: str,
+    radius_grid: Sequence[float],
+    pitch_grid: Sequence[float],
+    units: Mapping[str, str],
+    quadrature: Mapping[str, object],
 ) -> dict[str, object]:
     """Build the frozen `{SD, M} × {ZOW, FOW}` matrix.
 
@@ -198,7 +238,18 @@ def build_four_backgrounds(
     which would erase a possible shape-by-orbit interaction in a future solver.
     """
 
+    if not source_id.strip() or not orbit_operator_id.strip():
+        raise ValueError("source and orbit operator identifiers must be non-empty")
     radius_count, pitch_count, energy_count = _validate_distribution(source_sd, energies)
+    _validate_coordinate_metadata(
+        radius_grid,
+        pitch_grid,
+        energies,
+        units,
+        quadrature,
+        radius_count,
+        pitch_count,
+    )
     _validate_orbit_map(orbit_map, radius_count, pitch_count, energy_count)
     maxwellian, temperatures = match_canonical_maxwellian(source_sd, energies)
     sd_zow = deepcopy(source_sd)
@@ -212,11 +263,20 @@ def build_four_backgrounds(
             raise AssertionError("the declared orbit map did not conserve total density")
     return {
         "metadata": {
-            "scope": "pipeline_verified_synthetic_or_supplied_input_only",
+            "scope": "pipeline_verified",
+            "scope_limitations": ["synthetic_or_supplied_input_only"],
             "input_semantics": "nonnegative energy-bin masses with any quadrature already applied",
+            "input_schema": "f0-cell-mass-grid/v1",
+            "provenance_contract_complete": True,
             "source_id": source_id,
             "source_content_hash": _content_hash(source_sd),
+            "radius_grid_hash": _content_hash(list(radius_grid)),
+            "pitch_grid_hash": _content_hash(list(pitch_grid)),
             "energy_grid_hash": _content_hash(list(energies)),
+            "units": dict(units),
+            "units_hash": _content_hash(dict(units)),
+            "quadrature": deepcopy(dict(quadrature)),
+            "quadrature_hash": _content_hash(dict(quadrature)),
             "orbit_operator_id": orbit_operator_id,
             "orbit_operator_hash": _content_hash(orbit_map),
             "matching_convention": "match_density_and_mean_energy_per_source_radius_pitch_before_common_fow_operator",

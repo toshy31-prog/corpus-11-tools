@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "protocol_fixed_before_execution": true,
+  "cases": [
+    {
+      "id": "same_generator_new_seeds",
+      "evidence_terminals": ["result-A", "result-B"],
+      "nodes": [
+        {"id": "generator-shared", "kind": "generator", "fingerprint": "fp:generator-shared-v1", "parents": []},
+        {"id": "oracle-shared", "kind": "oracle", "fingerprint": "fp:oracle-shared-v1", "parents": []},
+        {"id": "seed-A", "kind": "seed", "parents": ["generator-shared"]},
+        {"id": "seed-B", "kind": "seed", "parents": ["generator-shared"]},
+        {"id": "result-A", "kind": "result", "parents": ["seed-A", "oracle-shared"]},
+        {"id": "result-B", "kind": "result", "parents": ["seed-B", "oracle-shared"]}
+      ],
+      "expected": {
+        "verdict": "shared_failure_mode",
+        "shared_kinds": ["generator", "oracle"],
+        "shared_dependencies": ["generator:fp:generator-shared-v1", "oracle:fp:oracle-shared-v1"]
+      }
+    },
+    {
+      "id": "new_code_same_data",
+      "evidence_terminals": ["result-A", "result-B"],
+      "nodes": [
+        {"id": "data-shared", "kind": "data", "fingerprint": "fp:data-shared-v1", "parents": []},
+        {"id": "code-A", "kind": "code", "fingerprint": "fp:code-A-v1", "parents": []},
+        {"id": "code-B", "kind": "code", "fingerprint": "fp:code-B-v1", "parents": []},
+        {"id": "oracle-A", "kind": "oracle", "fingerprint": "fp:oracle-A-v1", "parents": []},
+        {"id": "oracle-B", "kind": "oracle", "fingerprint": "fp:oracle-B-v1", "parents": []},
+        {"id": "result-A", "kind": "result", "parents": ["data-shared", "code-A", "oracle-A"]},
+        {"id": "result-B", "kind": "result", "parents": ["data-shared", "code-B", "oracle-B"]}
+      ],
+      "expected": {
+        "verdict": "partially_separated",
+        "shared_kinds": ["data"],
+        "shared_dependencies": ["data:fp:data-shared-v1"]
+      }
+    },
+    {
+      "id": "disjoint_fictional_pipelines",
+      "evidence_terminals": ["result-A", "result-B"],
+      "nodes": [
+        {"id": "data-A", "kind": "data", "fingerprint": "fp:data-A-v1", "parents": []},
+        {"id": "data-B", "kind": "data", "fingerprint": "fp:data-B-v1", "parents": []},
+        {"id": "generator-A", "kind": "generator", "fingerprint": "fp:generator-A-v1", "parents": []},
+        {"id": "generator-B", "kind": "generator", "fingerprint": "fp:generator-B-v1", "parents": []},
+        {"id": "oracle-A", "kind": "oracle", "fingerprint": "fp:oracle-A-v1", "parents": []},
+        {"id": "oracle-B", "kind": "oracle", "fingerprint": "fp:oracle-B-v1", "parents": []},
+        {"id": "result-A", "kind": "result", "parents": ["data-A", "generator-A", "oracle-A"]},
+        {"id": "result-B", "kind": "result", "parents": ["data-B", "generator-B", "oracle-B"]}
+      ],
+      "expected": {"verdict": "procedurally_separated", "shared_kinds": [], "shared_dependencies": []}
+    },
+    {
+      "id": "distinct_ids_same_generator_fingerprint",
+      "evidence_terminals": ["result-A", "result-B"],
+      "nodes": [
+        {"id": "data-A", "kind": "data", "fingerprint": "fp:data-A-v2", "parents": []},
+        {"id": "data-B", "kind": "data", "fingerprint": "fp:data-B-v2", "parents": []},
+        {"id": "generator-label-A", "kind": "generator", "fingerprint": "fp:generator-equivalent-v1", "parents": []},
+        {"id": "generator-label-B", "kind": "generator", "fingerprint": "fp:generator-equivalent-v1", "parents": []},
+        {"id": "oracle-A", "kind": "oracle", "fingerprint": "fp:oracle-A-v2", "parents": []},
+        {"id": "oracle-B", "kind": "oracle", "fingerprint": "fp:oracle-B-v2", "parents": []},
+        {"id": "result-A", "kind": "result", "parents": ["data-A", "generator-label-A", "oracle-A"]},
+        {"id": "result-B", "kind": "result", "parents": ["data-B", "generator-label-B", "oracle-B"]}
+      ],
+      "expected": {
+        "verdict": "shared_failure_mode",
+        "shared_kinds": ["generator"],
+        "shared_dependencies": ["generator:fp:generator-equivalent-v1"]
+      }
+    }
+  ]
+}

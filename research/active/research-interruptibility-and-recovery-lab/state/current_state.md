@@ -1,7 +1,11 @@
 # État courant
 
-Un arrêt et une reprise de fixture sont vérifiés. Les scénarios suivants restent
-fictifs : aucune interruption réelle, transmission entre acteurs ou récupération
-partielle hors modèle n’est établie.
+L’ancienne égalité snapshot/restored est `weakened` : elle ne testait aucun
+mécanisme de reprise. Le pipeline généré récupère exactement à 4/4 coupures
+lorsque la dépendance d’exécution est sérialisée. Son omission change les hashes
+et la décision. Portée `pipeline_verified`.
 
-Prochaine entrée requise : arrêt et retour sur une recherche fictive avec artefacts générés.
+## Prochaine action interne utile
+
+Ajouter checkpoints partiels, corruption de journal et ordres de reprise
+rivaux ; conserver la première dépendance omise comme condition de retrait.

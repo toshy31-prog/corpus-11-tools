@@ -26,3 +26,10 @@ dérive sont dans
 [`protocols/initial_synthetic_protocol.md`](protocols/initial_synthetic_protocol.md).
 Exécution : `python3 tests/test_initial_protocol.py`. Il ne teste pas une
 traduction réelle.
+
+## Mini-grammaire v0.2
+
+`python3 tests/test_controlled_grammar.py` parse une grammaire fictive dans les
+trois langues et compare surface et slots, notamment négation, modalité et
+attribution; voir
+[`protocols/controlled_grammar_v0.2.md`](protocols/controlled_grammar_v0.2.md).

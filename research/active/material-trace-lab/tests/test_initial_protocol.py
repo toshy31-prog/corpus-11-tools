@@ -66,7 +66,7 @@ def run_scenario(nodes: list[str], scenario: dict[str, object]) -> dict[str, obj
 
     present = [node for node in nodes if states[node]["payload"]]
     return {
-        "physically_present_nodes": present,
+        "payload_present_nodes": present,
         "normally_accessible": any(states[node]["payload"] for node in nodes if node not in partitioned),
         "reactivated": bool(channels),
         "recovery_channels": channels,

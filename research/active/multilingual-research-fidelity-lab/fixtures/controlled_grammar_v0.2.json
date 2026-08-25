@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "protocol_fixed_before_execution": true,
+  "required_slots": ["evidence_id", "claim_id", "scope", "decision", "attribution", "modality", "negated", "reversal_id"],
+  "cases": [
+    {
+      "id": "aligned_triplet",
+      "packets": [
+        {"language": "fr", "surface": "PREUVE=e1;CONCLUSION=c1;PORTEE=pipeline_verified;DECISION=retain;ATTRIBUTION=adapter-A;MODALITE=asserted;NEGATION=no;RETRAIT=r1", "slots": {"evidence_id": "e1", "claim_id": "c1", "scope": "pipeline_verified", "decision": "retain", "attribution": "adapter-A", "modality": "asserted", "negated": "no", "reversal_id": "r1"}},
+        {"language": "en", "surface": "EVIDENCE=e1;CLAIM=c1;SCOPE=pipeline_verified;DECISION=retain;ATTRIBUTION=adapter-A;MODALITY=asserted;NEGATION=no;REVERSAL=r1", "slots": {"evidence_id": "e1", "claim_id": "c1", "scope": "pipeline_verified", "decision": "retain", "attribution": "adapter-A", "modality": "asserted", "negated": "no", "reversal_id": "r1"}},
+        {"language": "de", "surface": "BELEG=e1;SCHLUSS=c1;UMFANG=pipeline_verified;ENTSCHEIDUNG=retain;ZUSCHREIBUNG=adapter-A;MODALITAET=asserted;NEGATION=no;RUECKNAHME=r1", "slots": {"evidence_id": "e1", "claim_id": "c1", "scope": "pipeline_verified", "decision": "retain", "attribution": "adapter-A", "modality": "asserted", "negated": "no", "reversal_id": "r1"}}
+      ],
+      "expected_divergences": []
+    },
+    {
+      "id": "hidden_surface_negation",
+      "packets": [
+        {"language": "fr", "surface": "PREUVE=e2;CONCLUSION=c2;PORTEE=pipeline_verified;DECISION=retain;ATTRIBUTION=adapter-A;MODALITE=asserted;NEGATION=no;RETRAIT=r2", "slots": {"evidence_id": "e2", "claim_id": "c2", "scope": "pipeline_verified", "decision": "retain", "attribution": "adapter-A", "modality": "asserted", "negated": "no", "reversal_id": "r2"}},
+        {"language": "en", "surface": "EVIDENCE=e2;CLAIM=c2;SCOPE=pipeline_verified;DECISION=retain;ATTRIBUTION=adapter-A;MODALITY=asserted;NEGATION=yes;REVERSAL=r2", "slots": {"evidence_id": "e2", "claim_id": "c2", "scope": "pipeline_verified", "decision": "retain", "attribution": "adapter-A", "modality": "asserted", "negated": "no", "reversal_id": "r2"}},
+        {"language": "de", "surface": "BELEG=e2;SCHLUSS=c2;UMFANG=pipeline_verified;ENTSCHEIDUNG=retain;ZUSCHREIBUNG=adapter-A;MODALITAET=asserted;NEGATION=no;RUECKNAHME=r2", "slots": {"evidence_id": "e2", "claim_id": "c2", "scope": "pipeline_verified", "decision": "retain", "attribution": "adapter-A", "modality": "asserted", "negated": "no", "reversal_id": "r2"}}
+      ],
+      "expected_divergences": ["cross_language:negated", "surface_slot:en:negated"]
+    },
+    {
+      "id": "modality_drift",
+      "packets": [
+        {"language": "fr", "surface": "PREUVE=e3;CONCLUSION=c3;PORTEE=pipeline_verified;DECISION=retain;ATTRIBUTION=adapter-A;MODALITE=asserted;NEGATION=no;RETRAIT=r3", "slots": {"evidence_id": "e3", "claim_id": "c3", "scope": "pipeline_verified", "decision": "retain", "attribution": "adapter-A", "modality": "asserted", "negated": "no", "reversal_id": "r3"}},
+        {"language": "en", "surface": "EVIDENCE=e3;CLAIM=c3;SCOPE=pipeline_verified;DECISION=retain;ATTRIBUTION=adapter-A;MODALITY=asserted;NEGATION=no;REVERSAL=r3", "slots": {"evidence_id": "e3", "claim_id": "c3", "scope": "pipeline_verified", "decision": "retain", "attribution": "adapter-A", "modality": "asserted", "negated": "no", "reversal_id": "r3"}},
+        {"language": "de", "surface": "BELEG=e3;SCHLUSS=c3;UMFANG=pipeline_verified;ENTSCHEIDUNG=retain;ZUSCHREIBUNG=adapter-A;MODALITAET=possible;NEGATION=no;RUECKNAHME=r3", "slots": {"evidence_id": "e3", "claim_id": "c3", "scope": "pipeline_verified", "decision": "retain", "attribution": "adapter-A", "modality": "possible", "negated": "no", "reversal_id": "r3"}}
+      ],
+      "expected_divergences": ["cross_language:modality"]
+    },
+    {
+      "id": "attribution_drift",
+      "packets": [
+        {"language": "fr", "surface": "PREUVE=e4;CONCLUSION=c4;PORTEE=pipeline_verified;DECISION=retain;ATTRIBUTION=adapter-A;MODALITE=asserted;NEGATION=no;RETRAIT=r4", "slots": {"evidence_id": "e4", "claim_id": "c4", "scope": "pipeline_verified", "decision": "retain", "attribution": "adapter-A", "modality": "asserted", "negated": "no", "reversal_id": "r4"}},
+        {"language": "en", "surface": "EVIDENCE=e4;CLAIM=c4;SCOPE=pipeline_verified;DECISION=retain;ATTRIBUTION=adapter-B;MODALITY=asserted;NEGATION=no;REVERSAL=r4", "slots": {"evidence_id": "e4", "claim_id": "c4", "scope": "pipeline_verified", "decision": "retain", "attribution": "adapter-B", "modality": "asserted", "negated": "no", "reversal_id": "r4"}},
+        {"language": "de", "surface": "BELEG=e4;SCHLUSS=c4;UMFANG=pipeline_verified;ENTSCHEIDUNG=retain;ZUSCHREIBUNG=adapter-A;MODALITAET=asserted;NEGATION=no;RUECKNAHME=r4", "slots": {"evidence_id": "e4", "claim_id": "c4", "scope": "pipeline_verified", "decision": "retain", "attribution": "adapter-A", "modality": "asserted", "negated": "no", "reversal_id": "r4"}}
+      ],
+      "expected_divergences": ["cross_language:attribution"]
+    },
+    {
+      "id": "scope_drift",
+      "packets": [
+        {"language": "fr", "surface": "PREUVE=e5;CONCLUSION=c5;PORTEE=pipeline_verified;DECISION=retain;ATTRIBUTION=adapter-A;MODALITE=asserted;NEGATION=no;RETRAIT=r5", "slots": {"evidence_id": "e5", "claim_id": "c5", "scope": "pipeline_verified", "decision": "retain", "attribution": "adapter-A", "modality": "asserted", "negated": "no", "reversal_id": "r5"}},
+        {"language": "en", "surface": "EVIDENCE=e5;CLAIM=c5;SCOPE=external_equivalent;DECISION=retain;ATTRIBUTION=adapter-A;MODALITY=asserted;NEGATION=no;REVERSAL=r5", "slots": {"evidence_id": "e5", "claim_id": "c5", "scope": "external_equivalent", "decision": "retain", "attribution": "adapter-A", "modality": "asserted", "negated": "no", "reversal_id": "r5"}},
+        {"language": "de", "surface": "BELEG=e5;SCHLUSS=c5;UMFANG=pipeline_verified;ENTSCHEIDUNG=retain;ZUSCHREIBUNG=adapter-A;MODALITAET=asserted;NEGATION=no;RUECKNAHME=r5", "slots": {"evidence_id": "e5", "claim_id": "c5", "scope": "pipeline_verified", "decision": "retain", "attribution": "adapter-A", "modality": "asserted", "negated": "no", "reversal_id": "r5"}}
+      ],
+      "expected_divergences": ["cross_language:scope"]
+    }
+  ]
+}

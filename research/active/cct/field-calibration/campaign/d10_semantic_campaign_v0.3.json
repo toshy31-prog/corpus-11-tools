@@ -1,0 +1,85 @@
+{
+  "id": "CCT-SC-D10-003",
+  "version": "0.3",
+  "scope": "model_internal",
+  "protocol_status": "fixed_before_execution",
+  "protocol_status_basis": "self_declared_in_config_no_independent_temporal_lock",
+  "generator": {
+    "kind": "exhaustive_fictional_state_machine",
+    "seed": "not_used_exhaustive_v0.3",
+    "axes": {
+      "load": ["moderate", "severe"],
+      "channel": ["stable", "degraded"],
+      "registration": ["registered", "off_registry"],
+      "decision": ["correct", "wrong_gate"],
+      "environment": ["redundant", "single_path"]
+    }
+  },
+  "mechanisms": {
+    "d10": {
+      "label": "D10 protected-core state machine",
+      "action_budget": 8,
+      "registered_trace": true,
+      "stable_off_registry_audit": true,
+      "redundant_off_registry_audit": true,
+      "redundant_recourse": true,
+      "visible_work_base": 7,
+      "hidden_work_base": 1,
+      "lost_work_base": 0,
+      "recovery_capacity": 4
+    },
+    "baseline": {
+      "label": "Append-only log with independent recourse",
+      "action_budget": 8,
+      "registered_trace": true,
+      "stable_off_registry_audit": false,
+      "redundant_off_registry_audit": true,
+      "redundant_recourse": true,
+      "visible_work_base": 5,
+      "hidden_work_base": 2,
+      "lost_work_base": 1,
+      "recovery_capacity": 3
+    }
+  },
+  "protocol_variations": {
+    "base": {"observer_visible_work": 1, "recovery_horizon": 7, "action_budget": 8},
+    "observer_cost_doubled": {"observer_visible_work": 2, "recovery_horizon": 7, "action_budget": 8},
+    "short_recovery_horizon": {"observer_visible_work": 1, "recovery_horizon": 3, "action_budget": 8},
+    "matched_low_action_budget": {"observer_visible_work": 1, "recovery_horizon": 7, "action_budget": 4}
+  },
+  "action_costs": {
+    "decision": 1,
+    "trace_attempt": 1,
+    "challenge": 1,
+    "review": 1,
+    "correction_or_uphold": 1,
+    "recovery": 1,
+    "usability_probe": 1
+  },
+  "execution_contract": {
+    "activation_observable": "fictional contention event with a protected gate decision",
+    "activation_window_hours": 24,
+    "activation_channel": "generated append-only incident stream",
+    "presentation_order_rule": "mechanism labels are sorted only after both outcomes are computed",
+    "observer_created_work_tracking": true,
+    "missing_values_tracking": true,
+    "abandonment_tracking": true,
+    "off_registry_decision_tracking": true
+  },
+  "declared_invariants": [
+    "same ground-truth world and effective action budget for both mechanisms",
+    "every executed transition consumes its declared action cost and no budget overrun is possible",
+    "complete 2^5 factorial traversal for every protocol variation",
+    "all five generator axes affect at least one primary outcome",
+    "five gate capabilities remain separate and non-compensable",
+    "visible hidden and lost work remain separate",
+    "O3 checks the expected actor and declared authority, not actor inequality alone",
+    "O4 reconstructs queue transition and restoration from recovery-log content",
+    "the transition checker receives ground truth, authorization bounds and outcome but no mechanism label or configured score",
+    "effective budgets cannot exceed their authorized ceilings and recovery capacity cannot exceed its authorization contract",
+    "each denial is tied by attempt order to an action that was actually attempted and not executed",
+    "no composite success score is computed"
+  ],
+  "protocol_effect": "The state machines, authority map, action ledger, event rules, recovery horizon and semantic checker fully determine the results; they are not calibrated to an institution.",
+  "withdrawal_condition": "Withdraw the result if a generator axis is inactive, paired worlds or effective action budgets differ, an action is executed without budget, O3 accepts an unauthorized actor, O4 accepts a false recovery log, the checker reads a mechanism label, or reconstruction changes an artifact."
+}

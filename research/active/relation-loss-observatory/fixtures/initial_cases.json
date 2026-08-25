@@ -1,6 +1,6 @@
 {
   "lab_id": "relation-loss-observatory",
-  "synthetic_scope": "not_substitutable",
+  "synthetic_scope": "pipeline_verified",
   "case": {
     "id": "training-only-migration",
     "is_real_case": false,

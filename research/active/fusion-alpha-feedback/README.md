@@ -30,3 +30,9 @@ pas les écrans analytiques déjà bornés.
 La convention de matching et son pipeline interne sont prêts, mais ne lèvent
 pas ces préconditions : voir
 [`f0-data-global-tae-matrix/matching-contract.md`](f0-data-global-tae-matrix/matching-contract.md).
+
+La matrice interne est maintenant exécutée sur une distribution et un solveur
+linéaire entièrement fictifs. La v1 conserve un échec de raffinement ; la v2
+corrige séparément l'opérateur et obtient une interaction SD/M × FOW stable sur
+deux noyaux sur trois. Ce résultat est `model_internal`, jamais une stabilité
+TAE. Aucune source ou infrastructure extérieure n'est une prochaine dépendance.
