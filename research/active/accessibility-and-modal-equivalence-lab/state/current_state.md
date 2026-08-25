@@ -1,6 +1,6 @@
 # État courant
 
-Le contrat structurel intermodal est exécutable. Il ne remplace pas un test
-avec personnes, technologies d’assistance ou situations de charge.
+Le contrat structurel intermodal est exécutable. Il est maintenant exercé sur
+des canaux, technologies d'assistance et situations de charge fictifs.
 
-Prochaine entrée requise : tâche critique et seuils évalués sur des canaux réels.
+Prochaine entrée requise : tâche critique et seuils simulés sur des canaux fictifs.

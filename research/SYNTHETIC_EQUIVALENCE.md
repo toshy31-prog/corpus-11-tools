@@ -9,6 +9,19 @@ Elle ne remplace pas une donnée réelle lorsque l’objet dépend de propriét�
 observées du terrain, de comportements, d’institutions, d’un instrument ou
 d’une population qui ne sont pas déterminés par le générateur.
 
+## Séquence d'exécution
+
+Cette limite ne rend pas l'IRL immédiatement nécessaire. Tout dossier doit
+d'abord épuiser les voies internes appropriées : théorie, calcul, simulation,
+mondes fictifs, distributions générées, modèles rivaux et variations de
+protocole. L'absence de donnée, de partenaire ou de terrain extérieur appelle
+un meilleur substitut interne ; elle ne bloque pas la routine.
+
+Une épreuve IRL n'est examinable qu'une fois toutes les autres voies capables
+d'éprouver une faille nommée explicitement écartées. Elle demeure alors une
+décision terminale distincte, soumise à une autorisation explicite, et non une
+conséquence automatique d'un résultat synthétique.
+
 ## Trace minimale de génération
 
 Avec le résultat, la routine doit consigner le construit, la portée de la

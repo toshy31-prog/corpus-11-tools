@@ -9,8 +9,8 @@ des tests locaux déclarés, exécute seulement ces tests.
 Il peut produire des données synthétiques, des distributions et des conclusions
 scientifiques **bornées** lorsque le contrat d’équivalence le permet. Avec
 `--record`, il met à jour un état de routine et un rapport horodaté dans chaque
-dossier après une exécution réussie. Un blocage externe est un résultat de
-routage, pas un échec à masquer.
+dossier après une exécution réussie. Une ressource extérieure absente n'est pas
+un blocage : la routine poursuit par théorie, calcul, simulation ou fiction.
 
 ## Modes
 
@@ -28,11 +28,13 @@ Le cycle spécialisé de `corpus-hypotheses` reste son propre mécanisme :
 Il peut créer une branche locale et exige un dépôt propre ; le cycle de
 portefeuille ne le déclenche donc jamais automatiquement.
 
-Une évolution sémantique ne devient possible que lorsqu’un dossier a une entrée
-admissible : banc matériel, cas consentis, problème externe gelé, site terrain,
-ou distribution alpha et solveur contrôlé. Le cycle global doit alors remettre
-le dossier à un agent de recherche ou à un protocole explicite, pas inventer
-l’entrée manquante.
+Une évolution sémantique progresse d'abord sur des entrées internes déclarées :
+modèle, calcul, scénario, distribution, monde fictif ou environnement simulé.
+Le cycle ne sollicite ni terrain, ni partenaire, ni consentement, ni collecte,
+ni évaluateur extérieur. Une épreuve IRL ne peut être discutée qu'après avoir
+écarté explicitement toutes les autres voies capables d'éprouver la faille
+nommée, conformément à la
+[`politique d'exécution`](RESEARCH_EXECUTION_POLICY.md).
 
 Une entrée synthétique est admissible si elle satisfait le
 [`contrat d’équivalence synthétique`](SYNTHETIC_EQUIVALENCE.md). La routine peut

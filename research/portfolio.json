@@ -7,8 +7,8 @@
       "mode": "guarded-specialist-cycle",
       "safe_checks": ["research_workspace", "corpus_factorization_s4_quotient"],
       "synthetic_scope": "formal_exact",
-      "next_decision": "N’ouvrir qu’un dispositif réellement distinct pour récupération/désinscription, ou une famille de factorisations justifiée indépendamment et sans sous-espace fixe commun.",
-      "blocker": "Les pistes F_T et S4 locales ont atteint leur condition d’arrêt ; la suite exige soit un dispositif externe, soit une règle de construction indépendante."
+      "next_decision": "Construire une famille fictive indépendante de dispositifs de récupération et chercher une factorisation sans sous-espace fixe commun.",
+      "blocker": "Les pistes F_T et S4 locales ont atteint leur condition d’arrêt ; la suite consiste en une règle de construction interne indépendante."
     },
     {
       "id": "cct",
@@ -25,35 +25,35 @@
       "mode": "bounded-reproducibility-checks",
       "safe_checks": ["fusion_resonance", "fusion_radial", "fusion_fow"],
       "synthetic_scope": "model_internal",
-      "next_decision": "Obtenir Falpha(r,E,pitch) sur équilibre fixe et appliquer le matching F0 désormais vérifié à un solveur TAE global contrôlé.",
-      "blocker": "Les écrans légers et le pipeline synthétique ne sont pas un test discriminant pour la question TAE globale."
+      "next_decision": "Générer une distribution Falpha déclarée et appliquer le matching F0 à un solveur TAE fictif contrôlé.",
+      "blocker": "Les écrans légers et le pipeline synthétique ne concluent que sur le modèle TAE fictif déclaré."
     },
     {
       "id": "material-trace-lab",
       "path": "active/material-trace-lab",
-      "mode": "protocol-gated-material-experiment",
+      "mode": "fictional-material-system-simulation",
       "safe_checks": ["material_trace_initial"],
       "synthetic_scope": "model_internal",
-      "next_decision": "Comparer le modèle de réplication à un banc matériel à trois nœuds déclaré.",
-      "blocker": "Le modèle discret est vérifié, mais aucun banc matériel ni scénario observé n’est disponible."
+      "next_decision": "Comparer le modèle de réplication à un banc matériel fictif à trois nœuds et à ses perturbations déclarées.",
+      "blocker": "Le modèle discret est vérifié dans sa portée interne ; aucun banc matériel réel n'est requis."
     },
     {
       "id": "relation-loss-observatory",
       "path": "active/relation-loss-observatory",
-      "mode": "consent-and-case-gated-observation",
+      "mode": "fictional-relation-loss-analysis",
       "safe_checks": ["initial_protocols"],
-      "synthetic_scope": "not_substitutable",
-      "next_decision": "Admettre deux cas comparables qui franchissent la porte de collecte et de preuve.",
-      "blocker": "La porte de refus est vérifiée, mais aucun cas documentable ni autorisation de collecte n’est disponible."
+      "synthetic_scope": "model_internal",
+      "next_decision": "Construire deux migrations ou archives fictives comparables et varier les voies de refus, d'accès et de réactivation.",
+      "blocker": "La porte de refus est vérifiée dans les mondes déclarés ; aucune collecte ni autorisation extérieure n'est requise."
     },
     {
       "id": "independent-evidence-arena",
       "path": "active/independent-evidence-arena",
-      "mode": "external-evaluation",
+      "mode": "fictional-blinded-evaluation",
       "safe_checks": ["initial_protocols"],
       "synthetic_scope": "pipeline_verified",
-      "next_decision": "Admettre un cas externe gelé, une procédure témoin et un évaluateur indépendant.",
-      "blocker": "La porte d’auto-évaluation est vérifiée, mais aucun cas externe ni évaluateur indépendant n’est désigné."
+      "next_decision": "Admettre un cas fictif gelé, une procédure témoin et un évaluateur fictif à l'aveugle.",
+      "blocker": "La porte d’auto-évaluation est vérifiée ; l'indépendance évaluée reste celle du protocole fictif."
     },
     {
       "id": "cct-field-calibration",
@@ -67,11 +67,11 @@
     {
       "id": "fusion-f0-data-global-tae-matrix",
       "path": "active/fusion-alpha-feedback/f0-data-global-tae-matrix",
-      "mode": "data-and-solver-gated",
+      "mode": "fictional-data-and-solver-matrix",
       "safe_checks": ["fusion_f0_matching"],
-      "synthetic_scope": "pipeline_verified",
-      "next_decision": "Identifier une distribution alpha traçable et un solveur TAE global contrôlé.",
-      "blocker": "Aucune entrée Falpha exploitable ni solveur contrôlé n’est disponible."
+      "synthetic_scope": "model_internal",
+      "next_decision": "Générer une distribution alpha traçable et exercer le matching avec un solveur TAE global fictif contrôlé.",
+      "blocker": "La matrice conclut sur l'entrée et le solveur fictifs déclarés, sans dépendance à une source extérieure."
     },
     {
       "id": "provenance-interoperability-lab",
@@ -79,8 +79,8 @@
       "mode": "format-adapter-roundtrip",
       "safe_checks": ["provenance_interop_initial"],
       "synthetic_scope": "pipeline_verified",
-      "next_decision": "Tester le reçu minimal contre des adaptateurs et validateurs de formats indépendants.",
-      "blocker": "Le noyau local survit à deux profils locaux, mais aucun aller-retour indépendant n’est disponible."
+      "next_decision": "Tester le reçu minimal contre des profils d'adaptateurs et validateurs fictifs indépendants.",
+      "blocker": "Le noyau local survit à deux profils locaux ; les nouveaux profils restent des objets de pipeline déclarés."
     },
     {
       "id": "multilingual-research-fidelity-lab",
@@ -88,8 +88,8 @@
       "mode": "cross-lingual-comparison",
       "safe_checks": ["multilingual_fidelity_initial"],
       "synthetic_scope": "pipeline_verified",
-      "next_decision": "Appliquer le comparateur à un corpus parallèle et à des évaluations linguistiques indépendantes.",
-      "blocker": "Les slots synthétiques français-anglais-allemand sont comparés, mais aucun corpus parallèle ni traduction évaluée n’est disponible."
+      "next_decision": "Appliquer le comparateur à un corpus parallèle fictif et à des traductions générées avec variations déclarées.",
+      "blocker": "Les slots synthétiques sont comparés dans la portée du corpus fictif déclaré."
     },
     {
       "id": "adversarial-agent-boundaries",
@@ -97,8 +97,8 @@
       "mode": "adversarial-process-testing",
       "safe_checks": ["adversarial_boundaries_initial"],
       "synthetic_scope": "formal_exact",
-      "next_decision": "Évaluer les invariants contre un corpus d’attaques et l’agent ciblé.",
-      "blocker": "L’évaluateur déterministe tient sur quatre fixtures, mais aucun corpus d’attaque ni résultat sur agent réel n’est établi."
+      "next_decision": "Évaluer les invariants contre un corpus d'attaques fictif et un simulateur d'agent ciblé.",
+      "blocker": "L’évaluateur déterministe conclut sur les attaques et le simulateur fictifs déclarés."
     },
     {
       "id": "semantic-migration-lab",
@@ -106,8 +106,8 @@
       "mode": "cross-version-replay",
       "safe_checks": ["semantic_migration_initial"],
       "synthetic_scope": "pipeline_verified",
-      "next_decision": "Exécuter le paquet de référence sur deux environnements versionnés indépendants.",
-      "blocker": "Le comparateur classe trois migrations synthétiques, mais aucune paire d’environnements réels n’est définie."
+      "next_decision": "Exécuter le paquet de référence sur deux environnements versionnés fictifs indépendants.",
+      "blocker": "Le comparateur classe des migrations synthétiques dans les environnements fictifs déclarés."
     },
     {
       "id": "contested-claims-lab",
@@ -115,8 +115,8 @@
       "mode": "plural-conclusion-testing",
       "safe_checks": ["contested_claims_initial"],
       "synthetic_scope": "formal_exact",
-      "next_decision": "Appliquer le protocole à une controverse sourcée avec traces discriminantes et règles de révision.",
-      "blocker": "La pluralité et la contradiction sont séparées dans un monde fini, mais aucun cas de désaccord réel n’est disponible."
+      "next_decision": "Appliquer le protocole à une controverse fictive avec traces discriminantes et règles de révision.",
+      "blocker": "La pluralité et la contradiction sont séparées dans un monde fini déclaré."
     },
     {
       "id": "causal-claim-calibration-lab",
@@ -124,8 +124,8 @@
       "mode": "interventional-calibration",
       "safe_checks": ["causal_calibration_initial"],
       "synthetic_scope": "model_internal",
-      "next_decision": "Choisir un mécanisme externe, ses confondeurs mesurables et une intervention discriminante.",
-      "blocker": "Deux mondes causaux synthétiques sont vérifiés, mais aucun mécanisme ou contrôle rival externe n’est défini."
+      "next_decision": "Construire un mécanisme causal fictif, ses confondeurs mesurables et une intervention discriminante.",
+      "blocker": "Deux mondes causaux synthétiques sont vérifiés ; le mécanisme reste interne au modèle."
     },
     {
       "id": "privacy-recourse-lab",
@@ -133,8 +133,8 @@
       "mode": "bounded-disclosure-testing",
       "safe_checks": ["privacy_recourse_initial"],
       "synthetic_scope": "pipeline_verified",
-      "next_decision": "Évaluer le schéma contre une menace, un canal et une procédure de recours spécifiés.",
-      "blocker": "Le schéma fictif distingue fuite et recours, mais aucune menace ni procédure réelle n’est définie."
+      "next_decision": "Évaluer le schéma contre une menace, un canal et une procédure de recours fictifs spécifiés.",
+      "blocker": "Le schéma fictif distingue fuite et recours dans la menace déclarée."
     },
     {
       "id": "research-footprint-and-yield-lab",
@@ -142,8 +142,8 @@
       "mode": "cost-and-decision-measurement",
       "safe_checks": ["initial_protocols"],
       "synthetic_scope": "pipeline_verified",
-      "next_decision": "Collecter deux journaux comparables avec unités observables et porteurs de charge.",
-      "blocker": "La comptabilité synthétique est vérifiée, mais aucune télémétrie ni comparaison de protocole réelle n’est disponible."
+      "next_decision": "Générer deux journaux comparables avec unités observables et porteurs de charge fictifs.",
+      "blocker": "La comptabilité synthétique est vérifiée dans les journaux déclarés."
     },
     {
       "id": "user-capacity-and-dependence-lab",
@@ -151,8 +151,8 @@
       "mode": "post-assistance-capacity-testing",
       "safe_checks": ["initial_protocols"],
       "synthetic_scope": "model_internal",
-      "next_decision": "Admettre une tâche, une mesure et une population pour une trace d’autonomie réelle.",
-      "blocker": "Le modèle sépare assistance et autonomie, mais aucune population ni mesure de capacité réelle n’est définie."
+      "next_decision": "Construire une tâche, une mesure et une population fictives pour une trace d'autonomie simulée.",
+      "blocker": "Le modèle sépare assistance et autonomie dans la population fictive déclarée."
     },
     {
       "id": "accessibility-and-modal-equivalence-lab",
@@ -160,8 +160,8 @@
       "mode": "cross-modal-action-testing",
       "safe_checks": ["initial_protocols"],
       "synthetic_scope": "pipeline_verified",
-      "next_decision": "Tester la tâche critique et les seuils d’équivalence sur des canaux réels.",
-      "blocker": "L’équivalence structurelle est vérifiée, mais aucun canal ni usage réel n’est comparé."
+      "next_decision": "Simuler la tâche critique et les seuils d'équivalence sur des canaux fictifs.",
+      "blocker": "L’équivalence structurelle est vérifiée dans les canaux fictifs déclarés."
     },
     {
       "id": "forecast-calibration-lab",
@@ -169,8 +169,8 @@
       "mode": "outcome-calibration",
       "safe_checks": ["initial_protocols"],
       "synthetic_scope": "formal_exact",
-      "next_decision": "Constituer un registre daté et un horizon dont les résultats seront observables.",
-      "blocker": "Le score du registre fermé est exact, mais aucun registre prospectif ni résultat observé n’est disponible."
+      "next_decision": "Constituer un registre fictif daté avec horizon et résultats générés sous règles gelées.",
+      "blocker": "Le score du registre fermé est exact dans le registre fictif déclaré."
     },
     {
       "id": "contributor-ecosystem-governance-lab",
@@ -178,8 +178,8 @@
       "mode": "contributor-governance-observation",
       "safe_checks": ["initial_protocols"],
       "synthetic_scope": "pipeline_verified",
-      "next_decision": "Observer un cycle contributif et ses voies de contestation, décision et retrait.",
-      "blocker": "Le cycle synthétique est traçable, mais aucune observation de gouvernance effective n’est disponible."
+      "next_decision": "Simuler un cycle contributif et ses voies de contestation, décision et retrait.",
+      "blocker": "Le cycle synthétique est traçable dans la gouvernance fictive déclarée."
     },
     {
       "id": "epistemic-diversity-and-common-mode-failure-lab",
@@ -187,8 +187,8 @@
       "mode": "independence-and-common-mode-testing",
       "safe_checks": ["initial_protocols"],
       "synthetic_scope": "model_internal",
-      "next_decision": "Admettre des voies d’analyse appariées avec leur provenance complète.",
-      "blocker": "Le mode commun est détecté dans un graphe synthétique, mais aucune indépendance effective n’est observée."
+      "next_decision": "Construire des voies d’analyse fictives appariées avec leur provenance complète.",
+      "blocker": "Le mode commun est détecté dans le graphe synthétique déclaré."
     },
     {
       "id": "research-interruptibility-and-recovery-lab",
@@ -196,8 +196,8 @@
       "mode": "interruption-recovery-testing",
       "safe_checks": ["initial_protocols"],
       "synthetic_scope": "pipeline_verified",
-      "next_decision": "Exécuter un arrêt et un retour sur une recherche avec artefacts réels.",
-      "blocker": "La reprise de fixture est vérifiée, mais aucun scénario d’interruption réelle n’est observé."
+      "next_decision": "Exécuter un arrêt et un retour sur une recherche fictive avec artefacts générés.",
+      "blocker": "La reprise de fixture est vérifiée dans le scénario d'interruption fictif déclaré."
     },
     {
       "id": "portfolio-option-value-lab",
@@ -205,8 +205,8 @@
       "mode": "portfolio-allocation-comparison",
       "safe_checks": ["initial_protocols"],
       "synthetic_scope": "model_internal",
-      "next_decision": "Admettre des unités de décision et un historique d’allocation traçable.",
-      "blocker": "Le comparateur est défini dans un modèle, mais aucun historique de choix ni allocation réelle n’est disponible."
+      "next_decision": "Construire des unités de décision fictives et un historique d'allocation traçable généré.",
+      "blocker": "Le comparateur est défini dans le modèle d'allocation fictif déclaré."
     }
   ]
 }

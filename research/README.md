@@ -18,17 +18,20 @@ Une recherche peut utiliser les skills et laboratoires de Corpus. Elle ne devien
 - une extension reste dans le projet dont elle cherche à rendre la conclusion
   observable. Elle ne devient pas un nouveau programme sur la seule base de sa
   proximité thématique.
+- toute recherche suit la [politique d'exécution](RESEARCH_EXECUTION_POLICY.md) :
+  théorie, calcul, simulation et fiction d'abord ; aucune épreuve IRL n'est une
+  étape courante de la routine.
 
 ## Recherches présentes
 
 | Projet | État | Contenu propre au projet |
 |---|---|---|
 | [`active/corpus-hypotheses/`](active/corpus-hypotheses/) | active | hypothèses mathématiques et temporelles, protocoles, sources et rapports |
-| [`active/cct/`](active/cct/) | active | modèle CCT, simulations, prototype institutionnel et publications |
+| [`active/cct/`](active/cct/) | active | modèle CCT, calculs et simulations de mondes fictifs |
 | [`active/fusion-alpha-feedback/`](active/fusion-alpha-feedback/) | active | rétroaction alpha–TAE–zonal flow et conditions du test cinétique global |
-| [`active/material-trace-lab/`](active/material-trace-lab/) | active | traces, récupération et effacement dans un petit système matériel distribué |
-| [`active/relation-loss-observatory/`](active/relation-loss-observatory/) | active | pertes d’accès, de lien et de réactivation dans des migrations ou archives réelles |
-| [`active/independent-evidence-arena/`](active/independent-evidence-arena/) | active | évaluation externe des méthodes de recherche Corpus, avec contrat d’essai explicite |
+| [`active/material-trace-lab/`](active/material-trace-lab/) | active | traces, récupération et effacement dans un système matériel fictif distribué |
+| [`active/relation-loss-observatory/`](active/relation-loss-observatory/) | active | pertes d’accès, de lien et de réactivation dans des migrations ou archives fictives |
+| [`active/independent-evidence-arena/`](active/independent-evidence-arena/) | active | évaluation fictive et à l'aveugle des méthodes de recherche Corpus |
 | [`active/provenance-interoperability-lab/`](active/provenance-interoperability-lab/) | active | interchange vérifiable de preuves, calculs et conclusions entre outils |
 | [`active/multilingual-research-fidelity-lab/`](active/multilingual-research-fidelity-lab/) | active | fidélité des preuves et conclusions à travers les langues |
 | [`active/adversarial-agent-boundaries/`](active/adversarial-agent-boundaries/) | active | résistance du processus de recherche aux entrées et outils adversariaux |
@@ -41,7 +44,7 @@ Une recherche peut utiliser les skills et laboratoires de Corpus. Elle ne devien
 | [`active/accessibility-and-modal-equivalence-lab/`](active/accessibility-and-modal-equivalence-lab/) | active | équivalence pratique entre canaux d’accès |
 | [`active/forecast-calibration-lab/`](active/forecast-calibration-lab/) | active | calibration des prédictions et renversements |
 | [`active/contributor-ecosystem-governance-lab/`](active/contributor-ecosystem-governance-lab/) | active | gouvernance distribuée des contributeurs et extensions |
-| [`active/epistemic-diversity-and-common-mode-failure-lab/`](active/epistemic-diversity-and-common-mode-failure-lab/) | active | indépendance réelle entre agents et modes communs d’échec |
+| [`active/epistemic-diversity-and-common-mode-failure-lab/`](active/epistemic-diversity-and-common-mode-failure-lab/) | active | indépendance modélisée entre agents et modes communs d’échec |
 | [`active/research-interruptibility-and-recovery-lab/`](active/research-interruptibility-and-recovery-lab/) | active | pause, reprise et récupération des recherches agentiques |
 | [`active/portfolio-option-value-lab/`](active/portfolio-option-value-lab/) | active | valeur d’ouvrir, fusionner ou arrêter un dossier |
 | [`completed/corpus-ui-workspace/`](completed/corpus-ui-workspace/) | abandonnée | prototype d’interface Corpus gelé, archive Git et acquis conversationnels candidats |
@@ -50,6 +53,6 @@ Les moteurs génériques utilisés par ces projets se trouvent dans [`../corpus-
 
 ## Extensions rattachées
 
-- [`active/cct/field-calibration/`](active/cct/field-calibration/) : évaluation
-  de terrain du modèle CCT ; elle ne prolonge pas les simulations synthétiques ;
+- [`active/cct/field-calibration/`](active/cct/field-calibration/) : calibration
+  par mondes fictifs appariés du modèle CCT ;
 - [`active/fusion-alpha-feedback/f0-data-global-tae-matrix/`](active/fusion-alpha-feedback/f0-data-global-tae-matrix/) : chaîne de données et matrice de calcul qui peut décider du prochain investissement de calcul TAE.
