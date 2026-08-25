@@ -28,7 +28,7 @@ des `C(48,3)=17 296` triplets ont la clé basse
 Ils se répartissent en dix orbites de conjugaison simultanée : 68 ont une
 intersection triple nulle et 16 une intersection triple de dimension un. Le test
 à quatre matrices porte sur les 3 780 extensions possibles. Sous la clé de
-contrôle préenregistrée, deux des cinq strates appariées ont un contraste positif
+contrôle déclarée, deux des cinq strates appariées ont un contraste positif
 et la médiane des contrastes est nulle. Le résultat H5 `not_supported` est ainsi
 un énoncé combinatoire fini, non une conclusion sur la persistance d'objets.
 
@@ -125,7 +125,7 @@ Les contrastes de moyenne `d4` sont donc
 `0, 0, 0, 1/8, 1`.
 
 Deux strates sur cinq sont positives et leur médiane est `0`. La classification
-préenregistrée H5 est par conséquent `not_supported`.
+H5 est par conséquent `not_supported`.
 
 ## 5. Nature de la preuve
 
@@ -179,11 +179,7 @@ Avant toute soumission extérieure, il faudrait :
 - Michael Field, *Dynamics and Symmetry*, section 4.5 sur la famille
   hyperoctaédrale.
 
-## Artifacts locaux
+## Artefact local
 
-- Préenregistrement H5 :
-  `experiments/factorization-signed-fourth-extension-preregistration-2026-08-23.md`.
-- Résultat H5 :
-  `experiments/factorization-signed-fourth-extension-results-2026-08-24.md`.
 - Script de certification par orbites :
   `experiments/analyze_b3_fixed_space_orbits.py`.
