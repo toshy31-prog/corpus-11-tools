@@ -9,7 +9,7 @@ Corpus 11 Tools est un ensemble d’outils pour aider Codex à analyser une ques
 - 49 capabilities ;
 - 4 familles descriptives ;
 - 88 relations ;
-- 71 évaluations.
+- 77 évaluations.
 
 ## Ce qui change dans v1.3.0
 
@@ -83,7 +83,7 @@ La version actuelle contient :
 - 49 capabilities ;
 - 4 familles descriptives ;
 - 88 relations ;
-- 71 évaluations.
+- 77 évaluations.
 
 La présence d’une capability dans le projet ne signifie pas que cette capacité est scientifiquement établie. Elle décrit seulement un comportement que le système peut tenter de produire sous certaines conditions.
 
@@ -130,9 +130,13 @@ python3 tools/validate_package.py
 python3 tools/check_graph.py
 python3 tools/check_docs.py
 python3 tools/check_boundaries.py
+python3 tools/check_integrity.py
+python3 tools/check_release_identity.py
+python3 tools/check_evals.py
+python3 tools/test_validation_guards.py
 ```
 
-L’état attendu pour v1.3.0 indique 58 skills, 49 capabilities, 4 familles descriptives, 88 relations et 71 évaluations.
+L’état attendu pour v1.3.0 indique 58 skills, 49 capabilities, 4 familles descriptives, 88 relations et 77 évaluations.
 
 Pour vérifier un exemple de chaîne de provenance :
 
@@ -151,7 +155,7 @@ Le dépôt contient un produit, ses instruments génériques et plusieurs recher
 - **Le manifeste du plugin** (`.codex-plugin/`) est sa fiche d’identité technique : nom, version et point d’entrée.
 - **Les skills** (`skills/`) sont les méthodes que Codex peut invoquer. Les 49 wrappers de capability traitent chacun un problème analytique précis ; les 9 autres skills organisent le routage, le contexte, les règles de conclusion ou les expériences.
 - **Les outils de contrôle** (`tools/`) vérifient que le paquet est cohérent. Ils servent principalement aux personnes qui maintiennent Corpus.
-- **Les évaluations** (`evals/`) sont 71 situations-test. Elles permettent de détecter certaines régressions, mais ne prouvent pas que Corpus aura raison dans toutes les situations réelles.
+- **Les évaluations** (`evals/`) sont 77 situations-test. Elles permettent de détecter certaines régressions, mais ne prouvent pas que Corpus aura raison dans toutes les situations réelles.
 - **Les laboratoires Corpus** (`corpus-11-tools/labs/`) sont des moteurs génériques : expériences reproductibles, protocoles gelés, Arena, campagnes appariées et comparaisons vectorielles. Ils font partie des outils Corpus, mais leurs fixtures ne constituent pas des preuves extérieures.
 - **Les archives historiques** (`archives/legacy/`) conservent les versions et documents dont Corpus est issu. Elles servent à retracer l’origine d’une règle ; Codex ne les exécute pas comme des outils actuels.
 - **La documentation interne** (`docs/`) contient l’inventaire, la taxonomie et les contrats qui définissent ce que la version affirme réellement.
@@ -177,7 +181,7 @@ Cette vue sert d’index aux personnes qui souhaitent retrouver les fichiers cor
 │   ├── .codex-plugin/                Manifeste du plugin
 │   ├── skills/                       49 wrappers de capability + 9 skills opérationnels
 │   ├── tools/                        Validateurs, provenance et porte de rendement
-│   ├── evals/                        71 scénarios de routage/non-régression
+│   ├── evals/                        77 scénarios de routage/non-régression
 │   ├── labs/                         Moteurs génériques, Arena et campagnes de simulation
 │   ├── archives/legacy/              Archives historiques non exécutoires
 │   └── docs/                         Inventaire, taxonomie et intégrité des sources

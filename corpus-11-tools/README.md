@@ -13,7 +13,7 @@ Ce plugin supplémentaire repose sur l’architecture 11.x fournie. Il ne rempla
 - 49 capabilities ;
 - 4 familles descriptives ;
 - 88 relations ;
-- 71 évaluations.
+- 77 évaluations.
 
 ## Changement public de v1.3.0
 
@@ -52,8 +52,8 @@ Les 49 capabilities correspondent donc aux 31 natives, aux 9 facultés récupér
 - Evals de routage et de non-régression.
 - Garde de gouvernance épistémique séparant critères de sélection, rôles des lois, frontière de neutralité et propriétés attribuées au système.
 - Outils déterministes de validation de paquet, contrôle de graphe et lecture de provenance.
-- Laboratoires génériques pour exécuter des expériences, comparer des méthodes dans l’Arena, explorer des possibilités appariées, appliquer un protocole institutionnel append-only configurable et valider un sous-ensemble JSON Schema explicitement borné sans importer les conclusions d’une recherche particulière.
-- 88 relations et 71 évaluations de routage/non-régression.
+- Laboratoires génériques pour exécuter des expériences, comparer des méthodes dans l’Arena, explorer des possibilités appariées, appliquer un protocole institutionnel append-only configurable, vérifier des trajectoires épistémiques et valider un sous-ensemble JSON Schema explicitement borné sans importer les conclusions d’une recherche particulière.
+- 88 relations et 77 évaluations de routage/non-régression.
 
 Les capabilities restent des possibles comportementaux sous conditions. Les fichiers `SKILL.md` sont des wrappers d’invocation : ils ne redéfinissent pas une capability comme algorithme.
 
@@ -83,6 +83,10 @@ python tools/validate_package.py
 python tools/check_graph.py
 python tools/check_docs.py
 python tools/check_boundaries.py
+python tools/check_integrity.py
+python tools/check_release_identity.py
+python tools/check_evals.py
+python tools/test_validation_guards.py
 python tools/show_provenance.py CAP.PROTOCOL_ROBUSTNESS
 python tools/project_yield_gate.py chemin/vers/record.json
 sha256sum -c archives/legacy/MANIFEST.sha256
@@ -98,7 +102,7 @@ déployée.
 
 ## Statut
 
-Le paquet `v1.3.0` contient 58 skills, 49 capabilities, 4 familles, 88 relations et 71 évaluations. Sa stabilité désigne la cohérence du paquet, de son installation, de sa taxonomie, de sa frontière avec la recherche et de ses tests sur le périmètre déclaré. `open-experiment-arena` reste une procédure expérimentale candidate : ses tests synthétiques n’établissent ni scénario extérieur indépendant, ni gain de capability, ni usage de terrain. Les 31 capabilities natives restent `candidate_unvalidated`, les neuf facultés récupérées `recovered_candidate_unvalidated` et les neuf nouveaux outils `design_candidate_unvalidated`.
+Le paquet `v1.3.0` contient 58 skills, 49 capabilities, 4 familles, 88 relations et 77 évaluations. Sa stabilité désigne la cohérence du paquet, de son installation, de sa taxonomie, de sa frontière avec la recherche et de ses tests sur le périmètre déclaré. `open-experiment-arena` reste une procédure expérimentale candidate : ses tests synthétiques n’établissent ni scénario extérieur indépendant, ni gain de capability, ni usage de terrain. Les 31 capabilities natives restent `candidate_unvalidated`, les neuf facultés récupérées `recovered_candidate_unvalidated` et les neuf nouveaux outils `design_candidate_unvalidated`.
 
 Le périmètre et les conditions de retrait de ce statut sont définis dans [`docs/stability-contract.md`](docs/stability-contract.md), et la matrice exécutée dans [`docs/release-validation-v1.3.0.md`](docs/release-validation-v1.3.0.md).
 

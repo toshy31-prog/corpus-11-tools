@@ -44,4 +44,4 @@ node corpus-11-tools/labs/experiment-lab/arena/cli.mjs test
 
 ## Statut
 
-Le cœur, la gouvernance de protocole et l’Arena sont écrits et testés. Cela n’établit ni universalité de l’abstraction, ni validité scientifique des adaptateurs, ni transport terrain.
+Le cœur, la gouvernance de protocole, la clôture attestée et l’Arena sont écrits et testés. Cela n’établit ni universalité de l’abstraction, ni validité scientifique des adaptateurs, ni transport terrain.

@@ -1,144 +1,74 @@
 # État courant de la recherche
 
-Dernière mise à jour : 2026-08-17
+Dernière mise à jour : 2026-08-18 — clôture quotidienne
 
-## Question centrale
+## Discipline
 
-Quelles structures minimales permettent de distinguer récupération et désinscription puis, éventuellement, de faire émerger orientation temporelle et invariants objectaux sans les injecter dans les définitions ?
+Observation, attribution, inférence, hypothèse et démonstration restent séparées. Les sorties finies et logicielles ne sont pas des observations physiques. `core/` et `sources/` restent gelés.
 
-## Discipline épistémique
+## État des branches
 
-- **Observation** : contenu directement constaté dans les fichiers ou sortie reproductible.
-- **Attribution** : proposition rapportée à la source, sans adoption automatique.
-- **Inférence** : conséquence argumentée mais non démontrée.
-- **Hypothèse** : mécanisme réfutable à tester contre des concurrentes.
-- **Démonstration** : conséquence formelle de définitions explicites, dont la portée reste celle du modèle.
+### Récupération contre désinscription — active, arrêt logiciel local
 
-Corpus 11 Tools sert de jeu d'audit et de discrimination. Il ne fournit ni données physiques ni validation d'une nouvelle physique.
+La séparation opérationnelle est reproduite dans le modèle exact, transportée vers `asyncio`, puis vers cinq processus OS persistants. Aucun mismatch modèle/runtime conditionné par l'ordre observé.
 
-## Évolution de l'outillage opérationnel
+Résultats principaux :
 
-Un retour d’application négatif est désormais conservé : un annuaire alimentaire local a été écrit, testé et déployé avant que sa faible valeur distincte face à Soliguide soit pleinement qualifiée. Aucun effet bénéficiaire n’a été réobservé ; le produit est abandonné. Cette trace motive une porte de rendement avant externalisation, sans nouvelle capability : comparaison au meilleur existant, delta réfutable, résultat capable de changer une décision, responsable de maintenance, séparation stricte entre déploiement et effet, puis découplage des composants à la clôture. Le vérificateur associé passe 5/5 tests locaux et requalifie le cas source en `abandon_and_harvest`. Son influence réelle sur les futures décisions de Corpus reste non réobservée.
+- famille n=6 : `32768` architectures brutes, `9765` atteignables, `176` strates appariées séparant `C_erase_1` ;
+- identité exacte sans exception : `C_erase_1 = 1 + tau(G_int)` ;
+- asyncio : A `360/360`, B `180/360`, zéro mismatch ;
+- cinq processus : A `240/240`, B `120/240`, zéro mismatch ; 16 réordonnancements runtime sans rupture du modèle.
 
-Neuf candidats de conception ont été ajoutés au carquois 11.x : identification
-causale, discrimination de modèles rivaux, validité des construits,
-transportabilité, transition d'échelle, dépendance des preuves, adaptation
-stratégique, valeur de l'information et interférence entre capabilities.
+Conclusion : récupération, effacement à convergence et effacement sous deadline sont des axes opérationnels distincts, mais la nouvelle coordonnée reste absorbée par un invariant standard. **Ne plus prolonger ce mécanisme en logiciel local.** Réouverture empirique seulement avec plusieurs machines, réseau externe ou matériel réel.
 
-Ils restent `design_candidate_unvalidated`. Leur présence, la validation du
-paquet et les évaluations de routage n'établissent ni leur robustesse générale
-ni une nouvelle observation scientifique. Aucun statut d'hypothèse n'est changé
-par cet ajout. Le gain opérationnel attendu est de rendre explicites les ponts
-qui manquaient entre observable et construit, association et cause, ajustement
-et discrimination, validité locale et transport, règles micro et lecture macro,
-ainsi que test disponible et test décisionnellement utile.
+### Frustration temporelle — weakened, condition de requalification atteinte
 
-La gouvernance distingue désormais trois axes indépendants : statut scientifique
-d'une proposition, rôle épistémique d'une loi et cycle de vie d'un changement.
-Une convention descriptive, une règle ajoutée au modèle, une primitive déclarée,
-une candidate interne au système et une contrainte observée ne sont pas des
-synonymes ni des promotions automatiques.
+`F_T` reste le minimum exact d'arêtes de retour et un descripteur mathématique valide. Sa lecture comme prédicteur autonome ou indice d'émergence temporelle est retirée dans le programme actuel.
 
-Un critère de sélection — simplicité, compression, invariance, portée,
-prédictivité ou robustesse — n'est pas une propriété du système sans
-discrimination indépendante. Un choix n'est neutre que s'il est réversible,
-conserve l'espace des complétions, ne crée pas de différence observable et ne
-sélectionne aucune structure. Toute prétention de compression doit compter le
-décodeur, les paramètres, les exceptions, le domaine, l'information partagée et
-le certificat de complétude.
+Bornes successives :
 
-## Hypothèses actives
+- succès historique avec ordre latent commun : avantage `913` violations face à un ordre aléatoire ;
+- ablation : avantage face à l'aléatoire `983` avec ordre commun contre `39` sans ordre commun, soit `3,97 %` conservé ;
+- test concurrent exhaustif du 2026-08-18 : `32768` tournois, `2932` strates de vecteur de degrés étiqueté dont `2212` non triviales, `1 343 184` couples train/test distincts sans ordre latent généré ;
+- `Delta_total = L_Borda-L_FT = -472112`, moyenne `-0,351487` violation par test ;
+- F_T meilleur/égal/pire : `301248 / 370240 / 671696` ;
+- **avantage moyen F_T négatif dans `2212/2212` strates non triviales** ;
+- classification préenregistrée : **`borda_better`**.
 
-1. Récupération contre désinscription : séparation structurelle-topologique reproduite sous protocole, mais encore réductible à des invariants standards ; le test à pertes de deux liens est négatif jusqu'à huit sommets.
-2. Orientation compositionnelle : une chiralité relative invariante existe dans un magma fini, sans signe absolu, dynamique ni interprétation physique.
-3. Frustration temporelle : deux tournois localement appariés ont des `F_T` différents ; la prédiction hors ajustement est réétablie mais une ablation prospective montre qu'elle dépend principalement de l'ordre commun injecté.
-4. Invariants de factorisation : un reste exact d'intersection triple existe à données marginales et deux à deux fixées ; la lecture objectale reste spéculative.
+Conclusion : la condition de requalification de la fiche est satisfaite. Ne pas concevoir un nouveau protocole pour sauver adaptativement `F_T`. Réouverture seulement sur prédiction indépendante avec concurrent standard préenregistré.
 
-## Hypothèses suspendues
+### Invariants de factorisation — active mais bornée
 
-Le complexe de distinctions compatibles reste spéculatif et suspendu. Un premier modèle fini intégralement spécifié est maintenant exécuté, mais son résultat suit directement les entrées et n'est pas exclusif face aux contrôles concurrents.
+Le reste triple est robuste dans deux familles : catalogue signé dimension 3 (`0/1`) et permutation naturelle `S4` (`1/2`, `transported_remainder`). Mais H4 sous ajout d'une quatrième factorisation est `not_supported` : contrastes appariés `+1,0,0,0`, médiane `0`, avec explication par la droite fixe commune `span((1,1,1,1))`.
 
-## Hypothèses affaiblies
+Réouverture seulement avec quotient préenregistré du sous-espace fixe commun ou famille sans plancher commun.
 
-- « Les traces font le temps » : trop proche de cadres connus et insuffisamment discriminant.
-- Profondeur d'inscription comme horloge : non monotone en général.
-- Premier couplage direct temps–objet : risque de programmer la co-émergence.
-- Attribution de la co-augmentation qualitative du jouet `S3` à la non-commutativité : un contrôle abélien `C6` apparié la reproduit.
-- Co-émergence par holonomie `S3` : requalifiée comme illustration exacte de l'incidence des sous-espaces fixes ; aucun mécanisme propre à `S3` ou à la non-commutativité n'est établi.
+### Orientation compositionnelle — weakened, voie P1/P2 close
 
-Ces formulations sont affaiblies, non rejetées comme classes entières sans résultat discriminant.
+P1 `too_common`; P2 `not_transported` / `no_predictive_transport`; H3 `standard_absorption`; `I2+A2` suffit à déterminer P1/P2 à l'ordre 3. Aucun P3 adaptatif.
 
-## Hypothèses abandonnées
+### Complexe de distinctions compatibles — suspended
 
-Aucune hypothèse du registre courant n'est rejetée. La prétention de nouveauté fondée sur la seule dispersion des traces est abandonnée.
+Les modèles finis exécutés suivent directement les entrées et n'ont pas produit de relation exclusive face aux contrôles. Maintenir la suspension.
 
-## Observations établies
+### Holonomie S3 — weakened/arrêt du fil P_I
 
-- La source est une trace de recherche et marque explicitement ses limites.
-- Les résultats numériques du jouet à huit triplets ne sont pas reproductibles avec les seules spécifications rapportées.
-- Le jouet `S3` permet des comptages exacts sous ses hypothèses explicites.
-- Deux circuits appariés ont la même récupération `C_info=1` mais des désinscriptions `C_erase=1` et `C_erase=N` ; dans ce protocole, la différence reste exactement réductible à la distance de Hamming terminale.
-- Le contrôle abélien `C6` retrouve le même `P_T` que `S3` et une croissance de `P_I` sous poids de l'identité ; la formule exacte de `P_I` diffère.
-- À distance de Hamming terminale fixée, deux arbres enracinés fortement appariés ont des profondeurs minimales d'effacement `2` et `3` ; la différence est exactement leur excentricité enracinée.
-- Aucune représentation orthogonale réelle de dimension deux de `C6` n'apparie le profil fixe de l'action standard de `S3`. À `S3` fixé, changer de représentation change néanmoins `P_I` : l'effet n'est pas une propriété du groupe seul.
-- À Hamming, excentricité, profondeur, travail et invariants locaux fixés, deux arbres laissent `9/5` et `10/5` traces réactivables en moyenne après perte uniforme d'une arête ; le résidu est leur profil de coupes enracinées.
-- Deux actions fidèles abéliennes `V4/C4` de même ordre, dimension et profil fixe marginal donnent des `P_I` différents. L'incidence paire-à-paire des sous-espaces fixes détermine l'écart.
-- Aucun reste à deux pertes n'a été trouvé à profil d'une perte fixé parmi tous les arbres enracinés étiquetés à sept et huit sommets.
-- Un magma d'ordre trois non isomorphe à son opposé établit deux secteurs relatifs invariants par renommage.
-- Deux tournois appariés sur séquence de scores et triangles cycliques ont `F_T=1/15` et `2/15`.
-- Deux triplets de matrices signées appariés jusqu'aux intersections deux à deux ont des intersections triples de dimensions `0` et `1`.
-- Deux complexes complets à huit distinctions ont été exécutés ; leurs différences sont injectées par la connexité et l'orientation des entrées.
-- Deux complétions admissibles du jouet historique à huit triplets donnent des distributions différentes, ce qui établit la non-identifiabilité de ses nombres à partir du texte disponible.
-- Un banc d'essai interactif simule écriture, diffusion, lecture, effacement, pannes et traces latentes sur cinq architectures ; il exporte des campagnes reproductibles en JSON/CSV.
-- Un moteur expérimental minimal exécute désormais des états opaques, transformations, perturbations, observateurs, critères et contrôles déclarés par module. Le premier module récupération/désinscription retrouve 45/45 résultats attendus, y compris les recherches exhaustives à sept et huit sommets.
-- La migration a rendu explicites deux conventions auparavant dispersées : `C_info` historique minimise sur tout sous-ensemble terminal alors que la lecture interactive part d'un port fixe ; la profondeur historique exclut la remise à zéro initiale de l'actionneur alors que l'interface l'inclut.
-- Un second module, frustration temporelle, réobserve les `32 768` tournois et la paire `F_T=1/15` contre `2/15` avec 18/18 comparaisons conformes, sans modifier aucun octet des cinq fichiers de `core/`.
-- Dans ce module, le journal d'exécution n'entre pas dans `F_T`, un ordre candidat ne remplace pas l'optimisation, et le minimum est invariant par renommage des sommets et inversion globale des relations.
-- Dans `temporal-predictive-prospective-001`, 192 paires apprentissage/test préenregistrées donnent `1028` violations tenues à l'écart pour les ordres minimisant `F_T`, contre `1941` pour les ordres aléatoires indépendants : avantage exact `913`. Les moyennes par bruit sont strictement croissantes, les contrôles de représentation et de génération ont zéro écart, la classification automatique est `not_triggered` et la reconstruction est identique `5/5`.
-- Dans `temporal-latent-ablation-001`, le groupe à ordre latent commun gagne `983` violations sur l'espérance aléatoire exacte, contre `39` dans le groupe indépendant apparié exactement sur les multiensembles de degrés. B ne conserve que `3,97 %` de A, sous le seuil préenregistré de `25 %` ; le contraste A–B vaut `944`, les contrôles ont zéro écart et la reconstruction est identique `5/5`.
-- Un troisième module, invariants de factorisation, réobserve les `17 296` triplets matriciels et le reste d'intersection triple `0/1` avec 17/17 comparaisons conformes, toujours sans modifier les cinq fichiers de `core/`.
-- Le reste matriciel est invariant sous réordonnancement des étiquettes et changement de base inversible exact. L'architecture est supportée et le résultat historique reproduit ; la portée objectale ou physique reste inconnue.
+Les contrôles abéliens et d'incidence expliquent les effets étudiés ; ne rouvrir qu'avec observable indépendant et prédiction spécifique.
 
-## Démonstrations limitées aux jouets
+## Décisions de fin de journée
 
-- Copies classiques : `C_info=1`, `C_erase=N` sous accès et interventions imposés.
-- Représentation plane de `S3` : dimensions fixes `2`, `0`, `1` pour identité, rotations non triviales et réflexions.
-- Ces résultats ne sont pas des lois fondamentales ni une nouvelle physique.
+1. **F_T est requalifié** comme score descriptif/optimiseur standard dans le programme actuel après `borda_better`.
+2. **Récupération/désinscription** conserve une distinction opérationnelle robuste mais atteint sa condition d'arrêt logicielle locale.
+3. **Factorisation** conserve un phénomène mathématique d'ordre trois, mais aucune stabilité prospective non triviale n'est établie.
+4. **Orientation compositionnelle** reste close pour P1/P2.
+5. Aucun résultat du jour n'établit temps émergent, objet physique nouveau ou nouvelle loi fondamentale.
 
-## Résultats encore spéculatifs
+## Prochaine action à la reprise
 
-Émergence du temps par composition, lecture physique de `F_T`, définition d'objets par factorisation, co-émergence temps–objet au-delà du jouet, et émergence depuis les distinctions compatibles.
+Ne pas reprendre automatiquement la piste la plus récente. Refaire une allocation par valeur d'information parmi :
 
-## Tests discriminants prioritaires
+- banc distribué/matériel récupération-désinscription si un vrai dispositif devient accessible ;
+- factorisation quotientée par le sous-espace fixe commun, seulement avec préenregistrement indépendant ;
+- complexe de distinctions compatibles uniquement si une relation non injectée et un contrôle apparié peuvent être spécifiés avant calcul.
 
-1. Tester le profil de désinscription sous ordres asynchrones ou ports multiples ; ne plus étendre la même recherche à deux pertes sans nouvelle prédiction.
-2. Ajouter une dynamique au témoin non-auto-opposé et tester si une orientation collective apparaît sans signe injecté.
-3. Comparer prospectivement `F_T` à un prédicteur standard fondé sur les degrés dans la même famille, puis tester une famille sans ordre générateur ; ne plus présenter le premier résultat hors ajustement comme émergence.
-4. Tester la stabilité du reste d'intersection triple sous changement de base et familles de transports non sélectionnées après résultat.
-5. Ne rouvrir le fil holonomique qu'avec un nouvel observable préenregistré, distinct de `P_I`, susceptible de discriminer composition ou intersections d'ordre supérieur.
-6. Chercher un second complexe fini dont une relation non injectée échoue dans un contrôle apparié.
-
-## Blocages
-
-Absence de données matérielles, de mesure énergétique étalonnée, de canal reliant les observables au temps physique et de comparaison quantitative exclusive. Le simulateur, son protocole et trois modules du moteur générique sont prêts, mais une sortie simulée n'est pas une observation physique. Le profil de désinscription connu reste une compilation d'invariants standards, `F_T` un minimum standard d'arêtes de retour et le reste factoriel une intersection de sous-espaces fixes. L'ablation montre que `96,03 %` de l'avantage prédictif observé pour `F_T` disparaît sans ordre commun injecté, malgré l'appariement exact des multiensembles de degrés ; aucune émergence n'est donc établie et la comparaison à des estimateurs standards manque encore. La portabilité sur trois domaines ne prouve pas l'universalité du contrat. Les gestionnaires scientifiques historiques restent synchrones. Le module orientation compositionnelle n'est pas implémenté. Le jouet historique à huit triplets est non identifiable sans son graphe et ses transports. Le fil `P_I` a atteint sa condition d'arrêt d'attribution au niveau de l'incidence paire-à-paire.
-
-## Prochaine action
-
-Garder `core/` et la gouvernance consolidée gelés après validation. Les futures
-expériences doivent rendre séparément le statut scientifique, le rôle de la loi,
-la base de sélection, l'information ajoutée, le discriminant indépendant et la
-condition de renversement. Le prochain test de frustration doit opposer
-prospectivement `F_T` à un prédicteur de degrés fixé avant résultat, puis employer
-une famille sans ordre générateur. Pour récupération/désinscription, brancher
-ensuite le même contrat sur un petit réseau matériel. Ne modifier le cœur que
-face à un besoin générique observé, notamment l'asynchronie matérielle. Maintenir
-inconnue toute portée physique sans canal de détection.
-
-Appliquer désormais la chaîne minimale suivante aux expériences prioritaires :
-valider le construit, figer les modèles rivaux, vérifier l'identification,
-choisir par valeur d'information le plus petit test discriminant, puis qualifier
-séparément transition d'échelle et transport. Auditer l'interférence entre
-capabilities avant toute promotion des neuf candidats au-delà de leur portée
-locale testée.
-
-Avant d’externaliser un nouveau prototype, appliquer aussi la porte décrite dans `docs/project-yield-gate.md`. Elle n’est pas un score de mérite : elle interdit les promotions non tracées et peut déclencher l’abandon d’un doublon. Réobserver sur le prochain projet si elle modifie effectivement la décision ou évite une charge externe ; sinon la retirer.
+Éviter toute nouvelle sonde destinée à sauver chiralité ou `F_T` après leurs conditions d'arrêt respectives.

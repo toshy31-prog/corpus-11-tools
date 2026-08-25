@@ -27,6 +27,9 @@ for path in required:
     if not path.is_dir():
         errors.append(f"missing boundary directory: {path.relative_to(repo_root)}")
 
+# Project-research state belongs under the repository-level `research/` tree.
+# Keep a nested `corpus-11-tools/research` forbidden even when its contents are
+# documentation-only: location is part of the product/research firewall.
 for obsolete in (
     plugin_root / "research",
     repo_root / "cct-executable",
@@ -68,11 +71,34 @@ for project in projects:
     if not readme.is_file():
         errors.append(f"research project lacks README: {project.relative_to(repo_root)}")
 
-for record in (transfer_root / "accepted").glob("*.md"):
+# Accepted transfers are part of the product/research firewall. A transfer is
+# accepted only when it is falsifiable: it must name where the genericized
+# mechanism lands, how it is checked, and what would revoke acceptance.
+#
+# Records legitimately use both plain and Markdown-bold labels, and some values
+# continue on the following indented line. "Vérification produit" is a more
+# specific verification field and therefore satisfies the generic contract.
+_value = r"\s*(?:\S.*|\n[ \t]+\S.*)"
+required_transfer_fields = {
+    "Destination": re.compile(
+        rf"(?mi)^\s*-\s*(?:\*\*)?Destination(?:\*\*)?\s*:{_value}"
+    ),
+    "Vérification": re.compile(
+        rf"(?mi)^\s*-\s*(?:\*\*)?Vérification(?:\s+[^*:\n]+)?(?:\*\*)?\s*:{_value}"
+    ),
+    "Condition de retrait": re.compile(
+        rf"(?mi)^\s*-\s*(?:\*\*)?Condition de retrait(?:\*\*)?\s*:{_value}"
+    ),
+}
+for record in sorted((transfer_root / "accepted").glob("*.md")):
     text = record.read_text(encoding="utf-8")
-    if "Destination" not in text or "Vérification" not in text:
+    missing = [
+        field for field, pattern in required_transfer_fields.items() if not pattern.search(text)
+    ]
+    if missing:
         errors.append(
-            f"accepted transfer lacks Destination or Vérification: {record.relative_to(repo_root)}"
+            "accepted transfer lacks required field(s) "
+            f"{', '.join(missing)}: {record.relative_to(repo_root)}"
         )
 
 cct_consumers = (
