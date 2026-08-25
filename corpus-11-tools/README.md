@@ -129,3 +129,9 @@ interruption forcée peut laisser cette copie dans le répertoire isolé choisi 
 vérifier alors ce seul fichier avant de reprendre. Cette isolation rend le gate
 exécutable ici, mais ne transforme pas son résultat en validation scientifique
 générale.
+
+Si Codex signale un épuisement externe de crédits, quota ou capacité, le
+lanceur arrête immédiatement le run avec le code de sortie `3`, écrit un rapport
+`BLOCKED_EXTERNAL_CAPACITY` et conserve le checkpoint. Ce n’est ni un `PASS` ni
+un échec des évaluations : rétablir la capacité côté fournisseur puis reprendre
+avec `--resume`. Une divergence de sortie, elle, reste un échec de test normal.

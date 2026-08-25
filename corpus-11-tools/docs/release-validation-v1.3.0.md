@@ -37,3 +37,9 @@ Les anciennes mentions `6/6`, `8/8`, `10/10` et `80/80` ne doivent pas être con
 - les fixtures démontrent le fonctionnement des instruments, pas une validation extérieure.
 
 Les résultats réellement observés lors de la validation finale sont consignés dans le commit de release et doivent correspondre à cette matrice avant publication. Un contrôle non exécuté, une authentification absente, une découverte vide ou un résultat non comparable interdit un verdict `PASS total`.
+
+Un épuisement extérieur de crédits, quota ou capacité Codex est enregistré comme
+`BLOCKED_EXTERNAL_CAPACITY` (code de sortie `3`) ; il interrompt le gate sans
+faire passer les évaluations restantes et interdit lui aussi un verdict `PASS
+total`. Après résolution de la condition côté fournisseur, le checkpoint peut
+être repris avec `--resume`.

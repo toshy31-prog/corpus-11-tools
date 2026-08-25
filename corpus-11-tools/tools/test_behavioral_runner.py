@@ -103,6 +103,132 @@ def test_atomic_json_writes_valid_complete_json() -> None:
         assert not path.with_suffix(".json.tmp").exists()
 
 
+def test_external_capacity_classifier_requires_a_provider_capacity_marker() -> None:
+    assert runner.external_service_capacity_reason("stream disconnected before completion") is None
+    assert runner.external_service_capacity_reason(
+        "stream disconnected before completion: You have no credits remaining"
+    ) == "provider reported no remaining credits"
+    assert runner.external_service_capacity_reason(
+        "error code=insufficient_quota"
+    ) == "provider reported exhausted quota or service capacity"
+
+
+def test_run_one_classifies_no_credit_stream_disconnection(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    record = sample_record()
+    proc = SimpleNamespace(
+        returncode=1,
+        stdout="",
+        stderr="stream disconnected before completion: You have no credits remaining",
+    )
+    monkeypatch.setattr(runner.subprocess, "run", lambda *args, **kwargs: proc)
+
+    with pytest.raises(runner.ExternalServiceCapacityError, match="no remaining credits"):
+        runner.run_one(
+            record,
+            "replica-a",
+            runner.mandatory_route(record),
+            state_dir=tmp_path,
+            base_cmd=["codex"],
+            codex_env={},
+            timeout=1,
+        )
+
+    assert "no credits remaining" in (
+        tmp_path / "sample" / "replica-a" / "stderr.log"
+    ).read_text(encoding="utf-8").lower()
+
+
+def test_run_one_keeps_401_as_authentication_error(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    record = sample_record()
+    proc = SimpleNamespace(
+        returncode=1,
+        stdout="",
+        stderr="401 Unauthorized: You have no credits remaining",
+    )
+    monkeypatch.setattr(runner.subprocess, "run", lambda *args, **kwargs: proc)
+
+    with pytest.raises(runner.AuthenticationError, match="authentication rejected"):
+        runner.run_one(
+            record,
+            "replica-a",
+            runner.mandatory_route(record),
+            state_dir=tmp_path,
+            base_cmd=["codex"],
+            codex_env={},
+            timeout=1,
+        )
+
+
+def test_capacity_block_aborts_before_remaining_replicas(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    record = sample_record()
+    attempted: list[tuple[str, str]] = []
+    monkeypatch.setattr(runner, "load_records", lambda: [record])
+    monkeypatch.setattr(runner, "auth_context", lambda **_: ({}, "api-key", None))
+    monkeypatch.setattr(runner, "git_head", lambda: "test-head")
+    monkeypatch.setattr(runner, "codex_version", lambda _command: "test-codex")
+
+    def fake_run_one(record: dict, replica: str, *args: object, **kwargs: object) -> dict:
+        attempted.append((record["id"], replica))
+        raise runner.ExternalServiceCapacityError("provider reported no remaining credits")
+
+    monkeypatch.setattr(runner, "run_one", fake_run_one)
+
+    exit_code = runner.main(
+        ["--fresh", "--state-dir", str(tmp_path), "--id", record["id"]]
+    )
+
+    assert exit_code == 3
+    assert attempted == [(record["id"], "replica-a")]
+    report = json.loads((tmp_path / "behavioral-report.json").read_text(encoding="utf-8"))
+    checkpoint = json.loads((tmp_path / "checkpoint.json").read_text(encoding="utf-8"))
+    assert report["status"] == "BLOCKED_EXTERNAL_CAPACITY"
+    assert report["blocker"] == "external_service_capacity"
+    assert report["abort_at"] == {"eval_id": record["id"], "replica": "replica-a"}
+    assert checkpoint["results"][f"{record['id']}::replica-a"]["status"] == (
+        "blocked_external_capacity"
+    )
+    assert "no remaining behavioral evaluations were attempted" in capsys.readouterr().out
+
+
+def test_output_mismatch_remains_a_normal_test_failure(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    record = sample_record()
+    attempted: list[tuple[str, str]] = []
+    monkeypatch.setattr(runner, "load_records", lambda: [record])
+    monkeypatch.setattr(runner, "auth_context", lambda **_: ({}, "api-key", None))
+    monkeypatch.setattr(runner, "git_head", lambda: "test-head")
+    monkeypatch.setattr(runner, "codex_version", lambda _command: "test-codex")
+    monkeypatch.setattr(
+        runner, "mandatory_route", lambda _record: ["real-transformation-assessment"]
+    )
+
+    def fake_run_one(record: dict, replica: str, *args: object, **kwargs: object) -> dict:
+        attempted.append((record["id"], replica))
+        return {"selected_skills": []}
+
+    monkeypatch.setattr(runner, "run_one", fake_run_one)
+
+    exit_code = runner.main(
+        ["--fresh", "--state-dir", str(tmp_path), "--id", record["id"]]
+    )
+
+    assert exit_code == 1
+    assert attempted == [(record["id"], "replica-a"), (record["id"], "replica-b")]
+    report = json.loads((tmp_path / "behavioral-report.json").read_text(encoding="utf-8"))
+    assert report["status"] == "FAIL"
+    assert report["completed_results"] == 2
+    assert "BLOCKED_EXTERNAL_CAPACITY" not in report["status"]
+    assert any("executable route changed" in error for error in report["errors"])
+    assert "FAIL" in capsys.readouterr().out
+
+
 def test_isolated_codex_home_uses_api_key_without_auth_copy(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("CODEX_API_KEY", "test-only-key")
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)

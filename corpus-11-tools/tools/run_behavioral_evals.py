@@ -36,8 +36,41 @@ class AuthenticationError(RuntimeError):
     pass
 
 
+class ExternalServiceCapacityError(RuntimeError):
+    """The provider reports exhausted quota/credits rather than an eval result."""
+
+
 class ConfigurationError(RuntimeError):
     pass
+
+
+def external_service_capacity_reason(*streams: str) -> str | None:
+    """Classify provider-side capacity exhaustion without treating it as a test failure.
+
+    A bare transport disconnection stays a normal execution failure: it is only
+    classified here when the provider also identifies exhausted credits, quota,
+    or rate capacity.  This keeps a generic local/network interruption
+    distinguishable from the exact no-credits stream-disconnection observed in
+    live runs.
+    """
+    text = "\n".join(stream for stream in streams if stream).casefold()
+    if "you have no credits remaining" in text:
+        return "provider reported no remaining credits"
+    markers = (
+        "insufficient_quota",
+        "insufficient quota",
+        "quota exceeded",
+        "quota has been exceeded",
+        "credit balance exhausted",
+        "credits exhausted",
+        "billing hard limit",
+        "rate limit exceeded",
+        "too many requests",
+        "service capacity exhausted",
+    )
+    if any(marker in text for marker in markers):
+        return "provider reported exhausted quota or service capacity"
+    return None
 
 
 def load_records() -> list[dict]:
@@ -293,7 +326,13 @@ def run_one(
             stderr = proc.stderr[-4000:]
             if "401 Unauthorized" in stderr or "Missing bearer or basic authentication" in stderr:
                 raise AuthenticationError("Codex authentication rejected")
+            capacity_reason = external_service_capacity_reason(proc.stdout or "", proc.stderr or "")
+            if capacity_reason:
+                raise ExternalServiceCapacityError(capacity_reason)
             raise RuntimeError(f"codex exit {proc.returncode}: {stderr[-2000:]}")
+        capacity_reason = external_service_capacity_reason(proc.stdout or "", proc.stderr or "")
+        if capacity_reason:
+            raise ExternalServiceCapacityError(capacity_reason)
         if not output_path.is_file():
             raise RuntimeError("codex exited successfully but did not write --output-last-message")
         raw_output = output_path.read_text(encoding="utf-8").strip()
@@ -434,6 +473,37 @@ def main(argv: list[str] | None = None) -> int:
                     except AuthenticationError as exc:
                         print(f"FAIL: {record['id']} {replica}: {exc}")
                         return 2
+                    except ExternalServiceCapacityError as exc:
+                        checkpoint["results"][key] = {
+                            "status": "blocked_external_capacity",
+                            "error": str(exc),
+                        }
+                        atomic_json(checkpoint_path, checkpoint)
+                        report = {
+                            "fingerprint": fingerprint,
+                            "status": "BLOCKED_EXTERNAL_CAPACITY",
+                            "blocker": "external_service_capacity",
+                            "abort_at": {"eval_id": record["id"], "replica": replica},
+                            "errors": [
+                                f"{record['id']} {replica}: external service capacity unavailable: {exc}"
+                            ],
+                            "completed_results": sum(
+                                1 for value in checkpoint["results"].values()
+                                if isinstance(value, dict) and value.get("status") == "success"
+                            ),
+                            "expected_results": len(records) * len(REPLICAS),
+                            "checkpoint": str(checkpoint_path),
+                        }
+                        atomic_json(report_path, report)
+                        print(
+                            "BLOCKED: external Codex service capacity is unavailable; "
+                            "no remaining behavioral evaluations were attempted."
+                        )
+                        print(
+                            "Resolve the provider-side capacity condition, then rerun with --resume."
+                        )
+                        print(f"Persistent report: {report_path}")
+                        return 3
                     except Exception as exc:
                         checkpoint["results"][key] = {"status": "failure", "error": str(exc)}
                         atomic_json(checkpoint_path, checkpoint)
