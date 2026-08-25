@@ -1,8 +1,8 @@
-# CCT-FC-D10-001 — préparation d'une comparaison de terrain
+# CCT-SC-D10-001 — campagne fictive appariée
 
 ## Mécanisme retenu
 
-Le premier mécanisme CCT retenu pour l'étalonnage est **D10 — Budget global
+Le premier mécanisme CCT retenu pour la campagne fictive est **D10 — Budget global
 de charge constitutionnelle**. Il est plus précis qu'une « CCT entière » :
 lorsque des contrôles sont en contention, il impose de préserver séparément
 besoin vital, plafond critique, droit, trace minimale et restitution, puis de
@@ -16,14 +16,14 @@ Ce choix s'appuie sur deux faits internes, et uniquement eux :
 - P005-DT-002 et son audit de robustesse mettent précisément à l'épreuve la
   charge commune et le noyau frugal, sans établir d'effet territorial.
 
-## Comparaison préparée
+## Comparaison fictive préparée
 
-La candidate sera comparée en **mode fantôme** au routage d'incident local
-déjà en vigueur. Les deux parcours reçoivent le même dossier initial, la même
-fenêtre, les mêmes contraintes déclarées et les mêmes canaux. L'exercice ne
-peut modifier ni service réel, ni droit, ni allocation, ni priorisation.
+La candidate sera comparée à un routage fictif plus simple. Les deux parcours
+reçoivent le même monde initial généré, la même fenêtre, les mêmes contraintes
+déclarées et les mêmes canaux simulés. L'exercice ne peut modifier ni service
+réel, ni droit, ni allocation, ni priorisation.
 
-Les observations ne seront jamais réduites à un score global. Elles suivent
+Les observations générées ne seront jamais réduites à un score global. Elles suivent
 séparément :
 
 - les cinq portes effectivement maintenues, dégradées ou perdues ;
@@ -48,10 +48,9 @@ Les abandons, le travail invisible, les décisions hors registre et les effets
 sur les personnes qui ne saisissent pas de recours restent des angles morts.
 L'absence de ces traces ne peut pas être lue comme l'absence du phénomène.
 
-## Ce qui manque encore
+## Limite de portée
 
-Le protocole est prêt à être lié à un site ; il n'est pas autorisé ni exécuté.
-Il faut encore un responsable opérationnel, une autorisation de périmètre et
-de collecte, une participation informée, une voie de recours, une protection
-des données et un évaluateur distinct. Sans ces éléments, aucun chiffre ou
-verdict externe ne sera produit.
+Le protocole est prêt à être exécuté dans une famille de mondes fictifs. Il
+peut conclure sur le modèle, son générateur et les variations déclarées, jamais
+sur une institution réelle. Sans calibration et test indépendant externes,
+aucun chiffre ou verdict externe ne sera produit.

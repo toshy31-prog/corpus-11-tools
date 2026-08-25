@@ -5,7 +5,7 @@
 - Mode : `local-model-verification`
 - Portée synthétique autorisée : `model_internal`
 - Vérifications sûres : passées quand elles sont déclarées.
-- Prochaine décision : Conserver D10 comme mécanisme unique et ne passer au terrain qu’avec le contrat CCT-FC-D10-001 completement autorisé.
-- Blocage : Aucun effet de terrain n’est établi par les simulations synthétiques, et aucune autorisation de terrain n’est disponible.
+- Prochaine décision : Conserver D10 comme mécanisme unique et exécuter sa campagne fictive appariée CCT-SC-D10-001.
+- Blocage : Aucun effet institutionnel réel n’est établi ni inférable à partir des simulations synthétiques.
 
 Cette routine ne constitue ni une observation nouvelle, ni un changement de statut scientifique.

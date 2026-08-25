@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Static boundary checks for the site-binding preparation of CCT-FC-D10-001."""
+"""Static boundary checks for the fictional campaign CCT-SC-D10-001."""
 
 from __future__ import annotations
 
@@ -17,14 +17,14 @@ def validate() -> list[str]:
     constitution = json.loads(CONSTITUTION_PATH.read_text(encoding="utf-8"))
     errors: list[str] = []
 
-    if protocol.get("id") != "CCT-FC-D10-001":
+    if protocol.get("id") != "CCT-SC-D10-001":
         errors.append("unexpected protocol identifier")
-    if protocol.get("status") != "ready_for_site_binding":
-        errors.append("protocol must remain ready_for_site_binding until a site is explicitly bound")
-    if protocol.get("scope") != "mode_fantome_observationnel":
-        errors.append("the preparation must remain a shadow-mode protocol")
-    if protocol.get("evidence_scope") != "protocol_preparation_only":
-        errors.append("the preparation must not claim external evidence")
+    if protocol.get("status") != "ready_for_synthetic_campaign":
+        errors.append("protocol must remain ready_for_synthetic_campaign")
+    if protocol.get("scope") != "fictional_matched_worlds":
+        errors.append("the protocol must remain a fictional matched-world campaign")
+    if protocol.get("evidence_scope") != "model_internal_only":
+        errors.append("the campaign must not claim external evidence")
 
     decisions = {item["id"]: item for item in constitution["dispositions"]}
     decision = decisions.get(protocol.get("candidate", {}).get("constitution_decision"))
@@ -49,7 +49,7 @@ def validate() -> list[str]:
             errors.append(f"observation {observation.get('id')} missing {sorted(missing)}")
 
     required_lists = {
-        "site_binding_requirements": 6,
+        "scenario_requirements": 6,
         "method_effect_controls": 5,
         "stop_conditions": 5,
         "reversal_conditions": 4,
@@ -74,4 +74,4 @@ if __name__ == "__main__":
         for failure in failures:
             print(f"FAIL: {failure}")
         raise SystemExit(1)
-    print("PASS: CCT-FC-D10-001 is internally coherent and bounded to site-binding preparation")
+    print("PASS: CCT-SC-D10-001 is internally coherent and bounded to fictional worlds")

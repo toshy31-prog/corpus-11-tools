@@ -8,7 +8,7 @@ La Confédération des communs terrestres est une recherche institutionnelle act
 - [`audit-adversarial-7-cycles.md`](audit-adversarial-7-cycles.md) : histoire des reconstructions adversariales ;
 - [`executable/`](executable/) : prototype CCT local ;
 - [`governance-lab/`](governance-lab/) : configurations, modèles et résultats CCT ;
-- [`field-calibration/`](field-calibration/) : protocole séparé d’évaluation de terrain, sans assimilation des simulations à un effet institutionnel ;
+- [`field-calibration/`](field-calibration/) : campagne fictive séparée, sans assimilation des simulations à un effet institutionnel réel ;
 - [`crisis-lab/`](crisis-lab/) : blueprint de crise CCT ;
 - [`publications/`](publications/) et [`output/`](output/) : sources et rendus du livre blanc.
 

@@ -11,8 +11,8 @@ aucune réobservation indépendante ne sont établis.
 ## Décision prise
 
 Le mécanisme CCT sélectionné est **D10 — Budget global de charge
-constitutionnelle**, avec le processus local déjà en vigueur comme comparateur
-futur en mode fantôme. Son protocole de liaison à un site est dans
+constitutionnelle**, avec un routage fictif plus simple comme comparateur
+apparié. Son protocole de campagne est dans
 [`field-calibration/protocols/d10-budget-charge-constitutionnelle-v0.1.md`](../field-calibration/protocols/d10-budget-charge-constitutionnelle-v0.1.md).
 
 `CCT-EXEC-0.1` a repassé ses onze contrôles locaux. Cela confirme le niveau
@@ -21,7 +21,8 @@ institutionnel.
 
 ## Prochaine condition
 
-Un site volontaire, une autorisation, un responsable d'arrêt, une évaluation
-distincte et une protection des données sont nécessaires avant toute
-calibration de terrain. Les détails de l’état de validation restent dans
+La prochaine étape est une campagne fictive appariée de D10, avec variations
+de charge, canal, rythme, perturbation et environnement. Elle peut conclure
+sur le modèle déclaré, jamais sur une institution réelle. Les détails de
+l’état de validation restent dans
 [`governance-lab/STATUS.md`](../governance-lab/STATUS.md).

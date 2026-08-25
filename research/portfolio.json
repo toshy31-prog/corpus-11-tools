@@ -16,8 +16,8 @@
       "mode": "local-model-verification",
       "safe_checks": ["cct_stack"],
       "synthetic_scope": "model_internal",
-      "next_decision": "Conserver D10 comme mécanisme unique et ne passer au terrain qu’avec le contrat CCT-FC-D10-001 completement autorisé.",
-      "blocker": "Aucun effet de terrain n’est établi par les simulations synthétiques, et aucune autorisation de terrain n’est disponible."
+      "next_decision": "Conserver D10 comme mécanisme unique et exécuter sa campagne fictive appariée CCT-SC-D10-001.",
+      "blocker": "Aucun effet institutionnel réel n’est établi ni inférable à partir des simulations synthétiques."
     },
     {
       "id": "fusion-alpha-feedback",
@@ -58,11 +58,11 @@
     {
       "id": "cct-field-calibration",
       "path": "active/cct/field-calibration",
-      "mode": "field-authorisation-gated",
+      "mode": "synthetic-counterfactual-calibration",
       "safe_checks": ["cct_stack"],
-      "synthetic_scope": "not_substitutable",
-      "next_decision": "Lier CCT-FC-D10-001 à un site volontaire et autorisé, avec responsable d’arrêt, évaluateur distinct, recours et protection des données.",
-      "blocker": "Aucun site, partenaire, autorisation de terrain, responsable d’arrêt ou évaluateur indépendant n’est disponible."
+      "synthetic_scope": "model_internal",
+      "next_decision": "Exécuter CCT-SC-D10-001 sur des mondes fictifs appariés en variant charge, canal, rythme, perturbation et environnement.",
+      "blocker": "La campagne ne peut conclure que sur le modèle et ne doit pas être interprétée comme effet institutionnel réel."
     },
     {
       "id": "fusion-f0-data-global-tae-matrix",
