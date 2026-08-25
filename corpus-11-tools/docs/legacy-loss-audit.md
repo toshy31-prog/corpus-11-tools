@@ -109,3 +109,11 @@ Leur fonction utile est soit absorbée par le routage minimal 11.x, soit conserv
 ## Condition de renversement
 
 Une entrée `source_missing` doit être reclassée si un paquet complet authentifiable apparaît dans une archive non inspectée. Une entrée `archived_without_route` doit être reclassée si un objet 11.x existant reproduit son effet, son type sémantique, ses conditions d'échec et ses recours sans reste discriminant.
+
+## Réexamen de la collection locale Corpus10 — 2026-08-25
+
+La collection locale `Corpus10/` a été relue comme source d'archive distincte de la distribution 11.x. Elle contient des déploiements 10.0, des correctifs 10.1/10.3, plusieurs générations de studios et une ancienne copie modifiée du paquet de skills. Aucun paquet complet et authentifiable de Corpus 10.2 ou 10.4 n'y a été trouvé : leur statut `source_missing` est donc maintenu.
+
+La copie modifiée du paquet de skills ne porte aucune capacité générique supplémentaire : ses ajouts de routage, de graphe, de provenance et de validation sont présents dans la version 1.4.0, qui les étend et les couvre par davantage de contrôles. Les studios historiques restent des prototypes applicatifs couplés (serveur HTTP, SQLite, mémoire/modèle local et politiques propres). Leurs éléments génériques déjà utiles — journal append-only, propositions/décisions/recours, tests appariés et registre de pertes — sont représentés par les laboratoires et transferts 11.x. Leur importation directe réintroduirait du couplage sans effet discriminant nouveau.
+
+Décision : aucune source n'est promue au runtime ; les constats sont intégrés à cet audit comme provenance documentaire. Les archives disponibles déjà couvertes par `archives/legacy/` restent la référence de conservation. La décision devra être rouverte seulement si apparaît une release 10.2/10.4 complète et vérifiable, ou une primitive générique séparable d'un studio avec test indépendant, condition d'échec et condition de retrait explicites.
