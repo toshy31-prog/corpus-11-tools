@@ -1,4 +1,4 @@
-# Contrat de stabilité v1.3.1
+# Contrat de stabilité v1.4.0
 
 ## Ce qui est stabilisé
 
@@ -37,7 +37,7 @@ skills, 49 capabilities, 4 familles, 88 relations et 77 évaluations**. Le
 contrôle `tools/check_docs.py` dérive désormais ces valeurs de
 `docs/inventory.json` et refuse toute divergence dans ce contrat. Les mentions
 de releases antérieures restent historiques ; elles ne redéfinissent pas ce
-contrat v1.3.1.
+contrat v1.4.0.
 
 ## Condition de retrait du statut stable
 

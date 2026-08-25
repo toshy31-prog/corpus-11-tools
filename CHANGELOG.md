@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v1.4.0 — 2026-08-25
+
 ### Gouvernance épistémique
 
 - ajoute une gouvernance de **trajectoire de représentation** : chaque changement matériel peut déclarer son gain, son registre de pertes, ses contre-épreuves, sa condition de renversement/réouverture et sa voie de reconstruction ;
