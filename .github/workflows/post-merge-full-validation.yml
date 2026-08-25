@@ -89,7 +89,11 @@ jobs:
           python -m pip --version
           pytest --version
       - name: Run Python test discovery
-        run: PYTHONPATH=corpus-11-tools/labs/python pytest -q
+        run: >-
+          PYTHONPATH=corpus-11-tools/labs/python pytest -q
+          --ignore-glob='research/active/*/tests/test_initial_protocol.py'
+      - name: Run every active research protocol gate
+        run: python3 research/scripts/portfolio_cycle.py --check --run-safe-checks
 
   node-tests:
     name: node-runtime
