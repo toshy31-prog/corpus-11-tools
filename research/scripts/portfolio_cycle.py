@@ -65,6 +65,10 @@ SAFE_CHECKS: dict[str, tuple[Path, list[str]]] = {
         ROOT / "research/active/cct/executable",
         [sys.executable, "test_stack.py"],
     ),
+    "cct_d10_campaign": (
+        ROOT / "research/active/cct/field-calibration/campaign",
+        [sys.executable, "-m", "unittest", "discover", "-p", "test_*.py"],
+    ),
     "fusion_resonance": (
         ROOT / "research/active/fusion-alpha-feedback/experiments",
         [sys.executable, "test_low_compute_resonance_screen.py"],

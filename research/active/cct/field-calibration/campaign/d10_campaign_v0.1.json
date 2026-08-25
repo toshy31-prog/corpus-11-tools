@@ -1,0 +1,64 @@
+{
+  "id": "CCT-SC-D10-001",
+  "version": "0.1",
+  "scope": "model_internal",
+  "generator": {
+    "kind": "exhaustive_factorial",
+    "seed": "not_used_exhaustive_v0.1",
+    "axes": {
+      "load": {"moderate": 0.45, "severe": 0.8},
+      "channel": {"stable": 0.1, "constrained": 0.45},
+      "rhythm": {"spaced": 0.15, "burst": 0.55},
+      "perturbation": {"registered": 0.1, "off_registry": 0.5},
+      "environment": {"distributed": 0.15, "centralized": 0.5}
+    }
+  },
+  "gate_pressure_weights": {
+    "vital_need": {"load": 0.45, "channel": 0.25, "rhythm": 0.15, "perturbation": 0.1, "environment": 0.05},
+    "critical_ceiling": {"load": 0.25, "channel": 0.15, "rhythm": 0.15, "perturbation": 0.2, "environment": 0.25},
+    "right": {"load": 0.25, "channel": 0.1, "rhythm": 0.2, "perturbation": 0.25, "environment": 0.2},
+    "minimal_trace": {"load": 0.15, "channel": 0.3, "rhythm": 0.15, "perturbation": 0.3, "environment": 0.1},
+    "restitution": {"load": 0.25, "channel": 0.15, "rhythm": 0.2, "perturbation": 0.15, "environment": 0.25}
+  },
+  "mechanisms": {
+    "d10": {
+      "label": "D10 fictional protected-core routing",
+      "gate_capacity": {"vital_need": 0.74, "critical_ceiling": 0.7, "right": 0.72, "minimal_trace": 0.73, "restitution": 0.69},
+      "reversible_shedding": 0.36,
+      "contention_penalty": 0.13,
+      "contestability": 0.82,
+      "restitution_capacity": 0.76,
+      "visible_work": 1.02,
+      "hidden_work": 0.36,
+      "lost_work": 0.1
+    },
+    "baseline": {
+      "label": "Fictional simple incident routing",
+      "gate_capacity": {"vital_need": 0.76, "critical_ceiling": 0.58, "right": 0.54, "minimal_trace": 0.52, "restitution": 0.57},
+      "reversible_shedding": 0.18,
+      "contention_penalty": 0.1,
+      "contestability": 0.48,
+      "restitution_capacity": 0.57,
+      "visible_work": 0.76,
+      "hidden_work": 0.58,
+      "lost_work": 0.21
+    }
+  },
+  "sensitivity_variations": {
+    "baseline": {},
+    "d10_hidden_load": {"mechanism": "d10", "hidden_work": 0.18},
+    "d10_constrained_recourse": {"mechanism": "d10", "contestability": -0.22},
+    "d10_delayed_restitution": {"mechanism": "d10", "restitution_capacity": -0.16},
+    "improved_baseline": {"mechanism": "baseline", "gate_capacity": 0.1, "hidden_work": -0.16, "lost_work": -0.08}
+  },
+  "invariants": [
+    "same generated world for both mechanisms",
+    "complete 2^5 factorial traversal",
+    "five gates reported separately",
+    "visible hidden and lost work reported separately",
+    "no compensatory aggregate success score",
+    "all coefficients declared before campaign execution"
+  ],
+  "protocol_effect": "The generator, gate equations, thresholds and rival definitions create the measured differences; no parameter is calibrated to an external institution.",
+  "withdrawal_condition": "Withdraw the result if the factorial space is incomplete, matched worlds differ between mechanisms, a gate is averaged away, an undeclared coefficient affects execution, or deterministic reconstruction changes an artifact."
+}

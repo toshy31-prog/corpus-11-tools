@@ -34,4 +34,9 @@ de protocole inverse sans explication la conclusion interne, ou si le modèle
 déplace sa charge hors des observables. Un résultat synthétique ne vaut jamais
 validation institutionnelle externe.
 
+La première exécution et sa reconstruction sont dans
+[`results/cct-sc-d10-001/`](results/cct-sc-d10-001/). Le modèle de base ne
+renverse pas D10, mais la sensibilité de recours contraint déclenche un
+renversement dans 24 mondes sur 32 ; la survie est donc dépendante du protocole.
+
 Voir [`state/current_state.md`](state/current_state.md).
