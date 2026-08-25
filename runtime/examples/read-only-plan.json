@@ -1,9 +1,0 @@
-{
-  "steps": [
-    {"capability": "workspace.status"},
-    {
-      "capability": "workspace.search",
-      "arguments": {"query": "CAPABILITY", "path": "corpus-11-tools"}
-    }
-  ]
-}

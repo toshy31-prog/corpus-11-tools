@@ -29,17 +29,6 @@ Corpus 11 Tools est un plugin pour Codex. Il ajoute des méthodes d’analyse, d
 
 Ce projet n’est ni une intelligence artificielle séparée, ni une théorie scientifique. Il organise des outils de raisonnement et conserve une séparation explicite entre leur fonctionnement, les expériences de recherche et les documents utilisés pour en retracer l’origine.
 
-## Exécution locale bornée (MVP)
-
-Le dossier [`runtime/`](runtime/README.md) ajoute une couche locale, volontairement petite, pour les cas où Codex doit constater ou préparer une action réelle dans ce dépôt. Ce n’est ni un nouvel agent, ni une mémoire, ni une interface parallèle : il n’exécute que des capacités nommées, refuse toute commande arbitraire et ne modifie jamais les skills Corpus.
-
-- les observations déclarées peuvent être exécutées localement ;
-- une action qui peut écrire exige une approbation explicite de l’utilisateur avant son lancement ;
-- le pont Codex expose seulement les observations et peut préparer, jamais lancer, une action qui écrit ;
-- les traces sont facultatives et ne sont pas conservées par défaut.
-
-Cette couche ne transforme pas le plugin en système autonome et ne confond pas la présence d’un outil avec une capacité démontrée. Son contrat, ses limites et ses tests sont dans [`runtime/README.md`](runtime/README.md).
-
 ## À quoi ça sert ?
 
 Le projet aide notamment à :
@@ -219,7 +208,6 @@ Cette vue sert d’index aux personnes qui souhaitent retrouver les fichiers cor
 │   ├── labs/                         Moteurs génériques, Arena et campagnes de simulation
 │   ├── archives/legacy/              Archives historiques non exécutoires
 │   └── docs/                         Inventaire, taxonomie et intégrité des sources
-├── runtime/                          Exécution locale bornée, registre et tests
 ├── research/
 │   ├── active/corpus-hypotheses/     Recherche mathématique et temporelle ouverte
 │   └── active/cct/                   Recherche institutionnelle CCT complète
