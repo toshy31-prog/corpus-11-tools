@@ -30,17 +30,12 @@
 - exit code: `0`
 - verdict: **PASS**
 
-## Node test discovery outside archived food site
+## Node test discovery
 
 - exit code: `0`
 - verdict: **PASS**
 
 ## CCT integration controls
-
-- exit code: `0`
-- verdict: **PASS**
-
-## Completed food-access prototype
 
 - exit code: `0`
 - verdict: **PASS**

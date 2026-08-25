@@ -28,4 +28,4 @@ Le JSON doit renseigner les champs booléens visibles dans `tools/project_yield_
 
 ## Portée validée
 
-Le code est écrit et testé localement. Le cas « Manger aujourd’hui » réobserve correctement `abandon_and_harvest`. La portabilité à d’autres projets et l’amélioration réelle des décisions de Corpus restent à réobserver.
+Le code est écrit et testé localement. Un cas de clôture contrôlé produit correctement `abandon_and_harvest`. La portabilité à d’autres projets et l’amélioration réelle des décisions de Corpus restent à réobserver.

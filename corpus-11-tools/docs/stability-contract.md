@@ -15,7 +15,7 @@
 - transport vers toute population ou tout domaine ;
 - indépendance extérieure des scénarios synthétiques ;
 - autorisation ou déploiement territorial de la CCT ;
-- poursuite du prototype alimentaire clôturé.
+- maintien d’un prototype ou d’un déploiement hors du périmètre du produit.
 
 ## Taxonomie canonique
 

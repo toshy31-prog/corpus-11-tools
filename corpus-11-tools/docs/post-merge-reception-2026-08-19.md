@@ -16,9 +16,8 @@ Cette réception couvre l’état produit/recherche destiné à la clôture. Le 
 - **Documentation** : PASS (`0`).
 - **Frontières produit/recherche** : PASS (`0`).
 - **Tests Python** : PASS (`0`).
-- **Tests Node hors prototype alimentaire archivé** : PASS (`0`).
+- **Tests Node du périmètre courant** : PASS (`0`).
 - **Contrôles CCT** : PASS (`0`).
-- **Prototype alimentaire terminé** : PASS (`0`).
 - **JSON/JSONL suivis** : PASS (`0`).
 - **Whitespace Git** : PASS (`0`).
 

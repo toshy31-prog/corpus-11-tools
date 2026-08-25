@@ -135,3 +135,12 @@ lanceur arrête immédiatement le run avec le code de sortie `3`, écrit un rapp
 `BLOCKED_EXTERNAL_CAPACITY` et conserve le checkpoint. Ce n’est ni un `PASS` ni
 un échec des évaluations : rétablir la capacité côté fournisseur puis reprendre
 avec `--resume`. Une divergence de sortie, elle, reste un échec de test normal.
+
+L’observation déjà obtenue dans un état Codex isolé est consignée dans
+[`docs/local-behavioral-attestation-2026-08-25.md`](docs/local-behavioral-attestation-2026-08-25.md).
+Elle est validée **localement** et ne vaut ni validation GitHub, ni disponibilité
+actuelle du fournisseur. À la demande du mainteneur, l’invocation GitHub qui
+consomme l’API Codex est différée manuellement jusqu’à nouvelle autorisation ;
+elle n’est pas supprimée ni déclarée globalement vérifiée. Cette différation ne
+concerne pas les gates non-API, qui continuent automatiquement, et ne bloque
+pas les commits ou pushes Git.

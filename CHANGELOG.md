@@ -36,7 +36,7 @@
 - journal append-only récupérable et protocole institutionnel configurable,
   avec CCT Ops réduit à une politique et une façade de compatibilité ;
 - conservation des adaptateurs scientifiques et résultats dans leur recherche d’origine ;
-- reclassement du prototype alimentaire comme recherche terminée sans effet bénéficiaire établi.
+- retrait d’un prototype hors périmètre du produit.
 
 ## v1.2.0 — 2026-08-17
 
@@ -46,7 +46,7 @@ Première version stable du paquet Corpus 11 Tools. « Stable » qualifie ici le
 
 - neuf capabilities de conception pour l’inférence, la validité, le transport, l’échelle, la dépendance des preuves, l’adaptation stratégique, la valeur de l’information et l’interférence entre capabilities ;
 - Open Experiment Arena avec scénarios gelés, rivaux appariés, prédictions préalables et rapports vectoriels ;
-- porte de rendement d’un projet et cas de clôture alimentaire ;
+- porte de rendement d’un projet et mécanisme de clôture contrôlée ;
 - pile de recherche CCT, laboratoire de gouvernance et artefacts exécutables clairement séparés du plugin utilisateur ;
 - vérificateur documentaire pour les liens, versions, compteurs, descriptions et catégories taxonomiques.
 

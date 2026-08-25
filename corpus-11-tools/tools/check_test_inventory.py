@@ -83,10 +83,6 @@ def validate() -> tuple[int, int]:
     for path in tracked:
         p = Path(path)
         name = p.name
-        if path.startswith("research/completed/food-access-paris/site/"):
-            if "/tests/" in path and name.endswith((".mjs", ".js")):
-                discovered.append(path)
-            continue
         if path.startswith(("corpus-11-tools/", "research/")):
             if name.startswith("test_") and name.endswith(".py"):
                 discovered.append(path)

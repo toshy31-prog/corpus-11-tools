@@ -80,7 +80,6 @@ for path in generic_lab.rglob("*.mjs"):
 projects = (
     research_root / "active" / "cct",
     research_root / "active" / "corpus-hypotheses",
-    research_root / "completed" / "food-access-paris",
 )
 for project in projects:
     readme = project / "README.md"

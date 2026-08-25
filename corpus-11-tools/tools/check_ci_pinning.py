@@ -63,6 +63,60 @@ if "--require-hashes --only-binary=:all: -r tools/requirements-validation.txt" n
 if re.search(r"pip install[^\n]*pytest==", text):
     errors.append("ad-hoc pytest installation remains in workflow")
 
+# The live behavioral job consumes a paid API. It is deliberately not a
+# push/PR gate: only a maintainer's explicit manual dispatch may invoke it.
+manual_input = """  workflow_dispatch:
+    inputs:
+      run_behavioral:
+        description: 'Run paid live Codex behavioral evaluations'
+        required: false
+        default: false
+        type: boolean
+"""
+if manual_input not in text:
+    errors.append("manual behavioral input must be an explicit boolean defaulting to false")
+
+
+def job_body(name: str) -> str | None:
+    match = re.search(
+        rf"(?ms)^  {re.escape(name)}:\n(?P<body>.*?)(?=^  [a-z][a-z0-9-]*:\n|\Z)",
+        text,
+    )
+    return match.group("body") if match else None
+
+
+behavioral_job = job_body("behavioral")
+if behavioral_job is None:
+    errors.append("behavioral job is missing")
+else:
+    manual_behavioral_condition = (
+        "if: github.event_name == 'workflow_dispatch' && inputs.run_behavioral == true"
+    )
+    if manual_behavioral_condition not in behavioral_job:
+        errors.append("paid behavioral job must be gated by explicit manual dispatch only")
+    if "python3 tools/run_behavioral_evals.py --fresh" not in behavioral_job:
+        errors.append("paid behavioral runner must remain inside the gated behavioral job")
+
+if text.count("python3 tools/run_behavioral_evals.py --fresh") != 1:
+    errors.append("paid behavioral runner must have exactly one workflow invocation")
+
+total_job = job_body("total")
+expected_behavioral_aggregate = """          behavioral_result="${{ needs.behavioral.result }}"
+          if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" && "${{ inputs.run_behavioral }}" == "true" ]]; then
+            echo 'Live behavioral gate was explicitly requested.'
+            [[ "$behavioral_result" == "success" ]] || failures=1
+          else
+            echo 'Live behavioral gate was deliberately deferred; no paid API call was made.'
+            [[ "$behavioral_result" == "skipped" ]] || failures=1
+          fi
+"""
+if total_job is None:
+    errors.append("total job is missing")
+elif expected_behavioral_aggregate not in total_job:
+    errors.append(
+        "total must require behavioral success after manual opt-in and skipped when deferred"
+    )
+
 # Codex must come from a repository-controlled npm lock, not global resolution.
 codex_root = plugin_root / "tools" / "codex-cli-lock"
 package_path = codex_root / "package.json"
@@ -112,12 +166,15 @@ for match in re.finditer(r"codex-cli-lock/node_modules/\.bin/([^\s\"']+)", text)
         errors.append(f"unapproved Codex binary path: {match.group(1)}")
 if text.count("working-directory: corpus-11-tools/tools/codex-cli-lock") != 2:
     errors.append("clean-room and behavioral jobs must both install locked Codex environment")
-if text.count("npm audit --audit-level=high") < 3:
-    errors.append("security audit missing from food or locked Codex gates")
+if text.count("npm audit --audit-level=high") != 2:
+    errors.append("security audit must cover both locked Codex gates exactly once")
 
 if errors:
     print("FAIL")
     for error in errors:
         print(" -", error)
     sys.exit(1)
-print("PASS: CI actions, runtimes, caches, Python wheels, and Codex transitive packages are pinned")
+print(
+    "PASS: CI actions, runtimes, caches, Python wheels, Codex transitive packages, "
+    "and deferred paid behavioral policy are pinned"
+)

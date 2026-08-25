@@ -165,7 +165,6 @@ Le dépôt contient un produit, ses instruments génériques et plusieurs recher
 - **La recherche sur les hypothèses Corpus** (`research/active/corpus-hypotheses/`) conserve les questions scientifiques, sources, expériences de domaine et rapports. Son moteur neutre est désormais dans les laboratoires Corpus.
 - **Les recherches terminées** (`research/completed/`) restent consultables sans être chargées ni présentées comme actives.
 - **Corpus Workspace** (`research/completed/corpus-ui-workspace/`) conserve le prototype d’interface abandonné et ses acquis conversationnels sans maintenir une application parallèle.
-- **Le cycle alimentaire parisien** (`research/completed/food-access-paris/`) est une recherche terminée avec un prototype privé gelé. Aucun utilisateur extérieur ni effet bénéficiaire n’a été réobservé.
 - **Le registre de transfert** (`transfers/`) documente chaque mécanisme extrait d’une recherche avant son intégration à Corpus.
 - **Ce README** explique l’ensemble du dépôt et les limites à conserver entre produit, recherche, prototypes, résultats et archives.
 
@@ -188,8 +187,7 @@ Cette vue sert d’index aux personnes qui souhaitent retrouver les fichiers cor
 │   └── docs/                         Inventaire, taxonomie et intégrité des sources
 ├── research/
 │   ├── active/corpus-hypotheses/     Recherche mathématique et temporelle ouverte
-│   ├── active/cct/                   Recherche institutionnelle CCT complète
-│   └── completed/food-access-paris/  Cycle terminé, prototype privé gelé
+│   └── active/cct/                   Recherche institutionnelle CCT complète
 ├── transfers/                        Sas documenté recherche → Corpus
 └── README.md                         Présentation générale et frontières de statut
 ```
@@ -232,7 +230,7 @@ Le projet maintient également une **frontière de neutralité** : une séparati
 
 La documentation détaillée du plugin, de son contenu et de ses validations se trouve dans [`corpus-11-tools/README.md`](corpus-11-tools/README.md).
 
-Le détail de la release se trouve dans [`CHANGELOG.md`](CHANGELOG.md), son périmètre exact dans le [`contrat de stabilité`](corpus-11-tools/docs/stability-contract.md) et ses contrôles dans la [`validation de release`](corpus-11-tools/docs/release-validation-v1.3.0.md).
+Le détail de la release se trouve dans [`CHANGELOG.md`](CHANGELOG.md), son périmètre exact dans le [`contrat de stabilité`](corpus-11-tools/docs/stability-contract.md) et ses contrôles dans la [`validation de release`](corpus-11-tools/docs/release-validation-v1.3.0.md). L’[attestation comportementale locale](corpus-11-tools/docs/local-behavioral-attestation-2026-08-25.md) est explicitement bornée : elle ne vaut pas validation GitHub ni disponibilité actuelle de l’API.
 
 Les personnes qui souhaitent inspecter la structure peuvent aussi consulter :
 

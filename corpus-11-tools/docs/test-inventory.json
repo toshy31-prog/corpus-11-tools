@@ -9,7 +9,7 @@
     {"path": "corpus-11-tools/labs/python/tests", "git_object": "31a4df1a96be8cc5c0c96907724535fe66aac862", "kind": "tree"},
     {"path": "corpus-11-tools/tools/test_behavioral_runner.py", "git_object": "83ecf6070161c49f2f9fdfc90371827b89ed03f5", "kind": "blob"},
     {"path": "corpus-11-tools/tools/test_behavioral_surfaces.py", "git_object": "739bacfbf9b5868ec2ca0da733b16c80e08e1669", "kind": "blob"},
-    {"path": "corpus-11-tools/tools/test_ci_pinning.py", "git_object": "ecd1759dedafdd4947c9c5591ec7af3118c86149", "kind": "blob"},
+    {"path": "corpus-11-tools/tools/test_ci_pinning.py", "git_object": "6049e58693b864ec7c5c84d6fe202c7c3e0d8d01", "kind": "blob"},
     {"path": "corpus-11-tools/tools/test_offline_router.py", "git_object": "a97daf895210267760b100b7cc15e62b8a8dd66c", "kind": "blob"},
     {"path": "corpus-11-tools/tools/test_project_yield_gate.py", "git_object": "b9465c90daa1ec5ac895967c2595602dd0531def", "kind": "blob"},
     {"path": "corpus-11-tools/tools/test_router_generalization.py", "git_object": "2ef1dfa175a85a87cbe92ec5c5a0a549306a75b0", "kind": "blob"},
@@ -52,7 +52,6 @@
     {"path": "research/active/research-footprint-and-yield-lab/tests/test_initial_protocol.py", "git_object": "5729ff083a5af3986ad2385ad90c6c0d48da0444", "kind": "blob"},
     {"path": "research/active/research-interruptibility-and-recovery-lab/tests/test_initial_protocol.py", "git_object": "8bb777b1a8ed0b4e37f2e9e3e837a1656fa8f586", "kind": "blob"},
     {"path": "research/active/semantic-migration-lab/tests/test_initial_protocol.py", "git_object": "bdad934f36c50aee24e31c89bb45597ad57dac8d", "kind": "blob"},
-    {"path": "research/active/user-capacity-and-dependence-lab/tests/test_initial_protocol.py", "git_object": "51c4e39bc432c149d3b47e41e72fd7c7984dd366", "kind": "blob"},
-    {"path": "research/completed/food-access-paris/site/tests", "git_object": "11860ea8c4d322a54754864472c90b3d19dac3e7", "kind": "tree"}
+    {"path": "research/active/user-capacity-and-dependence-lab/tests/test_initial_protocol.py", "git_object": "51c4e39bc432c149d3b47e41e72fd7c7984dd366", "kind": "blob"}
   ]
 }

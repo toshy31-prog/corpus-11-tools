@@ -19,8 +19,7 @@ La release est validée sur son périmètre déclaré. Le statut porte sur le pa
 | Effacement de mémoire | test du simulateur | 1/1 |
 | Non-régression | récupération, temporalité, factorisation | 45/45, 18/18, 17/17 |
 | CCT et gouvernance | 84 tests unitaires, 10 contrôles d’intégration | succès |
-| Prototype alimentaire | logique et rendu | 51/51 |
-| Archives | héritage Corpus, source CCT, bundle alimentaire | sommes et bundle valides |
+| Archives | héritage Corpus, source CCT et archives déclarées | sommes et archives valides |
 | Données | JSON et JSONL suivis | syntaxe valide |
 | Reproductibilité | deux exécutions CCT consécutives | artefacts identiques |
 

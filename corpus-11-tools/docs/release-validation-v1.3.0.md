@@ -22,11 +22,24 @@ Cette release stabilise la frontière entre le produit Corpus, les laboratoires 
 | Moteur expérimental | tests génériques Node | tous les tests déclarés doivent passer ; zéro test interdit |
 | Adaptateurs de recherche et simulateur de domaine | tests Node | tous les tests déclarés doivent passer ; zéro test interdit |
 | Recherche CCT | `executable/run_all.py` | 10/10 contrôles |
-| Recherche alimentaire terminée | `npm test` | 51/51 |
 | Non-régression scientifique | récupération, temporalité, factorisation | toutes les unités déclarées doivent passer sans dérive matérielle inexpliquée |
 | Routage comportemental | `tools/run_behavioral_evals.py --fresh --codex-home .validation-state/behavioral/codex-home --initialize-codex-home` | 77/77 en ordre forward et reverse, dans un état Codex isolé |
 
-Les anciennes mentions `6/6`, `8/8`, `10/10` et `80/80` ne doivent pas être conservées comme nombres historiques si les suites auxquelles elles se rapportaient ont évolué. La gate totale doit compter les unités présentes, exécuter l’ensemble déclaré, refuser une découverte vide et rendre explicite toute modification de cardinalité. Les nombres qui restent intrinsèques au protocole — 10 contrôles CCT, 51 tests du prototype alimentaire et 77 evals de routage — restent des invariants explicites.
+Les anciennes mentions `6/6`, `8/8`, `10/10` et `80/80` ne doivent pas être conservées comme nombres historiques si les suites auxquelles elles se rapportaient ont évolué. La gate totale doit compter les unités présentes, exécuter l’ensemble déclaré, refuser une découverte vide et rendre explicite toute modification de cardinalité. Les nombres qui restent intrinsèques au protocole — 10 contrôles CCT et 77 evals de routage — restent des invariants explicites.
+
+## État de l’évaluation vivante GitHub
+
+Une exécution antérieure dans un état Codex local isolé est attestée séparément
+dans [`local-behavioral-attestation-2026-08-25.md`](local-behavioral-attestation-2026-08-25.md).
+Elle établit seulement le résultat local qui y est décrit ; elle ne remplace ni
+une exécution GitHub ni une réobservation de la capacité du fournisseur.
+
+Sur instruction du mainteneur, l’invocation vivante Codex qui consomme des
+crédits API est différée manuellement jusqu’à nouvelle autorisation. Elle reste
+dans le périmètre de validation, mais n’est ni supprimée ni déclarée `PASS` ou
+globalement vérifiée. Les contrôles non-API continuent automatiquement et cette
+différation ne doit pas empêcher un commit ou un push Git. Toute reprise devra
+produire une observation GitHub fraîche, distincte de l’attestation locale.
 
 ## Frontières vérifiées
 

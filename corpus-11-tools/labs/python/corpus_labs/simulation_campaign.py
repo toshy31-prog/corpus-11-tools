@@ -1,6 +1,6 @@
 """Domain-neutral primitives for matched simulation campaigns.
 
-This module contains no CCT possibility, political metric, food-access case,
+This module contains no CCT possibility, political metric, project-specific case,
 or research conclusion. Research projects provide those through configuration.
 """
 

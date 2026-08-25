@@ -72,6 +72,26 @@ def test_ci_pinning_rejects_floating_inputs() -> None:
         "tools/codex-cli-lock/node_modules/.bin/codex-unlocked",
         "unapproved Codex binary path",
     )
+    mutate_workflow_and_require_failure(
+        "default: false",
+        "default: true",
+        "paid behavioral dispatch defaults to enabled",
+    )
+    mutate_workflow_and_require_failure(
+        "if: github.event_name == 'workflow_dispatch' && inputs.run_behavioral == true",
+        "if: github.event_name == 'workflow_dispatch'",
+        "paid behavioral job bypasses explicit opt-in",
+    )
+    mutate_workflow_and_require_failure(
+        '[[ "$behavioral_result" == "success" ]] || failures=1',
+        '[[ "$behavioral_result" == "skipped" ]] || failures=1',
+        "manual behavioral dispatch accepts a skipped live gate",
+    )
+    mutate_workflow_and_require_failure(
+        '[[ "$behavioral_result" == "skipped" ]] || failures=1',
+        '[[ "$behavioral_result" == "success" ]] || failures=1',
+        "deferred behavioral gate is not accepted as skipped",
+    )
 
 
 def test_ci_pinning_rejects_codex_lock_drift() -> None:
