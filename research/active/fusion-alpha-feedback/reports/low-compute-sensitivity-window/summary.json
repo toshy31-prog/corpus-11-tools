@@ -1,0 +1,29 @@
+{
+  "factor_two_rows": 0,
+  "grid_points": 289,
+  "interpretation": "A factor-of-two flag identifies large local slope mismatch only. It does not establish a TAE-growth or fusion-gain change.",
+  "max_location": {
+    "critical_ratio": 0.365,
+    "resonance_ratio": 0.5,
+    "second_moment": 0.37800317057183436,
+    "slope_ratio": 0.9258255956594671,
+    "thermal_speed_sq": 0.2520021137145562
+  },
+  "min_location": {
+    "critical_ratio": 0.31,
+    "resonance_ratio": 0.65,
+    "second_moment": 0.35002527585534743,
+    "slope_ratio": 0.6348822515119305,
+    "thermal_speed_sq": 0.23335018390356496
+  },
+  "ratio_max": 0.9258255956594671,
+  "ratio_min": 0.6348822515119305,
+  "scan": {
+    "critical_max": 0.53,
+    "critical_min": 0.31,
+    "label": "sensitivity window, not a device fit",
+    "resonance_max": 0.65,
+    "resonance_min": 0.5
+  },
+  "scope": "isotropic moment-matched F0 screen; not a TAE or reactor calculation"
+}

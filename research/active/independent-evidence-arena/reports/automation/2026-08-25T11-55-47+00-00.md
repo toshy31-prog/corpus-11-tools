@@ -1,0 +1,11 @@
+# Routine de portefeuille
+
+- Exécutée : 2026-08-25T11:55:47+00:00
+- Projet : `independent-evidence-arena`
+- Mode : `external-evaluation`
+- Portée synthétique autorisée : `pipeline_verified`
+- Vérifications sûres : passées quand elles sont déclarées.
+- Prochaine décision : Choisir un cas externe, sa procédure témoin et ses critères.
+- Blocage : Aucun cas externe gelé ni évaluateur indépendant n’est encore désigné.
+
+Cette routine ne constitue ni une observation nouvelle, ni un changement de statut scientifique.

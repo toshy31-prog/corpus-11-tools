@@ -1,0 +1,53 @@
+{
+  "cancellation_gap_max": 0.9945706036696034,
+  "cancellation_gap_median": 0.5052840818104225,
+  "grid_points": 4913,
+  "interpretation": "The cancellation gap is a normalized uncertainty interval in the relative energy/radial weighting. It does not identify a real mode or a real value of \u03bb.",
+  "max_cancellation_gap_location": {
+    "cancellation_gap": 0.9945706036696034,
+    "critical_ratio": 0.32375,
+    "energy_ratio": 0.9136638286604376,
+    "gradient_ratio": 2.0,
+    "lambda_critical_maxwell": -1.826902872313244,
+    "lambda_critical_sd": -0.8323322686436407,
+    "radial_ratio": 2.005419152652267,
+    "radial_sign_agrees": true,
+    "resonance_ratio": 0.5
+  },
+  "max_radial_ratio_location": {
+    "cancellation_gap": 0.9945706036696034,
+    "critical_ratio": 0.32375,
+    "energy_ratio": 0.9136638286604376,
+    "gradient_ratio": 2.0,
+    "lambda_critical_maxwell": -1.826902872313244,
+    "lambda_critical_sd": -0.8323322686436407,
+    "radial_ratio": 2.005419152652267,
+    "radial_sign_agrees": true,
+    "resonance_ratio": 0.5
+  },
+  "min_radial_ratio_location": {
+    "cancellation_gap": 0.4659768450501436,
+    "critical_ratio": 0.53,
+    "energy_ratio": 0.7281691851060184,
+    "gradient_ratio": 2.0,
+    "lambda_critical_maxwell": -1.8609328919832135,
+    "lambda_critical_sd": -2.326909737033357,
+    "radial_ratio": 0.5823491843822118,
+    "radial_sign_agrees": true,
+    "resonance_ratio": 0.5
+  },
+  "radial_ratio_max": 2.005419152652267,
+  "radial_ratio_median": 1.1663596045310558,
+  "radial_ratio_min": 0.5823491843822118,
+  "radial_sign_disagreements": 0,
+  "scan": {
+    "critical_max": 0.53,
+    "critical_min": 0.31,
+    "gradient_max": 2.0,
+    "gradient_min": 0.0,
+    "label": "co-decreasing local-gradient stress window, not a device fit",
+    "resonance_max": 0.65,
+    "resonance_min": 0.5
+  },
+  "scope": "local energy-radial derivative screen for an isotropic alpha F0; not a TAE, tokamak, or reactor calculation"
+}

@@ -1,0 +1,11 @@
+# Routine de portefeuille
+
+- Exécutée : 2026-08-25T11:55:47+00:00
+- Projet : `causal-claim-calibration-lab`
+- Mode : `interventional-calibration`
+- Portée synthétique autorisée : `formal_exact`
+- Vérifications sûres : passées quand elles sont déclarées.
+- Prochaine décision : Définir le premier mécanisme, ses confondeurs et son intervention discriminante.
+- Blocage : Aucun scénario causal ni contrôle rival n’est défini.
+
+Cette routine ne constitue ni une observation nouvelle, ni un changement de statut scientifique.

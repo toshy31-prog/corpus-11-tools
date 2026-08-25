@@ -1,0 +1,212 @@
+{
+  "schema_version": 1,
+  "projects": [
+    {
+      "id": "corpus-hypotheses",
+      "path": "active/corpus-hypotheses",
+      "mode": "guarded-specialist-cycle",
+      "safe_checks": ["research_workspace"],
+      "synthetic_scope": "formal_exact",
+      "next_decision": "Comparer prospectivement F_T à un prédicteur de degrés, puis tester une famille sans ordre générateur.",
+      "blocker": "Le cycle spécialisé exige un dépôt propre et une exécution sémantique distincte."
+    },
+    {
+      "id": "cct",
+      "path": "active/cct",
+      "mode": "local-model-verification",
+      "safe_checks": ["cct_stack"],
+      "synthetic_scope": "model_internal",
+      "next_decision": "Choisir un mécanisme institutionnel unique avant toute calibration de terrain.",
+      "blocker": "Aucun effet de terrain n’est établi par les simulations synthétiques."
+    },
+    {
+      "id": "fusion-alpha-feedback",
+      "path": "active/fusion-alpha-feedback",
+      "mode": "bounded-reproducibility-checks",
+      "safe_checks": ["fusion_resonance", "fusion_radial", "fusion_fow"],
+      "synthetic_scope": "model_internal",
+      "next_decision": "Obtenir Falpha(r,E,pitch) sur équilibre fixe et figer le matching des quatre F0.",
+      "blocker": "Les écrans légers ne sont plus un test discriminant pour la question TAE globale."
+    },
+    {
+      "id": "material-trace-lab",
+      "path": "active/material-trace-lab",
+      "mode": "protocol-gated-material-experiment",
+      "safe_checks": [],
+      "synthetic_scope": "pipeline_verified",
+      "next_decision": "Définir un banc à trois nœuds et ses scénarios synthétiques.",
+      "blocker": "Aucun banc matériel ni scénario déclaré n’est encore disponible."
+    },
+    {
+      "id": "relation-loss-observatory",
+      "path": "active/relation-loss-observatory",
+      "mode": "consent-and-case-gated-observation",
+      "safe_checks": [],
+      "synthetic_scope": "not_substitutable",
+      "next_decision": "Sélectionner deux cas comparables et vérifier le cadre de collecte.",
+      "blocker": "Aucun cas documentable ni autorisation de collecte n’est encore disponible."
+    },
+    {
+      "id": "independent-evidence-arena",
+      "path": "active/independent-evidence-arena",
+      "mode": "external-evaluation",
+      "safe_checks": [],
+      "synthetic_scope": "pipeline_verified",
+      "next_decision": "Choisir un cas externe, sa procédure témoin et ses critères.",
+      "blocker": "Aucun cas externe gelé ni évaluateur indépendant n’est encore désigné."
+    },
+    {
+      "id": "cct-field-calibration",
+      "path": "active/cct/field-calibration",
+      "mode": "field-authorisation-gated",
+      "safe_checks": [],
+      "synthetic_scope": "not_substitutable",
+      "next_decision": "Définir le mécanisme CCT et le comparateur avant de rechercher un site pilote.",
+      "blocker": "Aucun site, partenaire ou autorisation de terrain n’est disponible."
+    },
+    {
+      "id": "fusion-f0-data-global-tae-matrix",
+      "path": "active/fusion-alpha-feedback/f0-data-global-tae-matrix",
+      "mode": "data-and-solver-gated",
+      "safe_checks": [],
+      "synthetic_scope": "pipeline_verified",
+      "next_decision": "Identifier une distribution alpha traçable et un solveur TAE global contrôlé.",
+      "blocker": "Aucune entrée Falpha exploitable ni solveur contrôlé n’est disponible."
+    },
+    {
+      "id": "provenance-interoperability-lab",
+      "path": "active/provenance-interoperability-lab",
+      "mode": "format-adapter-roundtrip",
+      "safe_checks": [],
+      "synthetic_scope": "pipeline_verified",
+      "next_decision": "Définir le reçu de conclusion minimal et le premier couple de formats d’échange.",
+      "blocker": "Aucun adaptateur ni aller-retour indépendant n’est encore disponible."
+    },
+    {
+      "id": "multilingual-research-fidelity-lab",
+      "path": "active/multilingual-research-fidelity-lab",
+      "mode": "cross-lingual-comparison",
+      "safe_checks": [],
+      "synthetic_scope": "model_internal",
+      "next_decision": "Choisir les langues, une famille de preuves et une règle de comparaison des conclusions.",
+      "blocker": "Aucun corpus parallèle ni comparaison interlingue n’est encore disponible."
+    },
+    {
+      "id": "adversarial-agent-boundaries",
+      "path": "active/adversarial-agent-boundaries",
+      "mode": "adversarial-process-testing",
+      "safe_checks": [],
+      "synthetic_scope": "pipeline_verified",
+      "next_decision": "Définir les transformations adversariales autorisées et les invariants de processus à préserver.",
+      "blocker": "Aucun corpus d’attaque ni résultat de résistance n’est encore établi."
+    },
+    {
+      "id": "semantic-migration-lab",
+      "path": "active/semantic-migration-lab",
+      "mode": "cross-version-replay",
+      "safe_checks": [],
+      "synthetic_scope": "pipeline_verified",
+      "next_decision": "Sélectionner les premiers cas de référence et les deux environnements à comparer.",
+      "blocker": "Aucun paquet de régression sémantique ni paire d’environnements n’est encore définie."
+    },
+    {
+      "id": "contested-claims-lab",
+      "path": "active/contested-claims-lab",
+      "mode": "plural-conclusion-testing",
+      "safe_checks": [],
+      "synthetic_scope": "model_internal",
+      "next_decision": "Choisir une famille de désaccords et les traces discriminantes.",
+      "blocker": "Aucun cas de désaccord ni protocole de révision n’est disponible."
+    },
+    {
+      "id": "causal-claim-calibration-lab",
+      "path": "active/causal-claim-calibration-lab",
+      "mode": "interventional-calibration",
+      "safe_checks": [],
+      "synthetic_scope": "formal_exact",
+      "next_decision": "Définir le premier mécanisme, ses confondeurs et son intervention discriminante.",
+      "blocker": "Aucun scénario causal ni contrôle rival n’est défini."
+    },
+    {
+      "id": "privacy-recourse-lab",
+      "path": "active/privacy-recourse-lab",
+      "mode": "bounded-disclosure-testing",
+      "safe_checks": [],
+      "synthetic_scope": "pipeline_verified",
+      "next_decision": "Choisir un cas synthétique non sensible et les critères de protection, audit et réparation.",
+      "blocker": "Aucun cas, menace ni protocole de recours n’est défini."
+    },
+    {
+      "id": "research-footprint-and-yield-lab",
+      "path": "active/research-footprint-and-yield-lab",
+      "mode": "cost-and-decision-measurement",
+      "safe_checks": [],
+      "synthetic_scope": "pipeline_verified",
+      "next_decision": "Déclarer les unités de coût et une première paire de protocoles comparables.",
+      "blocker": "Aucune télémétrie de coût ni comparaison de protocole n’est disponible."
+    },
+    {
+      "id": "user-capacity-and-dependence-lab",
+      "path": "active/user-capacity-and-dependence-lab",
+      "mode": "post-assistance-capacity-testing",
+      "safe_checks": [],
+      "synthetic_scope": "model_internal",
+      "next_decision": "Choisir une tâche et une trace d’autonomie.",
+      "blocker": "Aucun protocole, population ou mesure de capacité n’est défini."
+    },
+    {
+      "id": "accessibility-and-modal-equivalence-lab",
+      "path": "active/accessibility-and-modal-equivalence-lab",
+      "mode": "cross-modal-action-testing",
+      "safe_checks": [],
+      "synthetic_scope": "pipeline_verified",
+      "next_decision": "Définir une tâche critique et les seuils d’équivalence.",
+      "blocker": "Aucun protocole ni canal comparé n’est disponible."
+    },
+    {
+      "id": "forecast-calibration-lab",
+      "path": "active/forecast-calibration-lab",
+      "mode": "outcome-calibration",
+      "safe_checks": [],
+      "synthetic_scope": "formal_exact",
+      "next_decision": "Définir le premier horizon et la règle de score.",
+      "blocker": "Aucun registre de prévisions ni résultat observé n’est disponible."
+    },
+    {
+      "id": "contributor-ecosystem-governance-lab",
+      "path": "active/contributor-ecosystem-governance-lab",
+      "mode": "contributor-governance-observation",
+      "safe_checks": [],
+      "synthetic_scope": "pipeline_verified",
+      "next_decision": "Définir un cycle contributif.",
+      "blocker": "Aucun protocole de contribution ni observation de gouvernance n’est disponible."
+    },
+    {
+      "id": "epistemic-diversity-and-common-mode-failure-lab",
+      "path": "active/epistemic-diversity-and-common-mode-failure-lab",
+      "mode": "independence-and-common-mode-testing",
+      "safe_checks": [],
+      "synthetic_scope": "model_internal",
+      "next_decision": "Définir des voies d’analyse réellement appariées.",
+      "blocker": "Aucun protocole de diversité ni échec commun n’est observé."
+    },
+    {
+      "id": "research-interruptibility-and-recovery-lab",
+      "path": "active/research-interruptibility-and-recovery-lab",
+      "mode": "interruption-recovery-testing",
+      "safe_checks": [],
+      "synthetic_scope": "pipeline_verified",
+      "next_decision": "Définir un premier arrêt et un retour.",
+      "blocker": "Aucun scénario d’interruption ni résultat de récupération n’est disponible."
+    },
+    {
+      "id": "portfolio-option-value-lab",
+      "path": "active/portfolio-option-value-lab",
+      "mode": "portfolio-allocation-comparison",
+      "safe_checks": [],
+      "synthetic_scope": "model_internal",
+      "next_decision": "Définir une unité de décision portefeuille.",
+      "blocker": "Aucun historique de choix ni comparateur d’allocation n’est disponible."
+    }
+  ]
+}

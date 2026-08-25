@@ -1,0 +1,11 @@
+# Routine de portefeuille
+
+- Exécutée : 2026-08-25T11:55:47+00:00
+- Projet : `accessibility-and-modal-equivalence-lab`
+- Mode : `cross-modal-action-testing`
+- Portée synthétique autorisée : `pipeline_verified`
+- Vérifications sûres : passées quand elles sont déclarées.
+- Prochaine décision : Définir une tâche critique et les seuils d’équivalence.
+- Blocage : Aucun protocole ni canal comparé n’est disponible.
+
+Cette routine ne constitue ni une observation nouvelle, ni un changement de statut scientifique.

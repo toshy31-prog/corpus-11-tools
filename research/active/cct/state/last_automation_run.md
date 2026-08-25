@@ -1,0 +1,11 @@
+# Routine de portefeuille
+
+- Exécutée : 2026-08-25T11:55:47+00:00
+- Projet : `cct`
+- Mode : `local-model-verification`
+- Portée synthétique autorisée : `model_internal`
+- Vérifications sûres : passées quand elles sont déclarées.
+- Prochaine décision : Choisir un mécanisme institutionnel unique avant toute calibration de terrain.
+- Blocage : Aucun effet de terrain n’est établi par les simulations synthétiques.
+
+Cette routine ne constitue ni une observation nouvelle, ni un changement de statut scientifique.
