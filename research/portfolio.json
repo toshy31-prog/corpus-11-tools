@@ -17,7 +17,7 @@
       "safe_checks": ["cct_stack"],
       "synthetic_scope": "model_internal",
       "next_decision": "Construire un générateur fictif complet O1–O4 et un oracle de recours indépendant avant toute nouvelle revendication de contestabilité D10.",
-      "blocker": "L’artefact actuel substitue un proxy à la trace et ne satisfait pas le contrat d’observation préenregistré."
+      "blocker": "L’artefact actuel substitue un proxy à la trace et ne satisfait pas le contrat d’observation fixé avant exécution."
     },
     {
       "id": "fusion-alpha-feedback",

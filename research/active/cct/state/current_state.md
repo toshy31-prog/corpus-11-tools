@@ -21,7 +21,7 @@ factoriels et cinq variations. L’audit retire toutefois la conclusion
 antérieure de trace inutilisable : le `24/32` est un événement de seuil sur un
 proxy configuré, réduit à trois cellules canal–perturbation répétées huit fois.
 Le pipeline ne génère aucune trace O3 ni usage du recours et n’est pas conforme
-au contrat d’observation préenregistré.
+au contrat d’observation fixé avant exécution.
 
 ## Prochaine condition
 
