@@ -15,7 +15,7 @@ from docx.shared import Inches, Pt, RGBColor
 
 ROOT = Path(__file__).resolve().parents[1]
 HERE = Path(__file__).resolve().parent
-OUT = ROOT / "output" / "docx" / "CCT-v0.11-livre-blanc.docx"
+OUT = ROOT / "output" / "docx" / "CCT-livre-blanc.docx"
 FIGURE = HERE / "cct-architecture.png"
 
 NAVY = "17324D"
@@ -33,8 +33,8 @@ TOC_GROUPS = (
     (
         "Fondements et décision",
         (
-            "Résumé exécutif et statut du document",
-            "1. Conclusion architecturale",
+            "Résumé et méthode de lecture",
+            "1. Une politique des interdépendances",
             "2. Principes constitutionnels non négociables",
             "3. Les unités politiques",
             "4. Répartition des compétences",
@@ -51,14 +51,14 @@ TOC_GROUPS = (
             "10. Information, langues, connaissance et numérique",
             "11. Justice, sûreté et force",
             "12. Urgence sans dictature provisoire permanente",
-            "13. Où se cacheraient les centres de pouvoir",
-            "14. Prévention de la reconstitution des classes dominantes",
+            "13. Où se cachent les centres de pouvoir",
+            "14. Prévenir la reconstitution des classes dominantes",
             "15. Métriques et adaptation stratégique",
             "16. Cycle de maintenance constitutionnelle",
         ),
     ),
     (
-        "Transition, épreuve et révision",
+        "Transition, épreuves et reconstruction",
         (
             "17. Stratégie de transition",
             "18. Tests de résistance",
@@ -66,13 +66,8 @@ TOC_GROUPS = (
             "20. Décisions politiques encore ouvertes",
             "21. Conditions d’échec du modèle",
             "22. Formule constitutionnelle courte",
-            "23. Conclusion provisoire",
-            "24. Statut expérimental",
-            "25. Résultat des cinquante tests-limites",
-            "26. Invariants constitutionnels v0.11",
-            "27. Six reconstructions de la version 0.11",
-            "28. Statut après CCT-L50-001",
-            "Annexes A–F — expériences, prototypes, validation, charte et 50 tests",
+            "23. Conclusion et conditions de révision",
+            "Annexes — résultats et carte de validation",
         ),
     ),
 )
@@ -242,7 +237,7 @@ def configure_document(doc: Document) -> None:
 
     header = section.header
     hp = header.paragraphs[0]
-    hp.text = "CONFÉDÉRATION DES COMMUNS TERRESTRES   /   LIVRE BLANC v0.11"
+    hp.text = "CONFÉDÉRATION DES COMMUNS TERRESTRES   /   LIVRE BLANC"
     hp.alignment = WD_ALIGN_PARAGRAPH.LEFT
     set_run(hp.runs[0], size=8.1, color=MUTED, bold=True)
     add_page_field(section.footer.paragraphs[0])
@@ -297,7 +292,7 @@ def add_cover(doc: Document) -> None:
     r = p.add_run("Une architecture écosocialiste libertaire pour coordonner le monde sans souverain mondial illimité"); set_run(r, size=14, color=TEAL, italic=True)
     p.paragraph_format.space_after = Pt(42)
     p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = p.add_run("VERSION 0.11  •  AOÛT 2026"); set_run(r, size=11, color=MUTED, bold=True)
+    r = p.add_run("ÉTAT DE RECHERCHE  •  AOÛT 2026"); set_run(r, size=11, color=MUTED, bold=True)
     p.paragraph_format.space_after = Pt(60)
     p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     r = p.add_run("PROPOSITION CONSOLIDÉE — NON VALIDÉE EMPIRIQUEMENT"); set_run(r, size=9, color=WHITE, bold=True)
@@ -426,7 +421,7 @@ def add_markdown(doc: Document, text: str, *, strip_model_front=False) -> None:
             chapter = re.match(r"(\d+)\.", title)
             if style_level == 1 and chapter and int(chapter.group(1)) in BREAK_CHAPTERS:
                 p.paragraph_format.page_break_before = True
-            if style_level == 1 and title.startswith("Annexe "):
+            if style_level == 1 and title.startswith("Annexe A"):
                 p.paragraph_format.page_break_before = True
             continue
         if line.startswith(">"):
@@ -451,14 +446,40 @@ def main() -> None:
     OUT.parent.mkdir(parents=True, exist_ok=True)
     make_figure()
     doc = Document(); configure_document(doc); add_cover(doc); add_toc(doc)
-    add_markdown(doc, (HERE / "livre-blanc-frontmatter.md").read_text(encoding="utf-8"))
-    add_markdown(doc, (ROOT / "modele-gouvernance-ecosocialiste-libertaire.md").read_text(encoding="utf-8"), strip_model_front=True)
-    add_markdown(doc, (HERE / "livre-blanc-annexes.md").read_text(encoding="utf-8"))
-    l50 = (ROOT / "governance-lab" / "results-limit-50" / "report.md").read_text(encoding="utf-8")
-    l50 = re.sub(r"^# .*?$", "# Annexe F — Matrice complète des cinquante tests-limites", l50, count=1, flags=re.MULTILINE)
-    add_markdown(doc, l50)
+    short_text = (HERE / "livre-blanc-cct.md").read_text(encoding="utf-8")
+    add_markdown(doc, short_text.split("## 1. Une politique des interdépendances", 1)[0])
+    model_text = (ROOT / "modele-gouvernance-ecosocialiste-libertaire.md").read_text(encoding="utf-8")
+    model_text = model_text[model_text.index("## 1. Conclusion architecturale"):model_text.index("## 24. Statut expérimental")]
+    model_text = model_text.replace(
+        "## 18. Tests de résistance",
+        """### Ce que les essais ont déjà changé
+
+Les essais synthétiques ont révélé que des protections solides isolément peuvent échouer ensemble lorsqu’elles partagent les mêmes réseaux, experts, clés, fournisseurs ou réserves. Ils ont aussi conservé trois erreurs de méthode : un avantage initial indu, des tirages non appariés et une mesure d’empreinte erronée. Les mécanismes retenus en portent la trace : voies hors ligne pour les droits vitaux, règle publique de pénurie, registre des dépendances, budget de charge, extinction séparée des pouvoirs temporaires et test de polycrise.
+
+Les prototypes exécutables ont confirmé une limite plus étroite : une règle ne rend pas une action possible, un gain matériel ne devient pas une capacité vérifiée sans attestation indépendante, et une réparation peut exiger plusieurs étapes. Une restauration séquencée concorde avec un oracle indépendant dans une abstraction finie ; elle ne crée ni les ressources, ni les témoins, ni les institutions réelles dont dépendrait son usage. Son statut reste local, non promouvable et sans transport externe établi.
+
+## 18. Tests de résistance""",
+    )
+    model_text = model_text.replace(
+        "## 16. Cycle de maintenance constitutionnelle",
+        """### Charge constitutionnelle et polycrise
+
+La CCT doit être éprouvée lorsque besoins vitaux, plafond écologique, droits, trace et restitution sollicitent les mêmes ressources dégradées. Les rapports secondaires et les formalités réversibles peuvent alors être délestés ; accès vital, traçabilité minimale, recours contre coercition, plafond critique et preuve de restitution ne le peuvent pas. Une procédure qui n’ajoute aucune protection observable face à une solution plus simple doit être fusionnée ou retirée.
+
+## 16. Cycle de maintenance constitutionnelle""",
+    )
+    model_text = model_text.replace(
+        "## 23. Conclusion",
+        """### Conditions de révision
+
+La proposition doit être reconstruite ou retirée si des observations indépendantes montrent durablement que ses collèges paralysent les crises, que ses communs deviennent des corporations, que les droits portables échouent à protéger la sortie, que les urgences conservent leurs pouvoirs ou que la complexité impose davantage de dépendance qu’elle ne produit de contrôle. Aucun test local ni aucun texte ne tranche ces questions : ils fixent seulement les conditions dans lesquelles une réponse future devrait compter.
+
+## 23. Conclusion""",
+    )
+    add_markdown(doc, model_text)
+    add_markdown(doc, """# Annexe — Carte de validation\n\n| Élément | Écrit | Logiciel | Synthétique | Structurel borné | Terrain / réobservation |\n|---|---:|---:|---:|---:|---:|\n| Architecture politique complète | Oui | Partiel | Non | Non | Non |\n| Continuité et planification | Oui | Oui | Oui | Non | Non |\n| Droits portables et recours | Oui | Partiel | Non | Non | Non |\n| Pouvoirs temporaires et restitution | Oui | Oui | Partiel | Non | Non |\n| Restauration séquencée | Oui | Oui | Non | Oui | Non |\n\nCes colonnes ne se compensent pas : un test logiciel établit une exécution définie, une simulation établit un résultat dans son monde, et une vérification structurelle établit une propriété de son abstraction. Aucune ne valide à elle seule un effet territorial ni une capacité institutionnelle générale.""")
     props = doc.core_properties
-    props.title = "Confédération des communs terrestres — Livre blanc v0.11"
+    props.title = "Confédération des communs terrestres — Livre blanc"
     props.subject = "Architecture écosocialiste libertaire, modèle institutionnel et programme expérimental"
     props.author = "Confédération des communs terrestres — document de travail"
     props.keywords = "CCT, écosocialisme, libertaire, gouvernance mondiale, communs, constitution"

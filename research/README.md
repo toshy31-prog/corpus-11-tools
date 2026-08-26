@@ -47,6 +47,7 @@ Une recherche peut utiliser les skills et laboratoires de Corpus. Elle ne devien
 | [`active/epistemic-diversity-and-common-mode-failure-lab/`](active/epistemic-diversity-and-common-mode-failure-lab/) | active | indépendance modélisée entre agents et modes communs d’échec |
 | [`active/research-interruptibility-and-recovery-lab/`](active/research-interruptibility-and-recovery-lab/) | active | pause, reprise et récupération des recherches agentiques |
 | [`active/portfolio-option-value-lab/`](active/portfolio-option-value-lab/) | active | valeur d’ouvrir, fusionner ou arrêter un dossier |
+| [`active/corpus-open-model/`](active/corpus-open-model/) | active | noyau IA open source, hybride et traçable, fondé sur les carriers Corpus |
 | [`completed/corpus-ui-workspace/`](completed/corpus-ui-workspace/) | abandonnée | prototype d’interface Corpus gelé, archive Git et acquis conversationnels candidats |
 
 Les moteurs génériques utilisés par ces projets se trouvent dans [`../corpus-11-tools/labs/`](../corpus-11-tools/labs/).

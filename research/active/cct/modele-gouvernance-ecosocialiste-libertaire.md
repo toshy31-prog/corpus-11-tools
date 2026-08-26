@@ -14,7 +14,7 @@ Le nom de travail du système est **Confédération des communs terrestres** (CC
 
 La forme la plus cohérente n’est ni l’État mondial, ni la juxtaposition de communes souveraines, ni la planification centrale intégrale. C’est une architecture polycentrique composée de trois pouvoirs de nature différente :
 
-1. des **territoires démocratiques fédérés**, qui garantissent citoyenneté, droits et décisions de proximité ;
+1. des **territoires démocratiques fédérés**, chargés de garantir citoyenneté, droits et décisions de proximité ;
 2. des **communs fonctionnels**, qui administrent les ressources et infrastructures suivant leurs bassins réels d’usage ;
 3. une **confédération planétaire à mandat borné**, compétente uniquement pour les risques, droits et redistributions réellement transfrontaliers.
 
@@ -354,7 +354,7 @@ La réparation peut être financière, technologique, territoriale, sanitaire, d
 
 Toute personne possède des droits fondamentaux partout. La résidence factuelle crée progressivement les droits politiques locaux selon une règle commune que les autorités locales ne peuvent durcir. La citoyenneté multiple est admise. L’asile écologique existe. Aucune communauté ne peut défendre son autonomie par l’exclusion ethnique, religieuse ou patrimoniale.
 
-Une personne menacée par son autorité locale peut saisir confidentiellement un défenseur situé hors du territoire et obtenir automatiquement assistance juridique, revenu, logement de protection et relocalisation temporaire. Elle conserve aussi le droit de rester : les juridictions supérieures peuvent protéger une personne, suspendre un responsable ou administrer provisoirement un service précis sans placer toute la communauté sous tutelle. Si la sortie fut contrainte, droit au retour et restauration des accès sont examinés séparément d’une simple indemnisation.
+Une personne menacée par son autorité locale doit pouvoir saisir confidentiellement un défenseur situé hors du territoire. Le mécanisme proposé associe cette saisine à une assistance juridique, un revenu, un logement de protection et, si la personne le demande, une relocalisation temporaire. Il reste à établir les capacités matérielles, les délais, le financement et les voies dégradées qui rendraient cette protection effectivement disponible. Elle conserve aussi le droit de rester : les juridictions supérieures pourraient protéger une personne, suspendre un responsable ou administrer provisoirement un service précis sans placer toute la communauté sous tutelle. Si la sortie fut contrainte, droit au retour et restauration des accès sont examinés séparément d’une simple indemnisation.
 
 Les communautés linguistiques, culturelles et religieuses peuvent exercer une autonomie non territoriale sur leurs institutions volontaires, toujours sous réserve des droits individuels et du droit de ne pas y participer.
 
@@ -593,7 +593,7 @@ Des mesures temporaires de protection — contrôle des capitaux, continuité ob
 
 ## 18. Tests de résistance
 
-Les scénarios détaillés des sept cycles adversariaux complètent les tests synthétiques ci-dessous. Ils deviennent un corpus de régression : une réforme qui réintroduit une paralysie généralisée, un monopole administratif, une planification mensongère, une sortie forcée, un commandement sans démobilisation, une transition sans capacité ou une complexité sans porte d’entrée doit être justifiée comme une nouvelle version, non présentée comme neutre.
+Les scénarios détaillés des sept cycles adversariaux complètent les tests synthétiques ci-dessous. Ils deviennent un corpus de régression : une réforme qui réintroduit une paralysie généralisée, un monopole administratif, une planification mensongère, une sortie forcée, un commandement sans démobilisation, une transition sans capacité ou une complexité sans porte d’entrée doit être justifiée comme une modification explicite, non présentée comme neutre.
 
 ### 18.1 Une région riche refuse la solidarité
 
@@ -717,9 +717,9 @@ Ces résultats ne justifieraient pas automatiquement le retour au capitalisme ce
 
 > La Terre et ses conditions d’habitabilité sont un commun. Toute personne possède des droits égaux à l’existence, à la liberté substantielle et à la participation. Les communautés s’autogouvernent dans les limites des droits universels et des conséquences qu’elles imposent à autrui. Les ressources vitales et les infrastructures de dépendance sont administrées pour l’usage, non pour la rente. Toute autorité est bornée, distribuée, contrôlable, révocable et tenue de réparer les dommages qu’elle produit ou perpétue. La coordination mondiale ne possède que les compétences nécessaires à la protection des communs planétaires, de la paix, de la mobilité humaine et de l’égalité matérielle entre territoires.
 
-## 23. Conclusion provisoire
+## 23. Conclusion
 
-Le cœur viable de l’écosocialisme libertaire globalisé est une **confédération polycentrique à noyau constitutionnel simple**, articulant territoires et communs, droits universels portables, planification écologique par corridors, économie socialisée mais pluraliste et niveau mondial puissant sur quelques objets seulement.
+Le candidat le plus cohérent, dans les périmètres écrits et synthétiques examinés, est une **confédération polycentrique à noyau constitutionnel simple**, articulant territoires et communs, droits universels portables, planification écologique par corridors, économie socialisée mais pluraliste et niveau mondial puissant sur quelques objets seulement.
 
 Sa réussite dépend moins de la pureté de ses institutions que de capacités distribuées et durables : savoir ce qui se passe, contester, bloquer, proposer, financer, réparer et empêcher qu’un pouvoir supprimé ne se reconstitue sous une autre forme. Les contrôles doivent croître avec le pouvoir réel, mais rester assez simples pour ne pas transformer la protection contre la domination en nouvelle dépendance.
 

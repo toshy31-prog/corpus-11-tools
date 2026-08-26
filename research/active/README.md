@@ -27,6 +27,7 @@ constitue pas à lui seul une validation de l’objet recherché.
 | [`epistemic-diversity-and-common-mode-failure-lab/`](epistemic-diversity-and-common-mode-failure-lab/) | indépendance réelle entre agents | erreur non répliquée par des voies appariées | diversité nominale |
 | [`research-interruptibility-and-recovery-lab/`](research-interruptibility-and-recovery-lab/) | arrêt et reprise de recherche | récupération de preuve et de décision après interruption | sauvegarde de fichiers seule |
 | [`portfolio-option-value-lab/`](portfolio-option-value-lab/) | allocation réversible du portefeuille | changement de priorité qui améliore une décision | nombre de dossiers ouverts |
+| [`corpus-open-model/`](corpus-open-model/) | noyau IA open source structuré par les carriers Corpus | routage et provenance vérifiables sans LLM | entraînement implicite sur l'ensemble du dépôt |
 
 ## Règle de circulation
 

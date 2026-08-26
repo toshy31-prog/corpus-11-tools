@@ -1,0 +1,6 @@
+{"id":"cd-v1-causal","prompt":"Un traitement paraît efficace, mais les personnes traitées étaient initialement différentes. Que faudrait-il établir avant de parler d'effet du traitement ?","expect":["causal-identification"]}
+{"id":"cd-v1-proxy","prompt":"Le score administratif progresse. Est-ce suffisant pour conclure que l'expérience concrète des usagers s'améliore ?","expect":["construct-validity-assessment"]}
+{"id":"cd-v1-provenance","prompt":"Des dizaines de médias relaient une information issue d'une même dépêche. Comment ne pas confondre répétition et indépendance ?","expect":["evidence-dependence-audit","chain-tracing"]}
+{"id":"cd-v1-robustness","prompt":"Le résultat disparaît avec un autre enquêteur et un autre canal. Que doit-on vérifier ?","expect":["protocol-robustness"]}
+{"id":"cd-v1-agency","prompt":"Ne reformule pas mon problème dans tes catégories : aide-moi à garder ma question et mes options.","expect":["user-agency-preservation"]}
+{"id":"cd-v1-negative","prompt":"Donne-moi une recette simple de soupe aux légumes.","expect":[]}
