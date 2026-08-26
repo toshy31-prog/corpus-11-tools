@@ -1,0 +1,10 @@
+{
+  "schema": "cct-kryos-contender-registry/v1",
+  "frozenBeforeRuns": true,
+  "entries": [
+    { "code": "K-A", "id": "cct-exec-1.2-candidate" },
+    { "code": "K-B", "id": "rival-cheapest" },
+    { "code": "K-C", "id": "rival-public-maximin" },
+    { "code": "K-D", "id": "rival-lowest-axis" }
+  ]
+}

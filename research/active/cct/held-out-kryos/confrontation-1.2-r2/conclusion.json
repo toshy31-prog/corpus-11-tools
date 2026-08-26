@@ -1,0 +1,26 @@
+{
+  "schema": "cct-kryos-confrontation-conclusion/v1",
+  "campaign": "CCT-KRYOS-CONFRONTATION-1.2-002",
+  "identityReveal": { "K-A": "CCT-EXEC 1.2", "K-B": "cheapest admissible", "K-C": "public immediate maximin", "K-D": "weakest-axis-first" },
+  "blindResult": {
+    "K-A": { "completeTrajectories": 0, "failures": 2, "failureTick": 2, "failureCode": "CCT_CAPACITY_GAIN_UNVERIFIED" },
+    "K-B": { "completeTrajectories": 2, "allThresholdsMet": 0, "failedDimension": "trade_volume" },
+    "K-C": { "completeTrajectories": 2, "allThresholdsMet": 2 },
+    "K-D": { "completeTrajectories": 2, "allThresholdsMet": 2 }
+  },
+  "projectionSensitivity": "CCT selects the same triage and capacity-acquisition sequence and fails at the same tick under full mechanics and optimistic harm omission.",
+  "methodEffectAudit": {
+    "protocolAdded": ["six constitutional proxy axes", "public immediate action semantics", "placeholder actors and recourse absence"],
+    "protocolDidNotAdd": ["receipts", "independent observers", "future knowledge", "hidden state", "delayed effect knowledge"],
+    "materialEffect": "The projection makes CCT action-capable but cannot make a physical effect into independent institutional verification.",
+    "r1Artifact": "Projection 001 omitted four pre-existing NCE fields and produced a tick-0 interface failure; it is retained as a projection failure, not attributed to CCT logic.",
+    "r2Revision": "Projection 002 adds only those required public fields; world, axes, effects, contenders and budgets remain unchanged."
+  },
+  "decision": {
+    "cct12Promotable": false,
+    "reason": "CCT-EXEC 1.2 cannot complete a held-out world lacking an independent capacity receipt while matched rivals can complete and two remain above every declared threshold.",
+    "doNotPatch": "Do not accept self-certification or tune on Kryos. A future version must make verification-capacity acquisition or evidence solicitation executable and then face a new held-out world.",
+    "worldResult": "synthetic_control_failure_not_general_invalidity"
+  },
+  "statusBoundary": "No scalar winner, field result, general invalidity, robustness, authorization, deployment, institutional effect or external transport."
+}

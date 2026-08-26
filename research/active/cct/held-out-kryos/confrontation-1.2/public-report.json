@@ -1,0 +1,454 @@
+{
+  "schema": "cct-kryos-blind-confrontation/v1",
+  "generatedAt": "2026-08-26",
+  "campaign": "CCT-KRYOS-CONFRONTATION-1.2-001",
+  "worldFreeze": "sha256:c75362b716987fa0d53f22d3d355e4ebb21a8b943d2d8873709b4ccfcd87deb1",
+  "interpreterFreeze": "CCT-KRYOS-RICH-V3-FREEZE-2026-08-26-01",
+  "cctFreeze": "CCT-EXEC-1.2-FREEZE-2026-08-26-01",
+  "projectionContract": "CCT-KRYOS-PROJECTION-001",
+  "identitiesBlinded": true,
+  "profiles": [
+    "P1-matched-public-mechanics",
+    "P2-optimistic-harm-omission"
+  ],
+  "thresholds": {
+    "structural_integrity": 20,
+    "marine_ecosystem_health": 15,
+    "freshwater_reservoir": 10,
+    "energy_grid_stability": 25,
+    "population_morale": 30,
+    "trade_volume": 20
+  },
+  "runs": [
+    {
+      "profileId": "P1-matched-public-mechanics",
+      "contenderCode": "K-A",
+      "completedRounds": 0,
+      "actions": [],
+      "failure": {
+        "tick": 0,
+        "code": "CCT_ACTION_SEMANTICS_MISSING: emergency_blackout+seismic_sensors"
+      },
+      "outcomeVector": null,
+      "prefixVector": {
+        "structural_integrity": 75,
+        "marine_ecosystem_health": 70,
+        "freshwater_reservoir": 60,
+        "energy_grid_stability": 80,
+        "population_morale": 65,
+        "trade_volume": 40,
+        "__reversal_total_system_collapse": 0,
+        "__reversal_civil_unrest": 0
+      },
+      "comparableAtEightRounds": false
+    },
+    {
+      "profileId": "P1-matched-public-mechanics",
+      "contenderCode": "K-B",
+      "completedRounds": 8,
+      "actions": [
+        {
+          "round": 0,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 1,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 2,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 3,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 4,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 5,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 6,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 7,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        }
+      ],
+      "failure": null,
+      "outcomeVector": {
+        "structural_integrity": 52,
+        "marine_ecosystem_health": 58,
+        "freshwater_reservoir": 67,
+        "energy_grid_stability": 65,
+        "population_morale": 41,
+        "trade_volume": 0,
+        "__reversal_total_system_collapse": 0,
+        "__reversal_civil_unrest": 0
+      },
+      "prefixVector": null,
+      "comparableAtEightRounds": true
+    },
+    {
+      "profileId": "P1-matched-public-mechanics",
+      "contenderCode": "K-C",
+      "completedRounds": 8,
+      "actions": [
+        {
+          "round": 0,
+          "action": "diplomatic_channel+intensive_harvest",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 1,
+          "action": "hydraulic_rationing+intensive_harvest",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 2,
+          "action": "diplomatic_channel",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 3,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 4,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 5,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 6,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 7,
+          "action": "diplomatic_channel+intensive_harvest",
+          "phase": "rival_policy"
+        }
+      ],
+      "failure": null,
+      "outcomeVector": {
+        "structural_integrity": 52,
+        "marine_ecosystem_health": 28,
+        "freshwater_reservoir": 71,
+        "energy_grid_stability": 65,
+        "population_morale": 60,
+        "trade_volume": 24,
+        "__reversal_total_system_collapse": 0,
+        "__reversal_civil_unrest": 0
+      },
+      "prefixVector": null,
+      "comparableAtEightRounds": true
+    },
+    {
+      "profileId": "P1-matched-public-mechanics",
+      "contenderCode": "K-D",
+      "completedRounds": 8,
+      "actions": [
+        {
+          "round": 0,
+          "action": "intensive_harvest",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 1,
+          "action": "intensive_harvest",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 2,
+          "action": "hydraulic_rationing",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 3,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 4,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 5,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 6,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 7,
+          "action": "intensive_harvest",
+          "phase": "rival_policy"
+        }
+      ],
+      "failure": null,
+      "outcomeVector": {
+        "structural_integrity": 52,
+        "marine_ecosystem_health": 28,
+        "freshwater_reservoir": 71,
+        "energy_grid_stability": 65,
+        "population_morale": 45,
+        "trade_volume": 24,
+        "__reversal_total_system_collapse": 0,
+        "__reversal_civil_unrest": 0
+      },
+      "prefixVector": null,
+      "comparableAtEightRounds": true
+    },
+    {
+      "profileId": "P2-optimistic-harm-omission",
+      "contenderCode": "K-A",
+      "completedRounds": 0,
+      "actions": [],
+      "failure": {
+        "tick": 0,
+        "code": "CCT_ACTION_SEMANTICS_MISSING: emergency_blackout+seismic_sensors"
+      },
+      "outcomeVector": null,
+      "prefixVector": {
+        "structural_integrity": 75,
+        "marine_ecosystem_health": 70,
+        "freshwater_reservoir": 60,
+        "energy_grid_stability": 80,
+        "population_morale": 65,
+        "trade_volume": 40,
+        "__reversal_total_system_collapse": 0,
+        "__reversal_civil_unrest": 0
+      },
+      "comparableAtEightRounds": false
+    },
+    {
+      "profileId": "P2-optimistic-harm-omission",
+      "contenderCode": "K-B",
+      "completedRounds": 8,
+      "actions": [
+        {
+          "round": 0,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 1,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 2,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 3,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 4,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 5,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 6,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 7,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        }
+      ],
+      "failure": null,
+      "outcomeVector": {
+        "structural_integrity": 52,
+        "marine_ecosystem_health": 58,
+        "freshwater_reservoir": 67,
+        "energy_grid_stability": 65,
+        "population_morale": 41,
+        "trade_volume": 0,
+        "__reversal_total_system_collapse": 0,
+        "__reversal_civil_unrest": 0
+      },
+      "prefixVector": null,
+      "comparableAtEightRounds": true
+    },
+    {
+      "profileId": "P2-optimistic-harm-omission",
+      "contenderCode": "K-C",
+      "completedRounds": 8,
+      "actions": [
+        {
+          "round": 0,
+          "action": "diplomatic_channel+intensive_harvest",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 1,
+          "action": "hydraulic_rationing+intensive_harvest",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 2,
+          "action": "diplomatic_channel",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 3,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 4,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 5,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 6,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 7,
+          "action": "diplomatic_channel+intensive_harvest",
+          "phase": "rival_policy"
+        }
+      ],
+      "failure": null,
+      "outcomeVector": {
+        "structural_integrity": 52,
+        "marine_ecosystem_health": 28,
+        "freshwater_reservoir": 71,
+        "energy_grid_stability": 65,
+        "population_morale": 60,
+        "trade_volume": 24,
+        "__reversal_total_system_collapse": 0,
+        "__reversal_civil_unrest": 0
+      },
+      "prefixVector": null,
+      "comparableAtEightRounds": true
+    },
+    {
+      "profileId": "P2-optimistic-harm-omission",
+      "contenderCode": "K-D",
+      "completedRounds": 8,
+      "actions": [
+        {
+          "round": 0,
+          "action": "intensive_harvest",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 1,
+          "action": "intensive_harvest",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 2,
+          "action": "hydraulic_rationing",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 3,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 4,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 5,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 6,
+          "action": "bridge_toll",
+          "phase": "rival_policy"
+        },
+        {
+          "round": 7,
+          "action": "intensive_harvest",
+          "phase": "rival_policy"
+        }
+      ],
+      "failure": null,
+      "outcomeVector": {
+        "structural_integrity": 52,
+        "marine_ecosystem_health": 28,
+        "freshwater_reservoir": 71,
+        "energy_grid_stability": 65,
+        "population_morale": 45,
+        "trade_volume": 24,
+        "__reversal_total_system_collapse": 0,
+        "__reversal_civil_unrest": 0
+      },
+      "prefixVector": null,
+      "comparableAtEightRounds": true
+    }
+  ],
+  "result": {
+    "cctCompleteEightRoundPaths": 0,
+    "rivalCompleteEightRoundPaths": 6,
+    "cctFailures": [
+      {
+        "profileId": "P1-matched-public-mechanics",
+        "failure": {
+          "tick": 0,
+          "code": "CCT_ACTION_SEMANTICS_MISSING: emergency_blackout+seismic_sensors"
+        },
+        "completedRounds": 0
+      },
+      {
+        "profileId": "P2-optimistic-harm-omission",
+        "failure": {
+          "tick": 0,
+          "code": "CCT_ACTION_SEMANTICS_MISSING: emergency_blackout+seismic_sensors"
+        },
+        "completedRounds": 0
+      }
+    ],
+    "scalarWinner": null,
+    "materialComparisonBoundary": "Only complete eight-round vectors are comparable. Failed prefixes are preserved but not ranked against final rival vectors."
+  },
+  "strongestConclusion": "The tested CCT-EXEC 1.2 contender suffers a control-path failure before eight rounds under both frozen projection profiles; three matched rivals complete all eight rounds. This is a synthetic Kryos result, not a field or general invalidity claim.",
+  "statusBoundary": "Frozen synthetic confrontation. No superiority, field validity, authorization, deployment, institutional effect, independent lineage verification or external transport is established."
+}

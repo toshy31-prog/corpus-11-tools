@@ -1,0 +1,621 @@
+{
+  "contract": "corpus-open-experiment-arena/v1",
+  "arenaId": "CCT-HO-001:irrigation-quota-fracture-plaine-canaux",
+  "seed": 0,
+  "scenario": {
+    "id": "irrigation-quota-fracture-plaine-canaux",
+    "version": "1.0.0",
+    "title": "Fracture des quotas d'irrigation dans la plaine des canaux croisés",
+    "dimensions": [
+      "cout_besoins_vitaux",
+      "cout_ecologique",
+      "cout_droits",
+      "cout_pouvoir_non_controle",
+      "cout_portabilite",
+      "cout_recuperation"
+    ],
+    "reversalConditions": [
+      "Observation d'un stock d'eau négatif après transition, indiquant une rupture physique non modélisée",
+      "Dépassement simultané de trois seuils non compensables en un seul tour, obligeant révision de la logique concurrente",
+      "Franchissement non compensable d'un seuil de privation vitale ou de perte de portabilité défini avant exécution"
+    ],
+    "source": {
+      "regime": "external_supplied",
+      "authorId": "canal-silt-chronicler",
+      "authorRelationToCorpus": "independent",
+      "frozenBeforeContenders": true,
+      "authorshipTrace": "b8e4d2a1-7c3f-9e5b-1a6d-4f0c8e2b9d7a",
+      "freezeHash": "sha256:8d1b4d7257fdbbe6aaf8a8cb3d77ae348f80ec76b82758362507cdb1409f0a14",
+      "freezeVerified": true
+    }
+  },
+  "claimExternal": false,
+  "externalityStatus": "declared_external_with_verified_freeze_authorship_not_independently_verified",
+  "matchedBaseline": {
+    "worldHash": "fnv1a64:5557ebd6b6f049d6",
+    "exogenousHash": "fnv1a64:3ffc72817724e74f"
+  },
+  "runs": [
+    {
+      "label": "method-436548e4",
+      "baseline": {
+        "worldHash": "fnv1a64:5557ebd6b6f049d6",
+        "exogenousHash": "fnv1a64:3ffc72817724e74f"
+      },
+      "outcomes": {
+        "cout_besoins_vitaux": 22,
+        "cout_ecologique": 53,
+        "cout_droits": 0,
+        "cout_pouvoir_non_controle": 19,
+        "cout_portabilite": 8,
+        "cout_recuperation": 16.9
+      },
+      "history": [
+        {
+          "round": 0,
+          "view": {
+            "water_visible": 120,
+            "silt_visible": 18,
+            "need_visible": 8,
+            "tension_visible": 11
+          },
+          "admissibleActions": [
+            "uniform_allocation",
+            "upstream_priority",
+            "silt_dredge",
+            "open_exit_rights",
+            "audit_control"
+          ],
+          "action": "uniform_allocation",
+          "predictions": {
+            "predicted_unmet_after_round": 39.25
+          },
+          "observation": {
+            "water_obs": 100,
+            "silt_obs": 25,
+            "need_obs": 9,
+            "rights_obs": 2,
+            "power_obs": 15,
+            "portability_obs": 10,
+            "recovery_obs": 8.3,
+            "tension_obs": 11.5
+          },
+          "predictionAssessment": {
+            "predicted_unmet_after_roundAbsoluteError": 30.25
+          },
+          "beforeHash": "fnv1a64:5557ebd6b6f049d6",
+          "afterHash": "fnv1a64:6650c9c203cec557"
+        },
+        {
+          "round": 1,
+          "view": {
+            "water_visible": 100,
+            "silt_visible": 25,
+            "need_visible": 9,
+            "tension_visible": 11.5
+          },
+          "admissibleActions": [
+            "uniform_allocation",
+            "upstream_priority",
+            "silt_dredge",
+            "open_exit_rights",
+            "audit_control"
+          ],
+          "action": "uniform_allocation",
+          "predictions": {
+            "predicted_unmet_after_round": 36.375
+          },
+          "observation": {
+            "water_obs": 75,
+            "silt_obs": 36,
+            "need_obs": 13,
+            "rights_obs": 0,
+            "power_obs": 18,
+            "portability_obs": 11,
+            "recovery_obs": 10.600000000000001,
+            "tension_obs": 11.5
+          },
+          "predictionAssessment": {
+            "predicted_unmet_after_roundAbsoluteError": 23.375
+          },
+          "beforeHash": "fnv1a64:6650c9c203cec557",
+          "afterHash": "fnv1a64:3a6c82b663044784"
+        },
+        {
+          "round": 2,
+          "view": {
+            "water_visible": 75,
+            "silt_visible": 36,
+            "need_visible": 13,
+            "tension_visible": 11.5
+          },
+          "admissibleActions": [
+            "uniform_allocation",
+            "upstream_priority",
+            "silt_dredge",
+            "open_exit_rights",
+            "audit_control"
+          ],
+          "action": "uniform_allocation",
+          "predictions": {
+            "predicted_unmet_after_round": 33.875
+          },
+          "observation": {
+            "water_obs": 45,
+            "silt_obs": 44,
+            "need_obs": 20,
+            "rights_obs": 0,
+            "power_obs": 21,
+            "portability_obs": 12,
+            "recovery_obs": 12.8,
+            "tension_obs": 11
+          },
+          "predictionAssessment": {
+            "predicted_unmet_after_roundAbsoluteError": 13.875
+          },
+          "beforeHash": "fnv1a64:3a6c82b663044784",
+          "afterHash": "fnv1a64:1ba54da42ec39e87"
+        },
+        {
+          "round": 3,
+          "view": {
+            "water_visible": 45,
+            "silt_visible": 44,
+            "need_visible": 20,
+            "tension_visible": 11
+          },
+          "admissibleActions": [
+            "uniform_allocation",
+            "upstream_priority",
+            "silt_dredge",
+            "open_exit_rights",
+            "audit_control"
+          ],
+          "action": "uniform_allocation",
+          "predictions": {
+            "predicted_unmet_after_round": 30
+          },
+          "observation": {
+            "water_obs": 22,
+            "silt_obs": 58,
+            "need_obs": 22,
+            "rights_obs": 0,
+            "power_obs": 24,
+            "portability_obs": 13,
+            "recovery_obs": 14.9,
+            "tension_obs": 10.5
+          },
+          "predictionAssessment": {
+            "predicted_unmet_after_roundAbsoluteError": 8
+          },
+          "beforeHash": "fnv1a64:1ba54da42ec39e87",
+          "afterHash": "fnv1a64:cf834779a3e8ce46"
+        },
+        {
+          "round": 4,
+          "view": {
+            "water_visible": 22,
+            "silt_visible": 58,
+            "need_visible": 22,
+            "tension_visible": 10.5
+          },
+          "admissibleActions": [
+            "uniform_allocation",
+            "upstream_priority",
+            "silt_dredge",
+            "open_exit_rights",
+            "audit_control"
+          ],
+          "action": "uniform_allocation",
+          "predictions": {
+            "predicted_unmet_after_round": 28.125
+          },
+          "observation": {
+            "water_obs": 0,
+            "silt_obs": 68,
+            "need_obs": 27,
+            "rights_obs": 0,
+            "power_obs": 27,
+            "portability_obs": 14,
+            "recovery_obs": 16.9,
+            "tension_obs": 10
+          },
+          "predictionAssessment": {
+            "predicted_unmet_after_roundAbsoluteError": 1.125
+          },
+          "beforeHash": "fnv1a64:cf834779a3e8ce46",
+          "afterHash": "fnv1a64:3243196405ae429b"
+        }
+      ],
+      "finalWorldHash": "fnv1a64:3243196405ae429b"
+    },
+    {
+      "label": "method-96402101",
+      "baseline": {
+        "worldHash": "fnv1a64:5557ebd6b6f049d6",
+        "exogenousHash": "fnv1a64:3ffc72817724e74f"
+      },
+      "outcomes": {
+        "cout_besoins_vitaux": 22,
+        "cout_ecologique": 53,
+        "cout_droits": 0,
+        "cout_pouvoir_non_controle": 19,
+        "cout_portabilite": 8,
+        "cout_recuperation": 16.9
+      },
+      "history": [
+        {
+          "round": 0,
+          "view": {
+            "water_visible": 120,
+            "silt_visible": 18,
+            "need_visible": 8,
+            "tension_visible": 11
+          },
+          "admissibleActions": [
+            "uniform_allocation",
+            "upstream_priority",
+            "silt_dredge",
+            "open_exit_rights",
+            "audit_control"
+          ],
+          "action": "uniform_allocation",
+          "predictions": {
+            "predicted_unmet_after_round": 39.25
+          },
+          "observation": {
+            "water_obs": 100,
+            "silt_obs": 25,
+            "need_obs": 9,
+            "rights_obs": 2,
+            "power_obs": 15,
+            "portability_obs": 10,
+            "recovery_obs": 8.3,
+            "tension_obs": 11.5
+          },
+          "predictionAssessment": {
+            "predicted_unmet_after_roundAbsoluteError": 30.25
+          },
+          "beforeHash": "fnv1a64:5557ebd6b6f049d6",
+          "afterHash": "fnv1a64:6650c9c203cec557"
+        },
+        {
+          "round": 1,
+          "view": {
+            "water_visible": 100,
+            "silt_visible": 25,
+            "need_visible": 9,
+            "tension_visible": 11.5
+          },
+          "admissibleActions": [
+            "uniform_allocation",
+            "upstream_priority",
+            "silt_dredge",
+            "open_exit_rights",
+            "audit_control"
+          ],
+          "action": "uniform_allocation",
+          "predictions": {
+            "predicted_unmet_after_round": 36.375
+          },
+          "observation": {
+            "water_obs": 75,
+            "silt_obs": 36,
+            "need_obs": 13,
+            "rights_obs": 0,
+            "power_obs": 18,
+            "portability_obs": 11,
+            "recovery_obs": 10.600000000000001,
+            "tension_obs": 11.5
+          },
+          "predictionAssessment": {
+            "predicted_unmet_after_roundAbsoluteError": 23.375
+          },
+          "beforeHash": "fnv1a64:6650c9c203cec557",
+          "afterHash": "fnv1a64:3a6c82b663044784"
+        },
+        {
+          "round": 2,
+          "view": {
+            "water_visible": 75,
+            "silt_visible": 36,
+            "need_visible": 13,
+            "tension_visible": 11.5
+          },
+          "admissibleActions": [
+            "uniform_allocation",
+            "upstream_priority",
+            "silt_dredge",
+            "open_exit_rights",
+            "audit_control"
+          ],
+          "action": "uniform_allocation",
+          "predictions": {
+            "predicted_unmet_after_round": 33.875
+          },
+          "observation": {
+            "water_obs": 45,
+            "silt_obs": 44,
+            "need_obs": 20,
+            "rights_obs": 0,
+            "power_obs": 21,
+            "portability_obs": 12,
+            "recovery_obs": 12.8,
+            "tension_obs": 11
+          },
+          "predictionAssessment": {
+            "predicted_unmet_after_roundAbsoluteError": 13.875
+          },
+          "beforeHash": "fnv1a64:3a6c82b663044784",
+          "afterHash": "fnv1a64:1ba54da42ec39e87"
+        },
+        {
+          "round": 3,
+          "view": {
+            "water_visible": 45,
+            "silt_visible": 44,
+            "need_visible": 20,
+            "tension_visible": 11
+          },
+          "admissibleActions": [
+            "uniform_allocation",
+            "upstream_priority",
+            "silt_dredge",
+            "open_exit_rights",
+            "audit_control"
+          ],
+          "action": "uniform_allocation",
+          "predictions": {
+            "predicted_unmet_after_round": 30
+          },
+          "observation": {
+            "water_obs": 22,
+            "silt_obs": 58,
+            "need_obs": 22,
+            "rights_obs": 0,
+            "power_obs": 24,
+            "portability_obs": 13,
+            "recovery_obs": 14.9,
+            "tension_obs": 10.5
+          },
+          "predictionAssessment": {
+            "predicted_unmet_after_roundAbsoluteError": 8
+          },
+          "beforeHash": "fnv1a64:1ba54da42ec39e87",
+          "afterHash": "fnv1a64:cf834779a3e8ce46"
+        },
+        {
+          "round": 4,
+          "view": {
+            "water_visible": 22,
+            "silt_visible": 58,
+            "need_visible": 22,
+            "tension_visible": 10.5
+          },
+          "admissibleActions": [
+            "uniform_allocation",
+            "upstream_priority",
+            "silt_dredge",
+            "open_exit_rights",
+            "audit_control"
+          ],
+          "action": "uniform_allocation",
+          "predictions": {
+            "predicted_unmet_after_round": 28.125
+          },
+          "observation": {
+            "water_obs": 0,
+            "silt_obs": 68,
+            "need_obs": 27,
+            "rights_obs": 0,
+            "power_obs": 27,
+            "portability_obs": 14,
+            "recovery_obs": 16.9,
+            "tension_obs": 10
+          },
+          "predictionAssessment": {
+            "predicted_unmet_after_roundAbsoluteError": 1.125
+          },
+          "beforeHash": "fnv1a64:cf834779a3e8ce46",
+          "afterHash": "fnv1a64:3243196405ae429b"
+        }
+      ],
+      "finalWorldHash": "fnv1a64:3243196405ae429b"
+    },
+    {
+      "label": "method-f5bda771",
+      "baseline": {
+        "worldHash": "fnv1a64:5557ebd6b6f049d6",
+        "exogenousHash": "fnv1a64:3ffc72817724e74f"
+      },
+      "outcomes": {
+        "cout_besoins_vitaux": 81,
+        "cout_ecologique": 57,
+        "cout_droits": 0,
+        "cout_pouvoir_non_controle": 0,
+        "cout_portabilite": 0,
+        "cout_recuperation": 39.15
+      },
+      "history": [
+        {
+          "round": 0,
+          "view": {
+            "water_visible": 120,
+            "silt_visible": 18,
+            "need_visible": 8,
+            "tension_visible": 11
+          },
+          "admissibleActions": [
+            "uniform_allocation",
+            "upstream_priority",
+            "silt_dredge",
+            "open_exit_rights",
+            "audit_control"
+          ],
+          "action": "open_exit_rights",
+          "predictions": {
+            "predicted_unmet_after_round": 39.25
+          },
+          "observation": {
+            "water_obs": 106,
+            "silt_obs": 25,
+            "need_obs": 22,
+            "rights_obs": 1,
+            "power_obs": 12,
+            "portability_obs": 2,
+            "recovery_obs": 11.65,
+            "tension_obs": 13.25
+          },
+          "predictionAssessment": {
+            "predicted_unmet_after_roundAbsoluteError": 17.25
+          },
+          "beforeHash": "fnv1a64:5557ebd6b6f049d6",
+          "afterHash": "fnv1a64:20451cb653879e39"
+        },
+        {
+          "round": 1,
+          "view": {
+            "water_visible": 106,
+            "silt_visible": 25,
+            "need_visible": 22,
+            "tension_visible": 13.25
+          },
+          "admissibleActions": [
+            "uniform_allocation",
+            "upstream_priority",
+            "silt_dredge",
+            "open_exit_rights",
+            "audit_control"
+          ],
+          "action": "audit_control",
+          "predictions": {
+            "predicted_unmet_after_round": 41.5625
+          },
+          "observation": {
+            "water_obs": 87,
+            "silt_obs": 38,
+            "need_obs": 36,
+            "rights_obs": 0,
+            "power_obs": 4,
+            "portability_obs": 2,
+            "recovery_obs": 19.299999999999997,
+            "tension_obs": 13.25
+          },
+          "predictionAssessment": {
+            "predicted_unmet_after_roundAbsoluteError": 5.5625
+          },
+          "beforeHash": "fnv1a64:20451cb653879e39",
+          "afterHash": "fnv1a64:947da6bc0a764f60"
+        },
+        {
+          "round": 2,
+          "view": {
+            "water_visible": 87,
+            "silt_visible": 38,
+            "need_visible": 36,
+            "tension_visible": 13.25
+          },
+          "admissibleActions": [
+            "uniform_allocation",
+            "upstream_priority",
+            "silt_dredge",
+            "open_exit_rights",
+            "audit_control"
+          ],
+          "action": "open_exit_rights",
+          "predictions": {
+            "predicted_unmet_after_round": 43.5625
+          },
+          "observation": {
+            "water_obs": 63,
+            "silt_obs": 46,
+            "need_obs": 56,
+            "rights_obs": 0,
+            "power_obs": 4,
+            "portability_obs": 0,
+            "recovery_obs": 25.199999999999996,
+            "tension_obs": 14.5
+          },
+          "predictionAssessment": {
+            "predicted_unmet_after_roundAbsoluteError": 12.4375
+          },
+          "beforeHash": "fnv1a64:947da6bc0a764f60",
+          "afterHash": "fnv1a64:7805de06b3d6429a"
+        },
+        {
+          "round": 3,
+          "view": {
+            "water_visible": 63,
+            "silt_visible": 46,
+            "need_visible": 56,
+            "tension_visible": 14.5
+          },
+          "admissibleActions": [
+            "uniform_allocation",
+            "upstream_priority",
+            "silt_dredge",
+            "open_exit_rights",
+            "audit_control"
+          ],
+          "action": "audit_control",
+          "predictions": {
+            "predicted_unmet_after_round": 44.875
+          },
+          "observation": {
+            "water_obs": 46,
+            "silt_obs": 62,
+            "need_obs": 68,
+            "rights_obs": 0,
+            "power_obs": 0,
+            "portability_obs": 0,
+            "recovery_obs": 33.05,
+            "tension_obs": 14.25
+          },
+          "predictionAssessment": {
+            "predicted_unmet_after_roundAbsoluteError": 23.125
+          },
+          "beforeHash": "fnv1a64:7805de06b3d6429a",
+          "afterHash": "fnv1a64:f736fbced22cf6e9"
+        },
+        {
+          "round": 4,
+          "view": {
+            "water_visible": 46,
+            "silt_visible": 62,
+            "need_visible": 68,
+            "tension_visible": 14.25
+          },
+          "admissibleActions": [
+            "uniform_allocation",
+            "upstream_priority",
+            "silt_dredge",
+            "open_exit_rights",
+            "audit_control"
+          ],
+          "action": "open_exit_rights",
+          "predictions": {
+            "predicted_unmet_after_round": 47.5625
+          },
+          "observation": {
+            "water_obs": 24,
+            "silt_obs": 72,
+            "need_obs": 86,
+            "rights_obs": 0,
+            "power_obs": 0,
+            "portability_obs": 0,
+            "recovery_obs": 39.15,
+            "tension_obs": 15.5
+          },
+          "predictionAssessment": {
+            "predicted_unmet_after_roundAbsoluteError": 38.4375
+          },
+          "beforeHash": "fnv1a64:f736fbced22cf6e9",
+          "afterHash": "fnv1a64:e1b08c7bbd2da267"
+        }
+      ],
+      "finalWorldHash": "fnv1a64:e1b08c7bbd2da267"
+    }
+  ],
+  "conclusionBoundary": "vector_outcomes_only_no_unique_winner",
+  "reportHash": "fnv1a64:9e039ca4b334bf68"
+}

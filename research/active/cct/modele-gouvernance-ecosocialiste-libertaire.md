@@ -1,12 +1,12 @@
 # Modèle d’organisation globale écosocialiste libertaire
 
-## Version 0.12 — candidate frugale après P-005-DT-001/002
+## Version 0.13 — candidate préparée après l’arène adverse v1
 
 ### Statut
 
 Ce texte est une proposition institutionnelle à éprouver, pas une constitution achevée ni la description d’un ordre déjà réalisable. Il conserve comme orientation de départ un écosocialisme libertaire mondialisé : égalité matérielle, limites écologiques contraignantes, autogouvernement, pluralisme et coordination planétaire sans souveraineté mondiale illimitée.
 
-La version 0.1 a été soumise à sept cycles adversariaux documentés séparément : paralysie multi-échelle, capture administrative, jeu de la planification, domination locale, agression extérieure, sabotage de la transition et surcharge institutionnelle. La version 0.8 intégrait leurs reconstructions. La version 0.9 corrigeait la transition après P-001. La version 0.10 rendait le corridor de planification proportionnel au risque après P-002. La version 0.11 ajoutait quinze invariants et six reconstructions après cinquante tests-limites conceptuels CCT-L50-001. La version 0.12 propose un noyau frugal après deux premiers jumeaux P-005. Aucun de ces exercices ne vaut validation empirique.
+La version 0.1 a été soumise à sept cycles adversariaux documentés séparément : paralysie multi-échelle, capture administrative, jeu de la planification, domination locale, agression extérieure, sabotage de la transition et surcharge institutionnelle. La version 0.8 intégrait leurs reconstructions. La version 0.9 corrigeait la transition après P-001. La version 0.10 rendait le corridor de planification proportionnel au risque après P-002. La version 0.11 ajoutait quinze invariants et six reconstructions après cinquante tests-limites conceptuels CCT-L50-001. La version 0.12 proposait un noyau frugal après deux premiers jumeaux P-005. La version 0.13 prépare quatre révisions après une arène interne où l’interprétation exécutable étroite a perdu sur urgence, domination locale et siège informationnel. Aucun de ces exercices ne vaut validation empirique.
 
 Le nom de travail du système est **Confédération des communs terrestres** (CCT).
 
@@ -822,3 +822,18 @@ Le programme ne maximise ni le nombre de pages, ni le nombre de simulations, ni 
 L’ordre de travail devient : calibration indépendante des paramètres sensibles ; registre public des hypothèses et résultats négatifs ; P-003 en mode fantôme ; puis P-004 fictif après revue externe. Les nouveaux tests isolés et la réécriture narrative sont différés tant qu’ils ne peuvent modifier une décision vivante.
 
 La candidate v0.12 doit être abandonnée ou reconstruite si elle perd au moins deux protocoles préspécifiés, si un rival simple protège les cinq noyaux avec quinze pour cent de charge en moins dans trois protocoles, ou si son gain disparaît après mesure des coûts cachés par porteur et retrait de l’équipe conceptrice.
+
+## 32. Candidate v0.13 — capacités préparées après l’arène adverse
+
+La première arène adverse du noyau constitutionnel n’exécute pas toute la CCT. Elle compile une politique décisionnelle étroite dans six mondes fictifs internes. Cette limite de méthode interdit de lire ses pertes comme une réfutation territoriale. Elle suffit toutefois à invalider l’idée que l’interprétation codée actuelle représente déjà les capacités promises par le texte.
+
+La v0.13 conserve l’architecture polycentrique et prépare quatre transformations :
+
+1. **Continuité d’urgence à double clé** — la continuité vitale et le recours sont activés ensemble, par deux chaînes distinctes ; l’autorité d’urgence ne peut cumuler activation, prolongation et certification. Chaque cycle expire en douze heures et son renouvellement exige la preuve de restitution du cycle précédent.
+2. **Portabilité hors capture territoriale** — une saisine extérieure au territoire ouvre simultanément biens vitaux, défense, choix de rester ou de partir temporairement et droit au retour. Le pouvoir local mis en cause ne contrôle ni le reçu ni l’activation et ne dispose d’aucun veto.
+3. **Continuité informationnelle contradictoire** — un registre local hors ligne et une archive interterritoriale de domaine de panne distinct produisent des décisions provisoires signées. La réconciliation conserve les divergences ; elle ne transforme jamais le registre dominant en vérité rétroactive.
+4. **Porte de nécessité distinctive** — une procédure CCT sans protection observable distincte face à un rival fédéral minimal est fusionnée ou retirée. La distinction reste archivée et possède une condition explicite de réouverture.
+
+Ces mécanismes ne sont pas gratuits. Ils ajoutent astreinte, double maintenance, réserves d’accueil, conflits de version et délais de contre-clé. Les personnes en attente, agents de première ligne, territoires d’accueil et minorités de cas sont nommés comme porteurs possibles de ces coûts. Un gain sur les droits ne peut donc compenser silencieusement une hausse de privation vitale, et inversement.
+
+Leur source exécutable est [`next-version/v0.13-candidate.json`](next-version/v0.13-candidate.json). Son statut maximal est `tests_statiques_passes`. La v0.13 n’est pas autorisée, déployée ni réobservée. Les six mondes ayant motivé les changements sont interdits comme preuve d’acceptation. La prochaine campagne doit être gelée par une personne ou équipe distincte, employer un rival sérieux, apparier budgets d’information et d’action et conserver les six dimensions non compensables séparées.

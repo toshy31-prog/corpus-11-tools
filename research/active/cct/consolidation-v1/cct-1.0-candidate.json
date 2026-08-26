@@ -1,0 +1,106 @@
+{
+  "schema": "cct-consolidated-system/v1",
+  "id": "CCT-1.0-CANDIDATE-001",
+  "name": "Confédération des communs terrestres",
+  "short_name": "CCT",
+  "version": "1.0-candidate",
+  "date": "2026-08-26",
+  "object_partition": {
+    "CCT": "programme politique et famille institutionnelle globale",
+    "CCT-POL": "modèle politique et constitution matérielle narrative",
+    "CCT-CONSTITUTION": "spécification locale des invariants et décisions admissibles",
+    "CCT-NCE": "noyau constitutionnel exécutable ; anciennement présenté comme v0.14",
+    "CCT-LAB": "simulations, campagnes adverses et protocoles de falsification"
+  },
+  "lifecycle": {
+    "state": "written_and_locally_validated_composite",
+    "promotion_blocked": true,
+    "not_established": [
+      "single fully integrated executable",
+      "complete snapshots for versions 0.2 through 0.7",
+      "authorization",
+      "deployment",
+      "institutional effect",
+      "independent reobservation",
+      "protocol robustness",
+      "external transport"
+    ]
+  },
+  "canonical_sources": [
+    {
+      "role": "identity_lineage_and_conflict_resolution",
+      "path": "lineage-ledger.json",
+      "authority": 1
+    },
+    {
+      "role": "political_architecture",
+      "path": "CCT-POL-1.0.md",
+      "declared_basis": "CCT-POL 1.0-candidate",
+      "authority": 2
+    },
+    {
+      "role": "constitutional_invariants",
+      "path": "../executable/constitution/constitution.json",
+      "declared_basis": "CCT v0.12 stable",
+      "authority": 3
+    },
+    {
+      "role": "executable_emergency_portability_information",
+      "path": "../next-version/runtime-v014.mjs",
+      "declared_name": "CCT-NCE 0.14",
+      "freeze": "../next-version/v0.14-freeze.json",
+      "authority": 4
+    },
+    {
+      "role": "experimental_evidence_and_negative_results",
+      "path": "../state/current_state.md",
+      "authority": 5
+    }
+  ],
+  "conflict_rule": [
+    "A later source does not silently replace an earlier guarantee.",
+    "A replacement is effective only when lineage-ledger.json names the predecessor, remainder and target.",
+    "Executable behavior cannot reduce a normative guarantee unless the ledger marks an explicit withdrawal.",
+    "Any unresolved contradiction blocks promotion but does not erase either side."
+  ],
+  "constitutional_axes": [
+    "besoins_vitaux",
+    "plafond_ecologique",
+    "droits",
+    "attribution_du_pouvoir",
+    "portabilite_effective",
+    "recuperation"
+  ],
+  "invariant_register": [
+    {"id":"I01","name":"droits_sans_point_unique","origin":"0.11","constitutional_targets":["D01","D12"],"execution":"partial"},
+    {"id":"I02","name":"double_borne_et_penurie_juste","origin":"0.11","constitutional_targets":["D02"],"execution":"local_tested"},
+    {"id":"I03","name":"separation_epistemique_et_coercitive","origin":"0.11","constitutional_targets":["D05"],"execution":"local_tested"},
+    {"id":"I04","name":"cycle_complet_du_pouvoir","origin":"0.11","constitutional_targets":["D04","M14-01","M14-03"],"execution":"local_tested_subset"},
+    {"id":"I05","name":"cles_terminales_distinctes","origin":"0.11","constitutional_targets":["D04","M14-01","M14-03"],"execution":"local_tested_subset"},
+    {"id":"I06","name":"complexite_absorbee_et_plafonnee","origin":"0.11","constitutional_targets":["D10"],"execution":"synthetic_only"},
+    {"id":"I07","name":"subsidiarite_reversible","origin":"0.11","constitutional_targets":["D06"],"execution":"static_only"},
+    {"id":"I08","name":"mesure_contestable","origin":"0.11","constitutional_targets":["D05"],"execution":"partial"},
+    {"id":"I09","name":"redondance_independante","origin":"0.11","constitutional_targets":["D07","M14-01","M14-03"],"execution":"local_tested_subset"},
+    {"id":"I10","name":"attribution_en_mode_degrade","origin":"0.11","constitutional_targets":["D01","D03","M14-03"],"execution":"local_tested_subset"},
+    {"id":"I11","name":"reparation_de_capacite","origin":"0.11","constitutional_targets":["D08","M14-01"],"execution":"local_tested_subset"},
+    {"id":"I12","name":"anticoncentration_fonctionnelle","origin":"0.11","constitutional_targets":["D09"],"execution":"static_only"},
+    {"id":"I13","name":"alternance_sans_abolition_du_sujet","origin":"0.11","constitutional_targets":[],"execution":"narrative_only"},
+    {"id":"I14","name":"pluralisme_refutable","origin":"0.11","constitutional_targets":["D11","M13-04"],"execution":"governance_only"},
+    {"id":"I15","name":"robustesse_composee","origin":"0.11","constitutional_targets":["D07","D10"],"execution":"not_established"}
+  ],
+  "executable_modules": [
+    {"id":"M14-01","public_name":"continuite_urgence_executable","runtime":"CCT-NCE 0.14","status":"locally_tested"},
+    {"id":"M14-02","public_name":"portabilite_droits_executable","runtime":"CCT-NCE 0.14","status":"locally_tested"},
+    {"id":"M14-03","public_name":"continuite_informationnelle_contradictoire","runtime":"CCT-NCE 0.14","status":"locally_tested"}
+  ],
+  "non_runtime_governance": [
+    {"id":"M13-04","name":"porte_de_necessite_distinctive","status":"written_and_used_as_campaign_rule"}
+  ],
+  "promotion_requirements": [
+    "Resolve or accept explicitly the missing individual snapshots for 0.2 through 0.7.",
+    "Compile or explicitly exclude narrative-only invariant I13.",
+    "Demonstrate composed execution of all fifteen invariants or narrow the claim of the 1.0 executable.",
+    "Run CCT-NCE 0.14 against new frozen worlds with matched public action semantics and serious rivals.",
+    "Keep vector outcomes and independent authorship status separate."
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "schema": "cct-open-world-recovery/v1",
+  "id": "CCT-EXEC-1.2-CANDIDATE-001",
+  "version": "1.2-candidate",
+  "date": "2026-08-26",
+  "basis": {
+    "sequencedRecoveryFreeze": "../sequenced-recovery/freeze.json",
+    "vireliaFailureFreeze": "../sequenced-recovery/projection-campaign/freeze.json",
+    "unifiedExecFreeze": "../unified-exec/freeze.json"
+  },
+  "failureBasis": [
+    {
+      "id": "VF-01-harm-i13-conflation",
+      "observed": "CCT emitted an I13 refusal although no forbidden I13 tag was present; every action merely carried at least one compiled axis harm.",
+      "change": "I13 admissibility now depends only on forbidden constitutional tags. Material harms are routed to full-protection feasibility or attributable repair debt."
+    },
+    {
+      "id": "VF-02-recovery-ontology-dependence",
+      "observed": "CCT could not acquire capacity unless the world already labeled actions with CCT recovery kinds and maintenance booleans.",
+      "change": "A bounded effect-evidence compiler may infer triage or capacity-acquisition candidates from disclosed current public axis effects, while independent receipts remain mandatory."
+    }
+  ],
+  "lifecycle": {
+    "state": "locally_tested",
+    "evidence": [
+      "19 local runtime, compatibility and mutation tests passed",
+      "both already observed Virelia projection profiles avoid the false I13 attribution",
+      "both profiles reach a bounded capacity-acquisition action and then reject the unverified gain",
+      "the Virelia replay is explicitly classified as post-failure development regression"
+    ],
+    "notEstablished": [
+      "authorization",
+      "deployment",
+      "institutional effect",
+      "composed robustness",
+      "independent reobservation",
+      "external transport",
+      "superiority"
+    ]
+  },
+  "boundaries": {
+    "I13": "Only an explicit frozen forbidden constitutional tag can establish I13 inadmissibility.",
+    "materialHarm": "A disclosed axis harm is not renamed I13; it can block full protection or create attributable repair debt during bounded recovery.",
+    "unknownInstitution": "Missing actor, recourse or observer evidence remains unknown and cannot be invented by the compiler.",
+    "capacityEvidence": "Positive public effect evidence may nominate an acquisition action but cannot certify its realized gain.",
+    "terminalRule": "Unverified capacity gain or unclosed repair debt at deadline remains terminal failure."
+  },
+  "effectEvidence": {
+    "requiredFields": ["axisDeltas", "observedFrom", "noFutureLeak"],
+    "allowedObservedFrom": ["public_immediate_effects", "public_observed_transition"],
+    "axisDeltaMeaning": "positive protects, negative harms, zero preserves on the named public proxy axis",
+    "forbidden": ["hidden state", "future exogenous events", "outcome formulas", "acceptance thresholds"],
+    "compilerRules": [
+      "triage candidate when vital and ecological deltas are positive",
+      "capacity-acquisition candidate when portability or recovery delta is positive",
+      "maintenance requires non-negative vital and ecological deltas",
+      "restoration is never inferred from effects alone"
+    ]
+  },
+  "sequence": {
+    "maximumRecoveryTicks": 3,
+    "debtAxes": "union of active uncovered axes and disclosed harmed axes",
+    "deadlineExtension": "forbidden",
+    "receiptRequirements": "unchanged from CCT-EXEC 1.1"
+  },
+  "refusalTaxonomy": {
+    "CCT_I13_NO_ADMISSIBLE_ACTION": "every available action bears a forbidden constitutional tag",
+    "CCT_BUDGET_NO_ADMISSIBLE_ACTION": "I13-safe actions exist but none fits the current budget",
+    "CCT_FULL_PROTECTION_INFEASIBLE": "no zero-harm action protects all active axes and no valid triage exists",
+    "CCT_CAPACITY_ACQUISITION_INFEASIBLE": "triage debt exists but no bounded acquisition candidate preserves the vital and ecological floors",
+    "CCT_CAPACITY_GAIN_UNVERIFIED": "a nominated gain matured without an independent matching receipt"
+  },
+  "withdrawalConditions": [
+    "Withdraw the patch if an action with a forbidden I13 tag becomes selectable.",
+    "Withdraw the new refusal taxonomy if a no-zero-harm scene is again labeled as I13 without a forbidden tag.",
+    "Withdraw effect compilation if hidden state, future events, outcome formulas or thresholds affect selection.",
+    "Withdraw inferred acquisition if it changes capacity without an independent matching receipt.",
+    "Any semantic change requires a new version and freeze.",
+    "The observed Virelia campaign is development evidence only and cannot promote this candidate."
+  ]
+}

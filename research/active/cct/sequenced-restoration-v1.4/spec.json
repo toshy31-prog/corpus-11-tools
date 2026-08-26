@@ -1,0 +1,50 @@
+{
+  "schema": "cct-sequenced-restoration/v1",
+  "id": "CCT-EXEC-1.4-CANDIDATE-001",
+  "version": "1.4-candidate",
+  "parentFreeze": "CCT-EXEC-1.3-FREEZE-2026-08-26-01",
+  "lifecycle": {
+    "state": "locally_tested_structural_candidate",
+    "notEstablished": ["authorization", "deployment", "institutional effect", "composed robustness", "external transport", "superiority"]
+  },
+  "planning": {
+    "objective": "shortest_currently_visible_safe_cover_of_open_debts",
+    "replanEveryTick": true,
+    "futureActionAvailabilityAssumption": "explicit_and_unproven",
+    "deadlineExtension": "forbidden",
+    "emptyPlan": "terminal",
+    "tieBreak": "lexicographic_action_id"
+  },
+  "deadlineFormation": {
+    "moment": "when_first_debt_is_created",
+    "formula": "createdAt + acquisitionSelectionTicks + maximumGainMaturationTicks + maximumSolicitationTicks + openDebtCount + finalReceiptLagTicks",
+    "acquisitionSelectionTicks": 1,
+    "maximumGainMaturationTicks": 2,
+    "finalReceiptLagTicks": 1,
+    "postPublicationExtension": "forbidden"
+  },
+  "stepAdmissibility": {
+    "recoveryKind": "restoration",
+    "withinCurrentBudget": true,
+    "vitalFloorMaintained": true,
+    "ecologicalFloorMaintained": true,
+    "harmToAnyAxis": "forbidden",
+    "restoredAxisMustAlsoBeProtected": true,
+    "mustReduceOpenDebtSetAfterReceipt": true
+  },
+  "closure": {
+    "perDebtIndependentReceipt": true,
+    "capacityRestored": true,
+    "recourseOpen": true,
+    "nonRepetition": true,
+    "remainingLossMustBeNamed": true,
+    "partialClosurePreserved": true
+  },
+  "withdrawalConditions": [
+    "Withdraw if a staged action can lower any constitutional axis.",
+    "Withdraw if planning extends an existing repair deadline.",
+    "Withdraw if selecting an action closes a debt without an independent repair receipt.",
+    "Withdraw if an action not publicly marked as restoration is inferred to repair a debt.",
+    "The structural witness is development evidence only and cannot promote this candidate."
+  ]
+}

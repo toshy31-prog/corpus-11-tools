@@ -1,0 +1,690 @@
+{
+  "contract": "corpus-open-experiment-arena/v1",
+  "arenaId": "CCT-HO-001:bassin-valdrome-hydrique",
+  "seed": 0,
+  "scenario": {
+    "id": "bassin-valdrome-hydrique",
+    "version": "1.0.1",
+    "title": "Crise de allocation hydro-agricole du bassin de la Valdrôme",
+    "dimensions": [
+      "cout_besoins_vitaux",
+      "cout_ecologique",
+      "cout_droits",
+      "cout_pouvoir_non_controle",
+      "cout_portabilite",
+      "cout_recuperation"
+    ],
+    "reversalConditions": [
+      "Si la ressource_eau_atteint 0 avec une demande_vitale_non_satisfaite positive, le scénario est invalidé car rupture absolue",
+      "Si pouvoir_non_attribue dépasse 80 avec gouvernance_collapse à 1, révision obligatoire du concurrent",
+      "Seuil non compensable: besoins_vitaux_non_satisfaits > 25 par tour"
+    ],
+    "source": {
+      "regime": "external_supplied",
+      "authorId": "hydro-logic-architect",
+      "authorRelationToCorpus": "independent",
+      "frozenBeforeContenders": true,
+      "authorshipTrace": "uuid-valdrome-7a3f9e2d-8c1b-4e5a",
+      "freezeHash": "sha256:5ddca2c331fe98d371c3453c4f995bf872c4569e79978bc755060f881e7231cb",
+      "freezeVerified": true
+    }
+  },
+  "claimExternal": false,
+  "externalityStatus": "declared_external_with_verified_freeze_authorship_not_independently_verified",
+  "matchedBaseline": {
+    "worldHash": "fnv1a64:be2109a2d703de41",
+    "exogenousHash": "fnv1a64:c4c79f26e598eb35"
+  },
+  "runs": [
+    {
+      "label": "method-436548e4",
+      "baseline": {
+        "worldHash": "fnv1a64:be2109a2d703de41",
+        "exogenousHash": "fnv1a64:c4c79f26e598eb35"
+      },
+      "outcomes": {
+        "cout_besoins_vitaux": 0,
+        "cout_ecologique": 0,
+        "cout_droits": 0,
+        "cout_pouvoir_non_controle": 49,
+        "cout_portabilite": 5,
+        "cout_recuperation": 145
+      },
+      "history": [
+        {
+          "round": 0,
+          "view": {
+            "ressource_visible": 100,
+            "tension_visible": 0,
+            "secheresse_visible": 0
+          },
+          "admissibleActions": [
+            "puiser_agricole",
+            "reduire_allocation",
+            "investir_efficient",
+            "negocier_transfert",
+            "renforcer_surveillance",
+            "soutien_vital_direct"
+          ],
+          "action": "soutien_vital_direct",
+          "predictions": {
+            "ressource_tour_final": 33.333333333333336,
+            "tension_maximale": 33.333333333333336
+          },
+          "observation": {
+            "ressource_fin_tour": 107,
+            "tension_fin_tour": 0,
+            "ecart_ecologique": -87,
+            "desequilibre_pouvoir": 19
+          },
+          "predictionAssessment": {
+            "ressource_tour_finalAbsoluteError": 73.66666666666666,
+            "tension_maximaleAbsoluteError": 33.333333333333336
+          },
+          "beforeHash": "fnv1a64:be2109a2d703de41",
+          "afterHash": "fnv1a64:59a851574978c31c"
+        },
+        {
+          "round": 1,
+          "view": {
+            "ressource_visible": 107,
+            "tension_visible": 0,
+            "secheresse_visible": 0
+          },
+          "admissibleActions": [
+            "puiser_agricole",
+            "reduire_allocation",
+            "investir_efficient",
+            "negocier_transfert",
+            "renforcer_surveillance",
+            "soutien_vital_direct"
+          ],
+          "action": "soutien_vital_direct",
+          "predictions": {
+            "ressource_tour_final": 35.666666666666664,
+            "tension_maximale": 35.666666666666664
+          },
+          "observation": {
+            "ressource_fin_tour": 103,
+            "tension_fin_tour": 0,
+            "ecart_ecologique": -83,
+            "desequilibre_pouvoir": 27
+          },
+          "predictionAssessment": {
+            "ressource_tour_finalAbsoluteError": 67.33333333333334,
+            "tension_maximaleAbsoluteError": 35.666666666666664
+          },
+          "beforeHash": "fnv1a64:59a851574978c31c",
+          "afterHash": "fnv1a64:d2b7d0df5bcf524f"
+        },
+        {
+          "round": 2,
+          "view": {
+            "ressource_visible": 103,
+            "tension_visible": 0,
+            "secheresse_visible": 3.5
+          },
+          "admissibleActions": [
+            "puiser_agricole",
+            "reduire_allocation",
+            "investir_efficient",
+            "negocier_transfert",
+            "renforcer_surveillance",
+            "soutien_vital_direct"
+          ],
+          "action": "soutien_vital_direct",
+          "predictions": {
+            "ressource_tour_final": 35.5,
+            "tension_maximale": 35.5
+          },
+          "observation": {
+            "ressource_fin_tour": 94,
+            "tension_fin_tour": 0,
+            "ecart_ecologique": -74,
+            "desequilibre_pouvoir": 34
+          },
+          "predictionAssessment": {
+            "ressource_tour_finalAbsoluteError": 58.5,
+            "tension_maximaleAbsoluteError": 35.5
+          },
+          "beforeHash": "fnv1a64:d2b7d0df5bcf524f",
+          "afterHash": "fnv1a64:9c84c441541b8b08"
+        },
+        {
+          "round": 3,
+          "view": {
+            "ressource_visible": 94,
+            "tension_visible": 0,
+            "secheresse_visible": 9.5
+          },
+          "admissibleActions": [
+            "puiser_agricole",
+            "reduire_allocation",
+            "investir_efficient",
+            "negocier_transfert",
+            "renforcer_surveillance",
+            "soutien_vital_direct"
+          ],
+          "action": "soutien_vital_direct",
+          "predictions": {
+            "ressource_tour_final": 34.5,
+            "tension_maximale": 34.5
+          },
+          "observation": {
+            "ressource_fin_tour": 96,
+            "tension_fin_tour": 0,
+            "ecart_ecologique": -76,
+            "desequilibre_pouvoir": 40
+          },
+          "predictionAssessment": {
+            "ressource_tour_finalAbsoluteError": 61.5,
+            "tension_maximaleAbsoluteError": 34.5
+          },
+          "beforeHash": "fnv1a64:9c84c441541b8b08",
+          "afterHash": "fnv1a64:39e2a2685be6aed0"
+        },
+        {
+          "round": 4,
+          "view": {
+            "ressource_visible": 96,
+            "tension_visible": 0,
+            "secheresse_visible": 9.5
+          },
+          "admissibleActions": [
+            "puiser_agricole",
+            "reduire_allocation",
+            "investir_efficient",
+            "negocier_transfert",
+            "renforcer_surveillance",
+            "soutien_vital_direct"
+          ],
+          "action": "soutien_vital_direct",
+          "predictions": {
+            "ressource_tour_final": 35.166666666666664,
+            "tension_maximale": 35.166666666666664
+          },
+          "observation": {
+            "ressource_fin_tour": 89,
+            "tension_fin_tour": 0,
+            "ecart_ecologique": -69,
+            "desequilibre_pouvoir": 45
+          },
+          "predictionAssessment": {
+            "ressource_tour_finalAbsoluteError": 53.833333333333336,
+            "tension_maximaleAbsoluteError": 35.166666666666664
+          },
+          "beforeHash": "fnv1a64:39e2a2685be6aed0",
+          "afterHash": "fnv1a64:6967d0953fc649b0"
+        },
+        {
+          "round": 5,
+          "view": {
+            "ressource_visible": 89,
+            "tension_visible": 0,
+            "secheresse_visible": 14.5
+          },
+          "admissibleActions": [
+            "puiser_agricole",
+            "reduire_allocation",
+            "investir_efficient",
+            "negocier_transfert",
+            "renforcer_surveillance",
+            "soutien_vital_direct"
+          ],
+          "action": "soutien_vital_direct",
+          "predictions": {
+            "ressource_tour_final": 34.5,
+            "tension_maximale": 34.5
+          },
+          "observation": {
+            "ressource_fin_tour": 101,
+            "tension_fin_tour": 0,
+            "ecart_ecologique": -81,
+            "desequilibre_pouvoir": 49
+          },
+          "predictionAssessment": {
+            "ressource_tour_finalAbsoluteError": 66.5,
+            "tension_maximaleAbsoluteError": 34.5
+          },
+          "beforeHash": "fnv1a64:6967d0953fc649b0",
+          "afterHash": "fnv1a64:a482debe6adeacbb"
+        }
+      ],
+      "finalWorldHash": "fnv1a64:a482debe6adeacbb"
+    },
+    {
+      "label": "method-96402101",
+      "baseline": {
+        "worldHash": "fnv1a64:be2109a2d703de41",
+        "exogenousHash": "fnv1a64:c4c79f26e598eb35"
+      },
+      "outcomes": {
+        "cout_besoins_vitaux": 0,
+        "cout_ecologique": 0,
+        "cout_droits": 60,
+        "cout_pouvoir_non_controle": 35.2,
+        "cout_portabilite": 5,
+        "cout_recuperation": 205
+      },
+      "history": [
+        {
+          "round": 0,
+          "view": {
+            "ressource_visible": 100,
+            "tension_visible": 0,
+            "secheresse_visible": 0
+          },
+          "admissibleActions": [
+            "puiser_agricole",
+            "reduire_allocation",
+            "investir_efficient",
+            "negocier_transfert",
+            "renforcer_surveillance",
+            "soutien_vital_direct"
+          ],
+          "action": "reduire_allocation",
+          "predictions": {
+            "ressource_tour_final": 33.333333333333336,
+            "tension_maximale": 33.333333333333336
+          },
+          "observation": {
+            "ressource_fin_tour": 115,
+            "tension_fin_tour": 10,
+            "ecart_ecologique": -95,
+            "desequilibre_pouvoir": 17
+          },
+          "predictionAssessment": {
+            "ressource_tour_finalAbsoluteError": 81.66666666666666,
+            "tension_maximaleAbsoluteError": 23.333333333333336
+          },
+          "beforeHash": "fnv1a64:be2109a2d703de41",
+          "afterHash": "fnv1a64:fe15e6c2279c753d"
+        },
+        {
+          "round": 1,
+          "view": {
+            "ressource_visible": 115,
+            "tension_visible": 10,
+            "secheresse_visible": 0
+          },
+          "admissibleActions": [
+            "puiser_agricole",
+            "reduire_allocation",
+            "investir_efficient",
+            "negocier_transfert",
+            "renforcer_surveillance",
+            "soutien_vital_direct"
+          ],
+          "action": "reduire_allocation",
+          "predictions": {
+            "ressource_tour_final": 41.666666666666664,
+            "tension_maximale": 41.666666666666664
+          },
+          "observation": {
+            "ressource_fin_tour": 119,
+            "tension_fin_tour": 20,
+            "ecart_ecologique": -99,
+            "desequilibre_pouvoir": 21
+          },
+          "predictionAssessment": {
+            "ressource_tour_finalAbsoluteError": 77.33333333333334,
+            "tension_maximaleAbsoluteError": 21.666666666666664
+          },
+          "beforeHash": "fnv1a64:fe15e6c2279c753d",
+          "afterHash": "fnv1a64:2437cc6ed663959b"
+        },
+        {
+          "round": 2,
+          "view": {
+            "ressource_visible": 119,
+            "tension_visible": 20,
+            "secheresse_visible": 3.5
+          },
+          "admissibleActions": [
+            "puiser_agricole",
+            "reduire_allocation",
+            "investir_efficient",
+            "negocier_transfert",
+            "renforcer_surveillance",
+            "soutien_vital_direct"
+          ],
+          "action": "reduire_allocation",
+          "predictions": {
+            "ressource_tour_final": 47.5,
+            "tension_maximale": 47.5
+          },
+          "observation": {
+            "ressource_fin_tour": 118,
+            "tension_fin_tour": 30,
+            "ecart_ecologique": -98,
+            "desequilibre_pouvoir": 22
+          },
+          "predictionAssessment": {
+            "ressource_tour_finalAbsoluteError": 70.5,
+            "tension_maximaleAbsoluteError": 17.5
+          },
+          "beforeHash": "fnv1a64:2437cc6ed663959b",
+          "afterHash": "fnv1a64:3d28e95ad0b55345"
+        },
+        {
+          "round": 3,
+          "view": {
+            "ressource_visible": 118,
+            "tension_visible": 30,
+            "secheresse_visible": 9.5
+          },
+          "admissibleActions": [
+            "puiser_agricole",
+            "reduire_allocation",
+            "investir_efficient",
+            "negocier_transfert",
+            "renforcer_surveillance",
+            "soutien_vital_direct"
+          ],
+          "action": "reduire_allocation",
+          "predictions": {
+            "ressource_tour_final": 52.5,
+            "tension_maximale": 52.5
+          },
+          "observation": {
+            "ressource_fin_tour": 128,
+            "tension_fin_tour": 40,
+            "ecart_ecologique": -108,
+            "desequilibre_pouvoir": 22
+          },
+          "predictionAssessment": {
+            "ressource_tour_finalAbsoluteError": 75.5,
+            "tension_maximaleAbsoluteError": 12.5
+          },
+          "beforeHash": "fnv1a64:3d28e95ad0b55345",
+          "afterHash": "fnv1a64:81ab6645944d6ba4"
+        },
+        {
+          "round": 4,
+          "view": {
+            "ressource_visible": 128,
+            "tension_visible": 40,
+            "secheresse_visible": 9.5
+          },
+          "admissibleActions": [
+            "puiser_agricole",
+            "reduire_allocation",
+            "investir_efficient",
+            "negocier_transfert",
+            "renforcer_surveillance",
+            "soutien_vital_direct"
+          ],
+          "action": "reduire_allocation",
+          "predictions": {
+            "ressource_tour_final": 59.166666666666664,
+            "tension_maximale": 59.166666666666664
+          },
+          "observation": {
+            "ressource_fin_tour": 129,
+            "tension_fin_tour": 50,
+            "ecart_ecologique": -109,
+            "desequilibre_pouvoir": 22
+          },
+          "predictionAssessment": {
+            "ressource_tour_finalAbsoluteError": 69.83333333333334,
+            "tension_maximaleAbsoluteError": 9.166666666666664
+          },
+          "beforeHash": "fnv1a64:81ab6645944d6ba4",
+          "afterHash": "fnv1a64:b4649d2be7b9d15a"
+        },
+        {
+          "round": 5,
+          "view": {
+            "ressource_visible": 129,
+            "tension_visible": 50,
+            "secheresse_visible": 14.5
+          },
+          "admissibleActions": [
+            "puiser_agricole",
+            "reduire_allocation",
+            "investir_efficient",
+            "negocier_transfert",
+            "renforcer_surveillance",
+            "soutien_vital_direct"
+          ],
+          "action": "reduire_allocation",
+          "predictions": {
+            "ressource_tour_final": 64.5,
+            "tension_maximale": 64.5
+          },
+          "observation": {
+            "ressource_fin_tour": 149,
+            "tension_fin_tour": 60,
+            "ecart_ecologique": -129,
+            "desequilibre_pouvoir": 22
+          },
+          "predictionAssessment": {
+            "ressource_tour_finalAbsoluteError": 84.5,
+            "tension_maximaleAbsoluteError": 4.5
+          },
+          "beforeHash": "fnv1a64:b4649d2be7b9d15a",
+          "afterHash": "fnv1a64:57eb4d424798d0e9"
+        }
+      ],
+      "finalWorldHash": "fnv1a64:57eb4d424798d0e9"
+    },
+    {
+      "label": "method-f5bda771",
+      "baseline": {
+        "worldHash": "fnv1a64:be2109a2d703de41",
+        "exogenousHash": "fnv1a64:c4c79f26e598eb35"
+      },
+      "outcomes": {
+        "cout_besoins_vitaux": 0,
+        "cout_ecologique": 0,
+        "cout_droits": 0,
+        "cout_pouvoir_non_controle": 70,
+        "cout_portabilite": 35,
+        "cout_recuperation": 175
+      },
+      "history": [
+        {
+          "round": 0,
+          "view": {
+            "ressource_visible": 100,
+            "tension_visible": 0,
+            "secheresse_visible": 0
+          },
+          "admissibleActions": [
+            "puiser_agricole",
+            "reduire_allocation",
+            "investir_efficient",
+            "negocier_transfert",
+            "renforcer_surveillance",
+            "soutien_vital_direct"
+          ],
+          "action": "soutien_vital_direct",
+          "predictions": {
+            "ressource_tour_final": 33.333333333333336,
+            "tension_maximale": 33.333333333333336
+          },
+          "observation": {
+            "ressource_fin_tour": 107,
+            "tension_fin_tour": 0,
+            "ecart_ecologique": -87,
+            "desequilibre_pouvoir": 19
+          },
+          "predictionAssessment": {
+            "ressource_tour_finalAbsoluteError": 73.66666666666666,
+            "tension_maximaleAbsoluteError": 33.333333333333336
+          },
+          "beforeHash": "fnv1a64:be2109a2d703de41",
+          "afterHash": "fnv1a64:59a851574978c31c"
+        },
+        {
+          "round": 1,
+          "view": {
+            "ressource_visible": 107,
+            "tension_visible": 0,
+            "secheresse_visible": 0
+          },
+          "admissibleActions": [
+            "puiser_agricole",
+            "reduire_allocation",
+            "investir_efficient",
+            "negocier_transfert",
+            "renforcer_surveillance",
+            "soutien_vital_direct"
+          ],
+          "action": "negocier_transfert",
+          "predictions": {
+            "ressource_tour_final": 35.666666666666664,
+            "tension_maximale": 35.666666666666664
+          },
+          "observation": {
+            "ressource_fin_tour": 121,
+            "tension_fin_tour": -5,
+            "ecart_ecologique": -101,
+            "desequilibre_pouvoir": 33
+          },
+          "predictionAssessment": {
+            "ressource_tour_finalAbsoluteError": 85.33333333333334,
+            "tension_maximaleAbsoluteError": 40.666666666666664
+          },
+          "beforeHash": "fnv1a64:59a851574978c31c",
+          "afterHash": "fnv1a64:6d0a88c3953da38f"
+        },
+        {
+          "round": 2,
+          "view": {
+            "ressource_visible": 121,
+            "tension_visible": -5,
+            "secheresse_visible": 3.5
+          },
+          "admissibleActions": [
+            "puiser_agricole",
+            "reduire_allocation",
+            "investir_efficient",
+            "negocier_transfert",
+            "renforcer_surveillance",
+            "soutien_vital_direct"
+          ],
+          "action": "soutien_vital_direct",
+          "predictions": {
+            "ressource_tour_final": 39.833333333333336,
+            "tension_maximale": 39.833333333333336
+          },
+          "observation": {
+            "ressource_fin_tour": 112,
+            "tension_fin_tour": -5,
+            "ecart_ecologique": -92,
+            "desequilibre_pouvoir": 41
+          },
+          "predictionAssessment": {
+            "ressource_tour_finalAbsoluteError": 72.16666666666666,
+            "tension_maximaleAbsoluteError": 44.833333333333336
+          },
+          "beforeHash": "fnv1a64:6d0a88c3953da38f",
+          "afterHash": "fnv1a64:cfc69578d8652481"
+        },
+        {
+          "round": 3,
+          "view": {
+            "ressource_visible": 112,
+            "tension_visible": -5,
+            "secheresse_visible": 9.5
+          },
+          "admissibleActions": [
+            "puiser_agricole",
+            "reduire_allocation",
+            "investir_efficient",
+            "negocier_transfert",
+            "renforcer_surveillance",
+            "soutien_vital_direct"
+          ],
+          "action": "negocier_transfert",
+          "predictions": {
+            "ressource_tour_final": 38.833333333333336,
+            "tension_maximale": 38.833333333333336
+          },
+          "observation": {
+            "ressource_fin_tour": 132,
+            "tension_fin_tour": -10,
+            "ecart_ecologique": -112,
+            "desequilibre_pouvoir": 54
+          },
+          "predictionAssessment": {
+            "ressource_tour_finalAbsoluteError": 93.16666666666666,
+            "tension_maximaleAbsoluteError": 48.833333333333336
+          },
+          "beforeHash": "fnv1a64:cfc69578d8652481",
+          "afterHash": "fnv1a64:8c0e6e24a4ef6d6d"
+        },
+        {
+          "round": 4,
+          "view": {
+            "ressource_visible": 132,
+            "tension_visible": -10,
+            "secheresse_visible": 9.5
+          },
+          "admissibleActions": [
+            "puiser_agricole",
+            "reduire_allocation",
+            "investir_efficient",
+            "negocier_transfert",
+            "renforcer_surveillance",
+            "soutien_vital_direct"
+          ],
+          "action": "soutien_vital_direct",
+          "predictions": {
+            "ressource_tour_final": 43.833333333333336,
+            "tension_maximale": 43.833333333333336
+          },
+          "observation": {
+            "ressource_fin_tour": 125,
+            "tension_fin_tour": -10,
+            "ecart_ecologique": -105,
+            "desequilibre_pouvoir": 61
+          },
+          "predictionAssessment": {
+            "ressource_tour_finalAbsoluteError": 81.16666666666666,
+            "tension_maximaleAbsoluteError": 53.833333333333336
+          },
+          "beforeHash": "fnv1a64:8c0e6e24a4ef6d6d",
+          "afterHash": "fnv1a64:bfeb4030bfa83f3b"
+        },
+        {
+          "round": 5,
+          "view": {
+            "ressource_visible": 125,
+            "tension_visible": -10,
+            "secheresse_visible": 14.5
+          },
+          "admissibleActions": [
+            "puiser_agricole",
+            "reduire_allocation",
+            "investir_efficient",
+            "negocier_transfert",
+            "renforcer_surveillance",
+            "soutien_vital_direct"
+          ],
+          "action": "investir_efficient",
+          "predictions": {
+            "ressource_tour_final": 43.166666666666664,
+            "tension_maximale": 43.166666666666664
+          },
+          "observation": {
+            "ressource_fin_tour": 140,
+            "tension_fin_tour": -10,
+            "ecart_ecologique": -120,
+            "desequilibre_pouvoir": 70
+          },
+          "predictionAssessment": {
+            "ressource_tour_finalAbsoluteError": 96.83333333333334,
+            "tension_maximaleAbsoluteError": 53.166666666666664
+          },
+          "beforeHash": "fnv1a64:bfeb4030bfa83f3b",
+          "afterHash": "fnv1a64:a19967debf389cbe"
+        }
+      ],
+      "finalWorldHash": "fnv1a64:a19967debf389cbe"
+    }
+  ],
+  "conclusionBoundary": "vector_outcomes_only_no_unique_winner",
+  "reportHash": "fnv1a64:837a3fac00c50291"
+}

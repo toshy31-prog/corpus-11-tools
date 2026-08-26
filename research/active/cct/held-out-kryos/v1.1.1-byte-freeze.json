@@ -1,0 +1,11 @@
+{
+  "schema": "cct-held-out-byte-freeze/v1",
+  "id": "CCT-KRYOS-1.1.1-RECEIPT-FREEZE-2026-08-26-01",
+  "receivedAt": "2026-08-26",
+  "receivedByteHash": "sha256:36a2cc0c96368f689b2c05acc49cc324aa20d18cefb2e2bab735eed984e7469e",
+  "localCanonicalPath": "kryos-bridges-v1.1.1.received.json",
+  "localCanonicalHash": "sha256:7e9698fe914945eea3ff13293b884deb600ad68edff27bc6bc6a63488adc5047",
+  "canonicalization": "The workspace copy adds exactly one terminal LF; remove that byte to reconstruct the received byte stream.",
+  "frozenBeforeContenderExecution": true,
+  "contenderExecutionAtFreeze": false
+}

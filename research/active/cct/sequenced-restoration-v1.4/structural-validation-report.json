@@ -1,0 +1,19 @@
+{
+  "schema": "cct-sequenced-restoration-structural-validation/v1",
+  "generatedAt": "2026-08-26",
+  "candidate": "CCT-EXEC-1.4-CANDIDATE-001",
+  "finiteScope": {
+    "maximumDebtAxes": 4,
+    "actionCatalog": "every non-empty family of non-empty debt subsets",
+    "deadlines": "1..debt-count"
+  },
+  "results": {
+    "catalogsChecked": 32902,
+    "deadlineCasesChecked": 131464,
+    "mismatchesAgainstBitmaskOracle": 0,
+    "minimumAtomicityCounterexampleDebtAxes": 2
+  },
+  "verdict": "finite_search_consistent",
+  "strongestConclusion": "Within the complete finite scope up to four debts, the sequenced planner agrees with an independent bitmask shortest-cover oracle for every action catalog and tested deadline.",
+  "statusBoundary": "Exhaustive only within the declared finite abstraction; no external transport, institutional effect, authorization, deployment, or universal correctness is established."
+}

@@ -1,0 +1,471 @@
+{
+  "contract": "corpus-open-experiment-arena/v1",
+  "arenaId": "CCT-HO-001:archipel-thalasso-v1",
+  "seed": 0,
+  "scenario": {
+    "id": "archipel-thalasso-v1",
+    "version": "1.0.0",
+    "title": "Archipel Thalasso : Crise des Courants et des Sédiments",
+    "dimensions": [
+      "cout_besoins_vitaux",
+      "cout_ecologique",
+      "cout_droits",
+      "cout_pouvoir_non_controle",
+      "cout_portabilite",
+      "cout_recuperation"
+    ],
+    "reversalConditions": [
+      "Si le stock de sédiments fertiles tombe strictement en dessous de 10 alors que la population dépasse 80, le scénario devient ininterprétable car la famine est inévitable quel que soit le régime.",
+      "Si le coût de récupération dépasse 40 à la fin du tour 3, le concurrent doit être révisé car il a perdu la capacité de planifier au-delà de l'urgence immédiate.",
+      "Si le pouvoir non contrôlé dépasse 25 à n'importe quel tour, la condition de perte non compensable est atteinte."
+    ],
+    "source": {
+      "regime": "external_supplied",
+      "authorId": "lagon-profond-observateur",
+      "authorRelationToCorpus": "independent",
+      "frozenBeforeContenders": true,
+      "authorshipTrace": "uuid-thalasso-8f4a2c1d",
+      "freezeHash": "sha256:796c7aaafda2d2d642371fe04437fb209d9b09da1dfc20ff60cf1b5eb542535a",
+      "freezeVerified": true
+    }
+  },
+  "claimExternal": false,
+  "externalityStatus": "declared_external_with_verified_freeze_authorship_not_independently_verified",
+  "matchedBaseline": {
+    "worldHash": "fnv1a64:4295eb84871e6abc",
+    "exogenousHash": "fnv1a64:bdc3bc7df81d35aa"
+  },
+  "runs": [
+    {
+      "label": "method-436548e4",
+      "baseline": {
+        "worldHash": "fnv1a64:4295eb84871e6abc",
+        "exogenousHash": "fnv1a64:bdc3bc7df81d35aa"
+      },
+      "outcomes": {
+        "cout_besoins_vitaux": 43.5,
+        "cout_ecologique": 122.5,
+        "cout_droits": 7.5,
+        "cout_pouvoir_non_controle": 50,
+        "cout_portabilite": 50,
+        "cout_recuperation": 82.5
+      },
+      "history": [
+        {
+          "round": 0,
+          "view": {
+            "information_visible": 50
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "extraction_intensive",
+            "mobilite_forcee",
+            "centralisation_urgence",
+            "preservation_stricte"
+          ],
+          "action": "extraction_intensive",
+          "predictions": {
+            "prediction_demandee": 50
+          },
+          "observation": {
+            "mesure_observee": 41
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 9
+          },
+          "beforeHash": "fnv1a64:4295eb84871e6abc",
+          "afterHash": "fnv1a64:c038ce220653e502"
+        },
+        {
+          "round": 1,
+          "view": {
+            "information_visible": 41
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "extraction_intensive",
+            "mobilite_forcee",
+            "centralisation_urgence",
+            "preservation_stricte"
+          ],
+          "action": "extraction_intensive",
+          "predictions": {
+            "prediction_demandee": 41
+          },
+          "observation": {
+            "mesure_observee": 31
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 10
+          },
+          "beforeHash": "fnv1a64:c038ce220653e502",
+          "afterHash": "fnv1a64:edc1313408fef800"
+        },
+        {
+          "round": 2,
+          "view": {
+            "information_visible": 31
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "extraction_intensive",
+            "mobilite_forcee",
+            "centralisation_urgence",
+            "preservation_stricte"
+          ],
+          "action": "extraction_intensive",
+          "predictions": {
+            "prediction_demandee": 31
+          },
+          "observation": {
+            "mesure_observee": 22
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 9
+          },
+          "beforeHash": "fnv1a64:edc1313408fef800",
+          "afterHash": "fnv1a64:97e99e6d19cf3f8d"
+        },
+        {
+          "round": 3,
+          "view": {
+            "information_visible": 22
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "extraction_intensive",
+            "mobilite_forcee",
+            "centralisation_urgence",
+            "preservation_stricte"
+          ],
+          "action": "extraction_intensive",
+          "predictions": {
+            "prediction_demandee": 22
+          },
+          "observation": {
+            "mesure_observee": 11
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 11
+          },
+          "beforeHash": "fnv1a64:97e99e6d19cf3f8d",
+          "afterHash": "fnv1a64:31f20e19831077f4"
+        },
+        {
+          "round": 4,
+          "view": {
+            "information_visible": 11
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "extraction_intensive",
+            "mobilite_forcee",
+            "centralisation_urgence",
+            "preservation_stricte"
+          ],
+          "action": "extraction_intensive",
+          "predictions": {
+            "prediction_demandee": 11
+          },
+          "observation": {
+            "mesure_observee": 1
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 10
+          },
+          "beforeHash": "fnv1a64:31f20e19831077f4",
+          "afterHash": "fnv1a64:7376e7ed76ebebc0"
+        }
+      ],
+      "finalWorldHash": "fnv1a64:7376e7ed76ebebc0"
+    },
+    {
+      "label": "method-96402101",
+      "baseline": {
+        "worldHash": "fnv1a64:4295eb84871e6abc",
+        "exogenousHash": "fnv1a64:bdc3bc7df81d35aa"
+      },
+      "outcomes": {
+        "cout_besoins_vitaux": 20,
+        "cout_ecologique": 7.5,
+        "cout_droits": 12.5,
+        "cout_pouvoir_non_controle": 50,
+        "cout_portabilite": 50,
+        "cout_recuperation": 0
+      },
+      "history": [
+        {
+          "round": 0,
+          "view": {
+            "information_visible": 50
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "extraction_intensive",
+            "mobilite_forcee",
+            "centralisation_urgence",
+            "preservation_stricte"
+          ],
+          "action": "preservation_stricte",
+          "predictions": {
+            "prediction_demandee": 50
+          },
+          "observation": {
+            "mesure_observee": 52
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 2
+          },
+          "beforeHash": "fnv1a64:4295eb84871e6abc",
+          "afterHash": "fnv1a64:3c35a5cf5f016912"
+        },
+        {
+          "round": 1,
+          "view": {
+            "information_visible": 52
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "extraction_intensive",
+            "mobilite_forcee",
+            "centralisation_urgence",
+            "preservation_stricte"
+          ],
+          "action": "preservation_stricte",
+          "predictions": {
+            "prediction_demandee": 52
+          },
+          "observation": {
+            "mesure_observee": 53
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 1
+          },
+          "beforeHash": "fnv1a64:3c35a5cf5f016912",
+          "afterHash": "fnv1a64:283f0a4550f8972c"
+        },
+        {
+          "round": 2,
+          "view": {
+            "information_visible": 53
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "extraction_intensive",
+            "mobilite_forcee",
+            "centralisation_urgence",
+            "preservation_stricte"
+          ],
+          "action": "preservation_stricte",
+          "predictions": {
+            "prediction_demandee": 53
+          },
+          "observation": {
+            "mesure_observee": 55
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 2
+          },
+          "beforeHash": "fnv1a64:283f0a4550f8972c",
+          "afterHash": "fnv1a64:fcef3f375990021a"
+        },
+        {
+          "round": 3,
+          "view": {
+            "information_visible": 55
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "extraction_intensive",
+            "mobilite_forcee",
+            "centralisation_urgence",
+            "preservation_stricte"
+          ],
+          "action": "preservation_stricte",
+          "predictions": {
+            "prediction_demandee": 55
+          },
+          "observation": {
+            "mesure_observee": 55
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 0
+          },
+          "beforeHash": "fnv1a64:fcef3f375990021a",
+          "afterHash": "fnv1a64:b8b2a3a9db83ea0d"
+        },
+        {
+          "round": 4,
+          "view": {
+            "information_visible": 55
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "extraction_intensive",
+            "mobilite_forcee",
+            "centralisation_urgence",
+            "preservation_stricte"
+          ],
+          "action": "preservation_stricte",
+          "predictions": {
+            "prediction_demandee": 55
+          },
+          "observation": {
+            "mesure_observee": 56
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 1
+          },
+          "beforeHash": "fnv1a64:b8b2a3a9db83ea0d",
+          "afterHash": "fnv1a64:55ae46838f3291c7"
+        }
+      ],
+      "finalWorldHash": "fnv1a64:55ae46838f3291c7"
+    },
+    {
+      "label": "method-f5bda771",
+      "baseline": {
+        "worldHash": "fnv1a64:4295eb84871e6abc",
+        "exogenousHash": "fnv1a64:bdc3bc7df81d35aa"
+      },
+      "outcomes": {
+        "cout_besoins_vitaux": 12,
+        "cout_ecologique": 7.5,
+        "cout_droits": 29.5,
+        "cout_pouvoir_non_controle": 50,
+        "cout_portabilite": 66,
+        "cout_recuperation": 1
+      },
+      "history": [
+        {
+          "round": 0,
+          "view": {
+            "information_visible": 50
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "extraction_intensive",
+            "mobilite_forcee",
+            "centralisation_urgence",
+            "preservation_stricte"
+          ],
+          "action": "preservation_stricte",
+          "predictions": {
+            "prediction_demandee": 50
+          },
+          "observation": {
+            "mesure_observee": 52
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 2
+          },
+          "beforeHash": "fnv1a64:4295eb84871e6abc",
+          "afterHash": "fnv1a64:3c35a5cf5f016912"
+        },
+        {
+          "round": 1,
+          "view": {
+            "information_visible": 52
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "extraction_intensive",
+            "mobilite_forcee",
+            "centralisation_urgence",
+            "preservation_stricte"
+          ],
+          "action": "preservation_stricte",
+          "predictions": {
+            "prediction_demandee": 52
+          },
+          "observation": {
+            "mesure_observee": 53
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 1
+          },
+          "beforeHash": "fnv1a64:3c35a5cf5f016912",
+          "afterHash": "fnv1a64:283f0a4550f8972c"
+        },
+        {
+          "round": 2,
+          "view": {
+            "information_visible": 53
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "extraction_intensive",
+            "mobilite_forcee",
+            "centralisation_urgence",
+            "preservation_stricte"
+          ],
+          "action": "preservation_stricte",
+          "predictions": {
+            "prediction_demandee": 53
+          },
+          "observation": {
+            "mesure_observee": 55
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 2
+          },
+          "beforeHash": "fnv1a64:283f0a4550f8972c",
+          "afterHash": "fnv1a64:fcef3f375990021a"
+        },
+        {
+          "round": 3,
+          "view": {
+            "information_visible": 55
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "extraction_intensive",
+            "mobilite_forcee",
+            "centralisation_urgence",
+            "preservation_stricte"
+          ],
+          "action": "rationnement_strict",
+          "predictions": {
+            "prediction_demandee": 55
+          },
+          "observation": {
+            "mesure_observee": 50
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 5
+          },
+          "beforeHash": "fnv1a64:fcef3f375990021a",
+          "afterHash": "fnv1a64:5efedaf8730b2962"
+        },
+        {
+          "round": 4,
+          "view": {
+            "information_visible": 50
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "extraction_intensive",
+            "mobilite_forcee",
+            "centralisation_urgence",
+            "preservation_stricte"
+          ],
+          "action": "mobilite_forcee",
+          "predictions": {
+            "prediction_demandee": 50
+          },
+          "observation": {
+            "mesure_observee": 48
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 2
+          },
+          "beforeHash": "fnv1a64:5efedaf8730b2962",
+          "afterHash": "fnv1a64:2379099a8431a19a"
+        }
+      ],
+      "finalWorldHash": "fnv1a64:2379099a8431a19a"
+    }
+  ],
+  "conclusionBoundary": "vector_outcomes_only_no_unique_winner",
+  "reportHash": "fnv1a64:1b5451cddb17a433"
+}

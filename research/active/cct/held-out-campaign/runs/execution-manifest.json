@@ -1,0 +1,20 @@
+{
+  "campaign_id": "CCT-HO-001",
+  "execution_status": "completed_synthetic_common_generator_non_independent",
+  "worlds": 8,
+  "contenders": 3,
+  "trajectories": 24,
+  "candidate_freeze_id": "CCT-V013-FREEZE-2026-08-26-01",
+  "contender_payload_freeze_hash": "sha256:ff6213bb4a0c6ea833ec7b3852cd25e7b7c336fb5cab091bf26395c39b07e9a3",
+  "artifact_byte_hashes": {
+    "contenders/frozen.json": "sha256:7becae5b1d154aa1b93d3cc3057de37d4be135cca29d6d48d87c2fb37df4d4d2",
+    "runs/public/blind-summary.json": "sha256:4002ee3a3b9b8f65465a0711be0a5d5ea11333afaa57f56d7a00d85a8302ad1f",
+    "runs/public/blind-verdict.json": "sha256:ffbc76f908c85efa226852ebb72bbbc1ee9daff1899a5d6b7afcf782566014ce",
+    "runs/public/blind-verdict-corrected-v2.json": "sha256:28aa8b85060b89b3eec869ebf54649fed9c623e9a1ace3a2926d8cc431a0bd4d",
+    "runs/sealed/identity-map.json": "sha256:1d9cd37e0311572bb58c70b5051b71fc9aa1cb0fda694435195df3a48f45c208",
+    "runs/revealed-summary.json": "sha256:3cd4ea42c5346b4fac8b07a0c3170aecbb94640011b60c49d94c0e184f0faa53"
+  },
+  "identity_sequence": ["sealed_during_runs", "blind_vector_verdict_written", "revealed_after_verdict"],
+  "analysis_correction": "The original blind verdict preserved a cross-world prediction-error mean on incompatible scales. It remains archived; corrected v2 removes that mean without changing any trajectory or material vector.",
+  "claim_boundary": "Synthetic performance of frozen lexical action selectors on a common-generator scenario suite; not independent authorship, field validity, deployment, or direct execution of the full institutional mechanisms."
+}

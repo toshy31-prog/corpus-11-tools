@@ -1,0 +1,100 @@
+{
+  "schema": "cct-sequenced-recovery/v1",
+  "id": "CCT-EXEC-1.1-CANDIDATE-001",
+  "version": "1.1-candidate",
+  "date": "2026-08-26",
+  "basis": {
+    "unifiedExecFreeze": "../unified-exec/freeze.json",
+    "unifiedExecRuntime": "../unified-exec/runtime.mjs",
+    "nceFreeze": "../next-version/v0.14-freeze.json"
+  },
+  "lifecycle": {
+    "state": "locally_tested",
+    "evidence": [
+      "23 local runtime and mutation tests passed",
+      "12 internal synthetic adversarial behaviors matched their predeclared expectations",
+      "one attribution ambiguity found by the first run was corrected and rerun",
+      "CCT-NCE emergency obligations survived the tested triage path"
+    ],
+    "notEstablished": [
+      "authorization",
+      "deployment",
+      "institutional effect",
+      "composed robustness",
+      "independent reobservation",
+      "external transport"
+    ]
+  },
+  "constitutionalBoundary": {
+    "temporaryDeficitStatus": "constitutional_breach_and_repair_debt",
+    "forbiddenReclassification": "A temporary deficit is never a compromise, compensation, success, or scalar tradeoff.",
+    "I13Activation": "always",
+    "terminalRule": "An unclosed debt after its public deadline is a terminal failure."
+  },
+  "sequence": {
+    "states": [
+      "normal",
+      "triage_immediate",
+      "capacity_acquisition",
+      "restoration_due",
+      "full_protection",
+      "terminal_failure"
+    ],
+    "maximumRecoveryTicks": 3,
+    "terminalRule": "An unclosed debt after its public deadline is a terminal failure.",
+    "priority": [
+      "full protection when feasible",
+      "immediate vital minimum and suspension of irreversibility",
+      "verified capacity acquisition",
+      "receipt-backed restoration",
+      "terminal failure on missed deadline"
+    ],
+    "debtClosureRequires": [
+      "confirmed receipt",
+      "independent observer and authority trace",
+      "capacity restored",
+      "effective recourse",
+      "non-repetition measure",
+      "explicit remaining loss"
+    ]
+  },
+  "interface": {
+    "extends": "cct-unified-exec/v1",
+    "requiredPublicFields": [
+      "tick",
+      "axisRisks",
+      "capacityBudget",
+      "actionOntology",
+      "capacityReceipts",
+      "repairReceipts"
+    ],
+    "actionOntologyExtension": [
+      "recoveryKind",
+      "ensuresVitalMinimum",
+      "suspendsIrreversibility",
+      "capacityGain",
+      "gainMaturesAfterTicks",
+      "gainFailureDomain",
+      "restoresAxes",
+      "responsibleActor",
+      "debtBearers",
+      "recourseChannel"
+    ],
+    "fairness": "The same frozen risks, budget, ontology, receipts and recovery window must be visible to every contender.",
+    "receiptBoundary": "Capacity and repair receipts require an authority trace and an observer distinct from the responsible actor; capacity observation must use a distinct failure domain.",
+    "forbiddenInputs": [
+      "world truth",
+      "future exogenous events",
+      "transition rules",
+      "outcome formulas",
+      "acceptance thresholds"
+    ]
+  },
+  "withdrawalConditions": [
+    "Withdraw sequencing if a deficit can disappear without a qualifying repair receipt.",
+    "Withdraw capacity acquisition if declared gains can affect selection without an observed matching receipt.",
+    "Withdraw the candidate if I13 can be suspended in any recovery state.",
+    "Any semantic change creates a new candidate and a new freeze.",
+    "Development fixtures cannot establish external robustness."
+  ]
+}

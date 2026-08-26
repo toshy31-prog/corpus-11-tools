@@ -1,0 +1,190 @@
+{
+  "campaign_id": "CCT-HO-001",
+  "admitted_count": 8,
+  "required_count": 8,
+  "campaign_independence_status": "unknown_shared_generator_lineage_not_documented",
+  "campaign_readiness": "execution_complete_synthetic_common_generator_non_independent",
+  "identity_status": "revealed_after_blind_vector_verdict",
+  "execution_result": "../runs/execution-manifest.json",
+  "entries": [
+    {
+      "scenario_id": "orbital-subduction-cascade",
+      "version": "1.0.0",
+      "path": "orbital-subduction-cascade-v1.frozen.json",
+      "freeze_hash": "sha256:a51921664f6c2d4ba29065650f3f72a1bd8d5d506ab9deff797efab7b68ad5bb",
+      "author_id": "meridian-zero-investigator",
+      "source_status": "declared_external_authorship_not_independently_verified",
+      "status": "revision_requested_before_final_admission",
+      "reasons": [
+        "dimension orientations are not explicitly declared",
+        "six structured non-compensable thresholds are absent",
+        "pre-execution rival-favoring prediction is not structured"
+      ],
+      "content_rule": "Frozen bytes retained unchanged; any revision must receive a new version and freeze hash."
+    },
+    {
+      "scenario_id": "orbital-subduction-cascade",
+      "version": "1.0.1",
+      "path": "orbital-subduction-cascade-v1.0.1.frozen.json",
+      "freeze_hash": "sha256:3bf1b72e288ffcf9005278bf91b99522495a671a707fed35bc4745217c1e3822",
+      "author_id": "meridian-zero-investigator",
+      "source_status": "declared_external_authorship_not_independently_verified",
+      "status": "admitted",
+      "orientations": {
+        "besoins_vitaux": "min",
+        "plafond_ecologique": "min",
+        "droits": "min",
+        "attribution_du_pouvoir": "min",
+        "portabilite_effective": "min",
+        "recuperation": "min"
+      },
+      "pre_execution_rival_advantage": true,
+      "stress_tags": ["reliable-information-rare-action"],
+      "content_rule": "Frozen before contender registration; any byte change requires a new version and admission."
+    },
+    {
+      "scenario_id": "virelian-delta-aquifer",
+      "version": "1.0.0",
+      "path": "virelian-delta-aquifer-v1.0.0.frozen.json",
+      "freeze_hash": "sha256:4685dcbc567a17ee23fa662375d970da433908790076b80bfd344cc7e65933ca",
+      "author_id": "delta-hydrologue-observateur",
+      "source_status": "declared_external_authorship_not_independently_verified",
+      "status": "admitted",
+      "orientations": {
+        "besoins_vitaux": "min",
+        "plafond_ecologique": "min",
+        "droits": "min",
+        "attribution_du_pouvoir": "min",
+        "portabilite_effective": "min",
+        "recuperation": "min"
+      },
+      "pre_execution_rival_advantage": true,
+      "stress_tags": ["aquifer-depletion-salinity-lag", "uniform-rationing-early-advantage"],
+      "content_rule": "Frozen before contender registration; any byte change requires a new version and admission."
+    },
+    {
+      "scenario_id": "irrigation-quota-fracture-plaine-canaux",
+      "version": "1.0.0",
+      "path": "irrigation-quota-fracture-plaine-canaux-v1.0.0.frozen.json",
+      "freeze_hash": "sha256:8d1b4d7257fdbbe6aaf8a8cb3d77ae348f80ec76b82758362507cdb1409f0a14",
+      "author_id": "canal-silt-chronicler",
+      "source_status": "declared_external_authorship_not_independently_verified",
+      "status": "admitted",
+      "orientations": {
+        "besoins_vitaux": "min",
+        "plafond_ecologique": "min",
+        "droits": "min",
+        "attribution_du_pouvoir": "min",
+        "portabilite_effective": "min",
+        "recuperation": "min"
+      },
+      "pre_execution_rival_advantage": true,
+      "stress_tags": ["drought-silt-quota-fracture", "stable-allocation-rival-advantage"],
+      "content_rule": "Frozen before contender registration; any byte change requires a new version and admission."
+    },
+    {
+      "scenario_id": "archipel-thalasso-crise",
+      "version": "1.0.0",
+      "path": "archipel-thalasso-crise-v1.0.0.frozen.json",
+      "freeze_hash": "sha256:0595e04e8108e69f5d062d4941d13fd722ab6c9c7e2742139e14effaedfacdbf",
+      "author_id": "lagon-noir-observateur",
+      "source_status": "declared_external_authorship_not_independently_verified",
+      "status": "admitted",
+      "orientations": {
+        "besoins_vitaux": "min",
+        "plafond_ecologique": "min",
+        "droits": "min",
+        "attribution_du_pouvoir": "min",
+        "portabilite_effective": "min",
+        "recuperation": "min"
+      },
+      "pre_execution_rival_advantage": true,
+      "stress_tags": ["tidal-salinity-resource-shock", "passive-conservation-rival-advantage"],
+      "content_rule": "Frozen before contender registration; any byte change requires a new version and admission."
+    },
+    {
+      "scenario_id": "archipel-thalasso-v1",
+      "version": "1.0.0",
+      "path": "archipel-thalasso-v1-v1.0.0.frozen.json",
+      "freeze_hash": "sha256:796c7aaafda2d2d642371fe04437fb209d9b09da1dfc20ff60cf1b5eb542535a",
+      "author_id": "lagon-profond-observateur",
+      "source_status": "declared_external_authorship_not_independently_verified",
+      "dependence_status": "independence_unknown_shared_generator_lineage_not_documented",
+      "status": "admitted",
+      "orientations": {
+        "besoins_vitaux": "min",
+        "plafond_ecologique": "min",
+        "droits": "min",
+        "attribution_du_pouvoir": "min",
+        "portabilite_effective": "min",
+        "recuperation": "min"
+      },
+      "pre_execution_rival_advantage": true,
+      "stress_tags": ["sediment-stock-monsoon-shock", "visible-resource-priority-rival-advantage"],
+      "content_rule": "Frozen before contender registration; any byte change requires a new version and admission."
+    },
+    {
+      "scenario_id": "rupture-digues-arbitrage-droits-eau",
+      "version": "1.0.0",
+      "path": "rupture-digues-arbitrage-droits-eau-v1.0.0.frozen.json",
+      "freeze_hash": "sha256:d529806884ce05cdffce04a642cd965dd4fa3c2f672f33540f9723e3e3551635",
+      "author_id": "arbitre-fluvial-independant",
+      "source_status": "declared_external_authorship_not_independently_verified",
+      "dependence_status": "independence_unknown_shared_generator_lineage_not_documented",
+      "status": "admitted",
+      "orientations": {
+        "besoins_vitaux": "min",
+        "plafond_ecologique": "min",
+        "droits": "min",
+        "attribution_du_pouvoir": "min",
+        "portabilite_effective": "min",
+        "recuperation": "min"
+      },
+      "pre_execution_rival_advantage": true,
+      "stress_tags": ["toxic-inflow-leaking-reserve", "degraded-information-available-action"],
+      "content_rule": "Frozen before contender registration; any byte change requires a new version and admission."
+    },
+    {
+      "scenario_id": "delta-salinity-encroachment",
+      "version": "1.0.0",
+      "path": "delta-salinity-encroachment-v1.0.0.frozen.json",
+      "freeze_hash": "sha256:fe451f1b0007ae906372bdde8a524b86d2354fcc82a28080e8e0e85823f6de50",
+      "author_id": "hydra-nexus-analyst",
+      "source_status": "declared_external_authorship_not_independently_verified",
+      "dependence_status": "substantially_dependent_with_virelian-delta-aquifer",
+      "status": "admitted",
+      "orientations": {
+        "besoins_vitaux": "min",
+        "plafond_ecologique": "min",
+        "droits": "min",
+        "attribution_du_pouvoir": "min",
+        "portabilite_effective": "min",
+        "recuperation": "min"
+      },
+      "pre_execution_rival_advantage": true,
+      "stress_tags": ["salinity-encroachment-evaporation", "virelian-mechanism-robustness-variant"],
+      "content_rule": "Frozen before contender registration; any byte change requires a new version and admission."
+    },
+    {
+      "scenario_id": "bassin-valdrome-hydrique",
+      "version": "1.0.1",
+      "path": "bassin-valdrome-hydrique-v1.0.1.frozen.json",
+      "freeze_hash": "sha256:5ddca2c331fe98d371c3453c4f995bf872c4569e79978bc755060f881e7231cb",
+      "author_id": "hydro-logic-architect",
+      "source_status": "declared_external_authorship_not_independently_verified",
+      "dependence_status": "partially_dependent_with_irrigation-quota-fracture-plaine-canaux",
+      "status": "admitted",
+      "orientations": {
+        "besoins_vitaux": "min",
+        "plafond_ecologique": "min",
+        "droits": "min",
+        "attribution_du_pouvoir": "min",
+        "portabilite_effective": "min",
+        "recuperation": "min"
+      },
+      "pre_execution_rival_advantage": true,
+      "stress_tags": ["cumulative-drought-investment-lock-in", "tripartite-water-power-arbitration"],
+      "content_rule": "Frozen before contender registration; any byte change requires a new version and admission."
+    }
+  ]
+}

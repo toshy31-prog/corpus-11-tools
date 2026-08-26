@@ -1,0 +1,19 @@
+{
+  "schema": "cct-kryos-confrontation-prerun-freeze/v1",
+  "id": "CCT-KRYOS-CONFRONTATION-R2-PRERUN-FREEZE-2026-08-26-01",
+  "frozenBeforeRuns": true,
+  "supersedesForExecution": "CCT-KRYOS-CONFRONTATION-PRERUN-FREEZE-2026-08-26-01",
+  "revisionReason": "Projection 001 omitted four public NCE fields required by the already-frozen contender interface.",
+  "worldContentHash": "sha256:c75362b716987fa0d53f22d3d355e4ebb21a8b943d2d8873709b4ccfcd87deb1",
+  "interpreterFreeze": "CCT-KRYOS-RICH-V3-FREEZE-2026-08-26-01",
+  "cctFreeze": "CCT-EXEC-1.2-FREEZE-2026-08-26-01",
+  "files": {
+    "contract.json": "bb1ee5bcd2256ca33247124539accb9ce6ccafd70905cd7f82dd92be0e704d71",
+    "projection.mjs": "77bd4e47a1bea991c99fd6afa2dc43ece9688315c1dec0ceec268a61bcef8858",
+    "run-campaign.mjs": "8075e611c9b8102b521624bb8c334f2ad5a469212ffa294623d305006aaee85f",
+    "../confrontation-1.2/contenders.mjs": "cd2e9d052cc094cffd0831ebf2dd14f62c16ace00776fbddfe285f27c2a4d0cb",
+    "../confrontation-1.2/contender-registry.json": "3f58d65840b81617064876804a94048f7c9131e4e3fab90ce2b3113d2c12b0fa"
+  },
+  "unchangedFromR1": ["world", "interpreter", "CCT 1.2", "contenders", "axes", "effects", "profiles", "budgets", "blinding"],
+  "noScalarWinner": true
+}

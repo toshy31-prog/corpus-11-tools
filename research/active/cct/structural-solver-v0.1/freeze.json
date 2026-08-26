@@ -1,0 +1,14 @@
+{
+  "schema": "cct-structural-solver-freeze/v1",
+  "id": "CCT-STRUCTURAL-SOLVER-0.1-FREEZE-2026-08-26-01",
+  "algorithm": "sha256",
+  "files": {
+    "solver.mjs": "c4a041044f57f67e765a7fd3aae22839868c2972a0a1298f5d1fb6d2f3a60fb0",
+    "test.mjs": "52bd2a27ace80c9ae508b5148f0e93c2105b793772e5f4a3c9274ccb996f8a78",
+    "run-analysis.mjs": "3002ec5c8fa37189b845e985e5145dd6b527bdf67b4055fdc748c1223ce28acf",
+    "report.json": "e41397c4caf1414c1dcf2fd40059546ae4048701416da84938891acb386a0319",
+    "README.md": "2436c16ff4dc6f333a696f4d599b2c420a2b421776b2df3f50182e8d5b57ed37",
+    "verify-freeze.mjs": "a3997fc895ef77a875dd30264bc0db1a5123b9b15b8232796e360a3cc795515a"
+  },
+  "statusBoundary": "Exact bounded structural-analysis bytes only. The solver proves no universal property and establishes no deployment, institutional effect or external transport."
+}

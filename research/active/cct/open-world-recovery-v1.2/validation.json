@@ -1,0 +1,53 @@
+{
+  "schema": "cct-open-world-recovery-validation/v1",
+  "date": "2026-08-26",
+  "status": "locally_tested_post_failure_candidate",
+  "tests": {
+    "total": 19,
+    "passed": 19,
+    "failed": 0
+  },
+  "commands": [
+    "node --check runtime.mjs",
+    "node --check run-virelia-development.mjs",
+    "node test.mjs",
+    "node run-virelia-development.mjs --check",
+    "node verify-freeze.mjs"
+  ],
+  "namedDefects": {
+    "VF-01": "locally repaired: no false I13 attribution in unit tests or Virelia development replay",
+    "VF-02": "partially repaired: public effects can nominate capacity acquisition, but independent realization evidence remains externally required"
+  },
+  "compatibility": {
+    "legacy11TriageSemantics": "passed",
+    "fullProtectionPriority": "passed",
+    "I13ForbiddenTag": "passed",
+    "independentCapacityReceipt": "passed",
+    "repairReceiptAndDebtClosure": "passed"
+  },
+  "negativeControls": [
+    "future-leaking effect evidence rejected",
+    "hidden-world evidence source rejected",
+    "self-certified capacity receipt rejected",
+    "missing institutional attribution remains unresolved",
+    "deadline extension forbidden",
+    "aggregate winner absent"
+  ],
+  "vireliaDevelopmentReplay": {
+    "profiles": 2,
+    "falseI13Attributions": 0,
+    "capacityAcquisitionReached": 2,
+    "unverifiedGainTerminalFailures": 2,
+    "completeEightRoundPaths": 0,
+    "evidenceRole": "post_failure_development_regression_only"
+  },
+  "notEstablished": [
+    "held-out robustness",
+    "authorization",
+    "deployment",
+    "institutional effect",
+    "superiority",
+    "independent reobservation",
+    "external transport"
+  ]
+}

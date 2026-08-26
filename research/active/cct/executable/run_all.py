@@ -23,6 +23,10 @@ CHECKS = [
     {"id": "governance_lab_tests", "cwd": WORKSPACE / "governance-lab", "cmd": [sys.executable, "-m", "unittest", "-v"], "expected": 0},
     {"id": "p005_robustness", "cwd": WORKSPACE / "governance-lab", "cmd": [sys.executable, "run_p005_robustness.py"], "expected": 0},
     {"id": "field_calibration_d10", "cwd": WORKSPACE / "field-calibration" / "protocols", "cmd": [sys.executable, "-m", "unittest", "-v", "test_validate_d10_protocol.py"], "expected": 0},
+    {"id": "v013_candidate", "cwd": WORKSPACE / "next-version", "cmd": [sys.executable, "-m", "unittest", "-v", "test_v013.py"], "expected": 0},
+    {"id": "v013_freeze", "cwd": WORKSPACE / "held-out-campaign", "cmd": [sys.executable, "verify_candidate_freeze.py"], "expected": 0},
+    {"id": "held_out_admission", "cwd": WORKSPACE / "held-out-campaign", "cmd": ["node", "--test", "test_admission.mjs"], "expected": 0},
+    {"id": "held_out_composition", "cwd": WORKSPACE / "held-out-campaign", "cmd": [sys.executable, "-m", "unittest", "-v", "test_campaign_manifest.py"], "expected": 0},
 ]
 
 

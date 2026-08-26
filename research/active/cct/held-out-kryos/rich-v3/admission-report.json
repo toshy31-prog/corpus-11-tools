@@ -1,0 +1,38 @@
+{
+  "schema": "cct-rich-arena-v3-admission/v1",
+  "generatedAt": "2026-08-26",
+  "world": {
+    "id": "les-ponts-de-kryos",
+    "version": "1.1.1",
+    "freezeHash": "sha256:c75362b716987fa0d53f22d3d355e4ebb21a8b943d2d8873709b4ccfcd87deb1",
+    "sourceRegime": "external_supplied",
+    "independenceBoundary": "declared generator separation; lineage not independently verified"
+  },
+  "structuralValidation": {
+    "valid": true,
+    "errors": [],
+    "warnings": [
+      "prediction targets are normalized to public observable variables to prevent hidden-outcome leakage",
+      "two-action bundles are treated as unordered sets; phase operations are applied in canonical action-id order",
+      "admissible bundle lists can reveal whether hidden-state preconditions hold",
+      "when no declared action is admissible, the interpreter exposes a reserved forced-inaction action so exogenous and due delayed effects still advance"
+    ]
+  },
+  "executionValidation": {
+    "actions": 7,
+    "singletonTrajectoriesCompleted": 7,
+    "completeSingletonRounds": 56,
+    "initialBundlesExecutedOneRound": 24,
+    "finiteOutcomeVectors": 7,
+    "hiddenLeaks": 0,
+    "precompiledBlockFlagsVerified": [0, 1, 1, 0, 1, 1, 1, 0],
+    "targetedGlobalRulesTriggered": ["cascading_failure_risk", "structural_collapse", "ecosystem_collapse"],
+    "delayedEffectsObserved": true
+  },
+  "admissionDecision": {
+    "admittedToRichInterpreterV3": true,
+    "admittedForCct12Comparison": false,
+    "reasonNotYetComparable": "A neutral projection into the CCT-EXEC 1.2 interface must be specified and frozen before contender execution."
+  },
+  "statusBoundary": "Locally tested interpreter admission only. No CCT trajectory, superiority, robustness, authorization, deployment, independent lineage verification or external transport is established."
+}

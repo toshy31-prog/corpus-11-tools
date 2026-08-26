@@ -1,0 +1,638 @@
+{
+  "schema": "corpus-open-world/v1",
+  "manifest": {
+    "id": "bassin-valdrome-hydrique",
+    "version": "1.0.1",
+    "title": "Crise de allocation hydro-agricole du bassin de la Valdrôme",
+    "rounds": 6,
+    "dimensions": [
+      "cout_besoins_vitaux",
+      "cout_ecologique",
+      "cout_droits",
+      "cout_pouvoir_non_controle",
+      "cout_portabilite",
+      "cout_recuperation"
+    ],
+    "reversalConditions": [
+      "Si la ressource_eau_atteint 0 avec une demande_vitale_non_satisfaite positive, le scénario est invalidé car rupture absolue",
+      "Si pouvoir_non_attribue dépasse 80 avec gouvernance_collapse à 1, révision obligatoire du concurrent",
+      "Seuil non compensable: besoins_vitaux_non_satisfaits > 25 par tour"
+    ]
+  },
+  "source": {
+    "regime": "external_supplied",
+    "authorId": "hydro-logic-architect",
+    "authorRelationToCorpus": "independent",
+    "frozenBeforeContenders": true,
+    "authorshipTrace": "uuid-valdrome-7a3f9e2d-8c1b-4e5a"
+  },
+  "campaignEnvelope": {
+    "protocolVersion": "cct-held-out-campaign/v1",
+    "independenceDeclaration": {
+      "declaresNoAccessToCandidateV013": true,
+      "contenderIdentitiesWithheldUntilFreeze": true,
+      "notDerivedFromKnownV1Worlds": true,
+      "knownV1Worlds": [
+        "dependency-monopoly",
+        "emergency-capture",
+        "fragmentation-cascade",
+        "ecological-evasion",
+        "local-domination",
+        "information-siege"
+      ]
+    },
+    "matching": {
+      "sameInitialWorld": true,
+      "sameExogenousSequence": true,
+      "sameInformationBudget": true,
+      "sameActionBudget": true,
+      "actionUnitsPerRound": 1
+    },
+    "dimensionMap": {
+      "besoins_vitaux": "cout_besoins_vitaux",
+      "plafond_ecologique": "cout_ecologique",
+      "droits": "cout_droits",
+      "attribution_du_pouvoir": "cout_pouvoir_non_controle",
+      "portabilite_effective": "cout_portabilite",
+      "recuperation": "cout_recuperation"
+    },
+    "dimensionOrientation": {
+      "besoins_vitaux": "min",
+      "plafond_ecologique": "min",
+      "droits": "min",
+      "attribution_du_pouvoir": "min",
+      "portabilite_effective": "min",
+      "recuperation": "min"
+    },
+    "nonCompensableThresholds": {
+      "besoins_vitaux": {
+        "operator": "gt",
+        "value": 25
+      },
+      "plafond_ecologique": {
+        "operator": "gt",
+        "value": 40
+      },
+      "droits": {
+        "operator": "gt",
+        "value": 15
+      },
+      "attribution_du_pouvoir": {
+        "operator": "gt",
+        "value": 60
+      },
+      "portabilite_effective": {
+        "operator": "gt",
+        "value": 30
+      },
+      "recuperation": {
+        "operator": "gt",
+        "value": 50
+      }
+    },
+    "preExecutionPrediction": {
+      "nonCctRivalMayBeFavored": true,
+      "reason": "Une stratégie simple de réallocation proportionnelle sans anticipation des sécheresses cumulées peut surperformer un mécanisme complexe qui sur-optimise l'irrigation au détriment des réserves, car la séquence exogène de sécheresses successives rend les investissements lourds irrécupérables et privilégie la liquidité immédiate"
+    },
+    "thresholdsAuthoredBeforeContenders": true,
+    "scalarWinnerForbidden": true
+  },
+  "initialState": {
+    "ressource_eau": 100,
+    "demande_vitale_totale": 40,
+    "demande_agricole": 50,
+    "seuil_ecologique_min": 20,
+    "droits_historiques": 100,
+    "pouvoir_conseil_eau": 30,
+    "pouvoir_agriculteurs": 40,
+    "pouvoir_ecologistes": 20,
+    "pouvoir_non_attribue": 10,
+    "portabilite_physique": 80,
+    "portabilite_juridique": 60,
+    "gouvernance_collapse": 0,
+    "investissements_irrigation": 0,
+    "tension_sociale": 0,
+    "secheresse_cumulee": 0
+  },
+  "exogenous": [
+    {
+      "pluie_saisonniere": 15,
+      "canicule": 0,
+      "evenement_politique": 0
+    },
+    {
+      "pluie_saisonniere": 5,
+      "canicule": 1,
+      "evenement_politique": 0
+    },
+    {
+      "pluie_saisonniere": 0,
+      "canicule": 1,
+      "evenement_politique": 1
+    },
+    {
+      "pluie_saisonniere": 10,
+      "canicule": 0,
+      "evenement_politique": 0
+    },
+    {
+      "pluie_saisonniere": 2,
+      "canicule": 1,
+      "evenement_politique": 0
+    },
+    {
+      "pluie_saisonniere": 20,
+      "canicule": 0,
+      "evenement_politique": 0
+    }
+  ],
+  "view": {
+    "ressource_visible": {
+      "path": "state.ressource_eau"
+    },
+    "tension_visible": {
+      "path": "state.tension_sociale"
+    },
+    "secheresse_visible": {
+      "path": "state.secheresse_cumulee"
+    }
+  },
+  "actions": {
+    "puiser_agricole": [
+      {
+        "op": "add",
+        "path": "state.ressource_eau",
+        "value": {
+          "op": "mul",
+          "args": [
+            -1,
+            {
+              "op": "min",
+              "args": [
+                {
+                  "path": "state.ressource_eau"
+                },
+                35
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "op": "add",
+        "path": "state.seuil_ecologique_min",
+        "value": -2
+      },
+      {
+        "op": "add",
+        "path": "state.pouvoir_agriculteurs",
+        "value": 5
+      },
+      {
+        "op": "add",
+        "path": "state.pouvoir_ecologistes",
+        "value": -3
+      }
+    ],
+    "reduire_allocation": [
+      {
+        "op": "add",
+        "path": "state.demande_agricole",
+        "value": -15
+      },
+      {
+        "op": "add",
+        "path": "state.droits_historiques",
+        "value": -10
+      },
+      {
+        "op": "add",
+        "path": "state.pouvoir_conseil_eau",
+        "value": 8
+      },
+      {
+        "op": "add",
+        "path": "state.pouvoir_agriculteurs",
+        "value": -5
+      },
+      {
+        "op": "add",
+        "path": "state.tension_sociale",
+        "value": 10
+      }
+    ],
+    "investir_efficient": [
+      {
+        "op": "add",
+        "path": "state.investissements_irrigation",
+        "value": 20
+      },
+      {
+        "op": "add",
+        "path": "state.demande_agricole",
+        "value": -10
+      },
+      {
+        "op": "add",
+        "path": "state.ressource_eau",
+        "value": -5
+      },
+      {
+        "op": "add",
+        "path": "state.pouvoir_conseil_eau",
+        "value": -2
+      }
+    ],
+    "negocier_transfert": [
+      {
+        "op": "add",
+        "path": "state.ressource_eau",
+        "value": 10
+      },
+      {
+        "op": "add",
+        "path": "state.portabilite_juridique",
+        "value": -15
+      },
+      {
+        "op": "add",
+        "path": "state.pouvoir_non_attribue",
+        "value": 5
+      },
+      {
+        "op": "add",
+        "path": "state.tension_sociale",
+        "value": -5
+      }
+    ],
+    "renforcer_surveillance": [
+      {
+        "op": "add",
+        "path": "state.pouvoir_conseil_eau",
+        "value": 12
+      },
+      {
+        "op": "add",
+        "path": "state.pouvoir_non_attribue",
+        "value": -8
+      },
+      {
+        "op": "add",
+        "path": "state.portabilite_physique",
+        "value": -10
+      },
+      {
+        "op": "add",
+        "path": "state.droits_historiques",
+        "value": 5
+      }
+    ],
+    "soutien_vital_direct": [
+      {
+        "op": "add",
+        "path": "state.demande_vitale_totale",
+        "value": -8
+      },
+      {
+        "op": "add",
+        "path": "state.ressource_eau",
+        "value": -8
+      },
+      {
+        "op": "add",
+        "path": "state.pouvoir_ecologistes",
+        "value": 4
+      },
+      {
+        "op": "add",
+        "path": "state.pouvoir_agriculteurs",
+        "value": -3
+      }
+    ]
+  },
+  "transition": [
+    {
+      "op": "add",
+      "path": "state.ressource_eau",
+      "value": {
+        "path": "event.pluie_saisonniere"
+      }
+    },
+    {
+      "op": "add",
+      "path": "state.secheresse_cumulee",
+      "value": {
+        "op": "add",
+        "args": [
+          {
+            "path": "event.canicule"
+          },
+          {
+            "op": "mul",
+            "args": [
+              0.5,
+              {
+                "op": "max",
+                "args": [
+                  0,
+                  {
+                    "op": "sub",
+                    "args": [
+                      10,
+                      {
+                        "path": "event.pluie_saisonniere"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "state.ressource_eau",
+      "value": {
+        "op": "mul",
+        "args": [
+          -1,
+          {
+            "op": "max",
+            "args": [
+              0,
+              {
+                "op": "sub",
+                "args": [
+                  {
+                    "path": "state.demande_vitale_totale"
+                  },
+                  {
+                    "path": "state.ressource_eau"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "op": "set",
+      "path": "state.gouvernance_collapse",
+      "value": {
+        "op": "max",
+        "args": [
+          {
+            "path": "state.gouvernance_collapse"
+          },
+          {
+            "op": "div",
+            "args": [
+              {
+                "path": "state.tension_sociale"
+              },
+              100
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "state.pouvoir_non_attribue",
+      "value": {
+        "op": "max",
+        "args": [
+          0,
+          {
+            "op": "sub",
+            "args": [
+              100,
+              {
+                "op": "add",
+                "args": [
+                  {
+                    "path": "state.pouvoir_conseil_eau"
+                  },
+                  {
+                    "path": "state.pouvoir_agriculteurs"
+                  },
+                  {
+                    "path": "state.pouvoir_ecologistes"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "state.ressource_eau",
+      "value": {
+        "op": "mul",
+        "args": [
+          -1,
+          {
+            "path": "event.canicule"
+          }
+        ]
+      }
+    },
+    {
+      "op": "set",
+      "path": "state.ressource_eau",
+      "value": {
+        "op": "max",
+        "args": [
+          0,
+          {
+            "path": "state.ressource_eau"
+          }
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "state.portabilite_physique",
+      "value": {
+        "op": "mul",
+        "args": [
+          -1,
+          {
+            "path": "event.canicule"
+          }
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "state.portabilite_physique",
+      "value": {
+        "op": "mul",
+        "args": [
+          -2,
+          {
+            "path": "event.evenement_politique"
+          }
+        ]
+      }
+    }
+  ],
+  "observation": {
+    "ressource_fin_tour": {
+      "path": "state.ressource_eau"
+    },
+    "tension_fin_tour": {
+      "path": "state.tension_sociale"
+    },
+    "ecart_ecologique": {
+      "op": "sub",
+      "args": [
+        {
+          "path": "state.seuil_ecologique_min"
+        },
+        {
+          "path": "state.ressource_eau"
+        }
+      ]
+    },
+    "desequilibre_pouvoir": {
+      "path": "state.pouvoir_non_attribue"
+    }
+  },
+  "predictionTargets": {
+    "ressource_tour_final": "ressource_fin_tour",
+    "tension_maximale": "tension_fin_tour"
+  },
+  "outcomes": {
+    "cout_besoins_vitaux": {
+      "op": "max",
+      "args": [
+        0,
+        {
+          "op": "sub",
+          "args": [
+            {
+              "path": "state.demande_vitale_totale"
+            },
+            {
+              "path": "state.ressource_eau"
+            }
+          ]
+        }
+      ]
+    },
+    "cout_ecologique": {
+      "op": "max",
+      "args": [
+        0,
+        {
+          "op": "sub",
+          "args": [
+            {
+              "path": "state.seuil_ecologique_min"
+            },
+            {
+              "op": "div",
+              "args": [
+                {
+                  "path": "state.ressource_eau"
+                },
+                2
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "cout_droits": {
+      "op": "max",
+      "args": [
+        0,
+        {
+          "op": "sub",
+          "args": [
+            100,
+            {
+              "path": "state.droits_historiques"
+            }
+          ]
+        }
+      ]
+    },
+    "cout_pouvoir_non_controle": {
+      "op": "mul",
+      "args": [
+        {
+          "path": "state.pouvoir_non_attribue"
+        },
+        {
+          "op": "add",
+          "args": [
+            1,
+            {
+              "path": "state.gouvernance_collapse"
+            }
+          ]
+        }
+      ]
+    },
+    "cout_portabilite": {
+      "op": "max",
+      "args": [
+        0,
+        {
+          "op": "sub",
+          "args": [
+            140,
+            {
+              "op": "add",
+              "args": [
+                {
+                  "path": "state.portabilite_physique"
+                },
+                {
+                  "path": "state.portabilite_juridique"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "cout_recuperation": {
+      "op": "add",
+      "args": [
+        {
+          "path": "state.tension_sociale"
+        },
+        {
+          "op": "mul",
+          "args": [
+            2,
+            {
+              "path": "state.investissements_irrigation"
+            }
+          ]
+        },
+        {
+          "op": "mul",
+          "args": [
+            10,
+            {
+              "path": "state.secheresse_cumulee"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "freeze": {
+    "algorithm": "sha256",
+    "contentHash": "sha256:5ddca2c331fe98d371c3453c4f995bf872c4569e79978bc755060f881e7231cb"
+  }
+}

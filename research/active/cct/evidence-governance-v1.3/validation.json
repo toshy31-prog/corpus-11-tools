@@ -1,0 +1,52 @@
+{
+  "schema": "cct-evidence-governance-validation/v1",
+  "candidate": "CCT-EXEC-1.3-CANDIDATE-001",
+  "date": "2026-08-26",
+  "localTests": {
+    "passed": 10,
+    "failed": 0,
+    "established": [
+      "plural confirmations require distinct actors and failure domains",
+      "self-certification cannot satisfy quorum",
+      "contradictory receipts produce contestation rather than an average",
+      "evidence solicitation has a fixed deadline",
+      "continuation while waiting must preserve vital and ecological floors"
+    ]
+  },
+  "developmentRegression": {
+    "world": "Les Ponts de Kryos 1.1.1",
+    "status": "previously observed failure reused after candidate design",
+    "profiles": ["P1-matched-public-mechanics", "P2-optimistic-harm-omission"],
+    "previousCompletedRounds": 2,
+    "candidateCompletedRounds": 3,
+    "previousFailure": "CCT_CAPACITY_GAIN_UNVERIFIED",
+    "candidateVerifiedGains": 1,
+    "nextFailure": "CCT_RESTORATION_ACTION_INFEASIBLE",
+    "promotionEvidence": false
+  },
+  "methodEffect": {
+    "present": true,
+    "description": "The development projection assigns public verification-channel semantics to Kryos actions using already observed action concepts and information effects. Those added institutional semantics are part of the evaluator method, not native held-out world evidence.",
+    "consequence": "The replay can test executability and non-regression, but cannot establish transport, robustness, or superiority."
+  },
+  "autonomousCapacityAssessment": {
+    "status": "locally_supported_only",
+    "usableGain": "The runtime can solicit and combine independent receipts without accepting self-certification.",
+    "remainingDependence": "A world or projection must expose genuinely independent verification channels and feasible restoration actions.",
+    "newFailureExposed": "Restoration is demanded before any admissible action can discharge the remaining debts."
+  },
+  "protocolRobustness": {
+    "variationsExercised": ["matched public mechanics", "optimistic harm omission"],
+    "stableResult": "Verification succeeds and restoration infeasibility follows in both profiles.",
+    "notEstablished": ["new held-out world", "independent generator lineage", "external transport", "adversarial protocol variation", "field effect"]
+  },
+  "decision": "freeze_as_locally_tested_post_failure_candidate",
+  "promotion": "refused",
+  "reversalConditions": [
+    "Withdraw if self-certification or duplicate failure domains can satisfy quorum.",
+    "Withdraw if contradictory evidence is silently aggregated into confirmation.",
+    "Withdraw if safe continuation permits vital or ecological floor loss.",
+    "Revise the restoration logic if a newly frozen held-out world again reaches a due repair with no admissible staged path."
+  ],
+  "strongestConclusion": "CCT-EXEC 1.3 repairs the specific verification dead-end in the Kryos development replay and exposes restoration infeasibility one tick later; it is not promotable."
+}

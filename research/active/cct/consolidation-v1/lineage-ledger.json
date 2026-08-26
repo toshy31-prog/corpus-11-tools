@@ -1,0 +1,107 @@
+{
+  "schema": "cct-lineage-ledger/v1",
+  "candidate": "CCT-1.0-CANDIDATE-001",
+  "status_vocabulary": ["retained", "replaced", "withdrawn", "compiled_subset", "governance_only", "provenance_gap"],
+  "entries": [
+    {
+      "id": "L001",
+      "source_version": "0.1",
+      "change": "orientation ecosocialiste libertaire, polycentrisme, territoires, communs et coordination planetaire",
+      "status": "retained",
+      "targets": ["CCT-POL 0.13"],
+      "sources": ["../modele-gouvernance-ecosocialiste-libertaire.md"],
+      "remainder": "la mecanique institutionnelle exacte de 0.1 ne survit pas"
+    },
+    {
+      "id": "L002",
+      "source_version": "0.2-0.7",
+      "change": "revisions intermediaires correspondant aux sept cycles adversariaux",
+      "status": "provenance_gap",
+      "targets": ["0.8"],
+      "sources": ["../audit-adversarial-7-cycles.md"],
+      "remainder": "les cycles sont traces, mais les instantanes individuels 0.2 a 0.7 ne sont pas presents"
+    },
+    {
+      "id": "L003",
+      "source_version": "0.8",
+      "change": "noyau simple, administration contradictrice, corridors, droits portables, defense en couches, portes de capacite et budget de complexite",
+      "status": "retained",
+      "targets": ["CCT-POL 0.13", "CCT-CONSTITUTION"],
+      "sources": ["../audit-adversarial-7-cycles.md", "../modele-gouvernance-ecosocialiste-libertaire.md"],
+      "remainder": "plusieurs capacites restent narratives ou statiques"
+    },
+    {
+      "id": "L004",
+      "source_version": "0.9",
+      "change": "transition par portes corrigee par cellule de continuite bornee et voie de secours",
+      "status": "retained",
+      "targets": ["CCT-POL 0.13", "D01", "D04"],
+      "sources": ["../modele-gouvernance-ecosocialiste-libertaire.md"],
+      "remainder": "perte connue sous attaque ciblee de la porte"
+    },
+    {
+      "id": "L005",
+      "source_version": "0.10",
+      "change": "corridor de planification a deux regimes proportionnel au risque",
+      "status": "retained",
+      "targets": ["CCT-POL 0.13", "D02", "D10"],
+      "sources": ["../modele-gouvernance-ecosocialiste-libertaire.md"],
+      "remainder": "fragilite a l'apprentissage strategique et cout administratif"
+    },
+    {
+      "id": "L006",
+      "source_version": "0.11",
+      "change": "quinze invariants et six reconstructions apres CCT-L50-001",
+      "status": "retained",
+      "targets": ["I01-I15", "D01-D12"],
+      "sources": ["../modele-gouvernance-ecosocialiste-libertaire.md", "../executable/constitution/constitution.json"],
+      "remainder": "I13 reste narratif et I15 n'est pas etabli"
+    },
+    {
+      "id": "L007",
+      "source_version": "0.12",
+      "change": "noyau constitutionnel frugal, enveloppe elastique, reserve commune et porte de necessite",
+      "status": "retained",
+      "targets": ["CCT-CONSTITUTION", "CCT-EXEC-0.1"],
+      "sources": ["../modele-gouvernance-ecosocialiste-libertaire.md", "../executable/manifest.json"],
+      "remainder": "le paquet executable reste explicitement fonde sur 0.12"
+    },
+    {
+      "id": "L008",
+      "source_version": "0.13",
+      "change": "urgence double cle, portabilite hors capture, information contradictoire et necessite distinctive",
+      "status": "compiled_subset",
+      "targets": ["M14-01", "M14-02", "M14-03", "M13-04"],
+      "sources": ["../next-version/v0.13-candidate.json", "../held-out-campaign/runs/conclusion.md"],
+      "remainder": "M13-04 reste gouvernance; la compilation lexicale 0.13 a echoue dans 8 mondes sur 8"
+    },
+    {
+      "id": "L009",
+      "source_version": "0.14",
+      "change": "machines d'etat pour activation, double cle, echeance, revocation, restitution, portabilite et divergence",
+      "status": "compiled_subset",
+      "targets": ["CCT-NCE 0.14"],
+      "sources": ["../next-version/v0.14-candidate.json", "../next-version/runtime-v014.mjs", "../next-version/v0.14-validation.json"],
+      "remainder": "ne compile pas toute la CCT et n'a pas encore affronte de nouveaux mondes d'acceptation"
+    },
+    {
+      "id": "L010",
+      "source_version": "rename-1.0",
+      "change": "CCT conserve le projet global; la v0.14 est requalifiee CCT-NCE 0.14",
+      "status": "retained",
+      "targets": ["CCT-1.0-CANDIDATE-001"],
+      "sources": ["cct-1.0-candidate.json", "../next-version/CCT-NCE-0.14.md"],
+      "remainder": "alias non destructif: les octets geles et identifiants historiques restent inchanges"
+    }
+  ],
+  "withdrawals": [
+    "triple validation generale",
+    "transparence consideree suffisante pour controler l'expertise",
+    "planification principalement annuelle",
+    "droit de sortie considere protection suffisante",
+    "desarmement sans doctrine transitoire",
+    "transition definie seulement par calendrier politique",
+    "augmentation des controles consideree automatiquement libertaire",
+    "selection d'action par lexique de la compilation 0.13"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "cct-kryos-confrontation-prerun-freeze/v1",
+  "id": "CCT-KRYOS-CONFRONTATION-PRERUN-FREEZE-2026-08-26-01",
+  "frozenBeforeRuns": true,
+  "worldContentHash": "sha256:c75362b716987fa0d53f22d3d355e4ebb21a8b943d2d8873709b4ccfcd87deb1",
+  "interpreterFreeze": "CCT-KRYOS-RICH-V3-FREEZE-2026-08-26-01",
+  "cctFreeze": "CCT-EXEC-1.2-FREEZE-2026-08-26-01",
+  "files": {
+    "contract.json": "21688d1ee9792f50d139d65d807079372050e189095a81f1806c3e39458bc6ca",
+    "projection.mjs": "166805edfcc571832ac362fe71dea948c9c679da1b64d686796382fb1da2065d",
+    "contenders.mjs": "cd2e9d052cc094cffd0831ebf2dd14f62c16ace00776fbddfe285f27c2a4d0cb",
+    "contender-registry.json": "3f58d65840b81617064876804a94048f7c9131e4e3fab90ce2b3113d2c12b0fa",
+    "run-campaign.mjs": "d974e3cb8db5f6cc472ab17abb059ee8a14c6233ac823df246315b10a0a577c9"
+  },
+  "profiles": ["P1-matched-public-mechanics", "P2-optimistic-harm-omission"],
+  "matchedBudgets": true,
+  "noScalarWinner": true
+}

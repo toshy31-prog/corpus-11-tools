@@ -1,0 +1,17 @@
+{
+  "schema": "cct-consolidation-freeze/v1",
+  "id": "CCT-1.0-CONSOLIDATION-FREEZE-2026-08-26-01",
+  "algorithm": "sha256",
+  "scope": "audited composite baseline; mutable research state and experimental outputs excluded",
+  "files": {
+    "cct-1.0-candidate.json": "31fcb18d3b6cf8bd892f4c37798271002ec52c4e12d08e9f56569f95abe8336b",
+    "lineage-ledger.json": "34fbded9a14046af1758a1d2a378c378d47cc23590df95e96756f44a57e3be5b",
+    "NON-REGRESSION.md": "e25c5c99b79f36c7afacaafa9c51621c167e9dc0134d6b35c9fc814f8e7ff5bb",
+    "CCT-POL-1.0.md": "9b3101d53e4faf1118306fc0e78e64dded66e76f0d206b1abe1c6738693353ea",
+    "../modele-gouvernance-ecosocialiste-libertaire.md": "6f6953dc3aa72beff446708b6555a9a364d7633c0aed9086ed538315c7b46e52",
+    "../executable/constitution/constitution.json": "48a8de1ddc0481c9fb8670666a579873ed14d0ee62c3cc8a77bd1d80b2a1fbde",
+    "../next-version/runtime-v014.mjs": "37a2bcfd363bf739c3de9b76968a5f9ec08ca5155ba72ba873b9633ffd85bb1f",
+    "../next-version/v0.14-freeze.json": "cd9cf8630d66f0ee22a7c0e49a0c0a95e683f45b11bf7d62b82e15f6e5ee20f2"
+  },
+  "statusBoundary": "Frozen consolidation establishes exact audited bytes only; it does not establish a total executable, authorization, deployment, institutional effect, robustness or transport."
+}

@@ -154,6 +154,61 @@
       ],
       "cwd": "field-calibration/protocols",
       "output_tail": ""
+    },
+    {
+      "id": "v013_candidate",
+      "passed": true,
+      "returncode": 0,
+      "expected_returncode": 0,
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "-v",
+        "test_v013.py"
+      ],
+      "cwd": "next-version",
+      "output_tail": ""
+    },
+    {
+      "id": "v013_freeze",
+      "passed": true,
+      "returncode": 0,
+      "expected_returncode": 0,
+      "command": [
+        "python3",
+        "verify_candidate_freeze.py"
+      ],
+      "cwd": "held-out-campaign",
+      "output_tail": ""
+    },
+    {
+      "id": "held_out_admission",
+      "passed": true,
+      "returncode": 0,
+      "expected_returncode": 0,
+      "command": [
+        "node",
+        "--test",
+        "test_admission.mjs"
+      ],
+      "cwd": "held-out-campaign",
+      "output_tail": ""
+    },
+    {
+      "id": "held_out_composition",
+      "passed": true,
+      "returncode": 0,
+      "expected_returncode": 0,
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "-v",
+        "test_campaign_manifest.py"
+      ],
+      "cwd": "held-out-campaign",
+      "output_tail": ""
     }
   ],
   "boundary": {

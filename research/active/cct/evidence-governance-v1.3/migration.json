@@ -1,0 +1,10 @@
+{
+  "schema": "cct-migration/v1",
+  "from": "CCT-EXEC 1.2",
+  "to": "CCT-EXEC 1.3 candidate",
+  "observedFailure": "Kryos: CCT_CAPACITY_GAIN_UNVERIFIED at tick 2 after valid triage and capacity acquisition",
+  "retained": ["I13 tag-only boundary", "material debt", "independent receipts", "repair deadlines", "no future leak", "no scalar winner"],
+  "added": ["action-opened verification channels", "two-source quorum", "evidence solicitation", "bounded safe continuation", "contradiction contestation", "verification timeout"],
+  "notAdded": ["self-certification", "automatic receipt from physical effect", "deadline extension", "Kryos-specific action names in runtime"],
+  "rollback": "Remove the 1.3 layer and return to frozen 1.2; no frozen predecessor is modified."
+}

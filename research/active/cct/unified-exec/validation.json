@@ -1,0 +1,21 @@
+{
+  "schema": "cct-unified-exec-validation/v1",
+  "candidate": "CCT-EXEC-1.0-CANDIDATE-001",
+  "date": "2026-08-26",
+  "lifecycle": "locally_tested",
+  "results": {
+    "runtime_and_mutation_tests": {"passed": 15, "failed": 0},
+    "internal_adversarial_fixtures": 8,
+    "expected_behavior_observed": 8,
+    "usable_action_fixtures": 5,
+    "safe_refusal_without_usable_action_fixtures": 3
+  },
+  "compositionAudit": {
+    "verdict": "bounded_interaction",
+    "detail": "I13 intentionally vetoes I15-covering actions that abolish protected subject capacities. A safe full-coverage alternative survives on the tested composition; otherwise the runtime exposes no usable capacity.",
+    "nceRegression": "M14-01 emergency obligations remain selected on the tested unified path."
+  },
+  "methodEffect": "The public risk vector, capacity budget and action ontology create the executable test surface. They must be frozen with each world and exposed identically to every contender.",
+  "strongestSupportedConclusion": "I13 and an executable I15 gate now exist and compose locally. Three of eight internal attacks still leave no usable constitutional action; composed robustness is not established.",
+  "notEstablished": ["held-out performance", "superiority", "authorization", "deployment", "institutional effect", "composed robustness", "independent reobservation", "external transport"]
+}

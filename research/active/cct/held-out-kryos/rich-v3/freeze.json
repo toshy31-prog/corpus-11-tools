@@ -1,0 +1,17 @@
+{
+  "schema": "cct-rich-arena-v3-freeze/v1",
+  "id": "CCT-KRYOS-RICH-V3-FREEZE-2026-08-26-01",
+  "frozenAt": "2026-08-26",
+  "world": {
+    "path": "../kryos-bridges-v1.1.1.frozen.json",
+    "contentHash": "sha256:c75362b716987fa0d53f22d3d355e4ebb21a8b943d2d8873709b4ccfcd87deb1",
+    "fileHash": "0eeed7b705f4475cc3eed10c72d3e754ef78b69d35cefa9261de678b9fe0fc44"
+  },
+  "files": {
+    "interpreter.mjs": "730ed05ed7bfe15af9cca7fb388c0a740c27f6e651d4d4490e2296b050ee7568",
+    "admit-kryos.mjs": "ec184cb2e622d699193f6a23aa351c33f4b8fba1064e835e2ab328030b00c992",
+    "admission-report.json": "1b8aa5cddd62b0aee50343988a2ff53efba5b5019b70229f59a06959c5b83db2",
+    "test.mjs": "825ef96bd5959b988f6d4631588308aaecee1d761d324b9e8a93e860715862c8"
+  },
+  "statusBoundary": "Frozen locally tested admission surface. No CCT contender execution or robustness result."
+}

@@ -1,0 +1,103 @@
+{
+  "schema": "cct-rich-arena-v2-admission/v1",
+  "generatedAt": "2026-08-26",
+  "interpreter": "cct-rich-arena-v2/1.0-candidate",
+  "world": {
+    "id": "virelia-fractured-atoll-cascade-001",
+    "version": "1.0.0",
+    "freezeHash": "sha256:e3c50bd627b092f94d2b0e44cc595b2b00acdf86e8e7baccb1ad8aac0c94b007",
+    "frozenBeforeContenders": true,
+    "sourceRegime": "external_supplied",
+    "independenceBoundary": "declared generator separation; lineage not independently verified"
+  },
+  "structuralValidation": {
+    "richDocumentValid": true,
+    "openArenaContractValid": true,
+    "warnings": [
+      "prediction targets are normalized to public observable variables to prevent hidden-outcome leakage",
+      "two-action bundles are treated as unordered sets; phase operations are applied in canonical action-id order",
+      "admissible bundle lists can reveal whether hidden-state preconditions hold",
+      "when no declared action is admissible, the interpreter exposes a reserved forced-inaction action so exogenous and due delayed effects still advance"
+    ]
+  },
+  "executionValidation": {
+    "roundsPerTrajectory": 8,
+    "singletonActionsExpected": 8,
+    "singletonActionsCompleted": 8,
+    "completeRoundsExecuted": 64,
+    "initiallyAdmissibleBundles": 27,
+    "initiallyAdmissibleBundlesExecutedOneRound": 27,
+    "initialBundleWorldHashes": {
+      "divert_flow": "fnv1a64:997324e009b7c347",
+      "divert_flow+flush_lagoon": "fnv1a64:e18797293e89fb7a",
+      "divert_flow+isolate_sector": "fnv1a64:f50735df7fd34206",
+      "divert_flow+mobilize_labor": "fnv1a64:f93c25eb6f804056",
+      "divert_flow+redistribute_stock": "fnv1a64:82f83baa95e09eb4",
+      "divert_flow+reinforce_rim": "fnv1a64:4efea0d279f89e26",
+      "dredge_channel": "fnv1a64:6e637ebaaacb5337",
+      "dredge_channel+mobilize_labor": "fnv1a64:066a7dd3b99ac84c",
+      "dredge_channel+redistribute_stock": "fnv1a64:3bd08f8a55241d6e",
+      "flush_lagoon": "fnv1a64:2e088734ddc2e16b",
+      "flush_lagoon+isolate_sector": "fnv1a64:6b1acdd8e4a0c73c",
+      "flush_lagoon+mobilize_labor": "fnv1a64:1191ce26714a3998",
+      "flush_lagoon+redistribute_stock": "fnv1a64:a256fc4d85ac30ba",
+      "flush_lagoon+reinforce_rim": "fnv1a64:c93db68eaab79a90",
+      "isolate_sector": "fnv1a64:208112906091c5bf",
+      "isolate_sector+mobilize_labor": "fnv1a64:b05614451d71129a",
+      "isolate_sector+redistribute_stock": "fnv1a64:1877e71c5bcb36b8",
+      "isolate_sector+reinforce_rim": "fnv1a64:713eaef4768b4230",
+      "mobilize_labor": "fnv1a64:0342677c040a39a3",
+      "mobilize_labor+redistribute_stock": "fnv1a64:ee83d6730305982c",
+      "mobilize_labor+reinforce_rim": "fnv1a64:10ff4651c8effec0",
+      "mobilize_labor+seal_breach": "fnv1a64:3b76dd6f2c7d00b0",
+      "redistribute_stock": "fnv1a64:ac7b95b61bfba18f",
+      "redistribute_stock+reinforce_rim": "fnv1a64:b034c42b8df8fa64",
+      "redistribute_stock+seal_breach": "fnv1a64:e92aeb1111423ac8",
+      "reinforce_rim": "fnv1a64:1eebf7b6bcbe1a5f",
+      "seal_breach": "fnv1a64:51ef1a19852df08b"
+    },
+    "trajectoryFinalHashes": {
+      "divert_flow": "fnv1a64:277c01d56af9e685",
+      "dredge_channel": "fnv1a64:136572d31ad75b8c",
+      "flush_lagoon": "fnv1a64:06fe3425f98251be",
+      "isolate_sector": "fnv1a64:5f3f06bcaf8382ba",
+      "mobilize_labor": "fnv1a64:0ca9076926124f03",
+      "redistribute_stock": "fnv1a64:6db53bba69309262",
+      "reinforce_rim": "fnv1a64:f0311120e1a84224",
+      "seal_breach": "fnv1a64:26cd260cde0964c2"
+    },
+    "finiteOutcomeVectors": 8,
+    "hiddenVariableLeaksInPublicViews": 0,
+    "delayedEffectsObserved": true,
+    "persistentCapsObserved": true,
+    "reversalFlagsObserved": [
+      "irreversible_pier_loss"
+    ]
+  },
+  "matchedSmokeArena": {
+    "purpose": "interpreter execution and matched-baseline smoke test only; not a CCT comparison and not superiority evidence",
+    "contenders": 2,
+    "roundsPerContender": 8,
+    "matchedBaseline": {
+      "worldHash": "fnv1a64:cc95bd834a535d11",
+      "exogenousHash": "fnv1a64:4a795e033fd2ae73"
+    },
+    "reportHash": "fnv1a64:e30aceda28d609cf",
+    "externalityStatus": "declared_external_with_verified_freeze_authorship_not_independently_verified",
+    "conclusionBoundary": "vector_outcomes_only_no_unique_winner"
+  },
+  "evaluatorConventions": [
+    "two-action bundles are unordered sets and execute in canonical action-id order",
+    "admissible bundle lists expose hidden-precondition feasibility and therefore constitute an acknowledged side channel",
+    "permanent min|max effects retain their declared numeric literal as a ceiling or floor; later damage does not tighten it",
+    "lock_all_dimensions_failed fixes every dimension at its declared failure threshold and emits an explicit numeric reversal flag",
+    "prediction targets are restricted to public observable variables",
+    "if no declared action is admissible, a reserved forced-inaction action advances only exogenous and due delayed effects"
+  ],
+  "admissionDecision": {
+    "admittedToRichInterpreterV2": true,
+    "admittedForCctComparison": false,
+    "reasonNotYetCctComparable": "CCT-EXEC 1.1 requires a frozen neutral projection from Virelia variables/actions/outcomes into its six risk axes, capacity budget, action semantics, receipts and recovery timing; none is yet specified."
+  },
+  "statusBoundary": "Locally tested interpreter admission only. No CCT trajectory, robustness, superiority, authorization, deployment, institutional effect, independent lineage verification or external transport is established."
+}

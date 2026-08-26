@@ -1,0 +1,37 @@
+{
+  "schema": "cct-consolidation-validation/v1",
+  "candidate": "CCT-1.0-CANDIDATE-001",
+  "date": "2026-08-26",
+  "lifecycle": "written_and_locally_validated_composite",
+  "results": [
+    {"scope":"consolidation structure","passed":1,"failed":0},
+    {"scope":"consolidation negative mutations","passed":8,"failed":0},
+    {"scope":"consolidation freeze","passed":1,"failed":0,"files_verified":8},
+    {"scope":"CCT-NCE 0.14 runtime","passed":13,"failed":0},
+    {"scope":"CCT-NCE 0.14 structure and freeze","passed":2,"failed":0},
+    {"scope":"v0.13 candidate regression","passed":7,"failed":0},
+    {"scope":"v0.13 political and candidate freeze","passed":1,"failed":0},
+    {"scope":"CCT-EXEC-0.1 full local stack","passed":11,"failed":0},
+    {"scope":"held-out campaign Node test files","passed":2,"failed":0},
+    {"scope":"held-out campaign composition mutations","passed":6,"failed":0}
+  ],
+  "caught_and_repaired": [
+    {
+      "event": "An attempted in-place 1.0 title update changed the frozen v0.13 political model.",
+      "detection": "verify_candidate_freeze.py rejected the changed SHA-256.",
+      "repair": "The frozen v0.13 bytes were restored exactly and CCT-POL 1.0 was moved to a separate overlay.",
+      "reverification": "v0.13 freeze valid"
+    }
+  ],
+  "strongest_supported_conclusion": "CCT now has a coherent, frozen and locally validated identity/lineage consolidation. It still does not have a single fully integrated executable or established robustness.",
+  "not_established": [
+    "complete exact history for 0.2 through 0.7",
+    "total executable assimilation",
+    "authorization",
+    "deployment",
+    "institutional effect",
+    "independent reobservation",
+    "protocol robustness",
+    "external transport"
+  ]
+}

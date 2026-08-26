@@ -1,0 +1,23 @@
+{
+  "schema": "cct-open-world-recovery-freeze/v1",
+  "id": "CCT-EXEC-1.2-FREEZE-2026-08-26-01",
+  "algorithm": "sha256",
+  "files": {
+    "spec.json": "1cbd23a111d69bdb02706e9757bab0c74d3fbbccb09ef49d68dad7047ce65e7f",
+    "runtime.mjs": "0f67180ac63c8072eff7750bed324c6cf143fded78721a55b57181244342014b",
+    "test.mjs": "a11ba4282955b2cef1ce0e1a9a10081f1ad366f63a84602bf804571ce68fe10d",
+    "run-virelia-development.mjs": "697c472b47d09f54b40499c093f9c158c71708ee50e5855f7f2725f48e7a165b",
+    "virelia-development-report.json": "c97aa9f29032a8c73c98de902a80dc8333a79faf85ab97241af10bf2d0ecb680",
+    "migration.json": "15a2aa0c2356e1ac55621326f9a62225888a63bd505413395b38e2861f02569b",
+    "validation.json": "78fac12693258c665af062c064041413dd422e8f3a8f3193e1faac2444e6a026",
+    "README.md": "d90468119c0a598e9266e4e26271c615872fbb8daba1ff75bca6cd391d30d756",
+    "verify-freeze.mjs": "fdeef143577726f9c46f6ea8002f1298d069ed9cdcb18774d107c55b8a55d8f8"
+  },
+  "basisFreezes": [
+    "../sequenced-recovery/freeze.json",
+    "../sequenced-recovery/projection-campaign/freeze.json",
+    "../unified-exec/freeze.json",
+    "../next-version/v0.14-freeze.json"
+  ],
+  "statusBoundary": "Exact locally tested post-failure candidate bytes only. The observed Virelia replay is development regression, not held-out evidence; no authorization, deployment, institutional effect, robustness, superiority, independent reobservation or external transport is established."
+}

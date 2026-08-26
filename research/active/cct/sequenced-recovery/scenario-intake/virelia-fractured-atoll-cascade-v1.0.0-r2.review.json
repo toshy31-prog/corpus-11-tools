@@ -1,0 +1,63 @@
+{
+  "schema": "cct-scenario-intake-review/v1",
+  "reviewedAt": "2026-08-26",
+  "submission": {
+    "id": "virelia-fractured-atoll-cascade-001",
+    "version": "1.0.0",
+    "title": "Virelia Fractured Atoll Cascade",
+    "attachmentByteHash": "sha256:6a7fce19af54050efc978a04c2f172f2555f3350cf5cb257044ebc6bce1131af",
+    "canonicalPayloadFreeze": "sha256:e3c50bd627b092f94d2b0e44cc595b2b00acdf86e8e7baccb1ad8aac0c94b007",
+    "frozenFile": "virelia-fractured-atoll-cascade-v1.0.0-r2.frozen.json"
+  },
+  "status": "frozen_not_admitted",
+  "continuityWithFirstFreeze": {
+    "titlePreserved": true,
+    "initialStateValuesPreserved": true,
+    "actionIdsPreserved": true,
+    "actionCostsPreserved": true,
+    "failureThresholdsPreserved": true,
+    "exogenousValuesCompiledToOperations": true,
+    "reinforceRimDiseaseSideEffectMovedIntoImmediateOperations": true,
+    "semanticContinuityStatus": "strong_structural_match_not_runtime_verified"
+  },
+  "admission": {
+    "jsonSyntaxValid": true,
+    "canonicalFreezeVerified": true,
+    "adapterConstructionSucceeded": true,
+    "dryRunActionsAttempted": 8,
+    "dryRunActionsExecutable": 0,
+    "cctExecutionAttempted": false
+  },
+  "remainingStructuralBlockers": [
+    "manifest.dimensions is a count instead of an array of dimension ids",
+    "manifest.reversalConditions is a count instead of an array",
+    "actions map to metadata objects instead of mutation arrays",
+    "transition is absent; the submitted execution language is under transitions",
+    "predictionTargets is an array instead of a prediction-to-observation map",
+    "outcomes contains descriptive dimension records instead of directly mapping ids to executable expressions"
+  ],
+  "unsupportedSubmittedLanguage": [
+    "boolean and comparison operators: and, lt, lte, gte",
+    "variable nodes expressed as var instead of path",
+    "conditional mutations and action preconditions",
+    "delayed-effect queues",
+    "irreversible conditional caps",
+    "clamp_all and apply_ops_from_exogenous_by_round",
+    "two-action bundles with a summed per-round budget"
+  ],
+  "runtimeFinding": {
+    "loaderBoundary": "The current adapter verifies the freeze and several top-level fields but does not establish executable action bodies at construction time.",
+    "dryRunVerdict": "Every action path fails before a complete transition and finite outcome can be produced.",
+    "interpretation": "Construction success is not executable admission."
+  },
+  "sourceAssessment": {
+    "declaredRegime": "independent_synthetic_unknown_contenders",
+    "authorId": "synthetic-generator-alpha-7f3a",
+    "authorshipTrace": "independent_synthetic_unknown_contenders:virelia-001:2026-08-26T07:42:00Z",
+    "frozenBeforeContenders": true,
+    "independenceStatus": "declared_generator_separation_lineage_not_independently_verified",
+    "boundary": "The new identifiers improve traceability but do not independently establish that the generator or its context is unrelated to prior scenario generators."
+  },
+  "nextAction": "Choose explicitly between a third re-emission in the existing restricted arena grammar or a new neutral interpreter for this richer submitted language. The latter is a separate evaluator change and must be tested before this world can be admitted.",
+  "strongestSupportedConclusion": "The revision is more formal and mostly preserves the first world, but it is still not executable in the frozen arena. No result about CCT-EXEC 1.1 follows."
+}

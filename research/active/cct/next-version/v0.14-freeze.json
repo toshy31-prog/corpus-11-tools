@@ -1,0 +1,15 @@
+{
+  "schema": "cct-executable-freeze/v1",
+  "id": "CCT-V014-FREEZE-2026-08-26-01",
+  "candidate": "CCT-V014-CANDIDATE-001",
+  "frozenAt": "2026-08-26",
+  "algorithm": "sha256",
+  "files": {
+    "v0.14-candidate.json": "3af820817b2ab8ea627b863ae92bc5413b84cfed41a516cc147f7ca7c8c9bc3b",
+    "runtime-v014.mjs": "37a2bcfd363bf739c3de9b76968a5f9ec08ca5155ba72ba873b9633ffd85bb1f",
+    "test-v014.mjs": "948ecfc8ed645353fae3361d0c98c3e284eecd7fc151993b1e83e4dbbbaf79ac",
+    "MIGRATION-v013-v014.md": "5a5c88229750baf7f5eb6dfc289b74fd970c284bbf34852826760e7352fa7eab"
+  },
+  "purpose": "Freeze the locally tested executable bundle before any new acceptance-world author receives its identity or outcomes.",
+  "statusBoundary": "Frozen bytes do not establish independent authorship, authorization, deployment, institutional effect, robustness or transport."
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "cct-sequenced-restoration-freeze/v1",
+  "id": "CCT-EXEC-1.4-FREEZE-2026-08-26-01",
+  "algorithm": "sha256",
+  "files": {
+    "spec.json": "ef4128abb1b7ec85fa13fbabdf22992e352fa26f9bbbfd28343da5cf3f064c9e",
+    "runtime.mjs": "50dd1349ddccffb82961f4c9cf9885520bf300b8ff6a1d5f81fb49a98ac66d1d",
+    "test.mjs": "d9ef7e6d6e87af23c2bd06c7fb370b0c1ad402b975f7f508cb90a529f070b409",
+    "run-structural-validation.mjs": "ed562719b4d9b67bdaf315507a79a5dcb0866870649ee528657dbdc928453e36",
+    "structural-validation-report.json": "03880fd880580b5a6298837cae5a48fc14007ac97c31b5c86029964e90ff8346",
+    "migration.json": "704c08af2cf7b76405361b442612d64d9f539bcb172850e1a351c7a8e44f75c6",
+    "validation.json": "5ac82f74646aca26d5918440e616410f3c0f3f7fa7308142a4e5057409262a03",
+    "README.md": "1eca59ec8e18483e983e6baa595aa9521a1a79835cb5f5b65eb6425b3df0283d",
+    "verify-freeze.mjs": "6d5118a65e804eec58ed0becb6d35946354f408564c18d80b665b6e42e3fdcbc"
+  },
+  "basisFreezes": [
+    "../evidence-governance-v1.3/freeze.json",
+    "../structural-solver-v0.1/freeze.json"
+  ],
+  "statusBoundary": "Exact locally tested structural candidate bytes only. Exhaustive finite consistency is bounded to four debts and does not establish promotion, authorization, deployment, institutional effect, universal correctness, superiority or external transport."
+}

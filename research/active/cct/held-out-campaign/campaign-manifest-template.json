@@ -1,0 +1,23 @@
+{
+  "campaign_id": "CCT-HO-001",
+  "protocol_version": "cct-held-out-campaign/v1",
+  "candidate_freeze_id": "CCT-V013-FREEZE-2026-08-26-01",
+  "status": "awaiting_external_scenarios",
+  "contender_identities_revealed": false,
+  "submissions": [
+    {
+      "scenario_id": "replace-after-admission",
+      "frozen_path": "replace-with-frozen-json-path",
+      "freeze_hash": "sha256:replace-after-freeze",
+      "author_id": "replace-with-author-id",
+      "admission_status": "pending",
+      "predicted_rival_advantage": false,
+      "stress_tags": []
+    }
+  ],
+  "required_stress_tags": [
+    "reliable-information-rare-action",
+    "degraded-information-available-action"
+  ],
+  "composition_rule": "At least eight admitted worlds, at least two authors, no author above half, and at least one world predicted before execution to favor a non-CCT rival."
+}

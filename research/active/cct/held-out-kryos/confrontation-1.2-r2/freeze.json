@@ -1,0 +1,17 @@
+{
+  "schema": "cct-kryos-confrontation-freeze/v1",
+  "id": "CCT-KRYOS-CONFRONTATION-1.2-R2-FREEZE-2026-08-26-01",
+  "preRunFreeze": "CCT-KRYOS-CONFRONTATION-R2-PRERUN-FREEZE-2026-08-26-01",
+  "worldContentHash": "sha256:c75362b716987fa0d53f22d3d355e4ebb21a8b943d2d8873709b4ccfcd87deb1",
+  "files": {
+    "contract.json": "bb1ee5bcd2256ca33247124539accb9ce6ccafd70905cd7f82dd92be0e704d71",
+    "projection.mjs": "77bd4e47a1bea991c99fd6afa2dc43ece9688315c1dec0ceec268a61bcef8858",
+    "run-campaign.mjs": "8075e611c9b8102b521624bb8c334f2ad5a469212ffa294623d305006aaee85f",
+    "public-report.json": "3d93e2a52935ba3caef183cb6623bdc78a2d434a27ae0f4e677fb424a4321c54",
+    "conclusion.json": "08360354162449554c92eb4958c197db63014b8ad5acdfb8117a8060f5d3b525"
+  },
+  "retainedControlFailure": {
+    "path": "../confrontation-1.2/public-report.json",
+    "hash": "145f829ee600dc9f38e8e2489d5a75062dbab87f3200434818c53442c44dc487"
+  }
+}

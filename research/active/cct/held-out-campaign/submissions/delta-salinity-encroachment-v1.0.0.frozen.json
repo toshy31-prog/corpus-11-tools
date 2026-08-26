@@ -1,0 +1,326 @@
+{
+  "schema": "corpus-open-world/v1",
+  "manifest": {
+    "id": "delta-salinity-encroachment",
+    "version": "1.0.0",
+    "title": "Subsurface Salinization and Deltaic Governance Collapse",
+    "rounds": 5,
+    "dimensions": [
+      "cout_besoins_vitaux",
+      "cout_ecologique",
+      "cout_droits",
+      "cout_pouvoir_non_controle",
+      "cout_portabilite",
+      "cout_recuperation"
+    ],
+    "reversalConditions": [
+      "Si la nappe phréatique atteint une salinité absolue supérieure à cent grammes par litre",
+      "Si le rationnement civil descend en dessous de zéro litre par habitant",
+      "Si l indice d urgence deborde les capacites de stockage du simulateur"
+    ]
+  },
+  "source": {
+    "regime": "external_supplied",
+    "authorId": "hydra-nexus-analyst",
+    "authorRelationToCorpus": "independent",
+    "frozenBeforeContenders": true,
+    "authorshipTrace": "7ef2a3bc-11fa-4c81-bd61-dc782cb41209"
+  },
+  "campaignEnvelope": {
+    "protocolVersion": "cct-held-out-campaign/v1",
+    "independenceDeclaration": {
+      "declaresNoAccessToCandidateV013": true,
+      "contenderIdentitiesWithheldUntilFreeze": true,
+      "notDerivedFromKnownV1Worlds": true,
+      "knownV1Worlds": [
+        "dependency-monopoly",
+        "emergency-capture",
+        "fragmentation-cascade",
+        "ecological-evasion",
+        "local-domination",
+        "information-siege"
+      ]
+    },
+    "matching": {
+      "sameInitialWorld": true,
+      "sameExogenousSequence": true,
+      "sameInformationBudget": true,
+      "sameActionBudget": true,
+      "actionUnitsPerRound": 1
+    },
+    "dimensionMap": {
+      "besoins_vitaux": "cout_besoins_vitaux",
+      "plafond_ecologique": "cout_ecologique",
+      "droits": "cout_droits",
+      "attribution_du_pouvoir": "cout_pouvoir_non_controle",
+      "portabilite_effective": "cout_portabilite",
+      "recuperation": "cout_recuperation"
+    },
+    "dimensionOrientation": {
+      "besoins_vitaux": "min",
+      "plafond_ecologique": "min",
+      "droits": "min",
+      "attribution_du_pouvoir": "min",
+      "portabilite_effective": "min",
+      "recuperation": "min"
+    },
+    "nonCompensableThresholds": {
+      "besoins_vitaux": {
+        "operator": "gt",
+        "value": 150
+      },
+      "plafond_ecologique": {
+        "operator": "gt",
+        "value": 200
+      },
+      "droits": {
+        "operator": "gt",
+        "value": 80
+      },
+      "attribution_du_pouvoir": {
+        "operator": "gt",
+        "value": 120
+      },
+      "portabilite_effective": {
+        "operator": "gt",
+        "value": 100
+      },
+      "recuperation": {
+        "operator": "gt",
+        "value": 250
+      }
+    },
+    "preExecutionPrediction": {
+      "nonCctRivalMayBeFavored": true,
+      "reason": "Une strategie brute de rationnement militaire indifferent aux structures juridiques minimise instantanement le debordement hydraulique immediate au detriment des droits."
+    },
+    "thresholdsAuthoredBeforeContenders": true,
+    "scalarWinnerForbidden": true
+  },
+  "initialState": {
+    "reserve_eau_douce": 1000,
+    "intrusion_saline": 50,
+    "recherche_pesticides": 20,
+    "decrets_exceptionnels": 10,
+    "permis_deplacement_refuses": 15,
+    "dette_infrastructurelle": 100
+  },
+  "exogenous": [
+    {
+      "pression_evaporation": 30
+    },
+    {
+      "pression_evaporation": 45
+    },
+    {
+      "pression_evaporation": 60
+    },
+    {
+      "pression_evaporation": 40
+    },
+    {
+      "pression_evaporation": 55
+    }
+  ],
+  "view": {
+    "volume_disponible": {
+      "path": "state.reserve_eau_douce"
+    },
+    "taux_salinite": {
+      "path": "state.intrusion_saline"
+    }
+  },
+  "actions": {
+    "pompage_massif": [
+      {
+        "op": "add",
+        "path": "state.reserve_eau_douce",
+        "value": 150
+      },
+      {
+        "op": "add",
+        "path": "state.intrusion_saline",
+        "value": 40
+      },
+      {
+        "op": "add",
+        "path": "state.decrets_exceptionnels",
+        "value": 5
+      }
+    ],
+    "rationnement_autoritaire": [
+      {
+        "op": "add",
+        "path": "state.reserve_eau_douce",
+        "value": 50
+      },
+      {
+        "op": "add",
+        "path": "state.permis_deplacement_refuses",
+        "value": 35
+      },
+      {
+        "op": "add",
+        "path": "state.decrets_exceptionnels",
+        "value": 25
+      }
+    ],
+    "restauration_zones_humides": [
+      {
+        "op": "add",
+        "path": "state.reserve_eau_douce",
+        "value": -80
+      },
+      {
+        "op": "add",
+        "path": "state.intrusion_saline",
+        "value": -25
+      },
+      {
+        "op": "add",
+        "path": "state.dette_infrastructurelle",
+        "value": 40
+      }
+    ],
+    "infrastructure_filtrage": [
+      {
+        "op": "add",
+        "path": "state.intrusion_saline",
+        "value": -10
+      },
+      {
+        "op": "add",
+        "path": "state.recherche_pesticides",
+        "value": 30
+      },
+      {
+        "op": "add",
+        "path": "state.dette_infrastructurelle",
+        "value": 60
+      }
+    ]
+  },
+  "transition": [
+    {
+      "op": "add",
+      "path": "state.intrusion_saline",
+      "value": {
+        "path": "event.pression_evaporation"
+      }
+    },
+    {
+      "op": "add",
+      "path": "state.reserve_eau_douce",
+      "value": {
+        "op": "mul",
+        "args": [
+          -2,
+          {
+            "path": "state.intrusion_saline"
+          }
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "state.dette_infrastructurelle",
+      "value": {
+        "op": "div",
+        "args": [
+          {
+            "path": "state.intrusion_saline"
+          },
+          2
+        ]
+      }
+    }
+  ],
+  "observation": {
+    "salinite_mesuree": {
+      "path": "state.intrusion_saline"
+    },
+    "reserve_estimee": {
+      "path": "state.reserve_eau_douce"
+    }
+  },
+  "predictionTargets": {
+    "salinite_finale": "salinite_mesuree"
+  },
+  "outcomes": {
+    "cout_besoins_vitaux": {
+      "op": "max",
+      "args": [
+        0,
+        {
+          "op": "sub",
+          "args": [
+            400,
+            {
+              "path": "state.reserve_eau_douce"
+            }
+          ]
+        }
+      ]
+    },
+    "cout_ecologique": {
+      "op": "add",
+      "args": [
+        {
+          "path": "state.intrusion_saline"
+        },
+        {
+          "path": "state.recherche_pesticides"
+        }
+      ]
+    },
+    "cout_droits": {
+      "op": "mul",
+      "args": [
+        2,
+        {
+          "path": "state.decrets_exceptionnels"
+        }
+      ]
+    },
+    "cout_pouvoir_non_controle": {
+      "op": "mean",
+      "args": [
+        {
+          "path": "state.decrets_exceptionnels"
+        },
+        {
+          "path": "state.permis_deplacement_refuses"
+        }
+      ]
+    },
+    "cout_portabilite": {
+      "op": "add",
+      "args": [
+        {
+          "path": "state.permis_deplacement_refuses"
+        },
+        5
+      ]
+    },
+    "cout_recuperation": {
+      "op": "add",
+      "args": [
+        {
+          "path": "state.dette_infrastructurelle"
+        },
+        {
+          "op": "abs",
+          "args": [
+            {
+              "path": "state.intrusion_saline"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "freeze": {
+    "algorithm": "sha256",
+    "contentHash": "sha256:fe451f1b0007ae906372bdde8a524b86d2354fcc82a28080e8e0e85823f6de50"
+  }
+}

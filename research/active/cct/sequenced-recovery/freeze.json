@@ -1,0 +1,20 @@
+{
+  "schema": "cct-sequenced-recovery-freeze/v1",
+  "id": "CCT-EXEC-1.1-FREEZE-2026-08-26-01",
+  "algorithm": "sha256",
+  "files": {
+    "spec.json": "e6f97239778ec625781f3d59fde01de1440cfe813874798585e1fd38e1e9eac9",
+    "runtime.mjs": "35b6cb92605830ac6b8891225c1ceff31d4e6c6832db7347405a80797f4f3fde",
+    "test.mjs": "35cd56d7d97f4da8e4ff2ec242d119fb5fbe7c19cd94e8b239f49b67b9780236",
+    "run-adversarial-development.mjs": "02de2c59c66a328991e76f629fa1fc26d450160a6240e3df9ced9026736169e2",
+    "development-report.json": "45642c29551d1c7217450f24374e87defdab34e97625641a58bbf6fac3c99432",
+    "validation.json": "ac37b1a82092a17de90d53f0cbd39ea06ec77ab534a56ac7c5e41d47662735e4",
+    "README.md": "ae83c78065b3300bf8f82a024e0a3ce06518600e6a4b869d5dd90a543efb4573"
+  },
+  "basisFreezes": [
+    "../unified-exec/freeze.json",
+    "../next-version/v0.14-freeze.json",
+    "../consolidation-v1/cct-1.0-freeze.json"
+  ],
+  "statusBoundary": "Exact locally tested sequenced-recovery bytes only; no authorization, deployment, robustness, institutional effect, superiority, independent reobservation or external transport is established."
+}

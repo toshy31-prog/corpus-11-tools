@@ -1,0 +1,260 @@
+{
+  "schema": "cct-virelia-projection-campaign/v1",
+  "generatedAt": "2026-08-26",
+  "world": {
+    "id": "virelia-fractured-atoll-cascade-001",
+    "version": "1.0.0",
+    "freezeHash": "sha256:e3c50bd627b092f94d2b0e44cc595b2b00acdf86e8e7baccb1ad8aac0c94b007"
+  },
+  "cct": {
+    "id": "CCT-EXEC-1.1-CANDIDATE-001",
+    "freezeId": "CCT-EXEC-1.1-FREEZE-2026-08-26-01"
+  },
+  "sourceBoundary": "Virelia bytes were frozen before CCT execution, but generator lineage is not independently verified.",
+  "strictOriginalView": {
+    "executable": false,
+    "observed": "CCT_RECOVERY_INTERFACE_MISSING"
+  },
+  "runs": [
+    {
+      "profileId": "P1-matched-public-mechanics",
+      "matchedBaseline": {
+        "worldHash": "fnv1a64:cc95bd834a535d11",
+        "exogenousHash": "fnv1a64:4a795e033fd2ae73"
+      },
+      "cct": {
+        "completedRounds": 0,
+        "controlFailure": {
+          "tick": 0,
+          "code": "CCT_I13_NO_CONSTITUTIONALLY_ADMISSIBLE_ACTION",
+          "phase": "normal"
+        },
+        "actionTrace": [],
+        "prefixOutcomeVector": {
+          "water_security": 54.4,
+          "trade_continuity": 68.2,
+          "health_stability": 73,
+          "legitimacy_hold": 55,
+          "capacity_preservation": 57,
+          "labor_resilience": 70,
+          "food_base": 58,
+          "__reversal_total_collapse": 0,
+          "__reversal_irreversible_pier_loss": 0
+        },
+        "prefixOutcomeComparableAtEightRounds": false,
+        "runtimeTrace": [
+          {
+            "tick": 0,
+            "event": "recovery_refusal",
+            "code": "CCT_I13_NO_CONSTITUTIONALLY_ADMISSIBLE_ACTION",
+            "phase": "normal",
+            "activeAxes": [
+              "besoins_vitaux",
+              "droits",
+              "plafond_ecologique",
+              "portabilite_effective",
+              "recuperation"
+            ]
+          }
+        ]
+      },
+      "rivals": [
+        {
+          "policyId": "low-cost-public",
+          "completedRounds": 8,
+          "actionTrace": ["mobilize_labor", "mobilize_labor", "mobilize_labor", "mobilize_labor", "mobilize_labor", "mobilize_labor", "mobilize_labor", "mobilize_labor"],
+          "outcomeVector": {
+            "water_security": 43.599999999999994,
+            "trade_continuity": 43.6,
+            "health_stability": 57,
+            "legitimacy_hold": 39,
+            "capacity_preservation": 34,
+            "labor_resilience": 100,
+            "food_base": 58,
+            "__reversal_total_collapse": 0,
+            "__reversal_irreversible_pier_loss": 0
+          }
+        },
+        {
+          "policyId": "max-protection-public",
+          "completedRounds": 8,
+          "actionTrace": ["isolate_sector+reinforce_rim", "isolate_sector+reinforce_rim", "isolate_sector+reinforce_rim", "isolate_sector+reinforce_rim", "redistribute_stock+reinforce_rim", "flush_lagoon", "flush_lagoon", "__forced_no_action__"],
+          "outcomeVector": {
+            "water_security": 28.799999999999997,
+            "trade_continuity": 31.6,
+            "health_stability": 96,
+            "legitimacy_hold": 40,
+            "capacity_preservation": 39.5,
+            "labor_resilience": 2,
+            "food_base": 50,
+            "__reversal_total_collapse": 0,
+            "__reversal_irreversible_pier_loss": 0
+          }
+        },
+        {
+          "policyId": "last-admissible",
+          "completedRounds": 8,
+          "actionTrace": ["seal_breach", "seal_breach", "seal_breach", "mobilize_labor", "mobilize_labor", "mobilize_labor", "mobilize_labor", "mobilize_labor"],
+          "outcomeVector": {
+            "water_security": 72.4,
+            "trade_continuity": 29.200000000000003,
+            "health_stability": 63,
+            "legitimacy_hold": 45,
+            "capacity_preservation": 13.5,
+            "labor_resilience": 49,
+            "food_base": 58,
+            "__reversal_total_collapse": 0,
+            "__reversal_irreversible_pier_loss": 0
+          }
+        }
+      ],
+      "conclusion": "CCT control failure; its prefix outcome is not comparable with eight-round rival outcomes"
+    },
+    {
+      "profileId": "P2-optimistic-harm-omission",
+      "matchedBaseline": {
+        "worldHash": "fnv1a64:cc95bd834a535d11",
+        "exogenousHash": "fnv1a64:4a795e033fd2ae73"
+      },
+      "cct": {
+        "completedRounds": 1,
+        "controlFailure": {
+          "tick": 1,
+          "code": "CCT_CAPACITY_ACQUISITION_INFEASIBLE",
+          "phase": "triage_immediate"
+        },
+        "actionTrace": [
+          {
+            "round": 0,
+            "action": "divert_flow+reinforce_rim",
+            "phase": "triage_immediate",
+            "constitutionalStatus": "breach_and_repair_debt"
+          }
+        ],
+        "prefixOutcomeVector": {
+          "water_security": 58.6,
+          "trade_continuity": 55.782,
+          "health_stability": 70,
+          "legitimacy_hold": 54,
+          "capacity_preservation": 55,
+          "labor_resilience": 56,
+          "food_base": 63,
+          "__reversal_total_collapse": 0,
+          "__reversal_irreversible_pier_loss": 0
+        },
+        "prefixOutcomeComparableAtEightRounds": false,
+        "runtimeTrace": [
+          {
+            "tick": 0,
+            "event": "recovery_decision",
+            "phase": "triage_immediate",
+            "action": "divert_flow+reinforce_rim",
+            "constitutionalStatus": "breach_and_repair_debt",
+            "openDebtIds": ["debt:droits:0", "debt:portabilite_effective:0", "debt:recuperation:0"],
+            "deadline": 3,
+            "activeAxes": ["besoins_vitaux", "droits", "plafond_ecologique", "portabilite_effective", "recuperation"],
+            "nce": {
+              "tick": 0,
+              "event": "decision",
+              "action": "divert_flow+reinforce_rim",
+              "activeMechanisms": [],
+              "satisfiedTags": [],
+              "pendingTags": [],
+              "burden": 4
+            }
+          },
+          {
+            "tick": 1,
+            "event": "recovery_refusal",
+            "code": "CCT_CAPACITY_ACQUISITION_INFEASIBLE",
+            "phase": "triage_immediate",
+            "openDebtIds": ["debt:droits:0", "debt:portabilite_effective:0", "debt:recuperation:0"]
+          }
+        ]
+      },
+      "rivals": [
+        {
+          "policyId": "low-cost-public",
+          "completedRounds": 8,
+          "actionTrace": ["mobilize_labor", "mobilize_labor", "mobilize_labor", "mobilize_labor", "mobilize_labor", "mobilize_labor", "mobilize_labor", "mobilize_labor"],
+          "outcomeVector": {
+            "water_security": 43.599999999999994,
+            "trade_continuity": 43.6,
+            "health_stability": 57,
+            "legitimacy_hold": 39,
+            "capacity_preservation": 34,
+            "labor_resilience": 100,
+            "food_base": 58,
+            "__reversal_total_collapse": 0,
+            "__reversal_irreversible_pier_loss": 0
+          }
+        },
+        {
+          "policyId": "max-protection-public",
+          "completedRounds": 8,
+          "actionTrace": ["redistribute_stock+reinforce_rim", "redistribute_stock+reinforce_rim", "redistribute_stock+reinforce_rim", "redistribute_stock+reinforce_rim", "divert_flow", "divert_flow", "divert_flow", "__forced_no_action__"],
+          "outcomeVector": {
+            "water_security": 57.8,
+            "trade_continuity": 21.945999999999998,
+            "health_stability": 61,
+            "legitimacy_hold": 50,
+            "capacity_preservation": 29,
+            "labor_resilience": 2,
+            "food_base": 89,
+            "__reversal_total_collapse": 0,
+            "__reversal_irreversible_pier_loss": 0
+          }
+        },
+        {
+          "policyId": "last-admissible",
+          "completedRounds": 8,
+          "actionTrace": ["seal_breach", "seal_breach", "seal_breach", "mobilize_labor", "mobilize_labor", "mobilize_labor", "mobilize_labor", "mobilize_labor"],
+          "outcomeVector": {
+            "water_security": 72.4,
+            "trade_continuity": 29.200000000000003,
+            "health_stability": 63,
+            "legitimacy_hold": 45,
+            "capacity_preservation": 13.5,
+            "labor_resilience": 49,
+            "food_base": 58,
+            "__reversal_total_collapse": 0,
+            "__reversal_irreversible_pier_loss": 0
+          }
+        }
+      ],
+      "conclusion": "CCT control failure; its prefix outcome is not comparable with eight-round rival outcomes"
+    }
+  ],
+  "vectorVerdict": {
+    "executableProfiles": 2,
+    "cctControlFailures": 2,
+    "cctEightRoundCompletions": 0,
+    "rivalEightRoundCompletions": 6,
+    "noScalarWinner": true,
+    "strongestConclusion": "CCT-EXEC 1.1 is not executable under Virelia's original information regime and reaches a control failure under both disclosed executable projection variants; no eight-round material CCT outcome is attributable."
+  },
+  "methodEffectAudit": {
+    "originalViewPreservedByP0": true,
+    "P0CctInterfaceAvailable": false,
+    "executableProfilesAddActionOntology": true,
+    "proxyConstructValidity": "proxy_substitution",
+    "powerAttributionObservable": false,
+    "actorRecourseAndDebtFieldsPresentInVirelia": false,
+    "postFailureMaterialOutcomesFabricated": false,
+    "neutralityClaim": "withdrawn"
+  },
+  "logicFindings": [
+    {
+      "id": "VF-01-harm-i13-conflation",
+      "observation": "P1 contains no forbidden constitutional tags, yet CCT emits CCT_I13_NO_CONSTITUTIONALLY_ADMISSIBLE_ACTION because every action has at least one compiled axis harm.",
+      "implication": "The runtime conflates absence of a zero-harm action with I13 constitutional inadmissibility, obscuring the actual tradeoff/action-capacity failure."
+    },
+    {
+      "id": "VF-02-recovery-ontology-dependence",
+      "observation": "After P2 suppresses every compiled harm, CCT performs one triage action and then fails because no physical Virelia action satisfies its capacity-acquisition ontology.",
+      "implication": "Sequenced recovery is not open-world executable without externally supplied institutional recovery kinds, actors, recourse and receipts."
+    }
+  ],
+  "transportVerdict": "not_transportable_without_method_added_institutional_semantics",
+  "statusBoundary": "Synthetic frozen-world control failure under maintainer-authored projections. It establishes neither field failure nor general invalidity of CCT, and the rival material vectors are not scalar-ranked."
+}

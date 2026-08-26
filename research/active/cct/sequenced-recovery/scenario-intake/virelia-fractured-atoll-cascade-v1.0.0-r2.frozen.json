@@ -1,0 +1,1155 @@
+{
+  "schema": "corpus-open-world/v1",
+  "manifest": {
+    "id": "virelia-fractured-atoll-cascade-001",
+    "version": "1.0.0",
+    "title": "Virelia Fractured Atoll Cascade",
+    "rounds": 8,
+    "rounds_total": 8,
+    "action_budget_per_round": 4,
+    "max_actions_per_round": 2,
+    "public_info_regime": "identical_partial",
+    "determinism": "state_action_exo_only",
+    "dimensions": 7,
+    "reversalConditions": 2
+  },
+  "source": {
+    "source_regime": "independent_synthetic_unknown_contenders",
+    "authorId": "synthetic-generator-alpha-7f3a",
+    "authorshipTrace": "independent_synthetic_unknown_contenders:virelia-001:2026-08-26T07:42:00Z",
+    "frozenBeforeContenders": true,
+    "generation": "pure_invention_no_external",
+    "territory": "Virelia atoll-chain: central lagoon, highland rim terraces, outer reef islands, single navigable pass",
+    "populations": {
+      "rim_cultivators": 42000,
+      "lagoon_navigators": 31000,
+      "reef_displaced": 18500
+    },
+    "initial_crisis": "Magma lens intrusion raised basal aquifers while collapsing reef sediment traps, simultaneously lowering lagoon salinity gradient and raising seismic risk under the single deep-water pier"
+  },
+  "initialState": {
+    "groundwater_index": 62,
+    "harbor_depth": 71,
+    "crop_yield_potential": 58,
+    "vessel_throughput": 64,
+    "disease_load": 27,
+    "trust_index": 55,
+    "material_stock": 48,
+    "seismic_stability": 66,
+    "labor_availability": 70,
+    "salt_intrusion": 19
+  },
+  "state": {
+    "groundwater_index": {
+      "value": 62,
+      "min": 0,
+      "max": 100,
+      "unit": "relative_storage"
+    },
+    "harbor_depth": {
+      "value": 71,
+      "min": 0,
+      "max": 100,
+      "unit": "usable_meters_normalized"
+    },
+    "crop_yield_potential": {
+      "value": 58,
+      "min": 0,
+      "max": 100,
+      "unit": "seasonal_index"
+    },
+    "vessel_throughput": {
+      "value": 64,
+      "min": 0,
+      "max": 100,
+      "unit": "daily_capacity_normalized"
+    },
+    "disease_load": {
+      "value": 27,
+      "min": 0,
+      "max": 100,
+      "unit": "incidence_index",
+      "higher_worse": true
+    },
+    "trust_index": {
+      "value": 55,
+      "min": 0,
+      "max": 100,
+      "unit": "cohesion_score"
+    },
+    "material_stock": {
+      "value": 48,
+      "min": 0,
+      "max": 100,
+      "unit": "aggregate_tonnes_normalized"
+    },
+    "seismic_stability": {
+      "value": 66,
+      "min": 0,
+      "max": 100,
+      "unit": "structural_integrity"
+    },
+    "labor_availability": {
+      "value": 70,
+      "min": 0,
+      "max": 100,
+      "unit": "mobilizable_person_days"
+    },
+    "salt_intrusion": {
+      "value": 19,
+      "min": 0,
+      "max": 100,
+      "unit": "chloride_index",
+      "higher_worse": true
+    }
+  },
+  "groups": [
+    {
+      "id": "rim_cultivators",
+      "size": 42000,
+      "primary_interest": [
+        "groundwater_index",
+        "crop_yield_potential"
+      ],
+      "secondary_interest": [
+        "labor_availability"
+      ],
+      "vulnerability": [
+        "salt_intrusion",
+        "disease_load"
+      ],
+      "incompatible_with": [
+        "lagoon_navigators"
+      ],
+      "can_block": [
+        "divert_flow",
+        "seal_breach"
+      ],
+      "can_adapt": true,
+      "can_misreport": false,
+      "strategic_reactor": false
+    },
+    {
+      "id": "lagoon_navigators",
+      "size": 31000,
+      "primary_interest": [
+        "harbor_depth",
+        "vessel_throughput"
+      ],
+      "secondary_interest": [
+        "material_stock"
+      ],
+      "vulnerability": [
+        "seismic_stability",
+        "trust_index"
+      ],
+      "incompatible_with": [
+        "rim_cultivators"
+      ],
+      "can_block": [
+        "dredge_channel",
+        "reinforce_rim"
+      ],
+      "can_adapt": true,
+      "can_misreport": true,
+      "strategic_reactor": false
+    },
+    {
+      "id": "reef_displaced",
+      "size": 18500,
+      "primary_interest": [
+        "disease_load",
+        "labor_availability"
+      ],
+      "secondary_interest": [
+        "trust_index"
+      ],
+      "vulnerability": [
+        "material_stock",
+        "crop_yield_potential"
+      ],
+      "incompatible_with": [],
+      "can_block": [
+        "isolate_sector"
+      ],
+      "can_adapt": true,
+      "can_misreport": false,
+      "strategic_reactor": true
+    }
+  ],
+  "actions": {
+    "divert_flow": {
+      "cost": 2,
+      "precondition": {
+        "op": "and",
+        "args": [
+          {
+            "op": "gte",
+            "var": "groundwater_index",
+            "value": 15
+          },
+          {
+            "op": "gte",
+            "var": "labor_availability",
+            "value": 10
+          }
+        ]
+      },
+      "public_label": "redirect_surface_channels"
+    },
+    "dredge_channel": {
+      "cost": 3,
+      "precondition": {
+        "op": "and",
+        "args": [
+          {
+            "op": "gte",
+            "var": "material_stock",
+            "value": 12
+          },
+          {
+            "op": "lte",
+            "var": "harbor_depth",
+            "value": 85
+          }
+        ]
+      },
+      "public_label": "clear_sediment_pass"
+    },
+    "reinforce_rim": {
+      "cost": 2,
+      "precondition": {
+        "op": "and",
+        "args": [
+          {
+            "op": "gte",
+            "var": "material_stock",
+            "value": 8
+          },
+          {
+            "op": "lte",
+            "var": "seismic_stability",
+            "value": 90
+          }
+        ]
+      },
+      "public_label": "stabilize_terrace_walls"
+    },
+    "redistribute_stock": {
+      "cost": 1,
+      "precondition": {
+        "op": "gte",
+        "var": "material_stock",
+        "value": 5
+      },
+      "public_label": "allocate_stored_aggregates"
+    },
+    "isolate_sector": {
+      "cost": 2,
+      "precondition": {
+        "op": "and",
+        "args": [
+          {
+            "op": "gte",
+            "var": "trust_index",
+            "value": 20
+          },
+          {
+            "op": "gte",
+            "var": "labor_availability",
+            "value": 8
+          }
+        ]
+      },
+      "public_label": "restrict_movement_corridors"
+    },
+    "mobilize_labor": {
+      "cost": 1,
+      "precondition": {
+        "op": "and",
+        "args": [
+          {
+            "op": "gte",
+            "var": "labor_availability",
+            "value": 5
+          },
+          {
+            "op": "gte",
+            "var": "trust_index",
+            "value": 15
+          }
+        ]
+      },
+      "public_label": "summon_work_crews"
+    },
+    "seal_breach": {
+      "cost": 3,
+      "precondition": {
+        "op": "and",
+        "args": [
+          {
+            "op": "gte",
+            "var": "material_stock",
+            "value": 15
+          },
+          {
+            "op": "gte",
+            "var": "seismic_stability",
+            "value": 25
+          }
+        ]
+      },
+      "public_label": "close_subsurface_fissures"
+    },
+    "flush_lagoon": {
+      "cost": 2,
+      "precondition": {
+        "op": "and",
+        "args": [
+          {
+            "op": "gte",
+            "var": "harbor_depth",
+            "value": 30
+          },
+          {
+            "op": "gte",
+            "var": "vessel_throughput",
+            "value": 20
+          }
+        ]
+      },
+      "public_label": "force_tidal_exchange"
+    }
+  },
+  "exogenous": [
+    {
+      "round": 1,
+      "id": "pulse_A",
+      "ops": [
+        {
+          "var": "seismic_stability",
+          "delta": -4
+        },
+        {
+          "var": "harbor_depth",
+          "delta": -6
+        },
+        {
+          "var": "salt_intrusion",
+          "delta": 3
+        },
+        {
+          "var": "labor_availability",
+          "delta": 0
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "id": "pulse_B",
+      "ops": [
+        {
+          "var": "seismic_stability",
+          "delta": -2
+        },
+        {
+          "var": "harbor_depth",
+          "delta": -3
+        },
+        {
+          "var": "salt_intrusion",
+          "delta": 2
+        },
+        {
+          "var": "labor_availability",
+          "delta": -5
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "id": "storm_C",
+      "ops": [
+        {
+          "var": "seismic_stability",
+          "delta": -7
+        },
+        {
+          "var": "harbor_depth",
+          "delta": -11
+        },
+        {
+          "var": "salt_intrusion",
+          "delta": 5
+        },
+        {
+          "var": "labor_availability",
+          "delta": -8
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "id": "calm_D",
+      "ops": [
+        {
+          "var": "seismic_stability",
+          "delta": 1
+        },
+        {
+          "var": "harbor_depth",
+          "delta": 2
+        },
+        {
+          "var": "salt_intrusion",
+          "delta": 1
+        },
+        {
+          "var": "labor_availability",
+          "delta": 3
+        }
+      ]
+    },
+    {
+      "round": 5,
+      "id": "pulse_E",
+      "ops": [
+        {
+          "var": "seismic_stability",
+          "delta": -5
+        },
+        {
+          "var": "harbor_depth",
+          "delta": -8
+        },
+        {
+          "var": "salt_intrusion",
+          "delta": 4
+        },
+        {
+          "var": "labor_availability",
+          "delta": -3
+        }
+      ]
+    },
+    {
+      "round": 6,
+      "id": "intrusion_F",
+      "ops": [
+        {
+          "var": "seismic_stability",
+          "delta": -3
+        },
+        {
+          "var": "harbor_depth",
+          "delta": -4
+        },
+        {
+          "var": "salt_intrusion",
+          "delta": 7
+        },
+        {
+          "var": "labor_availability",
+          "delta": 0
+        }
+      ]
+    },
+    {
+      "round": 7,
+      "id": "aftershock_G",
+      "ops": [
+        {
+          "var": "seismic_stability",
+          "delta": -9
+        },
+        {
+          "var": "harbor_depth",
+          "delta": -9
+        },
+        {
+          "var": "salt_intrusion",
+          "delta": 2
+        },
+        {
+          "var": "labor_availability",
+          "delta": -12
+        }
+      ]
+    },
+    {
+      "round": 8,
+      "id": "residual_H",
+      "ops": [
+        {
+          "var": "seismic_stability",
+          "delta": -1
+        },
+        {
+          "var": "harbor_depth",
+          "delta": -2
+        },
+        {
+          "var": "salt_intrusion",
+          "delta": 3
+        },
+        {
+          "var": "labor_availability",
+          "delta": 2
+        }
+      ]
+    }
+  ],
+  "rounds": [
+    {
+      "round": 1,
+      "exogenous_id": "pulse_A"
+    },
+    {
+      "round": 2,
+      "exogenous_id": "pulse_B"
+    },
+    {
+      "round": 3,
+      "exogenous_id": "storm_C"
+    },
+    {
+      "round": 4,
+      "exogenous_id": "calm_D"
+    },
+    {
+      "round": 5,
+      "exogenous_id": "pulse_E"
+    },
+    {
+      "round": 6,
+      "exogenous_id": "intrusion_F"
+    },
+    {
+      "round": 7,
+      "exogenous_id": "aftershock_G"
+    },
+    {
+      "round": 8,
+      "exogenous_id": "residual_H"
+    }
+  ],
+  "view": {
+    "public_visible": [
+      "groundwater_index",
+      "harbor_depth",
+      "disease_load",
+      "trust_index",
+      "material_stock",
+      "seismic_stability"
+    ],
+    "hidden": [
+      "crop_yield_potential",
+      "vessel_throughput",
+      "labor_availability",
+      "salt_intrusion"
+    ]
+  },
+  "observation": {
+    "mode": "exact_current_value_of_public_visible_only",
+    "identical_for_all": true,
+    "no_future_leak": true,
+    "no_private_signals": true,
+    "computation": {
+      "op": "select",
+      "vars": [
+        "groundwater_index",
+        "harbor_depth",
+        "disease_load",
+        "trust_index",
+        "material_stock",
+        "seismic_stability"
+      ]
+    }
+  },
+  "observations": {
+    "public_visible": [
+      "groundwater_index",
+      "harbor_depth",
+      "disease_load",
+      "trust_index",
+      "material_stock",
+      "seismic_stability"
+    ],
+    "hidden": [
+      "crop_yield_potential",
+      "vessel_throughput",
+      "labor_availability",
+      "salt_intrusion"
+    ],
+    "computation": {
+      "op": "select",
+      "vars": [
+        "groundwater_index",
+        "harbor_depth",
+        "disease_load",
+        "trust_index",
+        "material_stock",
+        "seismic_stability"
+      ]
+    },
+    "identical_for_all": true,
+    "no_future_leak": true,
+    "no_private_signals": true
+  },
+  "transitions": {
+    "rules": [
+      {
+        "action": "divert_flow",
+        "ops": [
+          {
+            "var": "groundwater_index",
+            "delta": 9
+          },
+          {
+            "var": "harbor_depth",
+            "delta": -6
+          },
+          {
+            "var": "salt_intrusion",
+            "delta": 4
+          },
+          {
+            "var": "crop_yield_potential",
+            "delta": 5
+          },
+          {
+            "var": "vessel_throughput",
+            "delta": -4
+          },
+          {
+            "var": "labor_availability",
+            "delta": -8
+          },
+          {
+            "var": "trust_index",
+            "delta": -3
+          }
+        ],
+        "delayed": [
+          {
+            "after_rounds": 2,
+            "ops": [
+              {
+                "var": "seismic_stability",
+                "delta": -5
+              }
+            ]
+          }
+        ],
+        "secondary_on": {
+          "group": "lagoon_navigators",
+          "ops": [
+            {
+              "var": "vessel_throughput",
+              "delta": 0
+            }
+          ]
+        },
+        "dependency_link": {
+          "source_var": "groundwater_index",
+          "target_var": "harbor_depth",
+          "factor": -0.67,
+          "apply_after": "divert_flow"
+        }
+      },
+      {
+        "action": "dredge_channel",
+        "ops": [
+          {
+            "var": "harbor_depth",
+            "delta": 11
+          },
+          {
+            "var": "material_stock",
+            "delta": -12
+          },
+          {
+            "var": "vessel_throughput",
+            "delta": 8
+          },
+          {
+            "var": "groundwater_index",
+            "delta": -3
+          },
+          {
+            "var": "seismic_stability",
+            "delta": -4
+          },
+          {
+            "var": "labor_availability",
+            "delta": -10
+          }
+        ],
+        "delayed": [
+          {
+            "after_rounds": 1,
+            "ops": [
+              {
+                "var": "crop_yield_potential",
+                "delta": -6
+              }
+            ]
+          }
+        ],
+        "irreversible_if": {
+          "condition": {
+            "op": "lt",
+            "var": "seismic_stability",
+            "value": 22
+          },
+          "ops": [
+            {
+              "var": "harbor_depth",
+              "op": "min",
+              "args": [
+                "harbor_depth",
+                35
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "action": "reinforce_rim",
+        "ops": [
+          {
+            "var": "seismic_stability",
+            "delta": 8
+          },
+          {
+            "var": "material_stock",
+            "delta": -8
+          },
+          {
+            "var": "groundwater_index",
+            "delta": -2
+          },
+          {
+            "var": "labor_availability",
+            "delta": -6
+          },
+          {
+            "var": "trust_index",
+            "delta": 2
+          },
+          {
+            "var": "disease_load",
+            "delta": 3
+          }
+        ],
+        "side_effect_borne_by": "reef_displaced",
+        "protective_but_worsens": "disease_load"
+      },
+      {
+        "action": "redistribute_stock",
+        "ops": [
+          {
+            "var": "material_stock",
+            "delta": -5
+          },
+          {
+            "var": "crop_yield_potential",
+            "delta": 4
+          },
+          {
+            "var": "harbor_depth",
+            "delta": 2
+          },
+          {
+            "var": "trust_index",
+            "delta": -1
+          }
+        ]
+      },
+      {
+        "action": "isolate_sector",
+        "ops": [
+          {
+            "var": "disease_load",
+            "delta": -7
+          },
+          {
+            "var": "labor_availability",
+            "delta": -9
+          },
+          {
+            "var": "vessel_throughput",
+            "delta": -5
+          },
+          {
+            "var": "trust_index",
+            "delta": -6
+          },
+          {
+            "var": "crop_yield_potential",
+            "delta": -3
+          }
+        ],
+        "immediate_gain_destroys_future": {
+          "ops": [
+            {
+              "var": "labor_availability",
+              "op": "min",
+              "args": [
+                "labor_availability",
+                55
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "action": "mobilize_labor",
+        "ops": [
+          {
+            "var": "labor_availability",
+            "delta": 7
+          },
+          {
+            "var": "trust_index",
+            "delta": -2
+          },
+          {
+            "var": "disease_load",
+            "delta": 2
+          },
+          {
+            "var": "material_stock",
+            "delta": -2
+          }
+        ]
+      },
+      {
+        "action": "seal_breach",
+        "ops": [
+          {
+            "var": "salt_intrusion",
+            "delta": -9
+          },
+          {
+            "var": "material_stock",
+            "delta": -15
+          },
+          {
+            "var": "groundwater_index",
+            "delta": 6
+          },
+          {
+            "var": "seismic_stability",
+            "delta": -3
+          },
+          {
+            "var": "labor_availability",
+            "delta": -11
+          }
+        ],
+        "delayed": [
+          {
+            "after_rounds": 3,
+            "ops": [
+              {
+                "var": "harbor_depth",
+                "delta": -8
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "action": "flush_lagoon",
+        "ops": [
+          {
+            "var": "disease_load",
+            "delta": -5
+          },
+          {
+            "var": "salt_intrusion",
+            "delta": -4
+          },
+          {
+            "var": "harbor_depth",
+            "delta": -3
+          },
+          {
+            "var": "vessel_throughput",
+            "delta": -2
+          },
+          {
+            "var": "groundwater_index",
+            "delta": -4
+          }
+        ]
+      }
+    ],
+    "exogenous_application": {
+      "op": "apply_ops_from_exogenous_by_round"
+    },
+    "clamping": {
+      "op": "clamp_all",
+      "min": 0,
+      "max": 100
+    },
+    "dependency": {
+      "domains": [
+        "groundwater_index",
+        "harbor_depth"
+      ],
+      "link": {
+        "on_action": "divert_flow",
+        "op": "add",
+        "target": "harbor_depth",
+        "factor": -0.67,
+        "source_delta": "groundwater_index"
+      }
+    },
+    "budget_enforcement": {
+      "max_cost_sum": 4,
+      "max_actions": 2,
+      "on_invalid": "skip_no_effect"
+    },
+    "execution_order": [
+      "check_preconditions",
+      "apply_action_ops",
+      "apply_dependency_link",
+      "apply_irreversible_if",
+      "apply_immediate_gain_destroys_future",
+      "apply_exogenous_ops",
+      "queue_delayed",
+      "apply_due_delayed",
+      "clamp_all"
+    ]
+  },
+  "outcomes": {
+    "dimensions": [
+      {
+        "id": "water_security",
+        "derived_from": {
+          "op": "sub",
+          "args": [
+            {
+              "var": "groundwater_index"
+            },
+            {
+              "op": "mul",
+              "args": [
+                0.4,
+                {
+                  "var": "salt_intrusion"
+                }
+              ]
+            }
+          ]
+        },
+        "favorable": "higher",
+        "failure_threshold": 28,
+        "never_merge": true
+      },
+      {
+        "id": "trade_continuity",
+        "derived_from": {
+          "op": "add",
+          "args": [
+            {
+              "op": "mul",
+              "args": [
+                0.6,
+                {
+                  "var": "harbor_depth"
+                }
+              ]
+            },
+            {
+              "op": "mul",
+              "args": [
+                0.4,
+                {
+                  "var": "vessel_throughput"
+                }
+              ]
+            }
+          ]
+        },
+        "favorable": "higher",
+        "failure_threshold": 32,
+        "never_merge": true
+      },
+      {
+        "id": "health_stability",
+        "derived_from": {
+          "op": "sub",
+          "args": [
+            100,
+            {
+              "var": "disease_load"
+            }
+          ]
+        },
+        "favorable": "higher",
+        "failure_threshold": 55,
+        "never_merge": true
+      },
+      {
+        "id": "legitimacy_hold",
+        "derived_from": {
+          "op": "var",
+          "var": "trust_index"
+        },
+        "favorable": "higher",
+        "failure_threshold": 22,
+        "never_merge": true
+      },
+      {
+        "id": "capacity_preservation",
+        "derived_from": {
+          "op": "add",
+          "args": [
+            {
+              "op": "mul",
+              "args": [
+                0.5,
+                {
+                  "var": "seismic_stability"
+                }
+              ]
+            },
+            {
+              "op": "mul",
+              "args": [
+                0.5,
+                {
+                  "var": "material_stock"
+                }
+              ]
+            }
+          ]
+        },
+        "favorable": "higher",
+        "failure_threshold": 30,
+        "never_merge": true
+      },
+      {
+        "id": "labor_resilience",
+        "derived_from": {
+          "op": "var",
+          "var": "labor_availability"
+        },
+        "favorable": "higher",
+        "failure_threshold": 25,
+        "never_merge": true
+      },
+      {
+        "id": "food_base",
+        "derived_from": {
+          "op": "var",
+          "var": "crop_yield_potential"
+        },
+        "favorable": "higher",
+        "failure_threshold": 27,
+        "never_merge": true
+      }
+    ],
+    "incompatible_pairs": [
+      [
+        "water_security",
+        "trade_continuity"
+      ],
+      [
+        "health_stability",
+        "labor_resilience"
+      ]
+    ],
+    "no_global_score": true,
+    "no_hidden_weights": true
+  },
+  "predictionTargets": [
+    "water_security",
+    "trade_continuity",
+    "health_stability",
+    "legitimacy_hold",
+    "capacity_preservation",
+    "labor_resilience",
+    "food_base"
+  ],
+  "reversalConditions": [
+    {
+      "id": "total_collapse",
+      "trigger": {
+        "op": "and",
+        "args": [
+          {
+            "op": "lt",
+            "var": "seismic_stability",
+            "value": 15
+          },
+          {
+            "op": "lt",
+            "var": "harbor_depth",
+            "value": 20
+          },
+          {
+            "op": "lt",
+            "var": "groundwater_index",
+            "value": 18
+          }
+        ]
+      },
+      "effect": {
+        "op": "lock_all_dimensions_failed"
+      },
+      "makes_any_strategy_lose": true
+    },
+    {
+      "id": "irreversible_pier_loss",
+      "trigger": {
+        "op": "and",
+        "args": [
+          {
+            "op": "lt",
+            "var": "seismic_stability",
+            "value": 22
+          },
+          {
+            "op": "action_was",
+            "value": "dredge_channel"
+          }
+        ]
+      },
+      "effect": {
+        "ops": [
+          {
+            "var": "harbor_depth",
+            "op": "min",
+            "args": [
+              "harbor_depth",
+              35
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "integrity": {
+    "budget_invariant": {
+      "action_budget_per_round": 4,
+      "fixed_for_all": true
+    },
+    "information_invariant": {
+      "identical_public_observation_vector_every_round": true
+    },
+    "no_privileged_access": true,
+    "no_post_observation_world_change": true,
+    "no_predefined_winner": true,
+    "exogenous_fixed_before_execution": true,
+    "transitions_deterministic": true,
+    "at_least_one_fail_trajectory_exists": true
+  },
+  "freeze": {
+    "algorithm": "sha256",
+    "contentHash": "sha256:e3c50bd627b092f94d2b0e44cc595b2b00acdf86e8e7baccb1ad8aac0c94b007"
+  }
+}

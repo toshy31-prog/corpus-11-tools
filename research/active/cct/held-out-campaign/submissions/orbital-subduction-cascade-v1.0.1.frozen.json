@@ -1,0 +1,452 @@
+{
+  "schema": "corpus-open-world/v1",
+  "manifest": {
+    "id": "orbital-subduction-cascade",
+    "version": "1.0.1",
+    "title": "Instabilité de la Lithosphère Orbitale et Résonance Solaire",
+    "rounds": 5,
+    "dimensions": [
+      "indigence_thermique_population",
+      "saturation_puits_carbone_cryo",
+      "erosion_franchises_citoyennes",
+      "fraction_decrets_sans_controle",
+      "taux_indisponibilite_visas_transit",
+      "cycles_calcul_inertie_systemique"
+    ],
+    "reversalConditions": [
+      "indigence_thermique_population superieure a 95 avec saturation_puits_carbone_cryo inferieure a 10",
+      "cycles_calcul_inertie_systemique superieur a 150 provoquant un blocage de transition",
+      "erosion_franchises_citoyennes superieure a 80 sans possibilite de compensation par portabilite"
+    ]
+  },
+  "source": {
+    "regime": "external_supplied",
+    "authorId": "meridian-zero-investigator",
+    "authorRelationToCorpus": "independent",
+    "frozenBeforeContenders": true,
+    "authorshipTrace": "7b5a19c4-c21e-4b47-8a30-f4d119e075fa"
+  },
+  "campaignEnvelope": {
+    "protocolVersion": "cct-held-out-campaign/v1",
+    "independenceDeclaration": {
+      "declaresNoAccessToCandidateV013": true,
+      "contenderIdentitiesWithheldUntilFreeze": true,
+      "notDerivedFromKnownV1Worlds": true,
+      "knownV1Worlds": [
+        "dependency-monopoly",
+        "emergency-capture",
+        "fragmentation-cascade",
+        "ecological-evasion",
+        "local-domination",
+        "information-siege"
+      ]
+    },
+    "matching": {
+      "sameInitialWorld": true,
+      "sameExogenousSequence": true,
+      "sameInformationBudget": true,
+      "sameActionBudget": true,
+      "actionUnitsPerRound": 1
+    },
+    "dimensionMap": {
+      "besoins_vitaux": "indigence_thermique_population",
+      "plafond_ecologique": "saturation_puits_carbone_cryo",
+      "droits": "erosion_franchises_citoyennes",
+      "attribution_du_pouvoir": "fraction_decrets_sans_controle",
+      "portabilite_effective": "taux_indisponibilite_visas_transit",
+      "recuperation": "cycles_calcul_inertie_systemique"
+    },
+    "dimensionOrientation": {
+      "indigence_thermique_population": "min",
+      "saturation_puits_carbone_cryo": "min",
+      "erosion_franchises_citoyennes": "min",
+      "fraction_decrets_sans_controle": "min",
+      "taux_indisponibilite_visas_transit": "min",
+      "cycles_calcul_inertie_systemique": "min"
+    },
+    "nonCompensableThresholds": {
+      "indigence_thermique_population": {
+        "operator": "gt",
+        "value": 90
+      },
+      "saturation_puits_carbone_cryo": {
+        "operator": "gt",
+        "value": 85
+      },
+      "erosion_franchises_citoyennes": {
+        "operator": "gt",
+        "value": 75
+      },
+      "fraction_decrets_sans_controle": {
+        "operator": "gt",
+        "value": 60
+      },
+      "taux_indisponibilite_visas_transit": {
+        "operator": "gt",
+        "value": 70
+      },
+      "cycles_calcul_inertie_systemique": {
+        "operator": "gt",
+        "value": 120
+      }
+    },
+    "preExecutionPrediction": {
+      "nonCctRivalMayBeFavored": true,
+      "reason": "Une strategie ultra-simpliste de statu quo passif ou de decentralisation lineaire peut surpasser les systemes de regulation complexes si le flux solaire exogene s'auto-neutralise cycliquement, evitant ainsi l'accumulation d'inertie bureaucratique."
+    },
+    "thresholdsAuthoredBeforeContenders": true,
+    "scalarWinnerForbidden": true
+  },
+  "initialState": {
+    "reserves_thermiques": 80,
+    "saturation_cryo": 15,
+    "garanties_legales": 90,
+    "arbitraire_executif": 10,
+    "droits_expatriation": 85,
+    "charge_bureaucratique": 20
+  },
+  "exogenous": [
+    {
+      "flux_solaire_anormal": 12,
+      "pression_populaire": 5
+    },
+    {
+      "flux_solaire_anormal": 25,
+      "pression_populaire": 15
+    },
+    {
+      "flux_solaire_anormal": 40,
+      "pression_populaire": 30
+    },
+    {
+      "flux_solaire_anormal": 15,
+      "pression_populaire": 45
+    },
+    {
+      "flux_solaire_anormal": 5,
+      "pression_populaire": 60
+    }
+  ],
+  "view": {
+    "index_thermique": {
+      "path": "state.reserves_thermiques"
+    },
+    "saturation_cryo": {
+      "path": "state.saturation_cryo"
+    },
+    "mouvement_civil": {
+      "path": "event.pression_populaire"
+    }
+  },
+  "actions": {
+    "rationnement_centralise": [
+      {
+        "op": "add",
+        "path": "state.reserves_thermiques",
+        "value": -5
+      },
+      {
+        "op": "add",
+        "path": "state.saturation_cryo",
+        "value": 10
+      },
+      {
+        "op": "add",
+        "path": "state.garanties_legales",
+        "value": -15
+      },
+      {
+        "op": "add",
+        "path": "state.arbitraire_executif",
+        "value": 20
+      },
+      {
+        "op": "add",
+        "path": "state.droits_expatriation",
+        "value": -10
+      },
+      {
+        "op": "add",
+        "path": "state.charge_bureaucratique",
+        "value": 5
+      }
+    ],
+    "decentralisation_survie": [
+      {
+        "op": "add",
+        "path": "state.reserves_thermiques",
+        "value": 15
+      },
+      {
+        "op": "add",
+        "path": "state.saturation_cryo",
+        "value": 25
+      },
+      {
+        "op": "add",
+        "path": "state.garanties_legales",
+        "value": 5
+      },
+      {
+        "op": "add",
+        "path": "state.arbitraire_executif",
+        "value": -5
+      },
+      {
+        "op": "add",
+        "path": "state.droits_expatriation",
+        "value": 5
+      },
+      {
+        "op": "add",
+        "path": "state.charge_bureaucratique",
+        "value": 25
+      }
+    ],
+    "ouverture_vannes_externes": [
+      {
+        "op": "add",
+        "path": "state.reserves_thermiques",
+        "value": 25
+      },
+      {
+        "op": "add",
+        "path": "state.saturation_cryo",
+        "value": 40
+      },
+      {
+        "op": "add",
+        "path": "state.garanties_legales",
+        "value": -5
+      },
+      {
+        "op": "add",
+        "path": "state.arbitraire_executif",
+        "value": 5
+      },
+      {
+        "op": "add",
+        "path": "state.droits_expatriation",
+        "value": -25
+      },
+      {
+        "op": "add",
+        "path": "state.charge_bureaucratique",
+        "value": -10
+      }
+    ],
+    "statu_quo_passif": [
+      {
+        "op": "add",
+        "path": "state.reserves_thermiques",
+        "value": -15
+      },
+      {
+        "op": "add",
+        "path": "state.saturation_cryo",
+        "value": 5
+      },
+      {
+        "op": "add",
+        "path": "state.garanties_legales",
+        "value": 0
+      },
+      {
+        "op": "add",
+        "path": "state.arbitraire_executif",
+        "value": -10
+      },
+      {
+        "op": "add",
+        "path": "state.droits_expatriation",
+        "value": 10
+      },
+      {
+        "op": "add",
+        "path": "state.charge_bureaucratique",
+        "value": -5
+      }
+    ]
+  },
+  "transition": [
+    {
+      "op": "add",
+      "path": "state.reserves_thermiques",
+      "value": {
+        "op": "mul",
+        "args": [
+          -1,
+          {
+            "path": "event.flux_solaire_anormal"
+          }
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "state.saturation_cryo",
+      "value": {
+        "op": "div",
+        "args": [
+          {
+            "path": "event.flux_solaire_anormal"
+          },
+          2
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "state.garanties_legales",
+      "value": {
+        "op": "mul",
+        "args": [
+          -1,
+          {
+            "op": "div",
+            "args": [
+              {
+                "path": "event.pression_populaire"
+              },
+              3
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "state.arbitraire_executif",
+      "value": {
+        "op": "div",
+        "args": [
+          {
+            "path": "event.pression_populaire"
+          },
+          4
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "state.droits_expatriation",
+      "value": {
+        "op": "mul",
+        "args": [
+          -1,
+          {
+            "op": "div",
+            "args": [
+              {
+                "path": "state.arbitraire_executif"
+              },
+              5
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "state.charge_bureaucratique",
+      "value": {
+        "op": "div",
+        "args": [
+          {
+            "path": "state.saturation_cryo"
+          },
+          3
+        ]
+      }
+    }
+  ],
+  "observation": {
+    "mesure_thermique": {
+      "path": "state.reserves_thermiques"
+    },
+    "mesure_ecologique": {
+      "path": "state.saturation_cryo"
+    },
+    "mesure_droits": {
+      "path": "state.garanties_legales"
+    }
+  },
+  "predictionTargets": {
+    "prediction_demande_thermique": "mesure_thermique"
+  },
+  "outcomes": {
+    "indigence_thermique_population": {
+      "op": "abs",
+      "args": [
+        {
+          "op": "add",
+          "args": [
+            100,
+            {
+              "op": "mul",
+              "args": [
+                -1,
+                {
+                  "path": "state.reserves_thermiques"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "saturation_puits_carbone_cryo": {
+      "path": "state.saturation_cryo"
+    },
+    "erosion_franchises_citoyennes": {
+      "op": "abs",
+      "args": [
+        {
+          "op": "add",
+          "args": [
+            100,
+            {
+              "op": "mul",
+              "args": [
+                -1,
+                {
+                  "path": "state.garanties_legales"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "fraction_decrets_sans_controle": {
+      "path": "state.arbitraire_executif"
+    },
+    "taux_indisponibilite_visas_transit": {
+      "op": "abs",
+      "args": [
+        {
+          "op": "add",
+          "args": [
+            100,
+            {
+              "op": "mul",
+              "args": [
+                -1,
+                {
+                  "path": "state.droits_expatriation"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "cycles_calcul_inertie_systemique": {
+      "path": "state.charge_bureaucratique"
+    }
+  },
+  "freeze": {
+    "algorithm": "sha256",
+    "contentHash": "sha256:3bf1b72e288ffcf9005278bf91b99522495a671a707fed35bc4745217c1e3822"
+  }
+}

@@ -1,0 +1,292 @@
+{
+  "schema": "corpus-open-world/v1",
+  "manifest": {
+    "title": "Les Ponts de Kryos",
+    "description": "Gouvernance d'un archipel interconnecté sous contraintes structurelles et écologiques conflictuelles",
+    "version": "1.0",
+    "turns": 8,
+    "contenders": "unknown_multiple",
+    "source_regime": "independent_synthetic_unknown_contenders"
+  },
+  "source": {
+    "territory": "Archipel de Kryos (7 îles, 3 ponts anciens interconnectant)",
+    "population": 45000,
+    "initial_year": 2147,
+    "synthetic": true,
+    "doctrine_neutral": true
+  },
+  "state": {
+    "initial": {
+      "structural_integrity": 75,
+      "freshwater_reservoir": 60,
+      "energy_grid_stability": 80,
+      "marine_ecosystem_health": 70,
+      "population_morale": 65,
+      "harvester_influence": 30,
+      "guardian_cohesion": 55,
+      "deep_sea_pressure": 20,
+      "trade_volume": 40,
+      "bridge_maintenance_debt": 0
+    },
+    "bounds": {
+      "structural_integrity": {"min": 0, "max": 100},
+      "freshwater_reservoir": {"min": 0, "max": 100},
+      "energy_grid_stability": {"min": 0, "max": 100},
+      "marine_ecosystem_health": {"min": 0, "max": 100},
+      "population_morale": {"min": 0, "max": 100},
+      "harvester_influence": {"min": 0, "max": 100},
+      "guardian_cohesion": {"min": 0, "max": 100},
+      "deep_sea_pressure": {"min": 0, "max": 100},
+      "trade_volume": {"min": 0, "max": 100},
+      "bridge_maintenance_debt": {"min": 0, "max": 100}
+    },
+    "irreversible": ["structural_integrity_below_20", "marine_ecosystem_health_below_15"]
+  },
+  "groups": [
+    {
+      "id": "pontifex",
+      "name": "Ordre des Pontifex",
+      "role": "Maintenance infrastructure",
+      "vulnerability": "structural_integrity",
+      "adaptive": false,
+      "budget_share": 0.4
+    },
+    {
+      "id": "abyssaux",
+      "name": "Corporation des Abyssaux",
+      "role": "Extraction ressources profondes",
+      "vulnerability": "marine_ecosystem_health",
+      "adaptive": true,
+      "strategic_reaction": "harvester_influence_threshold",
+      "budget_share": 0.35
+    },
+    {
+      "id": "civiles",
+      "name": "Conseil Civique",
+      "role": "Population et services",
+      "vulnerability": "population_morale",
+      "adaptive": false,
+      "passive_receiver": true,
+      "budget_share": 0.25
+    }
+  ],
+  "actions": {
+    "budget_per_turn": 10,
+    "catalog": {
+      "reinforce_structure": {
+        "cost": 6,
+        "immediate_effect": {"structural_integrity": 8, "guardian_cohesion": 5},
+        "delayed_cost": {"rounds": 2, "energy_grid_stability": -3},
+        "visible_to": "all",
+        "description": "Renforcement métallique des ponts"
+      },
+      "intensive_harvest": {
+        "cost": 4,
+        "immediate_effect": {"trade_volume": 12, "harvester_influence": 8, "freshwater_reservoir": -2},
+        "future_destruction": {"marine_ecosystem_health": 15, "deep_sea_pressure": 10},
+        "side_effect_carrier": "abyssaux",
+        "side_effect_victim": "pontifex",
+        "visible_to": "all",
+        "description": "Extraction accélérée des nodules profonds"
+      },
+      "hydraulic_rationing": {
+        "cost": 2,
+        "immediate_effect": {"freshwater_reservoir": 10, "population_morale": -8},
+        "paradox": {"protects": "freshwater_reservoir", "aggravates": "population_morale"},
+        "visible_to": "all",
+        "description": "Distribution rationnée de l'eau douce"
+      },
+      "emergency_blackout": {
+        "cost": 3,
+        "immediate_effect": {"energy_grid_stability": 15, "trade_volume": -10, "harvester_influence": -5},
+        "reversible": true,
+        "visible_to": "all",
+        "description": "Coupure ciblée du réseau électrique"
+      },
+      "diplomatic_channel": {
+        "cost": 5,
+        "immediate_effect": {"guardian_cohesion": -3, "harvester_influence": -3, "population_morale": 5},
+        "condition": "guardian_cohesion_above_40",
+        "visible_to": "all",
+        "description": "Ouverture de négociations inter-factions"
+      },
+      "seismic_sensors": {
+        "cost": 7,
+        "immediate_effect": {"deep_sea_pressure": -5},
+        "information_bonus": "next_exogenous_preview",
+        "delayed_benefit": {"rounds": 3, "structural_integrity": 5},
+        "visible_to": "all",
+        "description": "Déploiement de capteurs sismiques"
+      },
+      "bridge_toll": {
+        "cost": 1,
+        "immediate_effect": {"trade_volume": -5, "bridge_maintenance_debt": -8, "population_morale": -3},
+        "cumulative_penalty": "trade_volume",
+        "visible_to": "all",
+        "description": "Péage d'urgence sur les ponts"
+      }
+    }
+  },
+  "rounds": [
+    {"number": 1, "exogenous": "seismic_tremor_minor", "budget": 10},
+    {"number": 2, "exogenous": "null", "budget": 10},
+    {"number": 3, "exogenous": "algae_bloom", "budget": 10},
+    {"number": 4, "exogenous": "null", "budget": 10},
+    {"number": 5, "exogenous": "deep_pressure_spike", "budget": 10},
+    {"number": 6, "exogenous": "null", "budget": 10},
+    {"number": 7, "exogenous": "storm_surge", "budget": 10},
+    {"number": 8, "exogenous": "cascading_failure_risk", "budget": 10}
+  ],
+  "observations": {
+    "public": {
+      "structural_integrity": "range_10",
+      "freshwater_reservoir": "range_10",
+      "energy_grid_stability": "range_10",
+      "marine_ecosystem_health": "range_10",
+      "population_morale": "range_10",
+      "harvester_influence": "exact",
+      "guardian_cohesion": "exact",
+      "deep_sea_pressure": "range_20",
+      "trade_volume": "range_10",
+      "bridge_maintenance_debt": "exact"
+    },
+    "hidden": {
+      "true_values": "not_disclosed",
+      "exogenous_future": "not_disclosed",
+      "transition_formulas": "not_disclosed"
+    }
+  },
+  "transitions": {
+    "exogenous_events": {
+      "seismic_tremor_minor": {
+        "structural_integrity": -5,
+        "deep_sea_pressure": 5,
+        "guardian_cohesion": 3
+      },
+      "algae_bloom": {
+        "marine_ecosystem_health": -12,
+        "freshwater_reservoir": -8,
+        "trade_volume": -5
+      },
+      "deep_pressure_spike": {
+        "deep_sea_pressure": 25,
+        "structural_integrity": -8,
+        "energy_grid_stability": -5
+      },
+      "storm_surge": {
+        "structural_integrity": -10,
+        "freshwater_reservoir": 15,
+        "trade_volume": -15,
+        "energy_grid_stability": -10
+      },
+      "cascading_failure_risk": {
+        "trigger": "if_structural_integrity_below_50",
+        "structural_integrity": -15,
+        "energy_grid_stability": -20,
+        "population_morale": -20
+      },
+      "null": {}
+    },
+    "domain_failures": {
+      "structural_collapse": {
+        "condition": "structural_integrity <= 20",
+        "effect": "irreversible_bridge_loss",
+        "cascade": {"trade_volume": -30, "population_morale": -25}
+      },
+      "ecosystem_collapse": {
+        "condition": "marine_ecosystem_health <= 15",
+        "effect": "irreversible_harvest_ban",
+        "cascade": {"harvester_influence": -40, "trade_volume": -20}
+      }
+    },
+    "adaptive_reaction": {
+      "abyssaux": {
+        "trigger": "harvester_influence > 50",
+        "reaction": "block_reinforce_structure",
+        "probability": 0.7
+      }
+    },
+    "delayed_costs": {
+      "round_2_from_reinforce": {"energy_grid_stability": -3},
+      "round_5_from_intensive_harvest": {"marine_ecosystem_health": -15}
+    }
+  },
+  "outcomes": {
+    "dimensions": [
+      {
+        "id": "structural_integrity",
+        "name": "Intégrité Structurelle",
+        "type": "independent",
+        "direction": "maximize",
+        "threshold_failure": 20,
+        "irreversible_below": 20
+      },
+      {
+        "id": "marine_ecosystem_health",
+        "name": "Santé Écosystémique",
+        "type": "independent",
+        "direction": "maximize",
+        "threshold_failure": 15,
+        "irreversible_below": 15
+      },
+      {
+        "id": "freshwater_reservoir",
+        "name": "Sécurité Hydrique",
+        "type": "independent",
+        "direction": "maximize",
+        "threshold_failure": 10
+      },
+      {
+        "id": "energy_grid_stability",
+        "name": "Stabilité Énergétique",
+        "type": "independent",
+        "direction": "maximize",
+        "threshold_failure": 25
+      },
+      {
+        "id": "population_morale",
+        "name": "Cohésion Sociale",
+        "type": "independent",
+        "direction": "maximize",
+        "threshold_failure": 30
+      },
+      {
+        "id": "trade_volume",
+        "name": "Activité Commerciale",
+        "type": "independent",
+        "direction": "maximize",
+        "threshold_failure": 20
+      }
+    ],
+    "no_aggregation": true,
+    "incompatible_pairs": [
+      ["structural_integrity", "marine_ecosystem_health"],
+      ["freshwater_reservoir", "trade_volume"]
+    ]
+  },
+  "reversalConditions": [
+    {
+      "id": "total_system_collapse",
+      "condition": "structural_integrity <= 20 AND marine_ecosystem_health <= 15",
+      "effect": "automatic_loss_all_strategies",
+      "description": "Effondrement simultané des deux piliers de gouvernance"
+    },
+    {
+      "id": "civil_unrest",
+      "condition": "population_morale <= 15 AND harvester_influence >= 70",
+      "effect": "strategy_nullification",
+      "description": "Perte de légitimité totale avec capture par extractivistes"
+    }
+  ],
+  "integrity": {
+    "budget_invariant": "strict_10_per_turn",
+    "information_symmetry": "identical_public_observation",
+    "no_hidden_state_access": true,
+    "deterministic_transitions": true,
+    "no_post_observation_modification": true,
+    "exogenous_predefined": true,
+    "no_winner_predefined": true,
+    "no_aggregate_score": true,
+    "verifiable_trajectory": true
+  }
+}

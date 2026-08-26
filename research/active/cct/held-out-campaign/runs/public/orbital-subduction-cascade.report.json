@@ -1,0 +1,516 @@
+{
+  "contract": "corpus-open-experiment-arena/v1",
+  "arenaId": "CCT-HO-001:orbital-subduction-cascade",
+  "seed": 0,
+  "scenario": {
+    "id": "orbital-subduction-cascade",
+    "version": "1.0.1",
+    "title": "Instabilité de la Lithosphère Orbitale et Résonance Solaire",
+    "dimensions": [
+      "indigence_thermique_population",
+      "saturation_puits_carbone_cryo",
+      "erosion_franchises_citoyennes",
+      "fraction_decrets_sans_controle",
+      "taux_indisponibilite_visas_transit",
+      "cycles_calcul_inertie_systemique"
+    ],
+    "reversalConditions": [
+      "indigence_thermique_population superieure a 95 avec saturation_puits_carbone_cryo inferieure a 10",
+      "cycles_calcul_inertie_systemique superieur a 150 provoquant un blocage de transition",
+      "erosion_franchises_citoyennes superieure a 80 sans possibilite de compensation par portabilite"
+    ],
+    "source": {
+      "regime": "external_supplied",
+      "authorId": "meridian-zero-investigator",
+      "authorRelationToCorpus": "independent",
+      "frozenBeforeContenders": true,
+      "authorshipTrace": "7b5a19c4-c21e-4b47-8a30-f4d119e075fa",
+      "freezeHash": "sha256:3bf1b72e288ffcf9005278bf91b99522495a671a707fed35bc4745217c1e3822",
+      "freezeVerified": true
+    }
+  },
+  "claimExternal": false,
+  "externalityStatus": "declared_external_with_verified_freeze_authorship_not_independently_verified",
+  "matchedBaseline": {
+    "worldHash": "fnv1a64:10cc87b9931b5823",
+    "exogenousHash": "fnv1a64:5199119dcfcf25be"
+  },
+  "runs": [
+    {
+      "label": "method-436548e4",
+      "baseline": {
+        "worldHash": "fnv1a64:10cc87b9931b5823",
+        "exogenousHash": "fnv1a64:5199119dcfcf25be"
+      },
+      "outcomes": {
+        "indigence_thermique_population": 142,
+        "saturation_puits_carbone_cryo": 113.5,
+        "erosion_franchises_citoyennes": 136.66666666666669,
+        "fraction_decrets_sans_controle": 148.75,
+        "taux_indisponibilite_visas_transit": 151.25,
+        "cycles_calcul_inertie_systemique": 172.5
+      },
+      "history": [
+        {
+          "round": 0,
+          "view": {
+            "index_thermique": 80,
+            "saturation_cryo": 15,
+            "mouvement_civil": 5
+          },
+          "admissibleActions": [
+            "rationnement_centralise",
+            "decentralisation_survie",
+            "ouverture_vannes_externes",
+            "statu_quo_passif"
+          ],
+          "action": "rationnement_centralise",
+          "predictions": {
+            "prediction_demande_thermique": 33.333333333333336
+          },
+          "observation": {
+            "mesure_thermique": 63,
+            "mesure_ecologique": 31,
+            "mesure_droits": 73.33333333333333
+          },
+          "predictionAssessment": {
+            "prediction_demande_thermiqueAbsoluteError": 29.666666666666664
+          },
+          "beforeHash": "fnv1a64:10cc87b9931b5823",
+          "afterHash": "fnv1a64:57a77efe0ccbe804"
+        },
+        {
+          "round": 1,
+          "view": {
+            "index_thermique": 63,
+            "saturation_cryo": 31,
+            "mouvement_civil": 15
+          },
+          "admissibleActions": [
+            "rationnement_centralise",
+            "decentralisation_survie",
+            "ouverture_vannes_externes",
+            "statu_quo_passif"
+          ],
+          "action": "rationnement_centralise",
+          "predictions": {
+            "prediction_demande_thermique": 36.333333333333336
+          },
+          "observation": {
+            "mesure_thermique": 33,
+            "mesure_ecologique": 53.5,
+            "mesure_droits": 53.33333333333333
+          },
+          "predictionAssessment": {
+            "prediction_demande_thermiqueAbsoluteError": 3.3333333333333357
+          },
+          "beforeHash": "fnv1a64:57a77efe0ccbe804",
+          "afterHash": "fnv1a64:521a0344ac6dfd21"
+        },
+        {
+          "round": 2,
+          "view": {
+            "index_thermique": 33,
+            "saturation_cryo": 53.5,
+            "mouvement_civil": 30
+          },
+          "admissibleActions": [
+            "rationnement_centralise",
+            "decentralisation_survie",
+            "ouverture_vannes_externes",
+            "statu_quo_passif"
+          ],
+          "action": "rationnement_centralise",
+          "predictions": {
+            "prediction_demande_thermique": 38.833333333333336
+          },
+          "observation": {
+            "mesure_thermique": -12,
+            "mesure_ecologique": 83.5,
+            "mesure_droits": 28.33333333333333
+          },
+          "predictionAssessment": {
+            "prediction_demande_thermiqueAbsoluteError": 50.833333333333336
+          },
+          "beforeHash": "fnv1a64:521a0344ac6dfd21",
+          "afterHash": "fnv1a64:9858acfad83a6f65"
+        },
+        {
+          "round": 3,
+          "view": {
+            "index_thermique": -12,
+            "saturation_cryo": 83.5,
+            "mouvement_civil": 45
+          },
+          "admissibleActions": [
+            "rationnement_centralise",
+            "decentralisation_survie",
+            "ouverture_vannes_externes",
+            "statu_quo_passif"
+          ],
+          "action": "rationnement_centralise",
+          "predictions": {
+            "prediction_demande_thermique": 38.833333333333336
+          },
+          "observation": {
+            "mesure_thermique": -32,
+            "mesure_ecologique": 101,
+            "mesure_droits": -1.6666666666666714
+          },
+          "predictionAssessment": {
+            "prediction_demande_thermiqueAbsoluteError": 70.83333333333334
+          },
+          "beforeHash": "fnv1a64:9858acfad83a6f65",
+          "afterHash": "fnv1a64:0d0e9a30e0245921"
+        },
+        {
+          "round": 4,
+          "view": {
+            "index_thermique": -32,
+            "saturation_cryo": 101,
+            "mouvement_civil": 60
+          },
+          "admissibleActions": [
+            "rationnement_centralise",
+            "decentralisation_survie",
+            "ouverture_vannes_externes",
+            "statu_quo_passif"
+          ],
+          "action": "rationnement_centralise",
+          "predictions": {
+            "prediction_demande_thermique": 43
+          },
+          "observation": {
+            "mesure_thermique": -42,
+            "mesure_ecologique": 113.5,
+            "mesure_droits": -36.66666666666667
+          },
+          "predictionAssessment": {
+            "prediction_demande_thermiqueAbsoluteError": 85
+          },
+          "beforeHash": "fnv1a64:0d0e9a30e0245921",
+          "afterHash": "fnv1a64:44e49753787d2312"
+        }
+      ],
+      "finalWorldHash": "fnv1a64:44e49753787d2312"
+    },
+    {
+      "label": "method-96402101",
+      "baseline": {
+        "worldHash": "fnv1a64:10cc87b9931b5823",
+        "exogenousHash": "fnv1a64:5199119dcfcf25be"
+      },
+      "outcomes": {
+        "indigence_thermique_population": 192,
+        "saturation_puits_carbone_cryo": 88.5,
+        "erosion_franchises_citoyennes": 61.66666666666667,
+        "fraction_decrets_sans_controle": -1.25,
+        "taux_indisponibilite_visas_transit": 38.75,
+        "cycles_calcul_inertie_systemique": 97.5
+      },
+      "history": [
+        {
+          "round": 0,
+          "view": {
+            "index_thermique": 80,
+            "saturation_cryo": 15,
+            "mouvement_civil": 5
+          },
+          "admissibleActions": [
+            "rationnement_centralise",
+            "decentralisation_survie",
+            "ouverture_vannes_externes",
+            "statu_quo_passif"
+          ],
+          "action": "statu_quo_passif",
+          "predictions": {
+            "prediction_demande_thermique": 33.333333333333336
+          },
+          "observation": {
+            "mesure_thermique": 53,
+            "mesure_ecologique": 26,
+            "mesure_droits": 88.33333333333333
+          },
+          "predictionAssessment": {
+            "prediction_demande_thermiqueAbsoluteError": 19.666666666666664
+          },
+          "beforeHash": "fnv1a64:10cc87b9931b5823",
+          "afterHash": "fnv1a64:b0cece57e7272404"
+        },
+        {
+          "round": 1,
+          "view": {
+            "index_thermique": 53,
+            "saturation_cryo": 26,
+            "mouvement_civil": 15
+          },
+          "admissibleActions": [
+            "rationnement_centralise",
+            "decentralisation_survie",
+            "ouverture_vannes_externes",
+            "statu_quo_passif"
+          ],
+          "action": "statu_quo_passif",
+          "predictions": {
+            "prediction_demande_thermique": 31.333333333333332
+          },
+          "observation": {
+            "mesure_thermique": 13,
+            "mesure_ecologique": 43.5,
+            "mesure_droits": 83.33333333333333
+          },
+          "predictionAssessment": {
+            "prediction_demande_thermiqueAbsoluteError": 18.333333333333332
+          },
+          "beforeHash": "fnv1a64:b0cece57e7272404",
+          "afterHash": "fnv1a64:81407644e782207e"
+        },
+        {
+          "round": 2,
+          "view": {
+            "index_thermique": 13,
+            "saturation_cryo": 43.5,
+            "mouvement_civil": 30
+          },
+          "admissibleActions": [
+            "rationnement_centralise",
+            "decentralisation_survie",
+            "ouverture_vannes_externes",
+            "statu_quo_passif"
+          ],
+          "action": "statu_quo_passif",
+          "predictions": {
+            "prediction_demande_thermique": 28.833333333333332
+          },
+          "observation": {
+            "mesure_thermique": -42,
+            "mesure_ecologique": 68.5,
+            "mesure_droits": 73.33333333333333
+          },
+          "predictionAssessment": {
+            "prediction_demande_thermiqueAbsoluteError": 70.83333333333333
+          },
+          "beforeHash": "fnv1a64:81407644e782207e",
+          "afterHash": "fnv1a64:cb56210330ee21ff"
+        },
+        {
+          "round": 3,
+          "view": {
+            "index_thermique": -42,
+            "saturation_cryo": 68.5,
+            "mouvement_civil": 45
+          },
+          "admissibleActions": [
+            "rationnement_centralise",
+            "decentralisation_survie",
+            "ouverture_vannes_externes",
+            "statu_quo_passif"
+          ],
+          "action": "statu_quo_passif",
+          "predictions": {
+            "prediction_demande_thermique": 23.833333333333332
+          },
+          "observation": {
+            "mesure_thermique": -72,
+            "mesure_ecologique": 81,
+            "mesure_droits": 58.33333333333333
+          },
+          "predictionAssessment": {
+            "prediction_demande_thermiqueAbsoluteError": 95.83333333333333
+          },
+          "beforeHash": "fnv1a64:cb56210330ee21ff",
+          "afterHash": "fnv1a64:41c15b656f43f9c2"
+        },
+        {
+          "round": 4,
+          "view": {
+            "index_thermique": -72,
+            "saturation_cryo": 81,
+            "mouvement_civil": 60
+          },
+          "admissibleActions": [
+            "rationnement_centralise",
+            "decentralisation_survie",
+            "ouverture_vannes_externes",
+            "statu_quo_passif"
+          ],
+          "action": "statu_quo_passif",
+          "predictions": {
+            "prediction_demande_thermique": 23
+          },
+          "observation": {
+            "mesure_thermique": -92,
+            "mesure_ecologique": 88.5,
+            "mesure_droits": 38.33333333333333
+          },
+          "predictionAssessment": {
+            "prediction_demande_thermiqueAbsoluteError": 115
+          },
+          "beforeHash": "fnv1a64:41c15b656f43f9c2",
+          "afterHash": "fnv1a64:70c9c1bec96f43fc"
+        }
+      ],
+      "finalWorldHash": "fnv1a64:70c9c1bec96f43fc"
+    },
+    {
+      "label": "method-f5bda771",
+      "baseline": {
+        "worldHash": "fnv1a64:10cc87b9931b5823",
+        "exogenousHash": "fnv1a64:5199119dcfcf25be"
+      },
+      "outcomes": {
+        "indigence_thermique_population": 72,
+        "saturation_puits_carbone_cryo": 193.5,
+        "erosion_franchises_citoyennes": 76.66666666666667,
+        "fraction_decrets_sans_controle": 43.75,
+        "taux_indisponibilite_visas_transit": 93.25,
+        "cycles_calcul_inertie_systemique": 187.5
+      },
+      "history": [
+        {
+          "round": 0,
+          "view": {
+            "index_thermique": 80,
+            "saturation_cryo": 15,
+            "mouvement_civil": 5
+          },
+          "admissibleActions": [
+            "rationnement_centralise",
+            "decentralisation_survie",
+            "ouverture_vannes_externes",
+            "statu_quo_passif"
+          ],
+          "action": "ouverture_vannes_externes",
+          "predictions": {
+            "prediction_demande_thermique": 33.333333333333336
+          },
+          "observation": {
+            "mesure_thermique": 93,
+            "mesure_ecologique": 61,
+            "mesure_droits": 83.33333333333333
+          },
+          "predictionAssessment": {
+            "prediction_demande_thermiqueAbsoluteError": 59.666666666666664
+          },
+          "beforeHash": "fnv1a64:10cc87b9931b5823",
+          "afterHash": "fnv1a64:06842e0982b85626"
+        },
+        {
+          "round": 1,
+          "view": {
+            "index_thermique": 93,
+            "saturation_cryo": 61,
+            "mouvement_civil": 15
+          },
+          "admissibleActions": [
+            "rationnement_centralise",
+            "decentralisation_survie",
+            "ouverture_vannes_externes",
+            "statu_quo_passif"
+          ],
+          "action": "statu_quo_passif",
+          "predictions": {
+            "prediction_demande_thermique": 56.333333333333336
+          },
+          "observation": {
+            "mesure_thermique": 53,
+            "mesure_ecologique": 78.5,
+            "mesure_droits": 78.33333333333333
+          },
+          "predictionAssessment": {
+            "prediction_demande_thermiqueAbsoluteError": 3.3333333333333357
+          },
+          "beforeHash": "fnv1a64:06842e0982b85626",
+          "afterHash": "fnv1a64:75b3e882ffe75c9b"
+        },
+        {
+          "round": 2,
+          "view": {
+            "index_thermique": 53,
+            "saturation_cryo": 78.5,
+            "mouvement_civil": 30
+          },
+          "admissibleActions": [
+            "rationnement_centralise",
+            "decentralisation_survie",
+            "ouverture_vannes_externes",
+            "statu_quo_passif"
+          ],
+          "action": "ouverture_vannes_externes",
+          "predictions": {
+            "prediction_demande_thermique": 53.833333333333336
+          },
+          "observation": {
+            "mesure_thermique": 38,
+            "mesure_ecologique": 138.5,
+            "mesure_droits": 63.33333333333333
+          },
+          "predictionAssessment": {
+            "prediction_demande_thermiqueAbsoluteError": 15.833333333333336
+          },
+          "beforeHash": "fnv1a64:75b3e882ffe75c9b",
+          "afterHash": "fnv1a64:51586d2ca1581070"
+        },
+        {
+          "round": 3,
+          "view": {
+            "index_thermique": 38,
+            "saturation_cryo": 138.5,
+            "mouvement_civil": 45
+          },
+          "admissibleActions": [
+            "rationnement_centralise",
+            "decentralisation_survie",
+            "ouverture_vannes_externes",
+            "statu_quo_passif"
+          ],
+          "action": "statu_quo_passif",
+          "predictions": {
+            "prediction_demande_thermique": 73.83333333333333
+          },
+          "observation": {
+            "mesure_thermique": 8,
+            "mesure_ecologique": 151,
+            "mesure_droits": 48.33333333333333
+          },
+          "predictionAssessment": {
+            "prediction_demande_thermiqueAbsoluteError": 65.83333333333333
+          },
+          "beforeHash": "fnv1a64:51586d2ca1581070",
+          "afterHash": "fnv1a64:23a5a63cd684043a"
+        },
+        {
+          "round": 4,
+          "view": {
+            "index_thermique": 8,
+            "saturation_cryo": 151,
+            "mouvement_civil": 60
+          },
+          "admissibleActions": [
+            "rationnement_centralise",
+            "decentralisation_survie",
+            "ouverture_vannes_externes",
+            "statu_quo_passif"
+          ],
+          "action": "ouverture_vannes_externes",
+          "predictions": {
+            "prediction_demande_thermique": 73
+          },
+          "observation": {
+            "mesure_thermique": 28,
+            "mesure_ecologique": 193.5,
+            "mesure_droits": 23.33333333333333
+          },
+          "predictionAssessment": {
+            "prediction_demande_thermiqueAbsoluteError": 45
+          },
+          "beforeHash": "fnv1a64:23a5a63cd684043a",
+          "afterHash": "fnv1a64:159896d546b35469"
+        }
+      ],
+      "finalWorldHash": "fnv1a64:159896d546b35469"
+    }
+  ],
+  "conclusionBoundary": "vector_outcomes_only_no_unique_winner",
+  "reportHash": "fnv1a64:4d8be2803cb37f37"
+}

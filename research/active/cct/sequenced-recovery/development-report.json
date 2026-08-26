@@ -1,0 +1,116 @@
+{
+  "schema": "cct-sequenced-recovery-development/v1",
+  "candidate": "CCT-EXEC-1.1-CANDIDATE-001",
+  "generatedAt": "2026-08-26",
+  "sourceRegime": "internal_synthetic_development_only",
+  "lifecycleBoundary": "Behavior matches on maintainer-authored attacks do not establish robustness, authorization, deployment or external transport.",
+  "vectorSummary": {
+    "total": 12,
+    "behaviorMatched": 12,
+    "behaviorMismatch": 0,
+    "classifications": {
+      "usable_without_debt": 1,
+      "usable_sequence": 1,
+      "protected_failure": 2,
+      "material_failure_preserved": 4,
+      "terminal_failure_exposed": 2,
+      "limitation_exposed": 1,
+      "usable_shortcut": 1
+    }
+  },
+  "noScalarWinner": true,
+  "materialFailuresRemainFailures": [
+    "A11-05-no-safe-triage",
+    "A11-06-no-capacity-path",
+    "A11-07-common-cause-budget-collapse",
+    "A11-08-deadline-miss",
+    "A11-09-I13-emergency-abolition",
+    "A11-10-self-certified-repair"
+  ],
+  "results": [
+    {
+      "id": "A11-01-full-protection-preemption",
+      "expected": "full_protection",
+      "observed": "full_protection",
+      "behaviorMatched": true,
+      "classification": "usable_without_debt"
+    },
+    {
+      "id": "A11-02-complete-sequence",
+      "expected": "full_protection",
+      "observed": "full_protection",
+      "behaviorMatched": true,
+      "classification": "usable_sequence"
+    },
+    {
+      "id": "A11-03-paper-capacity-gain",
+      "expected": "CCT_CAPACITY_GAIN_UNVERIFIED",
+      "observed": "CCT_CAPACITY_GAIN_UNVERIFIED",
+      "behaviorMatched": true,
+      "classification": "protected_failure"
+    },
+    {
+      "id": "A11-04-self-certified-gain",
+      "expected": "CCT_CAPACITY_GAIN_UNVERIFIED",
+      "observed": "CCT_CAPACITY_GAIN_UNVERIFIED",
+      "behaviorMatched": true,
+      "classification": "protected_failure"
+    },
+    {
+      "id": "A11-05-no-safe-triage",
+      "expected": "CCT_TRIAGE_INFEASIBLE",
+      "observed": "CCT_TRIAGE_INFEASIBLE",
+      "behaviorMatched": true,
+      "classification": "material_failure_preserved"
+    },
+    {
+      "id": "A11-06-no-capacity-path",
+      "expected": "CCT_CAPACITY_ACQUISITION_INFEASIBLE",
+      "observed": "CCT_CAPACITY_ACQUISITION_INFEASIBLE",
+      "behaviorMatched": true,
+      "classification": "material_failure_preserved"
+    },
+    {
+      "id": "A11-07-common-cause-budget-collapse",
+      "expected": "CCT_RECOVERY_BUDGET_COLLAPSE",
+      "observed": "CCT_RECOVERY_BUDGET_COLLAPSE",
+      "behaviorMatched": true,
+      "classification": "material_failure_preserved"
+    },
+    {
+      "id": "A11-08-deadline-miss",
+      "expected": "CCT_REPAIR_DEADLINE_MISSED",
+      "observed": "CCT_REPAIR_DEADLINE_MISSED",
+      "behaviorMatched": true,
+      "classification": "terminal_failure_exposed"
+    },
+    {
+      "id": "A11-09-I13-emergency-abolition",
+      "expected": "CCT_I13_NO_CONSTITUTIONALLY_ADMISSIBLE_ACTION",
+      "observed": "CCT_I13_NO_CONSTITUTIONALLY_ADMISSIBLE_ACTION",
+      "behaviorMatched": true,
+      "classification": "material_failure_preserved"
+    },
+    {
+      "id": "A11-10-self-certified-repair",
+      "expected": "CCT_REPAIR_DEADLINE_MISSED",
+      "observed": "CCT_REPAIR_DEADLINE_MISSED",
+      "behaviorMatched": true,
+      "classification": "terminal_failure_exposed"
+    },
+    {
+      "id": "A11-11-residual-loss-visible",
+      "expected": "named_residual",
+      "observed": "named_residual",
+      "behaviorMatched": true,
+      "classification": "limitation_exposed"
+    },
+    {
+      "id": "A11-12-exogenous-capacity-shortcut",
+      "expected": "restoration_due",
+      "observed": "restoration_due",
+      "behaviorMatched": true,
+      "classification": "usable_shortcut"
+    }
+  ]
+}

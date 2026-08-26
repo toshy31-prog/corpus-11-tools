@@ -1,0 +1,153 @@
+{
+  "campaignId": "CCT-HO-001",
+  "identityStatus": "sealed",
+  "statusBoundary": "synthetic_common_generator_non_independent",
+  "conclusion": "no_blind_method_avoids_non_compensable_breaches_across_all_worlds",
+  "noScalarWinner": true,
+  "strata": {
+    "all_worlds": {
+      "worldCount": 8,
+      "byLabel": {
+        "method-436548e4": {
+          "worldsWithAnyThresholdBreach": 8,
+          "thresholdBreachesByAxis": {
+            "besoins_vitaux": 4,
+            "plafond_ecologique": 5,
+            "droits": 2,
+            "attribution_du_pouvoir": 4,
+            "portabilite_effective": 4,
+            "recuperation": 5
+          },
+          "meanOfWorldMeanPredictionAbsoluteErrors": 58.75452124198949
+        },
+        "method-96402101": {
+          "worldsWithAnyThresholdBreach": 8,
+          "thresholdBreachesByAxis": {
+            "besoins_vitaux": 4,
+            "plafond_ecologique": 4,
+            "droits": 2,
+            "attribution_du_pouvoir": 3,
+            "portabilite_effective": 3,
+            "recuperation": 2
+          },
+          "meanOfWorldMeanPredictionAbsoluteErrors": 61.71115447758742
+        },
+        "method-f5bda771": {
+          "worldsWithAnyThresholdBreach": 8,
+          "thresholdBreachesByAxis": {
+            "besoins_vitaux": 4,
+            "plafond_ecologique": 5,
+            "droits": 2,
+            "attribution_du_pouvoir": 4,
+            "portabilite_effective": 4,
+            "recuperation": 3
+          },
+          "meanOfWorldMeanPredictionAbsoluteErrors": 60.15946032169991
+        }
+      }
+    },
+    "without_declared_mechanism_variants": {
+      "worldCount": 6,
+      "byLabel": {
+        "method-436548e4": {
+          "worldsWithAnyThresholdBreach": 6,
+          "thresholdBreachesByAxis": {
+            "besoins_vitaux": 3,
+            "plafond_ecologique": 4,
+            "droits": 2,
+            "attribution_du_pouvoir": 4,
+            "portabilite_effective": 4,
+            "recuperation": 3
+          },
+          "meanOfWorldMeanPredictionAbsoluteErrors": 28.39491721154154
+        },
+        "method-96402101": {
+          "worldsWithAnyThresholdBreach": 6,
+          "thresholdBreachesByAxis": {
+            "besoins_vitaux": 3,
+            "plafond_ecologique": 4,
+            "droits": 1,
+            "attribution_du_pouvoir": 3,
+            "portabilite_effective": 3,
+            "recuperation": 0
+          },
+          "meanOfWorldMeanPredictionAbsoluteErrors": 33.58709485900545
+        },
+        "method-f5bda771": {
+          "worldsWithAnyThresholdBreach": 6,
+          "thresholdBreachesByAxis": {
+            "besoins_vitaux": 3,
+            "plafond_ecologique": 4,
+            "droits": 2,
+            "attribution_du_pouvoir": 3,
+            "portabilite_effective": 3,
+            "recuperation": 1
+          },
+          "meanOfWorldMeanPredictionAbsoluteErrors": 28.170947095599875
+        }
+      }
+    }
+  },
+  "exactVectorEquivalences": [
+    {
+      "scenarioId": "irrigation-quota-fracture-plaine-canaux",
+      "left": "method-436548e4",
+      "right": "method-96402101"
+    }
+  ],
+  "vectorDominances": [
+    {
+      "scenarioId": "virelian-delta-aquifer",
+      "dominant": "method-f5bda771",
+      "dominated": "method-436548e4",
+      "axes": {
+        "besoins_vitaux": "equal",
+        "plafond_ecologique": "right_better",
+        "droits": "right_better",
+        "attribution_du_pouvoir": "right_better",
+        "portabilite_effective": "right_better",
+        "recuperation": "right_better"
+      }
+    },
+    {
+      "scenarioId": "delta-salinity-encroachment",
+      "dominant": "method-96402101",
+      "dominated": "method-436548e4",
+      "axes": {
+        "besoins_vitaux": "right_better",
+        "plafond_ecologique": "right_better",
+        "droits": "equal",
+        "attribution_du_pouvoir": "equal",
+        "portabilite_effective": "equal",
+        "recuperation": "right_better"
+      }
+    },
+    {
+      "scenarioId": "delta-salinity-encroachment",
+      "dominant": "method-96402101",
+      "dominated": "method-f5bda771",
+      "axes": {
+        "besoins_vitaux": "left_better",
+        "plafond_ecologique": "left_better",
+        "droits": "equal",
+        "attribution_du_pouvoir": "equal",
+        "portabilite_effective": "equal",
+        "recuperation": "left_better"
+      }
+    },
+    {
+      "scenarioId": "bassin-valdrome-hydrique",
+      "dominant": "method-436548e4",
+      "dominated": "method-f5bda771",
+      "axes": {
+        "besoins_vitaux": "equal",
+        "plafond_ecologique": "equal",
+        "droits": "equal",
+        "attribution_du_pouvoir": "left_better",
+        "portabilite_effective": "left_better",
+        "recuperation": "left_better"
+      }
+    }
+  ],
+  "reversalCondition": "recompute if a frozen scenario, contender freeze, threshold, identity map, or dependence classification changes"
+}

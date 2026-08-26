@@ -1,0 +1,21 @@
+{
+  "schema": "cct-virelia-projection-campaign-freeze/v1",
+  "id": "CCT-VIRELIA-PROJECTION-FREEZE-2026-08-26-01",
+  "algorithm": "sha256",
+  "files": {
+    "contract.json": "d4532c6de8232b5e02499b304d62451411341d61b6292f5862400559e6da5e7d",
+    "runtime.mjs": "1cce702603d1327d8712b1da7cbf4d05c9951d86c7773158fc4973deffeabdc5",
+    "test.mjs": "fd712732f9969f88f2d622d93bbebe96b6aa69d35233cefb94edcff0e443bb1c",
+    "run-campaign.mjs": "3f81a9112606bf158f9684d75ff7cd92c9c1c520b7dde3786017a6c63665765e",
+    "campaign-report.json": "801631a6614ecbfa55249e7fafd598c04265a3c11b45a6dda9dfa824f11fb220",
+    "validation.json": "2d4fbea34d2d4d42e548b95c86f964c6e0900a493eb8c07c929966874fcaf646",
+    "README.md": "bced8703ccc79323f3b645b3939db4e6cdf783d11642d8218e199c89c0ca90b0",
+    "verify-freeze.mjs": "5834eb5497a26689bfb2d8d275d73fc6061c72620a02c579c2cbc50150915304"
+  },
+  "basisFreezes": [
+    "../freeze.json",
+    "../rich-arena-v2/freeze.json"
+  ],
+  "worldFreezeHash": "sha256:e3c50bd627b092f94d2b0e44cc595b2b00acdf86e8e7baccb1ad8aac0c94b007",
+  "statusBoundary": "Exact synthetic projection-campaign bytes only. Two CCT control failures under maintainer-authored projections do not establish field failure, general invalidity, rival superiority, independent lineage or external transport."
+}

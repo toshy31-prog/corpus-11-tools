@@ -1,0 +1,112 @@
+{
+  "schema": "corpus-open-world/v1",
+  "manifest": {
+    "id": "replace-with-new-held-out-scenario-id",
+    "version": "1.0.0",
+    "title": "Replace with the author's title",
+    "rounds": 4,
+    "dimensions": [
+      "replace_vital_dimension",
+      "replace_ecological_dimension",
+      "replace_rights_dimension",
+      "replace_power_dimension",
+      "replace_portability_dimension",
+      "replace_recovery_dimension"
+    ],
+    "reversalConditions": [
+      "State an outcome that makes the scenario interpretation fail.",
+      "State an outcome that forces revision of at least one contender."
+    ]
+  },
+  "source": {
+    "regime": "external_supplied",
+    "authorId": "replace-with-author-or-pseudonym",
+    "authorRelationToCorpus": "independent",
+    "frozenBeforeContenders": true,
+    "authorshipTrace": "replace-with-author-controlled-trace"
+  },
+  "campaignEnvelope": {
+    "protocolVersion": "cct-held-out-campaign/v1",
+    "independenceDeclaration": {
+      "declaresNoAccessToCandidateV013": true,
+      "contenderIdentitiesWithheldUntilFreeze": true,
+      "notDerivedFromKnownV1Worlds": true,
+      "knownV1Worlds": [
+        "dependency-monopoly",
+        "emergency-capture",
+        "fragmentation-cascade",
+        "ecological-evasion",
+        "local-domination",
+        "information-siege"
+      ]
+    },
+    "matching": {
+      "sameInitialWorld": true,
+      "sameExogenousSequence": true,
+      "sameInformationBudget": true,
+      "sameActionBudget": true,
+      "actionUnitsPerRound": 1
+    },
+    "dimensionMap": {
+      "besoins_vitaux": "replace_vital_dimension",
+      "plafond_ecologique": "replace_ecological_dimension",
+      "droits": "replace_rights_dimension",
+      "attribution_du_pouvoir": "replace_power_dimension",
+      "portabilite_effective": "replace_portability_dimension",
+      "recuperation": "replace_recovery_dimension"
+    },
+    "dimensionOrientation": {
+      "besoins_vitaux": "min",
+      "plafond_ecologique": "min",
+      "droits": "min",
+      "attribution_du_pouvoir": "min",
+      "portabilite_effective": "min",
+      "recuperation": "min"
+    },
+    "nonCompensableThresholds": {
+      "besoins_vitaux": {"operator": "gt", "value": 0},
+      "plafond_ecologique": {"operator": "gt", "value": 0},
+      "droits": {"operator": "gt", "value": 0},
+      "attribution_du_pouvoir": {"operator": "gt", "value": 0},
+      "portabilite_effective": {"operator": "gt", "value": 0},
+      "recuperation": {"operator": "gt", "value": 0}
+    },
+    "preExecutionPrediction": {
+      "nonCctRivalMayBeFavored": false,
+      "reason": "Replace with a reason written before contender identities are known."
+    },
+    "thresholdsAuthoredBeforeContenders": true,
+    "scalarWinnerForbidden": true
+  },
+  "initialState": {
+    "replace": 0
+  },
+  "exogenous": [
+    {"replace": 0},
+    {"replace": 0},
+    {"replace": 0},
+    {"replace": 0}
+  ],
+  "view": {
+    "replace_visible_name": {"path": "state.replace"}
+  },
+  "actions": {
+    "replace_action_a": [],
+    "replace_action_b": []
+  },
+  "transition": [],
+  "observation": {
+    "replace_observed_name": {"path": "state.replace"}
+  },
+  "predictionTargets": {
+    "replace_prediction_name": "replace_observed_name"
+  },
+  "outcomes": {
+    "replace_vital_dimension": {"path": "state.replace"},
+    "replace_ecological_dimension": {"path": "state.replace"},
+    "replace_rights_dimension": {"path": "state.replace"},
+    "replace_power_dimension": {"path": "state.replace"},
+    "replace_portability_dimension": {"path": "state.replace"},
+    "replace_recovery_dimension": {"path": "state.replace"}
+  }
+}

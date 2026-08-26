@@ -1,0 +1,325 @@
+{
+  "schema": "corpus-open-world/v1",
+  "manifest": {
+    "id": "rupture-digues-arbitrage-droits-eau",
+    "version": "1.0.0",
+    "title": "Rupture des Digues et Arbitrage des Droits d'Eau dans la Confédération des Communes Riveraines",
+    "rounds": 5,
+    "dimensions": [
+      "cout_besoins_vitaux",
+      "cout_ecologique",
+      "cout_droits",
+      "cout_pouvoir_non_controle",
+      "cout_portabilite",
+      "cout_recuperation"
+    ],
+    "reversalConditions": [
+      "Si la reserve_eau dépasse 200 après application des fuites exogènes, le stress hydrique initial n'est plus crédible et invalide l'interprétation du scénario",
+      "Un concurrent atteignant simultanément zéro sur cout_besoins_vitaux et cout_ecologique malgré la séquence d'apports toxiques force une révision des mécanismes du concurrent",
+      "Dépassement non compensable du seuil 70 sur les besoins vitaux non satisfaits"
+    ]
+  },
+  "source": {
+    "regime": "external_supplied",
+    "authorId": "arbitre-fluvial-independant",
+    "authorRelationToCorpus": "independent",
+    "frozenBeforeContenders": true,
+    "authorshipTrace": "f8e2a1c9-7b4d-3e6f-0a9c-5d8b2e1f4a7c"
+  },
+  "campaignEnvelope": {
+    "protocolVersion": "cct-held-out-campaign/v1",
+    "independenceDeclaration": {
+      "declaresNoAccessToCandidateV013": true,
+      "contenderIdentitiesWithheldUntilFreeze": true,
+      "notDerivedFromKnownV1Worlds": true,
+      "knownV1Worlds": [
+        "dependency-monopoly",
+        "emergency-capture",
+        "fragmentation-cascade",
+        "ecological-evasion",
+        "local-domination",
+        "information-siege"
+      ]
+    },
+    "matching": {
+      "sameInitialWorld": true,
+      "sameExogenousSequence": true,
+      "sameInformationBudget": true,
+      "sameActionBudget": true,
+      "actionUnitsPerRound": 1
+    },
+    "dimensionMap": {
+      "besoins_vitaux": "cout_besoins_vitaux",
+      "plafond_ecologique": "cout_ecologique",
+      "droits": "cout_droits",
+      "attribution_du_pouvoir": "cout_pouvoir_non_controle",
+      "portabilite_effective": "cout_portabilite",
+      "recuperation": "cout_recuperation"
+    },
+    "dimensionOrientation": {
+      "besoins_vitaux": "min",
+      "plafond_ecologique": "min",
+      "droits": "min",
+      "attribution_du_pouvoir": "min",
+      "portabilite_effective": "min",
+      "recuperation": "min"
+    },
+    "nonCompensableThresholds": {
+      "besoins_vitaux": {
+        "operator": "gt",
+        "value": 70
+      },
+      "plafond_ecologique": {
+        "operator": "gt",
+        "value": 45
+      },
+      "droits": {
+        "operator": "gt",
+        "value": 28
+      },
+      "attribution_du_pouvoir": {
+        "operator": "gt",
+        "value": 35
+      },
+      "portabilite_effective": {
+        "operator": "gt",
+        "value": 40
+      },
+      "recuperation": {
+        "operator": "gt",
+        "value": 22
+      }
+    },
+    "preExecutionPrediction": {
+      "nonCctRivalMayBeFavored": true,
+      "reason": "Une stratégie simple de conservation uniforme de la réserve d'eau limite les cascades d'immobilité induites par des interventions ciblées complexes face à des apports toxiques et des fuites variables, préservant mieux la portabilité effective sans sur-réagir aux chocs institutionnels"
+    },
+    "thresholdsAuthoredBeforeContenders": true,
+    "scalarWinnerForbidden": true
+  },
+  "initialState": {
+    "reserve_eau": 135,
+    "charge_toxique": 30,
+    "index_violations": 6,
+    "pouvoir_non_mandat": 18,
+    "index_immobilite": 12,
+    "retard_systeme": 4,
+    "besoin_minimal": 110
+  },
+  "exogenous": [
+    {
+      "apport_pollution": 9,
+      "fuite_eau": 11,
+      "pression_migratoire": 4
+    },
+    {
+      "apport_pollution": 18,
+      "fuite_eau": 6,
+      "pression_migratoire": 9
+    },
+    {
+      "apport_pollution": 7,
+      "fuite_eau": 14,
+      "pression_migratoire": 6
+    },
+    {
+      "apport_pollution": 22,
+      "fuite_eau": 8,
+      "pression_migratoire": 12
+    },
+    {
+      "apport_pollution": 11,
+      "fuite_eau": 10,
+      "pression_migratoire": 5
+    }
+  ],
+  "view": {
+    "reserve_visible": {
+      "path": "state.reserve_eau"
+    },
+    "pollution_visible": {
+      "path": "state.charge_toxique"
+    },
+    "mobilite_visible": {
+      "path": "state.index_immobilite"
+    }
+  },
+  "actions": {
+    "conserver_eau": [
+      {
+        "op": "add",
+        "path": "state.reserve_eau",
+        "value": 15
+      },
+      {
+        "op": "add",
+        "path": "state.index_immobilite",
+        "value": 4
+      },
+      {
+        "op": "add",
+        "path": "state.pouvoir_non_mandat",
+        "value": 2
+      }
+    ],
+    "deleguer_local": [
+      {
+        "op": "add",
+        "path": "state.pouvoir_non_mandat",
+        "value": -8
+      },
+      {
+        "op": "add",
+        "path": "state.index_violations",
+        "value": 3
+      },
+      {
+        "op": "add",
+        "path": "state.retard_systeme",
+        "value": 3
+      }
+    ],
+    "ouvrir_mobilite": [
+      {
+        "op": "add",
+        "path": "state.index_immobilite",
+        "value": -6
+      },
+      {
+        "op": "add",
+        "path": "state.charge_toxique",
+        "value": 5
+      },
+      {
+        "op": "add",
+        "path": "state.reserve_eau",
+        "value": -8
+      }
+    ],
+    "epurer_urgence": [
+      {
+        "op": "add",
+        "path": "state.charge_toxique",
+        "value": -12
+      },
+      {
+        "op": "add",
+        "path": "state.retard_systeme",
+        "value": -2
+      },
+      {
+        "op": "add",
+        "path": "state.index_violations",
+        "value": 4
+      },
+      {
+        "op": "add",
+        "path": "state.reserve_eau",
+        "value": -5
+      }
+    ]
+  },
+  "transition": [
+    {
+      "op": "add",
+      "path": "state.charge_toxique",
+      "value": {
+        "path": "event.apport_pollution"
+      }
+    },
+    {
+      "op": "add",
+      "path": "state.reserve_eau",
+      "value": {
+        "op": "mul",
+        "args": [
+          -1,
+          {
+            "path": "event.fuite_eau"
+          }
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "state.index_immobilite",
+      "value": {
+        "path": "event.pression_migratoire"
+      }
+    },
+    {
+      "op": "add",
+      "path": "state.retard_systeme",
+      "value": 1
+    },
+    {
+      "op": "add",
+      "path": "state.pouvoir_non_mandat",
+      "value": 1
+    }
+  ],
+  "observation": {
+    "etat_hydrique": {
+      "path": "state.reserve_eau"
+    },
+    "pression_toxique": {
+      "path": "state.charge_toxique"
+    },
+    "contraintes_mouvement": {
+      "path": "state.index_immobilite"
+    }
+  },
+  "predictionTargets": {
+    "prediction_reserve_finale": "etat_hydrique"
+  },
+  "outcomes": {
+    "cout_besoins_vitaux": {
+      "op": "max",
+      "args": [
+        0,
+        {
+          "op": "sub",
+          "args": [
+            {
+              "path": "state.besoin_minimal"
+            },
+            {
+              "path": "state.reserve_eau"
+            }
+          ]
+        }
+      ]
+    },
+    "cout_ecologique": {
+      "op": "max",
+      "args": [
+        0,
+        {
+          "op": "sub",
+          "args": [
+            {
+              "path": "state.charge_toxique"
+            },
+            50
+          ]
+        }
+      ]
+    },
+    "cout_droits": {
+      "path": "state.index_violations"
+    },
+    "cout_pouvoir_non_controle": {
+      "path": "state.pouvoir_non_mandat"
+    },
+    "cout_portabilite": {
+      "path": "state.index_immobilite"
+    },
+    "cout_recuperation": {
+      "path": "state.retard_systeme"
+    }
+  },
+  "freeze": {
+    "algorithm": "sha256",
+    "contentHash": "sha256:d529806884ce05cdffce04a642cd965dd4fa3c2f672f33540f9723e3e3551635"
+  }
+}

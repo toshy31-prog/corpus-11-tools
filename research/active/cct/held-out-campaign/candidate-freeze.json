@@ -1,0 +1,28 @@
+{
+  "freeze_id": "CCT-V013-FREEZE-2026-08-26-01",
+  "date": "2026-08-26",
+  "algorithm": "sha256",
+  "candidate": {
+    "path": "../next-version/v0.13-candidate.json",
+    "sha256": "b8b0c246de4b80c34b7b3fcda383e0f90397b24728239443ab9b2354ed2bed76"
+  },
+  "political_model": {
+    "path": "../modele-gouvernance-ecosocialiste-libertaire.md",
+    "sha256": "6f6953dc3aa72beff446708b6555a9a364d7633c0aed9086ed538315c7b46e52"
+  },
+  "frozen_scope": [
+    "M13-01",
+    "M13-02",
+    "M13-03",
+    "M13-04"
+  ],
+  "lifecycle_at_freeze": "tests_statiques_passes",
+  "not_established": [
+    "autorisee",
+    "deployee",
+    "reobservee",
+    "efficacite_territoriale",
+    "robustesse_independante"
+  ],
+  "rule": "Toute modification d'un fichier gelé crée une nouvelle candidate et interdit de conserver cet identifiant de gel."
+}

@@ -1,0 +1,56 @@
+{
+  "schema": "cct-open-world-recovery-migration/v1",
+  "from": "CCT-EXEC-1.1-FREEZE-2026-08-26-01",
+  "to": "CCT-EXEC-1.2-CANDIDATE-001",
+  "date": "2026-08-26",
+  "triggeredBy": [
+    "VF-01-harm-i13-conflation",
+    "VF-02-recovery-ontology-dependence"
+  ],
+  "retained": [
+    "I13 forbidden constitutional tags remain absolute",
+    "full zero-harm protection remains first priority",
+    "temporary deficits remain constitutional breach and repair debt",
+    "maximum recovery deadline remains three ticks",
+    "capacity and repair receipts require distinct observers",
+    "self-certification and late repair remain invalid",
+    "no outcome dimensions are aggregated into a winner"
+  ],
+  "changed": [
+    {
+      "surface": "refusal attribution",
+      "before": "any action carrying an axis harm was excluded from constitutionallySafe and could produce an I13 refusal",
+      "after": "only a forbidden constitutional tag establishes I13 inadmissibility; harm is reported separately"
+    },
+    {
+      "surface": "triage debt",
+      "before": "triage actions had to declare no axis harm",
+      "after": "bounded non-vital harms are admitted only as named repair debts with unchanged deadline"
+    },
+    {
+      "surface": "open-world recovery",
+      "before": "recoveryKind, maintenance booleans and capacityGain had to be supplied in CCT vocabulary",
+      "after": "current public axis-effect evidence may nominate triage or acquisition while never certifying realized capacity"
+    },
+    {
+      "surface": "unknown institution",
+      "before": "any non-empty actor and recourse strings appeared equally resolved",
+      "after": "absent, unspecified or unresolved actor/recourse values create explicitly unresolved institutional attribution"
+    }
+  ],
+  "notChanged": [
+    "CCT-EXEC 1.1 frozen bytes",
+    "CCT-NCE 0.14 frozen bytes",
+    "CCT-EXEC 1.0 frozen bytes",
+    "Virelia world and projection campaign frozen bytes"
+  ],
+  "knownRemainder": [
+    "effect evidence still depends on an evaluator-supplied public proxy projection",
+    "restoration cannot be inferred from physical effects alone",
+    "missing independent observers still terminates the sequence",
+    "attribution du pouvoir remains unobservable in Virelia",
+    "no held-out world has evaluated version 1.2"
+  ],
+  "rollback": "Deactivate 1.2 and return to the exact 1.1 freeze; do not rewrite either freeze.",
+  "reversalCondition": "Withdraw 1.2 if it selects an I13-forbidden action, turns effect evidence into self-certification, extends debt deadlines, or labels material harm as I13 without a forbidden tag."
+}

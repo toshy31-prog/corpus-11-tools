@@ -1,0 +1,42 @@
+{
+  "schema": "cct-rich-arena-v2-validation/v1",
+  "date": "2026-08-26",
+  "status": "locally_tested_interpreter_admission",
+  "commands": [
+    "node --check interpreter.mjs",
+    "node --check admit-virelia.mjs",
+    "node test.mjs",
+    "node admit-virelia.mjs --check",
+    "node verify-freeze.mjs"
+  ],
+  "tests": {
+    "total": 20,
+    "passed": 20,
+    "failed": 0
+  },
+  "admissionCoverage": {
+    "completeSingletonTrajectories": 8,
+    "roundsPerTrajectory": 8,
+    "initialBundlesExecuted": 27,
+    "hiddenVariableLeaks": 0,
+    "matchedSmokeArenaRuns": 2,
+    "delayedEffectsObserved": true,
+    "persistentCapsObserved": true,
+    "irreversiblePierLossObserved": true,
+    "totalCollapseUnitTested": true,
+    "forcedNoActionUnitTested": true
+  },
+  "methodEffects": [
+    "bundle order is imposed canonically by the interpreter",
+    "public admissibility lists leak hidden-precondition feasibility",
+    "forced inaction is a reserved interpreter fallback",
+    "terminal failure threshold locking is an interpreter convention",
+    "prediction targets are reduced to public observables"
+  ],
+  "decision": {
+    "vireliaAdmittedToRichV2": true,
+    "vireliaAdmittedForCctComparison": false
+  },
+  "remainingBlocker": "A neutral, shared and pre-frozen projection contract from Virelia into CCT-EXEC 1.1 inputs and action semantics is absent.",
+  "statusBoundary": "Written and locally tested interpreter admission only; no CCT run or external effectiveness claim."
+}

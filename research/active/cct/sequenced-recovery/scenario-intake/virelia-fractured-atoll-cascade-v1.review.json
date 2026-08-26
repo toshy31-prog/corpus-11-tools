@@ -1,0 +1,63 @@
+{
+  "schema": "cct-scenario-intake-review/v1",
+  "reviewedAt": "2026-08-26",
+  "submission": {
+    "title": "Virelia Fractured Atoll Cascade",
+    "attachmentByteHash": "sha256:038b60f8b9099d0b8616dea4c5b5a665e9b5e2e6d7823c56d5100ebeed7bdeea",
+    "canonicalPayloadFreeze": "sha256:736b2b4eb3c1644d46a9a21a86d202efdb4ba2f252d4ab4b70f5bb0ad9d7c0a0",
+    "frozenFile": "virelia-fractured-atoll-cascade-v1.frozen.json"
+  },
+  "status": "frozen_not_admitted",
+  "admission": {
+    "jsonSyntaxValid": true,
+    "canonicalFreezeVerified": true,
+    "declarativeAdapterCompatible": false,
+    "firstRuntimeError": "initialState is required",
+    "cctExecutionAttempted": false
+  },
+  "observedStrengths": {
+    "stateVariables": 10,
+    "groups": 3,
+    "actions": 8,
+    "rounds": 8,
+    "separateOutcomeDimensions": 7,
+    "matchedPartialInformationDeclared": true,
+    "noGlobalScoreDeclared": true,
+    "delayedCostsDeclared": true,
+    "irreversibilityDeclared": true,
+    "strategicAdaptationDeclared": true
+  },
+  "structuralBlockers": [
+    "manifest.id missing",
+    "manifest.version missing",
+    "manifest.rounds missing",
+    "manifest.dimensions missing",
+    "manifest.reversalConditions missing",
+    "initialState missing",
+    "exogenous missing",
+    "view missing",
+    "transition missing",
+    "observation missing",
+    "predictionTargets missing",
+    "outcomes is a descriptive dimension array rather than an executable expression map",
+    "actions are descriptive objects rather than mutation arrays"
+  ],
+  "semanticBlockers": [
+    "Preconditions, exogenous application, clamping and budget enforcement are prose strings, not executable operations.",
+    "Delayed effects have no executable queue state or transition rule.",
+    "Blocking, misreporting and strategic reaction are declared but have no state transition mechanism.",
+    "The submission allows two actions per round while the current arena contender contract selects one action per round.",
+    "Irreversible caps and derived outcomes use free-form formulas unsupported by the declarative adapter."
+  ],
+  "sourceAssessment": {
+    "declaredRegime": "independent_synthetic_unknown_contenders",
+    "generatorIsolation": "declared_by_submission",
+    "authorId": "missing",
+    "authorshipTrace": "missing",
+    "frozenBeforeContenders": "payload frozen before CCT execution",
+    "independenceStatus": "unknown_not_verified",
+    "boundary": "A declaration of unknown contenders and a freeze establish separation claims and stable bytes, not independent authorship lineage."
+  },
+  "nextAction": "Return the frozen payload to its original generator and request a semantics-preserving re-emission in the exact executable adapter schema. Do not let a CCT-aware maintainer invent missing transitions.",
+  "strongestSupportedConclusion": "The submission is a useful adverse world design but not an executable world. It cannot yet confront CCT-EXEC 1.1."
+}

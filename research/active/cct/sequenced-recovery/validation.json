@@ -1,0 +1,52 @@
+{
+  "schema": "cct-sequenced-recovery-validation/v1",
+  "candidate": "CCT-EXEC-1.1-CANDIDATE-001",
+  "date": "2026-08-26",
+  "lifecycle": "locally_tested",
+  "results": {
+    "runtime_and_mutation_tests": {
+      "passed": 23,
+      "failed": 0
+    },
+    "internal_adversarial_attacks": 12,
+    "expected_behavior_observed": 12,
+    "usable_paths": 3,
+    "protected_or_terminal_failures": 4,
+    "material_failures_preserved_as_failures": 4,
+    "limitations_exposed": 1
+  },
+  "adversarialRevision": {
+    "firstRun": "11/12 behavior matches",
+    "failureFound": "A post-gain budget collapse was attributed to a combined constitutional-or-budget refusal.",
+    "revision": "The runtime now distinguishes no constitutionally admissible action, ordinary budget infeasibility, and budget collapse while repair debt is open.",
+    "rerun": "12/12 behavior matches",
+    "statusBoundary": "This is an internal maintainer-authored correction, not independent evidence of robustness."
+  },
+  "sequenceAudit": {
+    "fullProtectionPriority": "A full admissible action preempts debt creation and can shortcut capacity acquisition when restoration becomes feasible.",
+    "temporaryDeficit": "Every uncovered confirmed axis becomes an attributable constitutional breach and repair debt; it is never scored as a compromise or success.",
+    "capacityGain": "A declared gain has no effect until a matching, authority-traced receipt arrives from a distinct actor and failure domain.",
+    "repairClosure": "Debt closes only after an attempted restoration and a timely, independent receipt confirming restored capacity, recourse, non-repetition and remaining loss.",
+    "deadline": "Open debt after the public deadline is terminal failure; even a complete late receipt is rejected.",
+    "I13": "The permanent subject-capacity prohibitions remain active in every recovery phase.",
+    "NCE": "M14-01 emergency obligations remain selected on the tested triage path."
+  },
+  "methodEffect": "The public ontology, receipt schema, recovery window and synthetic worlds define what the runtime can observe. A signed receipt establishes only the declared public observation, not truth outside that protocol.",
+  "remainingFailures": [
+    "No safe triage action leaves vital minimum and irreversibility suspension materially unavailable.",
+    "No admissible capacity-acquisition action leaves debt open without a usable path.",
+    "A common-cause budget collapse can make restoration unaffordable after a verified gain.",
+    "If only an I13-violating action exists, CCT preserves the prohibition but cannot satisfy the material need."
+  ],
+  "strongestSupportedConclusion": "CCT-EXEC 1.1 locally executes a bounded recovery sequence and refuses to erase debt, fake capacity or accept late repair. It improves failure attribution but does not solve worlds where safe material capacity is absent.",
+  "notEstablished": [
+    "held-out performance",
+    "superiority",
+    "authorization",
+    "deployment",
+    "institutional effect",
+    "composed robustness",
+    "independent reobservation",
+    "external transport"
+  ]
+}

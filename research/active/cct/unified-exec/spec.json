@@ -1,0 +1,69 @@
+{
+  "schema": "cct-unified-exec/v1",
+  "id": "CCT-EXEC-1.0-CANDIDATE-001",
+  "version": "1.0-candidate",
+  "date": "2026-08-26",
+  "basis": {
+    "consolidationFreeze": "../consolidation-v1/cct-1.0-freeze.json",
+    "nceFreeze": "../next-version/v0.14-freeze.json",
+    "nceRuntime": "../next-version/runtime-v014.mjs"
+  },
+  "lifecycle": {
+    "state": "locally_tested",
+    "evidence": [
+      "15 local executable and mutation tests passed",
+      "CCT-NCE 0.14 integration preserved on tested emergency path",
+      "I13/I15 ordering variation passed on tested scope"
+    ],
+    "notEstablished": [
+      "authorization",
+      "deployment",
+      "institutional effect",
+      "composed robustness",
+      "independent reobservation",
+      "external transport"
+    ]
+  },
+  "interface": {
+    "extends": "cct-public-governance-view/v1",
+    "requiredPublicFields": ["axisRisks", "capacityBudget", "actionOntology"],
+    "actionOntologyExtension": ["resourceCost", "protectsAxes", "harmsAxes", "constitutionalTags"],
+    "fairness": "The same frozen axis risks, capacity budget and action semantics must be visible to every contender.",
+    "forbiddenInputs": ["world truth", "future exogenous events", "transition rules", "outcome formulas", "acceptance thresholds"]
+  },
+  "I13": {
+    "name": "alternance_sans_abolition_du_sujet",
+    "activation": "always",
+    "protectedSubjectCapacities": ["dignity", "vital_status", "opposition", "recourse"],
+    "forbiddenActionTags": [
+      "abolish_dignity",
+      "deny_vital_status",
+      "suppress_opposition",
+      "eliminate_recourse",
+      "disenfranchise_class"
+    ],
+    "rule": "A majority transition may change policy but cannot make any protected subject capacity unavailable."
+  },
+  "I15": {
+    "name": "robustesse_composee_executable_gate",
+    "axes": [
+      "besoins_vitaux",
+      "plafond_ecologique",
+      "droits",
+      "attribution_du_pouvoir",
+      "portabilite_effective",
+      "recuperation"
+    ],
+    "riskFields": ["id", "axis", "severity", "confirmed", "channel", "failureDomain"],
+    "minimumComposedAxes": 2,
+    "selectionRule": "Every selected action must fit the public capacity budget, harm no constitutional axis, and protect every currently confirmed at-risk axis.",
+    "infeasibleRule": "Refuse explicitly with a trace; never select a partial protection or manufacture a scalar tradeoff.",
+    "statusBoundary": "Executing this gate does not establish composed robustness."
+  },
+  "withdrawalConditions": [
+    "Withdraw I13 compilation if it blocks ordinary alternance without protecting a named subject capacity.",
+    "Rebuild I15 if action bundling or risk declaration creates unmatched information between contenders.",
+    "Do not promote from development fixtures or previously observed worlds.",
+    "Any semantic change creates a new freeze."
+  ]
+}

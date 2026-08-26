@@ -1,0 +1,29 @@
+{
+  "schema": "cct-held-out-intake-review/v1",
+  "generatedAt": "2026-08-26",
+  "candidate": "les-ponts-de-kryos/1.1.0",
+  "receivedByteHash": "sha256:8657af9f65f70e8668722d73391acff5c9003ee1bd2cd5cb8f4b54d71745925a",
+  "richV2StructuralValidation": {
+    "valid": false,
+    "errorCount": 10,
+    "unsupportedSetOperations": 7,
+    "expressionValuedDeltas": 3
+  },
+  "randomnessVerification": {
+    "declaredAlgorithm": "mulberry32",
+    "declaredSeed": 12345,
+    "declaredDrawsMatchAlgorithm": false,
+    "expectedDraws": [0.9797282677609473, 0.3067522644996643, 0.484205421525985, 0.817934412509203, 0.5094283693470061, 0.34747186047025025, 0.07375754183158278, 0.7663964673411101]
+  },
+  "mechanismPreservation": {
+    "originalStructuralCollapsePresent": false,
+    "originalEcosystemCollapsePresent": false,
+    "round8ConditionalCascadePresentButNotExecutable": true
+  },
+  "decision": {
+    "admitted": false,
+    "cctExecutionLaunched": false,
+    "nextStep": "generator_reemission_1.1.1_under_global_rules_contract"
+  },
+  "statusBoundary": "Receipt and local review only; no contender trajectory or robustness claim."
+}

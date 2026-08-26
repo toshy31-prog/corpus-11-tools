@@ -1,6 +1,6 @@
 {
   "package": "CCT-EXEC-0.1",
-  "model_basis": "CCT v0.12",
+  "model_basis": "CCT v0.12 stable; v0.13 candidate tested separately",
   "date": "2026-08-17",
   "purpose": "Premier paquet local composable de constitution, économie, opérations et pilotes CCT",
   "lifecycle_scale": ["described", "written", "tested", "authorized", "deployed", "reobserved"],
@@ -11,7 +11,9 @@
     {"id": "calibration", "path": "calibration", "status": "written", "scope": "protocole de collecte non exécuté"},
     {"id": "pilots", "path": "pilots", "status": "written", "scope": "protocoles, non autorisés sur terrain"},
     {"id": "evidence", "path": "evidence", "status": "written", "scope": "registre local de preuves"},
-    {"id": "integration", "path": "integration", "status": "tested", "scope": "orchestration de tests locale"}
+    {"id": "integration", "path": "integration", "status": "tested", "scope": "orchestration de tests locale"},
+    {"id": "v013_candidate", "path": "../next-version", "status": "tested", "scope": "candidate écrite et tests statiques locaux, sans promotion de la v0.12"},
+    {"id": "held_out_campaign", "path": "../held-out-campaign", "status": "tested", "scope": "gel, admission et composition testés; scénarios externes non encore reçus"}
   ],
   "explicitly_not_established": [
     "autorisation institutionnelle",

@@ -1,0 +1,471 @@
+{
+  "contract": "corpus-open-experiment-arena/v1",
+  "arenaId": "CCT-HO-001:archipel-thalasso-crise",
+  "seed": 0,
+  "scenario": {
+    "id": "archipel-thalasso-crise",
+    "version": "1.0.0",
+    "title": "Crise des marées dans l'archipel de Sélène",
+    "dimensions": [
+      "cout_besoins_vitaux",
+      "cout_ecologique",
+      "cout_droits",
+      "cout_pouvoir_non_controle",
+      "cout_portabilite",
+      "cout_recuperation"
+    ],
+    "reversalConditions": [
+      "Si la salinité des réserves d'eau douce tombe en dessous de 10, le scénario devient ininterprétable car toute gouvernance est impossible.",
+      "Si le coût de récupération dépasse 50, le concurrent doit être révisé car la société ne peut plus se reconstruire.",
+      "Franchissement non compensable : toute violation d'un seuil non compensable invalide immédiatement la performance, indépendamment des autres axes."
+    ],
+    "source": {
+      "regime": "external_supplied",
+      "authorId": "lagon-noir-observateur",
+      "authorRelationToCorpus": "independent",
+      "frozenBeforeContenders": true,
+      "authorshipTrace": "a7f3c9e2-4b1d-48a6-9c3f-2d8e5f1a6b9c",
+      "freezeHash": "sha256:0595e04e8108e69f5d062d4941d13fd722ab6c9c7e2742139e14effaedfacdbf",
+      "freezeVerified": true
+    }
+  },
+  "claimExternal": false,
+  "externalityStatus": "declared_external_with_verified_freeze_authorship_not_independently_verified",
+  "matchedBaseline": {
+    "worldHash": "fnv1a64:5262ca09bb3b00eb",
+    "exogenousHash": "fnv1a64:2e26656147065231"
+  },
+  "runs": [
+    {
+      "label": "method-436548e4",
+      "baseline": {
+        "worldHash": "fnv1a64:5262ca09bb3b00eb",
+        "exogenousHash": "fnv1a64:2e26656147065231"
+      },
+      "outcomes": {
+        "cout_besoins_vitaux": 0,
+        "cout_ecologique": 120,
+        "cout_droits": 0,
+        "cout_pouvoir_non_controle": 45,
+        "cout_portabilite": 0,
+        "cout_recuperation": 0
+      },
+      "history": [
+        {
+          "round": 0,
+          "view": {
+            "information_visible": 80
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "pompage_intensif",
+            "mobilisation_communautaire",
+            "evacuation_partielle",
+            "sanctions_collectives"
+          ],
+          "action": "pompage_intensif",
+          "predictions": {
+            "prediction_demandee": 80
+          },
+          "observation": {
+            "mesure_observee": 65
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 15
+          },
+          "beforeHash": "fnv1a64:5262ca09bb3b00eb",
+          "afterHash": "fnv1a64:f71901b952181e9a"
+        },
+        {
+          "round": 1,
+          "view": {
+            "information_visible": 85
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "pompage_intensif",
+            "mobilisation_communautaire",
+            "evacuation_partielle",
+            "sanctions_collectives"
+          ],
+          "action": "pompage_intensif",
+          "predictions": {
+            "prediction_demandee": 85
+          },
+          "observation": {
+            "mesure_observee": 82.5
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 2.5
+          },
+          "beforeHash": "fnv1a64:f71901b952181e9a",
+          "afterHash": "fnv1a64:d16811eccd91f9ab"
+        },
+        {
+          "round": 2,
+          "view": {
+            "information_visible": 85
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "pompage_intensif",
+            "mobilisation_communautaire",
+            "evacuation_partielle",
+            "sanctions_collectives"
+          ],
+          "action": "pompage_intensif",
+          "predictions": {
+            "prediction_demandee": 85
+          },
+          "observation": {
+            "mesure_observee": 102.5
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 17.5
+          },
+          "beforeHash": "fnv1a64:d16811eccd91f9ab",
+          "afterHash": "fnv1a64:423f6cd0b3e1bd25"
+        },
+        {
+          "round": 3,
+          "view": {
+            "information_visible": 80
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "pompage_intensif",
+            "mobilisation_communautaire",
+            "evacuation_partielle",
+            "sanctions_collectives"
+          ],
+          "action": "pompage_intensif",
+          "predictions": {
+            "prediction_demandee": 80
+          },
+          "observation": {
+            "mesure_observee": 117.5
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 37.5
+          },
+          "beforeHash": "fnv1a64:423f6cd0b3e1bd25",
+          "afterHash": "fnv1a64:08865213585daa42"
+        },
+        {
+          "round": 4,
+          "view": {
+            "information_visible": 85
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "pompage_intensif",
+            "mobilisation_communautaire",
+            "evacuation_partielle",
+            "sanctions_collectives"
+          ],
+          "action": "pompage_intensif",
+          "predictions": {
+            "prediction_demandee": 85
+          },
+          "observation": {
+            "mesure_observee": 140
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 55
+          },
+          "beforeHash": "fnv1a64:08865213585daa42",
+          "afterHash": "fnv1a64:0cc38c0e1517348e"
+        }
+      ],
+      "finalWorldHash": "fnv1a64:0cc38c0e1517348e"
+    },
+    {
+      "label": "method-96402101",
+      "baseline": {
+        "worldHash": "fnv1a64:5262ca09bb3b00eb",
+        "exogenousHash": "fnv1a64:2e26656147065231"
+      },
+      "outcomes": {
+        "cout_besoins_vitaux": 5,
+        "cout_ecologique": 45,
+        "cout_droits": 15,
+        "cout_pouvoir_non_controle": 45,
+        "cout_portabilite": 0,
+        "cout_recuperation": 0
+      },
+      "history": [
+        {
+          "round": 0,
+          "view": {
+            "information_visible": 80
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "pompage_intensif",
+            "mobilisation_communautaire",
+            "evacuation_partielle",
+            "sanctions_collectives"
+          ],
+          "action": "rationnement_strict",
+          "predictions": {
+            "prediction_demandee": 80
+          },
+          "observation": {
+            "mesure_observee": 55
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 25
+          },
+          "beforeHash": "fnv1a64:5262ca09bb3b00eb",
+          "afterHash": "fnv1a64:ad7ba0f0f6f7a49c"
+        },
+        {
+          "round": 1,
+          "view": {
+            "information_visible": 75
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "pompage_intensif",
+            "mobilisation_communautaire",
+            "evacuation_partielle",
+            "sanctions_collectives"
+          ],
+          "action": "rationnement_strict",
+          "predictions": {
+            "prediction_demandee": 75
+          },
+          "observation": {
+            "mesure_observee": 62.5
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 12.5
+          },
+          "beforeHash": "fnv1a64:ad7ba0f0f6f7a49c",
+          "afterHash": "fnv1a64:0a72fd503c6653ab"
+        },
+        {
+          "round": 2,
+          "view": {
+            "information_visible": 65
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "pompage_intensif",
+            "mobilisation_communautaire",
+            "evacuation_partielle",
+            "sanctions_collectives"
+          ],
+          "action": "rationnement_strict",
+          "predictions": {
+            "prediction_demandee": 65
+          },
+          "observation": {
+            "mesure_observee": 72.5
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 7.5
+          },
+          "beforeHash": "fnv1a64:0a72fd503c6653ab",
+          "afterHash": "fnv1a64:d5ad8b22dddfa5ca"
+        },
+        {
+          "round": 3,
+          "view": {
+            "information_visible": 50
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "pompage_intensif",
+            "mobilisation_communautaire",
+            "evacuation_partielle",
+            "sanctions_collectives"
+          ],
+          "action": "rationnement_strict",
+          "predictions": {
+            "prediction_demandee": 50
+          },
+          "observation": {
+            "mesure_observee": 77.5
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 27.5
+          },
+          "beforeHash": "fnv1a64:d5ad8b22dddfa5ca",
+          "afterHash": "fnv1a64:676f38eb9e6441a2"
+        },
+        {
+          "round": 4,
+          "view": {
+            "information_visible": 45
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "pompage_intensif",
+            "mobilisation_communautaire",
+            "evacuation_partielle",
+            "sanctions_collectives"
+          ],
+          "action": "rationnement_strict",
+          "predictions": {
+            "prediction_demandee": 45
+          },
+          "observation": {
+            "mesure_observee": 90
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 45
+          },
+          "beforeHash": "fnv1a64:676f38eb9e6441a2",
+          "afterHash": "fnv1a64:da3359e8c157cd96"
+        }
+      ],
+      "finalWorldHash": "fnv1a64:da3359e8c157cd96"
+    },
+    {
+      "label": "method-f5bda771",
+      "baseline": {
+        "worldHash": "fnv1a64:5262ca09bb3b00eb",
+        "exogenousHash": "fnv1a64:2e26656147065231"
+      },
+      "outcomes": {
+        "cout_besoins_vitaux": 60,
+        "cout_ecologique": 45,
+        "cout_droits": 0,
+        "cout_pouvoir_non_controle": 55,
+        "cout_portabilite": 0,
+        "cout_recuperation": 0
+      },
+      "history": [
+        {
+          "round": 0,
+          "view": {
+            "information_visible": 80
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "pompage_intensif",
+            "mobilisation_communautaire",
+            "evacuation_partielle",
+            "sanctions_collectives"
+          ],
+          "action": "evacuation_partielle",
+          "predictions": {
+            "prediction_demandee": 80
+          },
+          "observation": {
+            "mesure_observee": 55
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 25
+          },
+          "beforeHash": "fnv1a64:5262ca09bb3b00eb",
+          "afterHash": "fnv1a64:6b706895daddedba"
+        },
+        {
+          "round": 1,
+          "view": {
+            "information_visible": 60
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "pompage_intensif",
+            "mobilisation_communautaire",
+            "evacuation_partielle",
+            "sanctions_collectives"
+          ],
+          "action": "mobilisation_communautaire",
+          "predictions": {
+            "prediction_demandee": 60
+          },
+          "observation": {
+            "mesure_observee": 62.5
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 2.5
+          },
+          "beforeHash": "fnv1a64:6b706895daddedba",
+          "afterHash": "fnv1a64:7677e103c31fbe31"
+        },
+        {
+          "round": 2,
+          "view": {
+            "information_visible": 45
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "pompage_intensif",
+            "mobilisation_communautaire",
+            "evacuation_partielle",
+            "sanctions_collectives"
+          ],
+          "action": "evacuation_partielle",
+          "predictions": {
+            "prediction_demandee": 45
+          },
+          "observation": {
+            "mesure_observee": 72.5
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 27.5
+          },
+          "beforeHash": "fnv1a64:7677e103c31fbe31",
+          "afterHash": "fnv1a64:314bc5fd1e12443f"
+        },
+        {
+          "round": 3,
+          "view": {
+            "information_visible": 15
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "pompage_intensif",
+            "mobilisation_communautaire",
+            "evacuation_partielle",
+            "sanctions_collectives"
+          ],
+          "action": "mobilisation_communautaire",
+          "predictions": {
+            "prediction_demandee": 15
+          },
+          "observation": {
+            "mesure_observee": 77.5
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 62.5
+          },
+          "beforeHash": "fnv1a64:314bc5fd1e12443f",
+          "afterHash": "fnv1a64:8b72299c21f7ee04"
+        },
+        {
+          "round": 4,
+          "view": {
+            "information_visible": 5
+          },
+          "admissibleActions": [
+            "rationnement_strict",
+            "pompage_intensif",
+            "mobilisation_communautaire",
+            "evacuation_partielle",
+            "sanctions_collectives"
+          ],
+          "action": "evacuation_partielle",
+          "predictions": {
+            "prediction_demandee": 5
+          },
+          "observation": {
+            "mesure_observee": 90
+          },
+          "predictionAssessment": {
+            "prediction_demandeeAbsoluteError": 85
+          },
+          "beforeHash": "fnv1a64:8b72299c21f7ee04",
+          "afterHash": "fnv1a64:a8f3cc61f6b28950"
+        }
+      ],
+      "finalWorldHash": "fnv1a64:a8f3cc61f6b28950"
+    }
+  ],
+  "conclusionBoundary": "vector_outcomes_only_no_unique_winner",
+  "reportHash": "fnv1a64:19bb71ac4359f9f8"
+}

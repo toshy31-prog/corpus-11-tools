@@ -1,0 +1,26 @@
+{
+  "schema": "cct-kryos-projection-contract/v1",
+  "id": "CCT-KRYOS-PROJECTION-001",
+  "version": "0.1-frozen-candidate",
+  "worldFreeze": "sha256:c75362b716987fa0d53f22d3d355e4ebb21a8b943d2d8873709b4ccfcd87deb1",
+  "cctFreeze": "CCT-EXEC-1.2-FREEZE-2026-08-26-01",
+  "axes": {
+    "besoins_vitaux": { "severity": "((100-freshwater_reservoir)+(100-energy_grid_stability))/40", "effect": "mean(delta(freshwater_reservoir),delta(energy_grid_stability))", "status": "proxy_substitution" },
+    "plafond_ecologique": { "severity": "((100-marine_ecosystem_health)+deep_sea_pressure)/40", "effect": "delta(marine_ecosystem_health)-delta(deep_sea_pressure)", "status": "proxy_substitution" },
+    "droits": { "severity": "(100-population_morale)/20", "effect": "delta(population_morale)", "status": "proxy_substitution" },
+    "attribution_du_pouvoir": { "severity": "harvester_influence/20", "effect": "-delta(harvester_influence)", "status": "proxy_substitution" },
+    "portabilite_effective": { "severity": "(100-structural_integrity)/20", "effect": "delta(structural_integrity)", "status": "proxy_substitution" },
+    "recuperation": { "severity": "bridge_maintenance_debt/20", "effect": "-delta(bridge_maintenance_debt)", "status": "proxy_substitution" }
+  },
+  "profiles": [
+    { "id": "P1-matched-public-mechanics", "omitHarms": false },
+    { "id": "P2-optimistic-harm-omission", "omitHarms": true }
+  ],
+  "methodEffects": {
+    "added": ["six-axis ontology", "action effect evidence", "institutional role placeholders"],
+    "lost": ["original range observations replaced upstream by exact values", "no actor, authority, recourse or independent receipt exists in Kryos"],
+    "excluded": ["hidden flags", "future draws", "future exogenous events", "delayed effects", "outcome thresholds"],
+    "reversal": "Withdraw any CCT material-performance comparison because CCT cannot complete eight rounds; retain only the observed control failure and rival final vectors."
+  },
+  "fairness": { "sameProjectionWithinProfile": true, "sameWorld": true, "sameExogenous": true, "sameActions": true, "sameBudget": true, "noScalarWinner": true }
+}

@@ -1,0 +1,132 @@
+{
+  "document_kind": "cct_executable_candidate",
+  "id": "CCT-V014-CANDIDATE-001",
+  "version": "0.14-candidate",
+  "date": "2026-08-26",
+  "predecessor_freeze": "../held-out-campaign/candidate-freeze.json",
+  "failure_basis": {
+    "campaign": "CCT-HO-001",
+    "result": "v0.13 lexical compilation breached at least one non-compensable threshold in 8/8 synthetic worlds",
+    "method_limit": "The result tests a lexical action selector, not execution of the written M13 institutions."
+  },
+  "lifecycle": {
+    "state": "locally_tested",
+    "evidence": [
+      "13 executable state-machine tests passed",
+      "candidate structural validator passed",
+      "v0.13 regression suite passed",
+      "v0.13 candidate freeze remained valid"
+    ],
+    "not_established": [
+      "authorized",
+      "deployed",
+      "reobserved",
+      "institutional_effect",
+      "protocol_robustness",
+      "external_transport"
+    ]
+  },
+  "interface": {
+    "schema": "cct-public-governance-view/v1",
+    "location": "view.cct",
+    "required": ["tick", "signals", "keyGrants", "keyRevocations", "evidence", "actionOntology"],
+    "action_ontology_fields": ["tags", "burden", "actor", "traceable"],
+    "information_boundary": "public signals, public institutional grants/evidence, public action semantics, allowed actions and prior public history only",
+    "forbidden_inputs": ["world truth", "transition rules", "exogenous future", "outcome formulas", "acceptance thresholds"],
+    "fairness_rule": "The identical frozen public governance view and action ontology must be available to every contender.",
+    "missing_semantics_rule": "Reject execution when an allowed action lacks a public ontology; do not infer semantics from its name."
+  },
+  "future_arena": {
+    "old_worlds_role": "development_regression_only",
+    "acceptance_requires_new_frozen_worlds": true,
+    "matched_information_budget": true,
+    "matched_action_budget": true,
+    "matched_public_action_ontology": true,
+    "blind_identity_until_vector_verdict": true,
+    "scalar_winner_forbidden": true
+  },
+  "mechanisms": [
+    {
+      "id": "M14-01",
+      "inherits": "M13-01",
+      "title": "Executable emergency continuity",
+      "priority": 30,
+      "activation": {
+        "signalKinds": ["vital_denial"],
+        "minimumDistinctFailureDomains": 2,
+        "groupBy": "subject",
+        "requiredKeys": ["continuity", "contradictor"]
+      },
+      "active": {
+        "ttlSteps": 2,
+        "obligationTags": ["vital_minimum", "recourse_open", "attributable_receipt"],
+        "forbiddenTags": ["competence_extension", "unattributed_coercion"],
+        "safeFallbackTags": ["vital_minimum", "hold_noncoercive"]
+      },
+      "expiry": {
+        "phase": "restitution_due",
+        "restitutionRequired": true,
+        "renewalEvidence": ["restitution_complete", "renewal_need"],
+        "clearKeys": true
+      },
+      "traces": ["activation_evidence", "two_key_grants", "selected_action", "expiry", "restitution"]
+    },
+    {
+      "id": "M14-02",
+      "inherits": "M13-02",
+      "title": "Executable portable rights",
+      "priority": 20,
+      "activation": {
+        "signalKinds": ["rights_denial", "retaliation_risk"],
+        "minimumDistinctFailureDomains": 1,
+        "groupBy": "subject",
+        "requiredKeys": ["extraterritorial_defender", "jurisdiction"]
+      },
+      "active": {
+        "ttlSteps": 3,
+        "obligationTags": ["rights_portability", "recourse_open", "vital_access_independent", "return_option"],
+        "forbiddenTags": ["local_veto", "forced_displacement", "rights_conditioned_on_local_permission"],
+        "safeFallbackTags": ["rights_portability", "hold_noncoercive"]
+      },
+      "expiry": {
+        "phase": "inactive",
+        "restitutionRequired": false,
+        "renewalEvidence": ["renewal_need"],
+        "clearKeys": true
+      },
+      "traces": ["confidential_signal", "extraterritorial_key", "selected_action", "expiry"]
+    },
+    {
+      "id": "M14-03",
+      "inherits": "M13-03",
+      "title": "Executable contradictory information continuity",
+      "priority": 40,
+      "activation": {
+        "signalKinds": ["information_divergence"],
+        "minimumDistinctFailureDomains": 2,
+        "groupBy": "subject",
+        "requiredAffectsAny": ["vital", "right", "coercion"],
+        "requiredKeys": ["archive", "contradictor"]
+      },
+      "active": {
+        "ttlSteps": 2,
+        "obligationTags": ["provisional_signed", "preserve_divergence", "recourse_open"],
+        "forbiddenTags": ["erase_divergence", "unattributed_coercion", "durable_order_from_single_channel"],
+        "safeFallbackTags": ["preserve_divergence", "suspend_coercion", "vital_minimum"]
+      },
+      "expiry": {
+        "phase": "reconciliation_due",
+        "restitutionRequired": true,
+        "renewalEvidence": ["reconciliation_diff_preserved", "renewal_need"],
+        "clearKeys": true
+      },
+      "traces": ["channel_divergence", "two_key_grants", "selected_action", "unresolved_difference", "reconciliation_diff"]
+    }
+  ],
+  "withdrawal_conditions": [
+    "Remove the executable interface if matched contenders do not receive identical public semantics.",
+    "Rebuild a mechanism if meaningful event-order permutations change its material decision.",
+    "Do not promote if a new held-out campaign still shows non-compensable breach without a distinct countervailing protection.",
+    "Return to written_untested after any semantic change to mechanisms or runtime."
+  ]
+}

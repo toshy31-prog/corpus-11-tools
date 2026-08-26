@@ -1,0 +1,65 @@
+{
+  "schema": "cct-structural-solver-report/v1",
+  "generatedAt": "2026-08-26",
+  "target": "CCT-EXEC 1.3 candidate",
+  "result": {
+    "structuralCounterexampleFound": true,
+    "minimumDebtAxes": 2,
+    "currentAtomicRuleSatisfiable": false,
+    "stagedPlanFeasible": true,
+    "stagedPlan": ["restore_1", "restore_2"]
+  },
+  "witness": {
+    "debtAxisCount": 2,
+    "debts": ["debt_1", "debt_2"],
+    "actions": [
+      {
+        "id": "restore_1",
+        "resourceCost": 1,
+        "recoveryKind": "restoration",
+        "vitalMaintained": true,
+        "ecologyMaintained": true,
+        "harmsAxes": [],
+        "protectsAxes": ["debt_1"],
+        "restoresAxes": ["debt_1"]
+      },
+      {
+        "id": "restore_2",
+        "resourceCost": 1,
+        "recoveryKind": "restoration",
+        "vitalMaintained": true,
+        "ecologyMaintained": true,
+        "harmsAxes": [],
+        "protectsAxes": ["debt_2"],
+        "restoresAxes": ["debt_2"]
+      }
+    ],
+    "atomic": {
+      "satisfiable": false,
+      "admissible": [],
+      "closest": [
+        { "action": "restore_1", "failures": ["protect_all_active_risks", "restore_all_debts_atomically"] },
+        { "action": "restore_2", "failures": ["protect_all_active_risks", "restore_all_debts_atomically"] }
+      ],
+      "unavoidableFailureClauses": ["protect_all_active_risks", "restore_all_debts_atomically"],
+      "evaluated": [
+        { "action": "restore_1", "failures": ["protect_all_active_risks", "restore_all_debts_atomically"] },
+        { "action": "restore_2", "failures": ["protect_all_active_risks", "restore_all_debts_atomically"] }
+      ]
+    },
+    "staged": {
+      "feasible": true,
+      "ticks": 2,
+      "plan": ["restore_1", "restore_2"],
+      "covered": ["debt_1", "debt_2"]
+    }
+  },
+  "testPolicy": {
+    "calculated": ["verification_quorum_consistency", "restoration_atomicity_gap", "deadline_feasibility"],
+    "empirical": ["external_transport", "institutional_effect"],
+    "anotherWorldNeeded": true,
+    "stopWorldGenerationWhen": "Every remaining claim is decided by invariant checking, finite search, or an existing trace."
+  },
+  "strongestConclusion": "No additional fictional world is needed to establish the restoration atomicity defect: two independently repairable debts already form a finite counterexample. Worlds remain relevant only for external transport and institutional effect.",
+  "statusBoundary": "Bounded structural result for the encoded transition predicates; not a proof about every implementation, institution, or real environment."
+}

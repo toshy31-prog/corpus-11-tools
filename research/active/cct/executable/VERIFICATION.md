@@ -15,5 +15,9 @@ Résultat global : **PASS**
 | governance_lab_tests | PASS | 0/0 |
 | p005_robustness | PASS | 0/0 |
 | field_calibration_d10 | PASS | 0/0 |
+| v013_candidate | PASS | 0/0 |
+| v013_freeze | PASS | 0/0 |
+| held_out_admission | PASS | 0/0 |
+| held_out_composition | PASS | 0/0 |
 
 Le niveau maximal établi est `tested` localement. Autorisation, déploiement, efficacité territoriale et réobservation indépendante ne sont pas établis.

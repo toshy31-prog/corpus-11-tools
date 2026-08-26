@@ -1,0 +1,203 @@
+{
+  "campaignId": "CCT-HO-001",
+  "correctionOf": "blind-verdict.json",
+  "correctionReason": "cross-world prediction-error means used incompatible scenario scales and are removed",
+  "identityStatusAtOriginalVerdict": "sealed",
+  "statusBoundary": "synthetic_common_generator_non_independent",
+  "conclusion": "no_blind_method_avoids_non_compensable_breaches_across_all_worlds",
+  "noScalarWinner": true,
+  "strata": {
+    "all_worlds": {
+      "worldCount": 8,
+      "byLabel": {
+        "method-436548e4": {
+          "worldsWithAnyThresholdBreach": 8,
+          "thresholdBreachesByAxis": {
+            "besoins_vitaux": 4,
+            "plafond_ecologique": 5,
+            "droits": 2,
+            "attribution_du_pouvoir": 4,
+            "portabilite_effective": 4,
+            "recuperation": 5
+          },
+          "predictionAbsoluteErrorByWorld": {
+            "orbital-subduction-cascade": 47.93333333333334,
+            "virelian-delta-aquifer": 35.2111699359159,
+            "irrigation-quota-fracture-plaine-canaux": 15.325,
+            "archipel-thalasso-crise": 25.5,
+            "archipel-thalasso-v1": 9.8,
+            "rupture-digues-arbitrage-droits-eau": 36.599999999999994,
+            "delta-salinity-encroachment": 250.5,
+            "bassin-valdrome-hydrique": 49.166666666666664
+          }
+        },
+        "method-96402101": {
+          "worldsWithAnyThresholdBreach": 8,
+          "thresholdBreachesByAxis": {
+            "besoins_vitaux": 4,
+            "plafond_ecologique": 4,
+            "droits": 2,
+            "attribution_du_pouvoir": 3,
+            "portabilite_effective": 3,
+            "recuperation": 2
+          },
+          "predictionAbsoluteErrorByWorld": {
+            "orbital-subduction-cascade": 63.93333333333332,
+            "virelian-delta-aquifer": 24.964235820699358,
+            "irrigation-quota-fracture-plaine-canaux": 15.325,
+            "archipel-thalasso-crise": 23.5,
+            "archipel-thalasso-v1": 1.2,
+            "rupture-digues-arbitrage-droits-eau": 72.60000000000001,
+            "delta-salinity-encroachment": 246.5,
+            "bassin-valdrome-hydrique": 45.666666666666664
+          }
+        },
+        "method-f5bda771": {
+          "worldsWithAnyThresholdBreach": 8,
+          "thresholdBreachesByAxis": {
+            "besoins_vitaux": 4,
+            "plafond_ecologique": 5,
+            "droits": 2,
+            "attribution_du_pouvoir": 4,
+            "portabilite_effective": 4,
+            "recuperation": 3
+          },
+          "predictionAbsoluteErrorByWorld": {
+            "orbital-subduction-cascade": 37.93333333333334,
+            "virelian-delta-aquifer": 35.763182573599245,
+            "irrigation-quota-fracture-plaine-canaux": 19.3625,
+            "archipel-thalasso-crise": 40.5,
+            "archipel-thalasso-v1": 2.4,
+            "rupture-digues-arbitrage-droits-eau": 33.06666666666667,
+            "delta-salinity-encroachment": 247.5,
+            "bassin-valdrome-hydrique": 64.75
+          }
+        }
+      }
+    },
+    "without_declared_mechanism_variants": {
+      "worldCount": 6,
+      "byLabel": {
+        "method-436548e4": {
+          "worldsWithAnyThresholdBreach": 6,
+          "thresholdBreachesByAxis": {
+            "besoins_vitaux": 3,
+            "plafond_ecologique": 4,
+            "droits": 2,
+            "attribution_du_pouvoir": 4,
+            "portabilite_effective": 4,
+            "recuperation": 3
+          },
+          "predictionAbsoluteErrorByWorld": {
+            "orbital-subduction-cascade": 47.93333333333334,
+            "virelian-delta-aquifer": 35.2111699359159,
+            "irrigation-quota-fracture-plaine-canaux": 15.325,
+            "archipel-thalasso-crise": 25.5,
+            "archipel-thalasso-v1": 9.8,
+            "rupture-digues-arbitrage-droits-eau": 36.599999999999994
+          }
+        },
+        "method-96402101": {
+          "worldsWithAnyThresholdBreach": 6,
+          "thresholdBreachesByAxis": {
+            "besoins_vitaux": 3,
+            "plafond_ecologique": 4,
+            "droits": 1,
+            "attribution_du_pouvoir": 3,
+            "portabilite_effective": 3,
+            "recuperation": 0
+          },
+          "predictionAbsoluteErrorByWorld": {
+            "orbital-subduction-cascade": 63.93333333333332,
+            "virelian-delta-aquifer": 24.964235820699358,
+            "irrigation-quota-fracture-plaine-canaux": 15.325,
+            "archipel-thalasso-crise": 23.5,
+            "archipel-thalasso-v1": 1.2,
+            "rupture-digues-arbitrage-droits-eau": 72.60000000000001
+          }
+        },
+        "method-f5bda771": {
+          "worldsWithAnyThresholdBreach": 6,
+          "thresholdBreachesByAxis": {
+            "besoins_vitaux": 3,
+            "plafond_ecologique": 4,
+            "droits": 2,
+            "attribution_du_pouvoir": 3,
+            "portabilite_effective": 3,
+            "recuperation": 1
+          },
+          "predictionAbsoluteErrorByWorld": {
+            "orbital-subduction-cascade": 37.93333333333334,
+            "virelian-delta-aquifer": 35.763182573599245,
+            "irrigation-quota-fracture-plaine-canaux": 19.3625,
+            "archipel-thalasso-crise": 40.5,
+            "archipel-thalasso-v1": 2.4,
+            "rupture-digues-arbitrage-droits-eau": 33.06666666666667
+          }
+        }
+      }
+    }
+  },
+  "exactVectorEquivalences": [
+    {
+      "scenarioId": "irrigation-quota-fracture-plaine-canaux",
+      "left": "method-436548e4",
+      "right": "method-96402101"
+    }
+  ],
+  "vectorDominances": [
+    {
+      "scenarioId": "virelian-delta-aquifer",
+      "dominant": "method-f5bda771",
+      "dominated": "method-436548e4",
+      "axes": {
+        "besoins_vitaux": "equal",
+        "plafond_ecologique": "right_better",
+        "droits": "right_better",
+        "attribution_du_pouvoir": "right_better",
+        "portabilite_effective": "right_better",
+        "recuperation": "right_better"
+      }
+    },
+    {
+      "scenarioId": "delta-salinity-encroachment",
+      "dominant": "method-96402101",
+      "dominated": "method-436548e4",
+      "axes": {
+        "besoins_vitaux": "right_better",
+        "plafond_ecologique": "right_better",
+        "droits": "equal",
+        "attribution_du_pouvoir": "equal",
+        "portabilite_effective": "equal",
+        "recuperation": "right_better"
+      }
+    },
+    {
+      "scenarioId": "delta-salinity-encroachment",
+      "dominant": "method-96402101",
+      "dominated": "method-f5bda771",
+      "axes": {
+        "besoins_vitaux": "left_better",
+        "plafond_ecologique": "left_better",
+        "droits": "equal",
+        "attribution_du_pouvoir": "equal",
+        "portabilite_effective": "equal",
+        "recuperation": "left_better"
+      }
+    },
+    {
+      "scenarioId": "bassin-valdrome-hydrique",
+      "dominant": "method-436548e4",
+      "dominated": "method-f5bda771",
+      "axes": {
+        "besoins_vitaux": "equal",
+        "plafond_ecologique": "equal",
+        "droits": "equal",
+        "attribution_du_pouvoir": "left_better",
+        "portabilite_effective": "left_better",
+        "recuperation": "left_better"
+      }
+    }
+  ],
+  "reversalCondition": "recompute if a frozen scenario, contender freeze, threshold, identity map, or dependence classification changes"
+}

@@ -1,0 +1,45 @@
+{
+  "schema": "cct-local-validation/v1",
+  "candidate": "CCT-V014-CANDIDATE-001",
+  "date": "2026-08-26",
+  "lifecycle": "locally_tested",
+  "commands": [
+    "node test-v014.mjs",
+    "node validate-v014.mjs",
+    "python3 -m unittest test_v013.py",
+    "python3 validate_v013.py",
+    "python3 ../held-out-campaign/verify_candidate_freeze.py",
+    "node verify-v014-freeze.mjs",
+    "git diff --check"
+  ],
+  "results": {
+    "v014_runtime_tests": { "passed": 13, "failed": 0 },
+    "v014_structural_validation": "passed",
+    "v013_regression_tests": { "passed": 7, "failed": 0 },
+    "v013_structural_validation": "passed",
+    "v013_freeze_verification": "passed",
+    "v014_bundle_freeze_verification": "passed",
+    "diff_check": "passed"
+  },
+  "hashes": {
+    "v0.14-candidate.json": "sha256:3af820817b2ab8ea627b863ae92bc5413b84cfed41a516cc147f7ca7c8c9bc3b",
+    "runtime-v014.mjs": "sha256:37a2bcfd363bf739c3de9b76968a5f9ec08ca5155ba72ba873b9633ffd85bb1f",
+    "test-v014.mjs": "sha256:948ecfc8ed645353fae3361d0c98c3e284eecd7fc151993b1e83e4dbbbaf79ac",
+    "MIGRATION-v013-v014.md": "sha256:5a5c88229750baf7f5eb6dfc289b74fd970c284bbf34852826760e7352fa7eab"
+  },
+  "audits": {
+    "method_effect": "The public action ontology changes the tested object from lexical guessing to institution execution. It must be frozen with the world, restricted to public semantics, and exposed identically to all contenders.",
+    "capability_interference": "non_interfering_on_tested_scope for permutation of simultaneous M14-01 and M14-03 inputs; population-level composition robustness is not established.",
+    "protocol_robustness": "not_tested beyond local event ordering, action renaming, missing semantics, time regression, expiry, renewal and key revocation.",
+    "terminal_recovery": "expiry, key revocation, restitution gate and fresh-key renewal execute locally; representative institutional restoration is not established."
+  },
+  "not_established": [
+    "authorization",
+    "deployment",
+    "field effect",
+    "new held-out performance",
+    "independent authorship",
+    "protocol robustness",
+    "external transport"
+  ]
+}

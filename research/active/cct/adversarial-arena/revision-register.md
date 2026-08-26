@@ -1,0 +1,16 @@
+# Registre de révision — arène adverse v1
+
+Le premier passage est **interne et synthétique**. Il ne démontre pas une défaillance territoriale de la CCT. En revanche, il fait perdre l'interprétation exécutable étroite dans trois mondes par seuil non compensable et montre qu'un rival apparié lui est non inférieur sur tous les axes dans quatre mondes. Cette dernière observation révèle surtout que le noyau codé ne distingue pas encore certains mécanismes CCT d'un fédéralisme résilient minimal.
+
+Les ajouts ci-dessous sont des candidats de révision, pas des corrections validées. Ils ne doivent pas être rejoués contre ces six mêmes mondes pour déclarer une victoire : une seconde campagne devra utiliser des états, des attaques et un rival construits indépendamment de ces résultats.
+
+| Candidat | Perte adressée | Modification proposée | Coût / risque ajouté | Condition de retrait |
+|---|---|---|---|---|
+| R-01 : continuité sous urgence à double clé | `emergency-capture` : besoins vitaux et pouvoir non contrôlé | Toute délégation d'urgence exige une clé de continuité et une clé contradictoire distincte ; l'action est courte, journalisée, et son renouvellement est impossible sans preuve de restitution de l'action précédente. | Délai ou indisponibilité quand une clé est injoignable. | Retirer si une campagne tenue à l'écart montre qu'elle augmente la privation vitale sans diminuer pouvoir non contrôlé ou droits suspendus. |
+| R-02 : portabilité hors capture locale | `local-domination` : droits et sortie | Le recours, l'hébergement temporaire, les prestations vitales et le retour sont déclenchables depuis un canal extérieur au territoire ; l'autorité locale ne peut ni sélectionner le guichet ni bloquer le reçu. | Dépendance possible à l'infrastructure fédérale et coût de fausses saisines. | Retirer ou borner si l'intervention devient un moyen de neutraliser une dissidence locale sans privation vérifiable de droits. |
+| R-03 : continuité informationnelle contradictoire | `information-siege` : besoins vitaux et récupération | Deux voies dégradées incompatibles (locale hors ligne et interterritoriale), avec décisions provisoires à échéance courte, audit différé obligatoire et possibilité de contestation sans réseau principal. | Double maintenance et désaccords entre registres. | Retirer si les deux voies partagent une panne critique ou si l'audit différé ne rétablit ni attribution ni recours. |
+| R-04 : nécessité distinctive | Rival non inférieur dans quatre mondes | Chaque dispositif CCT propre doit formuler une prédiction qui le distingue d'un rival fédéral minimal à budget et information égaux. À défaut, il est fusionné avec le noyau commun ou supprimé. | Réduction de la spécificité narrative de CCT. | Retirer uniquement si une campagne indépendante observe une protection distincte sans autre axe dégradé. |
+
+## Prochaine campagne admissible
+
+Avant d'exécuter R-01 à R-04, une personne ou équipe distincte de la présente passe doit geler : la dynamique des mondes, les traces accessibles, les coûts d'action, les seuils, le rival et l'issue qui fera perdre chaque révision. Le rapport devra conserver les vecteurs séparés : besoins, plafond écologique, droits, concentration/attribution, portabilité effective et délai de récupération.

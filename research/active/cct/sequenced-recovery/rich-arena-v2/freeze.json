@@ -1,0 +1,20 @@
+{
+  "schema": "cct-rich-arena-v2-freeze/v1",
+  "id": "CCT-RICH-ARENA-V2-FREEZE-2026-08-26-01",
+  "algorithm": "sha256",
+  "files": {
+    "interpreter.mjs": "6619b76d13e3efdb08c19cd4209766ff710f8444eb68b52fa8f4439f2cb01b20",
+    "test.mjs": "87d92fc71ac7c579298f480566de8e5795abb0d05d7a275f13daca01f0deae8f",
+    "admit-virelia.mjs": "55e1be53e5c288c539713eb83a339e2daf654fc0f30d2313b4ed1b710a48633e",
+    "admission-report.json": "743864cf7d228d526a59f86a55f10f39e52231091a37db543097319191e24bcd",
+    "validation.json": "9786c77703d242b8760bc6d6c94f3cf91a2c89a1b99afc017c0a3c9e76cf7b4c",
+    "README.md": "5fdedc628708a166d5da6cde0cc4649155c9375c4c0f88aa47414ed9c338d302",
+    "verify-freeze.mjs": "bdddbaf8972db638709d17f710aa453278813a366868fe558a95249c60cd4151"
+  },
+  "world": {
+    "path": "../scenario-intake/virelia-fractured-atoll-cascade-v1.0.0-r2.frozen.json",
+    "contentHash": "sha256:e3c50bd627b092f94d2b0e44cc595b2b00acdf86e8e7baccb1ad8aac0c94b007"
+  },
+  "basisFreeze": "../freeze.json",
+  "statusBoundary": "Exact locally tested rich-interpreter admission bytes only. Virelia is not yet admitted for CCT comparison; no CCT trajectory, robustness, superiority, authorization, deployment, institutional effect, independent lineage verification or external transport is established."
+}

@@ -1,0 +1,654 @@
+{
+  "contract": "corpus-open-experiment-arena/v1",
+  "arenaId": "CCT-HO-001:virelian-delta-aquifer",
+  "seed": 0,
+  "scenario": {
+    "id": "virelian-delta-aquifer",
+    "version": "1.0.0",
+    "title": "Crise de l'Aquifère du Delta Virelien",
+    "dimensions": [
+      "cout_besoins_vitaux",
+      "cout_ecologique",
+      "cout_droits",
+      "cout_pouvoir_non_controle",
+      "cout_portabilite",
+      "cout_recuperation"
+    ],
+    "reversalConditions": [
+      "Observation d'une remontée soudaine du front salé sans dégradation des prélèvements agricoles",
+      "Découverte d'une nappe phréatique secondaire non documentée modifiant substantiellement les réserves estimées",
+      "Franchissement du seuil critique d'intrusion salée non compensable par réduction immédiate des prélèvements autorisés"
+    ],
+    "source": {
+      "regime": "external_supplied",
+      "authorId": "delta-hydrologue-observateur",
+      "authorRelationToCorpus": "independent",
+      "frozenBeforeContenders": true,
+      "authorshipTrace": "uuid-virelian-delta-2024-8a7f3e9d",
+      "freezeHash": "sha256:4685dcbc567a17ee23fa662375d970da433908790076b80bfd344cc7e65933ca",
+      "freezeVerified": true
+    }
+  },
+  "claimExternal": false,
+  "externalityStatus": "declared_external_with_verified_freeze_authorship_not_independently_verified",
+  "matchedBaseline": {
+    "worldHash": "fnv1a64:dd998a602bfefc6d",
+    "exogenousHash": "fnv1a64:cca15420dfb3edc4"
+  },
+  "runs": [
+    {
+      "label": "method-436548e4",
+      "baseline": {
+        "worldHash": "fnv1a64:dd998a602bfefc6d",
+        "exogenousHash": "fnv1a64:cca15420dfb3edc4"
+      },
+      "outcomes": {
+        "cout_besoins_vitaux": 100,
+        "cout_ecologique": 18.835748462064252,
+        "cout_droits": 52.5,
+        "cout_pouvoir_non_controle": 1220,
+        "cout_portabilite": 125,
+        "cout_recuperation": 36
+      },
+      "history": [
+        {
+          "round": 0,
+          "view": {
+            "aquifer_visible": 80,
+            "demand_visible": 100,
+            "salt_visible": 10
+          },
+          "admissibleActions": [
+            "rationing_strict",
+            "infrastructure_investment",
+            "rights_formalization",
+            "enforcement_crackdown"
+          ],
+          "action": "infrastructure_investment",
+          "predictions": {
+            "final_aquifer_volume": 63.333333333333336,
+            "final_salt_front": 63.333333333333336
+          },
+          "observation": {
+            "aquifer_level": 19.009900990099013,
+            "salt_intrusion_level": 10.2,
+            "rights_coverage": 60,
+            "enforcement_index": 18
+          },
+          "predictionAssessment": {
+            "final_aquifer_volumeAbsoluteError": 44.32343234323432,
+            "final_salt_frontAbsoluteError": 53.13333333333334
+          },
+          "beforeHash": "fnv1a64:dd998a602bfefc6d",
+          "afterHash": "fnv1a64:128f30f5cabaf552"
+        },
+        {
+          "round": 1,
+          "view": {
+            "aquifer_visible": 19.009900990099013,
+            "demand_visible": 100,
+            "salt_visible": 10.2
+          },
+          "admissibleActions": [
+            "rationing_strict",
+            "infrastructure_investment",
+            "rights_formalization",
+            "enforcement_crackdown"
+          ],
+          "action": "infrastructure_investment",
+          "predictions": {
+            "final_aquifer_volume": 43.06996699669967,
+            "final_salt_front": 43.06996699669967
+          },
+          "observation": {
+            "aquifer_level": 0,
+            "salt_intrusion_level": 10.709523809523809,
+            "rights_coverage": 60,
+            "enforcement_index": 26
+          },
+          "predictionAssessment": {
+            "final_aquifer_volumeAbsoluteError": 43.06996699669967,
+            "final_salt_frontAbsoluteError": 32.36044318717586
+          },
+          "beforeHash": "fnv1a64:128f30f5cabaf552",
+          "afterHash": "fnv1a64:feb8b2ff77abc135"
+        },
+        {
+          "round": 2,
+          "view": {
+            "aquifer_visible": 0,
+            "demand_visible": 100,
+            "salt_visible": 10.709523809523809
+          },
+          "admissibleActions": [
+            "rationing_strict",
+            "infrastructure_investment",
+            "rights_formalization",
+            "enforcement_crackdown"
+          ],
+          "action": "infrastructure_investment",
+          "predictions": {
+            "final_aquifer_volume": 36.9031746031746,
+            "final_salt_front": 36.9031746031746
+          },
+          "observation": {
+            "aquifer_level": 0,
+            "salt_intrusion_level": 10.876190476190475,
+            "rights_coverage": 60,
+            "enforcement_index": 34
+          },
+          "predictionAssessment": {
+            "final_aquifer_volumeAbsoluteError": 36.9031746031746,
+            "final_salt_frontAbsoluteError": 26.026984126984125
+          },
+          "beforeHash": "fnv1a64:feb8b2ff77abc135",
+          "afterHash": "fnv1a64:622b6d68ec3cb8eb"
+        },
+        {
+          "round": 3,
+          "view": {
+            "aquifer_visible": 0,
+            "demand_visible": 100,
+            "salt_visible": 10.876190476190475
+          },
+          "admissibleActions": [
+            "rationing_strict",
+            "infrastructure_investment",
+            "rights_formalization",
+            "enforcement_crackdown"
+          ],
+          "action": "infrastructure_investment",
+          "predictions": {
+            "final_aquifer_volume": 36.958730158730155,
+            "final_salt_front": 36.958730158730155
+          },
+          "observation": {
+            "aquifer_level": 0,
+            "salt_intrusion_level": 11.311904761904762,
+            "rights_coverage": 60,
+            "enforcement_index": 42
+          },
+          "predictionAssessment": {
+            "final_aquifer_volumeAbsoluteError": 36.958730158730155,
+            "final_salt_frontAbsoluteError": 25.646825396825392
+          },
+          "beforeHash": "fnv1a64:622b6d68ec3cb8eb",
+          "afterHash": "fnv1a64:0669dc52c763bea5"
+        },
+        {
+          "round": 4,
+          "view": {
+            "aquifer_visible": 0,
+            "demand_visible": 100,
+            "salt_visible": 11.311904761904762
+          },
+          "admissibleActions": [
+            "rationing_strict",
+            "infrastructure_investment",
+            "rights_formalization",
+            "enforcement_crackdown"
+          ],
+          "action": "infrastructure_investment",
+          "predictions": {
+            "final_aquifer_volume": 37.103968253968254,
+            "final_salt_front": 37.103968253968254
+          },
+          "observation": {
+            "aquifer_level": 0,
+            "salt_intrusion_level": 11.783116883116882,
+            "rights_coverage": 60,
+            "enforcement_index": 50
+          },
+          "predictionAssessment": {
+            "final_aquifer_volumeAbsoluteError": 37.103968253968254,
+            "final_salt_frontAbsoluteError": 25.320851370851372
+          },
+          "beforeHash": "fnv1a64:0669dc52c763bea5",
+          "afterHash": "fnv1a64:8ca734659534aa7a"
+        },
+        {
+          "round": 5,
+          "view": {
+            "aquifer_visible": 0,
+            "demand_visible": 100,
+            "salt_visible": 11.783116883116882
+          },
+          "admissibleActions": [
+            "rationing_strict",
+            "infrastructure_investment",
+            "rights_formalization",
+            "enforcement_crackdown"
+          ],
+          "action": "infrastructure_investment",
+          "predictions": {
+            "final_aquifer_volume": 37.26103896103896,
+            "final_salt_front": 37.26103896103896
+          },
+          "observation": {
+            "aquifer_level": 0,
+            "salt_intrusion_level": 12.83574846206425,
+            "rights_coverage": 60,
+            "enforcement_index": 58
+          },
+          "predictionAssessment": {
+            "final_aquifer_volumeAbsoluteError": 37.26103896103896,
+            "final_salt_frontAbsoluteError": 24.42529049897471
+          },
+          "beforeHash": "fnv1a64:8ca734659534aa7a",
+          "afterHash": "fnv1a64:a7440e8eaeae2bee"
+        }
+      ],
+      "finalWorldHash": "fnv1a64:a7440e8eaeae2bee"
+    },
+    {
+      "label": "method-96402101",
+      "baseline": {
+        "worldHash": "fnv1a64:dd998a602bfefc6d",
+        "exogenousHash": "fnv1a64:cca15420dfb3edc4"
+      },
+      "outcomes": {
+        "cout_besoins_vitaux": 37.7149515625,
+        "cout_ecologique": 13.016666666666666,
+        "cout_droits": 67.5,
+        "cout_pouvoir_non_controle": 260,
+        "cout_portabilite": 143,
+        "cout_recuperation": 6
+      },
+      "history": [
+        {
+          "round": 0,
+          "view": {
+            "aquifer_visible": 80,
+            "demand_visible": 100,
+            "salt_visible": 10
+          },
+          "admissibleActions": [
+            "rationing_strict",
+            "infrastructure_investment",
+            "rights_formalization",
+            "enforcement_crackdown"
+          ],
+          "action": "rationing_strict",
+          "predictions": {
+            "final_aquifer_volume": 63.333333333333336,
+            "final_salt_front": 63.333333333333336
+          },
+          "observation": {
+            "aquifer_level": 19.065934065934073,
+            "salt_intrusion_level": 10.177777777777777,
+            "rights_coverage": 60,
+            "enforcement_index": 10
+          },
+          "predictionAssessment": {
+            "final_aquifer_volumeAbsoluteError": 44.26739926739926,
+            "final_salt_frontAbsoluteError": 53.15555555555556
+          },
+          "beforeHash": "fnv1a64:dd998a602bfefc6d",
+          "afterHash": "fnv1a64:186be32b93d6c93b"
+        },
+        {
+          "round": 1,
+          "view": {
+            "aquifer_visible": 19.065934065934073,
+            "demand_visible": 85,
+            "salt_visible": 10.177777777777777
+          },
+          "admissibleActions": [
+            "rationing_strict",
+            "infrastructure_investment",
+            "rights_formalization",
+            "enforcement_crackdown"
+          ],
+          "action": "rationing_strict",
+          "predictions": {
+            "final_aquifer_volume": 38.081237281237286,
+            "final_salt_front": 38.081237281237286
+          },
+          "observation": {
+            "aquifer_level": 0,
+            "salt_intrusion_level": 10.819444444444445,
+            "rights_coverage": 60,
+            "enforcement_index": 10
+          },
+          "predictionAssessment": {
+            "final_aquifer_volumeAbsoluteError": 38.081237281237286,
+            "final_salt_frontAbsoluteError": 27.261792836792843
+          },
+          "beforeHash": "fnv1a64:186be32b93d6c93b",
+          "afterHash": "fnv1a64:6d5cb2deecb0892b"
+        },
+        {
+          "round": 2,
+          "view": {
+            "aquifer_visible": 0,
+            "demand_visible": 72.25,
+            "salt_visible": 10.819444444444445
+          },
+          "admissibleActions": [
+            "rationing_strict",
+            "infrastructure_investment",
+            "rights_formalization",
+            "enforcement_crackdown"
+          ],
+          "action": "rationing_strict",
+          "predictions": {
+            "final_aquifer_volume": 27.689814814814813,
+            "final_salt_front": 27.689814814814813
+          },
+          "observation": {
+            "aquifer_level": 0,
+            "salt_intrusion_level": 10.930555555555555,
+            "rights_coverage": 60,
+            "enforcement_index": 10
+          },
+          "predictionAssessment": {
+            "final_aquifer_volumeAbsoluteError": 27.689814814814813,
+            "final_salt_frontAbsoluteError": 16.75925925925926
+          },
+          "beforeHash": "fnv1a64:6d5cb2deecb0892b",
+          "afterHash": "fnv1a64:5b2a421dc9fd5cd5"
+        },
+        {
+          "round": 3,
+          "view": {
+            "aquifer_visible": 0,
+            "demand_visible": 61.4125,
+            "salt_visible": 10.930555555555555
+          },
+          "admissibleActions": [
+            "rationing_strict",
+            "infrastructure_investment",
+            "rights_formalization",
+            "enforcement_crackdown"
+          ],
+          "action": "rationing_strict",
+          "predictions": {
+            "final_aquifer_volume": 24.11435185185185,
+            "final_salt_front": 24.11435185185185
+          },
+          "observation": {
+            "aquifer_level": 0,
+            "salt_intrusion_level": 11.277777777777777,
+            "rights_coverage": 60,
+            "enforcement_index": 10
+          },
+          "predictionAssessment": {
+            "final_aquifer_volumeAbsoluteError": 24.11435185185185,
+            "final_salt_frontAbsoluteError": 12.836574074074074
+          },
+          "beforeHash": "fnv1a64:5b2a421dc9fd5cd5",
+          "afterHash": "fnv1a64:f6d499b4c5958c14"
+        },
+        {
+          "round": 4,
+          "view": {
+            "aquifer_visible": 0,
+            "demand_visible": 52.200625,
+            "salt_visible": 11.277777777777777
+          },
+          "admissibleActions": [
+            "rationing_strict",
+            "infrastructure_investment",
+            "rights_formalization",
+            "enforcement_crackdown"
+          ],
+          "action": "rationing_strict",
+          "predictions": {
+            "final_aquifer_volume": 21.159467592592595,
+            "final_salt_front": 21.159467592592595
+          },
+          "observation": {
+            "aquifer_level": 0,
+            "salt_intrusion_level": 11.933333333333332,
+            "rights_coverage": 60,
+            "enforcement_index": 10
+          },
+          "predictionAssessment": {
+            "final_aquifer_volumeAbsoluteError": 21.159467592592595,
+            "final_salt_frontAbsoluteError": 9.226134259259263
+          },
+          "beforeHash": "fnv1a64:f6d499b4c5958c14",
+          "afterHash": "fnv1a64:a51a38996b4136c1"
+        },
+        {
+          "round": 5,
+          "view": {
+            "aquifer_visible": 0,
+            "demand_visible": 44.37053125,
+            "salt_visible": 11.933333333333332
+          },
+          "admissibleActions": [
+            "rationing_strict",
+            "infrastructure_investment",
+            "rights_formalization",
+            "enforcement_crackdown"
+          ],
+          "action": "rationing_strict",
+          "predictions": {
+            "final_aquifer_volume": 18.76795486111111,
+            "final_salt_front": 18.76795486111111
+          },
+          "observation": {
+            "aquifer_level": 0,
+            "salt_intrusion_level": 12.516666666666666,
+            "rights_coverage": 60,
+            "enforcement_index": 10
+          },
+          "predictionAssessment": {
+            "final_aquifer_volumeAbsoluteError": 18.76795486111111,
+            "final_salt_frontAbsoluteError": 6.251288194444445
+          },
+          "beforeHash": "fnv1a64:a51a38996b4136c1",
+          "afterHash": "fnv1a64:12141d4a251f5e5a"
+        }
+      ],
+      "finalWorldHash": "fnv1a64:12141d4a251f5e5a"
+    },
+    {
+      "label": "method-f5bda771",
+      "baseline": {
+        "worldHash": "fnv1a64:dd998a602bfefc6d",
+        "exogenousHash": "fnv1a64:cca15420dfb3edc4"
+      },
+      "outcomes": {
+        "cout_besoins_vitaux": 100,
+        "cout_ecologique": 13.462179487179485,
+        "cout_droits": -47.5,
+        "cout_pouvoir_non_controle": 1170,
+        "cout_portabilite": 50,
+        "cout_recuperation": 11
+      },
+      "history": [
+        {
+          "round": 0,
+          "view": {
+            "aquifer_visible": 80,
+            "demand_visible": 100,
+            "salt_visible": 10
+          },
+          "admissibleActions": [
+            "rationing_strict",
+            "infrastructure_investment",
+            "rights_formalization",
+            "enforcement_crackdown"
+          ],
+          "action": "rights_formalization",
+          "predictions": {
+            "final_aquifer_volume": 63.333333333333336,
+            "final_salt_front": 63.333333333333336
+          },
+          "observation": {
+            "aquifer_level": 0,
+            "salt_intrusion_level": 10.177777777777777,
+            "rights_coverage": 75,
+            "enforcement_index": 10
+          },
+          "predictionAssessment": {
+            "final_aquifer_volumeAbsoluteError": 63.333333333333336,
+            "final_salt_frontAbsoluteError": 53.15555555555556
+          },
+          "beforeHash": "fnv1a64:dd998a602bfefc6d",
+          "afterHash": "fnv1a64:aeaad3f09a1db515"
+        },
+        {
+          "round": 1,
+          "view": {
+            "aquifer_visible": 0,
+            "demand_visible": 100,
+            "salt_visible": 10.177777777777777
+          },
+          "admissibleActions": [
+            "rationing_strict",
+            "infrastructure_investment",
+            "rights_formalization",
+            "enforcement_crackdown"
+          ],
+          "action": "rights_formalization",
+          "predictions": {
+            "final_aquifer_volume": 36.72592592592593,
+            "final_salt_front": 36.72592592592593
+          },
+          "observation": {
+            "aquifer_level": 0,
+            "salt_intrusion_level": 10.819444444444445,
+            "rights_coverage": 90,
+            "enforcement_index": 10
+          },
+          "predictionAssessment": {
+            "final_aquifer_volumeAbsoluteError": 36.72592592592593,
+            "final_salt_frontAbsoluteError": 25.906481481481485
+          },
+          "beforeHash": "fnv1a64:aeaad3f09a1db515",
+          "afterHash": "fnv1a64:90decd9dcd182dde"
+        },
+        {
+          "round": 2,
+          "view": {
+            "aquifer_visible": 0,
+            "demand_visible": 100,
+            "salt_visible": 10.819444444444445
+          },
+          "admissibleActions": [
+            "rationing_strict",
+            "infrastructure_investment",
+            "rights_formalization",
+            "enforcement_crackdown"
+          ],
+          "action": "rights_formalization",
+          "predictions": {
+            "final_aquifer_volume": 36.93981481481482,
+            "final_salt_front": 36.93981481481482
+          },
+          "observation": {
+            "aquifer_level": 0,
+            "salt_intrusion_level": 10.930555555555555,
+            "rights_coverage": 105,
+            "enforcement_index": 10
+          },
+          "predictionAssessment": {
+            "final_aquifer_volumeAbsoluteError": 36.93981481481482,
+            "final_salt_frontAbsoluteError": 26.00925925925926
+          },
+          "beforeHash": "fnv1a64:90decd9dcd182dde",
+          "afterHash": "fnv1a64:56b0c7edcd9d5809"
+        },
+        {
+          "round": 3,
+          "view": {
+            "aquifer_visible": 0,
+            "demand_visible": 100,
+            "salt_visible": 10.930555555555555
+          },
+          "admissibleActions": [
+            "rationing_strict",
+            "infrastructure_investment",
+            "rights_formalization",
+            "enforcement_crackdown"
+          ],
+          "action": "rights_formalization",
+          "predictions": {
+            "final_aquifer_volume": 36.976851851851855,
+            "final_salt_front": 36.976851851851855
+          },
+          "observation": {
+            "aquifer_level": 0,
+            "salt_intrusion_level": 11.277777777777777,
+            "rights_coverage": 120,
+            "enforcement_index": 10
+          },
+          "predictionAssessment": {
+            "final_aquifer_volumeAbsoluteError": 36.976851851851855,
+            "final_salt_frontAbsoluteError": 25.699074074074076
+          },
+          "beforeHash": "fnv1a64:56b0c7edcd9d5809",
+          "afterHash": "fnv1a64:f7ee1176673b0e09"
+        },
+        {
+          "round": 4,
+          "view": {
+            "aquifer_visible": 0,
+            "demand_visible": 100,
+            "salt_visible": 11.277777777777777
+          },
+          "admissibleActions": [
+            "rationing_strict",
+            "infrastructure_investment",
+            "rights_formalization",
+            "enforcement_crackdown"
+          ],
+          "action": "rights_formalization",
+          "predictions": {
+            "final_aquifer_volume": 37.09259259259259,
+            "final_salt_front": 37.09259259259259
+          },
+          "observation": {
+            "aquifer_level": 0,
+            "salt_intrusion_level": 11.933333333333332,
+            "rights_coverage": 135,
+            "enforcement_index": 10
+          },
+          "predictionAssessment": {
+            "final_aquifer_volumeAbsoluteError": 37.09259259259259,
+            "final_salt_frontAbsoluteError": 25.159259259259258
+          },
+          "beforeHash": "fnv1a64:f7ee1176673b0e09",
+          "afterHash": "fnv1a64:6e36ed78fe344eaf"
+        },
+        {
+          "round": 5,
+          "view": {
+            "aquifer_visible": 0,
+            "demand_visible": 100,
+            "salt_visible": 11.933333333333332
+          },
+          "admissibleActions": [
+            "rationing_strict",
+            "infrastructure_investment",
+            "rights_formalization",
+            "enforcement_crackdown"
+          ],
+          "action": "infrastructure_investment",
+          "predictions": {
+            "final_aquifer_volume": 37.31111111111111,
+            "final_salt_front": 37.31111111111111
+          },
+          "observation": {
+            "aquifer_level": 0,
+            "salt_intrusion_level": 12.462179487179485,
+            "rights_coverage": 135,
+            "enforcement_index": 18
+          },
+          "predictionAssessment": {
+            "final_aquifer_volumeAbsoluteError": 37.31111111111111,
+            "final_salt_frontAbsoluteError": 24.848931623931627
+          },
+          "beforeHash": "fnv1a64:6e36ed78fe344eaf",
+          "afterHash": "fnv1a64:62aa9bb57dfa3449"
+        }
+      ],
+      "finalWorldHash": "fnv1a64:62aa9bb57dfa3449"
+    }
+  ],
+  "conclusionBoundary": "vector_outcomes_only_no_unique_winner",
+  "reportHash": "fnv1a64:c27e294570675deb"
+}

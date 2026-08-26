@@ -1,0 +1,66 @@
+{
+  "schema": "cct-evidence-governance-kryos-development/v1",
+  "generatedAt": "2026-08-26",
+  "candidate": "CCT-EXEC-1.3-CANDIDATE-001",
+  "sourceFailureCampaign": "CCT-KRYOS-CONFRONTATION-1.2-002",
+  "reuseBoundary": "Post-failure Kryos development regression only; cannot promote 1.3.",
+  "runs": [
+    {
+      "profileId": "P1-matched-public-mechanics",
+      "completedRounds": 3,
+      "actions": [
+        { "round": 0, "action": "hydraulic_rationing+seismic_sensors", "phase": "triage_immediate" },
+        { "round": 1, "action": "reinforce_structure", "phase": "capacity_acquisition" },
+        { "round": 2, "action": "diplomatic_channel", "phase": "verification_pending" }
+      ],
+      "failure": { "tick": 3, "code": "CCT_RESTORATION_ACTION_INFEASIBLE", "phase": "restoration_due" },
+      "channelsOpened": ["kryos-cross-faction-witness", "kryos-sensor-array"],
+      "verifiedGains": 1,
+      "openDebts": ["attribution_du_pouvoir", "droits", "portabilite_effective"],
+      "prefixVector": {
+        "structural_integrity": 78,
+        "marine_ecosystem_health": 58,
+        "freshwater_reservoir": 62,
+        "energy_grid_stability": 80,
+        "population_morale": 62,
+        "trade_volume": 35,
+        "__reversal_total_system_collapse": 0,
+        "__reversal_civil_unrest": 0
+      },
+      "comparableAtEightRounds": false
+    },
+    {
+      "profileId": "P2-optimistic-harm-omission",
+      "completedRounds": 3,
+      "actions": [
+        { "round": 0, "action": "hydraulic_rationing+seismic_sensors", "phase": "triage_immediate" },
+        { "round": 1, "action": "reinforce_structure", "phase": "capacity_acquisition" },
+        { "round": 2, "action": "diplomatic_channel", "phase": "verification_pending" }
+      ],
+      "failure": { "tick": 3, "code": "CCT_RESTORATION_ACTION_INFEASIBLE", "phase": "restoration_due" },
+      "channelsOpened": ["kryos-cross-faction-witness", "kryos-sensor-array"],
+      "verifiedGains": 1,
+      "openDebts": ["attribution_du_pouvoir", "droits", "portabilite_effective"],
+      "prefixVector": {
+        "structural_integrity": 78,
+        "marine_ecosystem_health": 58,
+        "freshwater_reservoir": 62,
+        "energy_grid_stability": 80,
+        "population_morale": 62,
+        "trade_volume": 35,
+        "__reversal_total_system_collapse": 0,
+        "__reversal_civil_unrest": 0
+      },
+      "comparableAtEightRounds": false
+    }
+  ],
+  "result": {
+    "bothProfilesOpenTwoIndependentChannels": true,
+    "bothProfilesVerifyCapacityGain": true,
+    "bothProfilesAvoidSelfCertification": true,
+    "completeEightRoundPaths": 0,
+    "nextExposedFailure": ["CCT_RESTORATION_ACTION_INFEASIBLE", "CCT_RESTORATION_ACTION_INFEASIBLE"]
+  },
+  "strongestConclusion": "1.3 locally makes plural verification and bounded solicitation executable on the already observed Kryos failure, then exposes restoration infeasibility; this is local adaptation, not promotion evidence.",
+  "statusBoundary": "Written and locally tested post-failure candidate only; no robustness, superiority, authorization, deployment, institutional effect, independent reobservation or external transport."
+}

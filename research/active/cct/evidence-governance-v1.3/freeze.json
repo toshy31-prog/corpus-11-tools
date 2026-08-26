@@ -1,0 +1,21 @@
+{
+  "schema": "cct-evidence-governance-freeze/v1",
+  "id": "CCT-EXEC-1.3-FREEZE-2026-08-26-01",
+  "algorithm": "sha256",
+  "files": {
+    "spec.json": "38c562a87607d5080ead1d203928a7fe832b8a36a6519f683c79d775910466c1",
+    "runtime.mjs": "bc85fbb9b8f9c637b78d91e0e142a74723f6bf4cd4043ac9f7ed88e58ac6486f",
+    "test.mjs": "203a3e333a6234328212b00a1df51bb2e1239f3e2be475bb9791d57d85b67679",
+    "run-kryos-development.mjs": "8dbdb88052c901035f6c24f83f19e05279e99e5ce9d5de38ab4109259de5c2d7",
+    "kryos-development-report.json": "573e1b69345ca182407848f3e21d77dd2c47162ef32f678ba8b5571d88d66794",
+    "migration.json": "acdafe03921316971c6b233262e46cf0cdd45196975e8f35a77ba69e91aae95c",
+    "validation.json": "bf0866075bbbc487df8d84c8928f04c3bd1bdb8707bf7976f407856359c3a2d3",
+    "README.md": "a9c2f1bdcd8733a8b6180576d205377b5d21d1aa2933158ee69d91abea00fb0d",
+    "verify-freeze.mjs": "2047b2eae9e80027e30760406037858da591bf9b676a6fa0092028b0724f8615"
+  },
+  "basisFreezes": [
+    "../open-world-recovery-v1.2/freeze.json",
+    "../held-out-kryos/confrontation-1.2-r2/freeze.json"
+  ],
+  "statusBoundary": "Exact locally tested post-failure candidate bytes only. Kryos is a development regression after observed failure; no promotion, authorization, deployment, institutional effect, robustness, superiority, independent reobservation or external transport is established."
+}

@@ -1,0 +1,38 @@
+{
+  "schema": "cct-evidence-governance/v1",
+  "id": "CCT-EXEC-1.3-CANDIDATE-001",
+  "version": "1.3-candidate",
+  "parentFreeze": "CCT-EXEC-1.2-FREEZE-2026-08-26-01",
+  "lifecycle": {
+    "state": "locally_tested_post_failure_candidate",
+    "notEstablished": ["authorization", "deployment", "institutional effect", "composed robustness", "external transport", "superiority"]
+  },
+  "verification": {
+    "minimumIndependentConfirmations": 2,
+    "maximumSolicitationTicks": 2,
+    "selfCertification": "forbidden",
+    "sameActorConfirmations": "count_once",
+    "sameFailureDomainConfirmations": "count_once",
+    "contradictions": "preserve_and_contest_never_average",
+    "continuation": "only_actions_maintaining_vital_and_ecological_floors",
+    "deadlineExtension": "forbidden"
+  },
+  "channel": {
+    "required": ["id", "observerActor", "failureDomain", "targetAxes", "openedBy"],
+    "activation": "only_by_selected_action_with_frozen_public_semantics",
+    "futureLeak": "forbidden",
+    "revocation": "public_and_effective_next_tick"
+  },
+  "receipt": {
+    "required": ["id", "channelId", "verdict", "action", "enactedAt", "effectiveAt", "amount", "failureDomain", "actor", "observerActor", "observerFailureDomain", "authorityTrace"],
+    "acceptedVerdict": "confirmed",
+    "rejectedVerdict": "rejected"
+  },
+  "withdrawalConditions": [
+    "Withdraw the candidate if self-certification can satisfy the quorum.",
+    "Withdraw the candidate if two receipts from one actor or one failure domain count as independent.",
+    "Withdraw the candidate if contradictory receipts are averaged into confirmation.",
+    "Withdraw the candidate if waiting permits harm to vital or ecological floors.",
+    "Kryos is development evidence only and cannot promote this candidate."
+  ]
+}

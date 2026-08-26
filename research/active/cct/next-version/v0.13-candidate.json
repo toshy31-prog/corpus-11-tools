@@ -1,0 +1,218 @@
+{
+  "document_kind": "cct_next_version_candidate",
+  "id": "CCT-V013-CANDIDATE-001",
+  "version": "0.13-candidate",
+  "date": "2026-08-26",
+  "basis": {
+    "predecessor": "CCT v0.12",
+    "source_campaign": "cct-adversarial-constitutional-stress-v1",
+    "source_regime": "internal_synthetic",
+    "observed_failures": [
+      "emergency-capture",
+      "local-domination",
+      "information-siege"
+    ],
+    "method_effect_limit": "La campagne v1 n'exécutait qu'un noyau décisionnel étroit et ne représente pas l'ensemble du CCT écrit."
+  },
+  "lifecycle": {
+    "state": "tests_statiques_passes",
+    "evidence": [
+      "validation structurelle locale",
+      "mutations négatives des rôles, canaux, coûts et règles de reprise"
+    ],
+    "not_established": [
+      "autorisee",
+      "deployee",
+      "reobservee",
+      "efficacite_territoriale",
+      "robustesse_independante"
+    ]
+  },
+  "design_constraints": {
+    "non_compensable_dimensions": [
+      "besoins_vitaux",
+      "plafond_ecologique",
+      "droits",
+      "attribution_du_pouvoir",
+      "portabilite_effective",
+      "recuperation"
+    ],
+    "future_arena": {
+      "matched_information_budget": true,
+      "matched_action_budget": true,
+      "reuse_v1_worlds_for_acceptance": false,
+      "must_be_frozen_by_distinct_author": true,
+      "keep_vector_outcomes": true
+    }
+  },
+  "mechanisms": [
+    {
+      "id": "M13-01",
+      "title": "Continuité d'urgence à double clé et restitution préalable",
+      "addresses": ["emergency-capture"],
+      "capability_delta": {
+        "removed_from_dominant": "Une autorité d'urgence ne peut plus activer, prolonger et certifier seule une délégation de continuité.",
+        "granted_to_affected": "Les personnes conservent service vital, reçu contestable et extinction vérifiable pendant l'urgence."
+      },
+      "activation": {
+        "observable": "rupture simultanée d'un service vital et saturation de la voie ordinaire",
+        "threshold": "au moins un refus vital confirmé par deux canaux de détection indépendants",
+        "channels": [
+          {"id": "local-offline", "failure_domain": "territorial-analogique"},
+          {"id": "interterritorial-signed", "failure_domain": "federal-numerique"}
+        ],
+        "dual_key": ["A08-continuite", "A05-contradicteur"],
+        "local_authority_veto": false
+      },
+      "authority": {
+        "propose": ["A08"],
+        "authorize": ["A02", "A05"],
+        "execute": ["A08"],
+        "stop": ["A06"],
+        "restart": ["A02"],
+        "certify": ["A09"],
+        "repair": ["A10"]
+      },
+      "execution": {
+        "action_budget_units": 2,
+        "actions": ["maintenir_minimum_vital", "ouvrir_recu_et_recours"],
+        "expires_hours": 12,
+        "renewal_requires": ["nouvelle_double_cle", "preuve_de_restitution_du_cycle_precedent"],
+        "safe_state": "minimum vital local, journal papier, aucune extension de compétence"
+      },
+      "traces": ["reçu local numéroté", "contre-clé signée", "inventaire des actes", "preuve de restitution"],
+      "costs": {
+        "burden": "astreinte de deux chaînes institutionnelles et délai de contre-clé",
+        "bearers": ["agents de continuité", "service contradicteur", "personnes en attente"],
+        "hidden_cost_probe": "mesurer refus et délais produits par l'absence d'une clé"
+      },
+      "withdrawal_condition": "Retirer ou simplifier si, dans une campagne tenue à l'écart, la double clé accroît la privation vitale sans réduire pouvoir non attribuable ni suspension de droits."
+    },
+    {
+      "id": "M13-02",
+      "title": "Portabilité des droits hors capture territoriale",
+      "addresses": ["local-domination"],
+      "capability_delta": {
+        "removed_from_dominant": "L'autorité territoriale mise en cause ne peut plus filtrer la saisine, bloquer le reçu ou conditionner les biens vitaux pendant le recours.",
+        "granted_to_affected": "Une personne peut contester, rester ou partir temporairement sans perdre droits, ressources vitales ni droit au retour."
+      },
+      "activation": {
+        "observable": "privation documentée ou crainte motivée de représailles par l'autorité locale",
+        "threshold": "une saisine confidentielle recevable ou deux refus concordants hors registre local",
+        "channels": [
+          {"id": "defenseur-extraterritorial", "failure_domain": "juridiction-exterieure"},
+          {"id": "pair-a-pair-offline", "failure_domain": "reseau-associatif-local"}
+        ],
+        "dual_key": ["A12-defenseur", "A06-juridiction"],
+        "local_authority_veto": false
+      },
+      "authority": {
+        "propose": ["A01", "A12"],
+        "authorize": ["A06"],
+        "execute": ["A10", "A12"],
+        "stop": ["A06"],
+        "restart": ["A02"],
+        "certify": ["A09"],
+        "repair": ["A10"]
+      },
+      "execution": {
+        "action_budget_units": 2,
+        "actions": ["garantir_biens_et_recours", "proteger_rester_partir_retourner"],
+        "expires_hours": 72,
+        "renewal_requires": ["audience_confidentielle", "revue_du_risque_de_tutelle"],
+        "safe_state": "droits et ressources portés hors du contrôle local sans tutelle territoriale générale"
+      },
+      "traces": ["reçu hors territoire", "preuve de prestation", "choix rester-partir", "journal des restrictions locales"],
+      "costs": {
+        "burden": "réserve de logement, traduction, défense et transfert interterritorial",
+        "bearers": ["fonds de réparation", "territoires d'accueil", "personnes déplacées ou protégées"],
+        "hidden_cost_probe": "mesurer représailles, déracinement et dépendance au guichet extérieur"
+      },
+      "withdrawal_condition": "Borner ou retirer si le mécanisme neutralise davantage de dissidences locales qu'il ne restaure de capacités vérifiables, ou si l'aide dépend de la permission du pouvoir dénoncé."
+    },
+    {
+      "id": "M13-03",
+      "title": "Continuité informationnelle contradictoire",
+      "addresses": ["information-siege"],
+      "capability_delta": {
+        "removed_from_dominant": "Aucun registre, réseau ou narrateur institutionnel ne peut transformer seul une information dégradée en ordre durable.",
+        "granted_to_affected": "Les personnes obtiennent une décision provisoire attribuable, contestable hors ligne et réconciliable sans effacement des divergences."
+      },
+      "activation": {
+        "observable": "divergence ou indisponibilité entre registre principal, canaux locaux et informations interterritoriales",
+        "threshold": "une divergence affectant un besoin vital, un droit ou un ordre coercitif",
+        "channels": [
+          {"id": "registre-local-append-only", "failure_domain": "support-local-hors-ligne"},
+          {"id": "archive-interterritoriale", "failure_domain": "reseau-et-juridiction-distincts"}
+        ],
+        "dual_key": ["A13-archive", "A05-contradicteur"],
+        "local_authority_veto": false
+      },
+      "authority": {
+        "propose": ["A01", "A13"],
+        "authorize": ["A05"],
+        "execute": ["A04", "A13"],
+        "stop": ["A06"],
+        "restart": ["A02"],
+        "certify": ["A09"],
+        "repair": ["A10"]
+      },
+      "execution": {
+        "action_budget_units": 2,
+        "actions": ["emettre_decision_provisoire_signee", "conserver_divergence_et_recours"],
+        "expires_hours": 8,
+        "renewal_requires": ["nouvelle_trace_locale", "contrelecture_independante"],
+        "safe_state": "service vital présumé, coercition suspendue, divergences conservées jusqu'à réconciliation"
+      },
+      "traces": ["journal local append-only", "copie interterritoriale", "diff de réconciliation", "divergences non résolues"],
+      "costs": {
+        "burden": "double maintenance, conflits de version et revue humaine différée",
+        "bearers": ["agents locaux", "conservateurs d'archive", "personnes en attente de stabilisation"],
+        "hidden_cost_probe": "mesurer décisions retardées, erreurs de réconciliation et divergences silencieusement écrasées"
+      },
+      "withdrawal_condition": "Retirer si les deux voies partagent une cause critique, si la réconciliation efface les désaccords ou si l'attribution et le recours ne sont pas restaurés après reprise."
+    },
+    {
+      "id": "M13-04",
+      "title": "Porte de nécessité distinctive",
+      "addresses": ["rival-noninferiority"],
+      "capability_delta": {
+        "removed_from_dominant": "Les mainteneurs ne peuvent plus conserver une procédure CCT au seul motif qu'elle exprime mieux le récit du projet.",
+        "granted_to_affected": "Les personnes peuvent exiger la suppression d'une charge institutionnelle sans protection observable distincte."
+      },
+      "activation": {
+        "observable": "équivalence ou non-infériorité d'un rival plus simple sur le vecteur préspécifié",
+        "threshold": "au moins une campagne tenue à l'écart sans gain distinctif CCT et sans déficit du rival",
+        "channels": [
+          {"id": "rapport-aveugle", "failure_domain": "evaluation-experimentale"},
+          {"id": "audit-de-charge", "failure_domain": "comptabilite-institutionnelle"}
+        ],
+        "dual_key": ["revue-externe", "representants-porteurs-de-charge"],
+        "local_authority_veto": false
+      },
+      "authority": {
+        "propose": ["mainteneurs", "porteurs-de-charge"],
+        "authorize": ["revue-externe", "porteurs-de-charge"],
+        "execute": ["mainteneurs"],
+        "stop": ["porteurs-de-charge"],
+        "restart": ["revue-externe"],
+        "certify": ["audit-independant"],
+        "repair": ["mainteneurs"]
+      },
+      "execution": {
+        "action_budget_units": 1,
+        "actions": ["fusionner_ou_retirer_le_mecanisme_non_distinctif"],
+        "expires_hours": 8760,
+        "renewal_requires": ["nouveau_discriminant_independant", "condition_de_reouverture"],
+        "safe_state": "noyau commun minimal et registre de la distinction retirée"
+      },
+      "traces": ["prédiction distinctive", "rapport rival", "registre des pertes", "condition de réouverture"],
+      "costs": {
+        "burden": "perte possible d'une protection rare non détectée par l'arène",
+        "bearers": ["minorités de cas", "mainteneurs", "usagers futurs"],
+        "hidden_cost_probe": "conserver les cas limites et tester la réouverture sans réintroduire automatiquement la procédure"
+      },
+      "withdrawal_condition": "Réouvrir la distinction uniquement si un nouveau résultat tenu à l'écart sépare le mécanisme CCT du noyau fédéral minimal sur une protection non compensable."
+    }
+  ]
+}

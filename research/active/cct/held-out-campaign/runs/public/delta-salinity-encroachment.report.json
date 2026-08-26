@@ -1,0 +1,486 @@
+{
+  "contract": "corpus-open-experiment-arena/v1",
+  "arenaId": "CCT-HO-001:delta-salinity-encroachment",
+  "seed": 0,
+  "scenario": {
+    "id": "delta-salinity-encroachment",
+    "version": "1.0.0",
+    "title": "Subsurface Salinization and Deltaic Governance Collapse",
+    "dimensions": [
+      "cout_besoins_vitaux",
+      "cout_ecologique",
+      "cout_droits",
+      "cout_pouvoir_non_controle",
+      "cout_portabilite",
+      "cout_recuperation"
+    ],
+    "reversalConditions": [
+      "Si la nappe phréatique atteint une salinité absolue supérieure à cent grammes par litre",
+      "Si le rationnement civil descend en dessous de zéro litre par habitant",
+      "Si l indice d urgence deborde les capacites de stockage du simulateur"
+    ],
+    "source": {
+      "regime": "external_supplied",
+      "authorId": "hydra-nexus-analyst",
+      "authorRelationToCorpus": "independent",
+      "frozenBeforeContenders": true,
+      "authorshipTrace": "7ef2a3bc-11fa-4c81-bd61-dc782cb41209",
+      "freezeHash": "sha256:fe451f1b0007ae906372bdde8a524b86d2354fcc82a28080e8e0e85823f6de50",
+      "freezeVerified": true
+    }
+  },
+  "claimExternal": false,
+  "externalityStatus": "declared_external_with_verified_freeze_authorship_not_independently_verified",
+  "matchedBaseline": {
+    "worldHash": "fnv1a64:def4f08e7bda5007",
+    "exogenousHash": "fnv1a64:8973554a5732bbc5"
+  },
+  "runs": [
+    {
+      "label": "method-436548e4",
+      "baseline": {
+        "worldHash": "fnv1a64:def4f08e7bda5007",
+        "exogenousHash": "fnv1a64:8973554a5732bbc5"
+      },
+      "outcomes": {
+        "cout_besoins_vitaux": 890,
+        "cout_ecologique": 400,
+        "cout_droits": 20,
+        "cout_pouvoir_non_controle": 12.5,
+        "cout_portabilite": 20,
+        "cout_recuperation": 1002.5
+      },
+      "history": [
+        {
+          "round": 0,
+          "view": {
+            "volume_disponible": 1000,
+            "taux_salinite": 50
+          },
+          "admissibleActions": [
+            "pompage_massif",
+            "rationnement_autoritaire",
+            "restauration_zones_humides",
+            "infrastructure_filtrage"
+          ],
+          "action": "infrastructure_filtrage",
+          "predictions": {
+            "salinite_finale": 525
+          },
+          "observation": {
+            "salinite_mesuree": 70,
+            "reserve_estimee": 860
+          },
+          "predictionAssessment": {
+            "salinite_finaleAbsoluteError": 455
+          },
+          "beforeHash": "fnv1a64:def4f08e7bda5007",
+          "afterHash": "fnv1a64:7482efbc039f8da1"
+        },
+        {
+          "round": 1,
+          "view": {
+            "volume_disponible": 860,
+            "taux_salinite": 70
+          },
+          "admissibleActions": [
+            "pompage_massif",
+            "rationnement_autoritaire",
+            "restauration_zones_humides",
+            "infrastructure_filtrage"
+          ],
+          "action": "infrastructure_filtrage",
+          "predictions": {
+            "salinite_finale": 465
+          },
+          "observation": {
+            "salinite_mesuree": 105,
+            "reserve_estimee": 650
+          },
+          "predictionAssessment": {
+            "salinite_finaleAbsoluteError": 360
+          },
+          "beforeHash": "fnv1a64:7482efbc039f8da1",
+          "afterHash": "fnv1a64:bcbc55705ac54486"
+        },
+        {
+          "round": 2,
+          "view": {
+            "volume_disponible": 650,
+            "taux_salinite": 105
+          },
+          "admissibleActions": [
+            "pompage_massif",
+            "rationnement_autoritaire",
+            "restauration_zones_humides",
+            "infrastructure_filtrage"
+          ],
+          "action": "infrastructure_filtrage",
+          "predictions": {
+            "salinite_finale": 377.5
+          },
+          "observation": {
+            "salinite_mesuree": 155,
+            "reserve_estimee": 340
+          },
+          "predictionAssessment": {
+            "salinite_finaleAbsoluteError": 222.5
+          },
+          "beforeHash": "fnv1a64:bcbc55705ac54486",
+          "afterHash": "fnv1a64:b9be3e1b36a08e0b"
+        },
+        {
+          "round": 3,
+          "view": {
+            "volume_disponible": 340,
+            "taux_salinite": 155
+          },
+          "admissibleActions": [
+            "pompage_massif",
+            "rationnement_autoritaire",
+            "restauration_zones_humides",
+            "infrastructure_filtrage"
+          ],
+          "action": "infrastructure_filtrage",
+          "predictions": {
+            "salinite_finale": 247.5
+          },
+          "observation": {
+            "salinite_mesuree": 185,
+            "reserve_estimee": -30
+          },
+          "predictionAssessment": {
+            "salinite_finaleAbsoluteError": 62.5
+          },
+          "beforeHash": "fnv1a64:b9be3e1b36a08e0b",
+          "afterHash": "fnv1a64:409f31f6fc354ddd"
+        },
+        {
+          "round": 4,
+          "view": {
+            "volume_disponible": -30,
+            "taux_salinite": 185
+          },
+          "admissibleActions": [
+            "pompage_massif",
+            "rationnement_autoritaire",
+            "restauration_zones_humides",
+            "infrastructure_filtrage"
+          ],
+          "action": "infrastructure_filtrage",
+          "predictions": {
+            "salinite_finale": 77.5
+          },
+          "observation": {
+            "salinite_mesuree": 230,
+            "reserve_estimee": -490
+          },
+          "predictionAssessment": {
+            "salinite_finaleAbsoluteError": 152.5
+          },
+          "beforeHash": "fnv1a64:409f31f6fc354ddd",
+          "afterHash": "fnv1a64:e1114e818b5d3e0e"
+        }
+      ],
+      "finalWorldHash": "fnv1a64:e1114e818b5d3e0e"
+    },
+    {
+      "label": "method-96402101",
+      "baseline": {
+        "worldHash": "fnv1a64:def4f08e7bda5007",
+        "exogenousHash": "fnv1a64:8973554a5732bbc5"
+      },
+      "outcomes": {
+        "cout_besoins_vitaux": 840,
+        "cout_ecologique": 175,
+        "cout_droits": 20,
+        "cout_pouvoir_non_controle": 12.5,
+        "cout_portabilite": 20,
+        "cout_recuperation": 715
+      },
+      "history": [
+        {
+          "round": 0,
+          "view": {
+            "volume_disponible": 1000,
+            "taux_salinite": 50
+          },
+          "admissibleActions": [
+            "pompage_massif",
+            "rationnement_autoritaire",
+            "restauration_zones_humides",
+            "infrastructure_filtrage"
+          ],
+          "action": "restauration_zones_humides",
+          "predictions": {
+            "salinite_finale": 525
+          },
+          "observation": {
+            "salinite_mesuree": 55,
+            "reserve_estimee": 810
+          },
+          "predictionAssessment": {
+            "salinite_finaleAbsoluteError": 470
+          },
+          "beforeHash": "fnv1a64:def4f08e7bda5007",
+          "afterHash": "fnv1a64:ae8379882509cf62"
+        },
+        {
+          "round": 1,
+          "view": {
+            "volume_disponible": 810,
+            "taux_salinite": 55
+          },
+          "admissibleActions": [
+            "pompage_massif",
+            "rationnement_autoritaire",
+            "restauration_zones_humides",
+            "infrastructure_filtrage"
+          ],
+          "action": "restauration_zones_humides",
+          "predictions": {
+            "salinite_finale": 432.5
+          },
+          "observation": {
+            "salinite_mesuree": 75,
+            "reserve_estimee": 580
+          },
+          "predictionAssessment": {
+            "salinite_finaleAbsoluteError": 357.5
+          },
+          "beforeHash": "fnv1a64:ae8379882509cf62",
+          "afterHash": "fnv1a64:fd2ac90eb7452e82"
+        },
+        {
+          "round": 2,
+          "view": {
+            "volume_disponible": 580,
+            "taux_salinite": 75
+          },
+          "admissibleActions": [
+            "pompage_massif",
+            "rationnement_autoritaire",
+            "restauration_zones_humides",
+            "infrastructure_filtrage"
+          ],
+          "action": "restauration_zones_humides",
+          "predictions": {
+            "salinite_finale": 327.5
+          },
+          "observation": {
+            "salinite_mesuree": 110,
+            "reserve_estimee": 280
+          },
+          "predictionAssessment": {
+            "salinite_finaleAbsoluteError": 217.5
+          },
+          "beforeHash": "fnv1a64:fd2ac90eb7452e82",
+          "afterHash": "fnv1a64:770d7f80481d9eb5"
+        },
+        {
+          "round": 3,
+          "view": {
+            "volume_disponible": 280,
+            "taux_salinite": 110
+          },
+          "admissibleActions": [
+            "pompage_massif",
+            "rationnement_autoritaire",
+            "restauration_zones_humides",
+            "infrastructure_filtrage"
+          ],
+          "action": "restauration_zones_humides",
+          "predictions": {
+            "salinite_finale": 195
+          },
+          "observation": {
+            "salinite_mesuree": 125,
+            "reserve_estimee": -50
+          },
+          "predictionAssessment": {
+            "salinite_finaleAbsoluteError": 70
+          },
+          "beforeHash": "fnv1a64:770d7f80481d9eb5",
+          "afterHash": "fnv1a64:19f7a63fff8079af"
+        },
+        {
+          "round": 4,
+          "view": {
+            "volume_disponible": -50,
+            "taux_salinite": 125
+          },
+          "admissibleActions": [
+            "pompage_massif",
+            "rationnement_autoritaire",
+            "restauration_zones_humides",
+            "infrastructure_filtrage"
+          ],
+          "action": "restauration_zones_humides",
+          "predictions": {
+            "salinite_finale": 37.5
+          },
+          "observation": {
+            "salinite_mesuree": 155,
+            "reserve_estimee": -440
+          },
+          "predictionAssessment": {
+            "salinite_finaleAbsoluteError": 117.5
+          },
+          "beforeHash": "fnv1a64:19f7a63fff8079af",
+          "afterHash": "fnv1a64:dd5a3670de4a6bf3"
+        }
+      ],
+      "finalWorldHash": "fnv1a64:dd5a3670de4a6bf3"
+    },
+    {
+      "label": "method-f5bda771",
+      "baseline": {
+        "worldHash": "fnv1a64:def4f08e7bda5007",
+        "exogenousHash": "fnv1a64:8973554a5732bbc5"
+      },
+      "outcomes": {
+        "cout_besoins_vitaux": 930,
+        "cout_ecologique": 310,
+        "cout_droits": 20,
+        "cout_pouvoir_non_controle": 12.5,
+        "cout_portabilite": 20,
+        "cout_recuperation": 902.5
+      },
+      "history": [
+        {
+          "round": 0,
+          "view": {
+            "volume_disponible": 1000,
+            "taux_salinite": 50
+          },
+          "admissibleActions": [
+            "pompage_massif",
+            "rationnement_autoritaire",
+            "restauration_zones_humides",
+            "infrastructure_filtrage"
+          ],
+          "action": "infrastructure_filtrage",
+          "predictions": {
+            "salinite_finale": 525
+          },
+          "observation": {
+            "salinite_mesuree": 70,
+            "reserve_estimee": 860
+          },
+          "predictionAssessment": {
+            "salinite_finaleAbsoluteError": 455
+          },
+          "beforeHash": "fnv1a64:def4f08e7bda5007",
+          "afterHash": "fnv1a64:7482efbc039f8da1"
+        },
+        {
+          "round": 1,
+          "view": {
+            "volume_disponible": 860,
+            "taux_salinite": 70
+          },
+          "admissibleActions": [
+            "pompage_massif",
+            "rationnement_autoritaire",
+            "restauration_zones_humides",
+            "infrastructure_filtrage"
+          ],
+          "action": "infrastructure_filtrage",
+          "predictions": {
+            "salinite_finale": 465
+          },
+          "observation": {
+            "salinite_mesuree": 105,
+            "reserve_estimee": 650
+          },
+          "predictionAssessment": {
+            "salinite_finaleAbsoluteError": 360
+          },
+          "beforeHash": "fnv1a64:7482efbc039f8da1",
+          "afterHash": "fnv1a64:bcbc55705ac54486"
+        },
+        {
+          "round": 2,
+          "view": {
+            "volume_disponible": 650,
+            "taux_salinite": 105
+          },
+          "admissibleActions": [
+            "pompage_massif",
+            "rationnement_autoritaire",
+            "restauration_zones_humides",
+            "infrastructure_filtrage"
+          ],
+          "action": "restauration_zones_humides",
+          "predictions": {
+            "salinite_finale": 377.5
+          },
+          "observation": {
+            "salinite_mesuree": 140,
+            "reserve_estimee": 290
+          },
+          "predictionAssessment": {
+            "salinite_finaleAbsoluteError": 237.5
+          },
+          "beforeHash": "fnv1a64:bcbc55705ac54486",
+          "afterHash": "fnv1a64:9556ede9e74b66ef"
+        },
+        {
+          "round": 3,
+          "view": {
+            "volume_disponible": 290,
+            "taux_salinite": 140
+          },
+          "admissibleActions": [
+            "pompage_massif",
+            "rationnement_autoritaire",
+            "restauration_zones_humides",
+            "infrastructure_filtrage"
+          ],
+          "action": "infrastructure_filtrage",
+          "predictions": {
+            "salinite_finale": 215
+          },
+          "observation": {
+            "salinite_mesuree": 170,
+            "reserve_estimee": -50
+          },
+          "predictionAssessment": {
+            "salinite_finaleAbsoluteError": 45
+          },
+          "beforeHash": "fnv1a64:9556ede9e74b66ef",
+          "afterHash": "fnv1a64:a8e6833ee198e424"
+        },
+        {
+          "round": 4,
+          "view": {
+            "volume_disponible": -50,
+            "taux_salinite": 170
+          },
+          "admissibleActions": [
+            "pompage_massif",
+            "rationnement_autoritaire",
+            "restauration_zones_humides",
+            "infrastructure_filtrage"
+          ],
+          "action": "restauration_zones_humides",
+          "predictions": {
+            "salinite_finale": 60
+          },
+          "observation": {
+            "salinite_mesuree": 200,
+            "reserve_estimee": -530
+          },
+          "predictionAssessment": {
+            "salinite_finaleAbsoluteError": 140
+          },
+          "beforeHash": "fnv1a64:a8e6833ee198e424",
+          "afterHash": "fnv1a64:60a90a50943b6449"
+        }
+      ],
+      "finalWorldHash": "fnv1a64:60a90a50943b6449"
+    }
+  ],
+  "conclusionBoundary": "vector_outcomes_only_no_unique_winner",
+  "reportHash": "fnv1a64:138741a6c91f1dfb"
+}

@@ -11,8 +11,8 @@ python3 run_all.py
 
 La commande exécute constitution, contre-exemple, économie, opérations hors ligne, laboratoire historique et robustesse P-005. Elle écrit `verification-report.json` et `VERIFICATION.md`.
 
-La vérification courante exécute 11 contrôles d'intégration, dont la
-préparation statique CCT-FC-D10-001. Le détail des résultats et des conclusions
+La vérification courante exécute 15 contrôles d'intégration, dont la
+préparation statique CCT-FC-D10-001, la candidate v0.13 et les portes de la campagne tenue à l'écart. Le détail des résultats et des conclusions
 de décision est consigné dans `RELEASE_NOTES.md`.
 
 ## Contenu

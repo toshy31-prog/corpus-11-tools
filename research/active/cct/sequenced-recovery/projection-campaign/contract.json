@@ -1,0 +1,111 @@
+{
+  "schema": "cct-virelia-projection-contract/v1",
+  "id": "CCT-VIRELIA-PROJECTION-001",
+  "version": "0.1-candidate",
+  "date": "2026-08-26",
+  "worldFreeze": {
+    "path": "../scenario-intake/virelia-fractured-atoll-cascade-v1.0.0-r2.frozen.json",
+    "contentHash": "sha256:e3c50bd627b092f94d2b0e44cc595b2b00acdf86e8e7baccb1ad8aac0c94b007"
+  },
+  "cctFreeze": {
+    "path": "../freeze.json",
+    "id": "CCT-EXEC-1.1-FREEZE-2026-08-26-01"
+  },
+  "publicProxyAxes": {
+    "besoins_vitaux": {
+      "severityExpression": "((100-groundwater_index)+disease_load)/40",
+      "effectExpression": "delta(groundwater_index)-delta(disease_load)",
+      "channels": ["groundwater_index", "disease_load"],
+      "constructStatus": "proxy_substitution"
+    },
+    "plafond_ecologique": {
+      "severityExpression": "(100-seismic_stability)/20",
+      "effectExpression": "delta(seismic_stability)",
+      "channels": ["seismic_stability"],
+      "constructStatus": "proxy_substitution"
+    },
+    "droits": {
+      "severityExpression": "(100-trust_index)/20",
+      "effectExpression": "delta(trust_index)",
+      "channels": ["trust_index"],
+      "constructStatus": "proxy_substitution"
+    },
+    "attribution_du_pouvoir": {
+      "severityExpression": "0",
+      "effectExpression": "0",
+      "channels": [],
+      "constructStatus": "unobservable_unconfirmed"
+    },
+    "portabilite_effective": {
+      "severityExpression": "(100-harbor_depth)/20",
+      "effectExpression": "delta(harbor_depth)",
+      "channels": ["harbor_depth"],
+      "constructStatus": "proxy_substitution"
+    },
+    "recuperation": {
+      "severityExpression": "((100-material_stock)+(100-seismic_stability))/40",
+      "effectExpression": "mean(delta(material_stock),delta(seismic_stability))",
+      "channels": ["material_stock", "seismic_stability"],
+      "constructStatus": "proxy_substitution"
+    }
+  },
+  "severityRule": {
+    "range": [0, 5],
+    "clamp": true,
+    "confirmedWhenObservable": true,
+    "acceptanceThresholdUsed": false,
+    "role": "evaluator_model_rule_not_world_property"
+  },
+  "actionCompilation": {
+    "source": "immediate operations on public-visible variables plus immediate declared dependency link",
+    "excluded": ["hidden variables", "future exogenous events", "delayed effects", "outcome formulas", "acceptance thresholds"],
+    "protectsAxisWhen": "compiled proxy delta > 0",
+    "harmsAxisWhen": "compiled proxy delta < 0",
+    "bundleRule": "sum component public deltas in canonical action-id order",
+    "resourceCost": "sum frozen action costs",
+    "recoveryKindRule": "triage iff vital and ecology proxies improve; capacity_acquisition iff portability or recovery proxy improves; otherwise ordinary",
+    "capacityGainRule": "max(0, portability proxy delta, recovery proxy delta)",
+    "restorationRule": "no action is labeled restoration because Virelia supplies no receipt-backed institutional restoration semantics",
+    "constitutionalTagsRule": "no I13 tag inferred from physical labels without a population-level rights observable"
+  },
+  "profiles": [
+    {
+      "id": "P0-strict-original-view",
+      "executableForCct": false,
+      "discloseCompiledOntology": false,
+      "omitCompiledHarms": false,
+      "purpose": "preserve Virelia's original no-transition-leak regime",
+      "expectedBoundary": "CCT recovery interface is absent"
+    },
+    {
+      "id": "P1-matched-public-mechanics",
+      "executableForCct": true,
+      "discloseCompiledOntology": true,
+      "omitCompiledHarms": false,
+      "purpose": "matched enriched interface with non-compensating positive and negative public-proxy effects",
+      "expectedBoundary": "method-added ontology disclosed equally to every contender"
+    },
+    {
+      "id": "P2-optimistic-harm-omission",
+      "executableForCct": true,
+      "discloseCompiledOntology": true,
+      "omitCompiledHarms": true,
+      "purpose": "sensitivity test favorable to actionability by suppressing all compiled harms",
+      "expectedBoundary": "deliberately optimistic evaluator variation, not a neutral world claim"
+    }
+  ],
+  "fairness": {
+    "sameProjectionForEveryContenderWithinRun": true,
+    "sameInitialWorld": true,
+    "sameExogenousSequence": true,
+    "sameActionsAndBudget": true,
+    "noScalarWinner": true
+  },
+  "reversalConditions": [
+    "Withdraw any CCT performance attribution if results change across P1 and P2 without an explained mechanism.",
+    "Withdraw neutrality language because every executable profile adds ontology absent from the original Virelia view.",
+    "Treat a CCT refusal as a control failure at its observed tick; do not fabricate post-refusal material outcomes.",
+    "Do not infer rights or power validity from trust, harbor, seismic, material, disease or groundwater proxies."
+  ],
+  "statusBoundary": "Written projection candidate. Proxy mappings and disclosed action semantics are evaluator model rules, not Virelia properties or validated constitutional constructs."
+}

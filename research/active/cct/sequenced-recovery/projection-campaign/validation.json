@@ -1,0 +1,39 @@
+{
+  "schema": "cct-virelia-projection-validation/v1",
+  "date": "2026-08-26",
+  "status": "synthetic_control_failure_under_projection_variation",
+  "tests": {
+    "total": 12,
+    "passed": 12,
+    "failed": 0
+  },
+  "commands": [
+    "node --check runtime.mjs",
+    "node --check run-campaign.mjs",
+    "node test.mjs",
+    "node run-campaign.mjs --check",
+    "node verify-freeze.mjs"
+  ],
+  "campaign": {
+    "strictProfiles": 1,
+    "executableProfiles": 2,
+    "cctControlFailures": 2,
+    "cctEightRoundCompletions": 0,
+    "rivalPolicies": 3,
+    "rivalEightRoundCompletions": 6,
+    "postFailureMaterialOutcomesFabricated": false,
+    "scalarWinnerProduced": false
+  },
+  "constructValidity": {
+    "fiveObservableAxes": "proxy_substitution",
+    "attributionDuPouvoir": "unobservable_unconfirmed",
+    "institutionalActorRecourseReceiptFields": "absent_from_virelia_source"
+  },
+  "protocolSensitivity": {
+    "P0": "CCT_RECOVERY_INTERFACE_MISSING",
+    "P1": "CCT_I13_NO_CONSTITUTIONALLY_ADMISSIBLE_ACTION at tick 0",
+    "P2": "CCT_CAPACITY_ACQUISITION_INFEASIBLE at tick 1 after triage"
+  },
+  "transportVerdict": "not_transportable_without_method_added_institutional_semantics",
+  "statusBoundary": "Frozen-world synthetic control failures under maintainer-authored projection variants; no field or general-validity conclusion."
+}

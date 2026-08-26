@@ -1,0 +1,124 @@
+{
+  "schema": "cct-open-world-recovery-virelia-development/v1",
+  "generatedAt": "2026-08-26",
+  "candidate": "CCT-EXEC-1.2-CANDIDATE-001",
+  "sourceCampaignFreeze": "CCT-VIRELIA-PROJECTION-FREEZE-2026-08-26-01",
+  "reuseBoundary": "Observed Virelia profiles are development regressions only. They cannot accept, promote or establish robustness of the candidate built after their failures were known.",
+  "runs": [
+    {
+      "profileId": "P1-matched-public-mechanics",
+      "baseline": {
+        "worldHash": "fnv1a64:cc95bd834a535d11",
+        "exogenousHash": "fnv1a64:4a795e033fd2ae73"
+      },
+      "completedRounds": 2,
+      "actions": [
+        {
+          "round": 0,
+          "action": "divert_flow+reinforce_rim",
+          "phase": "triage_immediate",
+          "harmedAxes": ["droits", "portabilite_effective"]
+        },
+        {
+          "round": 1,
+          "action": "redistribute_stock",
+          "phase": "capacity_acquisition",
+          "harmedAxes": ["droits", "recuperation"]
+        }
+      ],
+      "failure": {
+        "tick": 2,
+        "code": "CCT_CAPACITY_GAIN_UNVERIFIED",
+        "phase": "terminal_failure"
+      },
+      "openDebts": [
+        {"axis": "droits", "deadline": 3, "attributionStatus": "institutional_attribution_unresolved"},
+        {"axis": "portabilite_effective", "deadline": 3, "attributionStatus": "institutional_attribution_unresolved"},
+        {"axis": "recuperation", "deadline": 3, "attributionStatus": "institutional_attribution_unresolved"}
+      ],
+      "terminalFailure": {
+        "code": "CCT_CAPACITY_GAIN_UNVERIFIED",
+        "tick": 2,
+        "pendingGain": {
+          "action": "redistribute_stock",
+          "enactedAt": 1,
+          "dueAt": 2,
+          "amount": 2,
+          "failureDomain": "compiled-public-capacity-proxy",
+          "actor": "unspecified-virelia-operator"
+        }
+      },
+      "prefixOutcomeVector": {
+        "water_security": 57.8,
+        "trade_continuity": 55.182,
+        "health_stability": 70,
+        "legitimacy_hold": 53,
+        "capacity_preservation": 51.5,
+        "labor_resilience": 51,
+        "food_base": 67,
+        "__reversal_total_collapse": 0,
+        "__reversal_irreversible_pier_loss": 0
+      },
+      "prefixComparableAtEightRounds": false
+    },
+    {
+      "profileId": "P2-optimistic-harm-omission",
+      "baseline": {
+        "worldHash": "fnv1a64:cc95bd834a535d11",
+        "exogenousHash": "fnv1a64:4a795e033fd2ae73"
+      },
+      "completedRounds": 2,
+      "actions": [
+        {"round": 0, "action": "divert_flow+reinforce_rim", "phase": "triage_immediate", "harmedAxes": []},
+        {"round": 1, "action": "redistribute_stock", "phase": "capacity_acquisition", "harmedAxes": []}
+      ],
+      "failure": {
+        "tick": 2,
+        "code": "CCT_CAPACITY_GAIN_UNVERIFIED",
+        "phase": "terminal_failure"
+      },
+      "openDebts": [
+        {"axis": "droits", "deadline": 3, "attributionStatus": "institutional_attribution_unresolved"},
+        {"axis": "portabilite_effective", "deadline": 3, "attributionStatus": "institutional_attribution_unresolved"},
+        {"axis": "recuperation", "deadline": 3, "attributionStatus": "institutional_attribution_unresolved"}
+      ],
+      "terminalFailure": {
+        "code": "CCT_CAPACITY_GAIN_UNVERIFIED",
+        "tick": 2,
+        "pendingGain": {
+          "action": "redistribute_stock",
+          "enactedAt": 1,
+          "dueAt": 2,
+          "amount": 2,
+          "failureDomain": "compiled-public-capacity-proxy",
+          "actor": "unspecified-virelia-operator"
+        }
+      },
+      "prefixOutcomeVector": {
+        "water_security": 57.8,
+        "trade_continuity": 55.182,
+        "health_stability": 70,
+        "legitimacy_hold": 53,
+        "capacity_preservation": 51.5,
+        "labor_resilience": 51,
+        "food_base": 67,
+        "__reversal_total_collapse": 0,
+        "__reversal_irreversible_pier_loss": 0
+      },
+      "prefixComparableAtEightRounds": false
+    }
+  ],
+  "comparisonToFrozen11": {
+    "P1": {"frozen11CompletedRounds": 0, "candidate12CompletedRounds": 2},
+    "P2": {"frozen11CompletedRounds": 1, "candidate12CompletedRounds": 2},
+    "interpretation": "The candidate repairs refusal attribution and discovers a bounded acquisition action, but this is local adaptation to an already observed campaign."
+  },
+  "result": {
+    "bothProfilesAvoidFalseI13Attribution": true,
+    "bothProfilesReachCapacityAcquisition": true,
+    "bothProfilesRejectUnverifiedGain": true,
+    "completeEightRoundPaths": 0
+  },
+  "strongestConclusion": "CCT-EXEC 1.2 locally repairs the two named control-path defects on the already observed Virelia campaign, then fails honestly at independent gain verification; no robustness or promotion follows.",
+  "statusBoundary": "Post-failure development regression, not held-out evidence. No authorization, deployment, institutional effect, superiority, independent reobservation or external transport is established."
+}

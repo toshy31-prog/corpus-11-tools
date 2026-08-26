@@ -1,0 +1,516 @@
+{
+  "contract": "corpus-open-experiment-arena/v1",
+  "arenaId": "CCT-HO-001:rupture-digues-arbitrage-droits-eau",
+  "seed": 0,
+  "scenario": {
+    "id": "rupture-digues-arbitrage-droits-eau",
+    "version": "1.0.0",
+    "title": "Rupture des Digues et Arbitrage des Droits d'Eau dans la Confédération des Communes Riveraines",
+    "dimensions": [
+      "cout_besoins_vitaux",
+      "cout_ecologique",
+      "cout_droits",
+      "cout_pouvoir_non_controle",
+      "cout_portabilite",
+      "cout_recuperation"
+    ],
+    "reversalConditions": [
+      "Si la reserve_eau dépasse 200 après application des fuites exogènes, le stress hydrique initial n'est plus crédible et invalide l'interprétation du scénario",
+      "Un concurrent atteignant simultanément zéro sur cout_besoins_vitaux et cout_ecologique malgré la séquence d'apports toxiques force une révision des mécanismes du concurrent",
+      "Dépassement non compensable du seuil 70 sur les besoins vitaux non satisfaits"
+    ],
+    "source": {
+      "regime": "external_supplied",
+      "authorId": "arbitre-fluvial-independant",
+      "authorRelationToCorpus": "independent",
+      "frozenBeforeContenders": true,
+      "authorshipTrace": "f8e2a1c9-7b4d-3e6f-0a9c-5d8b2e1f4a7c",
+      "freezeHash": "sha256:d529806884ce05cdffce04a642cd965dd4fa3c2f672f33540f9723e3e3551635",
+      "freezeVerified": true
+    }
+  },
+  "claimExternal": false,
+  "externalityStatus": "declared_external_with_verified_freeze_authorship_not_independently_verified",
+  "matchedBaseline": {
+    "worldHash": "fnv1a64:8e16ab08effec1d5",
+    "exogenousHash": "fnv1a64:a3aa74920c35759a"
+  },
+  "runs": [
+    {
+      "label": "method-436548e4",
+      "baseline": {
+        "worldHash": "fnv1a64:8e16ab08effec1d5",
+        "exogenousHash": "fnv1a64:a3aa74920c35759a"
+      },
+      "outcomes": {
+        "cout_besoins_vitaux": 49,
+        "cout_ecologique": 0,
+        "cout_droits": 26,
+        "cout_pouvoir_non_controle": 23,
+        "cout_portabilite": 48,
+        "cout_recuperation": -1
+      },
+      "history": [
+        {
+          "round": 0,
+          "view": {
+            "reserve_visible": 135,
+            "pollution_visible": 30,
+            "mobilite_visible": 12
+          },
+          "admissibleActions": [
+            "conserver_eau",
+            "deleguer_local",
+            "ouvrir_mobilite",
+            "epurer_urgence"
+          ],
+          "action": "epurer_urgence",
+          "predictions": {
+            "prediction_reserve_finale": 59
+          },
+          "observation": {
+            "etat_hydrique": 119,
+            "pression_toxique": 27,
+            "contraintes_mouvement": 16
+          },
+          "predictionAssessment": {
+            "prediction_reserve_finaleAbsoluteError": 60
+          },
+          "beforeHash": "fnv1a64:8e16ab08effec1d5",
+          "afterHash": "fnv1a64:7944a66d0a342382"
+        },
+        {
+          "round": 1,
+          "view": {
+            "reserve_visible": 119,
+            "pollution_visible": 27,
+            "mobilite_visible": 16
+          },
+          "admissibleActions": [
+            "conserver_eau",
+            "deleguer_local",
+            "ouvrir_mobilite",
+            "epurer_urgence"
+          ],
+          "action": "epurer_urgence",
+          "predictions": {
+            "prediction_reserve_finale": 54
+          },
+          "observation": {
+            "etat_hydrique": 108,
+            "pression_toxique": 33,
+            "contraintes_mouvement": 25
+          },
+          "predictionAssessment": {
+            "prediction_reserve_finaleAbsoluteError": 54
+          },
+          "beforeHash": "fnv1a64:7944a66d0a342382",
+          "afterHash": "fnv1a64:9f2d1313d6e2809e"
+        },
+        {
+          "round": 2,
+          "view": {
+            "reserve_visible": 108,
+            "pollution_visible": 33,
+            "mobilite_visible": 25
+          },
+          "admissibleActions": [
+            "conserver_eau",
+            "deleguer_local",
+            "ouvrir_mobilite",
+            "epurer_urgence"
+          ],
+          "action": "epurer_urgence",
+          "predictions": {
+            "prediction_reserve_finale": 55.333333333333336
+          },
+          "observation": {
+            "etat_hydrique": 89,
+            "pression_toxique": 28,
+            "contraintes_mouvement": 31
+          },
+          "predictionAssessment": {
+            "prediction_reserve_finaleAbsoluteError": 33.666666666666664
+          },
+          "beforeHash": "fnv1a64:9f2d1313d6e2809e",
+          "afterHash": "fnv1a64:550dd05ec385e99d"
+        },
+        {
+          "round": 3,
+          "view": {
+            "reserve_visible": 89,
+            "pollution_visible": 28,
+            "mobilite_visible": 31
+          },
+          "admissibleActions": [
+            "conserver_eau",
+            "deleguer_local",
+            "ouvrir_mobilite",
+            "epurer_urgence"
+          ],
+          "action": "epurer_urgence",
+          "predictions": {
+            "prediction_reserve_finale": 49.333333333333336
+          },
+          "observation": {
+            "etat_hydrique": 76,
+            "pression_toxique": 38,
+            "contraintes_mouvement": 43
+          },
+          "predictionAssessment": {
+            "prediction_reserve_finaleAbsoluteError": 26.666666666666664
+          },
+          "beforeHash": "fnv1a64:550dd05ec385e99d",
+          "afterHash": "fnv1a64:36451e3caa943b5e"
+        },
+        {
+          "round": 4,
+          "view": {
+            "reserve_visible": 76,
+            "pollution_visible": 38,
+            "mobilite_visible": 43
+          },
+          "admissibleActions": [
+            "conserver_eau",
+            "deleguer_local",
+            "ouvrir_mobilite",
+            "epurer_urgence"
+          ],
+          "action": "epurer_urgence",
+          "predictions": {
+            "prediction_reserve_finale": 52.333333333333336
+          },
+          "observation": {
+            "etat_hydrique": 61,
+            "pression_toxique": 37,
+            "contraintes_mouvement": 48
+          },
+          "predictionAssessment": {
+            "prediction_reserve_finaleAbsoluteError": 8.666666666666664
+          },
+          "beforeHash": "fnv1a64:36451e3caa943b5e",
+          "afterHash": "fnv1a64:227503ca0065c1c5"
+        }
+      ],
+      "finalWorldHash": "fnv1a64:227503ca0065c1c5"
+    },
+    {
+      "label": "method-96402101",
+      "baseline": {
+        "worldHash": "fnv1a64:8e16ab08effec1d5",
+        "exogenousHash": "fnv1a64:a3aa74920c35759a"
+      },
+      "outcomes": {
+        "cout_besoins_vitaux": 0,
+        "cout_ecologique": 47,
+        "cout_droits": 6,
+        "cout_pouvoir_non_controle": 33,
+        "cout_portabilite": 68,
+        "cout_recuperation": 9
+      },
+      "history": [
+        {
+          "round": 0,
+          "view": {
+            "reserve_visible": 135,
+            "pollution_visible": 30,
+            "mobilite_visible": 12
+          },
+          "admissibleActions": [
+            "conserver_eau",
+            "deleguer_local",
+            "ouvrir_mobilite",
+            "epurer_urgence"
+          ],
+          "action": "conserver_eau",
+          "predictions": {
+            "prediction_reserve_finale": 59
+          },
+          "observation": {
+            "etat_hydrique": 139,
+            "pression_toxique": 39,
+            "contraintes_mouvement": 20
+          },
+          "predictionAssessment": {
+            "prediction_reserve_finaleAbsoluteError": 80
+          },
+          "beforeHash": "fnv1a64:8e16ab08effec1d5",
+          "afterHash": "fnv1a64:4d90fa1002e97d82"
+        },
+        {
+          "round": 1,
+          "view": {
+            "reserve_visible": 139,
+            "pollution_visible": 39,
+            "mobilite_visible": 20
+          },
+          "admissibleActions": [
+            "conserver_eau",
+            "deleguer_local",
+            "ouvrir_mobilite",
+            "epurer_urgence"
+          ],
+          "action": "conserver_eau",
+          "predictions": {
+            "prediction_reserve_finale": 66
+          },
+          "observation": {
+            "etat_hydrique": 148,
+            "pression_toxique": 57,
+            "contraintes_mouvement": 33
+          },
+          "predictionAssessment": {
+            "prediction_reserve_finaleAbsoluteError": 82
+          },
+          "beforeHash": "fnv1a64:4d90fa1002e97d82",
+          "afterHash": "fnv1a64:cf24efd108633a1e"
+        },
+        {
+          "round": 2,
+          "view": {
+            "reserve_visible": 148,
+            "pollution_visible": 57,
+            "mobilite_visible": 33
+          },
+          "admissibleActions": [
+            "conserver_eau",
+            "deleguer_local",
+            "ouvrir_mobilite",
+            "epurer_urgence"
+          ],
+          "action": "conserver_eau",
+          "predictions": {
+            "prediction_reserve_finale": 79.33333333333333
+          },
+          "observation": {
+            "etat_hydrique": 149,
+            "pression_toxique": 64,
+            "contraintes_mouvement": 43
+          },
+          "predictionAssessment": {
+            "prediction_reserve_finaleAbsoluteError": 69.66666666666667
+          },
+          "beforeHash": "fnv1a64:cf24efd108633a1e",
+          "afterHash": "fnv1a64:bdb1f2617b0b459a"
+        },
+        {
+          "round": 3,
+          "view": {
+            "reserve_visible": 149,
+            "pollution_visible": 64,
+            "mobilite_visible": 43
+          },
+          "admissibleActions": [
+            "conserver_eau",
+            "deleguer_local",
+            "ouvrir_mobilite",
+            "epurer_urgence"
+          ],
+          "action": "conserver_eau",
+          "predictions": {
+            "prediction_reserve_finale": 85.33333333333333
+          },
+          "observation": {
+            "etat_hydrique": 156,
+            "pression_toxique": 86,
+            "contraintes_mouvement": 59
+          },
+          "predictionAssessment": {
+            "prediction_reserve_finaleAbsoluteError": 70.66666666666667
+          },
+          "beforeHash": "fnv1a64:bdb1f2617b0b459a",
+          "afterHash": "fnv1a64:f282639ab8ec3138"
+        },
+        {
+          "round": 4,
+          "view": {
+            "reserve_visible": 156,
+            "pollution_visible": 86,
+            "mobilite_visible": 59
+          },
+          "admissibleActions": [
+            "conserver_eau",
+            "deleguer_local",
+            "ouvrir_mobilite",
+            "epurer_urgence"
+          ],
+          "action": "conserver_eau",
+          "predictions": {
+            "prediction_reserve_finale": 100.33333333333333
+          },
+          "observation": {
+            "etat_hydrique": 161,
+            "pression_toxique": 97,
+            "contraintes_mouvement": 68
+          },
+          "predictionAssessment": {
+            "prediction_reserve_finaleAbsoluteError": 60.66666666666667
+          },
+          "beforeHash": "fnv1a64:f282639ab8ec3138",
+          "afterHash": "fnv1a64:e208e47f065de9ec"
+        }
+      ],
+      "finalWorldHash": "fnv1a64:e208e47f065de9ec"
+    },
+    {
+      "label": "method-f5bda771",
+      "baseline": {
+        "worldHash": "fnv1a64:8e16ab08effec1d5",
+        "exogenousHash": "fnv1a64:a3aa74920c35759a"
+      },
+      "outcomes": {
+        "cout_besoins_vitaux": 40,
+        "cout_ecologique": 57,
+        "cout_droits": 15,
+        "cout_pouvoir_non_controle": -1,
+        "cout_portabilite": 36,
+        "cout_recuperation": 18
+      },
+      "history": [
+        {
+          "round": 0,
+          "view": {
+            "reserve_visible": 135,
+            "pollution_visible": 30,
+            "mobilite_visible": 12
+          },
+          "admissibleActions": [
+            "conserver_eau",
+            "deleguer_local",
+            "ouvrir_mobilite",
+            "epurer_urgence"
+          ],
+          "action": "deleguer_local",
+          "predictions": {
+            "prediction_reserve_finale": 59
+          },
+          "observation": {
+            "etat_hydrique": 124,
+            "pression_toxique": 39,
+            "contraintes_mouvement": 16
+          },
+          "predictionAssessment": {
+            "prediction_reserve_finaleAbsoluteError": 65
+          },
+          "beforeHash": "fnv1a64:8e16ab08effec1d5",
+          "afterHash": "fnv1a64:f813c736aededb2c"
+        },
+        {
+          "round": 1,
+          "view": {
+            "reserve_visible": 124,
+            "pollution_visible": 39,
+            "mobilite_visible": 16
+          },
+          "admissibleActions": [
+            "conserver_eau",
+            "deleguer_local",
+            "ouvrir_mobilite",
+            "epurer_urgence"
+          ],
+          "action": "ouvrir_mobilite",
+          "predictions": {
+            "prediction_reserve_finale": 59.666666666666664
+          },
+          "observation": {
+            "etat_hydrique": 110,
+            "pression_toxique": 62,
+            "contraintes_mouvement": 19
+          },
+          "predictionAssessment": {
+            "prediction_reserve_finaleAbsoluteError": 50.333333333333336
+          },
+          "beforeHash": "fnv1a64:f813c736aededb2c",
+          "afterHash": "fnv1a64:e47f48e465b4fe04"
+        },
+        {
+          "round": 2,
+          "view": {
+            "reserve_visible": 110,
+            "pollution_visible": 62,
+            "mobilite_visible": 19
+          },
+          "admissibleActions": [
+            "conserver_eau",
+            "deleguer_local",
+            "ouvrir_mobilite",
+            "epurer_urgence"
+          ],
+          "action": "deleguer_local",
+          "predictions": {
+            "prediction_reserve_finale": 63.666666666666664
+          },
+          "observation": {
+            "etat_hydrique": 96,
+            "pression_toxique": 69,
+            "contraintes_mouvement": 25
+          },
+          "predictionAssessment": {
+            "prediction_reserve_finaleAbsoluteError": 32.333333333333336
+          },
+          "beforeHash": "fnv1a64:e47f48e465b4fe04",
+          "afterHash": "fnv1a64:0626cf4b598f48b4"
+        },
+        {
+          "round": 3,
+          "view": {
+            "reserve_visible": 96,
+            "pollution_visible": 69,
+            "mobilite_visible": 25
+          },
+          "admissibleActions": [
+            "conserver_eau",
+            "deleguer_local",
+            "ouvrir_mobilite",
+            "epurer_urgence"
+          ],
+          "action": "ouvrir_mobilite",
+          "predictions": {
+            "prediction_reserve_finale": 63.333333333333336
+          },
+          "observation": {
+            "etat_hydrique": 80,
+            "pression_toxique": 96,
+            "contraintes_mouvement": 31
+          },
+          "predictionAssessment": {
+            "prediction_reserve_finaleAbsoluteError": 16.666666666666664
+          },
+          "beforeHash": "fnv1a64:0626cf4b598f48b4",
+          "afterHash": "fnv1a64:45628d7e6654ee02"
+        },
+        {
+          "round": 4,
+          "view": {
+            "reserve_visible": 80,
+            "pollution_visible": 96,
+            "mobilite_visible": 31
+          },
+          "admissibleActions": [
+            "conserver_eau",
+            "deleguer_local",
+            "ouvrir_mobilite",
+            "epurer_urgence"
+          ],
+          "action": "deleguer_local",
+          "predictions": {
+            "prediction_reserve_finale": 69
+          },
+          "observation": {
+            "etat_hydrique": 70,
+            "pression_toxique": 107,
+            "contraintes_mouvement": 36
+          },
+          "predictionAssessment": {
+            "prediction_reserve_finaleAbsoluteError": 1
+          },
+          "beforeHash": "fnv1a64:45628d7e6654ee02",
+          "afterHash": "fnv1a64:bbd8a3ba5169d0b0"
+        }
+      ],
+      "finalWorldHash": "fnv1a64:bbd8a3ba5169d0b0"
+    }
+  ],
+  "conclusionBoundary": "vector_outcomes_only_no_unique_winner",
+  "reportHash": "fnv1a64:50122bd6514bdb5f"
+}

@@ -1,0 +1,49 @@
+{
+  "schema": "cct-sequenced-restoration-validation/v1",
+  "candidate": "CCT-EXEC-1.4-CANDIDATE-001",
+  "date": "2026-08-26",
+  "changeStatus": "written_and_locally_tested_structural_candidate",
+  "localTests": {
+    "passed": 10,
+    "failed": 0,
+    "established": [
+      "two independently evidenced repair stages can close two debts",
+      "atomic repair remains admissible",
+      "harmful partial repair is rejected",
+      "action selection does not close debt",
+      "incomplete repair evidence does not close debt",
+      "repair semantics are never inferred when absent",
+      "deadline is formed once at debt creation from a public formula"
+    ]
+  },
+  "finiteSearch": {
+    "catalogsChecked": 32902,
+    "deadlineCasesChecked": 131464,
+    "maximumDebtAxes": 4,
+    "mismatchesAgainstIndependentBitmaskOracle": 0
+  },
+  "repairSufficiency": {
+    "actionEffectAloneSufficient": false,
+    "perDebtClosureRequires": ["capacity restored", "recourse open", "non-repetition", "remaining loss named", "independent observer"],
+    "partialClosurePreserved": true,
+    "remainingLimit": "The runtime validates declared receipts; it does not establish that an institution made them truthful or effective."
+  },
+  "methodEffect": {
+    "present": true,
+    "description": "The finite models provide explicit restoration labels, safe effects and receipts. This tests the planner and fences but does not show that Kryos or an external institution supplies those semantics.",
+    "consequence": "The structural calculation replaces further fictional worlds for the atomicity question, but cannot promote the candidate."
+  },
+  "protocolVariation": {
+    "varied": ["debt count 1..4", "every non-empty action-subset catalog", "deadlines 1..debt-count", "atomic and staged repairs", "harm and missing-semantics cases"],
+    "notVaried": ["external institutions", "strategic actors", "false receipts that pass the interface", "changing future action availability"]
+  },
+  "decision": "freeze_as_locally_tested_structural_candidate",
+  "promotion": "refused",
+  "reversalConditions": [
+    "Withdraw if any finite case disagrees with the independent shortest-cover oracle.",
+    "Withdraw if a harmful action enters a staged plan.",
+    "Withdraw if a debt closes without its independent sufficiency receipt.",
+    "Revise if replanning under disappearing actions violates an already published deadline."
+  ],
+  "strongestConclusion": "CCT-EXEC 1.4 removes the restoration atomicity defect in the tested finite abstraction while preserving per-debt evidentiary closure; it is not externally validated or promotable."
+}

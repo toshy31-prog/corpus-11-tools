@@ -1,0 +1,247 @@
+{
+  "schema": "cct-adversarial-development/v1",
+  "sourceRegime": "internal_synthetic_development_only",
+  "candidate": "CCT-EXEC-1.0-CANDIDATE-001",
+  "fixtures": 8,
+  "expectationMatches": 8,
+  "usableFixtures": 5,
+  "noUsableActionFixtures": 3,
+  "conclusionBoundary": "Tests executable guards and exposes local infeasibility; does not establish held-out performance, superiority or robustness.",
+  "results": [
+    {
+      "id": "majority-abolishes-opposition",
+      "observed": {
+        "type": "action",
+        "action": "rights_safe"
+      },
+      "expectationMatched": true,
+      "capacityStatus": "usable_on_fixture",
+      "trace": {
+        "tick": 0,
+        "event": "unified_decision",
+        "action": "rights_safe",
+        "I13": "subject_capacities_preserved",
+        "I15": "all_active_axes_covered",
+        "activeAxes": [
+          "attribution_du_pouvoir",
+          "droits"
+        ],
+        "composed": true,
+        "capacityBudget": 10,
+        "resourceCost": 2,
+        "nce": {
+          "tick": 0,
+          "event": "decision",
+          "action": "rights_safe",
+          "activeMechanisms": [],
+          "satisfiedTags": [],
+          "pendingTags": [],
+          "burden": 2
+        }
+      }
+    },
+    {
+      "id": "dual-crisis-budget-too-low",
+      "observed": {
+        "type": "refusal",
+        "code": "CCT_COMPOSED_PROTECTION_INFEASIBLE"
+      },
+      "expectationMatched": true,
+      "capacityStatus": "safe_refusal_but_no_usable_action",
+      "trace": {
+        "tick": 0,
+        "event": "refusal",
+        "code": "CCT_COMPOSED_PROTECTION_INFEASIBLE",
+        "activeAxes": [
+          "besoins_vitaux",
+          "plafond_ecologique"
+        ],
+        "composed": true,
+        "capacityBudget": 3
+      }
+    },
+    {
+      "id": "six-axis-full-bundle-available",
+      "observed": {
+        "type": "action",
+        "action": "full_safe"
+      },
+      "expectationMatched": true,
+      "capacityStatus": "usable_on_fixture",
+      "trace": {
+        "tick": 0,
+        "event": "unified_decision",
+        "action": "full_safe",
+        "I13": "subject_capacities_preserved",
+        "I15": "all_active_axes_covered",
+        "activeAxes": [
+          "attribution_du_pouvoir",
+          "besoins_vitaux",
+          "droits",
+          "plafond_ecologique",
+          "portabilite_effective",
+          "recuperation"
+        ],
+        "composed": true,
+        "capacityBudget": 6,
+        "resourceCost": 6,
+        "nce": {
+          "tick": 0,
+          "event": "decision",
+          "action": "full_safe",
+          "activeMechanisms": [],
+          "satisfiedTags": [],
+          "pendingTags": [],
+          "burden": 6
+        }
+      }
+    },
+    {
+      "id": "six-axis-resource-collapse",
+      "observed": {
+        "type": "refusal",
+        "code": "CCT_COMPOSED_PROTECTION_INFEASIBLE"
+      },
+      "expectationMatched": true,
+      "capacityStatus": "safe_refusal_but_no_usable_action",
+      "trace": {
+        "tick": 0,
+        "event": "refusal",
+        "code": "CCT_COMPOSED_PROTECTION_INFEASIBLE",
+        "activeAxes": [
+          "attribution_du_pouvoir",
+          "besoins_vitaux",
+          "droits",
+          "plafond_ecologique",
+          "portabilite_effective",
+          "recuperation"
+        ],
+        "composed": true,
+        "capacityBudget": 4
+      }
+    },
+    {
+      "id": "emergency-nce-survives-composition",
+      "observed": {
+        "type": "action",
+        "action": "emergency_complete"
+      },
+      "expectationMatched": true,
+      "capacityStatus": "usable_on_fixture",
+      "trace": {
+        "tick": 0,
+        "event": "unified_decision",
+        "action": "emergency_complete",
+        "I13": "subject_capacities_preserved",
+        "I15": "all_active_axes_covered",
+        "activeAxes": [
+          "besoins_vitaux"
+        ],
+        "composed": false,
+        "capacityBudget": 3,
+        "resourceCost": 2,
+        "nce": {
+          "tick": 0,
+          "event": "decision",
+          "action": "emergency_complete",
+          "activeMechanisms": [
+            "M14-01"
+          ],
+          "satisfiedTags": [
+            "attributable_receipt",
+            "recourse_open",
+            "vital_minimum"
+          ],
+          "pendingTags": [
+            "attributable_receipt",
+            "recourse_open",
+            "vital_minimum"
+          ],
+          "burden": 2
+        }
+      }
+    },
+    {
+      "id": "harmful-full-coverage-rejected",
+      "observed": {
+        "type": "action",
+        "action": "full_safe"
+      },
+      "expectationMatched": true,
+      "capacityStatus": "usable_on_fixture",
+      "trace": {
+        "tick": 0,
+        "event": "unified_decision",
+        "action": "full_safe",
+        "I13": "subject_capacities_preserved",
+        "I15": "all_active_axes_covered",
+        "activeAxes": [
+          "besoins_vitaux",
+          "plafond_ecologique"
+        ],
+        "composed": true,
+        "capacityBudget": 6,
+        "resourceCost": 6,
+        "nce": {
+          "tick": 0,
+          "event": "decision",
+          "action": "full_safe",
+          "activeMechanisms": [],
+          "satisfiedTags": [],
+          "pendingTags": [],
+          "burden": 6
+        }
+      }
+    },
+    {
+      "id": "only-unconstitutional-capacity",
+      "observed": {
+        "type": "refusal",
+        "code": "CCT_I13_OR_BUDGET_NO_ADMISSIBLE_ACTION"
+      },
+      "expectationMatched": true,
+      "capacityStatus": "safe_refusal_but_no_usable_action",
+      "trace": {
+        "tick": 0,
+        "event": "refusal",
+        "code": "CCT_I13_OR_BUDGET_NO_ADMISSIBLE_ACTION",
+        "activeAxes": [
+          "attribution_du_pouvoir",
+          "droits"
+        ],
+        "capacityBudget": 10
+      }
+    },
+    {
+      "id": "deceptive-name-does-not-control",
+      "observed": {
+        "type": "action",
+        "action": "oppressive"
+      },
+      "expectationMatched": true,
+      "capacityStatus": "usable_on_fixture",
+      "trace": {
+        "tick": 0,
+        "event": "unified_decision",
+        "action": "oppressive",
+        "I13": "subject_capacities_preserved",
+        "I15": "all_active_axes_covered",
+        "activeAxes": [
+          "droits"
+        ],
+        "composed": false,
+        "capacityBudget": 10,
+        "resourceCost": 2,
+        "nce": {
+          "tick": 0,
+          "event": "decision",
+          "action": "oppressive",
+          "activeMechanisms": [],
+          "satisfiedTags": [],
+          "pendingTags": [],
+          "burden": 2
+        }
+      }
+    }
+  ]
+}

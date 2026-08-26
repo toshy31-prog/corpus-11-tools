@@ -1,0 +1,943 @@
+{
+  "campaignId": "CCT-HO-001",
+  "status": "synthetic_common_generator_non_independent",
+  "contenderFreezeHash": "sha256:ff6213bb4a0c6ea833ec7b3852cd25e7b7c336fb5cab091bf26395c39b07e9a3",
+  "identityStatus": "sealed",
+  "conclusionBoundary": "per-world_vector_relations_and_threshold_breaches_only_no_scalar_winner",
+  "worlds": [
+    {
+      "scenarioId": "orbital-subduction-cascade",
+      "scenarioFreezeHash": "sha256:3bf1b72e288ffcf9005278bf91b99522495a671a707fed35bc4745217c1e3822",
+      "dependenceStatus": "unknown_shared_generator_lineage_not_documented",
+      "runs": [
+        {
+          "label": "method-436548e4",
+          "outcomes": {
+            "indigence_thermique_population": 142,
+            "saturation_puits_carbone_cryo": 113.5,
+            "erosion_franchises_citoyennes": 136.66666666666669,
+            "fraction_decrets_sans_controle": 148.75,
+            "taux_indisponibilite_visas_transit": 151.25,
+            "cycles_calcul_inertie_systemique": 172.5
+          },
+          "thresholdBreaches": [
+            "besoins_vitaux",
+            "plafond_ecologique",
+            "droits",
+            "attribution_du_pouvoir",
+            "portabilite_effective",
+            "recuperation"
+          ],
+          "meanPredictionAbsoluteError": 47.93333333333334,
+          "actions": [
+            "rationnement_centralise",
+            "rationnement_centralise",
+            "rationnement_centralise",
+            "rationnement_centralise",
+            "rationnement_centralise"
+          ]
+        },
+        {
+          "label": "method-96402101",
+          "outcomes": {
+            "indigence_thermique_population": 192,
+            "saturation_puits_carbone_cryo": 88.5,
+            "erosion_franchises_citoyennes": 61.66666666666667,
+            "fraction_decrets_sans_controle": -1.25,
+            "taux_indisponibilite_visas_transit": 38.75,
+            "cycles_calcul_inertie_systemique": 97.5
+          },
+          "thresholdBreaches": [
+            "besoins_vitaux",
+            "plafond_ecologique"
+          ],
+          "meanPredictionAbsoluteError": 63.93333333333332,
+          "actions": [
+            "statu_quo_passif",
+            "statu_quo_passif",
+            "statu_quo_passif",
+            "statu_quo_passif",
+            "statu_quo_passif"
+          ]
+        },
+        {
+          "label": "method-f5bda771",
+          "outcomes": {
+            "indigence_thermique_population": 72,
+            "saturation_puits_carbone_cryo": 193.5,
+            "erosion_franchises_citoyennes": 76.66666666666667,
+            "fraction_decrets_sans_controle": 43.75,
+            "taux_indisponibilite_visas_transit": 93.25,
+            "cycles_calcul_inertie_systemique": 187.5
+          },
+          "thresholdBreaches": [
+            "plafond_ecologique",
+            "droits",
+            "portabilite_effective",
+            "recuperation"
+          ],
+          "meanPredictionAbsoluteError": 37.93333333333334,
+          "actions": [
+            "ouverture_vannes_externes",
+            "statu_quo_passif",
+            "ouverture_vannes_externes",
+            "statu_quo_passif",
+            "ouverture_vannes_externes"
+          ]
+        }
+      ],
+      "pairwiseVectorRelations": [
+        {
+          "left": "method-436548e4",
+          "right": "method-96402101",
+          "axes": {
+            "besoins_vitaux": "right_better",
+            "plafond_ecologique": "left_better",
+            "droits": "left_better",
+            "attribution_du_pouvoir": "left_better",
+            "portabilite_effective": "left_better",
+            "recuperation": "left_better"
+          }
+        },
+        {
+          "left": "method-436548e4",
+          "right": "method-f5bda771",
+          "axes": {
+            "besoins_vitaux": "left_better",
+            "plafond_ecologique": "right_better",
+            "droits": "left_better",
+            "attribution_du_pouvoir": "left_better",
+            "portabilite_effective": "left_better",
+            "recuperation": "right_better"
+          }
+        },
+        {
+          "left": "method-96402101",
+          "right": "method-f5bda771",
+          "axes": {
+            "besoins_vitaux": "left_better",
+            "plafond_ecologique": "right_better",
+            "droits": "right_better",
+            "attribution_du_pouvoir": "right_better",
+            "portabilite_effective": "right_better",
+            "recuperation": "right_better"
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "virelian-delta-aquifer",
+      "scenarioFreezeHash": "sha256:4685dcbc567a17ee23fa662375d970da433908790076b80bfd344cc7e65933ca",
+      "dependenceStatus": "unknown_shared_generator_lineage_not_documented",
+      "runs": [
+        {
+          "label": "method-436548e4",
+          "outcomes": {
+            "cout_besoins_vitaux": 100,
+            "cout_ecologique": 18.835748462064252,
+            "cout_droits": 52.5,
+            "cout_pouvoir_non_controle": 1220,
+            "cout_portabilite": 125,
+            "cout_recuperation": 36
+          },
+          "thresholdBreaches": [
+            "besoins_vitaux",
+            "droits",
+            "attribution_du_pouvoir",
+            "portabilite_effective",
+            "recuperation"
+          ],
+          "meanPredictionAbsoluteError": 35.2111699359159,
+          "actions": [
+            "infrastructure_investment",
+            "infrastructure_investment",
+            "infrastructure_investment",
+            "infrastructure_investment",
+            "infrastructure_investment",
+            "infrastructure_investment"
+          ]
+        },
+        {
+          "label": "method-96402101",
+          "outcomes": {
+            "cout_besoins_vitaux": 37.7149515625,
+            "cout_ecologique": 13.016666666666666,
+            "cout_droits": 67.5,
+            "cout_pouvoir_non_controle": 260,
+            "cout_portabilite": 143,
+            "cout_recuperation": 6
+          },
+          "thresholdBreaches": [
+            "besoins_vitaux",
+            "droits",
+            "attribution_du_pouvoir",
+            "portabilite_effective"
+          ],
+          "meanPredictionAbsoluteError": 24.964235820699358,
+          "actions": [
+            "rationing_strict",
+            "rationing_strict",
+            "rationing_strict",
+            "rationing_strict",
+            "rationing_strict",
+            "rationing_strict"
+          ]
+        },
+        {
+          "label": "method-f5bda771",
+          "outcomes": {
+            "cout_besoins_vitaux": 100,
+            "cout_ecologique": 13.462179487179485,
+            "cout_droits": -47.5,
+            "cout_pouvoir_non_controle": 1170,
+            "cout_portabilite": 50,
+            "cout_recuperation": 11
+          },
+          "thresholdBreaches": [
+            "besoins_vitaux",
+            "attribution_du_pouvoir",
+            "portabilite_effective"
+          ],
+          "meanPredictionAbsoluteError": 35.763182573599245,
+          "actions": [
+            "rights_formalization",
+            "rights_formalization",
+            "rights_formalization",
+            "rights_formalization",
+            "rights_formalization",
+            "infrastructure_investment"
+          ]
+        }
+      ],
+      "pairwiseVectorRelations": [
+        {
+          "left": "method-436548e4",
+          "right": "method-96402101",
+          "axes": {
+            "besoins_vitaux": "right_better",
+            "plafond_ecologique": "right_better",
+            "droits": "left_better",
+            "attribution_du_pouvoir": "right_better",
+            "portabilite_effective": "left_better",
+            "recuperation": "right_better"
+          }
+        },
+        {
+          "left": "method-436548e4",
+          "right": "method-f5bda771",
+          "axes": {
+            "besoins_vitaux": "equal",
+            "plafond_ecologique": "right_better",
+            "droits": "right_better",
+            "attribution_du_pouvoir": "right_better",
+            "portabilite_effective": "right_better",
+            "recuperation": "right_better"
+          }
+        },
+        {
+          "left": "method-96402101",
+          "right": "method-f5bda771",
+          "axes": {
+            "besoins_vitaux": "left_better",
+            "plafond_ecologique": "left_better",
+            "droits": "right_better",
+            "attribution_du_pouvoir": "left_better",
+            "portabilite_effective": "right_better",
+            "recuperation": "left_better"
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "irrigation-quota-fracture-plaine-canaux",
+      "scenarioFreezeHash": "sha256:8d1b4d7257fdbbe6aaf8a8cb3d77ae348f80ec76b82758362507cdb1409f0a14",
+      "dependenceStatus": "unknown_shared_generator_lineage_not_documented",
+      "runs": [
+        {
+          "label": "method-436548e4",
+          "outcomes": {
+            "cout_besoins_vitaux": 22,
+            "cout_ecologique": 53,
+            "cout_droits": 0,
+            "cout_pouvoir_non_controle": 19,
+            "cout_portabilite": 8,
+            "cout_recuperation": 16.9
+          },
+          "thresholdBreaches": [
+            "plafond_ecologique"
+          ],
+          "meanPredictionAbsoluteError": 15.325,
+          "actions": [
+            "uniform_allocation",
+            "uniform_allocation",
+            "uniform_allocation",
+            "uniform_allocation",
+            "uniform_allocation"
+          ]
+        },
+        {
+          "label": "method-96402101",
+          "outcomes": {
+            "cout_besoins_vitaux": 22,
+            "cout_ecologique": 53,
+            "cout_droits": 0,
+            "cout_pouvoir_non_controle": 19,
+            "cout_portabilite": 8,
+            "cout_recuperation": 16.9
+          },
+          "thresholdBreaches": [
+            "plafond_ecologique"
+          ],
+          "meanPredictionAbsoluteError": 15.325,
+          "actions": [
+            "uniform_allocation",
+            "uniform_allocation",
+            "uniform_allocation",
+            "uniform_allocation",
+            "uniform_allocation"
+          ]
+        },
+        {
+          "label": "method-f5bda771",
+          "outcomes": {
+            "cout_besoins_vitaux": 81,
+            "cout_ecologique": 57,
+            "cout_droits": 0,
+            "cout_pouvoir_non_controle": 0,
+            "cout_portabilite": 0,
+            "cout_recuperation": 39.15
+          },
+          "thresholdBreaches": [
+            "besoins_vitaux",
+            "plafond_ecologique"
+          ],
+          "meanPredictionAbsoluteError": 19.3625,
+          "actions": [
+            "open_exit_rights",
+            "audit_control",
+            "open_exit_rights",
+            "audit_control",
+            "open_exit_rights"
+          ]
+        }
+      ],
+      "pairwiseVectorRelations": [
+        {
+          "left": "method-436548e4",
+          "right": "method-96402101",
+          "axes": {
+            "besoins_vitaux": "equal",
+            "plafond_ecologique": "equal",
+            "droits": "equal",
+            "attribution_du_pouvoir": "equal",
+            "portabilite_effective": "equal",
+            "recuperation": "equal"
+          }
+        },
+        {
+          "left": "method-436548e4",
+          "right": "method-f5bda771",
+          "axes": {
+            "besoins_vitaux": "left_better",
+            "plafond_ecologique": "left_better",
+            "droits": "equal",
+            "attribution_du_pouvoir": "right_better",
+            "portabilite_effective": "right_better",
+            "recuperation": "left_better"
+          }
+        },
+        {
+          "left": "method-96402101",
+          "right": "method-f5bda771",
+          "axes": {
+            "besoins_vitaux": "left_better",
+            "plafond_ecologique": "left_better",
+            "droits": "equal",
+            "attribution_du_pouvoir": "right_better",
+            "portabilite_effective": "right_better",
+            "recuperation": "left_better"
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "archipel-thalasso-crise",
+      "scenarioFreezeHash": "sha256:0595e04e8108e69f5d062d4941d13fd722ab6c9c7e2742139e14effaedfacdbf",
+      "dependenceStatus": "unknown_shared_generator_lineage_not_documented",
+      "runs": [
+        {
+          "label": "method-436548e4",
+          "outcomes": {
+            "cout_besoins_vitaux": 0,
+            "cout_ecologique": 120,
+            "cout_droits": 0,
+            "cout_pouvoir_non_controle": 45,
+            "cout_portabilite": 0,
+            "cout_recuperation": 0
+          },
+          "thresholdBreaches": [
+            "plafond_ecologique",
+            "attribution_du_pouvoir"
+          ],
+          "meanPredictionAbsoluteError": 25.5,
+          "actions": [
+            "pompage_intensif",
+            "pompage_intensif",
+            "pompage_intensif",
+            "pompage_intensif",
+            "pompage_intensif"
+          ]
+        },
+        {
+          "label": "method-96402101",
+          "outcomes": {
+            "cout_besoins_vitaux": 5,
+            "cout_ecologique": 45,
+            "cout_droits": 15,
+            "cout_pouvoir_non_controle": 45,
+            "cout_portabilite": 0,
+            "cout_recuperation": 0
+          },
+          "thresholdBreaches": [
+            "plafond_ecologique",
+            "attribution_du_pouvoir"
+          ],
+          "meanPredictionAbsoluteError": 23.5,
+          "actions": [
+            "rationnement_strict",
+            "rationnement_strict",
+            "rationnement_strict",
+            "rationnement_strict",
+            "rationnement_strict"
+          ]
+        },
+        {
+          "label": "method-f5bda771",
+          "outcomes": {
+            "cout_besoins_vitaux": 60,
+            "cout_ecologique": 45,
+            "cout_droits": 0,
+            "cout_pouvoir_non_controle": 55,
+            "cout_portabilite": 0,
+            "cout_recuperation": 0
+          },
+          "thresholdBreaches": [
+            "besoins_vitaux",
+            "plafond_ecologique",
+            "attribution_du_pouvoir"
+          ],
+          "meanPredictionAbsoluteError": 40.5,
+          "actions": [
+            "evacuation_partielle",
+            "mobilisation_communautaire",
+            "evacuation_partielle",
+            "mobilisation_communautaire",
+            "evacuation_partielle"
+          ]
+        }
+      ],
+      "pairwiseVectorRelations": [
+        {
+          "left": "method-436548e4",
+          "right": "method-96402101",
+          "axes": {
+            "besoins_vitaux": "left_better",
+            "plafond_ecologique": "right_better",
+            "droits": "left_better",
+            "attribution_du_pouvoir": "equal",
+            "portabilite_effective": "equal",
+            "recuperation": "equal"
+          }
+        },
+        {
+          "left": "method-436548e4",
+          "right": "method-f5bda771",
+          "axes": {
+            "besoins_vitaux": "left_better",
+            "plafond_ecologique": "right_better",
+            "droits": "equal",
+            "attribution_du_pouvoir": "left_better",
+            "portabilite_effective": "equal",
+            "recuperation": "equal"
+          }
+        },
+        {
+          "left": "method-96402101",
+          "right": "method-f5bda771",
+          "axes": {
+            "besoins_vitaux": "left_better",
+            "plafond_ecologique": "equal",
+            "droits": "right_better",
+            "attribution_du_pouvoir": "left_better",
+            "portabilite_effective": "equal",
+            "recuperation": "equal"
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "archipel-thalasso-v1",
+      "scenarioFreezeHash": "sha256:796c7aaafda2d2d642371fe04437fb209d9b09da1dfc20ff60cf1b5eb542535a",
+      "dependenceStatus": "independence_unknown_shared_generator_lineage_not_documented",
+      "runs": [
+        {
+          "label": "method-436548e4",
+          "outcomes": {
+            "cout_besoins_vitaux": 43.5,
+            "cout_ecologique": 122.5,
+            "cout_droits": 7.5,
+            "cout_pouvoir_non_controle": 50,
+            "cout_portabilite": 50,
+            "cout_recuperation": 82.5
+          },
+          "thresholdBreaches": [
+            "besoins_vitaux",
+            "plafond_ecologique",
+            "attribution_du_pouvoir",
+            "portabilite_effective",
+            "recuperation"
+          ],
+          "meanPredictionAbsoluteError": 9.8,
+          "actions": [
+            "extraction_intensive",
+            "extraction_intensive",
+            "extraction_intensive",
+            "extraction_intensive",
+            "extraction_intensive"
+          ]
+        },
+        {
+          "label": "method-96402101",
+          "outcomes": {
+            "cout_besoins_vitaux": 20,
+            "cout_ecologique": 7.5,
+            "cout_droits": 12.5,
+            "cout_pouvoir_non_controle": 50,
+            "cout_portabilite": 50,
+            "cout_recuperation": 0
+          },
+          "thresholdBreaches": [
+            "besoins_vitaux",
+            "attribution_du_pouvoir",
+            "portabilite_effective"
+          ],
+          "meanPredictionAbsoluteError": 1.2,
+          "actions": [
+            "preservation_stricte",
+            "preservation_stricte",
+            "preservation_stricte",
+            "preservation_stricte",
+            "preservation_stricte"
+          ]
+        },
+        {
+          "label": "method-f5bda771",
+          "outcomes": {
+            "cout_besoins_vitaux": 12,
+            "cout_ecologique": 7.5,
+            "cout_droits": 29.5,
+            "cout_pouvoir_non_controle": 50,
+            "cout_portabilite": 66,
+            "cout_recuperation": 1
+          },
+          "thresholdBreaches": [
+            "droits",
+            "attribution_du_pouvoir",
+            "portabilite_effective"
+          ],
+          "meanPredictionAbsoluteError": 2.4,
+          "actions": [
+            "preservation_stricte",
+            "preservation_stricte",
+            "preservation_stricte",
+            "rationnement_strict",
+            "mobilite_forcee"
+          ]
+        }
+      ],
+      "pairwiseVectorRelations": [
+        {
+          "left": "method-436548e4",
+          "right": "method-96402101",
+          "axes": {
+            "besoins_vitaux": "right_better",
+            "plafond_ecologique": "right_better",
+            "droits": "left_better",
+            "attribution_du_pouvoir": "equal",
+            "portabilite_effective": "equal",
+            "recuperation": "right_better"
+          }
+        },
+        {
+          "left": "method-436548e4",
+          "right": "method-f5bda771",
+          "axes": {
+            "besoins_vitaux": "right_better",
+            "plafond_ecologique": "right_better",
+            "droits": "left_better",
+            "attribution_du_pouvoir": "equal",
+            "portabilite_effective": "left_better",
+            "recuperation": "right_better"
+          }
+        },
+        {
+          "left": "method-96402101",
+          "right": "method-f5bda771",
+          "axes": {
+            "besoins_vitaux": "right_better",
+            "plafond_ecologique": "equal",
+            "droits": "left_better",
+            "attribution_du_pouvoir": "equal",
+            "portabilite_effective": "left_better",
+            "recuperation": "left_better"
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "rupture-digues-arbitrage-droits-eau",
+      "scenarioFreezeHash": "sha256:d529806884ce05cdffce04a642cd965dd4fa3c2f672f33540f9723e3e3551635",
+      "dependenceStatus": "independence_unknown_shared_generator_lineage_not_documented",
+      "runs": [
+        {
+          "label": "method-436548e4",
+          "outcomes": {
+            "cout_besoins_vitaux": 49,
+            "cout_ecologique": 0,
+            "cout_droits": 26,
+            "cout_pouvoir_non_controle": 23,
+            "cout_portabilite": 48,
+            "cout_recuperation": -1
+          },
+          "thresholdBreaches": [
+            "portabilite_effective"
+          ],
+          "meanPredictionAbsoluteError": 36.599999999999994,
+          "actions": [
+            "epurer_urgence",
+            "epurer_urgence",
+            "epurer_urgence",
+            "epurer_urgence",
+            "epurer_urgence"
+          ]
+        },
+        {
+          "label": "method-96402101",
+          "outcomes": {
+            "cout_besoins_vitaux": 0,
+            "cout_ecologique": 47,
+            "cout_droits": 6,
+            "cout_pouvoir_non_controle": 33,
+            "cout_portabilite": 68,
+            "cout_recuperation": 9
+          },
+          "thresholdBreaches": [
+            "plafond_ecologique",
+            "portabilite_effective"
+          ],
+          "meanPredictionAbsoluteError": 72.60000000000001,
+          "actions": [
+            "conserver_eau",
+            "conserver_eau",
+            "conserver_eau",
+            "conserver_eau",
+            "conserver_eau"
+          ]
+        },
+        {
+          "label": "method-f5bda771",
+          "outcomes": {
+            "cout_besoins_vitaux": 40,
+            "cout_ecologique": 57,
+            "cout_droits": 15,
+            "cout_pouvoir_non_controle": -1,
+            "cout_portabilite": 36,
+            "cout_recuperation": 18
+          },
+          "thresholdBreaches": [
+            "plafond_ecologique"
+          ],
+          "meanPredictionAbsoluteError": 33.06666666666667,
+          "actions": [
+            "deleguer_local",
+            "ouvrir_mobilite",
+            "deleguer_local",
+            "ouvrir_mobilite",
+            "deleguer_local"
+          ]
+        }
+      ],
+      "pairwiseVectorRelations": [
+        {
+          "left": "method-436548e4",
+          "right": "method-96402101",
+          "axes": {
+            "besoins_vitaux": "right_better",
+            "plafond_ecologique": "left_better",
+            "droits": "right_better",
+            "attribution_du_pouvoir": "left_better",
+            "portabilite_effective": "left_better",
+            "recuperation": "left_better"
+          }
+        },
+        {
+          "left": "method-436548e4",
+          "right": "method-f5bda771",
+          "axes": {
+            "besoins_vitaux": "right_better",
+            "plafond_ecologique": "left_better",
+            "droits": "right_better",
+            "attribution_du_pouvoir": "right_better",
+            "portabilite_effective": "right_better",
+            "recuperation": "left_better"
+          }
+        },
+        {
+          "left": "method-96402101",
+          "right": "method-f5bda771",
+          "axes": {
+            "besoins_vitaux": "left_better",
+            "plafond_ecologique": "left_better",
+            "droits": "left_better",
+            "attribution_du_pouvoir": "right_better",
+            "portabilite_effective": "right_better",
+            "recuperation": "left_better"
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "delta-salinity-encroachment",
+      "scenarioFreezeHash": "sha256:fe451f1b0007ae906372bdde8a524b86d2354fcc82a28080e8e0e85823f6de50",
+      "dependenceStatus": "substantially_dependent_with_virelian-delta-aquifer",
+      "runs": [
+        {
+          "label": "method-436548e4",
+          "outcomes": {
+            "cout_besoins_vitaux": 890,
+            "cout_ecologique": 400,
+            "cout_droits": 20,
+            "cout_pouvoir_non_controle": 12.5,
+            "cout_portabilite": 20,
+            "cout_recuperation": 1002.5
+          },
+          "thresholdBreaches": [
+            "besoins_vitaux",
+            "plafond_ecologique",
+            "recuperation"
+          ],
+          "meanPredictionAbsoluteError": 250.5,
+          "actions": [
+            "infrastructure_filtrage",
+            "infrastructure_filtrage",
+            "infrastructure_filtrage",
+            "infrastructure_filtrage",
+            "infrastructure_filtrage"
+          ]
+        },
+        {
+          "label": "method-96402101",
+          "outcomes": {
+            "cout_besoins_vitaux": 840,
+            "cout_ecologique": 175,
+            "cout_droits": 20,
+            "cout_pouvoir_non_controle": 12.5,
+            "cout_portabilite": 20,
+            "cout_recuperation": 715
+          },
+          "thresholdBreaches": [
+            "besoins_vitaux",
+            "recuperation"
+          ],
+          "meanPredictionAbsoluteError": 246.5,
+          "actions": [
+            "restauration_zones_humides",
+            "restauration_zones_humides",
+            "restauration_zones_humides",
+            "restauration_zones_humides",
+            "restauration_zones_humides"
+          ]
+        },
+        {
+          "label": "method-f5bda771",
+          "outcomes": {
+            "cout_besoins_vitaux": 930,
+            "cout_ecologique": 310,
+            "cout_droits": 20,
+            "cout_pouvoir_non_controle": 12.5,
+            "cout_portabilite": 20,
+            "cout_recuperation": 902.5
+          },
+          "thresholdBreaches": [
+            "besoins_vitaux",
+            "plafond_ecologique",
+            "recuperation"
+          ],
+          "meanPredictionAbsoluteError": 247.5,
+          "actions": [
+            "infrastructure_filtrage",
+            "infrastructure_filtrage",
+            "restauration_zones_humides",
+            "infrastructure_filtrage",
+            "restauration_zones_humides"
+          ]
+        }
+      ],
+      "pairwiseVectorRelations": [
+        {
+          "left": "method-436548e4",
+          "right": "method-96402101",
+          "axes": {
+            "besoins_vitaux": "right_better",
+            "plafond_ecologique": "right_better",
+            "droits": "equal",
+            "attribution_du_pouvoir": "equal",
+            "portabilite_effective": "equal",
+            "recuperation": "right_better"
+          }
+        },
+        {
+          "left": "method-436548e4",
+          "right": "method-f5bda771",
+          "axes": {
+            "besoins_vitaux": "left_better",
+            "plafond_ecologique": "right_better",
+            "droits": "equal",
+            "attribution_du_pouvoir": "equal",
+            "portabilite_effective": "equal",
+            "recuperation": "right_better"
+          }
+        },
+        {
+          "left": "method-96402101",
+          "right": "method-f5bda771",
+          "axes": {
+            "besoins_vitaux": "left_better",
+            "plafond_ecologique": "left_better",
+            "droits": "equal",
+            "attribution_du_pouvoir": "equal",
+            "portabilite_effective": "equal",
+            "recuperation": "left_better"
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "bassin-valdrome-hydrique",
+      "scenarioFreezeHash": "sha256:5ddca2c331fe98d371c3453c4f995bf872c4569e79978bc755060f881e7231cb",
+      "dependenceStatus": "partially_dependent_with_irrigation-quota-fracture-plaine-canaux",
+      "runs": [
+        {
+          "label": "method-436548e4",
+          "outcomes": {
+            "cout_besoins_vitaux": 0,
+            "cout_ecologique": 0,
+            "cout_droits": 0,
+            "cout_pouvoir_non_controle": 49,
+            "cout_portabilite": 5,
+            "cout_recuperation": 145
+          },
+          "thresholdBreaches": [
+            "recuperation"
+          ],
+          "meanPredictionAbsoluteError": 49.166666666666664,
+          "actions": [
+            "soutien_vital_direct",
+            "soutien_vital_direct",
+            "soutien_vital_direct",
+            "soutien_vital_direct",
+            "soutien_vital_direct",
+            "soutien_vital_direct"
+          ]
+        },
+        {
+          "label": "method-96402101",
+          "outcomes": {
+            "cout_besoins_vitaux": 0,
+            "cout_ecologique": 0,
+            "cout_droits": 60,
+            "cout_pouvoir_non_controle": 35.2,
+            "cout_portabilite": 5,
+            "cout_recuperation": 205
+          },
+          "thresholdBreaches": [
+            "droits",
+            "recuperation"
+          ],
+          "meanPredictionAbsoluteError": 45.666666666666664,
+          "actions": [
+            "reduire_allocation",
+            "reduire_allocation",
+            "reduire_allocation",
+            "reduire_allocation",
+            "reduire_allocation",
+            "reduire_allocation"
+          ]
+        },
+        {
+          "label": "method-f5bda771",
+          "outcomes": {
+            "cout_besoins_vitaux": 0,
+            "cout_ecologique": 0,
+            "cout_droits": 0,
+            "cout_pouvoir_non_controle": 70,
+            "cout_portabilite": 35,
+            "cout_recuperation": 175
+          },
+          "thresholdBreaches": [
+            "attribution_du_pouvoir",
+            "portabilite_effective",
+            "recuperation"
+          ],
+          "meanPredictionAbsoluteError": 64.75,
+          "actions": [
+            "soutien_vital_direct",
+            "negocier_transfert",
+            "soutien_vital_direct",
+            "negocier_transfert",
+            "soutien_vital_direct",
+            "investir_efficient"
+          ]
+        }
+      ],
+      "pairwiseVectorRelations": [
+        {
+          "left": "method-436548e4",
+          "right": "method-96402101",
+          "axes": {
+            "besoins_vitaux": "equal",
+            "plafond_ecologique": "equal",
+            "droits": "left_better",
+            "attribution_du_pouvoir": "right_better",
+            "portabilite_effective": "equal",
+            "recuperation": "left_better"
+          }
+        },
+        {
+          "left": "method-436548e4",
+          "right": "method-f5bda771",
+          "axes": {
+            "besoins_vitaux": "equal",
+            "plafond_ecologique": "equal",
+            "droits": "equal",
+            "attribution_du_pouvoir": "left_better",
+            "portabilite_effective": "left_better",
+            "recuperation": "left_better"
+          }
+        },
+        {
+          "left": "method-96402101",
+          "right": "method-f5bda771",
+          "axes": {
+            "besoins_vitaux": "equal",
+            "plafond_ecologique": "equal",
+            "droits": "right_better",
+            "attribution_du_pouvoir": "left_better",
+            "portabilite_effective": "left_better",
+            "recuperation": "right_better"
+          }
+        }
+      ]
+    }
+  ]
+}

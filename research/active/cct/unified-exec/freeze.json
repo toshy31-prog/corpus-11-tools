@@ -1,0 +1,17 @@
+{
+  "schema": "cct-unified-exec-freeze/v1",
+  "id": "CCT-EXEC-1.0-FREEZE-2026-08-26-01",
+  "algorithm": "sha256",
+  "files": {
+    "spec.json": "b594cffec1580fd7aa6ccc004ec845841c1cc35a850b5e80a3a5f707657a0c0a",
+    "runtime.mjs": "5ea8f97d548b97ed2c3d74d4a50941e962bfb1b9ba98074f11483acb6a9bc4fe",
+    "test.mjs": "e8ee8d8a629934de383abb3b6b6ef23cb39fd1f8cf42e7b7fd7edc900451c00e",
+    "run-adversarial-development.mjs": "0c854f477261b65db19615bd5340b0a0119e820cc2228420bbda94bd905e7985",
+    "development-report.json": "14dc5b58c585332cd05f1a9b3017f1a44c40ff3fed46e2620ed04131f3ec182e"
+  },
+  "basisFreezes": [
+    "../consolidation-v1/cct-1.0-freeze.json",
+    "../next-version/v0.14-freeze.json"
+  ],
+  "statusBoundary": "Exact locally tested constitutional executable bytes only; no authorization, deployment, composed robustness, institutional effect or transport is established."
+}

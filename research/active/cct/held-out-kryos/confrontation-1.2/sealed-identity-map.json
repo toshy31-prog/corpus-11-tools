@@ -1,0 +1,7 @@
+{
+  "schema": "cct-kryos-sealed-identity-map/v1",
+  "K-A": "CCT-EXEC 1.2 candidate",
+  "K-B": "cheapest admissible rival",
+  "K-C": "public immediate maximin rival",
+  "K-D": "weakest-axis-first rival"
+}
