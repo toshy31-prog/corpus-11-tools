@@ -1,4 +1,4 @@
-# Contrat de stabilité v1.4.0
+# Contrat de stabilité v1.5.0
 
 ## Ce qui est stabilisé
 
@@ -8,6 +8,10 @@
 - liens et compteurs des documents courants ;
 - évaluations de routage/non-régression ;
 - interfaces déterministes de l’Arena et de la porte de rendement.
+- contrat d'organisme, état de lignée et frontières entre corps actif, mémoire,
+  laboratoires, recherches et transferts ;
+- contenu exact du plugin attesté octet par octet dans
+  `release-content-v1.5.0.json`, hors auto-référence explicitement déclarée.
 
 ## Ce qui ne l’est pas par cette release
 
@@ -37,7 +41,7 @@ skills, 49 capabilities, 4 familles, 88 relations et 77 évaluations**. Le
 contrôle `tools/check_docs.py` dérive désormais ces valeurs de
 `docs/inventory.json` et refuse toute divergence dans ce contrat. Les mentions
 de releases antérieures restent historiques ; elles ne redéfinissent pas ce
-contrat v1.4.0.
+contrat v1.5.0.
 
 ## Condition de retrait du statut stable
 

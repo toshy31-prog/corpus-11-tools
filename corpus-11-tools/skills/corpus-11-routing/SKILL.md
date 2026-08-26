@@ -3,7 +3,20 @@ name: corpus-11-routing
 description: Mandatory routing governor for Corpus 11.x analytical routing. Apply before capability selection whenever a request is being routed across Corpus skills, especially for broad, mixed, epistemic, model/law/compression, representation, robustness, causal, transport, scale, evidence, or interference claims.
 ---
 
-Use Architecture 11.x as the operational source of truth. Treat 10.x only as provenance, audit, ambiguity resolution, and non-regression material.
+Use the currently installed Architecture 11.x release as the operational source of truth. Treat Corpus as one evolving discipline whose releases are state transitions, not as an immutable kernel plus detached additions. Treat 10.x only as provenance, audit, ambiguity resolution, and non-regression material.
+
+## Organism continuity
+
+For requests about Corpus itself—its identity, evolution, current discipline,
+versions, memory, stability, or integration of research—read
+`references/organism-contract.md` and `references/organism-state.json` before
+answering. The installed release is the active body. Stable invariants establish
+continuity, not absence of change. Archives are memory, laboratories are generic
+experimental organs, repository research is bounded sensorium, and accepted
+transfers are the only membrane by which a reusable mechanism enters the
+product. Distinguish described, present, installed, active, and re-observed
+state; do not answer from the oldest persistent material when a newer installed
+release is available.
 
 ## Routing-governor invariant
 
@@ -43,6 +56,7 @@ Before choosing capabilities:
 16. Route source-to-target generalization through `transportability-assessment`; micro-to-macro or emergence claims through `scale-transition-assessment`; apparent evidence accumulation through `evidence-dependence-audit`.
 17. Route gaming or response to consequential metrics through `strategic-adaptation-assessment`; next-test selection through `value-of-information` when concrete alternative observations or experiments differ in possible decision effect, cost, delay, risk, or lost options. Ordering analytical questions in a composite scene is not by itself next-test selection.
 18. Route skill overlap, order effects, semantic shadowing, or conclusion drift through `capability-interference-audit`. Load `change-validation` with it only when the scene concerns an actual or proposed capability addition, removal, patch, test, deployment, or a claim that such a change fixed routing; ordinary overlap among analyses in one unchanged scene does not require lifecycle validation.
+19. When Corpus itself is the object, preserve release lineage and product/research boundaries. A research result may change the organism's questions and memory without becoming an active analytical rule; activation requires an accepted transfer, product validation, release, installation, and re-observation at the level claimed.
 
 Never infer:
 - rule existence => recognizable condition;
@@ -80,5 +94,9 @@ Never infer:
 - fruitful approximation => true ontology;
 - increased certainty => increased knowledge;
 - counterfield => forced compromise or symmetry.
+- stable invariant => unchanged organism;
+- repository head => installed release;
+- research result => active product rule;
+- release published => release installed in the current task.
 
 Public answers should use ordinary, explicit vocabulary. Do not expose internal IDs unless the user is explicitly working on the architecture.

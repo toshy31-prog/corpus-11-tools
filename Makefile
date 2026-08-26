@@ -22,6 +22,8 @@ check-structure:
 		$(PYTHON) tools/check_graph.py && \
 		$(PYTHON) tools/check_docs.py && \
 		$(PYTHON) tools/check_boundaries.py && \
+		$(PYTHON) tools/check_organism.py --self-test && \
+		$(PYTHON) tools/check_release_content.py && \
 		$(PYTHON) tools/check_conversational_surface.py && \
 		$(PYTHON) tools/check_integrity.py && \
 		$(PYTHON) tools/check_release_identity.py && \

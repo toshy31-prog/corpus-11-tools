@@ -2,6 +2,47 @@
 
 ## Unreleased
 
+## v1.5.0 — 2026-08-26
+
+### Continuité de l'organisme Corpus
+
+- remplace la représentation implicite « noyau persistant + releases » par une
+  continuité versionnée où la release installée constitue le corps actif ;
+- relie sans les fusionner le corps analytique, les laboratoires, la validation,
+  les archives, les recherches et le registre de transfert ;
+- ajoute un contrat chargé par le routeur, un état machine-lisible, une lignée
+  de releases et une migration avec registre des gains, pertes et retour ;
+- maintient la frontière recherche → produit : une expérience peut entrer dans
+  la mémoire de Corpus sans devenir une règle active ;
+- ajoute une attestation exhaustive, octet par octet, de tous les fichiers du
+  plugin distribués dans la release, hors manifeste auto-référentiel lui-même ;
+- sépare la validation de l'identité locale avant publication de la vérification
+  explicite d'`origin/main` après le push ;
+- ancre la lignée sur les objets de tags publics lorsqu'ils existent, sans
+  écraser les anciens tags locaux divergents, et conserve v1.0.0 comme ancrage
+  local explicitement absent du distant.
+
+### Recherche et mémoire incluses dans le tag
+
+- conserve sous `research/active/cct/` la chaîne CCT développée depuis v1.4.0 :
+  arènes adversariales, campagnes aveugles, restaurations séquencées, solveur
+  structurel, versions exécutables et consolidation 1.0 ;
+- étend le manifeste exécutable CCT à 15 contrôles et réatteste les quatre
+  nouvelles surfaces de test dans l'inventaire global ;
+- maintient ces résultats, politiques et preuves hors du runtime du plugin :
+  ils modifient la mémoire et le champ expérimental de Corpus, pas ses règles
+  analytiques actives sans transfert ultérieur accepté ;
+- conserve l'audit externe Corpus 10 et l'état des pertes historiques sans
+  reconstruire les sources absentes par supposition.
+
+### Reproductibilité et environnement
+
+- ajoute `make verify`, un environnement Python verrouillé par empreintes et
+  une validation de tous les JSON/JSONL suivis ;
+- ajoute des scripts bornés de préparation du poste Corpus sous Ubuntu ;
+- ne distribue ni Corpus Flow ni runtime local parallèle : les deux prototypes
+  expérimentés après v1.4.0 ont été retirés avant cette release.
+
 ## v1.4.0 — 2026-08-25
 
 ### Gouvernance épistémique

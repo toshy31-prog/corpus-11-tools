@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "organism": "Corpus 11",
+  "model_status": "released",
+  "current_product": {
+    "name": "corpus-11-tools",
+    "release": "v1.5.0",
+    "version": "1.5.0+codex.20260826132834",
+    "activation_rule": "the installed release is the active body for a task"
+  },
+  "continuity": {
+    "identity_carrier": "versioned lineage plus preserved relations and invariants",
+    "release_lineage_source": "public origin tags when available; preserved local historical anchor only when the public tag is absent",
+    "immutable_content_kernel": false,
+    "stable_does_not_mean_unchanged": true,
+    "research_is_automatically_runtime": false
+  },
+  "carriers": [
+    {
+      "id": "active_body",
+      "scope": "plugin",
+      "paths": ["skills"],
+      "runtime_status": "routable_when_installed"
+    },
+    {
+      "id": "experimental_organs",
+      "scope": "plugin",
+      "paths": ["labs"],
+      "runtime_status": "generic_instruments"
+    },
+    {
+      "id": "validation_and_repair",
+      "scope": "plugin",
+      "paths": ["evals", "tools"],
+      "runtime_status": "non_regression_not_general_validity"
+    },
+    {
+      "id": "historical_memory",
+      "scope": "plugin",
+      "paths": ["archives/legacy"],
+      "runtime_status": "non_executable_by_default"
+    },
+    {
+      "id": "repository_sensorium",
+      "scope": "repository",
+      "paths": ["research"],
+      "runtime_status": "project_evidence_not_product_runtime"
+    },
+    {
+      "id": "transfer_membrane",
+      "scope": "repository",
+      "paths": ["transfers"],
+      "runtime_status": "candidate_accept_reject_boundary"
+    }
+  ],
+  "activation_sequence": [
+    "project_observation",
+    "generic_candidate",
+    "accepted_transfer",
+    "product_integration",
+    "product_tests",
+    "release",
+    "installation",
+    "context_access",
+    "reobservation"
+  ],
+  "release_lineage": [
+    {
+      "release": "v1.0.0",
+      "commit": "c23efdec7fc7100422193ada2b13969a5e70d31c",
+      "tag_object": "7a5de72523a379f22252b5bd3ac46dfd5ad04326",
+      "tag_scope": "local_historical_anchor_remote_absent",
+      "predecessor_release": null,
+      "lineage_relation": "origin"
+    },
+    {
+      "release": "v1.1.0",
+      "commit": "0e8c6c81f85ce4b253e36ee474a5a6d7ef67ca1c",
+      "tag_object": "498ff7107d82d263f27773417ae27ca6154b0bbe",
+      "tag_scope": "public_origin",
+      "predecessor_release": "v1.0.0",
+      "lineage_relation": "git_ancestor"
+    },
+    {
+      "release": "v1.2.0-alpha.1",
+      "commit": "f221b2cac7df4d8f121489e36d6e88ff4c9b5c9e",
+      "tag_object": "9a67b9f0a243dd5f5a149ee0293d7752f37e82b7",
+      "tag_scope": "public_origin",
+      "predecessor_release": "v1.1.0",
+      "lineage_relation": "git_ancestor"
+    },
+    {
+      "release": "v1.2.0-alpha.2",
+      "commit": "627bcdf0a19f5c1bc4a2008f7ae9c9017c635cae",
+      "tag_object": "d126093d96d862d6167869b515d2c92a96238037",
+      "tag_scope": "public_origin",
+      "predecessor_release": "v1.2.0-alpha.1",
+      "lineage_relation": "git_ancestor"
+    },
+    {
+      "release": "v1.2.0",
+      "commit": "35be18744f553cb6a4781c8443dd99b456f84b61",
+      "tag_object": "84cadca2a844bc2ee611b08c7e19c8f2a7c06838",
+      "tag_scope": "public_origin",
+      "predecessor_release": "v1.2.0-alpha.2",
+      "lineage_relation": "git_ancestor"
+    },
+    {
+      "release": "v1.3.0",
+      "commit": "6a12fa76552bd79543377da3708ff97def3681de",
+      "tag_object": "a3ed53d1011bfa03aa588327d75345aecc8af324",
+      "tag_scope": "public_origin",
+      "predecessor_release": "v1.2.0",
+      "lineage_relation": "git_ancestor"
+    },
+    {
+      "release": "v1.3.1",
+      "commit": "21a36e46d22b82d1826545f43c87bd071f6a81a0",
+      "tag_object": "d67bda3817d0226644838fc115c020cbc370ec6a",
+      "tag_scope": "public_origin",
+      "predecessor_release": "v1.3.0",
+      "lineage_relation": "git_ancestor"
+    },
+    {
+      "release": "v1.4.0",
+      "commit": "3aa0606515ebab6a79feb2413c60c97dd8c8c372",
+      "tag_object": "ebb012e9d35219e0fe19b7cebbaad04e7a43067a",
+      "tag_scope": "public_origin",
+      "predecessor_release": "v1.3.1",
+      "lineage_relation": "git_ancestor"
+    },
+    {
+      "release": "v1.5.0",
+      "commit": null,
+      "tag_object": null,
+      "tag_scope": "current_release",
+      "predecessor_release": "v1.4.0",
+      "lineage_relation": "git_ancestor"
+    }
+  ]
+}

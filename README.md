@@ -4,16 +4,27 @@ Corpus 11 Tools est un ensemble d’outils pour aider Codex à analyser une ques
 
 ## État actuel
 
-- version stable du paquet : **v1.4.0** ;
+- version stable du paquet : **v1.5.0** ;
 - 58 skills ;
 - 49 capabilities ;
 - 4 familles descriptives ;
 - 88 relations ;
 - 77 évaluations.
 
-## Ce qui change dans v1.4.0
+## Ce qui change dans v1.5.0
 
-v1.4.0 stabilise les moteurs génériques extraits de recherches sans importer leurs objets ni résultats : gouvernance de trajectoire épistémique, clôture d’exécution attestée, campagnes de simulation appariées, protocole institutionnel append-only configurable et validateur JSON Schema borné. Chaque extraction est documentée dans `transfers/`, testée hors de sa recherche source et assortie d’une condition de retrait.
+v1.5.0 rend explicite Corpus comme une seule discipline vivante et versionnée :
+la release installée constitue le corps analytique actif, les invariants et la
+lignée en assurent la continuité, les archives en conservent la mémoire, les
+recherches restent un sensorium borné et le registre de transfert demeure la
+seule membrane d'intégration au produit. La release ajoute le contrat chargé par
+le routeur, son état machine-lisible, une migration réversible et une attestation
+exhaustive du contenu distribué.
+
+Le tag inclut également l'état courant de la recherche CCT, ses campagnes et sa
+consolidation, ainsi que la validation locale reproductible du dépôt. Ces
+éléments restent sous `research/` et ne sont pas transformés en règles du
+plugin par le simple fait d'appartenir à la release du dépôt.
 
 ## Ce qui avait changé dans v1.2.0
 
@@ -28,6 +39,12 @@ Ils complètent les neuf facultés historiques restaurées en v1.1.0. Les nouvea
 Corpus 11 Tools est un plugin pour Codex. Il ajoute des méthodes d’analyse, d’audit et de vérification que Codex peut mobiliser selon la question posée.
 
 Ce projet n’est ni une intelligence artificielle séparée, ni une théorie scientifique. Il organise des outils de raisonnement et conserve une séparation explicite entre leur fonctionnement, les expériences de recherche et les documents utilisés pour en retracer l’origine.
+
+Corpus est maintenu comme une discipline vivante : la release installée est son
+corps analytique actif, ses invariants assurent la continuité sans figer son
+contenu, ses archives conservent la mémoire et ses recherches alimentent des
+transferts contrôlés. Une recherche appartient à son histoire et à son champ
+d'exploration sans devenir automatiquement une règle du plugin.
 
 ## À quoi ça sert ?
 
@@ -116,6 +133,19 @@ La présence d’une capability dans le projet ne signifie pas que cette capacit
 
 Les mêmes opérations restent accessibles dans l’interface de Codex pour les personnes qui préfèrent ne pas utiliser la CLI.
 
+Pour remplacer une version déjà mise en cache par la release courante du
+catalogue local :
+
+```bash
+codex plugin remove corpus-11-tools@corpus-11-local
+codex plugin add corpus-11-tools@corpus-11-local
+codex plugin list
+```
+
+La dernière commande doit afficher la version attendue. Fermer puis rouvrir
+Codex, ou au minimum actualiser l'application, puis créer une nouvelle tâche :
+une tâche déjà ouverte conserve les skills chargés à son démarrage.
+
 ### Alternative : intégrer le plugin à un autre catalogue local
 
 Le fichier [`corpus-11-tools/docs/marketplace.example.json`](corpus-11-tools/docs/marketplace.example.json) sert de modèle. Dans ce cas seulement, adapter le chemin `source.path` à l’emplacement réel du dossier `corpus-11-tools` dans cet autre catalogue.
@@ -130,6 +160,8 @@ python3 tools/validate_package.py
 python3 tools/check_graph.py
 python3 tools/check_docs.py
 python3 tools/check_boundaries.py
+python3 tools/check_organism.py --self-test
+python3 tools/check_release_content.py
 python3 tools/check_conversational_surface.py
 python3 tools/check_integrity.py
 python3 tools/check_release_identity.py
@@ -137,7 +169,7 @@ python3 tools/check_evals.py
 python3 tools/test_validation_guards.py
 ```
 
-L’état attendu pour v1.4.0 indique 58 skills, 49 capabilities, 4 familles descriptives, 88 relations et 77 évaluations.
+L’état attendu pour v1.5.0 indique 58 skills, 49 capabilities, 4 familles descriptives, 88 relations et 77 évaluations.
 
 Pour vérifier un exemple de chaîne de provenance :
 
@@ -223,7 +255,11 @@ Cette vue sert d’index aux personnes qui souhaitent retrouver les fichiers cor
 - **Transferts** : seules voies autorisées pour décontextualiser un mécanisme et l’intégrer au produit.
 - **Archives** : sources historiques et recherches clôturées ; leur présence conserve une trace, pas une capacité active.
 
-La stabilité de v1.4.0 signifie que le paquet, sa taxonomie, sa documentation, sa frontière avec la recherche, son installation et ses tests de non-régression sont cohérents sur le périmètre déclaré. Elle ne transforme pas les capabilities candidates en résultats scientifiques établis.
+La stabilité de v1.5.0 signifie que le paquet, sa taxonomie, sa documentation,
+sa continuité versionnée, sa frontière avec la recherche et ses tests de
+non-régression sont cohérents sur le périmètre déclaré. Elle ne présume ni son
+installation dans un hôte donné, ni la réobservation de ses capabilities, ni
+leur validité scientifique générale.
 
 ## Où trouver les outils ?
 
@@ -253,7 +289,11 @@ Le projet maintient également une **frontière de neutralité** : une séparati
 
 La documentation détaillée du plugin, de son contenu et de ses validations se trouve dans [`corpus-11-tools/README.md`](corpus-11-tools/README.md).
 
-Le détail de la release se trouve dans [`CHANGELOG.md`](CHANGELOG.md), son périmètre exact dans le [`contrat de stabilité`](corpus-11-tools/docs/stability-contract.md) et ses contrôles dans la [`validation de release`](corpus-11-tools/docs/release-validation-v1.4.0.md). L’[attestation comportementale locale](corpus-11-tools/docs/local-behavioral-attestation-2026-08-25.md) est explicitement bornée : elle ne vaut pas validation GitHub ni disponibilité actuelle de l’API.
+Le détail de la release se trouve dans [`CHANGELOG.md`](CHANGELOG.md), son périmètre exact dans le [`contrat de stabilité`](corpus-11-tools/docs/stability-contract.md), ses contrôles dans la [`validation de release`](corpus-11-tools/docs/release-validation-v1.5.0.md) et son contenu exact dans l’[`attestation exhaustive`](corpus-11-tools/docs/release-content-v1.5.0.json). L’[attestation comportementale locale du 2026-08-25](corpus-11-tools/docs/local-behavioral-attestation-2026-08-25.md) reste historique et explicitement bornée : elle ne vaut ni réobservation de v1.5.0, ni validation GitHub, ni disponibilité actuelle de l’API.
+
+La représentation de Corpus comme organisme versionné est définie dans le
+[`contrat d'organisme`](corpus-11-tools/skills/corpus-11-routing/references/organism-contract.md)
+et sa [`migration sans perte`](corpus-11-tools/docs/organism-migration.md).
 
 Les personnes qui souhaitent inspecter la structure peuvent aussi consulter :
 

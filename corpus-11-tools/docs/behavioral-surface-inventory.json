@@ -1,10 +1,12 @@
 {
   "schema_version": 1,
-  "description": "Exact Git objects whose contents define the behavioral routing gate. Any change requires explicit re-attestation.",
+  "description": "Exact Git objects whose contents define the behavioral routing gate and Corpus living-continuity state. Any change requires explicit re-attestation.",
   "surfaces": [
     {"path": "corpus-11-tools/tools/run_behavioral_evals.py", "git_object": "6481f8d0f93deb82c3ad733a59b477cce0d7414a", "kind": "blob"},
     {"path": "corpus-11-tools/tools/offline_router.py", "git_object": "38c04985b2bf9b0c374969a232b66816dea45319", "kind": "blob"},
     {"path": "corpus-11-tools/evals/routing-and-nonregression.jsonl", "git_object": "4a21c16b9a516e3e26029f16606b325761a4fbd9", "kind": "blob"},
-    {"path": "corpus-11-tools/skills/corpus-11-routing/SKILL.md", "git_object": "ee9b033b556ba7042cce36bdea0055893a0d8971", "kind": "blob"}
+    {"path": "corpus-11-tools/skills/corpus-11-routing/SKILL.md", "git_object": "e6f86814ef80bb44a31fadf5e8190d16dacddade", "kind": "blob"},
+    {"path": "corpus-11-tools/skills/corpus-11-routing/references/organism-contract.md", "git_object": "f815930ed63e5e6351c913d6f942c8c7cf0745cd", "kind": "blob"},
+    {"path": "corpus-11-tools/skills/corpus-11-routing/references/organism-state.json", "git_object": "0ce2a38bfea395cb88908251bc0c8cc327fbbd99", "kind": "blob"}
   ]
 }

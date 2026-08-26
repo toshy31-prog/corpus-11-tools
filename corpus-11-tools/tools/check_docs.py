@@ -197,6 +197,23 @@ else:
         f"{release_validation.relative_to(repo_root)}"
     )
 
+release_content = plugin_root / "docs" / f"release-content-{release}.json"
+if release_content.is_file():
+    content_attestation = load_json(release_content)
+    if content_attestation.get("release") != release:
+        errors.append("release content attestation: release marker mismatch")
+    if content_attestation.get("scope") != "corpus-11-tools/":
+        errors.append("release content attestation: invalid package scope")
+    if content_attestation.get("excluded_paths") != [
+        f"docs/release-content-{release}.json"
+    ]:
+        errors.append("release content attestation: invalid self-reference exclusion")
+else:
+    errors.append(
+        "release content attestation: missing current-release manifest "
+        f"{release_content.relative_to(repo_root)}"
+    )
+
 for required_path in (
     "corpus-11-tools/",
     "corpus-11-tools/labs/",

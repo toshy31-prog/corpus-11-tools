@@ -1,7 +1,7 @@
 {
   "name": "corpus-11-tools",
-  "version": "1.4.0+codex.20260825224950",
-  "description": "Stable Corpus 11.x analysis toolkit with bounded routing, 49 capability wrappers, provenance, generic experiment labs, and enforced separation from project research.",
+  "version": "1.5.0+codex.20260826132834",
+  "description": "Stable Corpus 11.x living discipline with bounded routing, explicit release continuity, 49 capability wrappers, provenance, generic experiment labs, and enforced separation from project research.",
   "author": {
     "name": "toshy31-prog"
   },
@@ -20,8 +20,8 @@
   "interface": {
     "displayName": "Corpus 11 Tools",
     "developerName": "toshy31-prog",
-    "shortDescription": "Bounded analysis, audit, experiments, and provenance",
-    "longDescription": "A stable plugin package implementing the Corpus 11.x operational graph as focused skills. It routes only relevant capabilities, preserves provenance and user agency, tests claims against rival models and protocol changes, and keeps experimental results distinct from deployment or general validity.",
+    "shortDescription": "Living discipline for bounded analysis and audit",
+    "longDescription": "A stable, versioned plugin package implementing Corpus 11.x as one evolving analytical discipline. It routes only relevant capabilities, lets the installed release speak for the current body, preserves lineage, provenance and user agency, and keeps research evidence distinct from active product rules, deployment and general validity.",
     "category": "Productivity",
     "capabilities": [
       "skills"

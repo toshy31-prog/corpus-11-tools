@@ -12,9 +12,12 @@ manifest = root / ".codex-plugin" / "plugin.json"
 manifest_data: dict = {}
 governance = root / "skills" / "corpus-11-routing" / "references" / "epistemic-governance.md"
 routing_skill = root / "skills" / "corpus-11-routing" / "SKILL.md"
+organism_contract = root / "skills" / "corpus-11-routing" / "references" / "organism-contract.md"
+organism_state = root / "skills" / "corpus-11-routing" / "references" / "organism-state.json"
 eval_file = root / "evals" / "routing-and-nonregression.jsonl"
 inventory_file = root / "docs" / "inventory.json"
 research_guard_checker = root / "tools" / "check_research_derived_guards.py"
+release_content_checker = root / "tools" / "check_release_content.py"
 inventory: dict = {}
 NON_CAPABILITY_SKILLS = {
     "corpus-11-routing",
@@ -78,6 +81,18 @@ if not routing_skill.is_file() or "references/epistemic-governance.md" not in ro
     encoding="utf-8"
 ):
     errors.append("routing skill does not load epistemic governance")
+if not routing_skill.is_file() or any(
+    reference not in routing_skill.read_text(encoding="utf-8")
+    for reference in (
+        "references/organism-contract.md",
+        "references/organism-state.json",
+    )
+):
+    errors.append("routing skill does not load living-continuity state")
+if not organism_contract.is_file() or not organism_state.is_file():
+    errors.append("missing living-continuity contract or machine-readable state")
+if not release_content_checker.is_file():
+    errors.append("missing exhaustive release-content checker")
 
 eval_ids: list[str] = []
 if not eval_file.is_file():
@@ -117,6 +132,11 @@ else:
             errors.append(
                 "inventory eval_count does not match routing/non-regression eval file"
             )
+        release_marker = inventory.get("release")
+        if not isinstance(release_marker, str) or not (
+            root / "docs" / f"release-content-{release_marker}.json"
+        ).is_file():
+            errors.append("missing exhaustive current-release content attestation")
 
 if not research_guard_checker.is_file():
     errors.append("missing research-derived guard checker")

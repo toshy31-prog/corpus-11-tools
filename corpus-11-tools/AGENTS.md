@@ -6,6 +6,21 @@ Use Corpus 11.x as the operational architecture.
 
 10.x material is provenance, audit, ambiguity resolution and non-regression only.
 
+## Living continuity
+
+Treat Corpus as one evolving discipline, not as an immutable kernel with releases
+attached around it. The active body is the installed release; invariants carry
+continuity; archives carry historical memory; laboratories provide generic
+experimental organs; repository research supplies bounded observations; and
+the transfer registry governs what may cross into the product.
+
+Read `skills/corpus-11-routing/references/organism-contract.md` and its
+machine-readable state when the request concerns Corpus itself, its identity,
+evolution, versions, memory, current discipline, or integration of research.
+Never describe stable invariants as evidence that Corpus has not changed.
+Never promote a repository result into the installed body without an accepted
+transfer, product tests, a release, installation, and re-observation.
+
 ## Research discipline
 
 Preserve:

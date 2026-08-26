@@ -6,18 +6,31 @@ Vocabulaire utilisé ci-dessous : l’**architecture 11.x** est la représentati
 
 Ce plugin supplémentaire repose sur l’architecture 11.x fournie. Il ne remplace pas le bot et ne constitue pas une migration.
 
+L'architecture est désormais explicitement comprise comme un organisme
+versionné : le contenu actif est celui de la release installée, tandis que la
+continuité est portée par les invariants, la lignée, la provenance et les
+relations conservées. Cette métaphore fonctionnelle n'attribue ni conscience
+ni autonomie au plugin. Voir
+[`skills/corpus-11-routing/references/organism-contract.md`](skills/corpus-11-routing/references/organism-contract.md).
+
 ## État actuel
 
-- version stable du paquet : **v1.4.0** ;
+- version stable du paquet : **v1.5.0** ;
 - 58 skills ;
 - 49 capabilities ;
 - 4 familles descriptives ;
 - 88 relations ;
 - 77 évaluations.
 
-## Changement public de v1.4.0
+## Changement public de v1.5.0
 
-v1.4.0 stabilise des moteurs génériques issus de recherches sans importer leurs objets ni résultats : gouvernance de trajectoire épistémique, clôture d’exécution attestée, campagnes de simulation appariées, protocole institutionnel append-only configurable et validateur JSON Schema borné. Chaque extraction conserve un transfert, des tests indépendants et une condition de retrait.
+v1.5.0 fait de la continuité de Corpus un contrat exécutable plutôt qu'une
+simple lecture documentaire. Le routeur charge l'identité de l'organisme et son
+état de lignée lorsqu'il doit parler de Corpus lui-même ; la release installée
+est distinguée de la tête du dépôt, et aucun résultat de recherche ne devient
+une règle active sans transfert accepté, validation produit, release,
+installation et réobservation. Une attestation exhaustive couvre chaque octet
+du plugin distribué, hors son propre fichier auto-référentiel.
 
 ## Changement public de v1.2.0
 
@@ -74,6 +87,17 @@ codex plugin add corpus-11-tools@corpus-11-local
 
 Le catalogue inclus référence déjà `./corpus-11-tools`. Ouvrir ensuite une nouvelle tâche Codex pour charger le plugin installé.
 
+Pour remplacer une version déjà mise en cache :
+
+```bash
+codex plugin remove corpus-11-tools@corpus-11-local
+codex plugin add corpus-11-tools@corpus-11-local
+codex plugin list
+```
+
+Actualiser ensuite Codex et ouvrir une nouvelle tâche. Une tâche existante ne
+constitue pas une réobservation de la nouvelle version.
+
 Pour intégrer le plugin à un autre catalogue local, utiliser `docs/marketplace.example.json` comme modèle et adapter son chemin.
 
 ## Validation
@@ -93,6 +117,8 @@ python tools/validate_package.py
 python tools/check_graph.py
 python tools/check_docs.py
 python tools/check_boundaries.py
+python tools/check_organism.py --self-test
+python tools/check_release_content.py
 python tools/check_conversational_surface.py
 python tools/check_integrity.py
 python tools/check_release_identity.py
@@ -114,9 +140,9 @@ déployée.
 
 ## Statut
 
-Le paquet `v1.4.0` contient 58 skills, 49 capabilities, 4 familles, 88 relations et 77 évaluations. Sa stabilité désigne la cohérence du paquet, de son installation, de sa taxonomie, de sa frontière avec la recherche et de ses tests sur le périmètre déclaré. `open-experiment-arena` reste une procédure expérimentale candidate : ses tests synthétiques n’établissent ni scénario extérieur indépendant, ni gain de capability, ni usage de terrain. Les 31 capabilities natives restent `candidate_unvalidated`, les neuf facultés récupérées `recovered_candidate_unvalidated` et les neuf nouveaux outils `design_candidate_unvalidated`.
+Le paquet `v1.5.0` contient 58 skills, 49 capabilities, 4 familles, 88 relations et 77 évaluations. Sa stabilité désigne la cohérence du paquet, de sa continuité versionnée, de sa taxonomie, de sa frontière avec la recherche et de ses tests sur le périmètre déclaré ; elle ne présume pas l'installation dans un hôte donné. `open-experiment-arena` reste une procédure expérimentale candidate : ses tests synthétiques n’établissent ni scénario extérieur indépendant, ni gain de capability, ni usage de terrain. Les 31 capabilities natives restent `candidate_unvalidated`, les neuf facultés récupérées `recovered_candidate_unvalidated` et les neuf nouveaux outils `design_candidate_unvalidated`.
 
-Le périmètre et les conditions de retrait de ce statut sont définis dans [`docs/stability-contract.md`](docs/stability-contract.md), et la matrice exécutée dans [`docs/release-validation-v1.4.0.md`](docs/release-validation-v1.4.0.md).
+Le périmètre et les conditions de retrait de ce statut sont définis dans [`docs/stability-contract.md`](docs/stability-contract.md), la matrice exécutée dans [`docs/release-validation-v1.5.0.md`](docs/release-validation-v1.5.0.md), et l'attestation octet par octet dans [`docs/release-content-v1.5.0.json`](docs/release-content-v1.5.0.json).
 
 Les lacunes historiques restent documentées dans `docs/legacy-loss-audit.md` et `archives/legacy/STATUS.md` : Atlas 2.7, Corpus 9.8, Corpus 10.2, la release 10.4 complète et la source éditable du manuel n’ont pas été retrouvés ni reconstruits par supposition.
 
