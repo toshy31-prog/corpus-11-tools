@@ -1,0 +1,57 @@
+{
+  "document_kind": "cct_resource_vehicle",
+  "id": "CCT-RV-01",
+  "version": "0.1-candidate",
+  "status": "design_only_no_funds_no_legal_host",
+  "purpose": "Finance material continuity capacity through existing accountable operators without transferring service authority to CCT.",
+  "funding_truth": {
+    "may_claim_funds_available_only_when_ring_fenced": true,
+    "no_pledge_is_treated_as_cash": true,
+    "no_outreach_as_a_service_offer_before_resources_exist": true
+  },
+  "required_resource_components": [
+    "critical_spares_or_materials",
+    "independent_backup_or_contingency",
+    "paid_local_maintenance_and_safety",
+    "recourse_and_repair",
+    "recipient_administrative_burden_covered"
+  ],
+  "governance": {
+    "legal_fiscal_host_required": true,
+    "local_operator_retains_service_authority": true,
+    "separate_financial_custody_and_independent_review": true,
+    "affected_people_recourse_required": true,
+    "public_aggregate_disbursement_ledger_required": true,
+    "personal_data_or_beneficiary_lists_forbidden": true,
+    "funds_cannot_buy_coercive_or_discriminatory_capacity": true
+  },
+  "disbursement_rules": {
+    "existing_service_and_local_need_required": true,
+    "written_itemized_continuity_plan_required": true,
+    "payment_to_local_operator_or_supplier_under_local_authorization": true,
+    "no_substitution_for_ordinary_public_duty_without_public_justification": true,
+    "repair_fund_reserved_before_start": true,
+    "stop_and_remedy_condition_before_disbursement": true
+  },
+  "light_reporting": {
+    "funds_cover_reporting_cost": true,
+    "minimum_traces": [
+      "baseline_asset_and_dependency_inventory",
+      "purchase_or_payment_receipts",
+      "service_continuity_and_water_safety_status",
+      "incident_and_recovery_log",
+      "aggregate_recourse_and_repair_record"
+    ],
+    "no_nominal_user_tracking": true
+  },
+  "not_established": [
+    "legal_host",
+    "ring_fenced_funds",
+    "financial_custodian",
+    "independent_reviewer",
+    "local_operator_agreement",
+    "disbursement",
+    "material_effect",
+    "renewable_funding"
+  ]
+}

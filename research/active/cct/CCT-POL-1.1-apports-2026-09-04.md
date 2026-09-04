@@ -60,6 +60,16 @@ Dans une alerte climatique, sanitaire ou logistique, la priorité est accordée 
 
 Les écosystèmes encore fonctionnels — notamment les zones humides, mangroves, tourbières, forêts anciennes, récifs et bassins versants critiques — bénéficient d'une présomption de protection. Détruire un amortisseur existant au nom d'une restauration future exige une preuve renforcée d'absence d'alternative et un recours suspensif effectif.
 
+### Le Ciel de la CCT : relier sans absorber
+
+Le **Ciel** n'est ni un gouvernement supérieur ni une flotte propriétaire des territoires. C'est la couche de continuité mobile qui relie les communs lorsqu'une rupture dépasse leur capacité locale : eau, soin, alimentation, énergie, pièces, communications, réparation et évacuation. Son but est de rendre traversable un effondrement de route, de réseau, de revenu ou d'approvisionnement sans remplacer durablement les personnes et institutions qui vivent sur place.
+
+Son architecture comporte trois couches inséparables : un **sol** de réserves, droits, savoirs et décisions locales ; des **veines** de circulation matérielle et informationnelle ; des **vecteurs** mobiles adaptés au terrain — bateau, barge, véhicule terrestre, vélo, train, relais humain ou autre moyen localement pertinent. Les vecteurs ne sont admis que s'ils ajoutent une voie indépendante à une panne existante et s'ils laissent derrière eux plus de capacité locale qu'ils n'en concentrent.
+
+Un bateau peut être décisif lorsque les crues coupent les routes ; il devient inutile ou dominant s'il remplace des stocks, des équipes et un pouvoir local de réparation. En zone de sécheresse, la même fonction peut être remplie par le stockage, le pompage, la maintenance locale et un vecteur terrestre. La forme ne compte pas ; compte la capacité effectivement transmise : un service plus maintenable, une issue de secours, des personnes payées et protégées, un recours et une réparation qui restent accessibles après le départ du vecteur.
+
+Le Ciel ne peut déclencher une intervention qu'à la demande ou avec l'accord de l'acteur local compétent, sauf secours immédiat indispensable à la survie lorsque cet accord est matériellement impossible ; dans ce dernier cas, l'intervention est strictement bornée, traçable, révocable et suivie d'un contrôle local. Il ne peut conditionner l'accès vital à une adhésion politique, à une collecte de données non nécessaire ou à une visibilité médiatique. Son échec propre est de devenir le seul canal, de transformer le secours en dépendance ou de retirer aux territoires la capacité de refuser, réparer et transmettre.
+
 ## 5. Décider sous incertitude sans fausse optimisation
 
 Une enveloppe d'urgence ou de transition est répartie par portefeuille public, et non selon une prétendue optimisation mondiale unique. Chaque allocation rend publics, séparément : vies et droits protégés, irréversibilités évitées, capacités futures conservées, coût, délai, incertitude, porteurs de charge, acteur habilité, obstacle actuel et condition de révision.
@@ -92,6 +102,18 @@ La CCT échoue dans sa propre direction si, de façon répétée et observée :
 - l'analyse attribue à des identités collectives ce qui devrait être démontré par des mécanismes, des actes et des responsabilités identifiables.
 
 Dans chacun de ces cas, la réponse n'est pas de sauver l'étiquette de la CCT, mais d'arrêter le mécanisme fautif, de protéger sans délai les personnes et écosystèmes touchés, de rendre les traces auditables, de réparer les pertes et de rouvrir la comparaison institutionnelle.
+
+## 8. Porte d'admission avant tout essai territorial
+
+La CCT ne peut pas s'autoriser elle-même à expérimenter sur un territoire, une population ou un service essentiel. Un essai n'est admissible qu'après une porte publique indépendante, documentée dans `pol-1.1-executable/pre-adoption/`. Elle distingue rigoureusement le texte écrit, le prototype testé, l'autorisation, le déploiement et la réobservation.
+
+Cette porte exige cumulativement : un périmètre étroit et réversible ; un mandat d'un acteur local légalement compétent ; une approbation libre et informée des personnes concernées, avec possibilité réelle de refuser sans perdre leurs droits ; une contre-expertise indépendante financée sans contrôle du porteur CCT ; un comparateur crédible ; un registre de contre-champ ; des indicateurs qui distinguent protection réelle, déplacement de charge, non-discrimination, autonomie, continuité écologique et recours ; une minimisation des données ; un pouvoir d'arrêt immédiatement exerçable ; une capacité de restauration et un fonds de réparation préalablement garantis.
+
+Un essai ne peut ni conditionner l'accès au vital, ni imposer une privation comme groupe témoin, ni remplacer un service public essentiel, ni utiliser une identité collective comme variable explicative sans mécanisme démontré. Les résultats sont publiés sous forme agrégée et contestable ; le témoignage nominatif ne circule que dans la procédure de recours strictement nécessaire.
+
+La règle d'arrêt est pré-enregistrée : atteinte aux droits, dommage écologique non compensable, refus matériellement impraticable, déplacement de charge non prévu, perte de contrôle locale, défaut d'indépendance de l'évaluation ou incapacité de restaurer suspendent l'essai. L'arrêt nominal ne suffit pas : l'acteur capable, l'état sûr, les pertes supportées et la voie de réparation doivent être démontrés par un exercice représentatif avant l'ouverture.
+
+L'autorisation d'essayer n'est pas une adoption. L'adoption ne peut être envisagée qu'après publication des écarts, recours exerçables, observation après choc ou charge, contrôle indépendant et comparaison avec des alternatives sérieuses. Un résultat favorable isolé ne rend pas la CCT robuste ni transportable hors du périmètre réellement observé.
 
 ## Formule courte révisée
 

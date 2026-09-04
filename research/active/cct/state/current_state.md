@@ -18,6 +18,24 @@ Dernière mise à jour : 2026-08-26 — CCT-EXEC 1.2 récupération en monde ouv
 > El Niño Mozambique 2026–2027 est désormais sourcé et borné, mais il demeure
 > non observé et non exécutable faute de données par district et de résultats
 > de mise en œuvre.
+>
+> Addendum 2026-09-04 — une porte de pré-adoption CCT-POL 1.1 est écrite et
+> validée statiquement dans `pol-1.1-executable/pre-adoption/`. Elle interdit
+> tout passage direct de la doctrine à un essai : mandat local distinct, refus
+> sans perte de droits, revue indépendante, comparateur pré-enregistré,
+> données minimisées, arrêt exercé et réparation préfinancée sont requis. Son
+> statut explicite demeure `not_admissible` : aucune de ces attestations
+> externes n'est disponible dans le dépôt et aucun essai n'est engagé.
+>
+> Addendum 2026-09-04 — `CCT-MIN-01 — Continuité locale de l'eau` traduit
+> une seule partie de la doctrine des marges distribuées en objet minimal :
+> service standard conservé, pièces et énergie non communes, maintenance locale
+> rémunérée, alerte, recours, arrêt indépendant et réparation. Il est comparé à
+> la maintenance réactive existante sans retirer l'eau à un groupe témoin. Le
+> contrat et les mutations négatives passent localement dans
+> `pol-1.1-executable/minimum-use-case-water-continuity/`. Son statut est
+> `candidate_design_not_authorized` : aucun site, mandat, financement,
+> baseline, déploiement ou effet n'est établi.
 
 ## Statut
 

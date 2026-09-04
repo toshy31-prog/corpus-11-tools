@@ -21,3 +21,14 @@ logistique, avec des résultats non compensables.
 
 Le pré-enregistrement de cette arène est désormais dans [`arena/`](arena/).
 Ses mondes sont internes et ne peuvent donc servir qu'au développement négatif.
+
+Avant toute proposition d'essai territorial, la candidate est aussi tenue par
+la [porte de pré-adoption](pre-adoption/). Son statut actuel est
+`not_admissible` : une validation locale ou logicielle ne remplace ni mandat
+compétent, ni refus sans perte de droits, ni revue indépendante, ni arrêt et
+réparation effectivement préparés.
+
+Le [Ciel de la CCT](cct-sky/) compile enfin une fonction matérielle : relier les
+communs lors des ruptures au moyen de vecteurs mobiles sans en faire un centre
+de dépendance. Il reste une architecture écrite ; aucun véhicule, trajet ou
+effet n'est revendiqué.

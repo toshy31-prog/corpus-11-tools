@@ -1,0 +1,59 @@
+{
+  "document_kind": "cct_pol_1_1_pre_adoption_gate",
+  "id": "CCT-POL-1.1-PREADOPTION-001",
+  "version": "0.1-candidate",
+  "date": "2026-09-04",
+  "lifecycle": {
+    "state": "not_admissible",
+    "highest_established": "written_and_statically_validated",
+    "not_established": [
+      "local_authorization",
+      "affected_people_approval",
+      "independent_review",
+      "funding",
+      "deployment",
+      "post_shock_observation",
+      "external_robustness",
+      "adoption"
+    ]
+  },
+  "non_negotiable_entry_conditions": {
+    "bounded_scope": true,
+    "no_vital_service_replacement": true,
+    "no_deprivation_control_group": true,
+    "local_authorization_separate_from_cct": true,
+    "affected_people_can_refuse_without_losing_rights": true,
+    "independent_review_with_separate_funding": true,
+    "pre_registered_comparator": true,
+    "counterview_register": true,
+    "outcomes_are_non_compensable": [
+      "vital_access",
+      "equal_treatment",
+      "ecological_integrity",
+      "autonomous_capacity",
+      "recourse_and_repair"
+    ],
+    "data_minimization_and_bounded_recourse": true,
+    "stop_owner_independent_of_delivery": true,
+    "safe_state_and_recovery_exercise_required": true,
+    "repair_fund_committed_before_start": true,
+    "public_aggregate_reporting": true,
+    "adoption_not_inferred_from_single_trial": true
+  },
+  "automatic_suspension_conditions": [
+    "rights_violation_or_unconsented_exposure",
+    "irreversible_ecological_harm_or_loss_of_critical_buffer",
+    "refusal_or_exit_becomes_materially_unusable",
+    "unplanned_displacement_of_cost_or_risk",
+    "loss_of_local_control_or_independent_review",
+    "stop_or_recovery_capacity_fails_rehearsal",
+    "repair_fund_or_recourse_becomes_unavailable"
+  ],
+  "required_external_attestations": [
+    "competent_local_authority",
+    "affected_people_governance_body",
+    "independent_reviewer",
+    "data_protection_or_ethics_reviewer_when_applicable",
+    "repair_fund_holder"
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "document_kind": "cct_minimum_use_case",
+  "id": "CCT-MIN-01-WATER-CONTINUITY",
+  "version": "0.1-candidate",
+  "status": "candidate_design_not_authorized",
+  "scope": "one existing local water service or a small matched set; no service withdrawal",
+  "claim": "Distributed, locally usable continuity margins can reduce loss of safe water access and unequal maintenance burden relative to reactive centralized maintenance under comparable conditions.",
+  "non_negotiable": {
+    "existing_responsible_operator_retained": true,
+    "no_vital_service_withdrawal_for_comparison": true,
+    "standard_service_guaranteed_at_all_sites": true,
+    "local_refusal_and_recourse": true,
+    "local_repair_capacity_paid": true,
+    "distributed_spares_and_independent_backup": true,
+    "safe_water_quality_check": true,
+    "costs_to_users_and_workers_measured": true,
+    "aggregate_public_reporting": true,
+    "independent_stop_authority_required": true,
+    "repair_and_contingency_fund_required": true
+  },
+  "comparison": {
+    "baseline": "usual reactive centralized maintenance and existing emergency supply",
+    "candidate": "pre-positioned distributed spares, independent backup energy, trained paid local repair, transparent escalation, recourse and emergency supply",
+    "matching_required": ["water_source_type", "population_served", "season", "baseline_reliability", "access_conditions"],
+    "no_deprivation_design": true
+  },
+  "non_compensable_outcomes": [
+    "safe_water_access",
+    "equal_treatment_and_burden",
+    "worker_safety_and_pay",
+    "local_repair_capacity",
+    "recourse_and_repair"
+  ],
+  "automatic_stop_conditions": [
+    "water_safety_failure",
+    "access_loss_above_pre_registered_threshold_without_immediate_contingency",
+    "unpaid_or_unsafe_maintenance_work",
+    "refusal_or_recourse_unusable",
+    "unplanned_cost_shift_to_users",
+    "loss_of_independent_oversight"
+  ],
+  "not_established": [
+    "local_site",
+    "local_authorization",
+    "funding",
+    "independent_review",
+    "baseline_measurement",
+    "deployment",
+    "effect",
+    "transportability"
+  ]
+}

@@ -25,3 +25,7 @@ La Confédération des communs terrestres est une recherche institutionnelle act
 Les simulations réutilisent les primitives génériques de [`../../../corpus-11-tools/labs/`](../../../corpus-11-tools/labs/) pour les budgets appariés, l’aléa commun, les comparaisons vectorielles et les variations bornées. CCT Ops réutilise aussi le journal append-only et la machine institutionnelle générique. Les architectures, métriques, paramètres, politique de rôles et conclusions CCT restent ici.
 
 La suppression ou la clôture de cette recherche ne doit casser ni l’installation de Corpus ni ses tests propres.
+> **Pré-adoption :** CCT-POL 1.1 n'est pas admissible à un essai territorial
+> tant que les attestations locales, la revue indépendante, le comparateur,
+> l'arrêt et la réparation préfinancée ne sont pas établis. Voir
+> [`pol-1.1-executable/pre-adoption/`](pol-1.1-executable/pre-adoption/).

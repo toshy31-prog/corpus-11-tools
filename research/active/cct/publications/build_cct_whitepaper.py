@@ -484,6 +484,8 @@ Dans une crise, la priorité va aux situations où vulnérabilité, fenêtre d�
 
 Le cas réel El Niño 2026–2027 au Mozambique rend cette doctrine concrète sans prétendre valider la CCT : les sources publiques confirment les déclencheurs d’action anticipée, la nécessité de protéger eau, semences, actifs et continuité, mais elles ne permettent pas encore une allocation chiffrée par district ni une évaluation après choc. La CCT y désigne les responsabilités existantes et les rend contestables ; elle ne prétend pas se substituer aux institutions mozambicaines.
 
+Le Ciel de la CCT désigne la continuité mobile entre les communs, non un centre qui les possède. Il relie un sol local de réserves, de savoirs, d’équipes et de recours à des veines de circulation, puis à des vecteurs adaptés : bateau ou barge quand les crues coupent les routes, véhicule terrestre ou relais humain ailleurs. Un vecteur ne compte que s’il ouvre une voie indépendante, protège l’accès vital sans condition et laisse après son départ davantage de capacité locale : pièces, réparation, fonds de secours et pouvoir de recours. Un bateau qui devient le seul canal de survie échoue au même test qu’un dépôt ou un fournisseur unique.
+
 ### Charge constitutionnelle et polycrise
 
 La CCT doit être éprouvée lorsque besoins vitaux, plafond écologique, droits, trace et restitution sollicitent les mêmes ressources dégradées. Les rapports secondaires et les formalités réversibles peuvent alors être délestés ; accès vital, traçabilité minimale, recours contre coercition, plafond critique et preuve de restitution ne le peuvent pas. Une procédure qui n’ajoute aucune protection observable face à une solution plus simple doit être fusionnée ou retirée.
