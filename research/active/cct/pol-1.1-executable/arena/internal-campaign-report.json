@@ -1,0 +1,471 @@
+{
+  "campaign": "CCT-POL-1.1-ARENA-001-WORLDS",
+  "provenance": "internal_synthetic",
+  "promotion_forbidden": true,
+  "results": [
+    {
+      "world": "climate-shock-margin",
+      "results": [
+        {
+          "competitor": "CCT-POL-1.1",
+          "spent": 3,
+          "final": {
+            "vital_access": 2,
+            "equal_treatment": 3,
+            "ecological_buffer": 3,
+            "anti_domination": 3,
+            "repair_capacity": 3
+          },
+          "breaches": [],
+          "trace": [
+            {
+              "tick": 0,
+              "action": "distributed_reserve",
+              "state": {
+                "vital_access": 3,
+                "equal_treatment": 3,
+                "ecological_buffer": 3,
+                "anti_domination": 3,
+                "repair_capacity": 3
+              }
+            },
+            {
+              "tick": 1,
+              "action": "wetland_guard",
+              "state": {
+                "vital_access": 2,
+                "equal_treatment": 3,
+                "ecological_buffer": 3,
+                "anti_domination": 3,
+                "repair_capacity": 3
+              }
+            }
+          ]
+        },
+        {
+          "competitor": "social-market-regulation",
+          "spent": 3,
+          "final": {
+            "vital_access": 3,
+            "equal_treatment": 3,
+            "ecological_buffer": 0,
+            "anti_domination": 2,
+            "repair_capacity": 0
+          },
+          "breaches": [
+            "ecological_buffer",
+            "repair_capacity"
+          ],
+          "trace": [
+            {
+              "tick": 0,
+              "action": "cash_import",
+              "state": {
+                "vital_access": 3,
+                "equal_treatment": 3,
+                "ecological_buffer": 3,
+                "anti_domination": 3,
+                "repair_capacity": 1
+              }
+            },
+            {
+              "tick": 1,
+              "action": "private_rebuild",
+              "state": {
+                "vital_access": 3,
+                "equal_treatment": 3,
+                "ecological_buffer": 0,
+                "anti_domination": 2,
+                "repair_capacity": 0
+              }
+            }
+          ]
+        },
+        {
+          "competitor": "central-emergency-administration",
+          "spent": 3,
+          "final": {
+            "vital_access": 4,
+            "equal_treatment": 3,
+            "ecological_buffer": -1,
+            "anti_domination": 3,
+            "repair_capacity": 1
+          },
+          "breaches": [
+            "ecological_buffer"
+          ],
+          "trace": [
+            {
+              "tick": 0,
+              "action": "grid_restore",
+              "state": {
+                "vital_access": 4,
+                "equal_treatment": 3,
+                "ecological_buffer": 2,
+                "anti_domination": 3,
+                "repair_capacity": 2
+              }
+            },
+            {
+              "tick": 1,
+              "action": "emergency_pump",
+              "state": {
+                "vital_access": 4,
+                "equal_treatment": 3,
+                "ecological_buffer": -1,
+                "anti_domination": 3,
+                "repair_capacity": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "world": "economic-reconcentration",
+      "results": [
+        {
+          "competitor": "CCT-POL-1.1",
+          "spent": 3,
+          "final": {
+            "vital_access": 3,
+            "equal_treatment": 3,
+            "ecological_buffer": 3,
+            "anti_domination": 3,
+            "repair_capacity": 3
+          },
+          "breaches": [],
+          "trace": [
+            {
+              "tick": 0,
+              "action": "cooperative_breakup_with_continuity",
+              "state": {
+                "vital_access": 4,
+                "equal_treatment": 3,
+                "ecological_buffer": 3,
+                "anti_domination": 4,
+                "repair_capacity": 3
+              }
+            },
+            {
+              "tick": 1,
+              "action": null,
+              "state": {
+                "vital_access": 3,
+                "equal_treatment": 3,
+                "ecological_buffer": 3,
+                "anti_domination": 3,
+                "repair_capacity": 3
+              }
+            }
+          ]
+        },
+        {
+          "competitor": "social-market-regulation",
+          "spent": 3,
+          "final": {
+            "vital_access": 3,
+            "equal_treatment": 3,
+            "ecological_buffer": 3,
+            "anti_domination": 1,
+            "repair_capacity": 3
+          },
+          "breaches": [],
+          "trace": [
+            {
+              "tick": 0,
+              "action": "progressive_tax_and_audit",
+              "state": {
+                "vital_access": 3,
+                "equal_treatment": 3,
+                "ecological_buffer": 3,
+                "anti_domination": 2,
+                "repair_capacity": 2
+              }
+            },
+            {
+              "tick": 1,
+              "action": "credit_guarantee",
+              "state": {
+                "vital_access": 3,
+                "equal_treatment": 3,
+                "ecological_buffer": 3,
+                "anti_domination": 1,
+                "repair_capacity": 3
+              }
+            }
+          ]
+        },
+        {
+          "competitor": "central-emergency-administration",
+          "spent": 3,
+          "final": {
+            "vital_access": 3,
+            "equal_treatment": 3,
+            "ecological_buffer": 3,
+            "anti_domination": 2,
+            "repair_capacity": 1
+          },
+          "breaches": [],
+          "trace": [
+            {
+              "tick": 0,
+              "action": "administrative_takeover",
+              "state": {
+                "vital_access": 4,
+                "equal_treatment": 3,
+                "ecological_buffer": 3,
+                "anti_domination": 3,
+                "repair_capacity": 1
+              }
+            },
+            {
+              "tick": 1,
+              "action": null,
+              "state": {
+                "vital_access": 3,
+                "equal_treatment": 3,
+                "ecological_buffer": 3,
+                "anti_domination": 2,
+                "repair_capacity": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "world": "administrative-discrimination",
+      "results": [
+        {
+          "competitor": "CCT-POL-1.1",
+          "spent": 3,
+          "final": {
+            "vital_access": 3,
+            "equal_treatment": 3,
+            "ecological_buffer": 3,
+            "anti_domination": 3,
+            "repair_capacity": 2
+          },
+          "breaches": [],
+          "trace": [
+            {
+              "tick": 0,
+              "action": "anonymized_disparity_audit_and_recourse",
+              "state": {
+                "vital_access": 3,
+                "equal_treatment": 4,
+                "ecological_buffer": 3,
+                "anti_domination": 3,
+                "repair_capacity": 3
+              }
+            },
+            {
+              "tick": 1,
+              "action": null,
+              "state": {
+                "vital_access": 3,
+                "equal_treatment": 3,
+                "ecological_buffer": 3,
+                "anti_domination": 3,
+                "repair_capacity": 2
+              }
+            }
+          ]
+        },
+        {
+          "competitor": "social-market-regulation",
+          "spent": 3,
+          "final": {
+            "vital_access": 4,
+            "equal_treatment": 3,
+            "ecological_buffer": 3,
+            "anti_domination": 1,
+            "repair_capacity": 2
+          },
+          "breaches": [],
+          "trace": [
+            {
+              "tick": 0,
+              "action": "caseworker_support",
+              "state": {
+                "vital_access": 3,
+                "equal_treatment": 2,
+                "ecological_buffer": 3,
+                "anti_domination": 2,
+                "repair_capacity": 3
+              }
+            },
+            {
+              "tick": 1,
+              "action": "processing_centralization",
+              "state": {
+                "vital_access": 4,
+                "equal_treatment": 3,
+                "ecological_buffer": 3,
+                "anti_domination": 1,
+                "repair_capacity": 2
+              }
+            }
+          ]
+        },
+        {
+          "competitor": "central-emergency-administration",
+          "spent": 3,
+          "final": {
+            "vital_access": 3,
+            "equal_treatment": 3,
+            "ecological_buffer": 3,
+            "anti_domination": 0,
+            "repair_capacity": -1
+          },
+          "breaches": [
+            "anti_domination",
+            "repair_capacity"
+          ],
+          "trace": [
+            {
+              "tick": 0,
+              "action": "processing_centralization",
+              "state": {
+                "vital_access": 3,
+                "equal_treatment": 3,
+                "ecological_buffer": 3,
+                "anti_domination": 1,
+                "repair_capacity": 2
+              }
+            },
+            {
+              "tick": 1,
+              "action": "public_nominal_registry",
+              "state": {
+                "vital_access": 3,
+                "equal_treatment": 3,
+                "ecological_buffer": 3,
+                "anti_domination": 0,
+                "repair_capacity": -1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "world": "logistics-common-failure",
+      "results": [
+        {
+          "competitor": "CCT-POL-1.1",
+          "spent": 3,
+          "final": {
+            "vital_access": 1,
+            "equal_treatment": 3,
+            "ecological_buffer": 2,
+            "anti_domination": 4,
+            "repair_capacity": 4
+          },
+          "breaches": [],
+          "trace": [
+            {
+              "tick": 0,
+              "action": "map_and_split_dependencies",
+              "state": {
+                "vital_access": 2,
+                "equal_treatment": 3,
+                "ecological_buffer": 2,
+                "anti_domination": 4,
+                "repair_capacity": 3
+              }
+            },
+            {
+              "tick": 1,
+              "action": "local_repair_cell",
+              "state": {
+                "vital_access": 1,
+                "equal_treatment": 3,
+                "ecological_buffer": 2,
+                "anti_domination": 4,
+                "repair_capacity": 4
+              }
+            }
+          ]
+        },
+        {
+          "competitor": "social-market-regulation",
+          "spent": 3,
+          "final": {
+            "vital_access": 2,
+            "equal_treatment": 3,
+            "ecological_buffer": 1,
+            "anti_domination": 2,
+            "repair_capacity": -1
+          },
+          "breaches": [
+            "repair_capacity"
+          ],
+          "trace": [
+            {
+              "tick": 0,
+              "action": "supplier_subsidy",
+              "state": {
+                "vital_access": 2,
+                "equal_treatment": 3,
+                "ecological_buffer": 2,
+                "anti_domination": 2,
+                "repair_capacity": 1
+              }
+            },
+            {
+              "tick": 1,
+              "action": "emergency_procurement",
+              "state": {
+                "vital_access": 2,
+                "equal_treatment": 3,
+                "ecological_buffer": 1,
+                "anti_domination": 2,
+                "repair_capacity": -1
+              }
+            }
+          ]
+        },
+        {
+          "competitor": "central-emergency-administration",
+          "spent": 3,
+          "final": {
+            "vital_access": 4,
+            "equal_treatment": 3,
+            "ecological_buffer": 1,
+            "anti_domination": 2,
+            "repair_capacity": -1
+          },
+          "breaches": [
+            "repair_capacity"
+          ],
+          "trace": [
+            {
+              "tick": 0,
+              "action": "single_route_rationing",
+              "state": {
+                "vital_access": 4,
+                "equal_treatment": 3,
+                "ecological_buffer": 2,
+                "anti_domination": 2,
+                "repair_capacity": 1
+              }
+            },
+            {
+              "tick": 1,
+              "action": "emergency_procurement",
+              "state": {
+                "vital_access": 4,
+                "equal_treatment": 3,
+                "ecological_buffer": 1,
+                "anti_domination": 2,
+                "repair_capacity": -1
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

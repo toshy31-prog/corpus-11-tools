@@ -1,0 +1,42 @@
+{
+  "id": "EXTERNAL-SCENARIO-ID",
+  "version": "0.1.0",
+  "author": {
+    "id": "opaque-author-or-team-id",
+    "relationship_to_cct_author": "independent|unknown|dependent",
+    "contact_or_provenance": "contact method or public provenance"
+  },
+  "scope": {
+    "place_or_system": "bounded territory, institution or supply system",
+    "period": "bounded historical, current or prospective window",
+    "question": "decision that could change after the comparison"
+  },
+  "evidence": [{
+    "claim": "observable claim used by the scenario",
+    "source": "primary source, dataset, interview protocol or bounded field record",
+    "limits": "missingness, bias, access or safety limit"
+  }],
+  "state": {
+    "axes": ["vital_access", "equal_treatment", "ecological_buffer", "anti_domination", "repair_capacity"],
+    "initial_conditions": "machine-readable values and units",
+    "events_and_delays": "machine-readable transitions and uncertainty",
+    "irreversibilities": "named thresholds and why they matter"
+  },
+  "action_ontology": [{
+    "id": "action-id",
+    "public_semantics": "what this action physically and institutionally does",
+    "costs_and_capacity": "same unit for every contender",
+    "known_harms": "harms, exclusions and uncertainty"
+  }],
+  "fairness": {
+    "same_public_information_for_all_contenders": true,
+    "same_action_budget_for_all_contenders": true,
+    "same_action_ontology_for_all_contenders": true,
+    "rival_predicted_to_do_better_on": "at least one named axis or condition"
+  },
+  "reversal_conditions": ["observable result requiring revision of a live conclusion"],
+  "safety_and_privacy": {
+    "sensitive_data_present": false,
+    "publication_constraints": "aggregate, anonymize or withhold operational details when necessary"
+  }
+}

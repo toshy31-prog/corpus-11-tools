@@ -2,6 +2,23 @@
 
 Dernière mise à jour : 2026-08-26 — CCT-EXEC 1.2 récupération en monde ouvert
 
+> Addendum 2026-09-04 — CCT-POL 1.1 est une révision politique candidate
+> distincte des artefacts gelés. Elle impose un registre du contre-champ, une
+> discipline d'attribution non identitaire, la démarchandisation du vital et
+> un test matériel des marges distribuées, de la continuité et de la
+> reconcentration. Son contrat structurel et ses mutations négatives passent
+> localement dans `pol-1.1-executable/`. Une arène préenregistrée comporte
+> quatre mondes `internal_synthetic` : choc climatique, reconcentration,
+> discrimination administrative et rupture logistique. Elle peut seulement
+> faire perdre ou réviser le candidat, jamais le promouvoir. Aucun de ces
+> ajouts n'a encore été compilé dans CCT-NCE ni testé indépendamment. La
+> campagne interne conserve une non-conclusion documentée : ses mondes et
+> effets ont la même lignée que la candidate. Le prochain blocage est donc une
+> soumission de monde indépendante, gelée avant exécution. Un dossier réel
+> El Niño Mozambique 2026–2027 est désormais sourcé et borné, mais il demeure
+> non observé et non exécutable faute de données par district et de résultats
+> de mise en œuvre.
+
 ## Statut
 
 La recherche CCT dispose d’un modèle écrit et de simulations synthétiques

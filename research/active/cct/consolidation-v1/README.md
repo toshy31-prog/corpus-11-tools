@@ -24,3 +24,7 @@ Le statut maximal est `written_and_locally_validated_composite`. Une source de
 vérité cohérente ne constitue pas encore un exécutable total ni une validation
 politique ou territoriale.
 Le gel `cct-1.0-freeze.json` fixe l'état audité, sans en augmenter le statut.
+
+La révision politique candidate postérieure est
+[`../CCT-POL-1.1-apports-2026-09-04.md`](../CCT-POL-1.1-apports-2026-09-04.md).
+Elle ne modifie pas ce gel et n'est pas encore intégrée au candidat exécutable.

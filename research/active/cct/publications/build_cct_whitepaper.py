@@ -54,6 +54,7 @@ TOC_GROUPS = (
             "13. Où se cachent les centres de pouvoir",
             "14. Prévenir la reconstitution des classes dominantes",
             "15. Métriques et adaptation stratégique",
+            "Révision CCT POL 1 1 Marges et contre champ",
             "16. Cycle de maintenance constitutionnelle",
         ),
     ),
@@ -136,6 +137,13 @@ def set_repeat_table_header(row) -> None:
     tbl_header = OxmlElement("w:tblHeader")
     tbl_header.set(qn("w:val"), "true")
     tr_pr.append(tbl_header)
+
+
+def prevent_row_split(row) -> None:
+    tr_pr = row._tr.get_or_add_trPr()
+    node = OxmlElement("w:cantSplit")
+    node.set(qn("w:val"), "true")
+    tr_pr.append(node)
 
 
 def set_run(run, *, size=None, color=INK, bold=None, italic=None, font="Aptos") -> None:
@@ -292,7 +300,7 @@ def add_cover(doc: Document) -> None:
     r = p.add_run("Une architecture écosocialiste libertaire pour coordonner le monde sans souverain mondial illimité"); set_run(r, size=14, color=TEAL, italic=True)
     p.paragraph_format.space_after = Pt(42)
     p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = p.add_run("ÉTAT DE RECHERCHE  •  AOÛT 2026"); set_run(r, size=11, color=MUTED, bold=True)
+    r = p.add_run("ÉTAT DE RECHERCHE  •  SEPTEMBRE 2026"); set_run(r, size=11, color=MUTED, bold=True)
     p.paragraph_format.space_after = Pt(60)
     p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     r = p.add_run("PROPOSITION CONSOLIDÉE — NON VALIDÉE EMPIRIQUEMENT"); set_run(r, size=9, color=WHITE, bold=True)
@@ -351,6 +359,8 @@ def add_table(doc: Document, rows: list[list[str]]) -> None:
             elif r_index % 2 == 0:
                 set_cell_shading(cell, LIGHT)
     set_repeat_table_header(table.rows[0])
+    for row in table.rows:
+        prevent_row_split(row)
     set_table_geometry(table, widths)
     p = doc.add_paragraph(); p.paragraph_format.space_after = Pt(2)
 
@@ -462,7 +472,19 @@ Les prototypes exécutables ont confirmé une limite plus étroite : une règle 
     )
     model_text = model_text.replace(
         "## 16. Cycle de maintenance constitutionnelle",
-        """### Charge constitutionnelle et polycrise
+        """### Révision CCT POL 1 1 Marges et contre champ
+
+La CCT ne traite plus la résilience comme la promesse de prédire parfaitement un choc. Elle finance des marges distribuées : eau, énergie, soins, semences, alimentation, pièces de rechange, communications, voies analogiques et capacités locales de réparation. Une réserve n’est réelle que si elle est accessible, entretenue, exercée et indépendante de la panne qui frappe le système principal.
+
+Avant toute décision majeure, urgente ou irréversible, une instruction doit produire son contre-champ : personnes et écosystèmes absents, limites de détection, bénéficiaires et porteurs de coûts, détenteurs de veto, condition de renversement et capacité de recours des personnes affectées. Une identité collective ne remplace jamais la preuve d’un mécanisme de pouvoir, de responsabilité ou de traitement différentiel.
+
+La pluralité économique est bornée par une direction explicite. Le vital est démarchandisé ; les formes résiduelles de marché ou de propriété ne sont acceptables que si elles ne conditionnent ni un droit vital ni un plafond écologique, ne donnent pas un pouvoir proportionnel à la richesse, et sont retirées lorsqu’elles reconstituent rente, héritage concentré, monopole ou veto. Une coopérative qui reproduit ces capacités échoue au même test qu’une entreprise privée.
+
+Dans une crise, la priorité va aux situations où vulnérabilité, fenêtre d’action, irréversibilité, capacité locale d’exécution et possibilité de préserver une marge se rencontrent. Les travailleurs qui maintiennent eau, santé, alimentation, énergie, transport, communications et secours doivent disposer de protection, relève et droit de refus ; leur perte de capacité mettrait beaucoup d’autres personnes en danger. Les zones humides, bassins versants et autres amortisseurs écologiques existants bénéficient d’une présomption de protection plutôt que d’une promesse de restauration après dommage.
+
+Le cas réel El Niño 2026–2027 au Mozambique rend cette doctrine concrète sans prétendre valider la CCT : les sources publiques confirment les déclencheurs d’action anticipée, la nécessité de protéger eau, semences, actifs et continuité, mais elles ne permettent pas encore une allocation chiffrée par district ni une évaluation après choc. La CCT y désigne les responsabilités existantes et les rend contestables ; elle ne prétend pas se substituer aux institutions mozambicaines.
+
+### Charge constitutionnelle et polycrise
 
 La CCT doit être éprouvée lorsque besoins vitaux, plafond écologique, droits, trace et restitution sollicitent les mêmes ressources dégradées. Les rapports secondaires et les formalités réversibles peuvent alors être délestés ; accès vital, traçabilité minimale, recours contre coercition, plafond critique et preuve de restitution ne le peuvent pas. Une procédure qui n’ajoute aucune protection observable face à une solution plus simple doit être fusionnée ou retirée.
 

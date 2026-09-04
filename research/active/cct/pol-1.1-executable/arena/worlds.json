@@ -1,0 +1,82 @@
+{
+  "id": "CCT-POL-1.1-ARENA-001-WORLDS",
+  "provenance": "internal_synthetic",
+  "axes": ["vital_access", "equal_treatment", "ecological_buffer", "anti_domination", "repair_capacity"],
+  "competitors": ["CCT-POL-1.1", "social-market-regulation", "central-emergency-administration"],
+  "common_action_budget": 3,
+  "scalar_winner_forbidden": true,
+  "worlds": [
+    {
+      "id": "climate-shock-margin",
+      "initial": [3, 3, 3, 3, 3],
+      "threshold": [1, 1, 1, 1, 1],
+      "events": [[-2, 0, 0, 0, -1], [-1, 0, -2, 0, -1]],
+      "actions": {
+        "distributed_reserve": {"cost": 2, "effect": [2, 0, 0, 0, 1]},
+        "wetland_guard": {"cost": 1, "effect": [0, 0, 2, 0, 1]},
+        "grid_restore": {"cost": 2, "effect": [3, 0, -1, 0, 0]},
+        "emergency_pump": {"cost": 1, "effect": [1, 0, -1, 0, 0]},
+        "cash_import": {"cost": 2, "effect": [2, 0, 0, 0, -1]},
+        "private_rebuild": {"cost": 1, "effect": [1, 0, -1, -1, 0]}
+      },
+      "plans": {
+        "CCT-POL-1.1": ["distributed_reserve", "wetland_guard"],
+        "social-market-regulation": ["cash_import", "private_rebuild"],
+        "central-emergency-administration": ["grid_restore", "emergency_pump"]
+      }
+    },
+    {
+      "id": "economic-reconcentration",
+      "initial": [3, 3, 3, 3, 3],
+      "threshold": [1, 1, 1, 1, 1],
+      "events": [[0, 0, 0, -2, -1], [-1, 0, 0, -1, 0]],
+      "actions": {
+        "cooperative_breakup_with_continuity": {"cost": 3, "effect": [1, 0, 0, 3, 1]},
+        "progressive_tax_and_audit": {"cost": 2, "effect": [0, 0, 0, 1, 0]},
+        "credit_guarantee": {"cost": 1, "effect": [1, 0, 0, 0, 1]},
+        "administrative_takeover": {"cost": 3, "effect": [1, 0, 0, 2, -1]},
+        "price_cap": {"cost": 1, "effect": [1, 0, 0, 0, 0]}
+      },
+      "plans": {
+        "CCT-POL-1.1": ["cooperative_breakup_with_continuity"],
+        "social-market-regulation": ["progressive_tax_and_audit", "credit_guarantee"],
+        "central-emergency-administration": ["administrative_takeover"]
+      }
+    },
+    {
+      "id": "administrative-discrimination",
+      "initial": [3, 3, 3, 3, 3],
+      "threshold": [1, 1, 1, 1, 1],
+      "events": [[-1, -2, 0, -1, -1], [0, -1, 0, 0, -1]],
+      "actions": {
+        "anonymized_disparity_audit_and_recourse": {"cost": 3, "effect": [1, 3, 0, 1, 1]},
+        "processing_centralization": {"cost": 2, "effect": [1, 2, 0, -1, 0]},
+        "public_nominal_registry": {"cost": 1, "effect": [0, 1, 0, -1, -2]},
+        "caseworker_support": {"cost": 1, "effect": [1, 1, 0, 0, 1]}
+      },
+      "plans": {
+        "CCT-POL-1.1": ["anonymized_disparity_audit_and_recourse"],
+        "social-market-regulation": ["caseworker_support", "processing_centralization"],
+        "central-emergency-administration": ["processing_centralization", "public_nominal_registry"]
+      }
+    },
+    {
+      "id": "logistics-common-failure",
+      "initial": [3, 3, 3, 3, 3],
+      "threshold": [1, 1, 1, 1, 1],
+      "events": [[-2, 0, -1, 0, -2], [-2, 0, 0, 0, -1]],
+      "actions": {
+        "map_and_split_dependencies": {"cost": 2, "effect": [1, 0, 0, 1, 2]},
+        "local_repair_cell": {"cost": 1, "effect": [1, 0, 0, 0, 2]},
+        "single_route_rationing": {"cost": 2, "effect": [3, 0, 0, -1, 0]},
+        "emergency_procurement": {"cost": 1, "effect": [2, 0, -1, 0, -1]},
+        "supplier_subsidy": {"cost": 2, "effect": [1, 0, 0, -1, 0]}
+      },
+      "plans": {
+        "CCT-POL-1.1": ["map_and_split_dependencies", "local_repair_cell"],
+        "social-market-regulation": ["supplier_subsidy", "emergency_procurement"],
+        "central-emergency-administration": ["single_route_rationing", "emergency_procurement"]
+      }
+    }
+  ]
+}

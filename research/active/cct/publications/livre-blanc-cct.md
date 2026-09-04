@@ -6,13 +6,15 @@ La réponse proposée n’est ni un gouvernement unique de la Terre, ni une addi
 
 Ce livre blanc ne promet pas qu’une telle architecture fonctionne déjà. Il formule des garanties à construire, décrit des mécanismes candidats et conserve les situations où ils échouent. Les tests synthétiques et logiciels ont servi à découvrir des dépendances, des coûts et des contradictions ; ils ne démontrent ni une validité territoriale ni une supériorité générale.
 
-> **Orientation.** Garantir à chacun les conditions matérielles d’une vie libre ; protéger les limites écologiques communes ; distribuer l’initiative, l’exécution, le contrôle, le recours et l’arrêt de tout pouvoir.
+> **Orientation.** Garantir à chacun les conditions matérielles d’une vie libre ; protéger les limites écologiques communes ; distribuer l’initiative, l’exécution, le contrôle, le recours et l’arrêt de tout pouvoir. Chercher systématiquement le contre-champ des décisions, et juger leur réussite à la capacité réellement préservée plutôt qu’à l’argent dépensé ou aux intentions déclarées.
 
 # Lire ce texte
 
 Les premières parties décrivent l’architecture politique et économique. Les suivantes exposent les protections contre la concentration du pouvoir, les conditions de transition et ce que les mises à l’épreuve ont réellement appris. La dernière partie fixe les questions qui restent ouvertes et les conditions dans lesquelles la proposition devrait être révisée ou abandonnée.
 
 Les mots *garantie*, *droit* et *protection* désignent ici des exigences normatives. Un droit n’est effectif que lorsqu’une personne peut l’exercer dans des conditions dégradées, obtenir une réponse, contester un refus et faire réparer une perte. Une règle écrite, un prototype logiciel ou une institution déclarée ne suffisent pas.
+
+La version actuelle rend aussi explicite une règle d’attribution : aucun pouvoir, privilège ou dommage ne peut être imputé à une identité collective. Il faut démontrer un mécanisme — propriété, financement, décision, contrôle d’une ressource, acte ou effet — et conserver les limites de la preuve.
 
 ## 1. Une politique des interdépendances
 

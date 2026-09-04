@@ -1,0 +1,68 @@
+{
+  "document_kind": "cct_political_revision_contract",
+  "id": "CCT-POL-1.1-CANDIDATE-001",
+  "version": "1.1-candidate",
+  "date": "2026-09-04",
+  "source": "../CCT-POL-1.1-apports-2026-09-04.md",
+  "lifecycle": {
+    "state": "written_and_statically_validated",
+    "not_established": [
+      "authorized",
+      "deployed",
+      "institutional_effect",
+      "post_shock_observation",
+      "external_robustness"
+    ]
+  },
+  "non_negotiable_obligations": {
+    "counterview": {
+      "required_fields": ["absent_affected", "detection_limits", "beneficiaries_and_cost_bearers", "reversal_condition", "affected_agency"],
+      "omission_rule": "unjustified_omission_is_suspendable"
+    },
+    "attribution": {
+      "required_mechanisms": ["effective_ownership", "financing", "decision_role", "resource_control", "order_or_act", "measurable_effect"],
+      "identity_proxy_forbidden": true,
+      "legal_term_requires_criteria": true
+    },
+    "economic_direction": {
+      "vital_decommodified": true,
+      "residual_market_scope": "nonessential_only",
+      "market_conditions": ["no_vital_access_condition", "no_wealth_proportional_political_power", "externalities_attributed_and_repairable", "worker_user_territory_governance", "socialize_on_durable_rent_or_veto"],
+      "inheritance_reconstitution_forbidden": true
+    },
+    "margins": {
+      "distributed_reserves_required": true,
+      "single_common_failure_insufficient": true,
+      "essential_worker_protection_required": true,
+      "local_window_and_irreversibility_required": true
+    },
+    "living_systems": {
+      "existing_critical_buffers_presumption": "protect",
+      "destruction_requires_absence_of_alternative_and_suspensive_recourse": true
+    },
+    "equal_treatment_data": {
+      "eligibility_distinct_from_individual_outcome": true,
+      "aggregated_anonymized_statistics_required": true,
+      "nominal_lists_for_comparative_claims_forbidden": true,
+      "disparity_requires_adversarial_inquiry": true
+    },
+    "success": {
+      "spending_is_not_success": true,
+      "required_observables": ["vital_access_after_shock", "livelihoods_retained", "ecosystems_preserved", "recourse_used", "repair_received"],
+      "single_scalar_optimization_forbidden": true
+    }
+  },
+  "withdrawal_conditions": [
+    "Residual property or market mechanisms repeatedly recreate rent, inherited concentration, productive control or essential veto.",
+    "A reserve exists in accounts but is inaccessible under shock or shares a critical failure with its supposed backup.",
+    "A decision attributes privilege or guilt to collective identity rather than demonstrated mechanism and evidence.",
+    "A critical ecological buffer is destroyed while a feasible protective alternative exists.",
+    "Affected people cannot contest their category, evidence or exposure decision."
+  ],
+  "future_arena": {
+    "required_scenarios": ["climate_shock", "economic_reconcentration", "administrative_discrimination", "logistics_failure"],
+    "matched_comparators": true,
+    "non_compensable_axes": ["vital_access", "equal_treatment", "ecological_buffer", "anti_domination", "repair_capacity"],
+    "pre_registered_reversal_conditions": true
+  }
+}

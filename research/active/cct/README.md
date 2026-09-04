@@ -4,7 +4,9 @@ La Confédération des communs terrestres est une recherche institutionnelle act
 
 ## Contenu propre à la recherche
 
-- [`modele-gouvernance-ecosocialiste-libertaire.md`](modele-gouvernance-ecosocialiste-libertaire.md) : proposition institutionnelle courante ;
+- [`modele-gouvernance-ecosocialiste-libertaire.md`](modele-gouvernance-ecosocialiste-libertaire.md) : modèle politique v0.13, conservé gelé comme source historique ;
+- [`CCT-POL-1.1-apports-2026-09-04.md`](CCT-POL-1.1-apports-2026-09-04.md) : révision politique candidate courante : contre-champ, attribution rigoureuse, direction post-capitaliste, marges distribuées et test des effets réels ;
+- [`pol-1.1-executable/`](pol-1.1-executable/) : contrat statique et mutations négatives de cette révision ;
 - [`audit-adversarial-7-cycles.md`](audit-adversarial-7-cycles.md) : histoire des reconstructions adversariales ;
 - [`executable/`](executable/) : prototype CCT local ;
 - [`governance-lab/`](governance-lab/) : configurations, modèles et résultats CCT ;

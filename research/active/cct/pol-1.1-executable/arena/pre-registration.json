@@ -1,0 +1,73 @@
+{
+  "id": "CCT-POL-1.1-ARENA-001",
+  "version": "pre-registered-internal-synthetic",
+  "date": "2026-09-04",
+  "lifecycle": {
+    "state": "written_and_statically_validated",
+    "admission_ceiling": "internal_development_only",
+    "not_established": ["independent_authorship", "external_robustness", "institutional_effect", "promotion"]
+  },
+  "fairness": {
+    "matched_public_information": true,
+    "matched_action_budget": true,
+    "matched_action_ontology": true,
+    "blind_identity_until_vector_verdict": true,
+    "scalar_winner_forbidden": true,
+    "old_observed_worlds_development_regression_only": true
+  },
+  "axes": ["vital_access", "equal_treatment", "ecological_buffer", "anti_domination", "repair_capacity"],
+  "competitors": [
+    {"id": "CCT-POL-1.1", "kind": "candidate"},
+    {"id": "social-market-regulation", "kind": "serious_comparator"},
+    {"id": "central-emergency-administration", "kind": "serious_comparator"}
+  ],
+  "scenarios": [
+    {
+      "id": "climate-shock-margin",
+      "type": "climate_shock",
+      "author_provenance": "internal_synthetic",
+      "live_claim": "A drought-to-flood transition threatens water access, seed stocks, a clinic and a wetland that buffers the flood.",
+      "discriminating_question": "Can a policy preserve vital access and the wetland without hiding a single common failure or shifting the burden to exposed workers?",
+      "required_observables": ["days_of_water_access", "clinic_continuity", "seed_retention", "wetland_area_after_shock", "worker_heat_exposure", "reserve_failure_domains"],
+      "rival_favorable_prediction": "A centralized emergency administrator may restore clinic power faster when local redundancy is initially incomplete.",
+      "reversal_condition": "Withdraw the margin rule if distributed reserves repeatedly delay vital restoration without reducing common-failure loss."
+    },
+    {
+      "id": "economic-reconcentration",
+      "type": "economic_reconcentration",
+      "author_provenance": "internal_synthetic",
+      "live_claim": "A worker cooperative network acquires suppliers, credit channels and a data platform, then converts democratic status into a durable investment veto.",
+      "discriminating_question": "Can the CCT distinguish cooperative legal form from actual concentration and remove the veto without destroying livelihood continuity?",
+      "required_observables": ["effective_control", "rents_collected", "worker_and_user_governance", "inheritance_transfer", "continuity_of_essential_service", "recourse_outcomes"],
+      "rival_favorable_prediction": "A social-market regulator may retain more short-run investment capacity if socialization disrupts supplier coordination.",
+      "reversal_condition": "Withdraw the socialization trigger if it changes titles but does not reduce effective control, rents or vetoes."
+    },
+    {
+      "id": "administrative-discrimination",
+      "type": "administrative_discrimination",
+      "author_provenance": "internal_synthetic",
+      "live_claim": "A formally neutral eligibility procedure grants temporary continuity protections through organizations, but access and renewal differ across groups for administrative reasons.",
+      "discriminating_question": "Can a policy detect and repair a disparity without converting group identity into proof of collective guilt or exposing people through nominal lists?",
+      "required_observables": ["eligible_organizations", "individual_applications", "approvals", "renewals", "refusals_by_reason", "appeals", "privacy_breaches"],
+      "rival_favorable_prediction": "A centralized administrator may equalize processing times faster, while a decentralised process may better preserve confidential recourse.",
+      "reversal_condition": "Withdraw the data rule if its aggregation prevents detection of a material disparity or if disclosure creates a predictable safety harm."
+    },
+    {
+      "id": "logistics-common-failure",
+      "type": "logistics_failure",
+      "author_provenance": "internal_synthetic",
+      "live_claim": "Food, medicine, power and communications appear redundant but depend on the same port, fuel supplier and scheduling system.",
+      "discriminating_question": "Can a policy expose the shared dependency, preserve minimum access and create a repair path before the outage becomes irreversible?",
+      "required_observables": ["distinct_failure_domains", "minimum_food_and_medicine_access", "outage_duration", "local_repair_capacity", "unmet_need_distribution", "repair_receipts"],
+      "rival_favorable_prediction": "A centralized emergency administrator may ration a single remaining route more quickly than a distributed coordination system.",
+      "reversal_condition": "Withdraw the distributed-reserve rule if its material cost worsens shortages without improving access or recovery under matched constraints."
+    }
+  ],
+  "execution_requirements": [
+    "Freeze world, action ontology, budgets and vector threshold before contender execution.",
+    "Keep all five axes separate; a gain on one does not erase a breach on another.",
+    "Record refusal, inaction, workload and displaced harms as outcomes.",
+    "Reveal contender identities only after vector verdict is written.",
+    "A result in this arena may trigger revision or removal, never promotion."
+  ]
+}

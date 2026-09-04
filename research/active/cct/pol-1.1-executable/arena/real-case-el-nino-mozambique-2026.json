@@ -1,0 +1,14 @@
+{
+  "id": "CCT-REAL-ELNINO-MOZ-2026-001",
+  "status": "evidence_grounded_not_observed",
+  "scenario_compilation_provenance": "cct_internal_from_external_primary_sources",
+  "scope": "Mozambique, ten districts with anticipatory-action triggers reported reached in July 2026; season 2026-2027",
+  "decision": "Prioritize anticipatory protection of household assets, water, agricultural inputs, livestock, essential workers and critical ecological buffers before El Nino impacts peak.",
+  "sources": [
+    {"publisher": "FAO Mozambique / WFP", "date": "2026-07-29", "url": "https://www.fao.org/mozambique/news/details/mozambique-strengthens-anticipatory-action-ahead-of-a-record-el-ni%C3%B1o-with-support-from-fao-and-wfp/en", "supports": ["ten districts triggered", "drought south and centre", "flood north", "national framework", "priority anticipatory actions", "regional funding gap"]},
+    {"publisher": "World Meteorological Organization", "date": "2026-09-03", "url": "https://wmo.int/fr/news/media-centre/el-nino-devrait-atteindre-une-intensite-tres-forte-augmentant-les-risques-de-phenomenes", "supports": ["El Nino established", "near-100 persistence through February 2027", "very strong expected", "local impacts not mechanically determined"]}
+  ],
+  "axes": ["vital_access", "equal_treatment", "ecological_buffer", "anti_domination", "repair_capacity"],
+  "required_next_data": ["official confirmation of district identifiers and activation levels", "local triggers", "baseline capacities", "disbursement and delivery records", "safe disaggregated outcome data", "post-shock observations"],
+  "promotion_forbidden": true
+}
