@@ -30,9 +30,15 @@ et conditions de renversement sous trois niveaux de détail.
 L'évaluation B pré-enregistrée des requêtes produit a rendu et vérifié 54
 restitutions à partir de 18 paquets fictifs scellés, sans routeur ni modèle.
 Son statut est `pipeline_verified` dans cette portée ; voir
-[`reports/reobservation/2026-09-05-product-query-evaluation-b.md`](reports/reobservation/2026-09-05-product-query-evaluation-b.md).
-L'évaluation A du Corpus Open Model demeure suspendue faute de routeur
-multilingue avec inventaire et attentes de route gelés.
+[`reports/reobservation/2026-09-05-product-query-evaluation-b.md`](../reports/reobservation/2026-09-05-product-query-evaluation-b.md).
+L'évaluation A du Corpus Open Model est désormais `pipeline_verified` sur son
+unique exécution des 18 requêtes synthétiques pré-enregistrées ; voir le
+[rapport scellé](../../corpus-open-model/reports/2026-09-05-product-query-evaluation-a-pipeline-verified.md).
+Ce statut vaut seulement pour la baseline lexicale fermée aux six catégories et
+pour les sorties `route`, `scope_limit` et `withdrawal_condition`. Il n'établit
+ni compréhension des langues, ni robustesse générale, ni réhabilitation du
+routeur neuronal, ni intégration produit. Le jeu est clos : aucune relance ni
+réglage à partir de ses résultats n'est autorisé.
 
 Le skill candidat `native_surface/corpus-native-conversation/` orchestre dans
 Codex la question brute, le routage, l'analyse, le scellement et la restitution.

@@ -141,7 +141,7 @@ python3 research/active/corpus-open-model/src/temporal_episode_readiness.py
 ## Campagne de requêtes produit v0.1
 
 Le protocole pré-enregistré
-[`research/PRODUCT_QUERY_EVALUATION_PROTOCOL_v0.1.md`](../../../PRODUCT_QUERY_EVALUATION_PROTOCOL_v0.1.md)
+[`research/PRODUCT_QUERY_EVALUATION_PROTOCOL_v0.1.md`](../../PRODUCT_QUERY_EVALUATION_PROTOCOL_v0.1.md)
 sépare le noyau de routage (A) de la surface de restitution (B). Son lanceur
 scelle l'état du routeur disponible, mais bloque A lorsque ce routeur est déjà
 écarté par sa comparaison interne ; il ne fabrique alors aucune sortie de
