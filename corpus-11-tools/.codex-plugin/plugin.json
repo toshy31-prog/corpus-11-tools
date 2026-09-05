@@ -1,7 +1,7 @@
 {
   "name": "corpus-11-tools",
   "version": "1.6.0+codex.20260905213607",
-  "description": "Corpus 11.x release candidate with bounded routing, explicit release continuity, 49 capability wrappers, provenance, generic experiment labs including independent replication, and enforced separation from project research.",
+  "description": "Corpus 11.x locally tagged release with bounded routing, explicit release continuity, 49 capability wrappers, provenance, generic experiment labs including independent replication, and enforced separation from project research.",
   "author": {
     "name": "toshy31-prog"
   },
@@ -21,7 +21,7 @@
     "displayName": "Corpus 11 Tools",
     "developerName": "toshy31-prog",
     "shortDescription": "Living discipline for bounded analysis and audit",
-    "longDescription": "A versioned release candidate implementing Corpus 11.x as one evolving analytical discipline. It routes only relevant capabilities, lets the installed release speak for the current body, preserves lineage, provenance and user agency, and keeps research evidence distinct from active product rules, deployment and general validity.",
+    "longDescription": "A locally tagged versioned release implementing Corpus 11.x as one evolving analytical discipline. It routes only relevant capabilities, lets the installed release speak for the current body, preserves lineage, provenance and user agency, and keeps research evidence distinct from active product rules, deployment and general validity.",
     "category": "Productivity",
     "capabilities": [
       "skills"

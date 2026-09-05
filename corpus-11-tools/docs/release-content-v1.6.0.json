@@ -7,12 +7,12 @@
   ],
   "exclusion_reason": "The attestation cannot contain its own digest without circularity; the annotated Git tag covers the attestation itself.",
   "file_count": 328,
-  "total_bytes": 3987300,
+  "total_bytes": 3987027,
   "files": [
     {
       "path": ".codex-plugin/plugin.json",
-      "bytes": 1397,
-      "sha256": "7c33647fd5bbd19084156dce6098a596afae160131e56f671c34843931242cae"
+      "bytes": 1407,
+      "sha256": "f0d42b09c1d4a54c460a88691b7d89c5c6a43663490f7fe95bb59ab22d85cd53"
     },
     {
       "path": "AGENTS.md",
@@ -21,8 +21,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 13386,
-      "sha256": "0f49cfae1964e60f494c56e8029aed891ad58ef920e811c499646588f3165e77"
+      "bytes": 13111,
+      "sha256": "cd50e2ba61e97d0e498f81cf56d9ff20627774623994d462dace380cbea72bc0"
     },
     {
       "path": "archives/legacy/Atlas_3_0_final.zip",
@@ -156,8 +156,8 @@
     },
     {
       "path": "docs/release-validation-v1.6.0.md",
-      "bytes": 5512,
-      "sha256": "8d4cf209b80c53a9c52ab53cc0c73b854419979226f2e18cc77bb9db4822cb4f"
+      "bytes": 5509,
+      "sha256": "3cbca21083d9e39c1676d061e368e9fee43b048c871377837e8808aed06c4199"
     },
     {
       "path": "docs/research-derived-guard-contract.json",
@@ -171,8 +171,8 @@
     },
     {
       "path": "docs/stability-contract.md",
-      "bytes": 3009,
-      "sha256": "b406f8ef6c77c9a8ea74cc375f8ea2587e0113a23a4c1fca30b4a972e902999b"
+      "bytes": 3029,
+      "sha256": "cf4b5db182cd8e969aab29ac0a64ec72fe872f43697c6b21ade3e4113b98cc61"
     },
     {
       "path": "docs/test-inventory.json",
@@ -801,8 +801,8 @@
     },
     {
       "path": "skills/corpus-11-routing/references/organism-state.json",
-      "bytes": 4693,
-      "sha256": "9fd720541f126dacb745b5469659d0ec8eaa5e133d9519591eb4bc5c9ae49b64"
+      "bytes": 4668,
+      "sha256": "e456ff5901972503880774eb3d5d3925911e55e46b22fe90b4bd357ac641f766"
     },
     {
       "path": "skills/corpus-context-library/SKILL.md",

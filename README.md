@@ -4,7 +4,7 @@ Corpus 11 Tools est un ensemble d’outils pour aider Codex à analyser une ques
 
 ## État actuel
 
-- candidate de release en réparation requise dans le dépôt : **v1.6.0** ;
+- release locale taguée dans le dépôt : **v1.6.0** ;
 - version installée au point de départ : **v1.5.0** ;
 - 58 skills ;
 - 49 capabilities ;
@@ -12,9 +12,9 @@ Corpus 11 Tools est un ensemble d’outils pour aider Codex à analyser une ques
 - 88 relations ;
 - 77 évaluations.
 
-## Candidate v1.6.0 — réparation requise, non publiée, non installée
+## Release locale v1.6.0 — non publiée, non installée
 
-La candidate en réparation prépare le harnais générique de réplication indépendante dans les
+La release locale ajoute le harnais générique de réplication indépendante dans les
 laboratoires Python : paquet gelé, liste blanche, attestations, sorties
 comparables, différences et dépendances communes visibles. Elle ne contient
 aucune règle ou fixture FOE/provenance. Ni projection locale ni Bubblewrap ne
@@ -22,8 +22,8 @@ prouve une indépendance externe : `independence_unknown` demeure obligatoire.
 Bubblewrap reste optionnel, réseau désactivé et sans fallback vers la projection.
 
 La version installée dans cet environnement reste v1.5.0 jusqu’à une
-contre-revue distincte, une autorisation, un tag, une publication, une
-installation et une réobservation séparées.
+autorisation distincte de publication, une installation et une réobservation
+séparées.
 
 ## Ce qui change dans v1.5.0
 
@@ -269,7 +269,7 @@ Cette vue sert d’index aux personnes qui souhaitent retrouver les fichiers cor
 - **Transferts** : seules voies autorisées pour décontextualiser un mécanisme et l’intégrer au produit.
 - **Archives** : sources historiques et recherches clôturées ; leur présence conserve une trace, pas une capacité active.
 
-La candidate v1.6.0 en réparation signifie seulement que le paquet, sa taxonomie, sa documentation,
+La release locale v1.6.0 signifie seulement que le paquet, sa taxonomie, sa documentation,
 sa continuité versionnée, sa frontière avec la recherche et ses tests de
 non-régression sont cohérents sur le périmètre déclaré. Elle ne présume ni son
 installation dans un hôte donné, ni la réobservation de ses capabilities, ni
@@ -303,7 +303,7 @@ Le projet maintient également une **frontière de neutralité** : une séparati
 
 La documentation détaillée du plugin, de son contenu et de ses validations se trouve dans [`corpus-11-tools/README.md`](corpus-11-tools/README.md).
 
-Le détail de la candidate se trouve dans [`CHANGELOG.md`](CHANGELOG.md), son périmètre exact dans le [`contrat de stabilité`](corpus-11-tools/docs/stability-contract.md), ses contrôles dans la [`validation de release`](corpus-11-tools/docs/release-validation-v1.6.0.md) et son contenu exact dans l’[`attestation exhaustive`](corpus-11-tools/docs/release-content-v1.6.0.json). L’[attestation comportementale locale du 2026-08-25](corpus-11-tools/docs/local-behavioral-attestation-2026-08-25.md) reste historique et explicitement bornée : elle ne vaut ni réobservation de v1.5.0, ni validation GitHub, ni disponibilité actuelle de l’API.
+Le détail de la release locale se trouve dans [`CHANGELOG.md`](CHANGELOG.md), son périmètre exact dans le [`contrat de stabilité`](corpus-11-tools/docs/stability-contract.md), ses contrôles dans la [`validation de release`](corpus-11-tools/docs/release-validation-v1.6.0.md) et son contenu exact dans l’[`attestation exhaustive`](corpus-11-tools/docs/release-content-v1.6.0.json). L’[attestation comportementale locale du 2026-08-25](corpus-11-tools/docs/local-behavioral-attestation-2026-08-25.md) reste historique et explicitement bornée : elle ne vaut ni réobservation de v1.5.0, ni validation GitHub, ni disponibilité actuelle de l’API.
 
 La représentation de Corpus comme organisme versionné est définie dans le
 [`contrat d'organisme`](corpus-11-tools/skills/corpus-11-routing/references/organism-contract.md)

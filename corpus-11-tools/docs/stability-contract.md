@@ -1,4 +1,4 @@
-# Contrat de stabilité — candidate v1.6.0
+# Contrat de stabilité v1.6.0 — release locale
 
 ## Ce qui est stabilisé
 
@@ -46,8 +46,8 @@ skills, 49 capabilities, 4 familles, 88 relations et 77 évaluations**. Le
 contrôle `tools/check_docs.py` dérive désormais ces valeurs de
 `docs/inventory.json` et refuse toute divergence dans ce contrat. Les mentions
 de releases antérieures restent historiques ; elles ne redéfinissent pas ce
-candidate v1.6.0.
+release locale v1.6.0.
 
-## Condition de retrait de la candidate
+## Condition de retrait de la release locale
 
-Retirer ou refuser la candidate si l’installation ne reproduit plus l’inventaire, si une catégorie devient ambiguë, si le graphe diverge des dossiers, si un lien courant casse, si une variation d’ordre produit une dérive matérielle inexpliquée sur le jeu d’évaluations déclaré, si le harnais importe une recherche, s’il masque une dépendance ou un écart, s’il transforme projection/isolation locale en indépendance, ou si Bubblewrap replie vers la projection.
+Retirer ou refuser la release locale si l’installation ne reproduit plus l’inventaire, si une catégorie devient ambiguë, si le graphe diverge des dossiers, si un lien courant casse, si une variation d’ordre produit une dérive matérielle inexpliquée sur le jeu d’évaluations déclaré, si le harnais importe une recherche, s’il masque une dépendance ou un écart, s’il transforme projection/isolation locale en indépendance, ou si Bubblewrap replie vers la projection.

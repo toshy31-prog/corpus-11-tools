@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "organism": "Corpus 11",
-  "model_status": "release_candidate_repair_required",
+  "model_status": "released",
   "current_product": {
     "name": "corpus-11-tools",
     "release": "v1.6.0",

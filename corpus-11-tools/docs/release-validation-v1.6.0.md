@@ -1,13 +1,13 @@
-# Validation de release candidate v1.6.0
+# Validation de release locale v1.6.0
 
 ## Périmètre
 
-Cette matrice prépare l'entrée du harnais de réplication indépendante dans le
+Cette matrice valide l'entrée du harnais de réplication indépendante dans le
 produit. Elle couvre l'organe générique, ses exports, documentation et tests,
 sans importer FOE-001, provenance, CCT ou une autre sémantique de recherche.
-La candidate n'est ni taguée, ni publiée, ni installée.
+La release est taguée localement ; elle n'est ni publiée ni installée.
 
-## Matrice attendue avant contre-revue
+## Matrice de la release locale
 
 | Surface | Contrôle | Attendu de la préparation |
 | --- | --- | --- |
@@ -15,7 +15,7 @@ La candidate n'est ni taguée, ni publiée, ni installée.
 | Graphe | `python3 tools/check_graph.py` | PASS |
 | Documentation | `python3 tools/check_docs.py` | PASS |
 | Frontières | `python3 tools/check_boundaries.py` | PASS ; aucun runtime produit ne dépend de `research/` |
-| Contenu candidat | `python3 tools/check_release_content.py` | PASS ; tous les octets de `corpus-11-tools/` concordent avec l'attestation v1.6.0 |
+| Contenu de release | `python3 tools/check_release_content.py` | PASS ; tous les octets de `corpus-11-tools/` concordent avec l'attestation v1.6.0 |
 | Harnais Python | `PYTHONPATH=labs/python python3 labs/python/tests/test_independent_replication.py` | contrôles de contrat, négatifs, Bubblewrap conditionnel et `independence_unknown` |
 | Evals | `python3 tools/check_evals.py` | 77/77 contrats ; 49/49 capabilities couvertes positivement |
 | Métavalidation | `python3 tools/test_validation_guards.py` | mutations adversariales rejetées |
@@ -31,7 +31,7 @@ et limitée à cet hôte.
 
 ## Résultat de réparation observé
 
-Statut du reçu : `release_candidate_prepared`.
+Statut du reçu : `release_local_tagged`.
 
 Les contrôles directs de paquet, frontières, graphe, évaluations, intégrité,
 CI, surface conversationnelle, documentation et laboratoires passent. La suite
@@ -91,7 +91,7 @@ sandbox reste donc la trace applicable pour cette sous-étape.
 
 ## Porte suivante
 
-`release_candidate_prepared` ne vaut ni acceptation, ni tag, ni publication,
-ni installation, ni activation dans le plugin installé v1.5.0. Le manifeste
-est régénéré en dernier puis le contrôle de contenu est rejoué après le commit
-de finalisation. La prochaine décision reste une autorisation distincte.
+`release_local_tagged` ne vaut ni publication, ni installation, ni activation
+dans le plugin installé v1.5.0. Le manifeste est régénéré en dernier et le
+contrôle de contenu est rejoué après le commit de release. La prochaine
+décision reste une autorisation distincte de publication et d’installation.
