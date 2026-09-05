@@ -13,7 +13,7 @@
     {"path": "corpus-11-tools/tools/test_offline_router.py", "git_object": "a97daf895210267760b100b7cc15e62b8a8dd66c", "kind": "blob"},
     {"path": "corpus-11-tools/tools/test_project_yield_gate.py", "git_object": "b9465c90daa1ec5ac895967c2595602dd0531def", "kind": "blob"},
     {"path": "corpus-11-tools/tools/test_router_generalization.py", "git_object": "2ef1dfa175a85a87cbe92ec5c5a0a549306a75b0", "kind": "blob"},
-    {"path": "corpus-11-tools/tools/test_validation_guards.py", "git_object": "e0ae7ccf8e685592dea0fa5a0b0e60d27221425c", "kind": "blob"},
+    {"path": "corpus-11-tools/tools/test_validation_guards.py", "git_object": "986307329ab6c9eee539a368dd71291f2842575d", "kind": "blob"},
     {"path": "research/active/corpus-hypotheses/experiments/memory-erasure-lab/test-simulator.mjs", "git_object": "85eac26b83b8976e3fd35cd9637874154a4a7e84", "kind": "blob"},
     {"path": "research/active/corpus-hypotheses/lab-adapters/governance/tests", "git_object": "e739202ebc6b437a15e0f779abcba27b8cf7dd2b", "kind": "tree"},
     {"path": "research/active/corpus-hypotheses/lab-adapters/tests", "git_object": "8673393a6b9bed09a6c4b8efb8118f53d4d0ae7f", "kind": "tree"},
