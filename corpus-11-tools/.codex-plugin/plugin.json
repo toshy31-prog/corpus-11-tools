@@ -1,7 +1,7 @@
 {
   "name": "corpus-11-tools",
-  "version": "1.6.0+codex.20260905213607",
-  "description": "Corpus 11.x locally tagged release with bounded routing, explicit release continuity, 49 capability wrappers, provenance, generic experiment labs including independent replication, and enforced separation from project research.",
+  "version": "1.6.1+codex.20260906000314",
+  "description": "Corpus 11.x corrective release candidate with bounded routing, explicit release continuity, 49 capability wrappers, provenance, generic experiment labs including independent replication, and enforced separation from project research.",
   "author": {
     "name": "toshy31-prog"
   },

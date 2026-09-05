@@ -1,7 +1,7 @@
 {
   "plugin": "corpus-11-tools",
-  "release": "v1.6.0",
-  "version": "1.6.0+codex.20260905213607",
+  "release": "v1.6.1",
+  "version": "1.6.1+codex.20260906000314",
   "skill_count": 58,
   "capability_skill_count": 49,
   "family_count": 4,

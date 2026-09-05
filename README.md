@@ -4,7 +4,8 @@ Corpus 11 Tools est un ensemble d’outils pour aider Codex à analyser une ques
 
 ## État actuel
 
-- release locale taguée dans le dépôt : **v1.6.0** ;
+- candidate locale corrective : **v1.6.1**, non taguée ;
+- version publiée : **v1.6.0**, non installée après l'échec global ;
 - version installée au point de départ : **v1.5.0** ;
 - 58 skills ;
 - 49 capabilities ;
@@ -12,9 +13,12 @@ Corpus 11 Tools est un ensemble d’outils pour aider Codex à analyser une ques
 - 88 relations ;
 - 77 évaluations.
 
-## Release locale v1.6.0 — non publiée, non installée
+## Candidate locale v1.6.1 — correction des frontières de validation
 
-La release locale ajoute le harnais générique de réplication indépendante dans les
+La candidate corrige la collecte Python, les attestations, les liens distribués
+et le gel CCT v013. Elle ne modifie ni le harnais, ni FOE-001, ni provenance.
+
+La release v1.6.0 a ajouté le harnais générique de réplication indépendante dans les
 laboratoires Python : paquet gelé, liste blanche, attestations, sorties
 comparables, différences et dépendances communes visibles. Elle ne contient
 aucune règle ou fixture FOE/provenance. Ni projection locale ni Bubblewrap ne
@@ -303,7 +307,7 @@ Le projet maintient également une **frontière de neutralité** : une séparati
 
 La documentation détaillée du plugin, de son contenu et de ses validations se trouve dans [`corpus-11-tools/README.md`](corpus-11-tools/README.md).
 
-Le détail de la release locale se trouve dans [`CHANGELOG.md`](CHANGELOG.md), son périmètre exact dans le [`contrat de stabilité`](corpus-11-tools/docs/stability-contract.md), ses contrôles dans la [`validation de release`](corpus-11-tools/docs/release-validation-v1.6.0.md) et son contenu exact dans l’[`attestation exhaustive`](corpus-11-tools/docs/release-content-v1.6.0.json). L’[attestation comportementale locale du 2026-08-25](corpus-11-tools/docs/local-behavioral-attestation-2026-08-25.md) reste historique et explicitement bornée : elle ne vaut ni réobservation de v1.5.0, ni validation GitHub, ni disponibilité actuelle de l’API.
+Le détail de la candidate se trouve dans [`CHANGELOG.md`](CHANGELOG.md), sa validation dans [`release-validation-v1.6.1.md`](corpus-11-tools/docs/release-validation-v1.6.1.md) et son contenu dans [`release-content-v1.6.1.json`](corpus-11-tools/docs/release-content-v1.6.1.json).
 
 La représentation de Corpus comme organisme versionné est définie dans le
 [`contrat d'organisme`](corpus-11-tools/skills/corpus-11-routing/references/organism-contract.md)

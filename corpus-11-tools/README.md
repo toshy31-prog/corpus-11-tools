@@ -15,7 +15,8 @@ ni autonomie au plugin. Voir
 
 ## État actuel
 
-- release locale taguée : **v1.6.0** ;
+- candidate locale corrective : **v1.6.1**, non taguée ;
+- release publiée : **v1.6.0**, non installée après l'échec global ;
 - version installée dans l’environnement de départ : **v1.5.0** ;
 - 58 skills ;
 - 49 capabilities ;
@@ -23,7 +24,13 @@ ni autonomie au plugin. Voir
 - 88 relations ;
 - 77 évaluations.
 
-## Changement public de v1.6.0 — release locale taguée
+## Candidate v1.6.1 — correction des frontières de validation
+
+v1.6.1 corrige la collecte Python, les attestations, les liens distribués et le
+gel CCT v013. Elle ne modifie ni le harnais de réplication, ni ses limites ;
+elle n'est ni taguée, ni publiée, ni installée.
+
+## Changement public de v1.6.0 — release publiée
 
 v1.6.0 ajoute `corpus_labs.independent_replication`, un organe générique qui
 compare une référence et une soumission séparée à partir d’un paquet gelé,
@@ -155,9 +162,9 @@ déployée.
 
 ## Statut
 
-La release locale `v1.6.0` contient 58 skills, 49 capabilities, 4 familles, 88 relations et 77 évaluations. Elle ajoute un laboratoire, pas une capability ni une règle analytique. Son tag local ne présume ni publication ni installation dans un hôte donné. `open-experiment-arena` reste une procédure expérimentale candidate : ses tests synthétiques n’établissent ni scénario extérieur indépendant, ni gain de capability, ni usage de terrain. Les 31 capabilities natives restent `candidate_unvalidated`, les neuf facultés récupérées `recovered_candidate_unvalidated` et les neuf nouveaux outils `design_candidate_unvalidated`.
+La candidate `v1.6.1` conserve 58 skills, 49 capabilities, 4 familles, 88 relations et 77 évaluations. Elle corrige des frontières de validation, pas une capability ni une règle analytique. `open-experiment-arena` reste une procédure expérimentale candidate : ses tests synthétiques n’établissent ni scénario extérieur indépendant, ni gain de capability, ni usage de terrain.
 
-Le périmètre et les conditions de retrait de cette release locale sont définis dans [`docs/stability-contract.md`](docs/stability-contract.md), la matrice de validation dans [`docs/release-validation-v1.6.0.md`](docs/release-validation-v1.6.0.md), et l'attestation octet par octet dans [`docs/release-content-v1.6.0.json`](docs/release-content-v1.6.0.json).
+Le périmètre est défini dans [`docs/stability-contract.md`](docs/stability-contract.md), la matrice dans [`docs/release-validation-v1.6.1.md`](docs/release-validation-v1.6.1.md), et l'attestation dans [`docs/release-content-v1.6.1.json`](docs/release-content-v1.6.1.json).
 
 Les lacunes historiques restent documentées dans `docs/legacy-loss-audit.md` et `archives/legacy/STATUS.md` : Atlas 2.7, Corpus 9.8, Corpus 10.2, la release 10.4 complète et la source éditable du manuel n’ont pas été retrouvés ni reconstruits par supposition.
 

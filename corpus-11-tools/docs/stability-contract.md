@@ -1,4 +1,4 @@
-# Contrat de stabilité v1.6.0 — release locale
+# Contrat de stabilité v1.6.1 — candidate corrective locale
 
 ## Ce qui est stabilisé
 
@@ -11,10 +11,9 @@
 - contrat d'organisme, état de lignée et frontières entre corps actif, mémoire,
   laboratoires, recherches et transferts ;
 - contenu exact du plugin attesté octet par octet dans
-  `release-content-v1.6.0.json`, hors auto-référence explicitement déclarée ;
-- harnais de réplication indépendante générique : paquet gelé, entrées
-  autorisées, attestations, sorties comparables et dépendances communes
-  visibles, sans sémantique FOE ou provenance.
+  `release-content-v1.6.1.json`, hors auto-référence explicitement déclarée ;
+- frontières de validation publiées : collecte Python bornée au produit,
+  attestations d'identité, liens distribués et gel CCT v013 cohérents.
 
 ## Ce qui ne l’est pas par cette release
 
@@ -46,7 +45,7 @@ skills, 49 capabilities, 4 familles, 88 relations et 77 évaluations**. Le
 contrôle `tools/check_docs.py` dérive désormais ces valeurs de
 `docs/inventory.json` et refuse toute divergence dans ce contrat. Les mentions
 de releases antérieures restent historiques ; elles ne redéfinissent pas ce
-release locale v1.6.0.
+candidate corrective v1.6.1.
 
 ## Condition de retrait de la release locale
 
