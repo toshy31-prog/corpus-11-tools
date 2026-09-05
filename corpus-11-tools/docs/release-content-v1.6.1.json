@@ -7,7 +7,7 @@
   ],
   "exclusion_reason": "The attestation cannot contain its own digest without circularity; the annotated Git tag covers the attestation itself.",
   "file_count": 331,
-  "total_bytes": 4049018,
+  "total_bytes": 4049050,
   "files": [
     {
       "path": ".codex-plugin/plugin.json",
@@ -21,8 +21,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 13132,
-      "sha256": "686171e18df9dc94abe9aaa1d0a4e2fd2c7b98332798852c1cd35ebf032df7f6"
+      "bytes": 13146,
+      "sha256": "151637b5973da3e5e277027766787004fc2b86981454db26ef563a6edcb73a42"
     },
     {
       "path": "archives/legacy/Atlas_3_0_final.zip",
@@ -136,8 +136,8 @@
     },
     {
       "path": "docs/release-candidate-v1.6.1-preparation.md",
-      "bytes": 902,
-      "sha256": "6c5f002a4864b27d062b1864ac9cd6b8e653f96a1f16fcd3a84648e9a102b194"
+      "bytes": 898,
+      "sha256": "e2e1de2249265f0ad63ed523b5b3cef404af324986ad20b9bce920e14dbd76a3"
     },
     {
       "path": "docs/release-content-v1.5.0.json",
@@ -171,8 +171,8 @@
     },
     {
       "path": "docs/release-validation-v1.6.1.md",
-      "bytes": 1120,
-      "sha256": "93a5793d45b4319ad822c70ad525f3909385f174aa1fdbc9adb925068812e931"
+      "bytes": 1144,
+      "sha256": "f8bfd3280baef1fe708720e21830f7b24816008e85f2e87f81be8a0998ffad28"
     },
     {
       "path": "docs/research-derived-guard-contract.json",
@@ -186,8 +186,8 @@
     },
     {
       "path": "docs/stability-contract.md",
-      "bytes": 2999,
-      "sha256": "1e008bafa91c64ad4a7197d6fb068de1e7dc9840401ca7704927252b99a98ff1"
+      "bytes": 2997,
+      "sha256": "32fa9485b6d30d732f10d01de5a0cd2be93b74aafbe9c4eff6529d7a924e6efe"
     },
     {
       "path": "docs/test-inventory.json",

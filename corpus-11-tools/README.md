@@ -15,7 +15,7 @@ ni autonomie au plugin. Voir
 
 ## État actuel
 
-- candidate locale corrective : **v1.6.1**, non taguée ;
+- release locale préparée : **v1.6.1**, non taguée ;
 - release publiée : **v1.6.0**, non installée après l'échec global ;
 - version installée dans l’environnement de départ : **v1.5.0** ;
 - 58 skills ;
@@ -24,7 +24,7 @@ ni autonomie au plugin. Voir
 - 88 relations ;
 - 77 évaluations.
 
-## Candidate v1.6.1 — correction des frontières de validation
+## Release locale préparée v1.6.1 — correction des frontières de validation
 
 v1.6.1 corrige la collecte Python, les attestations, les liens distribués et le
 gel CCT v013. Elle ne modifie ni le harnais de réplication, ni ses limites ;

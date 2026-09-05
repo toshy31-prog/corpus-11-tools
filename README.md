@@ -4,7 +4,7 @@ Corpus 11 Tools est un ensemble d’outils pour aider Codex à analyser une ques
 
 ## État actuel
 
-- candidate locale corrective : **v1.6.1**, non taguée ;
+- release locale préparée : **v1.6.1**, non taguée ;
 - version publiée : **v1.6.0**, non installée après l'échec global ;
 - version installée au point de départ : **v1.5.0** ;
 - 58 skills ;
@@ -13,7 +13,7 @@ Corpus 11 Tools est un ensemble d’outils pour aider Codex à analyser une ques
 - 88 relations ;
 - 77 évaluations.
 
-## Candidate locale v1.6.1 — correction des frontières de validation
+## Release locale préparée v1.6.1 — correction des frontières de validation
 
 La candidate corrige la collecte Python, les attestations, les liens distribués
 et le gel CCT v013. Elle ne modifie ni le harnais, ni FOE-001, ni provenance.

@@ -1,6 +1,6 @@
 # Comparaison fermée — candidate v1.6.1 depuis `65fa6f2f`
 
-Statut : `release_candidate_prepared`.
+Statut : `release_local_prepared`.
 
 Les treize chemins de métadonnées sont :
 

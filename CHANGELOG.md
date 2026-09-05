@@ -4,7 +4,7 @@
 
 ### v1.6.1 — correction des frontières de validation publiées
 
-- candidate corrective sans nouvelle capability ni modification du harnais ;
+- release locale préparée, sans nouvelle capability ni modification du harnais ;
 - collecte Python bornée au produit, attestations et liens réalignés, modèle CCT
   restauré au gel v013 ;
 - non taguée, non publiée et non installée.

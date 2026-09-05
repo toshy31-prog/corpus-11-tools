@@ -1,4 +1,4 @@
-# Contrat de stabilité v1.6.1 — candidate corrective locale
+# Contrat de stabilité v1.6.1 — release locale préparée
 
 ## Ce qui est stabilisé
 

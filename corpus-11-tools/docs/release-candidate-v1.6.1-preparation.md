@@ -1,6 +1,6 @@
 # Reçu de préparation — release candidate v1.6.1
 
-Statut : `release_candidate_prepared`.
+Statut : `release_local_prepared`.
 
 La candidate corrige uniquement les frontières de validation publiées de
 v1.6.0 : collecte Python, attestations, liens distribués et gel CCT v013. Elle

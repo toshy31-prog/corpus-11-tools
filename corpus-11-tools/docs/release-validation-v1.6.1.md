@@ -1,4 +1,4 @@
-# Validation de release candidate v1.6.1
+# Validation de release locale préparée v1.6.1
 
 | Surface | Contrôle | Attendu |
 | --- | --- | --- |
@@ -12,5 +12,5 @@
 | Installation | clean-room | requiert autorisation distincte ; non exécutée avant elle |
 | Identité taguée | identité et organisme | `not_executable_before_tag` |
 
-La candidate n'est ni taguée, ni publiée, ni installée. Le harnais est inchangé
+La release locale préparée n'est ni taguée, ni publiée, ni installée. Le harnais est inchangé
 et `independence_unknown` demeure obligatoire.
