@@ -1,0 +1,20 @@
+{
+  "analysis": {
+    "critical_dependencies": [
+      "fixture-only"
+    ],
+    "material_conclusion": "Schlussfolgerung B-D3-de. Geltungsbereich: fiktiver Fall D3, Sprache de.",
+    "reversal_conditions": [
+      "Umkehrbedingung B-D3-de."
+    ],
+    "routes": [
+      "pre_registered_reference"
+    ],
+    "useful_uncertainties": [
+      "Nützliche Unsicherheit B-D3-de."
+    ]
+  },
+  "packet_sha256": "95d234541d574e046eac643480c3c01c68d41813b08a8a56a90de1e27005580b",
+  "raw_prompt": "Référence de paquet B / D3 / de",
+  "schema": "corpus-analytic-packet/v1"
+}

@@ -1,0 +1,20 @@
+{
+  "analysis": {
+    "critical_dependencies": [
+      "fixture-only"
+    ],
+    "material_conclusion": "Conclusion B-A2-en. Scope: fictional case A2, language en.",
+    "reversal_conditions": [
+      "Reversal condition B-A2-en."
+    ],
+    "routes": [
+      "pre_registered_reference"
+    ],
+    "useful_uncertainties": [
+      "Useful uncertainty B-A2-en."
+    ]
+  },
+  "packet_sha256": "949538144d8acad1b8ae2cdab6d664ca5505b883ee9aaa2e78a38462b0788ebc",
+  "raw_prompt": "Référence de paquet B / A2 / en",
+  "schema": "corpus-analytic-packet/v1"
+}

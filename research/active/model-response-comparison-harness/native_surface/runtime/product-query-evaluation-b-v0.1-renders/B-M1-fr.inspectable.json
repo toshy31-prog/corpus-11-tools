@@ -1,0 +1,22 @@
+{
+  "conversation": "Demande d'origine\nRéférence de paquet B / M1 / fr\n\nConclusion\nConclusion B-M1-fr. Portée : cas fictif M1, langue fr.\n\nLimites et incertitudes à garder\n- Incertitude utile B-M1-fr.\n\nCe qui ferait réviser l'analyse\n- Condition de renversement B-M1-fr.\n\nMéthode inspectable\nRoutes : pre_registered_reference\nDépendances critiques : fixture-only",
+  "detail": "inspectable",
+  "fidelity_payload": {
+    "material_conclusion": "Conclusion B-M1-fr. Portée : cas fictif M1, langue fr.",
+    "reversal_conditions": [
+      "Condition de renversement B-M1-fr."
+    ],
+    "useful_uncertainties": [
+      "Incertitude utile B-M1-fr."
+    ]
+  },
+  "presentation_changes": [
+    "language",
+    "order",
+    "concision",
+    "detail_on_request"
+  ],
+  "render_sha256": "dad65373926dce435db228f31019a844cf16ba15e68ac159deee23a827a0d339",
+  "schema": "corpus-conversation-render/v1",
+  "source_packet_sha256": "dac91933c2705e3a3d7cf03e40d700b883b395cc4a30eee32a2dfd4c18d33ad2"
+}

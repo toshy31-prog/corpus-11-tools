@@ -1,0 +1,22 @@
+{
+  "conversation": "Demande d'origine\nRéférence de paquet B / A1 / de\n\nConclusion\nSchlussfolgerung B-A1-de. Geltungsbereich: fiktiver Fall A1, Sprache de.\n\nLimites et incertitudes à garder\n- Nützliche Unsicherheit B-A1-de.\n\nCe qui ferait réviser l'analyse\n- Umkehrbedingung B-A1-de.\n\nMéthode inspectable\nRoutes : pre_registered_reference\nDépendances critiques : fixture-only",
+  "detail": "inspectable",
+  "fidelity_payload": {
+    "material_conclusion": "Schlussfolgerung B-A1-de. Geltungsbereich: fiktiver Fall A1, Sprache de.",
+    "reversal_conditions": [
+      "Umkehrbedingung B-A1-de."
+    ],
+    "useful_uncertainties": [
+      "Nützliche Unsicherheit B-A1-de."
+    ]
+  },
+  "presentation_changes": [
+    "language",
+    "order",
+    "concision",
+    "detail_on_request"
+  ],
+  "render_sha256": "f44eaa67b0c6cafb39e05ba4dee195a3383fa6601cbd8e631daebdd8d59335cf",
+  "schema": "corpus-conversation-render/v1",
+  "source_packet_sha256": "c087c7fa0992263349413dfabd24d23e619c03607515fd16021e0a18cffcdcb6"
+}

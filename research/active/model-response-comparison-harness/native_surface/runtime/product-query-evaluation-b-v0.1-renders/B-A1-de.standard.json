@@ -1,0 +1,22 @@
+{
+  "conversation": "Voici l'essentiel.\n\nConclusion\nSchlussfolgerung B-A1-de. Geltungsbereich: fiktiver Fall A1, Sprache de.\n\nLimites et incertitudes à garder\n- Nützliche Unsicherheit B-A1-de.\n\nCe qui ferait réviser l'analyse\n- Umkehrbedingung B-A1-de.",
+  "detail": "standard",
+  "fidelity_payload": {
+    "material_conclusion": "Schlussfolgerung B-A1-de. Geltungsbereich: fiktiver Fall A1, Sprache de.",
+    "reversal_conditions": [
+      "Umkehrbedingung B-A1-de."
+    ],
+    "useful_uncertainties": [
+      "Nützliche Unsicherheit B-A1-de."
+    ]
+  },
+  "presentation_changes": [
+    "language",
+    "order",
+    "concision",
+    "detail_on_request"
+  ],
+  "render_sha256": "7e283e79874e6a76ccc746b5520a835f6d7c34764c99f1a874f3df19c15a8f5c",
+  "schema": "corpus-conversation-render/v1",
+  "source_packet_sha256": "c087c7fa0992263349413dfabd24d23e619c03607515fd16021e0a18cffcdcb6"
+}

@@ -1,0 +1,20 @@
+{
+  "analysis": {
+    "critical_dependencies": [
+      "fixture-only"
+    ],
+    "material_conclusion": "Conclusion B-D1-fr. Portée : cas fictif D1, langue fr.",
+    "reversal_conditions": [
+      "Condition de renversement B-D1-fr."
+    ],
+    "routes": [
+      "pre_registered_reference"
+    ],
+    "useful_uncertainties": [
+      "Incertitude utile B-D1-fr."
+    ]
+  },
+  "packet_sha256": "ed02ed7be4a93172ebe989bad58a6abd56dbfa17663e33eb8bf5a8d0b2eb45c0",
+  "raw_prompt": "Référence de paquet B / D1 / fr",
+  "schema": "corpus-analytic-packet/v1"
+}

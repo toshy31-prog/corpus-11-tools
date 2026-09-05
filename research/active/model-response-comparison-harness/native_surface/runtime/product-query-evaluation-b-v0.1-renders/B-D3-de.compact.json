@@ -1,0 +1,22 @@
+{
+  "conversation": "Conclusion\nSchlussfolgerung B-D3-de. Geltungsbereich: fiktiver Fall D3, Sprache de.\n\nLimites et incertitudes à garder\n- Nützliche Unsicherheit B-D3-de.\n\nCe qui ferait réviser l'analyse\n- Umkehrbedingung B-D3-de.",
+  "detail": "compact",
+  "fidelity_payload": {
+    "material_conclusion": "Schlussfolgerung B-D3-de. Geltungsbereich: fiktiver Fall D3, Sprache de.",
+    "reversal_conditions": [
+      "Umkehrbedingung B-D3-de."
+    ],
+    "useful_uncertainties": [
+      "Nützliche Unsicherheit B-D3-de."
+    ]
+  },
+  "presentation_changes": [
+    "language",
+    "order",
+    "concision",
+    "detail_on_request"
+  ],
+  "render_sha256": "93095339b3eda7cd68fc3ba63da93e3682b555ac0ca81336767182d035aa1b85",
+  "schema": "corpus-conversation-render/v1",
+  "source_packet_sha256": "95d234541d574e046eac643480c3c01c68d41813b08a8a56a90de1e27005580b"
+}

@@ -1,0 +1,22 @@
+{
+  "conversation": "Conclusion\nConclusion B-A1-en. Scope: fictional case A1, language en.\n\nLimites et incertitudes à garder\n- Useful uncertainty B-A1-en.\n\nCe qui ferait réviser l'analyse\n- Reversal condition B-A1-en.",
+  "detail": "compact",
+  "fidelity_payload": {
+    "material_conclusion": "Conclusion B-A1-en. Scope: fictional case A1, language en.",
+    "reversal_conditions": [
+      "Reversal condition B-A1-en."
+    ],
+    "useful_uncertainties": [
+      "Useful uncertainty B-A1-en."
+    ]
+  },
+  "presentation_changes": [
+    "language",
+    "order",
+    "concision",
+    "detail_on_request"
+  ],
+  "render_sha256": "76b4958cbba33acd665b895bbcbc58b8a33c5f4f0f276180144d287ee8759d59",
+  "schema": "corpus-conversation-render/v1",
+  "source_packet_sha256": "fa94ab9b4f1cc5714928806a8fc3150afb1dd007fe209f0646f940b172bd2039"
+}

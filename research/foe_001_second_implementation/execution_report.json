@@ -1,0 +1,89 @@
+{
+  "dependencies": {
+    "language": "Python",
+    "packages": [],
+    "runtime": "Python 3"
+  },
+  "input_sha256": {
+    "fixture": "0fde7cb2e30ee0352ab9f0101666698e485559fede42d7ec5df930daa22d41b1",
+    "protocol": "ad523be81c6a4f3478b8d88de41b85b99ee30b368c0f7729942d3cdbabd63711"
+  },
+  "lineage_results": [
+    {
+      "expected": "independent",
+      "id": "independent",
+      "matches_expected": true,
+      "observed": "independent",
+      "procedure_expected": {
+        "control": "eligible",
+        "evaluated": "eligible"
+      },
+      "procedures": {
+        "control": "eligible",
+        "evaluated": "eligible"
+      }
+    },
+    {
+      "expected": "shared_failure_mode",
+      "id": "common_mode",
+      "matches_expected": true,
+      "observed": "shared_failure_mode",
+      "procedure_expected": {
+        "control": "eligible",
+        "evaluated": "not_eligible"
+      },
+      "procedures": {
+        "control": "eligible",
+        "evaluated": "not_eligible"
+      }
+    },
+    {
+      "expected": "independence_unknown",
+      "id": "incomplete_lineage",
+      "matches_expected": true,
+      "observed": "independence_unknown",
+      "procedure_expected": {
+        "control": "eligible",
+        "evaluated": "withhold"
+      },
+      "procedures": {
+        "control": "eligible",
+        "evaluated": "withhold"
+      }
+    }
+  ],
+  "migration_results": [
+    {
+      "expected": "stable",
+      "id": "stable",
+      "matches_expected": true,
+      "observed": "stable"
+    },
+    {
+      "expected": "declared_rule_change",
+      "id": "declared_migration",
+      "matches_expected": true,
+      "observed": "declared_rule_change"
+    },
+    {
+      "expected": "unexplained_drift",
+      "id": "unexplained_migration",
+      "matches_expected": true,
+      "observed": "unexplained_drift"
+    }
+  ],
+  "protocol_id": "FOE-001",
+  "provenance": {
+    "collision": "rejected",
+    "core_fields_preserved": true,
+    "extension": {
+      "field": "future_provenance",
+      "preserved": true,
+      "value": "preserve-or-report"
+    },
+    "representations": [
+      "canonical_json",
+      "flat_key_value"
+    ]
+  }
+}

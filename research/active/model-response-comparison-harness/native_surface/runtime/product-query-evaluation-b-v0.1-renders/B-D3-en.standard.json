@@ -1,0 +1,22 @@
+{
+  "conversation": "Voici l'essentiel.\n\nConclusion\nConclusion B-D3-en. Scope: fictional case D3, language en.\n\nLimites et incertitudes à garder\n- Useful uncertainty B-D3-en.\n\nCe qui ferait réviser l'analyse\n- Reversal condition B-D3-en.",
+  "detail": "standard",
+  "fidelity_payload": {
+    "material_conclusion": "Conclusion B-D3-en. Scope: fictional case D3, language en.",
+    "reversal_conditions": [
+      "Reversal condition B-D3-en."
+    ],
+    "useful_uncertainties": [
+      "Useful uncertainty B-D3-en."
+    ]
+  },
+  "presentation_changes": [
+    "language",
+    "order",
+    "concision",
+    "detail_on_request"
+  ],
+  "render_sha256": "a54791f876d96ceebbc86994d28d66675262d828d1ad2f950eabbc84c9ca15c5",
+  "schema": "corpus-conversation-render/v1",
+  "source_packet_sha256": "90b926648f6c9f54ee1b202aa29b1acfbf87249d1b54da524fefb6ff6629a7a6"
+}

@@ -1,0 +1,22 @@
+{
+  "conversation": "Voici l'essentiel.\n\nConclusion\nConclusion B-A2-fr. Portée : cas fictif A2, langue fr.\n\nLimites et incertitudes à garder\n- Incertitude utile B-A2-fr.\n\nCe qui ferait réviser l'analyse\n- Condition de renversement B-A2-fr.",
+  "detail": "standard",
+  "fidelity_payload": {
+    "material_conclusion": "Conclusion B-A2-fr. Portée : cas fictif A2, langue fr.",
+    "reversal_conditions": [
+      "Condition de renversement B-A2-fr."
+    ],
+    "useful_uncertainties": [
+      "Incertitude utile B-A2-fr."
+    ]
+  },
+  "presentation_changes": [
+    "language",
+    "order",
+    "concision",
+    "detail_on_request"
+  ],
+  "render_sha256": "d88bce38e7114317ae3b5acdc2c3d827039a18fc6eaa98fd754fac5cd836d346",
+  "schema": "corpus-conversation-render/v1",
+  "source_packet_sha256": "001e07d3da561f3bec161106372586e38e1885c37ad1d7cc06e2e3d44e1f0661"
+}

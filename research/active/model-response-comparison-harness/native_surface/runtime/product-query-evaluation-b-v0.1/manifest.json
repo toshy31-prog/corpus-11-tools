@@ -1,0 +1,100 @@
+{
+  "compiler_sha256": "c50dff49eecb391cd47e36553fe91488b29b6d5d46c4ef6a856d677c8e75ba90",
+  "fixture_sha256": "285e3a8e0a83b10af182d056750c24dc965c4941516a1686aa6e8cdafba6cd3b",
+  "manifest_sha256": "6de88fb8f6d727d8349124f365a4a03001be398990e7fbe5c0d36ee6298ebaf3",
+  "packet_count": 18,
+  "packets": [
+    {
+      "filename": "B-A1-fr.json",
+      "packet_id": "B-A1-fr",
+      "sha256": "0375f747b6d3f57ea10b8db91f8af03d2b88f78ca0c44bd00001c482c8361a86"
+    },
+    {
+      "filename": "B-A1-en.json",
+      "packet_id": "B-A1-en",
+      "sha256": "fa94ab9b4f1cc5714928806a8fc3150afb1dd007fe209f0646f940b172bd2039"
+    },
+    {
+      "filename": "B-A1-de.json",
+      "packet_id": "B-A1-de",
+      "sha256": "c087c7fa0992263349413dfabd24d23e619c03607515fd16021e0a18cffcdcb6"
+    },
+    {
+      "filename": "B-A2-fr.json",
+      "packet_id": "B-A2-fr",
+      "sha256": "001e07d3da561f3bec161106372586e38e1885c37ad1d7cc06e2e3d44e1f0661"
+    },
+    {
+      "filename": "B-A2-en.json",
+      "packet_id": "B-A2-en",
+      "sha256": "949538144d8acad1b8ae2cdab6d664ca5505b883ee9aaa2e78a38462b0788ebc"
+    },
+    {
+      "filename": "B-A2-de.json",
+      "packet_id": "B-A2-de",
+      "sha256": "2ad11829da426cde863cab440a7c2417737c049ffe18faf9719cd17f3ae21dc5"
+    },
+    {
+      "filename": "B-D1-fr.json",
+      "packet_id": "B-D1-fr",
+      "sha256": "ed02ed7be4a93172ebe989bad58a6abd56dbfa17663e33eb8bf5a8d0b2eb45c0"
+    },
+    {
+      "filename": "B-D1-en.json",
+      "packet_id": "B-D1-en",
+      "sha256": "aae117a7805e40227c4c98e9306d2fbe5551ce88afde0f4605ae786e64c42803"
+    },
+    {
+      "filename": "B-D1-de.json",
+      "packet_id": "B-D1-de",
+      "sha256": "0c2d4226ce249dedd0a9005b8f3d135e81d6388385a0bc3d843961fe68fc39b5"
+    },
+    {
+      "filename": "B-D2-fr.json",
+      "packet_id": "B-D2-fr",
+      "sha256": "e488d166d62c524a080364a51fe4b5731d220be065f99486c1aa61147ad220ff"
+    },
+    {
+      "filename": "B-D2-en.json",
+      "packet_id": "B-D2-en",
+      "sha256": "52078e0bfc1908ec8b65a31b6f08ed30d3f5c776f76fbafe3cdfb2864ea4f10d"
+    },
+    {
+      "filename": "B-D2-de.json",
+      "packet_id": "B-D2-de",
+      "sha256": "96491f8315faab54d375dafbb0fc070e4c040cb4b923cdbdc6dddb190005493b"
+    },
+    {
+      "filename": "B-D3-fr.json",
+      "packet_id": "B-D3-fr",
+      "sha256": "6d5d3151fd017aab8349468765de98d7b8f109cbab7b2615b618890a57530805"
+    },
+    {
+      "filename": "B-D3-en.json",
+      "packet_id": "B-D3-en",
+      "sha256": "90b926648f6c9f54ee1b202aa29b1acfbf87249d1b54da524fefb6ff6629a7a6"
+    },
+    {
+      "filename": "B-D3-de.json",
+      "packet_id": "B-D3-de",
+      "sha256": "95d234541d574e046eac643480c3c01c68d41813b08a8a56a90de1e27005580b"
+    },
+    {
+      "filename": "B-M1-fr.json",
+      "packet_id": "B-M1-fr",
+      "sha256": "dac91933c2705e3a3d7cf03e40d700b883b395cc4a30eee32a2dfd4c18d33ad2"
+    },
+    {
+      "filename": "B-M1-en.json",
+      "packet_id": "B-M1-en",
+      "sha256": "811d550559a1ef5ce3c04093321b3cce6728e91b58a7183edc7ada3a1b3005d3"
+    },
+    {
+      "filename": "B-M1-de.json",
+      "packet_id": "B-M1-de",
+      "sha256": "704359e06f9033be3491945a49ed6f4d43b44df3c2ad223cfe44d4d7599d0014"
+    }
+  ],
+  "protocol_sha256": "7db15a1e81b3fa863feb51a1dfd7b1a764aff00aa8625f8d96fe68813288b1f3",
+  "schema": "product-query-evaluation-b-manifest/v1"
+}

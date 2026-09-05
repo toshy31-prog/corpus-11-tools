@@ -1,0 +1,333 @@
+{
+  "manifest_sha256": "fe7866bfb9b75e370e90378344e4f7edb6610842435957461c941ec02970bcd5",
+  "render_count": 54,
+  "renders": [
+    {
+      "detail": "compact",
+      "filename": "B-A1-fr.compact.json",
+      "packet_id": "B-A1-fr",
+      "sha256": "cac6807088a7aa402b8c5045c641fdc78960e9e1b9e592c95a9e3e0ccd532f6e"
+    },
+    {
+      "detail": "standard",
+      "filename": "B-A1-fr.standard.json",
+      "packet_id": "B-A1-fr",
+      "sha256": "82b94982cbd56b958f42c9a953f32ff23d37ff415abf7481eea41495a281390c"
+    },
+    {
+      "detail": "inspectable",
+      "filename": "B-A1-fr.inspectable.json",
+      "packet_id": "B-A1-fr",
+      "sha256": "3049e1a8fbc74e5f74c0e01c6142ad330ef63914d2a0602d5e8c5dcda7198ebf"
+    },
+    {
+      "detail": "compact",
+      "filename": "B-A1-en.compact.json",
+      "packet_id": "B-A1-en",
+      "sha256": "76b4958cbba33acd665b895bbcbc58b8a33c5f4f0f276180144d287ee8759d59"
+    },
+    {
+      "detail": "standard",
+      "filename": "B-A1-en.standard.json",
+      "packet_id": "B-A1-en",
+      "sha256": "f96f700cc89afd5c93c4986809f11df04a0da76cb41f6542c75435667335009d"
+    },
+    {
+      "detail": "inspectable",
+      "filename": "B-A1-en.inspectable.json",
+      "packet_id": "B-A1-en",
+      "sha256": "a4cd0ced462f0947bcf74a3080d11e991190a0e94540b1c557979de6e165a93c"
+    },
+    {
+      "detail": "compact",
+      "filename": "B-A1-de.compact.json",
+      "packet_id": "B-A1-de",
+      "sha256": "881cfdf0d15fdd65b55f9cdbb323fe2d88900878d98e621005cc742cef1cd80f"
+    },
+    {
+      "detail": "standard",
+      "filename": "B-A1-de.standard.json",
+      "packet_id": "B-A1-de",
+      "sha256": "7e283e79874e6a76ccc746b5520a835f6d7c34764c99f1a874f3df19c15a8f5c"
+    },
+    {
+      "detail": "inspectable",
+      "filename": "B-A1-de.inspectable.json",
+      "packet_id": "B-A1-de",
+      "sha256": "f44eaa67b0c6cafb39e05ba4dee195a3383fa6601cbd8e631daebdd8d59335cf"
+    },
+    {
+      "detail": "compact",
+      "filename": "B-A2-fr.compact.json",
+      "packet_id": "B-A2-fr",
+      "sha256": "24d4e8afcb897826c9794a3d27d27dc2d37303601f5565718677e60cec79b15c"
+    },
+    {
+      "detail": "standard",
+      "filename": "B-A2-fr.standard.json",
+      "packet_id": "B-A2-fr",
+      "sha256": "d88bce38e7114317ae3b5acdc2c3d827039a18fc6eaa98fd754fac5cd836d346"
+    },
+    {
+      "detail": "inspectable",
+      "filename": "B-A2-fr.inspectable.json",
+      "packet_id": "B-A2-fr",
+      "sha256": "f11ab33ee8750bd7b63aef3d1420af076f61a8e40170c95a40927e6b5246be5b"
+    },
+    {
+      "detail": "compact",
+      "filename": "B-A2-en.compact.json",
+      "packet_id": "B-A2-en",
+      "sha256": "62f39adb86594c2a6904f0941fefb39a80e353350f21ab90eb98bb76cb27fbb8"
+    },
+    {
+      "detail": "standard",
+      "filename": "B-A2-en.standard.json",
+      "packet_id": "B-A2-en",
+      "sha256": "419f2e74191397cd42c339cdafa16c40d823337d6502d47fdbe0ac2a045b744c"
+    },
+    {
+      "detail": "inspectable",
+      "filename": "B-A2-en.inspectable.json",
+      "packet_id": "B-A2-en",
+      "sha256": "829d6e5e81654740906f6a32eb3a3cdfd131106b2584c877ab0565458d2f78e1"
+    },
+    {
+      "detail": "compact",
+      "filename": "B-A2-de.compact.json",
+      "packet_id": "B-A2-de",
+      "sha256": "6845d778d948b116d95988c132fe47a777bca67e58e0ba2465bf83d385656520"
+    },
+    {
+      "detail": "standard",
+      "filename": "B-A2-de.standard.json",
+      "packet_id": "B-A2-de",
+      "sha256": "3f52719560cf091b62a1059efb6df3c56f42bbefcfb07532f797bf302f58fc1f"
+    },
+    {
+      "detail": "inspectable",
+      "filename": "B-A2-de.inspectable.json",
+      "packet_id": "B-A2-de",
+      "sha256": "0cc1fb8c50637283c8c8f2cf75ba3cf4ca0bebce14e336cb002ad7fe21fa63ca"
+    },
+    {
+      "detail": "compact",
+      "filename": "B-D1-fr.compact.json",
+      "packet_id": "B-D1-fr",
+      "sha256": "e3020e07e191e836ca6e27cbffd221ed076a4e7a8b942fb8e3133784028f9ede"
+    },
+    {
+      "detail": "standard",
+      "filename": "B-D1-fr.standard.json",
+      "packet_id": "B-D1-fr",
+      "sha256": "d11823700333d0f3736908c68832687e446cc6dee13f03459c6a2ea9ba763300"
+    },
+    {
+      "detail": "inspectable",
+      "filename": "B-D1-fr.inspectable.json",
+      "packet_id": "B-D1-fr",
+      "sha256": "5e4d232fe76cf80fc80cfc9fa5934bb00e93c1a5dce6d11a538c41ea5e38553b"
+    },
+    {
+      "detail": "compact",
+      "filename": "B-D1-en.compact.json",
+      "packet_id": "B-D1-en",
+      "sha256": "28f072a1772ce2cf9f912ca9b2c64df4bd8069955c9cebdd13de499b6961fd56"
+    },
+    {
+      "detail": "standard",
+      "filename": "B-D1-en.standard.json",
+      "packet_id": "B-D1-en",
+      "sha256": "dec51fa9297513a5f9c0bbbf23de68a62a3a44784a8f0351c61cda74d5a1d331"
+    },
+    {
+      "detail": "inspectable",
+      "filename": "B-D1-en.inspectable.json",
+      "packet_id": "B-D1-en",
+      "sha256": "fb008690e1f6133ebc20ed19c6d8ba1e0a3603e71ea4d18d264e2593a971514f"
+    },
+    {
+      "detail": "compact",
+      "filename": "B-D1-de.compact.json",
+      "packet_id": "B-D1-de",
+      "sha256": "08dbf48f85f26df7d3665054990da95901d5be76a74035104fce46e23426c53e"
+    },
+    {
+      "detail": "standard",
+      "filename": "B-D1-de.standard.json",
+      "packet_id": "B-D1-de",
+      "sha256": "dacfe2d230879eefa51e8d7db9b1ec2595d6ebeb4c34d400397626c631d70912"
+    },
+    {
+      "detail": "inspectable",
+      "filename": "B-D1-de.inspectable.json",
+      "packet_id": "B-D1-de",
+      "sha256": "a69b3580c8d804bd988b7da70ef1266b53bac60ba84ff1e68b01ea837bfd6457"
+    },
+    {
+      "detail": "compact",
+      "filename": "B-D2-fr.compact.json",
+      "packet_id": "B-D2-fr",
+      "sha256": "0187afb7958a0af430a4d9f463a8b3c6d4fe03b28ea15cea979cdec462d6b376"
+    },
+    {
+      "detail": "standard",
+      "filename": "B-D2-fr.standard.json",
+      "packet_id": "B-D2-fr",
+      "sha256": "4d3e5be67bd21bbcfd80abe988d3163d46c021f662733bc216e8b880e4242177"
+    },
+    {
+      "detail": "inspectable",
+      "filename": "B-D2-fr.inspectable.json",
+      "packet_id": "B-D2-fr",
+      "sha256": "ffe343c97c66defcfff4b9771f2af959c99b3b9e9555ad65d2ea189423704905"
+    },
+    {
+      "detail": "compact",
+      "filename": "B-D2-en.compact.json",
+      "packet_id": "B-D2-en",
+      "sha256": "e1d2d2bfd853d193ae1368d9a59ebf9210644a1dec295b1a1df01e4d227650c6"
+    },
+    {
+      "detail": "standard",
+      "filename": "B-D2-en.standard.json",
+      "packet_id": "B-D2-en",
+      "sha256": "3b26366ec511d6b182f8bbeb31ddcd0119ec569ade4e443b544130eb001322ff"
+    },
+    {
+      "detail": "inspectable",
+      "filename": "B-D2-en.inspectable.json",
+      "packet_id": "B-D2-en",
+      "sha256": "b15a4e16b9df2932af50ee5d8a9abfa02c6cfa277d21427ac02c1c8b887152d7"
+    },
+    {
+      "detail": "compact",
+      "filename": "B-D2-de.compact.json",
+      "packet_id": "B-D2-de",
+      "sha256": "24a7f3cf2abfb62f33e711a2d6fafd3c9af19ea4d0be7f2809d782ffb8a8da1f"
+    },
+    {
+      "detail": "standard",
+      "filename": "B-D2-de.standard.json",
+      "packet_id": "B-D2-de",
+      "sha256": "030219deffaaae71f3fb2bb88b2d3f0e4c822bfbdfaccea7adf2a1f4e204e58f"
+    },
+    {
+      "detail": "inspectable",
+      "filename": "B-D2-de.inspectable.json",
+      "packet_id": "B-D2-de",
+      "sha256": "8984e7a7599cd2b531a1237d1456c98a1c38cb33ffee071777e35b95bfb45a6f"
+    },
+    {
+      "detail": "compact",
+      "filename": "B-D3-fr.compact.json",
+      "packet_id": "B-D3-fr",
+      "sha256": "0776e394ffe97d392d498a8169cfd849c4091ab8f6325e1d652ebb696ddc0378"
+    },
+    {
+      "detail": "standard",
+      "filename": "B-D3-fr.standard.json",
+      "packet_id": "B-D3-fr",
+      "sha256": "fea4ed627975207eb749c10a7ea58b3c895bee8e73b70fa32e6f2bb860ba800b"
+    },
+    {
+      "detail": "inspectable",
+      "filename": "B-D3-fr.inspectable.json",
+      "packet_id": "B-D3-fr",
+      "sha256": "62f5507be31af35a338ecfe446f3d6d415e72a1f184f172198c6d8276b166db8"
+    },
+    {
+      "detail": "compact",
+      "filename": "B-D3-en.compact.json",
+      "packet_id": "B-D3-en",
+      "sha256": "925be5bdc6505ccb901f944de9f20f940ba988d8a1837100e5b923ca7f3d09b9"
+    },
+    {
+      "detail": "standard",
+      "filename": "B-D3-en.standard.json",
+      "packet_id": "B-D3-en",
+      "sha256": "a54791f876d96ceebbc86994d28d66675262d828d1ad2f950eabbc84c9ca15c5"
+    },
+    {
+      "detail": "inspectable",
+      "filename": "B-D3-en.inspectable.json",
+      "packet_id": "B-D3-en",
+      "sha256": "f0f53e945082f79cc46d3bd4eb249345aaa20deb7f1a4b8d6359d43f0a4e1fd1"
+    },
+    {
+      "detail": "compact",
+      "filename": "B-D3-de.compact.json",
+      "packet_id": "B-D3-de",
+      "sha256": "93095339b3eda7cd68fc3ba63da93e3682b555ac0ca81336767182d035aa1b85"
+    },
+    {
+      "detail": "standard",
+      "filename": "B-D3-de.standard.json",
+      "packet_id": "B-D3-de",
+      "sha256": "f66d6914a67d86e257c85db129bcf8dd092809b77349604d3ce7eb9b38880fbc"
+    },
+    {
+      "detail": "inspectable",
+      "filename": "B-D3-de.inspectable.json",
+      "packet_id": "B-D3-de",
+      "sha256": "9ed14ef275ebcf6a7d35f33b092bac831f6e8650f4d00cabf6407e38a9e926e9"
+    },
+    {
+      "detail": "compact",
+      "filename": "B-M1-fr.compact.json",
+      "packet_id": "B-M1-fr",
+      "sha256": "f4907985b6c101a6dca0bdbb90badac4e553c8a56dd803c3bd82b4345e942c58"
+    },
+    {
+      "detail": "standard",
+      "filename": "B-M1-fr.standard.json",
+      "packet_id": "B-M1-fr",
+      "sha256": "c9ab602f3174aa88bc9e58b2ec6b3c0d022f15e953ec96a4878187bddfdf43d7"
+    },
+    {
+      "detail": "inspectable",
+      "filename": "B-M1-fr.inspectable.json",
+      "packet_id": "B-M1-fr",
+      "sha256": "dad65373926dce435db228f31019a844cf16ba15e68ac159deee23a827a0d339"
+    },
+    {
+      "detail": "compact",
+      "filename": "B-M1-en.compact.json",
+      "packet_id": "B-M1-en",
+      "sha256": "abe9501576306d6e4dc9772c3f005020fcb79167ed527406fb54bbe637e34416"
+    },
+    {
+      "detail": "standard",
+      "filename": "B-M1-en.standard.json",
+      "packet_id": "B-M1-en",
+      "sha256": "5f6c5cf3040a42f3e452ca6acd5488a28e1263492a2fe1c5eb26a3e81929ba17"
+    },
+    {
+      "detail": "inspectable",
+      "filename": "B-M1-en.inspectable.json",
+      "packet_id": "B-M1-en",
+      "sha256": "24ea15f349931d42b4e7134b6e5e53f1f76a7a8579229fdbfb6f0bfb62140119"
+    },
+    {
+      "detail": "compact",
+      "filename": "B-M1-de.compact.json",
+      "packet_id": "B-M1-de",
+      "sha256": "bfdd59f6161c67c80f3f25236ec8b508f258731087b907a2c17c96a82f3067f1"
+    },
+    {
+      "detail": "standard",
+      "filename": "B-M1-de.standard.json",
+      "packet_id": "B-M1-de",
+      "sha256": "55f7d4a06054192b5bed61d648a6f75799f4c9b438827ae48a2542dae6448fb3"
+    },
+    {
+      "detail": "inspectable",
+      "filename": "B-M1-de.inspectable.json",
+      "packet_id": "B-M1-de",
+      "sha256": "d7b570d30ad23564857726d6be061857fe1a3e28ea5daa687c8bd5bef490f75f"
+    }
+  ],
+  "schema": "product-query-evaluation-b-render-manifest/v1",
+  "source_manifest_declared_sha256": "6de88fb8f6d727d8349124f365a4a03001be398990e7fbe5c0d36ee6298ebaf3",
+  "source_manifest_file_sha256": "62c0a7825f829aad394724544c36179a5718eb0cc8e65d83ca74a3de3a8a5430"
+}

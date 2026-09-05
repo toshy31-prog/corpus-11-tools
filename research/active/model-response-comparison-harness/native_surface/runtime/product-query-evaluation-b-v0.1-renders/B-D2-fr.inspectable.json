@@ -1,0 +1,22 @@
+{
+  "conversation": "Demande d'origine\nRéférence de paquet B / D2 / fr\n\nConclusion\nConclusion B-D2-fr. Portée : cas fictif D2, langue fr.\n\nLimites et incertitudes à garder\n- Incertitude utile B-D2-fr.\n\nCe qui ferait réviser l'analyse\n- Condition de renversement B-D2-fr.\n\nMéthode inspectable\nRoutes : pre_registered_reference\nDépendances critiques : fixture-only",
+  "detail": "inspectable",
+  "fidelity_payload": {
+    "material_conclusion": "Conclusion B-D2-fr. Portée : cas fictif D2, langue fr.",
+    "reversal_conditions": [
+      "Condition de renversement B-D2-fr."
+    ],
+    "useful_uncertainties": [
+      "Incertitude utile B-D2-fr."
+    ]
+  },
+  "presentation_changes": [
+    "language",
+    "order",
+    "concision",
+    "detail_on_request"
+  ],
+  "render_sha256": "ffe343c97c66defcfff4b9771f2af959c99b3b9e9555ad65d2ea189423704905",
+  "schema": "corpus-conversation-render/v1",
+  "source_packet_sha256": "e488d166d62c524a080364a51fe4b5731d220be065f99486c1aa61147ad220ff"
+}

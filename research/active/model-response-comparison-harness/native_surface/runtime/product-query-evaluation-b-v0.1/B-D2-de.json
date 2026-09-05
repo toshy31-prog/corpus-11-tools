@@ -1,0 +1,20 @@
+{
+  "analysis": {
+    "critical_dependencies": [
+      "fixture-only"
+    ],
+    "material_conclusion": "Schlussfolgerung B-D2-de. Geltungsbereich: fiktiver Fall D2, Sprache de.",
+    "reversal_conditions": [
+      "Umkehrbedingung B-D2-de."
+    ],
+    "routes": [
+      "pre_registered_reference"
+    ],
+    "useful_uncertainties": [
+      "Nützliche Unsicherheit B-D2-de."
+    ]
+  },
+  "packet_sha256": "96491f8315faab54d375dafbb0fc070e4c040cb4b923cdbdc6dddb190005493b",
+  "raw_prompt": "Référence de paquet B / D2 / de",
+  "schema": "corpus-analytic-packet/v1"
+}
