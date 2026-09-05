@@ -359,6 +359,9 @@ class IndependentReplicationTests(unittest.TestCase):
 
     @unittest.skipUnless(shutil.which("bwrap"), "skipped_unavailable: Bubblewrap is not installed")
     def test_real_bubblewrap_is_conditional_and_skips_when_namespaces_are_unavailable(self):
+        system_python = Path("/usr/bin/python3")
+        if not system_python.is_file():
+            self.skipTest("skipped_unavailable: /usr/bin/python3 is not available for the guest runtime")
         runtime_mounts = [
             str(path)
             for path in (Path("/usr/local"), Path("/usr"), Path("/lib"), Path("/lib64"))
@@ -369,7 +372,7 @@ class IndependentReplicationTests(unittest.TestCase):
             self.root,
             source_root=self.source_root,
             source_files=["submission.py"],
-            command=[sys.executable, "/implementation/submission.py", "{input:case}", "{output}"],
+            command=[str(system_python), "/implementation/submission.py", "{input:case}", "{output}"],
             output_path="report.json",
             runtime_mounts=runtime_mounts,
         )
