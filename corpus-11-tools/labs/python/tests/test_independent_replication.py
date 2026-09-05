@@ -212,7 +212,11 @@ class IndependentReplicationTests(unittest.TestCase):
             stderr="bwrap: Creating new namespace failed: Operation not permitted",
         )
         with (
-            patch("corpus_labs.independent_replication.shutil.which", return_value="/usr/bin/bwrap"),
+            # The namespace-refusal branch must not depend on Bubblewrap being
+            # installed on the host that runs this unit test.  Resolution is
+            # production behavior covered separately by the absent-backend test.
+            patch("corpus_labs.independent_replication.shutil.which", return_value=None),
+            patch("corpus_labs.independent_replication._resolve_bubblewrap", return_value="/fake/bwrap"),
             patch("corpus_labs.independent_replication.subprocess.run", return_value=refused),
         ):
             result = run_isolated_submission(
