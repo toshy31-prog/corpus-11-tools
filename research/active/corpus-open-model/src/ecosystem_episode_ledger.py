@@ -151,6 +151,21 @@ def episode_from(before: dict, after: dict) -> dict:
     }
 
 
+def _recorded_episode_ids(events_path: Path) -> set[str]:
+    """Lit les identifiants déjà écrits afin de préserver l'append-only sans doublon."""
+    if not events_path.exists():
+        return set()
+    episode_ids = set()
+    for number, line in enumerate(events_path.read_text(encoding="utf-8").splitlines(), start=1):
+        if not line.strip():
+            continue
+        try:
+            episode_ids.add(json.loads(line)["episode_id"])
+        except (KeyError, json.JSONDecodeError) as error:
+            raise ValueError(f"registre d'épisodes illisible à la ligne {number}") from error
+    return episode_ids
+
+
 def record(root: Path = ROOT, artifacts: Path = ARTIFACTS, excluded_prefixes: Iterable[str] = DEFAULT_EXCLUDED_PREFIXES) -> dict:
     """Met à jour l'état local et ajoute un épisode seulement si le milieu change."""
     artifacts.mkdir(parents=True, exist_ok=True)
@@ -163,6 +178,15 @@ def record(root: Path = ROOT, artifacts: Path = ARTIFACTS, excluded_prefixes: It
     if before["structural_fingerprint"] == after["structural_fingerprint"]:
         return {"ledger": "ecosystem-episode-v0", "status": "no_included_change", "state": str(state_path), "difference": difference(before, after), "authorization": after["observation_boundary"]}
     episode = episode_from(before, after)
+    if episode["episode_id"] in _recorded_episode_ids(events_path):
+        return {
+            "ledger": "ecosystem-episode-v0",
+            "status": "duplicate_episode_ignored",
+            "episode": episode,
+            "state": str(state_path),
+            "events": str(events_path),
+            "authorization": after["observation_boundary"],
+        }
     with events_path.open("a", encoding="utf-8") as handle:
         handle.write(json.dumps(episode, ensure_ascii=False) + "\n")
     return {"ledger": "ecosystem-episode-v0", "status": "episode_recorded", "episode": episode, "state": str(state_path), "events": str(events_path), "authorization": after["observation_boundary"]}

@@ -47,6 +47,21 @@ class EcosystemEpisodeLedgerTests(unittest.TestCase):
             lines = (artifacts / EVENTS_NAME).read_text().splitlines()
             self.assertEqual(len(lines), 1)
 
+    def test_deduplicates_a_repeated_transition(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root, artifacts = Path(directory) / "Corpus", Path(directory) / "artifacts"
+            self.build_fixture(root)
+            record(root, artifacts)
+            (root / "corpus-11-tools/docs/a.md").write_text("state B")
+            first = record(root, artifacts)
+            (root / "corpus-11-tools/docs/a.md").write_text("state A")
+            record(root, artifacts)
+            (root / "corpus-11-tools/docs/a.md").write_text("state B")
+            repeated = record(root, artifacts)
+            self.assertEqual(first["status"], "episode_recorded")
+            self.assertEqual(repeated["status"], "duplicate_episode_ignored")
+            self.assertEqual(len((artifacts / EVENTS_NAME).read_text().splitlines()), 2)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -16,6 +16,12 @@ projet `corpus-open-model` est ajoutée à
 Git. Une modification du collecteur lui-même n'est donc pas confondue avec une
 évolution de Corpus.
 
+Chaque épisode porte les empreintes structurelles avant/après et un identifiant
+dérivé de ces empreintes. Si une transition identique se répète, elle est
+signalée mais n'est pas ajoutée une seconde fois au registre. Le collecteur
+conserve ainsi la provenance sans faire croître artificiellement le jeu
+d'expériences.
+
 Ce n'est pas encore un modèle neuronal. C'est le matériau expérimental minimal
 pour comparer plus tard, sur des épisodes futurs gelés, une baseline explicite
 (fréquences, voisinage, persistance) et un noyau local entraîné. Aucun

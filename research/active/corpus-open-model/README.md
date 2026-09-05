@@ -129,6 +129,14 @@ Le [registre d'épisodes de l'écosystème v0](ECOSYSTEM_EPISODE_LEDGER_V0.md)
 conserve désormais des différences réelles entre états successifs de Corpus,
 avec les faits avant/après et les relations explicites, sans contenu brut ni
 entraînement. C'est le préalable à un futur test temporel réellement comparé.
+Le [benchmark temporel d'épisodes v1](TEMPORAL_EPISODE_BENCHMARK_V1.md) fige
+dès maintenant la cible, la baseline et le seuil d'admission : il ne permet
+aucun entraînement avant que 30 épisodes réels admissibles aient été collectés.
+Vérifier son état ne coûte aucun token ni GPU :
+
+```bash
+python3 research/active/corpus-open-model/src/temporal_episode_readiness.py
+```
 
 ## Campagne de requêtes produit v0.1
 
