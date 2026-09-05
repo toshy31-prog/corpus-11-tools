@@ -1,4 +1,4 @@
-# Contrat de stabilité v1.5.0
+# Contrat de stabilité — candidate v1.6.0
 
 ## Ce qui est stabilisé
 
@@ -11,13 +11,18 @@
 - contrat d'organisme, état de lignée et frontières entre corps actif, mémoire,
   laboratoires, recherches et transferts ;
 - contenu exact du plugin attesté octet par octet dans
-  `release-content-v1.5.0.json`, hors auto-référence explicitement déclarée.
+  `release-content-v1.6.0.json`, hors auto-référence explicitement déclarée ;
+- harnais de réplication indépendante générique : paquet gelé, entrées
+  autorisées, attestations, sorties comparables et dépendances communes
+  visibles, sans sémantique FOE ou provenance.
 
 ## Ce qui ne l’est pas par cette release
 
 - validité scientifique générale des 49 capabilities ;
 - transport vers toute population ou tout domaine ;
 - indépendance extérieure des scénarios synthétiques ;
+- indépendance externe, des auteurs ou de l’environnement :
+  `independence_unknown` reste obligatoire, y compris avec Bubblewrap ;
 - autorisation ou déploiement territorial de la CCT ;
 - maintien d’un prototype ou d’un déploiement hors du périmètre du produit.
 
@@ -41,8 +46,8 @@ skills, 49 capabilities, 4 familles, 88 relations et 77 évaluations**. Le
 contrôle `tools/check_docs.py` dérive désormais ces valeurs de
 `docs/inventory.json` et refuse toute divergence dans ce contrat. Les mentions
 de releases antérieures restent historiques ; elles ne redéfinissent pas ce
-contrat v1.5.0.
+candidate v1.6.0.
 
-## Condition de retrait du statut stable
+## Condition de retrait de la candidate
 
-La version doit redevenir candidate si l’installation ne reproduit plus l’inventaire, si une catégorie devient ambiguë, si le graphe diverge des dossiers, si un lien courant casse, ou si une variation d’ordre produit une dérive matérielle inexpliquée sur le jeu d’évaluations déclaré.
+Retirer ou refuser la candidate si l’installation ne reproduit plus l’inventaire, si une catégorie devient ambiguë, si le graphe diverge des dossiers, si un lien courant casse, si une variation d’ordre produit une dérive matérielle inexpliquée sur le jeu d’évaluations déclaré, si le harnais importe une recherche, s’il masque une dépendance ou un écart, s’il transforme projection/isolation locale en indépendance, ou si Bubblewrap replie vers la projection.

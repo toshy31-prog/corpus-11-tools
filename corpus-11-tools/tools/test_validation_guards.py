@@ -11,17 +11,73 @@ import tempfile
 
 HERE = Path(__file__).resolve().parent
 SOURCE_REPO = HERE.parents[1]
+NON_DISTRIBUTED_NAMES = {
+    ".agents",
+    ".cache",
+    ".codex",
+    ".coverage",
+    ".git",
+    ".maintenance",
+    ".mypy_cache",
+    ".next",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".venv",
+    "__pycache__",
+    "artifacts",
+    "htmlcov",
+    "node_modules",
+}
+MINIMUM_FREE_BYTES = 256 * 1024 * 1024
 
 
 def copy_repo(destination: Path) -> Path:
+    def ignore_non_distributed(_source: str, names: list[str]) -> set[str]:
+        return {
+            name
+            for name in names
+            if name in NON_DISTRIBUTED_NAMES or name.startswith(".venv-")
+        }
+
     shutil.copytree(
         SOURCE_REPO,
         destination,
-        ignore=shutil.ignore_patterns(
-            ".git", "node_modules", ".next", "__pycache__", ".pytest_cache"
-        ),
+        ignore=ignore_non_distributed,
     )
     return destination
+
+
+def projected_copy_bytes() -> int:
+    """Measure one mutation copy while excluding non-distributed local state."""
+    total = 0
+    for path in SOURCE_REPO.rglob("*"):
+        relative_parts = path.relative_to(SOURCE_REPO).parts
+        if any(part in NON_DISTRIBUTED_NAMES or part.startswith(".venv-") for part in relative_parts):
+            continue
+        if path.is_file() and not path.is_symlink():
+            total += path.stat().st_size
+    return total
+
+
+def require_disk_capacity() -> None:
+    copy_bytes = projected_copy_bytes()
+    required = max(MINIMUM_FREE_BYTES, (2 * copy_bytes) + MINIMUM_FREE_BYTES)
+    available = shutil.disk_usage(SOURCE_REPO).free
+    if available < required:
+        raise RuntimeError(
+            "insufficient free disk space for one isolated mutation copy: "
+            f"need at least {required} bytes, found {available} bytes"
+        )
+    print(
+        "PASS disk capacity: "
+        f"{available} bytes free for one projected copy of {copy_bytes} bytes"
+    )
+
+
+def remove_tree(path: Path) -> None:
+    """Remove a mutation directory; a failure must prevent a false PASS."""
+    if path.exists():
+        shutil.rmtree(path)
 
 
 def run_validator(repo: Path, script: str) -> subprocess.CompletedProcess[str]:
@@ -251,6 +307,7 @@ MUTATIONS = [
 
 
 def main() -> int:
+    require_disk_capacity()
     # First prove that the validators under test accept the untouched branch.
     for validator in (
         "validate_package.py",
@@ -263,13 +320,19 @@ def main() -> int:
     ):
         require_success(run_validator(SOURCE_REPO, validator), f"untouched {validator}")
 
-    with tempfile.TemporaryDirectory() as raw:
-        base = Path(raw)
+    base = Path(tempfile.mkdtemp(prefix="corpus-validation-guards-"))
+    try:
         for index, mutation in enumerate(MUTATIONS, 1):
-            repo = copy_repo(base / f"case-{index:02d}")
-            validator, label = mutation(repo)
-            require_failure(run_validator(repo, validator), label)
-            print(f"PASS mutation {index:02d}: {label}")
+            repo = base / f"case-{index:02d}"
+            try:
+                copy_repo(repo)
+                validator, label = mutation(repo)
+                require_failure(run_validator(repo, validator), label)
+                print(f"PASS mutation {index:02d}: {label}")
+            finally:
+                remove_tree(repo)
+    finally:
+        remove_tree(base)
 
     print(f"PASS: {len(MUTATIONS)} adversarial repository mutations rejected")
     return 0

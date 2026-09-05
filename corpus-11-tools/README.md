@@ -15,12 +15,28 @@ ni autonomie au plugin. Voir
 
 ## État actuel
 
-- version stable du paquet : **v1.5.0** ;
+- candidate de release en réparation requise : **v1.6.0** ;
+- version installée dans l’environnement de départ : **v1.5.0** ;
 - 58 skills ;
 - 49 capabilities ;
 - 4 familles descriptives ;
 - 88 relations ;
 - 77 évaluations.
+
+## Changement public de v1.6.0 — candidate en réparation requise
+
+v1.6.0 en réparation prépare `corpus_labs.independent_replication`, un organe générique qui
+compare une référence et une soumission séparée à partir d’un paquet gelé,
+d’une liste blanche, d’attestations et d’un contrat de sortie. Il expose les
+différences et dépendances communes sans importer FOE-001, provenance, leurs
+fixtures, règles ou résultats. `independence_unknown` reste le seul verdict
+d’indépendance ; Bubblewrap est optionnel, désactive le réseau et ne replie
+jamais silencieusement vers la projection locale.
+
+Cette candidate n’est ni taguée, ni publiée, ni installée. Son statut ne peut
+redevenir `release_candidate_prepared` qu'après passage de toutes les portes
+applicables ; une contre-revue de release devra alors vérifier son diff, ses
+exports, son installation propre et ses limites avant toute autorisation.
 
 ## Changement public de v1.5.0
 
@@ -140,9 +156,9 @@ déployée.
 
 ## Statut
 
-Le paquet `v1.5.0` contient 58 skills, 49 capabilities, 4 familles, 88 relations et 77 évaluations. Sa stabilité désigne la cohérence du paquet, de sa continuité versionnée, de sa taxonomie, de sa frontière avec la recherche et de ses tests sur le périmètre déclaré ; elle ne présume pas l'installation dans un hôte donné. `open-experiment-arena` reste une procédure expérimentale candidate : ses tests synthétiques n’établissent ni scénario extérieur indépendant, ni gain de capability, ni usage de terrain. Les 31 capabilities natives restent `candidate_unvalidated`, les neuf facultés récupérées `recovered_candidate_unvalidated` et les neuf nouveaux outils `design_candidate_unvalidated`.
+La candidate `v1.6.0` contient 58 skills, 49 capabilities, 4 familles, 88 relations et 77 évaluations. Elle ajoute un laboratoire, pas une capability ni une règle analytique. Son statut `release_candidate_repair_required` signale qu'une porte applicable n'est pas encore au vert ; il ne présume ni tag, ni publication, ni installation dans un hôte donné. `open-experiment-arena` reste une procédure expérimentale candidate : ses tests synthétiques n’établissent ni scénario extérieur indépendant, ni gain de capability, ni usage de terrain. Les 31 capabilities natives restent `candidate_unvalidated`, les neuf facultés récupérées `recovered_candidate_unvalidated` et les neuf nouveaux outils `design_candidate_unvalidated`.
 
-Le périmètre et les conditions de retrait de ce statut sont définis dans [`docs/stability-contract.md`](docs/stability-contract.md), la matrice exécutée dans [`docs/release-validation-v1.5.0.md`](docs/release-validation-v1.5.0.md), et l'attestation octet par octet dans [`docs/release-content-v1.5.0.json`](docs/release-content-v1.5.0.json).
+Le périmètre et les conditions de retrait de ce statut sont définis dans [`docs/stability-contract.md`](docs/stability-contract.md), la matrice candidate dans [`docs/release-validation-v1.6.0.md`](docs/release-validation-v1.6.0.md), et l'attestation octet par octet dans [`docs/release-content-v1.6.0.json`](docs/release-content-v1.6.0.json).
 
 Les lacunes historiques restent documentées dans `docs/legacy-loss-audit.md` et `archives/legacy/STATUS.md` : Atlas 2.7, Corpus 9.8, Corpus 10.2, la release 10.4 complète et la source éditable du manuel n’ont pas été retrouvés ni reconstruits par supposition.
 

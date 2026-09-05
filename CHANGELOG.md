@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+### Candidate v1.6.0 — réplication indépendante locale
+
+- prépare `corpus_labs.independent_replication`, mécanisme générique de paquet
+  gelé, liste blanche, attestations, comparaison de sorties et dépendances
+  communes visibles ;
+- expose explicitement la projection locale et, optionnellement, une isolation
+  Bubblewrap sans réseau et sans fallback ; aucune de ces voies ne dépasse
+  `independence_unknown` ;
+- conserve hors produit FOE-001, provenance, leurs adaptateurs, leurs fixtures,
+  leurs règles et leurs résultats ;
+- reste une candidate locale : aucun tag, push, publication, installation ou
+  réobservation de v1.6.0 n'est impliqué.
+
 ## v1.5.0 — 2026-08-26
 
 ### Continuité de l'organisme Corpus

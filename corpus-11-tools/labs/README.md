@@ -15,6 +15,11 @@ Ce dossier contient les instruments génériques d’expérimentation livrés av
 - `python/corpus_labs/json_schema_subset.py` : validateur sans dépendance d'un
   sous-ensemble JSON Schema explicitement borné ; tout mot-clé hors contrat est
   refusé au lieu d'être silencieusement ignoré.
+- `python/corpus_labs/independent_replication.py` : paquet d’entrées gelé,
+  liste blanche, attestations de dépendances et comparaison de deux sorties ;
+  une projection locale séparée reste explicitement distincte d’une preuve
+  d’indépendance externe. Voir
+  [`python/INDEPENDENT_REPLICATION.md`](python/INDEPENDENT_REPLICATION.md).
 
 L’exécuteur reçoit les possibilités, scénarios, orientations des métriques,
 quantiles et règles de perte depuis la recherche appelante. Chaque appel reçoit
