@@ -18,6 +18,34 @@ ALLOWED_SYNTHETIC_SCOPES = {"formal_exact", "model_internal", "pipeline_verified
 
 
 SAFE_CHECKS: dict[str, tuple[Path, list[str]]] = {
+    "ecosystem_episode_ledger": (
+        ROOT,
+        [
+            sys.executable,
+            "research/active/corpus-open-model/tests/test_ecosystem_episode_ledger.py",
+        ],
+    ),
+    "native_conversation_surface": (
+        ROOT,
+        [
+            sys.executable,
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "research/active/model-response-comparison-harness/native_surface/tests",
+            "-p",
+            "test_*.py",
+        ],
+    ),
+    "conversational_surface_candidate": (
+        ROOT,
+        [sys.executable, "corpus-11-tools/tools/check_conversational_surface.py"],
+    ),
+    "comparison_harness": (
+        ROOT,
+        [sys.executable, "research/active/model-response-comparison-harness/tests/test_harness.py"],
+    ),
     "portfolio_manifest": (
         ROOT / "research/scripts",
         [sys.executable, "test_portfolio_cycle.py"],

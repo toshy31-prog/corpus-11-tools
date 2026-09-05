@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Comparison response envelope v1",
+  "type": "object",
+  "required": ["schema", "run_id", "job_id", "attempt_id", "input_sha256", "response_text", "response_sha256", "operator_notes", "sealed_at"],
+  "properties": {
+    "schema": {"const": "comparison-response/v1"},
+    "attempt_id": {"type": "integer", "minimum": 1},
+    "response_text": {"type": "string"},
+    "response_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "operator_notes": {"type": "string"}
+  },
+  "additionalProperties": true
+}
+

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Comparison run manifest v1",
+  "type": "object",
+  "required": ["schema", "run_id", "purpose", "input_sha256", "status", "jobs"],
+  "properties": {
+    "schema": {"const": "comparison-run/v1"},
+    "run_id": {"type": "string", "minLength": 1},
+    "purpose": {"enum": ["synthetic_fixture", "real_non_sensitive"]},
+    "input_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "status": {"enum": ["draft", "input_frozen", "awaiting_results", "both_sealed", "comparison_ready", "reviewed", "closed", "invalidated"]},
+    "jobs": {"const": ["chatgpt_custom_gpt", "codex_corpus"]}
+  },
+  "additionalProperties": true
+}

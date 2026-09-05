@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Comparison job v1",
+  "type": "object",
+  "required": ["schema", "run_id", "job_id", "attempt_id", "input_sha256", "status"],
+  "properties": {
+    "schema": {"const": "comparison-job/v1"},
+    "job_id": {"enum": ["chatgpt_custom_gpt", "codex_corpus"]},
+    "executor_kind": {"const": "manual_import"},
+    "attempt_id": {"type": "integer", "minimum": 1},
+    "input_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "status": {"enum": ["planned", "prepared", "output_received", "sealed", "failed_retryable", "failed_terminal", "timed_out", "cancelled", "invalidated"]}
+  },
+  "additionalProperties": true
+}

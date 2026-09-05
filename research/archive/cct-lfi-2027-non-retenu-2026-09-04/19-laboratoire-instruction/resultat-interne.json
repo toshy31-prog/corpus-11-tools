@@ -1,0 +1,312 @@
+{
+  "title": "Qualification juridique-budget-territoire : moteur interne",
+  "source": "internal_synthetic",
+  "boundary": "Les profils representent des pieces disponibles ou absentes ; ils ne decrivent aucun territoire reel et ne sont pas une expertise juridique ou budgetaire.",
+  "rules": {
+    "all_three_present": "PRET_A_INSTRUIRE",
+    "any_absent": "A_RETENIR",
+    "no_claim": [
+      "legalite",
+      "financement",
+      "faisabilite_nationale"
+    ]
+  },
+  "results": {
+    "pieces_completes": {
+      "A1_dependances": {
+        "pieces": {
+          "droit": "P",
+          "budget_capacite": "P",
+          "territoire": "P"
+        },
+        "status": "PRET_A_INSTRUIRE",
+        "missing": [],
+        "conditional": []
+      },
+      "A2_continuite": {
+        "pieces": {
+          "droit": "P",
+          "budget_capacite": "P",
+          "territoire": "P"
+        },
+        "status": "PRET_A_INSTRUIRE",
+        "missing": [],
+        "conditional": []
+      },
+      "A3_hors_numerique": {
+        "pieces": {
+          "droit": "P",
+          "budget_capacite": "P",
+          "territoire": "P"
+        },
+        "status": "PRET_A_INSTRUIRE",
+        "missing": [],
+        "conditional": []
+      },
+      "A4_exceptions": {
+        "pieces": {
+          "droit": "P",
+          "budget_capacite": "P",
+          "territoire": "P"
+        },
+        "status": "PRET_A_INSTRUIRE",
+        "missing": [],
+        "conditional": []
+      },
+      "A5_charge": {
+        "pieces": {
+          "droit": "P",
+          "budget_capacite": "P",
+          "territoire": "P"
+        },
+        "status": "PRET_A_INSTRUIRE",
+        "missing": [],
+        "conditional": []
+      },
+      "A6_contradiction": {
+        "pieces": {
+          "droit": "P",
+          "budget_capacite": "P",
+          "territoire": "P"
+        },
+        "status": "PRET_A_INSTRUIRE",
+        "missing": [],
+        "conditional": []
+      }
+    },
+    "droit_sans_capacite_locale": {
+      "A1_dependances": {
+        "pieces": {
+          "droit": "P",
+          "budget_capacite": "C",
+          "territoire": "A"
+        },
+        "status": "A_RETENIR",
+        "missing": [
+          "territoire"
+        ],
+        "conditional": [
+          "budget_capacite"
+        ]
+      },
+      "A2_continuite": {
+        "pieces": {
+          "droit": "P",
+          "budget_capacite": "C",
+          "territoire": "A"
+        },
+        "status": "A_RETENIR",
+        "missing": [
+          "territoire"
+        ],
+        "conditional": [
+          "budget_capacite"
+        ]
+      },
+      "A3_hors_numerique": {
+        "pieces": {
+          "droit": "P",
+          "budget_capacite": "C",
+          "territoire": "A"
+        },
+        "status": "A_RETENIR",
+        "missing": [
+          "territoire"
+        ],
+        "conditional": [
+          "budget_capacite"
+        ]
+      },
+      "A4_exceptions": {
+        "pieces": {
+          "droit": "P",
+          "budget_capacite": "C",
+          "territoire": "A"
+        },
+        "status": "A_RETENIR",
+        "missing": [
+          "territoire"
+        ],
+        "conditional": [
+          "budget_capacite"
+        ]
+      },
+      "A5_charge": {
+        "pieces": {
+          "droit": "P",
+          "budget_capacite": "C",
+          "territoire": "A"
+        },
+        "status": "A_RETENIR",
+        "missing": [
+          "territoire"
+        ],
+        "conditional": [
+          "budget_capacite"
+        ]
+      },
+      "A6_contradiction": {
+        "pieces": {
+          "droit": "P",
+          "budget_capacite": "C",
+          "territoire": "A"
+        },
+        "status": "A_RETENIR",
+        "missing": [
+          "territoire"
+        ],
+        "conditional": [
+          "budget_capacite"
+        ]
+      }
+    },
+    "capacite_sans_base_juridique": {
+      "A1_dependances": {
+        "pieces": {
+          "droit": "A",
+          "budget_capacite": "P",
+          "territoire": "P"
+        },
+        "status": "A_RETENIR",
+        "missing": [
+          "droit"
+        ],
+        "conditional": []
+      },
+      "A2_continuite": {
+        "pieces": {
+          "droit": "A",
+          "budget_capacite": "P",
+          "territoire": "P"
+        },
+        "status": "A_RETENIR",
+        "missing": [
+          "droit"
+        ],
+        "conditional": []
+      },
+      "A3_hors_numerique": {
+        "pieces": {
+          "droit": "A",
+          "budget_capacite": "P",
+          "territoire": "P"
+        },
+        "status": "A_RETENIR",
+        "missing": [
+          "droit"
+        ],
+        "conditional": []
+      },
+      "A4_exceptions": {
+        "pieces": {
+          "droit": "A",
+          "budget_capacite": "P",
+          "territoire": "P"
+        },
+        "status": "A_RETENIR",
+        "missing": [
+          "droit"
+        ],
+        "conditional": []
+      },
+      "A5_charge": {
+        "pieces": {
+          "droit": "A",
+          "budget_capacite": "P",
+          "territoire": "P"
+        },
+        "status": "A_RETENIR",
+        "missing": [
+          "droit"
+        ],
+        "conditional": []
+      },
+      "A6_contradiction": {
+        "pieces": {
+          "droit": "A",
+          "budget_capacite": "P",
+          "territoire": "P"
+        },
+        "status": "A_RETENIR",
+        "missing": [
+          "droit"
+        ],
+        "conditional": []
+      }
+    },
+    "voie_humaine_absente": {
+      "A1_dependances": {
+        "pieces": {
+          "droit": "P",
+          "budget_capacite": "P",
+          "territoire": "C"
+        },
+        "status": "PRET_A_INSTRUIRE_SOUS_CONDITIONS",
+        "missing": [],
+        "conditional": [
+          "territoire"
+        ]
+      },
+      "A2_continuite": {
+        "pieces": {
+          "droit": "P",
+          "budget_capacite": "P",
+          "territoire": "C"
+        },
+        "status": "PRET_A_INSTRUIRE_SOUS_CONDITIONS",
+        "missing": [],
+        "conditional": [
+          "territoire"
+        ]
+      },
+      "A3_hors_numerique": {
+        "pieces": {
+          "droit": "P",
+          "budget_capacite": "P",
+          "territoire": "A"
+        },
+        "status": "A_RETENIR",
+        "missing": [
+          "territoire"
+        ],
+        "conditional": []
+      },
+      "A4_exceptions": {
+        "pieces": {
+          "droit": "P",
+          "budget_capacite": "P",
+          "territoire": "C"
+        },
+        "status": "PRET_A_INSTRUIRE_SOUS_CONDITIONS",
+        "missing": [],
+        "conditional": [
+          "territoire"
+        ]
+      },
+      "A5_charge": {
+        "pieces": {
+          "droit": "P",
+          "budget_capacite": "P",
+          "territoire": "C"
+        },
+        "status": "PRET_A_INSTRUIRE_SOUS_CONDITIONS",
+        "missing": [],
+        "conditional": [
+          "territoire"
+        ]
+      },
+      "A6_contradiction": {
+        "pieces": {
+          "droit": "P",
+          "budget_capacite": "P",
+          "territoire": "C"
+        },
+        "status": "PRET_A_INSTRUIRE_SOUS_CONDITIONS",
+        "missing": [],
+        "conditional": [
+          "territoire"
+        ]
+      }
+    }
+  }
+}

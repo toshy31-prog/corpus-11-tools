@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Comparison event v1",
+  "type": "object",
+  "required": ["schema", "sequence", "at", "type", "run_id", "previous_event_sha256", "event_sha256"],
+  "properties": {
+    "schema": {"const": "comparison-event/v1"},
+    "sequence": {"type": "integer", "minimum": 1},
+    "event_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  },
+  "additionalProperties": true
+}
+

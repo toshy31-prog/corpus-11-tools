@@ -1,0 +1,577 @@
+{
+  "report": {
+    "contract": "corpus-open-experiment-arena/v1",
+    "arenaId": "cct-lfi-six-001",
+    "seed": 20260901,
+    "scenario": {
+      "id": "lfi-six-guarantees-stress-test",
+      "version": "1.0.0",
+      "title": "Stress test synthetique des garanties de continuite et de recours",
+      "dimensions": [
+        "service_continuity",
+        "rights_access",
+        "decision_reversibility",
+        "resident_burden",
+        "delivery_progress"
+      ],
+      "reversalConditions": [
+        "Une garantie reduit la continuite ou l'acces dans tous les scenarii synthetiques testes.",
+        "Un gain de continuite n'apparait qu'en supprimant le recours ou la voie humaine.",
+        "Un result at favorable est presente comme une preuve de terrain ou de transportabilite."
+      ],
+      "source": {
+        "regime": "internal_synthetic",
+        "authorId": "cct-france",
+        "authorRelationToCorpus": "maintainer",
+        "frozenBeforeContenders": true,
+        "authorshipTrace": "cct-lfi-synthetic-stress-test-2026-09-01"
+      }
+    },
+    "claimExternal": false,
+    "externalityStatus": "internal_synthetic_not_external_evidence",
+    "matchedBaseline": {
+      "worldHash": "fnv1a64:7d3b732cb66dded6",
+      "exogenousHash": "fnv1a64:932b2b9b1a23f89f"
+    },
+    "runs": [
+      {
+        "label": "method-030c2318",
+        "baseline": {
+          "worldHash": "fnv1a64:7d3b732cb66dded6",
+          "exogenousHash": "fnv1a64:932b2b9b1a23f89f"
+        },
+        "outcomes": {
+          "service_continuity": 80,
+          "rights_access": 90,
+          "decision_reversibility": 96,
+          "resident_burden": 19,
+          "delivery_progress": 43
+        },
+        "history": [
+          {
+            "round": 0,
+            "view": {
+              "round": 0,
+              "continuity": 75,
+              "access": 75,
+              "reversibility": 65,
+              "burden": 25,
+              "prepared": false
+            },
+            "admissibleActions": [
+              "accelerate",
+              "prepare",
+              "guarantee"
+            ],
+            "action": "prepare",
+            "predictions": {
+              "continuity": 77,
+              "access": 76
+            },
+            "observation": {
+              "round": 0,
+              "continuity": 77,
+              "access": 76,
+              "reversibility": 65,
+              "burden": 24,
+              "delivery": 7,
+              "prepared": true
+            },
+            "predictionAssessment": {
+              "stated": {
+                "continuity": 77,
+                "access": 76
+              },
+              "access_error": 0,
+              "continuity_error": 0
+            },
+            "beforeHash": "fnv1a64:7d3b732cb66dded6",
+            "afterHash": "fnv1a64:6da161f153d11c94"
+          },
+          {
+            "round": 1,
+            "view": {
+              "round": 1,
+              "continuity": 77,
+              "access": 76,
+              "reversibility": 65,
+              "burden": 24,
+              "prepared": true
+            },
+            "admissibleActions": [
+              "accelerate",
+              "prepare",
+              "guarantee"
+            ],
+            "action": "guarantee",
+            "predictions": {
+              "continuity": 71,
+              "access": 85
+            },
+            "observation": {
+              "round": 1,
+              "continuity": 71,
+              "access": 85,
+              "reversibility": 80,
+              "burden": 22,
+              "delivery": 19,
+              "prepared": true
+            },
+            "predictionAssessment": {
+              "stated": {
+                "continuity": 71,
+                "access": 85
+              },
+              "access_error": 0,
+              "continuity_error": 0
+            },
+            "beforeHash": "fnv1a64:6da161f153d11c94",
+            "afterHash": "fnv1a64:143c4e195ddf5f6c"
+          },
+          {
+            "round": 2,
+            "view": {
+              "round": 2,
+              "continuity": 71,
+              "access": 85,
+              "reversibility": 80,
+              "burden": 22,
+              "prepared": true
+            },
+            "admissibleActions": [
+              "accelerate",
+              "prepare",
+              "guarantee"
+            ],
+            "action": "guarantee",
+            "predictions": {
+              "continuity": 75,
+              "access": 80
+            },
+            "observation": {
+              "round": 2,
+              "continuity": 75,
+              "access": 80,
+              "reversibility": 95,
+              "burden": 23,
+              "delivery": 31,
+              "prepared": true
+            },
+            "predictionAssessment": {
+              "stated": {
+                "continuity": 75,
+                "access": 80
+              },
+              "access_error": 0,
+              "continuity_error": 0
+            },
+            "beforeHash": "fnv1a64:143c4e195ddf5f6c",
+            "afterHash": "fnv1a64:74b9b47b44f4e86c"
+          },
+          {
+            "round": 3,
+            "view": {
+              "round": 3,
+              "continuity": 75,
+              "access": 80,
+              "reversibility": 95,
+              "burden": 23,
+              "prepared": true
+            },
+            "admissibleActions": [
+              "accelerate",
+              "prepare",
+              "guarantee"
+            ],
+            "action": "guarantee",
+            "predictions": {
+              "continuity": 80,
+              "access": 90
+            },
+            "observation": {
+              "round": 3,
+              "continuity": 80,
+              "access": 90,
+              "reversibility": 96,
+              "burden": 19,
+              "delivery": 43,
+              "prepared": true
+            },
+            "predictionAssessment": {
+              "stated": {
+                "continuity": 80,
+                "access": 90
+              },
+              "access_error": 0,
+              "continuity_error": 0
+            },
+            "beforeHash": "fnv1a64:74b9b47b44f4e86c",
+            "afterHash": "fnv1a64:ced3f7f3b34c8206"
+          }
+        ],
+        "finalWorldHash": "fnv1a64:ced3f7f3b34c8206"
+      },
+      {
+        "label": "method-98ca48f4",
+        "baseline": {
+          "worldHash": "fnv1a64:7d3b732cb66dded6",
+          "exogenousHash": "fnv1a64:932b2b9b1a23f89f"
+        },
+        "outcomes": {
+          "service_continuity": 50,
+          "rights_access": 83,
+          "decision_reversibility": 96,
+          "resident_burden": 27,
+          "delivery_progress": 58
+        },
+        "history": [
+          {
+            "round": 0,
+            "view": {
+              "round": 0,
+              "continuity": 75,
+              "access": 75,
+              "reversibility": 65,
+              "burden": 25,
+              "prepared": false
+            },
+            "admissibleActions": [
+              "accelerate",
+              "prepare",
+              "guarantee"
+            ],
+            "action": "accelerate",
+            "predictions": {
+              "continuity": 62,
+              "access": 69
+            },
+            "observation": {
+              "round": 0,
+              "continuity": 62,
+              "access": 69,
+              "reversibility": 65,
+              "burden": 32,
+              "delivery": 22,
+              "prepared": false
+            },
+            "predictionAssessment": {
+              "stated": {
+                "continuity": 62,
+                "access": 69
+              },
+              "access_error": 0,
+              "continuity_error": 0
+            },
+            "beforeHash": "fnv1a64:7d3b732cb66dded6",
+            "afterHash": "fnv1a64:d0190db9e6dc349f"
+          },
+          {
+            "round": 1,
+            "view": {
+              "round": 1,
+              "continuity": 62,
+              "access": 69,
+              "reversibility": 65,
+              "burden": 32,
+              "prepared": false
+            },
+            "admissibleActions": [
+              "accelerate",
+              "prepare",
+              "guarantee"
+            ],
+            "action": "guarantee",
+            "predictions": {
+              "continuity": 51,
+              "access": 78
+            },
+            "observation": {
+              "round": 1,
+              "continuity": 51,
+              "access": 78,
+              "reversibility": 80,
+              "burden": 30,
+              "delivery": 34,
+              "prepared": false
+            },
+            "predictionAssessment": {
+              "stated": {
+                "continuity": 51,
+                "access": 78
+              },
+              "access_error": 0,
+              "continuity_error": 0
+            },
+            "beforeHash": "fnv1a64:d0190db9e6dc349f",
+            "afterHash": "fnv1a64:64998e72bbc1d303"
+          },
+          {
+            "round": 2,
+            "view": {
+              "round": 2,
+              "continuity": 51,
+              "access": 78,
+              "reversibility": 80,
+              "burden": 30,
+              "prepared": false
+            },
+            "admissibleActions": [
+              "accelerate",
+              "prepare",
+              "guarantee"
+            ],
+            "action": "guarantee",
+            "predictions": {
+              "continuity": 50,
+              "access": 73
+            },
+            "observation": {
+              "round": 2,
+              "continuity": 50,
+              "access": 73,
+              "reversibility": 95,
+              "burden": 31,
+              "delivery": 46,
+              "prepared": false
+            },
+            "predictionAssessment": {
+              "stated": {
+                "continuity": 50,
+                "access": 73
+              },
+              "access_error": 0,
+              "continuity_error": 0
+            },
+            "beforeHash": "fnv1a64:64998e72bbc1d303",
+            "afterHash": "fnv1a64:6be6fd69ff5027d1"
+          },
+          {
+            "round": 3,
+            "view": {
+              "round": 3,
+              "continuity": 50,
+              "access": 73,
+              "reversibility": 95,
+              "burden": 31,
+              "prepared": false
+            },
+            "admissibleActions": [
+              "accelerate",
+              "prepare",
+              "guarantee"
+            ],
+            "action": "guarantee",
+            "predictions": {
+              "continuity": 50,
+              "access": 83
+            },
+            "observation": {
+              "round": 3,
+              "continuity": 50,
+              "access": 83,
+              "reversibility": 96,
+              "burden": 27,
+              "delivery": 58,
+              "prepared": false
+            },
+            "predictionAssessment": {
+              "stated": {
+                "continuity": 50,
+                "access": 83
+              },
+              "access_error": 0,
+              "continuity_error": 0
+            },
+            "beforeHash": "fnv1a64:6be6fd69ff5027d1",
+            "afterHash": "fnv1a64:1b0318e2bf9737eb"
+          }
+        ],
+        "finalWorldHash": "fnv1a64:1b0318e2bf9737eb"
+      },
+      {
+        "label": "method-c445a8f8",
+        "baseline": {
+          "worldHash": "fnv1a64:7d3b732cb66dded6",
+          "exogenousHash": "fnv1a64:932b2b9b1a23f89f"
+        },
+        "outcomes": {
+          "service_continuity": 26,
+          "rights_access": 32,
+          "decision_reversibility": 51,
+          "resident_burden": 63,
+          "delivery_progress": 88
+        },
+        "history": [
+          {
+            "round": 0,
+            "view": {
+              "round": 0,
+              "continuity": 75,
+              "access": 75,
+              "reversibility": 65,
+              "burden": 25,
+              "prepared": false
+            },
+            "admissibleActions": [
+              "accelerate",
+              "prepare",
+              "guarantee"
+            ],
+            "action": "accelerate",
+            "predictions": {
+              "continuity": 62,
+              "access": 69
+            },
+            "observation": {
+              "round": 0,
+              "continuity": 62,
+              "access": 69,
+              "reversibility": 65,
+              "burden": 32,
+              "delivery": 22,
+              "prepared": false
+            },
+            "predictionAssessment": {
+              "stated": {
+                "continuity": 62,
+                "access": 69
+              },
+              "access_error": 0,
+              "continuity_error": 0
+            },
+            "beforeHash": "fnv1a64:7d3b732cb66dded6",
+            "afterHash": "fnv1a64:d0190db9e6dc349f"
+          },
+          {
+            "round": 1,
+            "view": {
+              "round": 1,
+              "continuity": 62,
+              "access": 69,
+              "reversibility": 65,
+              "burden": 32,
+              "prepared": false
+            },
+            "admissibleActions": [
+              "accelerate",
+              "prepare",
+              "guarantee"
+            ],
+            "action": "accelerate",
+            "predictions": {
+              "continuity": 43,
+              "access": 61
+            },
+            "observation": {
+              "round": 1,
+              "continuity": 43,
+              "access": 61,
+              "reversibility": 65,
+              "burden": 42,
+              "delivery": 44,
+              "prepared": false
+            },
+            "predictionAssessment": {
+              "stated": {
+                "continuity": 43,
+                "access": 61
+              },
+              "access_error": 0,
+              "continuity_error": 0
+            },
+            "beforeHash": "fnv1a64:d0190db9e6dc349f",
+            "afterHash": "fnv1a64:5dd97b718fa732bd"
+          },
+          {
+            "round": 2,
+            "view": {
+              "round": 2,
+              "continuity": 43,
+              "access": 61,
+              "reversibility": 65,
+              "burden": 42,
+              "prepared": false
+            },
+            "admissibleActions": [
+              "accelerate",
+              "prepare",
+              "guarantee"
+            ],
+            "action": "accelerate",
+            "predictions": {
+              "continuity": 34,
+              "access": 39
+            },
+            "observation": {
+              "round": 2,
+              "continuity": 34,
+              "access": 39,
+              "reversibility": 65,
+              "burden": 55,
+              "delivery": 66,
+              "prepared": false
+            },
+            "predictionAssessment": {
+              "stated": {
+                "continuity": 34,
+                "access": 39
+              },
+              "access_error": 0,
+              "continuity_error": 0
+            },
+            "beforeHash": "fnv1a64:5dd97b718fa732bd",
+            "afterHash": "fnv1a64:41f90395248fdf48"
+          },
+          {
+            "round": 3,
+            "view": {
+              "round": 3,
+              "continuity": 34,
+              "access": 39,
+              "reversibility": 65,
+              "burden": 55,
+              "prepared": false
+            },
+            "admissibleActions": [
+              "accelerate",
+              "prepare",
+              "guarantee"
+            ],
+            "action": "accelerate",
+            "predictions": {
+              "continuity": 26,
+              "access": 32
+            },
+            "observation": {
+              "round": 3,
+              "continuity": 26,
+              "access": 32,
+              "reversibility": 51,
+              "burden": 63,
+              "delivery": 88,
+              "prepared": false
+            },
+            "predictionAssessment": {
+              "stated": {
+                "continuity": 26,
+                "access": 32
+              },
+              "access_error": 0,
+              "continuity_error": 0
+            },
+            "beforeHash": "fnv1a64:41f90395248fdf48",
+            "afterHash": "fnv1a64:777322b18b22d1fc"
+          }
+        ],
+        "finalWorldHash": "fnv1a64:777322b18b22d1fc"
+      }
+    ],
+    "conclusionBoundary": "vector_outcomes_only_no_unique_winner",
+    "reportHash": "fnv1a64:c2f078dc66772816"
+  },
+  "sealedIdentityMap": {
+    "method-030c2318": "prepare-then-guarantee",
+    "method-98ca48f4": "conditional-guarantee",
+    "method-c445a8f8": "rapid-delivery"
+  }
+}

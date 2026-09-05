@@ -1,0 +1,18 @@
+{
+  "name": "corpus-native-conversation-dev",
+  "version": "0.1.0+codex.20260904235116",
+  "description": "Development-only native conversational surface candidate for Corpus.",
+  "author": {
+    "name": "Local developer"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Corpus Native Conversation Dev",
+    "shortDescription": "Development-only sealed Corpus conversation.",
+    "longDescription": "Development plugin exposing a candidate skill that routes with Corpus, seals the resulting analytic packet, then verifies a conversational rendering.",
+    "developerName": "Local developer",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": "Use $corpus-native-conversation to analyze this question clearly without changing the sealed analytic packet."
+  }
+}

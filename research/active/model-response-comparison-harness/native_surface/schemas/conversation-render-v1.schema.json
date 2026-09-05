@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Native conversation surface render v1",
+  "type": "object",
+  "required": ["schema", "source_packet_sha256", "detail", "conversation", "fidelity_payload", "render_sha256"],
+  "properties": {
+    "schema": {"const": "corpus-conversation-render/v1"},
+    "detail": {"enum": ["compact", "standard", "inspectable"]},
+    "source_packet_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "conversation": {"type": "string", "minLength": 1}
+  }
+}
+

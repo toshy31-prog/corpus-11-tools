@@ -1,0 +1,20 @@
+{
+  "name": "corpus-native-conversation-dev-local",
+  "interface": {
+    "displayName": "Corpus Native Conversation Dev"
+  },
+  "plugins": [
+    {
+      "name": "corpus-native-conversation-dev",
+      "source": {
+        "source": "local",
+        "path": "./plugins/corpus-native-conversation-dev"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Comparison divergence v1",
+  "type": "object",
+  "required": ["schema", "run_id", "divergence_id", "kind", "review_status"],
+  "properties": {
+    "schema": {"const": "comparison-divergence/v1"},
+    "kind": {"enum": ["factual", "scope", "causal", "definition", "recommendation", "uncertainty", "source"]},
+    "review_status": {"enum": ["open", "non_material", "candidate_case"]}
+  },
+  "additionalProperties": true
+}
+

@@ -1,0 +1,18 @@
+{
+  "schema": "corpus-analytic-packet/v1",
+  "raw_prompt": "Le score a augmenté après publication de la règle : cela prouve-t-il que l'organisation s'est améliorée ?",
+  "analysis": {
+    "material_conclusion": "Non. L'augmentation du score ne prouve pas, à elle seule, une amélioration de l'organisation.",
+    "useful_uncertainties": [
+      "Le score peut avoir progressé par adaptation stratégique à la règle plutôt que par amélioration du phénomène visé.",
+      "La mesure disponible ne valide pas encore le construit « amélioration de l'organisation »."
+    ],
+    "reversal_conditions": [
+      "Une mesure validée du construit, robuste à l'adaptation stratégique observée, réviserait cette conclusion.",
+      "Une comparaison appariée montrant que l'amélioration persiste hors de la règle publiée réviserait cette conclusion."
+    ],
+    "routes": ["strategic-adaptation-assessment", "construct-validity-assessment"],
+    "critical_dependencies": ["method-effect-audit"]
+  },
+  "packet_sha256": "68f5acd29dd4d8a6ae425a2ad693893d12fa36fe2c5129f698b70f6245241104"
+}

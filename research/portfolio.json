@@ -207,6 +207,24 @@
       "synthetic_scope": "model_internal",
       "next_decision": "Calculer les frontières exactes des taux de conversion, du délai et de la redondance où le classement s’inverse.",
       "blocker": "Chaque politique perd un monde et le classement dépend d’un ledger explicite en synthetic_decision_utility, sans transport hors modèle."
+    },
+    {
+      "id": "corpus-open-model",
+      "path": "active/corpus-open-model",
+      "mode": "bounded-local-model-research",
+      "safe_checks": ["ecosystem_episode_ledger"],
+      "synthetic_scope": "model_internal",
+      "next_decision": "Constituer un jeu indépendant pré-enregistré de requêtes ambiguës, adversariales et multilingues, puis auditer les licences avant toute diffusion.",
+      "blocker": "Les évaluations et artefacts établissent seulement des résultats locaux ; aucun gain de compréhension sémantique, de robustesse conversationnelle, de sécurité générale ou de déploiement n’est établi."
+    },
+    {
+      "id": "model-response-comparison-harness",
+      "path": "active/model-response-comparison-harness",
+      "mode": "native-conversational-surface-validation",
+      "safe_checks": ["comparison_harness", "conversational_surface_candidate", "native_conversation_surface"],
+      "synthetic_scope": "pipeline_verified",
+      "next_decision": "Rejouer le candidat native_surface sur des paquets Corpus scellés supplémentaires et chercher une perte de sens avant toute intégration au plugin.",
+      "blocker": "Le candidat est déterministe et vérifié sur fixtures ; aucune surface native Codex observée avec des utilisateurs ni intégration au plugin n'est établie."
     }
   ]
 }

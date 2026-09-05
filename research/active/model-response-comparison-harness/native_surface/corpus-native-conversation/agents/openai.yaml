@@ -1,0 +1,4 @@
+interface:
+  display_name: "Corpus Conversation"
+  short_description: "Analyse Corpus et restitution conversationnelle scellée"
+  default_prompt: "Use $corpus-native-conversation to analyze this question clearly without changing the sealed analytic packet."

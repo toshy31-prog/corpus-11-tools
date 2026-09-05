@@ -1,0 +1,12 @@
+{
+  "schema": "comparison-fixtures/v1",
+  "scope": "synthetic_only",
+  "scenarios": [
+    {"id": "missing-response", "expected": "review_refused"},
+    {"id": "corrupt-response-hash", "expected": "verification_refused"},
+    {"id": "identical-responses", "expected": "review_permitted"},
+    {"id": "wording-only", "expected": "review_permitted"},
+    {"id": "manifest-contradiction", "expected": "review_permitted_without_verdict"}
+  ]
+}
+

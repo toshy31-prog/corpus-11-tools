@@ -125,6 +125,11 @@ langues et négatifs distincts, sans être une validation externe.
 Ses [résultats observés](reports/2026-08-26-benchmark-v1.md) ne servent pas à
 régler les paramètres des modèles existants.
 
+Le [registre d'épisodes de l'écosystème v0](ECOSYSTEM_EPISODE_LEDGER_V0.md)
+conserve désormais des différences réelles entre états successifs de Corpus,
+avec les faits avant/après et les relations explicites, sans contenu brut ni
+entraînement. C'est le préalable à un futur test temporel réellement comparé.
+
 `compile_historical_change_pairs_v2.py` ouvre une expérience différente : des
 révisions textuelles réelles de Git (fichier parent → fichier du commit), et
 non les seuls chemins ou sujets de commits. `train_historical_change_coherence_v2.py`
