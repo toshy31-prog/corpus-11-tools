@@ -67,4 +67,4 @@ Elle ne désigne pas de montant par district, ne remplace pas les décisions de
 l'INGD, ne publie pas de données nominatives et ne revendique aucun impact déjà
 obtenu. Les listes publiques de districts et niveaux d'alerte divergent ; la
 CCT les traite donc comme une incertitude à surveiller, pas comme une base de
-calcul. Voir le [registre de lacune](/home/olivier/Documents/ChatGPT/Corpus/research/active/cct/pol-1.1-executable/arena/real-case-el-nino-mozambique-data-gap.md).
+calcul. Voir le [registre de lacune](real-case-el-nino-mozambique-data-gap.md).
