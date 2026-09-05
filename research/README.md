@@ -13,6 +13,9 @@ Une recherche peut utiliser les skills et laboratoires de Corpus. Elle ne devien
 
 - [`active/README.md`](active/README.md) est l’index opérationnel : objet,
   premier test, dépendances et condition d’arrêt de chaque recherche ouverte ;
+- [`PORTFOLIO_NEXT_STEP.md`](PORTFOLIO_NEXT_STEP.md) fixe la prochaine
+  campagne transversale et ses portes de décision, sans modifier les statuts
+  scientifiques locaux ;
 - un projet autonome possède son propre objet d’étude et ne sert pas de sous-dossier
   technique à un autre projet ;
 - une extension reste dans le projet dont elle cherche à rendre la conclusion

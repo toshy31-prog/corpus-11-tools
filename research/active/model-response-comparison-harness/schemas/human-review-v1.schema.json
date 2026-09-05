@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Human comparison review v1",
+  "type": "object",
+  "required": ["schema", "run_id", "decision", "criteria", "answer_sha256", "automated_verdict"],
+  "properties": {
+    "schema": {"const": "comparison-human-review/v1"},
+    "run_id": {"type": "string", "minLength": 1},
+    "decision": {"enum": ["A", "B", "tie", "inconclusive", "invalid"]},
+    "criteria": {"type": "array", "minItems": 1, "items": {"enum": ["conclusion_supported", "uncertainty_preserved", "reversal_condition_preserved", "scope_preserved", "useful_to_human"]}},
+    "answer_sha256": {"type": "object", "required": ["A", "B"]},
+    "automated_verdict": {"const": false}
+  },
+  "additionalProperties": true
+}

@@ -1,6 +1,6 @@
 # État courant — CCT
 
-Dernière mise à jour : 2026-08-26 — CCT-EXEC 1.2 récupération en monde ouvert
+Dernière mise à jour : 2026-09-05 — validations locales CCT-POL 1.1 et continuité mobile
 
 > Addendum 2026-09-04 — CCT-POL 1.1 est une révision politique candidate
 > distincte des artefacts gelés. Elle impose un registre du contre-champ, une
@@ -36,6 +36,15 @@ Dernière mise à jour : 2026-08-26 — CCT-EXEC 1.2 récupération en monde ouv
 > `pol-1.1-executable/minimum-use-case-water-continuity/`. Son statut est
 > `candidate_design_not_authorized` : aucun site, mandat, financement,
 > baseline, déploiement ou effet n'est établi.
+>
+> Addendum 2026-09-05 — les contrats locaux `CCT-SKY-01` (continuité mobile)
+> et `CCT-RV-01` (véhicule de ressources) passent leurs validations et mutations
+> négatives respectives. Ils précisent que le vecteur ne peut devenir le canal
+> vital unique et que des fonds ne peuvent être déclarés disponibles qu'après
+> séquestre chez un hébergeur légal identifié. Ces résultats sont strictement
+> structurels : `CCT-SKY-01` demeure `written_and_statically_validated` et
+> `CCT-RV-01` demeure `design_only_no_funds_no_legal_host`. Aucun véhicule,
+> fonds, hébergeur, opérateur local, déploiement ni effet matériel n'est établi.
 
 ## Statut
 

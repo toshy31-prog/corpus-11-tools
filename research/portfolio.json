@@ -50,9 +50,9 @@
       "id": "independent-evidence-arena",
       "path": "active/independent-evidence-arena",
       "mode": "fictional-blinded-evaluation",
-      "safe_checks": ["initial_protocols", "independent_lineage_graphs"],
+      "safe_checks": ["initial_protocols", "independent_lineage_graphs", "foundations_of_evidence_foe_001"],
       "synthetic_scope": "pipeline_verified",
-      "next_decision": "Construire un cas fictif fixé avant exécution avec procédure témoin et deux lignages complets sans empreinte ni mode d’échec commun déclaré.",
+      "next_decision": "Préparer avec les dossiers produit un jeu de requêtes pré-enregistré, ambigu, adversarial et multilingue ; il évaluera séparément le modèle ouvert et la surface native sans autoriser leur intégration.",
       "blocker": "La séparation procédurale dépend de l’exhaustivité et de l’exactitude des identités et empreintes du DAG fictif."
     },
     {

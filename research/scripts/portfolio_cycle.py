@@ -18,6 +18,10 @@ ALLOWED_SYNTHETIC_SCOPES = {"formal_exact", "model_internal", "pipeline_verified
 
 
 SAFE_CHECKS: dict[str, tuple[Path, list[str]]] = {
+    "foundations_of_evidence_foe_001": (
+        ROOT,
+        [sys.executable, "research/scripts/test_foundations_of_evidence.py"],
+    ),
     "ecosystem_episode_ledger": (
         ROOT,
         [

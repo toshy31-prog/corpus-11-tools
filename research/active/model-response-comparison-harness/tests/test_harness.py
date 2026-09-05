@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
-from harness import HarnessError, create_run, import_response, invalidate_run, prepare_review, verify_run  # noqa: E402
+from harness import HarnessError, create_run, import_response, invalidate_run, prepare_review, record_review, verify_run  # noqa: E402
 
 
 class HarnessTests(unittest.TestCase):
@@ -78,6 +78,27 @@ class HarnessTests(unittest.TestCase):
         public_manifest = (self.runtime / "synthetic-1" / "manifest.json").read_text(encoding="utf-8")
         self.assertEqual(set(packet["answers"]), {"A", "B"})
         self.assertNotIn("blind_mapping", public_manifest)
+
+    def test_human_review_is_explicit_blind_and_does_not_retain_response_text(self) -> None:
+        self.response("chatgpt_custom_gpt", "One answer")
+        self.response("codex_corpus", "Other answer")
+        prepare_review(self.runtime, "synthetic-1")
+        review = json.loads(record_review(self.runtime, "synthetic-1", "A", ["conclusion_supported", "scope_preserved"]).read_text(encoding="utf-8"))
+        manifest = json.loads((self.runtime / "synthetic-1" / "manifest.json").read_text(encoding="utf-8"))
+        self.assertEqual(review["decision"], "A")
+        self.assertFalse(review["automated_verdict"])
+        self.assertNotIn("One answer", json.dumps(review))
+        self.assertNotIn("Other answer", json.dumps(review))
+        self.assertEqual(manifest["status"], "reviewed")
+
+    def test_human_review_requires_prepared_packet_and_known_criteria(self) -> None:
+        with self.assertRaisesRegex(HarnessError, "prepared blind"):
+            record_review(self.runtime, "synthetic-1", "A", ["conclusion_supported"])
+        self.response("chatgpt_custom_gpt", "One")
+        self.response("codex_corpus", "Two")
+        prepare_review(self.runtime, "synthetic-1")
+        with self.assertRaisesRegex(HarnessError, "known review criterion"):
+            record_review(self.runtime, "synthetic-1", "A", ["looks_good"])
 
     def test_sealed_response_cannot_be_replaced(self) -> None:
         self.response("chatgpt_custom_gpt", "First")

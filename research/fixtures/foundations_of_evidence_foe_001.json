@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "protocol_id": "FOE-001",
+  "protocol_fixed_before_execution": true,
+  "core_fields": ["receipt_id", "case_id", "variant_id", "conclusion_id", "conclusion_text", "scope", "attribution", "source_ids", "source_hashes", "lineage_ids", "generator_ids", "hypothesis_ids", "code_ids", "failure_mode_ids", "transformations", "withdrawal_condition"],
+  "lineage_cases": [
+    {
+      "id": "independent",
+      "lineages": [
+        {"id": "L1", "source_ids": ["S1"], "generator_ids": ["G1"], "hypothesis_ids": ["H1"], "code_ids": ["C1"], "failure_mode_ids": ["F1"]},
+        {"id": "L2", "source_ids": ["S2"], "generator_ids": ["G2"], "hypothesis_ids": ["H2"], "code_ids": ["C2"], "failure_mode_ids": ["F2"]}
+      ],
+      "expected": "independent",
+      "procedure_expected": {"evaluated": "eligible", "control": "eligible"}
+    },
+    {
+      "id": "common_mode",
+      "lineages": [
+        {"id": "L1", "source_ids": ["S1"], "generator_ids": ["G-shared"], "hypothesis_ids": ["H1"], "code_ids": ["C1"], "failure_mode_ids": ["F1"]},
+        {"id": "L2", "source_ids": ["S2"], "generator_ids": ["G-shared"], "hypothesis_ids": ["H2"], "code_ids": ["C2"], "failure_mode_ids": ["F2"]}
+      ],
+      "expected": "shared_failure_mode",
+      "procedure_expected": {"evaluated": "not_eligible", "control": "eligible"}
+    },
+    {
+      "id": "incomplete_lineage",
+      "lineages": [
+        {"id": "L1", "source_ids": ["S1"], "generator_ids": ["G1"], "hypothesis_ids": ["H1"], "code_ids": ["C1"], "failure_mode_ids": ["F1"]},
+        {"id": "L2", "source_ids": ["S2"], "generator_ids": [], "hypothesis_ids": ["H2"], "code_ids": ["C2"], "failure_mode_ids": []}
+      ],
+      "expected": "independence_unknown",
+      "procedure_expected": {"evaluated": "withhold", "control": "eligible"}
+    }
+  ],
+  "receipt": {
+    "receipt_id": "FOE-001-receipt-A",
+    "case_id": "FOE-001",
+    "variant_id": "independent",
+    "conclusion_id": "eligible",
+    "conclusion_text": "Northstar is eligible.",
+    "scope": "N1 declared input data",
+    "attribution": "L1+L2",
+    "source_ids": ["S1", "S2"],
+    "source_hashes": ["sha256:s1", "sha256:s2"],
+    "lineage_ids": ["L1", "L2"],
+    "generator_ids": ["G1", "G2"],
+    "hypothesis_ids": ["H1", "H2"],
+    "code_ids": ["C1", "C2"],
+    "failure_mode_ids": ["F1", "F2"],
+    "transformations": ["validate", "classify"],
+    "withdrawal_condition": "shared or incomplete lineage, or any core-field loss",
+    "adapter_dependencies": ["independent-evidence-arena", "provenance-interoperability-lab", "semantic-migration-lab", "epistemic-diversity-and-common-mode-failure-lab"]
+  },
+  "extension": {"field": "future_provenance", "value": "preserve-or-report"},
+  "migration_cases": [
+    {"id": "stable", "before": {"scope": "N1", "attribution": "L1+L2"}, "after": {"scope": "N1", "attribution": "L1+L2"}, "declared": [], "expected": "stable"},
+    {"id": "declared_migration", "before": {"scope": "N1", "attribution": "L1+L2"}, "after": {"scope": "N2", "attribution": "L1+L2"}, "declared": [["scope", "N1", "N2"]], "expected": "declared_rule_change"},
+    {"id": "unexplained_migration", "before": {"scope": "N1", "attribution": "L1+L2"}, "after": {"scope": "N1", "attribution": "L2"}, "declared": [], "expected": "unexplained_drift"}
+  ]
+}

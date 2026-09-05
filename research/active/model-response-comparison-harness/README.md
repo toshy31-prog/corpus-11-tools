@@ -26,11 +26,23 @@ supposées équivalentes. Le manifest déclare une session GPT fraîche avec sa
 configuration propre, ainsi que le contexte local Corpus ; le paquet A/B masque
 ces identités.
 
+Après la revue A/B, un humain peut enregistrer un verdict explicite et ses
+critères. Ce verdict ne contient ni prompt, ni réponse, ni note libre : il ne
+conserve que le choix aveugle, les hachages des réponses et les critères.
+
 ## Commandes de contrôle
 
 ```bash
 python3 tests/test_harness.py
 python3 tools/harness.py --help
+```
+
+Exemple, après `prepare-review` :
+
+```bash
+python3 tools/harness.py record-review RUN_ID A \
+  --criterion conclusion_supported \
+  --criterion uncertainty_preserved
 ```
 
 Les exécutions sont écrites sous `runtime/`, ignoré par Git. Un run réel exige

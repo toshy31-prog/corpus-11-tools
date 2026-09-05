@@ -27,6 +27,13 @@ Le premier candidat exécutable est `native_surface/` : il accepte uniquement un
 paquet Corpus scellé et conserve textuellement conclusion, incertitudes utiles
 et conditions de renversement sous trois niveaux de détail.
 
+L'évaluation B pré-enregistrée des requêtes produit a rendu et vérifié 54
+restitutions à partir de 18 paquets fictifs scellés, sans routeur ni modèle.
+Son statut est `pipeline_verified` dans cette portée ; voir
+[`reports/reobservation/2026-09-05-product-query-evaluation-b.md`](reports/reobservation/2026-09-05-product-query-evaluation-b.md).
+L'évaluation A du Corpus Open Model demeure suspendue faute de routeur
+multilingue avec inventaire et attentes de route gelés.
+
 Le skill candidat `native_surface/corpus-native-conversation/` orchestre dans
 Codex la question brute, le routage, l'analyse, le scellement et la restitution.
 Il reste `repository-present`, non installé ni ré-observé dans le plugin.

@@ -130,6 +130,25 @@ conserve désormais des différences réelles entre états successifs de Corpus,
 avec les faits avant/après et les relations explicites, sans contenu brut ni
 entraînement. C'est le préalable à un futur test temporel réellement comparé.
 
+## Campagne de requêtes produit v0.1
+
+Le protocole pré-enregistré
+[`research/PRODUCT_QUERY_EVALUATION_PROTOCOL_v0.1.md`](../../../PRODUCT_QUERY_EVALUATION_PROTOCOL_v0.1.md)
+sépare le noyau de routage (A) de la surface de restitution (B). Son lanceur
+scelle l'état du routeur disponible, mais bloque A lorsque ce routeur est déjà
+écarté par sa comparaison interne ; il ne fabrique alors aucune sortie de
+routage. B peut néanmoins vérifier ses 18 paquets et 54 restitutions
+déterministes, sans lire A ni appeler de modèle.
+
+```bash
+python3 research/scripts/run_product_query_evaluation_v0.py \
+  --output-dir research/active/model-response-comparison-harness/runtime/product-query-evaluation-v0.1-YYYYMMDDTHHMMZ
+```
+
+Un statut `incomplete_arm_a_blocked_arm_b_verified` est un résultat honnête : il
+établit la conservation de B, mais ne prouve ni qualité de routage, ni gain
+neural, ni intégration produit.
+
 `compile_historical_change_pairs_v2.py` ouvre une expérience différente : des
 révisions textuelles réelles de Git (fichier parent → fichier du commit), et
 non les seuls chemins ou sujets de commits. `train_historical_change_coherence_v2.py`

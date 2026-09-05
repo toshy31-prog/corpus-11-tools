@@ -13,6 +13,14 @@ from typing import Any
 JOBS = ("chatgpt_custom_gpt", "codex_corpus")
 TERMINAL_JOB_STATES = {"sealed", "failed_retryable", "failed_terminal", "timed_out", "cancelled", "invalidated"}
 PURPOSES = {"synthetic_fixture", "real_non_sensitive"}
+REVIEW_DECISIONS = {"A", "B", "tie", "inconclusive", "invalid"}
+REVIEW_CRITERIA = {
+    "conclusion_supported",
+    "uncertainty_preserved",
+    "reversal_condition_preserved",
+    "scope_preserved",
+    "useful_to_human",
+}
 EXECUTOR_PROFILES = {
     "chatgpt_custom_gpt": {
         "display_label": "GPT personnalisé dans ChatGPT",
@@ -172,6 +180,36 @@ def prepare_review(root: Path, run_id: str) -> Path:
     return target["comparison"]
 
 
+def record_review(root: Path, run_id: str, decision: str, criteria: list[str]) -> Path:
+    """Enregistre un verdict humain explicite sans recopier prompt ni réponses."""
+    if decision not in REVIEW_DECISIONS:
+        raise HarnessError("unsupported review decision")
+    if not criteria or any(criterion not in REVIEW_CRITERIA for criterion in criteria):
+        raise HarnessError("at least one known review criterion is required")
+    target = paths(root, run_id)
+    manifest = read_json(target["manifest"])
+    if manifest["status"] != "comparison_ready":
+        raise HarnessError("review requires a prepared blind packet")
+    packet = read_json(target["comparison"])
+    review = {
+        "schema": "comparison-human-review/v1",
+        "run_id": run_id,
+        "reviewed_at": now(),
+        "decision": decision,
+        "criteria": sorted(set(criteria)),
+        "answer_sha256": {label: answer["response_sha256"] for label, answer in packet["answers"].items()},
+        "reviewer_note_retention": "none",
+        "automated_verdict": False,
+    }
+    review_path = target["run"] / "comparison" / "human-review.json"
+    write_json(review_path, review)
+    manifest["status"] = "reviewed"
+    manifest["human_review_sha256"] = digest(review)
+    write_json(target["manifest"], manifest)
+    append_event(root, run_id, "human_review_recorded", decision=decision, criteria=review["criteria"], review_sha256=manifest["human_review_sha256"])
+    return review_path
+
+
 def invalidate_run(root: Path, run_id: str, reason: str) -> None:
     if not reason:
         raise HarnessError("invalidation reason is required")
@@ -194,6 +232,7 @@ def main() -> int:
     import_ = actions.add_parser("import-response"); import_.add_argument("run_id"); import_.add_argument("job_id", choices=JOBS); import_.add_argument("response_text"); import_.add_argument("--operator-notes", default="")
     verify = actions.add_parser("verify"); verify.add_argument("run_id")
     review = actions.add_parser("prepare-review"); review.add_argument("run_id")
+    human_review = actions.add_parser("record-review"); human_review.add_argument("run_id"); human_review.add_argument("decision", choices=sorted(REVIEW_DECISIONS)); human_review.add_argument("--criterion", choices=sorted(REVIEW_CRITERIA), action="append", required=True)
     invalidate = actions.add_parser("invalidate"); invalidate.add_argument("run_id"); invalidate.add_argument("reason")
     args = parser.parse_args()
     try:
@@ -204,6 +243,7 @@ def main() -> int:
         elif args.action == "import-response": import_response(args.runtime, args.run_id, args.job_id, args.response_text, args.operator_notes)
         elif args.action == "verify": verify_run(args.runtime, args.run_id)
         elif args.action == "prepare-review": print(prepare_review(args.runtime, args.run_id))
+        elif args.action == "record-review": print(record_review(args.runtime, args.run_id, args.decision, args.criterion))
         else: invalidate_run(args.runtime, args.run_id, args.reason)
     except HarnessError as exc:
         parser.error(str(exc))
