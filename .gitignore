@@ -6,6 +6,9 @@ __pycache__/
 .venv/
 .venv-tiny-doctrine/
 
+# Local output of the recurring maintenance digest.
+.maintenance/
+
 # Local validation evidence and resumable checkpoints.
 .validation-state/
 **/.validation-state/
