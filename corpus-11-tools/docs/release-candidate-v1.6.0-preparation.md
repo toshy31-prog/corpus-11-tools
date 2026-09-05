@@ -4,9 +4,14 @@ Date : 2026-09-05
 
 ## Statut
 
-`release_candidate_repair_required`
+`release_candidate_prepared`
 
-La contre-revue séparée a refusé temporairement la candidate : un exécutable Bubblewrap appelant pouvait attester abusivement une isolation, les montages protégés ne refusaient pas tous les ancêtres, la documentation distribuée dépendait d'une trace de recherche et deux liens documentaires applicables étaient cassés. Aucun tag, publication, installation ou réobservation de release n'est autorisé tant que les réparations et portes applicables ne sont pas au vert.
+Les réparations exigées par les deux contre-revues sont inscrites dans les
+trois commits locaux bornés, et les portes applicables ont été rejouées. Ce
+statut prépare seulement la candidate : il n’autorise ni tag, publication,
+installation, déploiement ni réobservation de release. L’état d’organisme
+distribué n’est pas modifié par ce reçu, conformément au périmètre de
+finalisation autorisé.
 
 ## Critères préalables
 
@@ -73,7 +78,7 @@ L'attestation `release-content-v1.6.0.json` est régénérée après ce reçu ; 
 | découverte Python `corpus_labs` | 42 tests passés ; 1 saut Bubblewrap attendu |
 | `tools/validate_package.py` | PASS : 58 skills, 49 capabilities, 77 evals |
 | `tools/check_boundaries.py` | PASS : aucun runtime produit ne dépend de `research/` |
-| `tools/check_release_content.py` | PASS après génération de l'attestation candidate ; rejoué après ce reçu |
+| `tools/check_release_content.py` | PASS après régénération finale du manifeste, avant le commit de finalisation ; à rejouer après ce commit |
 | `tools/check_graph.py` | PASS : 49 CAP, 4 FAM, 88 relations |
 | `tools/check_evals.py` | PASS : 77/77 contrats, 49/49 capabilities |
 | `tools/check_integrity.py` | PASS : 18 objets du registre d'intégrité et manifeste legacy |
@@ -88,7 +93,7 @@ L'attestation `release-content-v1.6.0.json` est régénérée après ce reçu ; 
 | `tools/check_release_identity.py` et `tools/check_organism.py --self-test` | `not_executable_before_tag` | Ils refusent correctement l'absence du tag `v1.6.0`. Créer ce tag est interdit avant contre-revue et autorisation. |
 | `tools/check_docs.py` | `passed_after_repair` | Les deux liens ont été corrigés séparément ; le contrôle passe. |
 | `tools/test_validation_guards.py` | `passed_after_maintenance_repair` | Les quinze mutations et leurs oracles sont inchangés ; copie projetée, garde d'espace et nettoyage par `finally` permettent leur exécution sans épuiser le volume. |
-| `tools/check_test_inventory.py --self-test` | `pending_scoped_commit` | La réattestation des 17 modules HEAD reste observée ; l’entrée des tests Python vise maintenant l’arbre candidat réel `5cd699ce0333da3829568fa374d1bdc921c760ab`, qui n’existe pas encore dans HEAD. Le contrôle doit donc refuser l’arbre HEAD antérieur jusqu’au commit local autorisé, puis être rejoué. |
+| `tools/check_test_inventory.py --self-test` | `passed_after_commit` | 90 surfaces et 113 modules sont attestés. L’arbre Python `5cd699ce0333da3829568fa374d1bdc921c760ab` et le garde `986307329ab6c9eee539a368dd71291f2842575d` correspondent à HEAD. Le self-test hors sandbox a aussi rejeté une mutation committée temporaire ; dans le sandbox de contre-revue, la création de worktree est indisponible. |
 | installation propre et réobservation | `not_authorized` | Interdites avant contre-revue et autorisation explicite. |
 
 ## Réparations de la contre-revue
@@ -105,12 +110,12 @@ L'attestation `release-content-v1.6.0.json` est régénérée après ce reçu ; 
   une trace `research/`. Les deux liens documentaires cassés ont été corrigés
   séparément sans toucher aux artefacts scellés.
 
-Les réparations spécifiques sont écrites et testées. La métavalidation est
-verte ; l’inventaire est intentionnellement en attente du commit candidat qui
-contient à la fois son nouvel arbre et son objet Git réel. Le statut reste
-`release_candidate_repair_required` jusqu'aux commits locaux bornés, à la
-régénération du manifeste v1.6.0 et au rejeu complet. Les traces exactes sont
-consignées dans [`release-validation-v1.6.0.md`](release-validation-v1.6.0.md).
+Les réparations spécifiques sont écrites, testées et réobservées dans les
+commits bornés. La métavalidation est verte ; l’inventaire correspond à HEAD
+et son self-test applicable est passé hors sandbox. Le statut de ce reçu est
+donc `release_candidate_prepared`, sous réserve du manifeste régénéré en
+dernier et du rejeu post-commit. Les traces exactes sont consignées dans
+[`release-validation-v1.6.0.md`](release-validation-v1.6.0.md).
 
 ## Frontières et invariants contrôlés
 
@@ -119,15 +124,19 @@ consignées dans [`release-validation-v1.6.0.md`](release-validation-v1.6.0.md).
 - `independent_replication.py` et son test ne contiennent aucun import ni chemin d'exécution vers `research/`; `check_boundaries.py` passe.
 - Le verdict d'indépendance reste `independence_unknown`; le test réel Bubblewrap saute ici par indisponibilité de namespace, sans fallback ni résultat simulé.
 
-## Limites et porte de contre-revue
+## Limites et porte suivante
 
 La candidate n'établit aucune indépendance externe, aucune validité scientifique générale et aucune capacité Bubblewrap sur le sandbox Codex. L'observation Bubblewrap Ubuntu reste une trace distincte, limitée à cet hôte.
 
-Après réparation et passage vert des portes applicables, une nouvelle contre-revue Codex doit contre-relire séparément :
+La contre-revue a trouvé aucun nouveau défaut du harnais. La prochaine porte
+reste distincte et doit vérifier le diff final, les exports, le chemin
+d’installation propre et les limites avant de demander l’autorisation de
+taguer, publier et installer :
 
 1. le diff fermé ci-dessus face aux critères ;
 2. les exports `corpus_labs` et le chemin d'installation propre ;
 3. les limites `independence_unknown`, Bubblewrap optionnel et absence de fallback ;
 4. l'absence de contenu recherche/CCT et les blocages de worktree consignés.
 
-Seule cette contre-revue peut demander ensuite l'autorisation de taguer, publier et installer. Elle ne doit pas corriger silencieusement les blocages hors périmètre.
+Cette porte ne vaut ni autorisation de taguer, ni publication, ni installation.
+Elle ne doit pas corriger silencieusement les blocages hors périmètre.

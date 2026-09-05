@@ -31,7 +31,7 @@ et limitée à cet hôte.
 
 ## Résultat de réparation observé
 
-Statut actuel : `release_candidate_repair_required`.
+Statut du reçu : `release_candidate_prepared`.
 
 Les contrôles directs de paquet, frontières, graphe, évaluations, intégrité,
 CI, surface conversationnelle, documentation et laboratoires passent. La suite
@@ -40,9 +40,8 @@ sandbox ; les dix tests Node passent. Les tests spécifiques du harnais comptent
 16 succès et ce même saut conditionnel.
 
 La métavalidation passe, sans changement de ses oracles. L’inventaire de tests
-attend volontairement le commit candidat : son entrée référence déjà l’objet
-Git de l’arbre qui inclut le test non suivi du harnais, donc elle ne peut pas
-être verte contre HEAD antérieur.
+correspond désormais à HEAD : le troisième commit borné a réattesté l’objet du
+garde de métavalidation, sans amendement.
 
 ### Métavalidation
 
@@ -77,28 +76,22 @@ forcée du processus reste hors de sa capacité d'assurer un nettoyage.
 
 ### Inventaire de tests HEAD
 
-Le contrôle atteste désormais les 17 modules réellement découverts (et non 18)
+Le contrôle atteste désormais les 17 modules initialement découverts (et non 18)
 par onze surfaces propriétaires HEAD : l'arène CCT `pol-1.1`, les tests de
 Corpus Open Model, les tests `native_surface`, le harness de comparaison, le
 rival FOE et les six scripts de recherche. Aucun de ces tests n'a été modifié.
 Le test non suivi du harnais de réplication ne reçoit aucun hash fictif.
 
-La réattestation des modules HEAD a été observée à 90 surfaces et 112 modules,
-et son self-test a rejeté une mutation committée temporaire d'une surface
-attestée. Ce résultat ne couvre pas encore le nouveau test du harnais. Les
-critères v0.2 portent donc `git_object:
-5cd699ce0333da3829568fa374d1bdc921c760ab` pour
-`corpus-11-tools/labs/python/tests` : le contrôle refuse désormais, comme
-attendu, l’objet HEAD antérieur `31a4df1a96be8cc5c0c96907724535fe66aac862`.
-Après le commit local autorisé qui contient les deux fichiers, le self-test
-doit être rejoué. La première exécution a eu lieu hors du sandbox Codex car sa
-création/suppression de worktree requiert l'écriture temporaire dans `.git`.
+La réattestation courante observe 90 surfaces et 113 modules. Son self-test
+hors sandbox a rejeté une mutation committée temporaire d'une surface attestée.
+L’arbre Python `5cd699ce0333da3829568fa374d1bdc921c760ab` et le blob du garde
+`986307329ab6c9eee539a368dd71291f2842575d` correspondent à HEAD. Le sandbox
+de contre-revue ne peut pas créer le worktree temporaire ; la trace hors
+sandbox reste donc la trace applicable pour cette sous-étape.
 
 ## Porte suivante
 
 `release_candidate_prepared` ne vaut ni acceptation, ni tag, ni publication,
-ni installation, ni activation dans le plugin installé v1.5.0. Ce statut ne
-peut revenir qu'après les commits locaux bornés autorisés, la régénération du
-manifeste de contenu v1.6.0 et le rejeu de ses contrôles. Jusque-là,
-`release_candidate_repair_required` reste exact, même lorsque les deux portes
-réparées sont vertes.
+ni installation, ni activation dans le plugin installé v1.5.0. Le manifeste
+est régénéré en dernier puis le contrôle de contenu est rejoué après le commit
+de finalisation. La prochaine décision reste une autorisation distincte.

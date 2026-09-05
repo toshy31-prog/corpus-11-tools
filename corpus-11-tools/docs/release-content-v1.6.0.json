@@ -7,7 +7,7 @@
   ],
   "exclusion_reason": "The attestation cannot contain its own digest without circularity; the annotated Git tag covers the attestation itself.",
   "file_count": 328,
-  "total_bytes": 3987666,
+  "total_bytes": 3987300,
   "files": [
     {
       "path": ".codex-plugin/plugin.json",
@@ -131,8 +131,8 @@
     },
     {
       "path": "docs/release-candidate-v1.6.0-preparation.md",
-      "bytes": 9901,
-      "sha256": "4f6c6f912f0740ddce982f5c684e11ca8bd15ad05687c8584934c8f56ddefa69"
+      "bytes": 9973,
+      "sha256": "9f5dd9107e6f8922c4b937af7e3fc122ad3e62c013ee49082065be73b185de23"
     },
     {
       "path": "docs/release-content-v1.5.0.json",
@@ -156,8 +156,8 @@
     },
     {
       "path": "docs/release-validation-v1.6.0.md",
-      "bytes": 5950,
-      "sha256": "a523bc655294f2731dc526c2a00923d1ab948057adceb9db02b8ef69e9620498"
+      "bytes": 5512,
+      "sha256": "8d4cf209b80c53a9c52ab53cc0c73b854419979226f2e18cc77bb9db4822cb4f"
     },
     {
       "path": "docs/research-derived-guard-contract.json",
@@ -177,7 +177,7 @@
     {
       "path": "docs/test-inventory.json",
       "bytes": 14464,
-      "sha256": "1ac132ffe83296f0a84d1f4149923eef7fe51eb1857aad3442fbb768113ff0c3"
+      "sha256": "33f1a9bda17a42953a96e2c1c651a1307b6f11c5cb55d7c596abb861a1bfc5dd"
     },
     {
       "path": "evals/routing-and-nonregression.jsonl",

@@ -2,7 +2,7 @@
 
 Date : 2026-09-05
 
-Statut : `release_candidate_repair_required`. Cette comparaison applique les
+Statut du reçu : `release_candidate_prepared`. Cette comparaison applique les
 [critères v0.2](corpus-11-tools/docs/release-candidate-independent-replication-acceptance-v0.2.md).
 La tentative v0.1 demeure refusée et archivée dans le fichier homonyme sans
 suffixe.
@@ -52,9 +52,9 @@ une marge disque et garantissent le nettoyage temporaire.
 
 Les SHA-256 ci-dessous comparent chaque chemin non auto-référent à `v1.5.0`.
 Le manifeste distribué `release-content-v1.6.0.json` atteste en plus les
-**328 fichiers** et **3 987 666 octets** de `corpus-11-tools/`, hors son propre
+**328 fichiers** et **3 987 300 octets** de `corpus-11-tools/`, hors son propre
 chemin ; son SHA-256 est
-`3708c097a9ec88ce494707e15d0d108f0b4bfb461f7aa0ce8a4853a9dd42df3e`.
+`4ed52846e75759f86608149344793c89130332c26362c5e759c8f32840f433fb`.
 
 | Chemin | v1.5.0 SHA-256 / octets | candidate SHA-256 / octets |
 | --- | --- | --- |
@@ -65,11 +65,11 @@ chemin ; son SHA-256 est
 | `corpus-11-tools/docs/inventory.json` | `dd0ed25b5f2a5c9341e003e8a6f4afe6301905e303777193564358016715d9fe` / 2703 | `d5df164aee8bfb80951ff703f1338e0734e75b3c0163819e43078256ae2f1316` / 2703 |
 | `corpus-11-tools/docs/release-candidate-independent-replication-acceptance.md` | absent | `7caefe237c4bf91c1416905615c640c786708bb0f0c93870125f6c1ce5f8c7d3` / 3915 |
 | `corpus-11-tools/docs/release-candidate-independent-replication-acceptance-v0.2.md` | absent | `1c17f26020d49cd72c8b4d20a055b9a50b422bdb8832170008c6d71c6f7c2272` / 4674 |
-| `corpus-11-tools/docs/release-candidate-v1.6.0-preparation.md` | absent | `4f6c6f912f0740ddce982f5c684e11ca8bd15ad05687c8584934c8f56ddefa69` / 9890 |
-| `corpus-11-tools/docs/release-content-v1.6.0.json` | absent | `3708c097a9ec88ce494707e15d0d108f0b4bfb461f7aa0ce8a4853a9dd42df3e` / 59692 |
-| `corpus-11-tools/docs/release-validation-v1.6.0.md` | absent | `a523bc655294f2731dc526c2a00923d1ab948057adceb9db02b8ef69e9620498` / 5959 |
+| `corpus-11-tools/docs/release-candidate-v1.6.0-preparation.md` | absent | `9f5dd9107e6f8922c4b937af7e3fc122ad3e62c013ee49082065be73b185de23` / 10182 |
+| `corpus-11-tools/docs/release-content-v1.6.0.json` | absent | `4ed52846e75759f86608149344793c89130332c26362c5e759c8f32840f433fb` / 59692 |
+| `corpus-11-tools/docs/release-validation-v1.6.0.md` | absent | `8d4cf209b80c53a9c52ab53cc0c73b854419979226f2e18cc77bb9db4822cb4f` / 5829 |
 | `corpus-11-tools/docs/stability-contract.md` | `cdaddaedfc69ffffc477b9961a8cd3ec0d6ffac3b3fbf4a94ab8faff01779931` / 2477 | `b406f8ef6c77c9a8ea74cc375f8ea2587e0113a23a4c1fca30b4a972e902999b` / 3009 |
-| `corpus-11-tools/docs/test-inventory.json` | `fd36e3b7883305598cd9b93b4cfd62d2320c4d84f8501d40838c953e374ac0ac` / 12841 | `1ac132ffe83296f0a84d1f4149923eef7fe51eb1857aad3442fbb768113ff0c3` / 14464 |
+| `corpus-11-tools/docs/test-inventory.json` | `fd36e3b7883305598cd9b93b4cfd62d2320c4d84f8501d40838c953e374ac0ac` / 12841 | `33f1a9bda17a42953a96e2c1c651a1307b6f11c5cb55d7c596abb861a1bfc5dd` / 14464 |
 | `corpus-11-tools/labs/README.md` | `0fca51b1f4d00ffc9d5e6b834cd3378a164742e8c93e58e8d338182ab2171013` / 3159 | `524ab7fa7afc06e19bc6de21660c376762e9fde9685d92dd246fad02fa2bc267` / 3506 |
 | `corpus-11-tools/labs/python/INDEPENDENT_REPLICATION.md` | absent | `d8c1d8d6e4d846b5b61a8c111fd26ae1ef87f080fd7bd851a29ebe6171a0a99f` / 4782 |
 | `corpus-11-tools/labs/python/corpus_labs/__init__.py` | `e41b88359bcae6f66f9a80fcd2dadb4eb90a557cb34500c8ac5969882e5b6a54` / 1125 | `0913e004dcce97f2f38942f33734a3f6344f151b63c589e088322abe21c35340` / 1734 |
@@ -92,12 +92,12 @@ partir des quatre entrées de l’arbre, puis vérifiée avec
 `git hash-object -t tree --stdin`; elle figure dans
 `docs/test-inventory.json`.
 
-HEAD porte encore l’arbre antérieur
-`31a4df1a96be8cc5c0c96907724535fe66aac862`. Le refus actuel de
-`check_test_inventory.py` est donc attendu et protecteur : il prouve que
-l’inventaire ne prétend pas attester le test non suivi. Après un commit local
-autorisé qui contient à la fois le test et cet inventaire, le contrôle devra
-être rejoué ; aucun succès anticipé n’est déclaré ici.
+HEAD porte maintenant cet arbre ; `check_test_inventory.py --self-test` est
+passé hors sandbox avec 90 surfaces et 113 modules. Le troisième commit borné
+a aussi réattesté le blob du garde de métavalidation
+`986307329ab6c9eee539a368dd71291f2842575d`. Le sandbox de contre-revue ne
+peut pas créer le worktree temporaire ; la trace hors sandbox est la trace
+applicable pour cet auto-test.
 
 ## Précondition documentaire distincte — 2 chemins, hors candidate
 
@@ -125,7 +125,7 @@ passe.
 
 ## Condition de préparation
 
-Le manifeste de contenu ne sera régénéré qu’après cette liste fermée. Le
-statut demeure `release_candidate_repair_required` jusqu’au commit local
-autorisé, au rejeu de l’inventaire contre son vrai arbre Git et aux autres
-contrôles applicables. `release_candidate_prepared` reste donc interdit ici.
+Le manifeste de contenu est régénéré en dernier pour couvrir les documents de
+finalisation. Après son commit et le rejeu des portes applicables,
+`release_candidate_prepared` demeure seulement une candidate locale ; tag,
+publication et installation exigent une autorisation distincte.
