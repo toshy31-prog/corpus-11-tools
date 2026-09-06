@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "organism": "Corpus 11",
-  "model_status": "released",
+  "model_status": "release_candidate_prepared",
   "current_product": {
     "name": "corpus-11-tools",
-    "release": "v1.6.1",
-    "version": "1.6.1+codex.20260906000314",
+    "release": "v1.6.2",
+    "version": "1.6.2+codex.20260906013502",
     "activation_rule": "the installed release is the active body for a task"
   },
   "continuity": {
@@ -147,10 +147,18 @@
     },
     {
       "release": "v1.6.1",
+      "commit": "fb59594563675be484e297c9a4de0d46a7f63bd9",
+      "tag_object": "69c2967f9adb6597b6386b303f4aaaf5301f7abe",
+      "tag_scope": "public_origin",
+      "predecessor_release": "v1.6.0",
+      "lineage_relation": "git_ancestor"
+    },
+    {
+      "release": "v1.6.2",
       "commit": null,
       "tag_object": null,
       "tag_scope": "current_release",
-      "predecessor_release": "v1.6.0",
+      "predecessor_release": "v1.6.1",
       "lineage_relation": "git_ancestor"
     }
   ]

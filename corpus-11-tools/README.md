@@ -15,8 +15,8 @@ ni autonomie au plugin. Voir
 
 ## État actuel
 
-- release locale préparée : **v1.6.1**, non taguée ;
-- release publiée : **v1.6.0**, non installée après l'échec global ;
+- candidate locale préparée : **v1.6.2**, non taguée ;
+- dernière release publiée : **v1.6.1**, non installée après l'échec global ;
 - version installée dans l’environnement de départ : **v1.5.0** ;
 - 58 skills ;
 - 49 capabilities ;
@@ -24,11 +24,13 @@ ni autonomie au plugin. Voir
 - 88 relations ;
 - 77 évaluations.
 
-## Release locale préparée v1.6.1 — correction des frontières de validation
+## Candidate locale v1.6.2 — portabilité des tests Bubblewrap
 
-v1.6.1 corrige la collecte Python, les attestations, les liens distribués et le
-gel CCT v013. Elle ne modifie ni le harnais de réplication, ni ses limites ;
-elle n'est ni taguée, ni publiée, ni installée.
+v1.6.2 corrige seulement deux tests Bubblewrap : le refus de namespace est
+simulé sans installation hôte et le test réel invoque le Python système monté
+dans l'invité, non le virtualenv appelant. Elle ne modifie ni le harnais de
+réplication, ni ses limites ; `independence_unknown` demeure obligatoire. Elle
+n'est ni taguée, ni publiée, ni installée.
 
 ## Changement public de v1.6.0 — release publiée
 
@@ -164,7 +166,7 @@ déployée.
 
 La candidate `v1.6.1` conserve 58 skills, 49 capabilities, 4 familles, 88 relations et 77 évaluations. Elle corrige des frontières de validation, pas une capability ni une règle analytique. `open-experiment-arena` reste une procédure expérimentale candidate : ses tests synthétiques n’établissent ni scénario extérieur indépendant, ni gain de capability, ni usage de terrain.
 
-Le périmètre est défini dans [`docs/stability-contract.md`](docs/stability-contract.md), la matrice dans [`docs/release-validation-v1.6.1.md`](docs/release-validation-v1.6.1.md), et l'attestation dans [`docs/release-content-v1.6.1.json`](docs/release-content-v1.6.1.json).
+Le périmètre est défini dans [`docs/stability-contract.md`](docs/stability-contract.md), la matrice dans [`docs/release-validation-v1.6.2.md`](docs/release-validation-v1.6.2.md), et l'attestation dans [`docs/release-content-v1.6.2.json`](docs/release-content-v1.6.2.json).
 
 Les lacunes historiques restent documentées dans `docs/legacy-loss-audit.md` et `archives/legacy/STATUS.md` : Atlas 2.7, Corpus 9.8, Corpus 10.2, la release 10.4 complète et la source éditable du manuel n’ont pas été retrouvés ni reconstruits par supposition.
 

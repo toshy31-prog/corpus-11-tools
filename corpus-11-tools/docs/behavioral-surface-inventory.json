@@ -7,6 +7,6 @@
     {"path": "corpus-11-tools/evals/routing-and-nonregression.jsonl", "git_object": "4a21c16b9a516e3e26029f16606b325761a4fbd9", "kind": "blob"},
     {"path": "corpus-11-tools/skills/corpus-11-routing/SKILL.md", "git_object": "e6f86814ef80bb44a31fadf5e8190d16dacddade", "kind": "blob"},
     {"path": "corpus-11-tools/skills/corpus-11-routing/references/organism-contract.md", "git_object": "f815930ed63e5e6351c913d6f942c8c7cf0745cd", "kind": "blob"},
-    {"path": "corpus-11-tools/skills/corpus-11-routing/references/organism-state.json", "git_object": "7e8a9034514cf18ab578fd554f2954ffca18f530", "kind": "blob"}
+    {"path": "corpus-11-tools/skills/corpus-11-routing/references/organism-state.json", "git_object": "cbfffdc471c67f4feddda73ac9d687765378485f", "kind": "blob"}
   ]
 }

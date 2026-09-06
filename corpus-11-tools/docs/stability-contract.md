@@ -1,4 +1,4 @@
-# Contrat de stabilité v1.6.1 — release locale préparée
+# Contrat de stabilité v1.6.2 — candidate locale préparée
 
 ## Ce qui est stabilisé
 
@@ -11,9 +11,10 @@
 - contrat d'organisme, état de lignée et frontières entre corps actif, mémoire,
   laboratoires, recherches et transferts ;
 - contenu exact du plugin attesté octet par octet dans
-  `release-content-v1.6.1.json`, hors auto-référence explicitement déclarée ;
-- frontières de validation publiées : collecte Python bornée au produit,
-  attestations d'identité, liens distribués et gel CCT v013 cohérents.
+  `release-content-v1.6.2.json`, hors auto-référence explicitement déclarée ;
+- portabilité des tests Bubblewrap : refus de namespace indépendant de la
+  présence hôte de Bubblewrap et test réel exécuté avec un Python système
+  monté dans l'invité, sans dépendre du virtualenv appelant.
 
 ## Ce qui ne l’est pas par cette release
 
@@ -44,8 +45,8 @@ Ces compteurs décrivent le même périmètre courant que l’inventaire : **58
 skills, 49 capabilities, 4 familles, 88 relations et 77 évaluations**. Le
 contrôle `tools/check_docs.py` dérive désormais ces valeurs de
 `docs/inventory.json` et refuse toute divergence dans ce contrat. Les mentions
-de releases antérieures restent historiques ; elles ne redéfinissent pas ce
-candidate corrective v1.6.1.
+de releases antérieures restent historiques ; elles ne redéfinissent pas cette
+candidate corrective v1.6.2.
 
 ## Condition de retrait de la release locale
 

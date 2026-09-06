@@ -4,8 +4,8 @@ Corpus 11 Tools est un ensemble d’outils pour aider Codex à analyser une ques
 
 ## État actuel
 
-- release locale préparée : **v1.6.1**, non taguée ;
-- version publiée : **v1.6.0**, non installée après l'échec global ;
+- candidate locale préparée : **v1.6.2**, non taguée ;
+- dernière version publiée : **v1.6.1**, non installée après l'échec global ;
 - version installée au point de départ : **v1.5.0** ;
 - 58 skills ;
 - 49 capabilities ;
@@ -13,10 +13,13 @@ Corpus 11 Tools est un ensemble d’outils pour aider Codex à analyser une ques
 - 88 relations ;
 - 77 évaluations.
 
-## Release locale préparée v1.6.1 — correction des frontières de validation
+## Candidate locale v1.6.2 — portabilité des tests Bubblewrap
 
-La candidate corrige la collecte Python, les attestations, les liens distribués
-et le gel CCT v013. Elle ne modifie ni le harnais, ni FOE-001, ni provenance.
+La candidate corrige seulement la portabilité de deux tests Bubblewrap : le
+refus de namespaces est simulé indépendamment de l'installation hôte, et le
+test réel utilise un Python système visible dans l'invité plutôt que le
+virtualenv appelant. Elle ne modifie ni le harnais de production, ni FOE-001,
+ni provenance ; `independence_unknown` reste obligatoire.
 
 La release v1.6.0 a ajouté le harnais générique de réplication indépendante dans les
 laboratoires Python : paquet gelé, liste blanche, attestations, sorties
@@ -27,7 +30,8 @@ Bubblewrap reste optionnel, réseau désactivé et sans fallback vers la project
 
 La version installée dans cet environnement reste v1.5.0 jusqu’à une
 autorisation distincte de publication, une installation et une réobservation
-séparées.
+séparées. La v1.6.1 publiée n'est pas installée, et v1.6.2 n'est qu'une
+candidate locale.
 
 ## Ce qui change dans v1.5.0
 
@@ -307,7 +311,7 @@ Le projet maintient également une **frontière de neutralité** : une séparati
 
 La documentation détaillée du plugin, de son contenu et de ses validations se trouve dans [`corpus-11-tools/README.md`](corpus-11-tools/README.md).
 
-Le détail de la candidate se trouve dans [`CHANGELOG.md`](CHANGELOG.md), sa validation dans [`release-validation-v1.6.1.md`](corpus-11-tools/docs/release-validation-v1.6.1.md) et son contenu dans [`release-content-v1.6.1.json`](corpus-11-tools/docs/release-content-v1.6.1.json).
+Le détail de la candidate se trouve dans [`CHANGELOG.md`](CHANGELOG.md), sa validation dans [`release-validation-v1.6.2.md`](corpus-11-tools/docs/release-validation-v1.6.2.md) et son contenu dans [`release-content-v1.6.2.json`](corpus-11-tools/docs/release-content-v1.6.2.json).
 
 La représentation de Corpus comme organisme versionné est définie dans le
 [`contrat d'organisme`](corpus-11-tools/skills/corpus-11-routing/references/organism-contract.md)

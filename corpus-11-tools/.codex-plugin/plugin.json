@@ -1,7 +1,7 @@
 {
   "name": "corpus-11-tools",
-  "version": "1.6.1+codex.20260906000314",
-  "description": "Corpus 11.x corrective release candidate with bounded routing, explicit release continuity, 49 capability wrappers, provenance, generic experiment labs including independent replication, and enforced separation from project research.",
+  "version": "1.6.2+codex.20260906013502",
+  "description": "Corpus 11.x corrective release candidate with portable Bubblewrap isolation tests, bounded routing, explicit release continuity, 49 capability wrappers, provenance, generic experiment labs including independent replication, and enforced separation from project research.",
   "author": {
     "name": "toshy31-prog"
   },
