@@ -4,7 +4,7 @@ Corpus 11 Tools est un ensemble d’outils pour aider Codex à analyser une ques
 
 ## État actuel
 
-- candidate locale préparée : **v1.6.2**, non taguée ;
+- release locale préparée : **v1.6.2**, non taguée ;
 - dernière version publiée : **v1.6.1**, non installée après l'échec global ;
 - version installée au point de départ : **v1.5.0** ;
 - 58 skills ;
@@ -13,7 +13,7 @@ Corpus 11 Tools est un ensemble d’outils pour aider Codex à analyser une ques
 - 88 relations ;
 - 77 évaluations.
 
-## Candidate locale v1.6.2 — portabilité des tests Bubblewrap
+## Release locale préparée v1.6.2 — portabilité des tests Bubblewrap
 
 La candidate corrige seulement la portabilité de deux tests Bubblewrap : le
 refus de namespaces est simulé indépendamment de l'installation hôte, et le

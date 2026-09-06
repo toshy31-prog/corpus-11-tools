@@ -4,7 +4,7 @@
 
 ### v1.6.2 — portabilité des tests Bubblewrap
 
-- candidate locale préparée pour deux correctifs de test seulement : le refus
+- release locale préparée pour deux correctifs de test seulement : le refus
   de namespace est simulé sans dépendre d'un binaire Bubblewrap hôte et le
   test d'exécution réelle utilise le Python système monté dans l'invité plutôt
   que le virtualenv appelant ;

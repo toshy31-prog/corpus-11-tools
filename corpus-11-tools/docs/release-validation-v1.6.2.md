@@ -1,6 +1,6 @@
-# Matrice de validation — release candidate v1.6.2
+# Matrice de validation — release locale préparée v1.6.2
 
-Statut : `release_candidate_prepared` sous réserve des identités qui ne peuvent
+Statut : `release_local_prepared` sous réserve des identités qui ne peuvent
 être établies qu'après le futur commit et le futur tag.
 
 | Surface | Contrôle | Résultat exigé |

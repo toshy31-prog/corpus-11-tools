@@ -1,6 +1,6 @@
 # Comparaison fermée — candidate v1.6.2 depuis `8524d816`
 
-Statut : `release_candidate_prepared`.
+Statut : `release_local_prepared`.
 
 Les douze chemins de métadonnées et d'attestation sont :
 

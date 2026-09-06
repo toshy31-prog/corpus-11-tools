@@ -15,7 +15,7 @@ ni autonomie au plugin. Voir
 
 ## État actuel
 
-- candidate locale préparée : **v1.6.2**, non taguée ;
+- release locale préparée : **v1.6.2**, non taguée ;
 - dernière release publiée : **v1.6.1**, non installée après l'échec global ;
 - version installée dans l’environnement de départ : **v1.5.0** ;
 - 58 skills ;
@@ -24,7 +24,7 @@ ni autonomie au plugin. Voir
 - 88 relations ;
 - 77 évaluations.
 
-## Candidate locale v1.6.2 — portabilité des tests Bubblewrap
+## Release locale préparée v1.6.2 — portabilité des tests Bubblewrap
 
 v1.6.2 corrige seulement deux tests Bubblewrap : le refus de namespace est
 simulé sans installation hôte et le test réel invoque le Python système monté

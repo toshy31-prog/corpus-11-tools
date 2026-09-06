@@ -7,7 +7,7 @@
   ],
   "exclusion_reason": "The attestation cannot contain its own digest without circularity; the annotated Git tag covers the attestation itself.",
   "file_count": 334,
-  "total_bytes": 4116157,
+  "total_bytes": 4116144,
   "files": [
     {
       "path": ".codex-plugin/plugin.json",
@@ -21,8 +21,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 13293,
-      "sha256": "c59e31345ffc5977ca76da19fb8db504f70ccb8315307103393cbcd4c641d752"
+      "bytes": 13300,
+      "sha256": "3fe237f2e96a28a5d850b750b32cb282c57f8b74a30cc525dd2b8c4b0799b627"
     },
     {
       "path": "archives/legacy/Atlas_3_0_final.zip",
@@ -72,7 +72,7 @@
     {
       "path": "docs/behavioral-surface-inventory.json",
       "bytes": 1096,
-      "sha256": "3637e02ecc2d89190be2d7efe96033da4e25910793c84e371b9f8d6151696b92"
+      "sha256": "a374efde998318ba6543fa1d1386d6014792d7c0637974c1b68e98d7ae5e0363"
     },
     {
       "path": "docs/inventory.json",
@@ -141,8 +141,8 @@
     },
     {
       "path": "docs/release-candidate-v1.6.2-preparation.md",
-      "bytes": 3096,
-      "sha256": "95351beed9e1b29929e7fc2e786a000428482df89a834b45058a50b8a935725d"
+      "bytes": 3092,
+      "sha256": "dfc1e38d875096e58939147861962217d27097f63151f12cbea113f53332f1ec"
     },
     {
       "path": "docs/release-content-v1.5.0.json",
@@ -186,8 +186,8 @@
     },
     {
       "path": "docs/release-validation-v1.6.2.md",
-      "bytes": 2718,
-      "sha256": "0752129a44028b870fe9981e2981778ed540f7ccafc59879f54fa201e8b62b82"
+      "bytes": 2722,
+      "sha256": "96ccf35fbc39db85be564c11de1bb382b7bb687e2c39291e7b17fc872bb1f0da"
     },
     {
       "path": "docs/research-derived-guard-contract.json",
@@ -201,8 +201,8 @@
     },
     {
       "path": "docs/stability-contract.md",
-      "bytes": 3072,
-      "sha256": "9564eabb478bc60a0c343d6306e319ded5ea40607e64504107b532179f6a4d05"
+      "bytes": 3070,
+      "sha256": "a07102f9d3f5c1ba97bf0054ab9c313a472d985922fd292c536ea6c0d86d5d57"
     },
     {
       "path": "docs/test-inventory.json",
@@ -831,8 +831,8 @@
     },
     {
       "path": "skills/corpus-11-routing/references/organism-state.json",
-      "bytes": 5246,
-      "sha256": "d18618b76c825ac704eb7af882fea676478b898cc01fe3eecd16614542ba58b5"
+      "bytes": 5228,
+      "sha256": "07290e23e3a6f1fbb5a3b70d8f79f9ada9a53e1df351770728b57e7edd5a0712"
     },
     {
       "path": "skills/corpus-context-library/SKILL.md",

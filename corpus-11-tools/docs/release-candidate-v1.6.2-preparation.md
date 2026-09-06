@@ -1,6 +1,6 @@
 # Reçu de préparation — release candidate v1.6.2
 
-Statut : `release_candidate_prepared`.
+Statut : `release_local_prepared`.
 
 La candidate est une correction de portabilité de tests. Sa base propre est
 `8524d816a81c8800a64eb605e3ef5766880c7496` et sa version est

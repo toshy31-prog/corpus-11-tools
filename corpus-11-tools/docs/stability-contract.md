@@ -1,4 +1,4 @@
-# Contrat de stabilité v1.6.2 — candidate locale préparée
+# Contrat de stabilité v1.6.2 — release locale préparée
 
 ## Ce qui est stabilisé
 
