@@ -1,0 +1,22 @@
+{
+  "schema": "cct-external-observer-separation-protocol/v1",
+  "id": "CCT-EXEC-10.35-EXTERNAL-OBSERVER-SEPARATION-PROTOCOL-CANDIDATE-001",
+  "version": "10.35-candidate",
+  "parentCandidate": "CCT-EXEC-10.34-GATE-CONFIG-READ-EFFECT-RECEIPT-CANDIDATE-001",
+  "successStatus": "external_observer_separation_protocol_candidate",
+  "processInstanceIdentity": {
+    "fields": ["componentInstanceId", "observerInstanceId"],
+    "semantics": "opaque identifier scoped to one component or observer invocation",
+    "localAdapterSource": "fresh random UUID per process invocation",
+    "syntheticFixtureSource": "fixed distinct values",
+    "notEquivalentTo": ["linux_boot_id", "host_identity", "organizational_independence"]
+  },
+  "notEstablished": [
+    "actual_process_separation",
+    "host_independence",
+    "external_independence",
+    "deployed_runtime_observation",
+    "deployment"
+  ],
+  "independence": "independence_unknown"
+}

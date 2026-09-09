@@ -1,0 +1,110 @@
+{
+  "schema": "cct-migration/v1",
+  "from": "CCT-EXEC 1.4 verified freeze",
+  "to": "CCT-EXEC 10.35 consolidation candidate",
+  "basisFreeze": "../sequenced-restoration-v1.4/freeze.json",
+  "purpose": "Consolidate the candidate lineage without creating 10.36, preserve every executable 1.4 invariant, and correct an instance identifier previously mislabeled as a boot identifier.",
+  "observedIssues": [
+    "10.35 had no exhaustive freeze, cumulative validation, or migration or sealed result report.",
+    "componentBootId and observerBootId were random or fixed invocation identifiers, not Linux boot identifiers.",
+    "the CCT index linked to a nonexistent 10.23 directory."
+  ],
+  "identityCorrection": {
+    "from": ["componentBootId", "observerBootId"],
+    "to": ["componentInstanceId", "observerInstanceId"],
+    "semanticChange": "name corrected to the value actually produced",
+    "capabilityChange": "none",
+    "notEstablished": ["linux_boot_identity", "host_identity", "host_independence", "external_independence"]
+  },
+  "authoritativeInvariants": [
+    {
+      "id": "v1.4-specification-validates",
+      "source": "../sequenced-restoration-v1.4/test.mjs",
+      "status": "preserved",
+      "evidence": "cumulative command v1.4-tests"
+    },
+    {
+      "id": "deadline-formed-once-at-debt-creation",
+      "source": "../sequenced-restoration-v1.4/test.mjs",
+      "status": "preserved",
+      "evidence": "cumulative command v1.4-tests"
+    },
+    {
+      "id": "two-debts-restored-in-two-evidenced-stages",
+      "source": "../sequenced-restoration-v1.4/test.mjs",
+      "status": "preserved",
+      "evidence": "cumulative command v1.4-tests"
+    },
+    {
+      "id": "atomic-repair-remains-admissible",
+      "source": "../sequenced-restoration-v1.4/test.mjs",
+      "status": "preserved",
+      "evidence": "cumulative command v1.4-tests"
+    },
+    {
+      "id": "restoration-semantics-never-inferred",
+      "source": "../sequenced-restoration-v1.4/test.mjs",
+      "status": "preserved",
+      "evidence": "cumulative command v1.4-tests"
+    },
+    {
+      "id": "harmful-partial-repair-rejected",
+      "source": "../sequenced-restoration-v1.4/test.mjs",
+      "status": "preserved",
+      "evidence": "cumulative command v1.4-tests"
+    },
+    {
+      "id": "action-selection-does-not-close-debt",
+      "source": "../sequenced-restoration-v1.4/test.mjs",
+      "status": "preserved",
+      "evidence": "cumulative command v1.4-tests"
+    },
+    {
+      "id": "incomplete-repair-receipt-does-not-close-debt",
+      "source": "../sequenced-restoration-v1.4/test.mjs",
+      "status": "preserved",
+      "evidence": "cumulative command v1.4-tests"
+    },
+    {
+      "id": "gain-maturation-beyond-bound-is-terminal",
+      "source": "../sequenced-restoration-v1.4/test.mjs",
+      "status": "preserved",
+      "evidence": "cumulative command v1.4-tests"
+    },
+    {
+      "id": "spec-mutation-cannot-permit-harm-or-deadline-extension",
+      "source": "../sequenced-restoration-v1.4/test.mjs",
+      "status": "preserved",
+      "evidence": "cumulative command v1.4-tests"
+    },
+    {
+      "id": "finite-planner-agrees-with-bitmask-oracle",
+      "source": "../sequenced-restoration-v1.4/structural-validation-report.json",
+      "status": "preserved",
+      "evidence": "cumulative command v1.4-structural-validation"
+    },
+    {
+      "id": "v1.4-frozen-bytes-remain-exact",
+      "source": "../sequenced-restoration-v1.4/freeze.json",
+      "status": "preserved",
+      "evidence": "cumulative command v1.4-freeze"
+    }
+  ],
+  "replacedInvariants": [],
+  "withdrawnInvariants": [],
+  "added": [
+    "candidate validators accumulated from 1.5 through 10.35",
+    "content-bound dual-signature instance-separation packet",
+    "local process, campaign and network evidence controls"
+  ],
+  "notAdded": [
+    "new capability",
+    "new generic framework",
+    "host separation claim",
+    "external independence claim",
+    "deployment claim"
+  ],
+  "rollback": "Discard the 10.35 consolidation candidate and retain the untouched verified 1.4 freeze.",
+  "scope": "local_synthetic_consolidation_only",
+  "independence": "independence_unknown"
+}

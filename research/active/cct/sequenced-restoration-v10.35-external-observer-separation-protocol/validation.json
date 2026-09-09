@@ -1,0 +1,47 @@
+{
+  "schema": "cct-cumulative-validation/v1",
+  "candidate": "CCT-EXEC-10.35-EXTERNAL-OBSERVER-SEPARATION-PROTOCOL-CANDIDATE-001",
+  "date": "2026-09-09",
+  "changeStatus": "written_and_locally_tested_consolidation_candidate",
+  "report": "cumulative-validation-report.json",
+  "reportSha256": "124b85485e65c2200e45f1a2304d65558bd70fec70cfd845c5ae2180e5c81f5c",
+  "localTests": {
+    "commandsPassed": 6,
+    "commandsFailed": 0,
+    "v14Tests": { "passed": 10, "failed": 0 },
+    "v14FiniteSearch": { "catalogsChecked": 32902, "deadlineCasesChecked": 131464, "mismatches": 0 },
+    "v1035Tests": { "passed": 4, "failed": 0 },
+    "v1035NetworkTests": { "passed": 9, "failed": 0 },
+    "heldOut": { "passed": true, "observedFailure": "separation_artifact_hash_mismatch" }
+  },
+  "invariants": {
+    "source": "migration.json",
+    "preserved": 12,
+    "replaced": 0,
+    "withdrawn": 0
+  },
+  "proofBinding": {
+    "v14Files": 10,
+    "candidateInputFiles": 121,
+    "intermediateLineageFiles": 716,
+    "intermediateLineageTreeSha256": "77ccf9aa730ccc773ba92e59ee5a667e7ceb32a944268b43c5ee55561a169b6f"
+  },
+  "cleanCheckout": {
+    "status": "pending_final_seal"
+  },
+  "methodEffect": {
+    "present": true,
+    "description": "The local deterministic fixtures, validators and adversarial mutations define the exercised evidence. Passing them establishes consistency of these exact implementations, not real institutional separation or external effectiveness."
+  },
+  "verdict": "promotion_candidate",
+  "verdictMeaning": "eligible for a separate promotion decision after the final clean-checkout and distinct-review gates; not promoted by this file",
+  "notEstablished": [
+    "host_separation",
+    "external_independence",
+    "authorization",
+    "deployment",
+    "territorial_effect",
+    "general_robustness"
+  ],
+  "independence": "independence_unknown"
+}
