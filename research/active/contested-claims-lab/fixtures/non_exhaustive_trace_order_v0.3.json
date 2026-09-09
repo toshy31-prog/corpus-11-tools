@@ -1,0 +1,113 @@
+{
+  "schema_version": "contested-claims-non-exhaustive-order-v0.3",
+  "campaign_id": "CCL-NETO-003",
+  "scope": "internal_synthetic_only",
+  "external_validity": "not_claimed",
+  "independence_status": "independence_unknown",
+  "preregistration_demonstrated": false,
+  "closed_change_set": [
+    "protocols/non_exhaustive_trace_order_v0.3.md",
+    "fixtures/non_exhaustive_trace_order_v0.3.json",
+    "tests/test_non_exhaustive_trace_order.py",
+    "reports/synthetic/2026-09-09-non-exhaustive-trace-order-v0.3.md",
+    "state/current_state.md"
+  ],
+  "case": {
+    "id": "non_exhaustive_reopening",
+    "universe": ["A", "B", "C", "D"],
+    "possible_worlds": ["A", "B", "D"],
+    "claims": [
+      {
+        "id": "claim-alpha",
+        "worlds_where_true": ["A"]
+      },
+      {
+        "id": "claim-beta",
+        "worlds_where_true": ["B", "C"]
+      }
+    ],
+    "expected_uncovered_worlds": ["D"],
+    "traces": [
+      {
+        "id": "add-C",
+        "operation": "union",
+        "worlds": ["C"]
+      },
+      {
+        "id": "restrict-A-C-D",
+        "operation": "intersect",
+        "worlds": ["A", "C", "D"]
+      }
+    ],
+    "orders": [
+      {
+        "id": "add_then_restrict",
+        "trace_ids": ["add-C", "restrict-A-C-D"],
+        "expected_world_path": [
+          ["A", "B", "D"],
+          ["A", "B", "C", "D"],
+          ["A", "C", "D"]
+        ],
+        "expected_recompute_status_path": [
+          {"claim-alpha": "individually_compatible", "claim-beta": "individually_compatible"},
+          {"claim-alpha": "individually_compatible", "claim-beta": "individually_compatible"},
+          {"claim-alpha": "individually_compatible", "claim-beta": "individually_compatible"}
+        ],
+        "expected_absorbing_final_statuses": {
+          "claim-alpha": "individually_compatible",
+          "claim-beta": "individually_compatible"
+        }
+      },
+      {
+        "id": "restrict_then_add",
+        "trace_ids": ["restrict-A-C-D", "add-C"],
+        "expected_world_path": [
+          ["A", "B", "D"],
+          ["A", "D"],
+          ["A", "C", "D"]
+        ],
+        "expected_recompute_status_path": [
+          {"claim-alpha": "individually_compatible", "claim-beta": "individually_compatible"},
+          {"claim-alpha": "individually_compatible", "claim-beta": "contradicted"},
+          {"claim-alpha": "individually_compatible", "claim-beta": "individually_compatible"}
+        ],
+        "expected_absorbing_final_statuses": {
+          "claim-alpha": "individually_compatible",
+          "claim-beta": "contradicted"
+        }
+      }
+    ],
+    "expected_final_worlds": ["A", "C", "D"],
+    "expected_recompute_final_statuses": {
+      "claim-alpha": "individually_compatible",
+      "claim-beta": "individually_compatible"
+    },
+    "expected_rejected_rival": "absorbing_contradiction"
+  },
+  "negative_case": {
+    "id": "different_final_worlds",
+    "replace_trace": {
+      "id": "restrict-A-C-D",
+      "operation": "intersect",
+      "worlds": ["A", "D"]
+    },
+    "expected_failure": "final_world_sets_differ"
+  },
+  "failure_criteria": [
+    "intermediate_state_mismatch",
+    "trace_multiset_mismatch",
+    "final_world_sets_differ",
+    "unexpected_final_worlds",
+    "uncovered_residual_mismatch",
+    "claim_beta_does_not_reopen",
+    "rival_predictions_do_not_diverge",
+    "negative_case_not_rejected"
+  ],
+  "scientific_limits": {
+    "scope": "internal_synthetic_only",
+    "external_validity": "not_claimed",
+    "independence_status": "independence_unknown",
+    "preregistration_demonstrated": false,
+    "general_robustness_claimed": false
+  }
+}
