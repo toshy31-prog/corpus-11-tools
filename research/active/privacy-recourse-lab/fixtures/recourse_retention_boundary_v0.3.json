@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "protocol_id": "recourse-retention-boundary-v0.3",
+  "scope": "pipeline_verified",
+  "evidence_regime": "internal_synthetic_only",
+  "external_validity": "not_claimed",
+  "pre_registration_demonstrated": false,
+  "independence_status": "independence_unknown",
+  "source_fixture": "taint_recourse_v0.2.json",
+  "source_profile": "graduated",
+  "reused_functions": [
+    "assess",
+    "materialize",
+    "propagate_taints"
+  ],
+  "composite_verdict_semantics": {
+    "field": "semantic_disclosure_bounded",
+    "meaning": "implementation_composite_protection_verdict",
+    "disclosure_event_status": "not_observed_by_this_protocol"
+  },
+  "varied_path": "views.adjudication.retention_days",
+  "declared_maximum": 30,
+  "profiles": [
+    {
+      "id": "retention_30",
+      "retention_days": 30,
+      "expected": {
+        "semantic_disclosure_bounded": true,
+        "recourse_path_complete": true
+      }
+    },
+    {
+      "id": "retention_31",
+      "retention_days": 31,
+      "expected": {
+        "semantic_disclosure_bounded": false,
+        "recourse_path_complete": true
+      }
+    }
+  ],
+  "required_equalities": [
+    "materialized_views",
+    "propagated_taints",
+    "recourse_paths",
+    "forbidden_taints"
+  ],
+  "rivals": {
+    "purpose_scoped_retention": {
+      "prediction": "composite_protection_changes_at_declared_retention_boundary_while_recourse_stays_complete"
+    },
+    "recourse_authorization_spillover": {
+      "prediction": "complete_recourse_keeps_composite_protection_positive",
+      "loses_only_if": "declared_30_31_retention_boundary_is_the_only_profile_difference"
+    }
+  },
+  "admissible_classification": {
+    "name": "declared_retention_boundary_discriminates",
+    "loser": "recourse_authorization_spillover"
+  },
+  "fallback_classification": "candidate_set_incomplete"
+}
