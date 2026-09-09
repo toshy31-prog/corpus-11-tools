@@ -1,0 +1,6 @@
+{
+  "outcome_changes": [
+    {"id": "fictional-f10", "from": 0, "to": 1},
+    {"id": "fictional-f11", "from": 1, "to": 0}
+  ]
+}
