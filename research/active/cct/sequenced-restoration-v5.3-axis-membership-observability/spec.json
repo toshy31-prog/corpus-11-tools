@@ -1,0 +1,11 @@
+{
+  "schema": "cct-axis-membership-observability/v1",
+  "id": "CCT-EXEC-5.3-AXIS-MEMBERSHIP-OBSERVABILITY-CANDIDATE-001",
+  "version": "5.3-candidate",
+  "parentCandidate": "CCT-EXEC-5.2-INTERSECTIONAL-NONDEGRADATION-CANDIDATE-001",
+  "minimumIndependentChannelsPerAxis": 2,
+  "requireCompleteAxisObservation": true,
+  "requirePreOutcomeObservation": true,
+  "successStatus": "observable_axis_membership_admission_candidate",
+  "notEstablished": ["axis_construct_validity", "classification_transport", "causal_relevance", "authorization", "deployment", "external_robustness"]
+}

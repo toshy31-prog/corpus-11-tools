@@ -1,0 +1,9 @@
+import test from "node:test"; import assert from "node:assert/strict";
+import { assessContestableObserverAdmission, CctContestableObserverAdmissionRuntime } from "./runtime.mjs";
+import { audit, axes, capturedEndorsements, completeExercise, initialCheckpointMemory, overlongEndorsements, selectorRegistry, transitionFixture, validAmendment, validEndorsements, validValidation } from "./fixtures.mjs";
+function setup() { const validation = validValidation(); const memory = initialCheckpointMemory(validation); const transition = transitionFixture(memory, true); return { validation, memory, transition }; }
+function assess(s, endorsements) { return assessContestableObserverAdmission(axes, audit, completeExercise(), validAmendment(), s.validation, s.memory, s.transition, selectorRegistry(), endorsements); }
+test("admits a rotated registry only with an independent expiring selector quorum", () => { const s = setup(); assert.equal(assess(s, validEndorsements(s.transition)).status, "contestable_observer_admission_candidate"); });
+test("refuses self-renewal endorsements controlled by an observer controller", () => { const s = setup(); assert.deepEqual(assess(s, capturedEndorsements(s.transition)).failures, ["observer_admission_independence_invalid"]); });
+test("refuses validly signed mandates exceeding the maximum duration", () => { const s = setup(); assert.equal(assess(s, overlongEndorsements(s.transition)).status, "not_established"); });
+test("runtime blocks action without selector evidence", () => { const runtime = new CctContestableObserverAdmissionRuntime(); runtime.state.phase = "staged_restoration_receipt_pending"; runtime.state.debts = axes.map((axis) => ({ axis, status: "open" })); assert.throws(() => runtime.decide({ view: { cct: { tick: 27 } }, allowedActions: ["restore"] }), { message: /CCT_CONTESTABLE_OBSERVER_ADMISSION_UNESTABLISHED/ }); });

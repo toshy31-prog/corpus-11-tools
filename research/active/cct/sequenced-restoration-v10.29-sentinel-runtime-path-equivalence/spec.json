@@ -1,0 +1,9 @@
+{
+  "schema": "cct-sentinel-runtime-path-equivalence/v1",
+  "id": "CCT-EXEC-10.29-SENTINEL-RUNTIME-PATH-EQUIVALENCE-CANDIDATE-001",
+  "version": "10.29-candidate",
+  "parentCandidate": "CCT-EXEC-10.28-SENTINEL-CLASS-CONSTRUCT-VALIDATION-CANDIDATE-001",
+  "matchedFields": ["entryCount", "aliasResolutionDepth", "activationDelayMs", "requiredPrivilege"],
+  "successStatus": "sentinel_runtime_path_equivalence_candidate",
+  "notEstablished": ["real_runtime_observation", "unmeasured_behavioral_equivalence", "external_transport", "deployment"]
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "cct-observed-repair-completion/v1",
+  "id": "CCT-EXEC-7.1-OBSERVED-REPAIR-COMPLETION-CANDIDATE-001",
+  "version": "7.1-candidate",
+  "parentCandidate": "CCT-EXEC-7.0-INDEPENDENT-SUSPENSION-ADJUDICATION-CANDIDATE-001",
+  "attestorRegistrySize": 3,
+  "attestorQuorumSize": 2,
+  "requiredDistinctChannels": 2,
+  "successStatus": "observed_repair_completion_candidate",
+  "notEstablished": ["real_world_observation", "adequacy_of_compensation", "independence_in_practice", "authorization", "deployment"]
+}

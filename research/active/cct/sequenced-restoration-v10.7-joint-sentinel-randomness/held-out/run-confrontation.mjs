@@ -1,0 +1,1 @@
+import assert from"node:assert/strict";import{assessJointSentinelRandomness}from"../runtime.mjs";import{fullSetup}from"../fixtures.mjs";const result=assessJointSentinelRandomness(fullSetup(true));assert.deepEqual(result.failures,["sentinel_randomness_order_invalid"]);console.log("held-out confrontation: randomness revealed before prediction commitment is rejected");

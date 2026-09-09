@@ -1,0 +1,9 @@
+{
+  "schema": "cct-bridge-common-cause/v1",
+  "id": "CCT-EXEC-2.2-COMMON-CAUSE-CANDIDATE-001",
+  "version": "2.2-candidate",
+  "parentCandidate": "CCT-EXEC-2.1-TEMPORAL-FAILOVER-CANDIDATE-001",
+  "rule": "Every declared dependency root must be perturbed across a bounded window; all lanes that depend on it are disabled together and every open debt axis must remain both supported and observed at every tick.",
+  "successStatus": "bounded_common_cause_candidate",
+  "notEstablished": ["complete_dependency_inventory", "unknown_common_causes", "authorization", "deployment", "external_robustness", "institutional_effect"]
+}

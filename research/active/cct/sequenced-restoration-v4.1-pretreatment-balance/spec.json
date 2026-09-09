@@ -1,0 +1,12 @@
+{
+  "schema": "cct-pretreatment-balance/v1",
+  "id": "CCT-EXEC-4.1-PRETREATMENT-BALANCE-CANDIDATE-001",
+  "version": "4.1-candidate",
+  "parentCandidate": "CCT-EXEC-4.0-REPRODUCIBLE-CLUSTER-RANDOMIZATION-CANDIDATE-001",
+  "rule": "Precommit pre-treatment covariates before cluster randomization. Require the exact covariate set, a within-stratum distance no greater than 0.1 on every covariate, and an absolute standardized mean difference no greater than 0.1 between arms.",
+  "requiredCovariates": ["baseline_event_rate", "dependency_load", "access_loss"],
+  "maximumWithinStratumDifference": 0.1,
+  "maximumAbsoluteStandardizedMeanDifference": 0.1,
+  "successStatus": "bounded_pretreatment_balance_candidate",
+  "notEstablished": ["unmeasured_confounder_balance", "covariate_construct_validity", "field_measurement_independence", "representative_sampling", "authorization", "deployment", "external_robustness"]
+}

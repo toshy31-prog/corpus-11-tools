@@ -1,0 +1,14 @@
+{
+  "schema": "cct-cluster-aware-transport/v1",
+  "id": "CCT-EXEC-3.2-CLUSTER-AWARE-TRANSPORT-CANDIDATE-001",
+  "version": "3.2-candidate",
+  "parentCandidate": "CCT-EXEC-3.1-UNCERTAINTY-BOUNDED-TRANSPORT-CANDIDATE-001",
+  "rule": "Precommit independent analysis clusters before held-out outcomes. Require at least 30 equal-sized clusters per context, reconcile cluster counts with aggregate counts, and accept transport only when a family-wise adjusted interval over cluster-level outcomes stays inside the 3.0 transfer tolerance.",
+  "minimumClustersPerContext": 30,
+  "clusterIntervalMethod": "studentized_cluster_mean",
+  "familyWiseCoverage": 0.95,
+  "contextIntervals": 90,
+  "adjustedTCritical": 4.0,
+  "successStatus": "bounded_cluster_aware_transport_candidate",
+  "notEstablished": ["real_cluster_independence", "representative_cluster_sampling", "construct_validity", "transport_beyond_declared_target_contexts", "causal_effect", "authorization", "deployment", "external_robustness"]
+}

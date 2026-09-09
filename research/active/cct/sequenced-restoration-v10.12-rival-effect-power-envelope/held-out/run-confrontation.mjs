@@ -1,0 +1,1 @@
+import assert from"node:assert/strict";import{deriveRivalPowerEnvelope}from"../runtime.mjs";const weak=deriveRivalPowerEnvelope().find(x=>x.alternativeDistanceProbability===.4);assert.equal(weak.minimumBitsPerBatch,574);console.log("held-out confrontation: a weak correlation alternative exposes the 88-bit plan as underpowered");

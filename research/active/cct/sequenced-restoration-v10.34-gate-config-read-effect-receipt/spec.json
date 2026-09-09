@@ -1,0 +1,8 @@
+{
+  "schema": "cct-gate-config-read-effect-receipt/v1",
+  "id": "CCT-EXEC-10.34-GATE-CONFIG-READ-EFFECT-RECEIPT-CANDIDATE-001",
+  "version": "10.34-candidate",
+  "parentCandidate": "CCT-EXEC-10.33-CONTENT-ADDRESSED-EXTERNAL-GATE-STATE-CANDIDATE-001",
+  "successStatus": "gate_config_read_effect_receipt_candidate",
+  "notEstablished": ["process_isolation", "production_component_identity", "deployed_runtime_observation", "persistent_suspension", "deployment"]
+}

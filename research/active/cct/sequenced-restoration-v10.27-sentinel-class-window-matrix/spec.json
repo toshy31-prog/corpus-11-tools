@@ -1,0 +1,10 @@
+{
+  "schema": "cct-sentinel-class-window-matrix/v1",
+  "id": "CCT-EXEC-10.27-SENTINEL-CLASS-WINDOW-MATRIX-CANDIDATE-001",
+  "version": "10.27-candidate",
+  "parentCandidate": "CCT-EXEC-10.26-BLINDED-PATH-SENTINEL-DETECTABILITY-CANDIDATE-001",
+  "pathClasses": ["direct", "alias", "delayed_activation", "privileged"],
+  "windows": ["startup", "steady_state", "rotation"],
+  "successStatus": "sentinel_class_window_matrix_candidate",
+  "notEstablished": ["unmodeled_path_class_detectability", "unobserved_window_detectability", "absolute_inventory_exhaustiveness", "deployment"]
+}

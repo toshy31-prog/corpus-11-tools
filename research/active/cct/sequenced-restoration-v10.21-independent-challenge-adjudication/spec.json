@@ -1,0 +1,10 @@
+{
+  "schema": "cct-independent-challenge-adjudication/v1",
+  "id": "CCT-EXEC-10.21-INDEPENDENT-CHALLENGE-ADJUDICATION-CANDIDATE-001",
+  "version": "10.21-candidate",
+  "parentCandidate": "CCT-EXEC-10.20-CONTESTABLE-CONTROL-CORROBORATION-CANDIDATE-001",
+  "minimumAdjudicationCenters": 2,
+  "challengeBinding": "sha256_canonical_challenge_content",
+  "successStatus": "independent_challenge_adjudication_candidate",
+  "notEstablished": ["adjudicator_legitimacy", "reason_truth", "absence_of_collusion", "real_world_independence", "deployment"]
+}

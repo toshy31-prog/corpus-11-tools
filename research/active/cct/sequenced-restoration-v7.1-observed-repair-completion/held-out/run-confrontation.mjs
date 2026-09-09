@@ -1,0 +1,7 @@
+import assert from "node:assert/strict";
+import { assessObservedRepairCompletion } from "../runtime.mjs";
+import { adjudicationVotes, adjudicatorRegistry, audit, axes, completeExercise, initialCheckpointMemory, repairAttestorRegistry, repairDecision, repairObservations, selectorRegistry, suspensionEndorsements, suspensionFixture, transitionFixture, validAmendment, validEndorsements, validValidation } from "../fixtures.mjs";
+const validation = validValidation(), memory = initialCheckpointMemory(validation), transition = transitionFixture(memory, true), selectors = selectorRegistry(), suspension = suspensionFixture(transition, validation), decision = repairDecision(suspension);
+const observations = repairObservations(decision); observations[1] = repairObservations(decision, { compensationTransferred: false })[1];
+const result = assessObservedRepairCompletion({ openDebtAxes: axes, dependencyAudit: audit, currentExercise: completeExercise(), amendment: validAmendment(), validation, memory, transition, selectors, admissionEndorsements: validEndorsements(transition), suspension, suspensionEndorsements: suspensionEndorsements(suspension, selectors), priorIncidentDigests: [], adjudicators: adjudicatorRegistry(), decision, votes: adjudicationVotes(decision), repairAttestors: repairAttestorRegistry(), repairObservations: observations });
+assert.equal(result.status, "not_established"); console.log("held-out confrontation: correction and restored access cannot hide a missing compensation transfer");

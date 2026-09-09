@@ -1,0 +1,13 @@
+{
+  "schema": "cct-dual-context-triples/v1",
+  "id": "CCT-EXEC-2.7-DUAL-CONTEXT-TRIPLES-CANDIDATE-001",
+  "version": "2.7-candidate",
+  "parentCandidate": "CCT-EXEC-2.6-BOUNDED-TRIPLES-CANDIDATE-001",
+  "rule": "Exercise two disjoint affine triple covers. Every dependency-class pair must occur once per cover with a different third class, every class must occur four times per cover, and all six orders of all twenty-four triples must preserve every open debt axis.",
+  "coverCount": 2,
+  "tripleCount": 24,
+  "sequenceCount": 144,
+  "thirdContextsPerPair": 2,
+  "successStatus": "bounded_dual_context_three_way_candidate",
+  "notEstablished": ["exhaustive_three_way_interactions", "four_way_or_higher_interactions", "all_intensities", "authorization", "deployment", "external_robustness"]
+}

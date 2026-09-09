@@ -1,0 +1,1 @@
+import assert from"node:assert/strict";import{assessSideChannelFingerprintScan}from"../runtime.mjs";import{fullSetup}from"../fixtures.mjs";const result=assessSideChannelFingerprintScan(fullSetup(true));assert.deepEqual(result.failures,["probe_side_channel_detected"]);console.log("held-out confrontation: an undeclared timing fingerprint defeats cross-campaign unlinkability");

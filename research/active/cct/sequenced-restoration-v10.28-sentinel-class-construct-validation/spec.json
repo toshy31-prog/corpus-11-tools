@@ -1,0 +1,9 @@
+{
+  "schema": "cct-sentinel-class-construct-validation/v1",
+  "id": "CCT-EXEC-10.28-SENTINEL-CLASS-CONSTRUCT-VALIDATION-CANDIDATE-001",
+  "version": "10.28-candidate",
+  "parentCandidate": "CCT-EXEC-10.27-SENTINEL-CLASS-WINDOW-MATRIX-CANDIDATE-001",
+  "windowBoundsMs": {"startup": [0, 100], "steady_state": [1000, 2000], "rotation": [3000, 4000]},
+  "successStatus": "sentinel_class_construct_validation_candidate",
+  "notEstablished": ["real_path_equivalence", "unmodeled_class_validity", "external_transport", "deployment"]
+}

@@ -1,0 +1,9 @@
+{
+  "schema": "cct-local-runtime-capture-reobservation/v1",
+  "id": "CCT-EXEC-10.30-LOCAL-RUNTIME-CAPTURE-REOBSERVATION-CANDIDATE-001",
+  "version": "10.30-candidate",
+  "parentCandidate": "CCT-EXEC-10.29-SENTINEL-RUNTIME-PATH-EQUIVALENCE-CANDIDATE-001",
+  "targetSentinelId": "sentinel-direct-startup",
+  "successStatus": "local_runtime_capture_reobservation_candidate",
+  "notEstablished": ["deployed_runtime_observation", "other_path_reobservation", "cross_environment_transport", "persistent_suspension", "deployment"]
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "cct-exposure-registry-amendment/v1",
+  "id": "CCT-EXEC-4.9-EXPOSURE-REGISTRY-AMENDMENT-CANDIDATE-001",
+  "version": "4.9-candidate",
+  "parentCandidate": "CCT-EXEC-4.8-EXPOSURE-REGISTRY-PAIR-SCAN-CANDIDATE-001",
+  "rule": "A new exposure requires a committed operational definition and two independent pre-outcome attestations, cannot alter the current campaign, and becomes eligible only in a named future campaign.",
+  "minimumIndependentAttestations": 2,
+  "commitmentAlgorithm": "sha256",
+  "successStatus": "precommitted_future_registry_amendment_candidate",
+  "notEstablished": ["construct_validity", "causal_relevance", "future_campaign_power", "authorization", "deployment", "external_robustness"]
+}

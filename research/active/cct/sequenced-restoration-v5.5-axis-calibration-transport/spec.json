@@ -1,0 +1,12 @@
+{
+  "schema": "cct-axis-calibration-transport/v1",
+  "id": "CCT-EXEC-5.5-AXIS-CALIBRATION-TRANSPORT-CANDIDATE-001",
+  "version": "5.5-candidate",
+  "parentCandidate": "CCT-EXEC-5.4-AXIS-CONSTRUCT-CALIBRATION-CANDIDATE-001",
+  "minimumDistinctTargetContexts": 2,
+  "minimumReferenceCasesPerClass": 15,
+  "minimumWilsonLowerBound": 0.75,
+  "z": 1.96,
+  "successStatus": "axis_calibration_transported_for_scope_candidate",
+  "notEstablished": ["untested_context_transport", "causal_relevance", "authorization", "deployment", "external_robustness"]
+}

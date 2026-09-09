@@ -1,0 +1,13 @@
+{
+  "schema": "cct-pretreatment-placebos/v1",
+  "id": "CCT-EXEC-4.2-PRETREATMENT-PLACEBOS-CANDIDATE-001",
+  "version": "4.2-candidate",
+  "parentCandidate": "CCT-EXEC-4.1-PRETREATMENT-BALANCE-CANDIDATE-001",
+  "rule": "Precommit three blinded pre-intervention placebo outcomes per probe. Aggregate them by the later randomized arms and reject the probe when any family-wise adjusted difference interval extends beyond plus or minus 0.05.",
+  "requiredPlacebos": ["lagged_event_rate", "preperiod_access_loss", "unrelated_failure_rate"],
+  "comparisonCount": 270,
+  "adjustedZCritical": 4.0,
+  "maximumAbsolutePlaceboDifference": 0.05,
+  "successStatus": "bounded_pretreatment_placebo_candidate",
+  "notEstablished": ["all_unmeasured_confounders", "placebo_construct_validity", "field_blinding", "representative_sampling", "authorization", "deployment", "external_robustness"]
+}

@@ -1,0 +1,9 @@
+{
+  "schema": "cct-blinded-path-sentinel-detectability/v1",
+  "id": "CCT-EXEC-10.26-BLINDED-PATH-SENTINEL-DETECTABILITY-CANDIDATE-001",
+  "version": "10.26-candidate",
+  "parentCandidate": "CCT-EXEC-10.25-DUAL-CHANNEL-PATH-INVENTORY-RECONCILIATION-CANDIDATE-001",
+  "minimumSentinels": 2,
+  "successStatus": "blinded_path_sentinel_detectability_candidate",
+  "notEstablished": ["unknown_path_detectability", "absolute_inventory_exhaustiveness", "persistent_suspension", "deployment"]
+}

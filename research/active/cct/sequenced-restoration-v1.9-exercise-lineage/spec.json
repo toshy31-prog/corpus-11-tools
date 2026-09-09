@@ -1,0 +1,8 @@
+{
+  "schema": "cct-bridge-exercise-lineage/v1",
+  "id": "CCT-EXEC-1.9-EXERCISE-LINEAGE-CANDIDATE-001",
+  "version": "1.9-candidate",
+  "parentCandidate": "CCT-EXEC-1.8-BRIDGE-PRESENCE-CANDIDATE-001",
+  "rule": "A fully exercised bridge requires complete report lineage and at least two distinct witnesses, witness failure domains and source roots; repeated reports with unknown or shared lineage do not accumulate independent support.",
+  "notEstablished": ["independence_in_fact", "authorization", "deployment", "institutional_effect", "external_robustness"]
+}

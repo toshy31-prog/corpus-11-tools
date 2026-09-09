@@ -1,0 +1,11 @@
+{
+  "schema": "cct-general-log-consistency/v1",
+  "id": "CCT-EXEC-6.2-GENERAL-LOG-CONSISTENCY-CANDIDATE-001",
+  "version": "6.2-candidate",
+  "parentCandidate": "CCT-EXEC-6.1-BOUNDED-LOG-CONSISTENCY-CANDIDATE-001",
+  "hashAlgorithm": "sha256",
+  "treeConstruction": "rfc9162",
+  "minimumPreviousTreeSize": 1,
+  "successStatus": "general_append_only_log_consistency_candidate",
+  "notEstablished": ["real_external_log", "trusted_wall_clock_time", "network_partition_resistance", "authorization", "deployment", "external_robustness"]
+}

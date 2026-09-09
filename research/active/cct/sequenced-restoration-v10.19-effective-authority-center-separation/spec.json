@@ -1,0 +1,10 @@
+{
+  "schema": "cct-effective-authority-center-separation/v1",
+  "id": "CCT-EXEC-10.19-EFFECTIVE-AUTHORITY-CENTER-SEPARATION-CANDIDATE-001",
+  "version": "10.19-candidate",
+  "parentCandidate": "CCT-EXEC-10.18-REVOCABLE-WITNESS-AUTHORITY-REGISTRY-CANDIDATE-001",
+  "controlDimensions": ["effectiveOwnerId", "keyOperatorId", "decisiveFunderId", "vetoControllerId"],
+  "minimumEffectiveCenters": 2,
+  "successStatus": "effective_authority_center_separation_candidate",
+  "notEstablished": ["beneficial_ownership_truth", "informal_coordination_absence", "authority_legitimacy", "real_world_independence", "deployment"]
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "cct-exposure-registry-pair-scan/v1",
+  "id": "CCT-EXEC-4.8-EXPOSURE-REGISTRY-PAIR-SCAN-CANDIDATE-001",
+  "version": "4.8-candidate",
+  "parentCandidate": "CCT-EXEC-4.7-BIVARIATE-THRESHOLD-SCAN-CANDIDATE-001",
+  "rule": "Freeze the complete measured pre-treatment exposure registry and scan every unordered covariate pair; no registered covariate may be omitted from interaction testing.",
+  "registeredCovariates": ["baseline_event_rate", "dependency_load", "access_loss"],
+  "pairCount": 3,
+  "minimumClustersPerArm": 5,
+  "maximumThresholdsPerCovariate": 16,
+  "maximumComparisonCount": 207360,
+  "adjustedTCritical": 6.4,
+  "maximumAbsolutePlaceboDifference": 0.05,
+  "successStatus": "bounded_exposure_registry_pair_scan_candidate",
+  "notEstablished": ["unmeasured_exposures", "higher_order_interactions", "construct_validity", "representative_sampling", "authorization", "deployment", "external_robustness"]
+}

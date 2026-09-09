@@ -1,0 +1,14 @@
+{
+  "schema": "cct-bivariate-threshold-scan/v1",
+  "id": "CCT-EXEC-4.7-BIVARIATE-THRESHOLD-SCAN-CANDIDATE-001",
+  "version": "4.7-candidate",
+  "parentCandidate": "CCT-EXEC-4.6-OBSERVED-THRESHOLD-SCAN-CANDIDATE-001",
+  "rule": "Scan every observed dependency-load by access-loss intersection retaining at least five clusters per arm, using cluster-rate intervals and a fixed family-wise search budget.",
+  "minimumClustersPerArm": 5,
+  "maximumThresholdsPerCovariate": 16,
+  "maximumComparisonCount": 69120,
+  "adjustedTCritical": 6.0,
+  "maximumAbsolutePlaceboDifference": 0.05,
+  "successStatus": "bounded_bivariate_threshold_scan_candidate",
+  "notEstablished": ["higher_dimensional_heterogeneity", "complete_exposure_measurement", "placebo_construct_validity", "representative_sampling", "authorization", "deployment", "external_robustness"]
+}

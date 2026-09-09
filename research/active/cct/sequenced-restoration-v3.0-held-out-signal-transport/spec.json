@@ -1,0 +1,14 @@
+{
+  "schema": "cct-held-out-signal-transport/v1",
+  "id": "CCT-EXEC-3.0-HELD-OUT-SIGNAL-TRANSPORT-CANDIDATE-001",
+  "version": "3.0-candidate",
+  "parentCandidate": "CCT-EXEC-2.9-SIGNAL-PROVENANCE-CANDIDATE-001",
+  "rule": "Before adaptive trials begin, test every compiled pair margin and class-risk score in two precommitted contexts excluded from its source evidence. Derive target values from direct outcome counts, require independent target controllers and failure domains, bound transfer error, and reject the adaptive plan if the target-derived schedule differs from the committed source-derived schedule.",
+  "targetContextsRequired": 2,
+  "pairTargetMinimumSampleSize": 100,
+  "riskTargetMinimumSampleSize": 100,
+  "pairMaximumRelativeTransferError": 0.2,
+  "riskMaximumAbsoluteTransferError": 0.1,
+  "successStatus": "bounded_held_out_signal_transport_candidate",
+  "notEstablished": ["real_world_construct_validity", "external_independence", "transport_beyond_declared_target_contexts", "causal_effect", "authorization", "deployment", "external_robustness"]
+}

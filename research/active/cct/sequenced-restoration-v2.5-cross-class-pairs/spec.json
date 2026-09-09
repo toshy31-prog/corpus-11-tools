@@ -1,0 +1,10 @@
+{
+  "schema": "cct-cross-class-pairs/v1",
+  "id": "CCT-EXEC-2.5-CROSS-CLASS-PAIRS-CANDIDATE-001",
+  "version": "2.5-candidate",
+  "parentCandidate": "CCT-EXEC-2.4-SUBTHRESHOLD-COMPOSITION-CANDIDATE-001",
+  "rule": "Exercise every unordered pair of the nine baseline dependency classes in both application orders; each component remains individually subthreshold and every open debt axis must remain protected at every tick.",
+  "pairCount": 36,
+  "successStatus": "bounded_pairwise_cross_class_candidate",
+  "notEstablished": ["three_way_interactions", "higher_order_interactions", "all_intensities", "authorization", "deployment", "external_robustness"]
+}

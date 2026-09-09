@@ -1,0 +1,8 @@
+{
+  "schema": "cct-evidence-hold/v1",
+  "id": "CCT-EXEC-1.6-EVIDENCE-HOLD-CANDIDATE-001",
+  "version": "1.6-candidate",
+  "parentCandidate": "CCT-EXEC-1.5-PROVENANCE-CANDIDATE-001",
+  "rule": "While repair closure is withheld for evidence, every continuation action must protect every open debt axis in addition to the standing vital, ecological, budget and no-harm constraints.",
+  "notEstablished": ["authorization", "deployment", "institutional_effect", "external_robustness"]
+}

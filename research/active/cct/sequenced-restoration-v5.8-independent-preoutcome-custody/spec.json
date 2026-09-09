@@ -1,0 +1,11 @@
+{
+  "schema": "cct-independent-preoutcome-custody/v1",
+  "id": "CCT-EXEC-5.8-INDEPENDENT-PREOUTCOME-CUSTODY-CANDIDATE-001",
+  "version": "5.8-candidate",
+  "parentCandidate": "CCT-EXEC-5.7-CONTENT-ADDRESSED-LINEAGE-CANDIDATE-001",
+  "minimumIndependentCustodians": 2,
+  "signatureAlgorithm": "ed25519",
+  "digestAlgorithm": "sha256",
+  "successStatus": "independently_custodied_preoutcome_lineage_candidate",
+  "notEstablished": ["trusted_external_timestamp", "custodian_real_world_independence", "authorization", "deployment", "external_robustness"]
+}

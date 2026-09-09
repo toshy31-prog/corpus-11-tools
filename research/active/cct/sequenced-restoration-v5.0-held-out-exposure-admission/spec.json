@@ -1,0 +1,13 @@
+{
+  "schema": "cct-held-out-exposure-admission/v1",
+  "id": "CCT-EXEC-5.0-HELD-OUT-EXPOSURE-ADMISSION-CANDIDATE-001",
+  "version": "5.0-candidate",
+  "parentCandidate": "CCT-EXEC-4.9-EXPOSURE-REGISTRY-AMENDMENT-CANDIDATE-001",
+  "minimumObservations": 40,
+  "minimumBrierImprovementLowerBound": 0.01,
+  "maximumDetectableImprovement": 0.02,
+  "criticalValue": 2.02,
+  "powerMultiplier": 2.8,
+  "successStatus": "held_out_exposure_admission_candidate",
+  "notEstablished": ["construct_validity", "causal_relevance", "cross_campaign_transport", "authorization", "deployment", "external_robustness"]
+}

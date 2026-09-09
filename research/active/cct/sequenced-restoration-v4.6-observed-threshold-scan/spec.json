@@ -1,0 +1,16 @@
+{
+  "schema": "cct-observed-threshold-scan/v1",
+  "id": "CCT-EXEC-4.6-OBSERVED-THRESHOLD-SCAN-CANDIDATE-001",
+  "version": "4.6-candidate",
+  "parentCandidate": "CCT-EXEC-4.5-THRESHOLD-SENSITIVITY-CANDIDATE-001",
+  "rule": "Before outcomes are inspected, derive every observed dependency-load and access-loss cutpoint that retains at least ten clusters per arm, reject probes exceeding the precommitted search budget, and test all retained slices with simultaneous intervals.",
+  "scanCovariates": ["dependency_load", "access_loss"],
+  "requiredPlacebos": ["lagged_event_rate", "preperiod_access_loss", "unrelated_failure_rate"],
+  "minimumClustersPerArm": 10,
+  "maximumGroupsPerCovariate": 21,
+  "maximumComparisonCount": 11340,
+  "adjustedZCritical": 5.3,
+  "maximumAbsolutePlaceboDifference": 0.05,
+  "successStatus": "bounded_observed_threshold_scan_candidate",
+  "notEstablished": ["two_dimensional_continuous_heterogeneity", "complete_exposure_measurement", "placebo_construct_validity", "representative_sampling", "authorization", "deployment", "external_robustness"]
+}

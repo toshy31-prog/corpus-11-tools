@@ -1,0 +1,1 @@
+import assert from"node:assert/strict";import{assessProbeMethodEffectControl}from"../runtime.mjs";import{fullSetup}from"../fixtures.mjs";const r=assessProbeMethodEffectControl(fullSetup(true));assert.deepEqual(r.failures,["withdrawal_effect_confounded_by_probe_method"]);console.log("held-out confrontation: sham-induced decision change invalidates withdrawal attribution");

@@ -1,0 +1,9 @@
+{
+  "schema": "cct-gate-state-negative-control/v1",
+  "id": "CCT-EXEC-10.32-GATE-STATE-NEGATIVE-CONTROL-CANDIDATE-001",
+  "version": "10.32-candidate",
+  "parentCandidate": "CCT-EXEC-10.31-FULL-LOCAL-RUNTIME-MATRIX-REOBSERVATION-CANDIDATE-001",
+  "expectedCellsPerState": 12,
+  "successStatus": "gate_state_negative_control_candidate",
+  "notEstablished": ["production_gate_coupling", "process_isolation", "deployed_runtime_observation", "persistent_suspension", "deployment"]
+}

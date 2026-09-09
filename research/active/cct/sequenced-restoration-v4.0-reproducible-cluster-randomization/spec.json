@@ -1,0 +1,12 @@
+{
+  "schema": "cct-reproducible-cluster-randomization/v1",
+  "id": "CCT-EXEC-4.0-REPRODUCIBLE-CLUSTER-RANDOMIZATION-CANDIDATE-001",
+  "version": "4.0-candidate",
+  "parentCandidate": "CCT-EXEC-3.9-CLUSTER-INTERFERENCE-CANDIDATE-001",
+  "rule": "Precommit 20 two-cluster strata and a seed hash for each probe. Derive one baseline and one perturbed cluster per stratum by SHA-256 rank, reveal the seed after assignment, and reject any arm label that cannot be reproduced.",
+  "algorithm": "sha256_rank_within_pairs",
+  "strataPerProbe": 20,
+  "clustersPerStratum": 2,
+  "successStatus": "bounded_reproducible_cluster_randomization_candidate",
+  "notEstablished": ["allocation_concealment_in_field", "stratum_construct_validity", "complete_interference_network", "representative_sampling", "authorization", "deployment", "external_robustness"]
+}

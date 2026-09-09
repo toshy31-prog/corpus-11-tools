@@ -1,0 +1,10 @@
+{
+  "schema": "cct-independent-signature-time-attestation/v1",
+  "id": "CCT-EXEC-10.17-INDEPENDENT-SIGNATURE-TIME-ATTESTATION-CANDIDATE-001",
+  "version": "10.17-candidate",
+  "parentCandidate": "CCT-EXEC-10.16-CONTENT-ADDRESSED-EVIDENCE-BINDING-CANDIDATE-001",
+  "signatureAlgorithm": "ed25519",
+  "minimumDistinctWitnesses": 2,
+  "successStatus": "independent_signature_time_attestation_candidate",
+  "notEstablished": ["civil_identity", "trusted_clock", "observation_truth", "material_independence", "real_data_collection", "deployment"]
+}

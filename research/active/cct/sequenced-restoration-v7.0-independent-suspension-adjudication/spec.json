@@ -1,0 +1,11 @@
+{
+  "schema": "cct-independent-suspension-adjudication/v1",
+  "id": "CCT-EXEC-7.0-INDEPENDENT-SUSPENSION-ADJUDICATION-CANDIDATE-001",
+  "version": "7.0-candidate",
+  "parentCandidate": "CCT-EXEC-6.9-EXPIRING-CONTESTABLE-SUSPENSION-CANDIDATE-001",
+  "adjudicatorRegistrySize": 3,
+  "adjudicatorQuorumSize": 2,
+  "allowedFindings": ["safeguard-substantiated", "allegation-not-established", "suspension-abusive"],
+  "successStatus": "independent_suspension_adjudication_candidate",
+  "notEstablished": ["truth_beyond_committed_record", "procedural_fairness_in_practice", "real_repair_payment", "authorization", "deployment"]
+}

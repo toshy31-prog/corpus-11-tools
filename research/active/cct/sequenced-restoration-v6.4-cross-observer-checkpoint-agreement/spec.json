@@ -1,0 +1,9 @@
+{
+  "schema": "cct-cross-observer-checkpoint-agreement/v1",
+  "id": "CCT-EXEC-6.4-CROSS-OBSERVER-CHECKPOINT-AGREEMENT-CANDIDATE-001",
+  "version": "6.4-candidate",
+  "parentCandidate": "CCT-EXEC-6.3-CHECKPOINT-ROLLBACK-RESISTANCE-CANDIDATE-001",
+  "minimumIndependentObservers": 2,
+  "successStatus": "cross_observer_checkpoint_agreement_candidate",
+  "notEstablished": ["partition_resolution", "complete_observer_visibility", "durable_external_storage", "real_external_log", "authorization", "deployment"]
+}

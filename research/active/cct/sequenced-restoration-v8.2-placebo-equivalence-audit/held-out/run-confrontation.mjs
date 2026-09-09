@@ -1,0 +1,1 @@
+import assert from"node:assert/strict";import{assessPlaceboEquivalenceAudit}from"../runtime.mjs";import{fullSetup}from"../fixtures.mjs";const r=assessPlaceboEquivalenceAudit(fullSetup(false));assert.deepEqual(r.failures,["placebo_not_equivalent_except_treatment_assignment"]);console.log("held-out confrontation: observer-visible sham is not an equivalent placebo");

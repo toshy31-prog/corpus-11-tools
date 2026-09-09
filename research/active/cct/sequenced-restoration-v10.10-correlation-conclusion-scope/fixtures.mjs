@@ -1,0 +1,1 @@
+import{fullSetup as setup109}from"../sequenced-restoration-v10.9-bounded-correlation-screen/fixtures.mjs";export*from"../sequenced-restoration-v10.9-bounded-correlation-screen/fixtures.mjs";export function fullSetup(requestedCorrelationConclusion){return{...setup109(),...(requestedCorrelationConclusion?{requestedCorrelationConclusion}:{})};}

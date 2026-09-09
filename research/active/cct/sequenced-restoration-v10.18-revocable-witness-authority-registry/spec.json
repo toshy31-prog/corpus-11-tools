@@ -1,0 +1,9 @@
+{
+  "schema": "cct-revocable-witness-authority-registry/v1",
+  "id": "CCT-EXEC-10.18-REVOCABLE-WITNESS-AUTHORITY-REGISTRY-CANDIDATE-001",
+  "version": "10.18-candidate",
+  "parentCandidate": "CCT-EXEC-10.17-INDEPENDENT-SIGNATURE-TIME-ATTESTATION-CANDIDATE-001",
+  "minimumAuthorityDomains": 2,
+  "successStatus": "revocable_witness_authority_registry_candidate",
+  "notEstablished": ["authority_legitimacy", "registry_operator_independence", "trusted_clock", "observation_truth", "real_data_collection", "deployment"]
+}

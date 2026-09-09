@@ -1,0 +1,1 @@
+import assert from"node:assert/strict";import{assessDelayedHeldOutLabelReveal}from"../runtime.mjs";import{fullSetup}from"../fixtures.mjs";const result=assessDelayedHeldOutLabelReveal(fullSetup(true));assert.deepEqual(result.failures,["held_out_labels_revealed_before_artifact_freeze"]);console.log("held-out confrontation: labels revealed before artifact freeze are rejected");

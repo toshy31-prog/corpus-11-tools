@@ -1,0 +1,10 @@
+{
+  "schema": "cct-target-evidence-independence/v1",
+  "id": "CCT-EXEC-5.6-TARGET-EVIDENCE-INDEPENDENCE-CANDIDATE-001",
+  "version": "5.6-candidate",
+  "parentCandidate": "CCT-EXEC-5.5-AXIS-CALIBRATION-TRANSPORT-CANDIDATE-001",
+  "requiredDistinctRoots": ["rawDataRoot", "samplingFrameRoot", "generatorRoot", "adjudicationRoot", "failureDomain"],
+  "requireDisjointSampleIds": true,
+  "successStatus": "materially_independent_target_evidence_candidate",
+  "notEstablished": ["independence_from_unknown_lineage", "causal_relevance", "authorization", "deployment", "external_robustness"]
+}

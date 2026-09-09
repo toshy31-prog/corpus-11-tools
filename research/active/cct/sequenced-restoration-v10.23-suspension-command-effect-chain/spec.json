@@ -1,0 +1,9 @@
+{
+  "schema": "cct-suspension-command-effect-chain/v1",
+  "id": "CCT-EXEC-10.23-SUSPENSION-COMMAND-EFFECT-CHAIN-CANDIDATE-001",
+  "version": "10.23-candidate",
+  "parentCandidate": "CCT-EXEC-10.22-UPHELD-CHALLENGE-QUORUM-RECALCULATION-CANDIDATE-001",
+  "requiredEventTypes": ["suspension_authorized", "command_received", "gate_disabled", "execution_attempt_blocked", "independent_effect_observed"],
+  "successStatus": "suspension_command_effect_chain_candidate",
+  "notEstablished": ["institutional_enforcement", "all_execution_paths_blocked", "operator_identity", "deployment"]
+}

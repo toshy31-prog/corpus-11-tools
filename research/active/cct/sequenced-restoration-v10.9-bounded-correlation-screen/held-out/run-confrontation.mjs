@@ -1,0 +1,1 @@
+import assert from"node:assert/strict";import{auditSentinelCorrelation}from"../runtime.mjs";const repeated=Array.from({length:4},()=>Array.from({length:32},(_,i)=>i%2)),result=auditSentinelCorrelation(repeated);assert.equal(result.failure,"sentinel_pairwise_distance_outside_bounds");console.log("held-out confrontation: distinct labels cannot hide bit-identical sentinel batches");

@@ -1,0 +1,14 @@
+{
+  "schema": "cct-signal-provenance/v1",
+  "id": "CCT-EXEC-2.9-SIGNAL-PROVENANCE-CANDIDATE-001",
+  "version": "2.9-candidate",
+  "parentCandidate": "CCT-EXEC-2.8-RISK-DIRECTED-CONTEXT-CANDIDATE-001",
+  "rule": "Compile each adaptive pair margin and dependency-class risk score from at least two pre-commitment attestations with distinct source roots, controllers, and failure domains. Pair margins use the conservative minimum; class risks use the conservative maximum. Every attestation must pass a blind challenge and risk attestations must meet declared calibration bounds.",
+  "pairAttestationsRequired": 2,
+  "classRiskAttestationsRequired": 2,
+  "pairMinimumSampleSize": 12,
+  "riskMinimumSampleSize": 30,
+  "riskMaximumCalibrationError": 0.1,
+  "successStatus": "bounded_provenanced_risk_signals_candidate",
+  "notEstablished": ["external_independence", "transportability_of_risk_scores", "construct_validity_beyond_declared_protocol", "authorization", "deployment", "external_robustness"]
+}

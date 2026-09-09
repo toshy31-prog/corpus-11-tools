@@ -1,0 +1,9 @@
+{
+  "schema": "cct-bridge-temporal-failover/v1",
+  "id": "CCT-EXEC-2.1-TEMPORAL-FAILOVER-CANDIDATE-001",
+  "version": "2.1-candidate",
+  "parentCandidate": "CCT-EXEC-2.0-SINGLE-FAILURE-CANDIDATE-001",
+  "rule": "Structural redundancy is insufficient: loss of each lane must be exercised over every tick of a bounded window without any interruption of protection for an open debt axis.",
+  "successStatus": "observed_continuity_candidate",
+  "notEstablished": ["authorization", "deployment", "external_robustness", "independence_in_fact", "institutional_effect"]
+}

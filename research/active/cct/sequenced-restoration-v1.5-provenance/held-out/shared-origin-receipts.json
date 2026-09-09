@@ -1,0 +1,9 @@
+{
+  "provenance": "internal_synthetic_adversarial",
+  "purpose": "Two distinct exports and hashes conceal one shared collection root.",
+  "actionActor": "operator",
+  "receipts": [
+    {"id": "h1", "observerActor": "auditor-a", "observerFailureDomain": "field-a", "sourceArtifactId": "export-a", "sourceHash": "sha256:111", "sourceCollectionRoot": "single-survey", "collectionLimit": "one enumerator visit"},
+    {"id": "h2", "observerActor": "auditor-b", "observerFailureDomain": "field-b", "sourceArtifactId": "export-b", "sourceHash": "sha256:222", "sourceCollectionRoot": "single-survey", "collectionLimit": "one enumerator visit"}
+  ]
+}

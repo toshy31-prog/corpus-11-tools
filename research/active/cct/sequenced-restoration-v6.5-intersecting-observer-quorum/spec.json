@@ -1,0 +1,11 @@
+{
+  "schema": "cct-intersecting-observer-quorum/v1",
+  "id": "CCT-EXEC-6.5-INTERSECTING-OBSERVER-QUORUM-CANDIDATE-001",
+  "version": "6.5-candidate",
+  "parentCandidate": "CCT-EXEC-6.4-CROSS-OBSERVER-CHECKPOINT-AGREEMENT-CANDIDATE-001",
+  "registrySize": 4,
+  "quorumSize": 3,
+  "maximumByzantineObservers": 1,
+  "successStatus": "intersecting_observer_quorum_candidate",
+  "notEstablished": ["safety_with_two_byzantine_observers", "partition_liveness", "complete_observer_visibility", "real_external_observers", "authorization", "deployment"]
+}

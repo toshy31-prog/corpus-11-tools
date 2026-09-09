@@ -1,0 +1,10 @@
+import assert from "node:assert/strict";
+import { assessIntersectingObserverQuorum } from "../../sequenced-restoration-v6.5-intersecting-observer-quorum/runtime.mjs";
+import { assessJointObserverRegistryTransition } from "../runtime.mjs";
+import { audit, axes, completeExercise, initialCheckpointMemory, transitionFixture, validAmendment, validValidation } from "../fixtures.mjs";
+const validation = validValidation(); const memory = initialCheckpointMemory(validation); const t = transitionFixture(memory, false);
+const args = [axes, audit, completeExercise(), validAmendment(), validation, memory];
+assert.equal(assessIntersectingObserverQuorum(...args, t.oldStatements, t.oldRegistry).status, "intersecting_observer_quorum_candidate");
+assert.equal(assessIntersectingObserverQuorum(...args, t.newStatements, t.newRegistry).status, "intersecting_observer_quorum_candidate");
+assert.equal(assessJointObserverRegistryTransition(...args, t.oldStatements, t.oldRegistry, t.newStatements, t.newRegistry).status, "not_established");
+console.log("held-out confrontation: individually valid old and new quorums cannot authorize rotation without two shared signers");

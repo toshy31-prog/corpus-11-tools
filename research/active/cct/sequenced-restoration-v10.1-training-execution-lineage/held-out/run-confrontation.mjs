@@ -1,0 +1,1 @@
+import assert from"node:assert/strict";import{assessTrainingExecutionLineage}from"../runtime.mjs";import{fullSetup}from"../fixtures.mjs";const result=assessTrainingExecutionLineage(fullSetup(true));assert.deepEqual(result.failures,["training_execution_diverged_from_manifest"]);console.log("held-out confrontation: runtime training with a different configuration is refused");

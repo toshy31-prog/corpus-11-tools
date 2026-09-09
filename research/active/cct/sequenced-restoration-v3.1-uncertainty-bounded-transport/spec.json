@@ -1,0 +1,14 @@
+{
+  "schema": "cct-uncertainty-bounded-transport/v1",
+  "id": "CCT-EXEC-3.1-UNCERTAINTY-BOUNDED-TRANSPORT-CANDIDATE-001",
+  "version": "3.1-candidate",
+  "parentCandidate": "CCT-EXEC-3.0-HELD-OUT-SIGNAL-TRANSPORT-CANDIDATE-001",
+  "rule": "Precommit a simultaneous uncertainty rule before observing held-out outcomes. Require exactly two target contexts per signal and accept transport only when the full adjusted Wilson interval remains inside the 3.0 transfer tolerance for every pair margin and class risk.",
+  "intervalMethod": "wilson_score",
+  "familyWiseCoverage": 0.95,
+  "elementaryProportionIntervals": 162,
+  "adjustedZCritical": 3.62,
+  "targetContextsPerSignal": 2,
+  "successStatus": "bounded_uncertainty_qualified_transport_candidate",
+  "notEstablished": ["real_world_sampling_frame", "independent_random_sampling", "construct_validity", "transport_beyond_declared_target_contexts", "causal_effect", "authorization", "deployment", "external_robustness"]
+}

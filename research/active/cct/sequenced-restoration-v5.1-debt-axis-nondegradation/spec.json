@@ -1,0 +1,13 @@
+{
+  "schema": "cct-debt-axis-nondegradation/v1",
+  "id": "CCT-EXEC-5.1-DEBT-AXIS-NONDEGRADATION-CANDIDATE-001",
+  "version": "5.1-candidate",
+  "parentCandidate": "CCT-EXEC-5.0-HELD-OUT-EXPOSURE-ADMISSION-CANDIDATE-001",
+  "minimumObservationsPerAxis": 20,
+  "maximumAcceptedBrierDegradation": 0.005,
+  "maximumDetectableAxisDifference": 0.03,
+  "criticalValue": 2.09,
+  "powerMultiplier": 2.8,
+  "successStatus": "debt_axis_nondegradation_admission_candidate",
+  "notEstablished": ["intersectional_nondegradation", "construct_validity", "causal_relevance", "authorization", "deployment", "external_robustness"]
+}

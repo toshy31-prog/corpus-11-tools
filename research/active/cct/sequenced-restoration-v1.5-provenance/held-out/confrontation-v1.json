@@ -1,0 +1,13 @@
+{
+  "id": "CCT-RECEIPT-PROVENANCE-HO-001",
+  "provenance": "internal_synthetic_adversarial",
+  "freeze_before_execution": true,
+  "world": "Two formally different repair exports originate from one field collection. A decision must either close the repair debt or preserve the evidence-integrity fence.",
+  "contenders": [
+    {"id": "cct-exec-1.5-provenance", "policy": "reject reused collection roots"},
+    {"id": "formal-receipt-acceptor", "policy": "close on formally complete receipts"}
+  ],
+  "axes": ["evidence_integrity", "repair_debt_closure"],
+  "no_scalar_winner": true,
+  "reversal_condition": "Revise the 1.5 provenance fence if the shared-origin bundle is accepted as independent evidence."
+}

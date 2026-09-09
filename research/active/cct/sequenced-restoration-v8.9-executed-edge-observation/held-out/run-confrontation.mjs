@@ -1,0 +1,1 @@
+import assert from"node:assert/strict";import{assessExecutedEdgeObservation}from"../runtime.mjs";import{fullSetup}from"../fixtures.mjs";const r=assessExecutedEdgeObservation(fullSetup(true));assert.deepEqual(r.failures,["required_edge_not_consumed_by_execution"]);console.log("held-out confrontation: sealed manifest compliance fails when runtime ignores the edge");

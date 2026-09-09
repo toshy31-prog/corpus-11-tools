@@ -1,0 +1,12 @@
+{
+  "schema": "cct-evidence-root-transport/v1",
+  "id": "CCT-EXEC-10.15-EVIDENCE-ROOT-TRANSPORT-CANDIDATE-001",
+  "version": "10.15-candidate",
+  "parentCandidate": "CCT-EXEC-10.14-PROSPECTIVE-EFFECT-ENVELOPE-ADMISSION-CANDIDATE-001",
+  "requiredManifestFields": ["sourceId", "rawDataRootHash", "samplingFrameHash", "generatorHash", "protocolHash", "outcomeHash", "artifactHash"],
+  "targetProtocolHash": "sha256:cct-sentinel-protocol-v10.15",
+  "targetOutcomeHash": "sha256:pairwise-hamming-distance-v1",
+  "minimumIndependentClusters": 2,
+  "successStatus": "evidence_root_transport_candidate",
+  "notEstablished": ["material_independence", "target_transport", "real_data_collection", "institutional_authorization", "deployment"]
+}

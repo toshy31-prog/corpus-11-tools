@@ -1,0 +1,11 @@
+{
+  "schema": "cct-bounded-log-consistency/v1",
+  "id": "CCT-EXEC-6.1-BOUNDED-LOG-CONSISTENCY-CANDIDATE-001",
+  "version": "6.1-candidate",
+  "parentCandidate": "CCT-EXEC-6.0-CROSS-WITNESS-LOG-AGREEMENT-CANDIDATE-001",
+  "fromTreeSize": 2,
+  "toTreeSize": 3,
+  "extensionRule": "sha256(node:previous-root||appended-leaf)",
+  "successStatus": "bounded_append_only_log_extension_candidate",
+  "notEstablished": ["general_merkle_consistency", "real_external_log", "trusted_wall_clock_time", "network_partition_resistance", "authorization", "deployment", "external_robustness"]
+}

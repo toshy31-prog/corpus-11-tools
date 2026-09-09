@@ -1,0 +1,13 @@
+{
+  "schema": "cct-cross-signal-perturbation/v1",
+  "id": "CCT-EXEC-3.6-CROSS-SIGNAL-PERTURBATION-CANDIDATE-001",
+  "version": "3.6-candidate",
+  "parentCandidate": "CCT-EXEC-3.5-LINEAGE-ATTESTATION-CANDIDATE-001",
+  "rule": "Precommit two independently controlled generator perturbations for each of the 45 signals. Require a normalized target response of at least 0.2 and reject any non-target response above 0.05 as evidence of an unrecorded cross-signal dependency.",
+  "portfolioSignalCount": 45,
+  "probesPerSignal": 2,
+  "minimumTargetEffect": 0.2,
+  "maximumNonTargetEffect": 0.05,
+  "successStatus": "bounded_cross_signal_perturbation_candidate",
+  "notEstablished": ["real_intervention_fidelity", "complete_common_cause_detection", "field_transport", "construct_validity", "causal_effect_beyond_probe", "authorization", "deployment", "external_robustness"]
+}

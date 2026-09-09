@@ -1,0 +1,10 @@
+{
+  "schema": "cct-upheld-challenge-quorum-recalculation/v1",
+  "id": "CCT-EXEC-10.22-UPHELD-CHALLENGE-QUORUM-RECALCULATION-CANDIDATE-001",
+  "version": "10.22-candidate",
+  "parentCandidate": "CCT-EXEC-10.21-INDEPENDENT-CHALLENGE-ADJUDICATION-CANDIDATE-001",
+  "controlDimensions": ["effectiveOwnerId", "keyOperatorId", "decisiveFunderId", "vetoControllerId"],
+  "minimumEffectiveCenters": 2,
+  "successStatus": "upheld_challenge_quorum_recalculation_candidate",
+  "notEstablished": ["adjudication_truth", "corrective_replacement_authority", "institutional_suspension", "deployment"]
+}

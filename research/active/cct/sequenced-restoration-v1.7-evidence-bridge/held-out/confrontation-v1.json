@@ -1,0 +1,10 @@
+{
+  "id": "CCT-EVIDENCE-BRIDGE-HO-001",
+  "provenance": "internal_synthetic_adversarial",
+  "freeze_before_execution": true,
+  "scene": "Contested repair evidence leaves rights and power debts open. A two-lane bridge protects each debt through distinct controllers, failure domains and recourse routes; a rival single controller supplies both lanes.",
+  "axes": ["evidence_integrity", "rights_continuity", "power_continuity", "centralization_risk"],
+  "contenders": ["cct-exec-1.7-evidence-bridge", "single-controller-continuity-acceptor"],
+  "no_scalar_winner": true,
+  "reversal_condition": "Revise 1.7 if it accepts a bridge that shares a controller, failure domain or recourse route across its lanes, or if it turns a bridge into debt closure."
+}

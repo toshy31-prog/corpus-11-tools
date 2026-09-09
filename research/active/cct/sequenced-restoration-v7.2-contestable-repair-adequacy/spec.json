@@ -1,0 +1,10 @@
+{
+  "schema": "cct-contestable-repair-adequacy/v1",
+  "id": "CCT-EXEC-7.2-CONTESTABLE-REPAIR-ADEQUACY-CANDIDATE-001",
+  "version": "7.2-candidate",
+  "parentCandidate": "CCT-EXEC-7.1-OBSERVED-REPAIR-COMPLETION-CANDIDATE-001",
+  "reviewerRegistrySize": 3,
+  "reviewerQuorumSize": 2,
+  "successStatus": "contestable_repair_adequacy_candidate",
+  "notEstablished": ["real_world_loss", "valuation_fairness", "recipient_authorization", "independence_in_practice", "deployment"]
+}

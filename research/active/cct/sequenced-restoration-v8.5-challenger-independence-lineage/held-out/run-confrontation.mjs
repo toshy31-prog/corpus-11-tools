@@ -1,0 +1,1 @@
+import assert from"node:assert/strict";import{assessChallengerIndependenceLineage}from"../runtime.mjs";import{fullSetup}from"../fixtures.mjs";const r=assessChallengerIndependenceLineage(fullSetup(true));assert.deepEqual(r.failures,["challengers_share_effective_control"]);console.log("held-out confrontation: nominally distinct challengers collapse under common control");

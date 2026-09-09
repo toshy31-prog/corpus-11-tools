@@ -1,0 +1,9 @@
+{
+  "schema": "cct-subthreshold-composition/v1",
+  "id": "CCT-EXEC-2.4-SUBTHRESHOLD-COMPOSITION-CANDIDATE-001",
+  "version": "2.4-candidate",
+  "parentCandidate": "CCT-EXEC-2.3-DEPENDENCY-DETECTABILITY-CANDIDATE-001",
+  "rule": "For each baseline dependency class, combine at least two individually subthreshold roots whose aggregate is material under two distinct aggregation maps, then require every open debt axis to remain protected at every tick.",
+  "successStatus": "bounded_subthreshold_tolerance_candidate",
+  "notEstablished": ["all_compositions", "all_aggregation_maps", "cross_class_interactions", "authorization", "deployment", "external_robustness"]
+}

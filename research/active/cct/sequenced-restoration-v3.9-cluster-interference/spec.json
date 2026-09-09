@@ -1,0 +1,12 @@
+{
+  "schema": "cct-cluster-interference/v1",
+  "id": "CCT-EXEC-3.9-CLUSTER-INTERFERENCE-CANDIDATE-001",
+  "version": "3.9-candidate",
+  "parentCandidate": "CCT-EXEC-3.8-RANDOMIZED-PERTURBATION-ASSIGNMENT-CANDIDATE-001",
+  "rule": "Randomize each perturbation probe over 40 precommitted equal-sized clusters, with 20 clusters per arm. Reconcile cluster membership with every measured effect and reject any cluster whose observed cross-arm exposure exceeds 5%.",
+  "clustersPerProbe": 40,
+  "clustersPerArm": 20,
+  "maximumCrossArmExposure": 0.05,
+  "successStatus": "bounded_cluster_interference_candidate",
+  "notEstablished": ["complete_interference_network", "exposure_measurement_validity", "allocation_concealment_in_field", "representative_sampling", "construct_validity", "authorization", "deployment", "external_robustness"]
+}

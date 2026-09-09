@@ -1,0 +1,10 @@
+{
+  "schema": "cct-contestable-control-corroboration/v1",
+  "id": "CCT-EXEC-10.20-CONTESTABLE-CONTROL-CORROBORATION-CANDIDATE-001",
+  "version": "10.20-candidate",
+  "parentCandidate": "CCT-EXEC-10.19-EFFECTIVE-AUTHORITY-CENTER-SEPARATION-CANDIDATE-001",
+  "controlDimensions": ["effectiveOwnerId", "keyOperatorId", "decisiveFunderId", "vetoControllerId"],
+  "minimumIndependentEvidenceRoots": 2,
+  "successStatus": "contestable_control_corroboration_candidate",
+  "notEstablished": ["document_authenticity", "source_independence_truth", "claim_truth", "authority_legitimacy", "real_world_independence", "deployment"]
+}

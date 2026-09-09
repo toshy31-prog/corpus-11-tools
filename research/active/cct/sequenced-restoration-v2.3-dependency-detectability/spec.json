@@ -1,0 +1,10 @@
+{
+  "schema": "cct-dependency-detectability/v1",
+  "id": "CCT-EXEC-2.3-DEPENDENCY-DETECTABILITY-CANDIDATE-001",
+  "version": "2.3-candidate",
+  "parentCandidate": "CCT-EXEC-2.2-COMMON-CAUSE-CANDIDATE-001",
+  "rule": "Absence of an undeclared dependency cannot support a bridge unless every baseline dependency class has a materiality threshold and two materially independent channels detect two blind challenges at that threshold within the bounded window.",
+  "baselineDependencyClasses": ["control", "identity", "data", "network", "power", "finance", "personnel", "supplier", "geography"],
+  "successStatus": "bounded_inventory_detection_candidate",
+  "notEstablished": ["absolute_exhaustiveness", "sub_threshold_dependencies", "unmodeled_classes", "authorization", "deployment", "external_robustness"]
+}

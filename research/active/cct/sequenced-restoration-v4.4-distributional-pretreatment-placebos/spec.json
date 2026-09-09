@@ -1,0 +1,18 @@
+{
+  "schema": "cct-distributional-pretreatment-placebos/v1",
+  "id": "CCT-EXEC-4.4-DISTRIBUTIONAL-PRETREATMENT-PLACEBOS-CANDIDATE-001",
+  "version": "4.4-candidate",
+  "parentCandidate": "CCT-EXEC-4.3-DISTRIBUTIONAL-PRETREATMENT-BALANCE-CANDIDATE-001",
+  "rule": "Commit cluster-level placebo counts before assignment, derive exposure groups from committed covariates, aggregate by randomized arm inside each group, and reject any simultaneous difference interval extending beyond plus or minus 0.05.",
+  "requiredPlacebos": ["lagged_event_rate", "preperiod_access_loss", "unrelated_failure_rate"],
+  "groups": [
+    { "id": "higher_dependency_load", "covariate": "dependency_load", "minimum": 0.1375 },
+    { "id": "higher_access_loss", "covariate": "access_loss", "minimum": 0.18333333333333332 },
+    { "id": "compound_exposure", "all": [{ "covariate": "dependency_load", "minimum": 0.1375 }, { "covariate": "access_loss", "minimum": 0.18333333333333332 }] }
+  ],
+  "comparisonCount": 810,
+  "adjustedZCritical": 4.4,
+  "maximumAbsolutePlaceboDifference": 0.05,
+  "successStatus": "bounded_distributional_pretreatment_placebo_candidate",
+  "notEstablished": ["complete_exposure_taxonomy", "unmeasured_subgroup_confounders", "placebo_construct_validity", "field_blinding", "representative_sampling", "authorization", "deployment", "external_robustness"]
+}

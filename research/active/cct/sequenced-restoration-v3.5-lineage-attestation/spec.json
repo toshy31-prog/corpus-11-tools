@@ -1,0 +1,12 @@
+{
+  "schema": "cct-lineage-attestation/v1",
+  "id": "CCT-EXEC-3.5-LINEAGE-ATTESTATION-CANDIDATE-001",
+  "version": "3.5-candidate",
+  "parentCandidate": "CCT-EXEC-3.4-PORTFOLIO-LINEAGE-CANDIDATE-001",
+  "rule": "Before the portfolio lineage commitment, bind every cluster's sampling-unit, event, and generator roots through at least two blind attestations with distinct evidence roots, controllers, and failure domains. Evidence roots must be unique across the portfolio and no attestation controller or failure domain may exceed half of all attestations.",
+  "attestationsPerCluster": 2,
+  "maximumAttestorShare": 0.5,
+  "maximumAttestationFailureDomainShare": 0.5,
+  "successStatus": "bounded_attested_portfolio_lineage_candidate",
+  "notEstablished": ["truth_beyond_attested_artifacts", "absence_of_hidden_common_causes", "representative_sampling", "construct_validity", "causal_effect", "authorization", "deployment", "external_robustness"]
+}

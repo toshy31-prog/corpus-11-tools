@@ -1,0 +1,18 @@
+{
+  "schema": "cct-receipt-provenance/v1",
+  "id": "CCT-EXEC-1.5-PROVENANCE-CANDIDATE-001",
+  "version": "1.5-candidate",
+  "parentCandidate": "CCT-EXEC-1.4-CANDIDATE-001",
+  "purpose": "Reject formally complete receipt bundles that reuse a source artifact or collapse observer independence.",
+  "requirements": {
+    "minimumIndependentReceipts": 2,
+    "distinctObserverActors": true,
+    "distinctObserverFailureDomains": true,
+    "distinctSourceArtifacts": true,
+    "distinctSourceHashes": true,
+    "distinctSourceCollectionRoots": true,
+    "observerCannotBeActionActor": true,
+    "sourceMustNameCollectionLimit": true
+  },
+  "notEstablished": ["receipt_truth", "institutional_effect", "deployment", "external_robustness"]
+}

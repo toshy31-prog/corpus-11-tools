@@ -1,0 +1,11 @@
+{
+  "schema": "cct-content-addressed-lineage/v1",
+  "id": "CCT-EXEC-5.7-CONTENT-ADDRESSED-LINEAGE-CANDIDATE-001",
+  "version": "5.7-candidate",
+  "parentCandidate": "CCT-EXEC-5.6-TARGET-EVIDENCE-INDEPENDENCE-CANDIDATE-001",
+  "algorithm": "sha256",
+  "artifactKinds": ["rawData", "samplingFrame", "generator", "adjudication", "failureDomain"],
+  "requireDisjointUnitFingerprints": true,
+  "successStatus": "content_addressed_target_lineage_candidate",
+  "notEstablished": ["semantic_independence", "fabrication_resistance_without_external_custody", "authorization", "deployment", "external_robustness"]
+}

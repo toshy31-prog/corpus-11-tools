@@ -1,0 +1,13 @@
+{
+  "schema": "cct-randomized-perturbation-assignment/v1",
+  "id": "CCT-EXEC-3.8-RANDOMIZED-PERTURBATION-ASSIGNMENT-CANDIDATE-001",
+  "version": "3.8-candidate",
+  "parentCandidate": "CCT-EXEC-3.7-OBSERVED-PERTURBATION-EFFECTS-CANDIDATE-001",
+  "rule": "Precommit a blocked randomized assignment for every perturbation comparison, verify the revealed seed, reconcile planned and actual allocations, and reject attrition above 5% or differential attrition above one percentage point.",
+  "assignmentMethod": "blocked_randomized",
+  "minimumBlockCount": 20,
+  "maximumArmAttrition": 0.05,
+  "maximumDifferentialAttrition": 0.01,
+  "successStatus": "bounded_randomized_perturbation_assignment_candidate",
+  "notEstablished": ["allocation_concealment_in_field", "absence_of_interference", "representative_sampling", "construct_validity", "causal_effect_beyond_probe", "authorization", "deployment", "external_robustness"]
+}

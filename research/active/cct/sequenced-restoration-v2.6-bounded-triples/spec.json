@@ -1,0 +1,11 @@
+{
+  "schema": "cct-bounded-triples/v1",
+  "id": "CCT-EXEC-2.6-BOUNDED-TRIPLES-CANDIDATE-001",
+  "version": "2.6-candidate",
+  "parentCandidate": "CCT-EXEC-2.5-CROSS-CLASS-PAIRS-CANDIDATE-001",
+  "rule": "Use a deterministic affine cover of twelve triples over the nine baseline dependency classes. Every class pair occurs in exactly one triple, every class occurs four times, and all six application orders of each triple must preserve every open debt axis at every tick.",
+  "tripleCount": 12,
+  "sequenceCount": 72,
+  "successStatus": "bounded_three_way_interaction_candidate",
+  "notEstablished": ["exhaustive_three_way_interactions", "four_way_or_higher_interactions", "all_intensities", "authorization", "deployment", "external_robustness"]
+}

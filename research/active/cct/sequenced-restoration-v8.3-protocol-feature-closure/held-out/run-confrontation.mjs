@@ -1,0 +1,1 @@
+import assert from"node:assert/strict";import{assessProtocolFeatureClosure}from"../runtime.mjs";import{fullSetup}from"../fixtures.mjs";const r=assessProtocolFeatureClosure(fullSetup(true));assert.deepEqual(r.failures,["protocol_feature_catalog_incomplete"]);console.log("held-out confrontation: a mutually omitted operator-prompt feature blocks placebo attribution");

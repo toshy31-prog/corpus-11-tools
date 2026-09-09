@@ -1,0 +1,8 @@
+{
+  "schema": "cct-evidence-bridge/v1",
+  "id": "CCT-EXEC-1.7-EVIDENCE-BRIDGE-CANDIDATE-001",
+  "version": "1.7-candidate",
+  "parentCandidate": "CCT-EXEC-1.6-EVIDENCE-HOLD-CANDIDATE-001",
+  "rule": "During contested evidence, a continuity bridge is admissible only when independently controlled lanes jointly protect every open debt axis, expose distinct recourse routes and failure domains, and make no closure claim.",
+  "notEstablished": ["receipt_truth", "authorization", "deployment", "institutional_effect", "external_robustness"]
+}

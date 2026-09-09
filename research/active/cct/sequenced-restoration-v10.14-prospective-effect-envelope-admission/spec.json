@@ -1,0 +1,11 @@
+{
+  "schema": "cct-prospective-effect-envelope-admission/v1",
+  "id": "CCT-EXEC-10.14-PROSPECTIVE-EFFECT-ENVELOPE-ADMISSION-CANDIDATE-001",
+  "version": "10.14-candidate",
+  "parentCandidate": "CCT-EXEC-10.13-MINIMAX-ENVELOPE-COVERAGE-CANDIDATE-001",
+  "requiredEvidenceFields": ["sourceId", "estimateType", "targetMatch", "uncertaintyBounds", "independenceLineage", "frozenAt"],
+  "admissibleEstimateTypes": ["held_out_observation", "independent_replication"],
+  "admissibleTargetMatch": "same_population_protocol_and_outcome",
+  "successStatus": "prospective_effect_envelope_admission_candidate",
+  "notEstablished": ["effect_size_plausibility", "alternative_exhaustiveness", "real_data_collection", "institutional_authorization", "deployment"]
+}

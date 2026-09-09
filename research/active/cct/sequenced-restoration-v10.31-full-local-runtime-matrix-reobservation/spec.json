@@ -1,0 +1,10 @@
+{
+  "schema": "cct-full-local-runtime-matrix-reobservation/v1",
+  "id": "CCT-EXEC-10.31-FULL-LOCAL-RUNTIME-MATRIX-REOBSERVATION-CANDIDATE-001",
+  "version": "10.31-candidate",
+  "parentCandidate": "CCT-EXEC-10.30-LOCAL-RUNTIME-CAPTURE-REOBSERVATION-CANDIDATE-001",
+  "matchedFields": ["sentinelId", "observedOffsetMs", "entryCount", "aliasResolutionDepth", "activationDelayMs", "requiredPrivilege", "blocked"],
+  "expectedCells": 12,
+  "successStatus": "full_local_runtime_matrix_reobservation_candidate",
+  "notEstablished": ["process_isolation", "deployed_runtime_observation", "cross_environment_transport", "persistent_suspension", "deployment"]
+}

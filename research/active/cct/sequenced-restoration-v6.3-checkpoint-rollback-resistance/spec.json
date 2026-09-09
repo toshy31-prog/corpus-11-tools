@@ -1,0 +1,9 @@
+{
+  "schema": "cct-checkpoint-rollback-resistance/v1",
+  "id": "CCT-EXEC-6.3-CHECKPOINT-ROLLBACK-RESISTANCE-CANDIDATE-001",
+  "version": "6.3-candidate",
+  "parentCandidate": "CCT-EXEC-6.2-GENERAL-LOG-CONSISTENCY-CANDIDATE-001",
+  "stateConstruction": "locally-pinned-monotonic-checkpoint",
+  "successStatus": "checkpoint_rollback_resistance_candidate",
+  "notEstablished": ["rollback_proof_after_local_state_loss", "trusted_wall_clock_time", "network_partition_resistance", "real_external_log", "authorization", "deployment", "external_robustness"]
+}

@@ -1,0 +1,1 @@
+import assert from"node:assert/strict";import{deriveMinimumPowerPlan}from"../runtime.mjs";const p=deriveMinimumPowerPlan();assert.ok(87<p.bitsPerBatch);console.log("held-out confrontation: an optimistic 87-bit plan is rejected by exact power derivation");

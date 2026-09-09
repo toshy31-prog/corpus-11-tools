@@ -1,0 +1,11 @@
+{
+  "schema": "cct-portfolio-lineage/v1",
+  "id": "CCT-EXEC-3.4-PORTFOLIO-LINEAGE-CANDIDATE-001",
+  "version": "3.4-candidate",
+  "parentCandidate": "CCT-EXEC-3.3-CLUSTER-LINEAGE-CANDIDATE-001",
+  "rule": "Precommit and audit lineage across the complete adaptive-signal portfolio. A sampling-unit, event, or generator root may support only one pair margin or class-risk signal; any cross-signal collision blocks the plan.",
+  "portfolioSignalCount": 45,
+  "globallyUniqueRoots": ["samplingUnitRoot", "eventRoot", "generatorRoot"],
+  "successStatus": "bounded_portfolio_lineage_transport_candidate",
+  "notEstablished": ["real_lineage_truth", "absence_of_unrecorded_common_causes", "representative_sampling", "construct_validity", "causal_effect", "authorization", "deployment", "external_robustness"]
+}

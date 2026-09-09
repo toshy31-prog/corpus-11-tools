@@ -1,0 +1,8 @@
+{
+  "schema": "cct-bridge-single-failure/v1",
+  "id": "CCT-EXEC-2.0-SINGLE-FAILURE-CANDIDATE-001",
+  "version": "2.0-candidate",
+  "parentCandidate": "CCT-EXEC-1.9-EXERCISE-LINEAGE-CANDIDATE-001",
+  "rule": "A bridge is single-lane-failure tolerant only if removal of any one lane leaves every open debt axis protected by the remaining lanes.",
+  "notEstablished": ["observed_failover", "authorization", "deployment", "institutional_effect", "external_robustness"]
+}

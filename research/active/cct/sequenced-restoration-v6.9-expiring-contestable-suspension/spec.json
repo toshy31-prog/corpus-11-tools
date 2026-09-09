@@ -1,0 +1,13 @@
+{
+  "schema": "cct-expiring-contestable-suspension/v1",
+  "id": "CCT-EXEC-6.9-EXPIRING-CONTESTABLE-SUSPENSION-CANDIDATE-001",
+  "version": "6.9-candidate",
+  "parentCandidate": "CCT-EXEC-6.8-EQUIVOCATION-BOUNDED-REVOCATION-CANDIDATE-001",
+  "selectorRegistrySize": 3,
+  "selectorQuorumSize": 2,
+  "maximumSuspensionTicks": 12,
+  "maximumConcurrentSuspensions": 1,
+  "allowedGrounds": ["credible-key-compromise", "credible-coercion", "credible-non-cryptographic-misconduct"],
+  "successStatus": "expiring_contestable_suspension_candidate",
+  "notEstablished": ["truth_of_allegation", "fair_final_adjudication", "usable_real_world_appeal", "authorization", "deployment"]
+}

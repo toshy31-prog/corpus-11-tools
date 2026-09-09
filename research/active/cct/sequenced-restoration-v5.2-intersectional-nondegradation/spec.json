@@ -1,0 +1,14 @@
+{
+  "schema": "cct-intersectional-nondegradation/v1",
+  "id": "CCT-EXEC-5.2-INTERSECTIONAL-NONDEGRADATION-CANDIDATE-001",
+  "version": "5.2-candidate",
+  "parentCandidate": "CCT-EXEC-5.1-DEBT-AXIS-NONDEGRADATION-CANDIDATE-001",
+  "intersectionOrder": 2,
+  "minimumObservationsPerIntersection": 10,
+  "maximumAcceptedBrierDegradation": 0.005,
+  "maximumDetectableIntersectionDifference": 0.04,
+  "criticalValue": 2.26,
+  "powerMultiplier": 2.8,
+  "successStatus": "intersectional_nondegradation_admission_candidate",
+  "notEstablished": ["higher_order_intersection_nondegradation", "construct_validity", "causal_relevance", "authorization", "deployment", "external_robustness"]
+}

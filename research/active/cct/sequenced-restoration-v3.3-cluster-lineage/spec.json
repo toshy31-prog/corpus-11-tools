@@ -1,0 +1,14 @@
+{
+  "schema": "cct-cluster-lineage/v1",
+  "id": "CCT-EXEC-3.3-CLUSTER-LINEAGE-CANDIDATE-001",
+  "version": "3.3-candidate",
+  "parentCandidate": "CCT-EXEC-3.2-CLUSTER-AWARE-TRANSPORT-CANDIDATE-001",
+  "rule": "Precommit cluster lineage before outcomes. Require unique sampling-unit, event, and generator roots across both target contexts of a signal, at least two controllers and failure domains per context, and prevent either from controlling more than half of a context's clusters.",
+  "uniqueRoots": ["samplingUnitRoot", "eventRoot", "generatorRoot"],
+  "minimumControllersPerContext": 2,
+  "minimumFailureDomainsPerContext": 2,
+  "maximumControllerShare": 0.5,
+  "maximumFailureDomainShare": 0.5,
+  "successStatus": "bounded_cluster_lineage_transport_candidate",
+  "notEstablished": ["real_lineage_truth", "absence_of_hidden_common_causes", "representative_cluster_sampling", "construct_validity", "causal_effect", "authorization", "deployment", "external_robustness"]
+}

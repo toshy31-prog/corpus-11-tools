@@ -1,0 +1,1 @@
+import assert from"node:assert/strict";import{assessRequiredEdgeCarryforward}from"../runtime.mjs";import{fullSetup}from"../fixtures.mjs";const r=assessRequiredEdgeCarryforward(fullSetup(true));assert.deepEqual(r.failures,["required_omitted_edge_not_carried_forward"]);console.log("held-out confrontation: next campaign cannot silently drop an admitted edge");

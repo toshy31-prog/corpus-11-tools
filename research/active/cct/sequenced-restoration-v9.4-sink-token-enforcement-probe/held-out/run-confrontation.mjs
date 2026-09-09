@@ -1,0 +1,1 @@
+import assert from"node:assert/strict";import{assessSinkTokenEnforcementProbe}from"../runtime.mjs";import{fullSetup}from"../fixtures.mjs";const result=assessSinkTokenEnforcementProbe(fullSetup(true));assert.deepEqual(result.failures,["sink_token_control_not_enforced"]);console.log("held-out confrontation: a registered sink that accepts an unminted token is refused");

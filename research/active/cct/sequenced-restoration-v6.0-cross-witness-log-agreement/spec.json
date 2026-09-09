@@ -1,0 +1,14 @@
+{
+  "schema": "cct-cross-witness-log-agreement/v1",
+  "id": "CCT-EXEC-6.0-CROSS-WITNESS-LOG-AGREEMENT-CANDIDATE-001",
+  "version": "6.0-candidate",
+  "parentCandidate": "CCT-EXEC-5.9-TRANSPARENCY-LOG-INCLUSION-CANDIDATE-001",
+  "signatureAlgorithm": "ed25519",
+  "minimumIndependentWitnesses": 2,
+  "pinnedWitnessKeyDigests": [
+    "68c90ca6a9d197c9275c05d3524365478970f7d984ef2628df65e3393ab20228",
+    "8a6cf8f61463483e9f4d62a8149f26d6ada836cf92927a880cc01587f062fbdb"
+  ],
+  "successStatus": "cross_witness_log_agreement_candidate",
+  "notEstablished": ["real_external_witnesses", "trusted_wall_clock_time", "network_gossip", "consistency_across_tree_sizes", "global_split_view_resistance", "authorization", "deployment", "external_robustness"]
+}

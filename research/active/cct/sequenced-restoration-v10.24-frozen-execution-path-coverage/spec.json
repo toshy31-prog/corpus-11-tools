@@ -1,0 +1,8 @@
+{
+  "schema": "cct-frozen-execution-path-coverage/v1",
+  "id": "CCT-EXEC-10.24-FROZEN-EXECUTION-PATH-COVERAGE-CANDIDATE-001",
+  "version": "10.24-candidate",
+  "parentCandidate": "CCT-EXEC-10.23-SUSPENSION-COMMAND-EFFECT-CHAIN-CANDIDATE-001",
+  "successStatus": "frozen_execution_path_coverage_candidate",
+  "notEstablished": ["inventory_exhaustiveness", "undisclosed_path_blocking", "persistent_suspension", "institutional_enforcement", "deployment"]
+}

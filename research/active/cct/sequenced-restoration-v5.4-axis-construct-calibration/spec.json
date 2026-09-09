@@ -1,0 +1,12 @@
+{
+  "schema": "cct-axis-construct-calibration/v1",
+  "id": "CCT-EXEC-5.4-AXIS-CONSTRUCT-CALIBRATION-CANDIDATE-001",
+  "version": "5.4-candidate",
+  "parentCandidate": "CCT-EXEC-5.3-AXIS-MEMBERSHIP-OBSERVABILITY-CANDIDATE-001",
+  "minimumReferenceCasesPerClass": 15,
+  "minimumWilsonLowerBound": 0.75,
+  "z": 1.96,
+  "minimumIndependentAdjudicators": 2,
+  "successStatus": "axis_construct_supported_for_scope_candidate",
+  "notEstablished": ["causal_relevance", "classification_transport", "authorization", "deployment", "external_robustness"]
+}

@@ -1,0 +1,9 @@
+{
+  "schema": "cct-joint-observer-registry-transition/v1",
+  "id": "CCT-EXEC-6.6-JOINT-OBSERVER-REGISTRY-TRANSITION-CANDIDATE-001",
+  "version": "6.6-candidate",
+  "parentCandidate": "CCT-EXEC-6.5-INTERSECTING-OBSERVER-QUORUM-CANDIDATE-001",
+  "minimumSharedSigners": 2,
+  "successStatus": "joint_observer_registry_transition_candidate",
+  "notEstablished": ["safe_transition_with_two_byzantine_shared_signers", "registry_member_independence_in_reality", "partition_liveness", "authorization", "deployment"]
+}

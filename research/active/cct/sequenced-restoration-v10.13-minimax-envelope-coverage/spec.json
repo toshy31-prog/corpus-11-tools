@@ -1,0 +1,17 @@
+{
+  "schema": "cct-minimax-envelope-coverage/v1",
+  "id": "CCT-EXEC-10.13-MINIMAX-ENVELOPE-COVERAGE-CANDIDATE-001",
+  "version": "10.13-candidate",
+  "parentCandidate": "CCT-EXEC-10.12-RIVAL-EFFECT-POWER-ENVELOPE-CANDIDATE-001",
+  "selectionRule": "cover_all_precommitted_alternatives",
+  "requiredBitsPerBatch": 574,
+  "successStatus": "minimax_envelope_coverage_candidate",
+  "notEstablished": [
+    "effect_size_plausibility",
+    "alternative_exhaustiveness",
+    "batch_independence",
+    "real_data_collection",
+    "institutional_authorization",
+    "deployment"
+  ]
+}

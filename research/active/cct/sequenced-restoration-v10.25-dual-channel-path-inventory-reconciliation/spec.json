@@ -1,0 +1,9 @@
+{
+  "schema": "cct-dual-channel-path-inventory-reconciliation/v1",
+  "id": "CCT-EXEC-10.25-DUAL-CHANNEL-PATH-INVENTORY-RECONCILIATION-CANDIDATE-001",
+  "version": "10.25-candidate",
+  "parentCandidate": "CCT-EXEC-10.24-FROZEN-EXECUTION-PATH-COVERAGE-CANDIDATE-001",
+  "requiredChannels": ["configuration_graph", "runtime_discovery"],
+  "successStatus": "dual_channel_path_inventory_reconciliation_candidate",
+  "notEstablished": ["absolute_inventory_exhaustiveness", "discovery_channel_independence", "persistent_suspension", "deployment"]
+}

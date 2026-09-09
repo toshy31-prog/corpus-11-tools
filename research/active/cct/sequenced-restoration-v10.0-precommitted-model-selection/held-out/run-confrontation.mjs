@@ -1,0 +1,1 @@
+import assert from"node:assert/strict";import{assessPrecommittedModelSelection}from"../runtime.mjs";import{fullSetup}from"../fixtures.mjs";const result=assessPrecommittedModelSelection(fullSetup(true));assert.deepEqual(result.failures,["evaluated_model_not_precommitted"]);console.log("held-out confrontation: a tree configuration chosen after held-out inspection is refused");

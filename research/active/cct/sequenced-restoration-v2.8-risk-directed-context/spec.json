@@ -1,0 +1,12 @@
+{
+  "schema": "cct-risk-directed-context/v1",
+  "id": "CCT-EXEC-2.8-RISK-DIRECTED-CONTEXT-CANDIDATE-001",
+  "version": "2.8-candidate",
+  "parentCandidate": "CCT-EXEC-2.7-DUAL-CONTEXT-TRIPLES-CANDIDATE-001",
+  "rule": "After the two fixed triple covers, rank all class pairs by their independently supplied minimum protection margin, select the six weakest pairs deterministically, and add one previously untested third context chosen by a frozen class-risk ranking. Commit the derived plan digest before exercising every order.",
+  "adaptivePairBudget": 6,
+  "addedTripleCount": 6,
+  "addedSequenceCount": 36,
+  "successStatus": "bounded_risk_directed_context_candidate",
+  "notEstablished": ["independence_of_declared_risk_signals", "exhaustive_three_way_interactions", "four_way_or_higher_interactions", "all_intensities", "authorization", "deployment", "external_robustness"]
+}

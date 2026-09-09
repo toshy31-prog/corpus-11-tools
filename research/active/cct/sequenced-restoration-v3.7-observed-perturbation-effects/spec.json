@@ -1,0 +1,14 @@
+{
+  "schema": "cct-observed-perturbation-effects/v1",
+  "id": "CCT-EXEC-3.7-OBSERVED-PERTURBATION-EFFECTS-CANDIDATE-001",
+  "version": "3.7-candidate",
+  "parentCandidate": "CCT-EXEC-3.6-CROSS-SIGNAL-PERTURBATION-CANDIDATE-001",
+  "rule": "Derive every perturbation effect from precommitted baseline and perturbed event counts with independent provenance. Across all 4,050 comparisons, require the adjusted interval's lower bound to reach 0.2 for the target and its maximum absolute bound to stay at or below 0.05 for every non-target.",
+  "comparisonCount": 4050,
+  "minimumArmSampleSize": 10000,
+  "adjustedZCritical": 4.4,
+  "minimumTargetEffect": 0.2,
+  "maximumNonTargetEffect": 0.05,
+  "successStatus": "bounded_observed_perturbation_effects_candidate",
+  "notEstablished": ["real_sampling_independence", "intervention_fidelity", "complete_common_cause_detection", "field_transport", "construct_validity", "authorization", "deployment", "external_robustness"]
+}

@@ -1,0 +1,9 @@
+{
+  "schema": "cct-equivocation-bounded-revocation/v1",
+  "id": "CCT-EXEC-6.8-EQUIVOCATION-BOUNDED-REVOCATION-CANDIDATE-001",
+  "version": "6.8-candidate",
+  "parentCandidate": "CCT-EXEC-6.7-CONTESTABLE-OBSERVER-ADMISSION-CANDIDATE-001",
+  "revocableFault": "same-observer-same-log-size-tick-distinct-root",
+  "successStatus": "equivocation_bounded_revocation_candidate",
+  "notEstablished": ["revocation_for_non_cryptographic_misconduct", "key_compromise_attribution", "usable_appeal", "authorization", "deployment"]
+}

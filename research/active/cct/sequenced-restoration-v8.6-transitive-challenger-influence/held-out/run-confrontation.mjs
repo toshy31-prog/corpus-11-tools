@@ -1,0 +1,1 @@
+import assert from"node:assert/strict";import{assessTransitiveChallengerInfluence}from"../runtime.mjs";import{fullSetup}from"../fixtures.mjs";const r=assessTransitiveChallengerInfluence(fullSetup(true));assert.deepEqual(r.failures,["challengers_share_transitive_influence"]);console.log("held-out confrontation: distinct direct influences converge on one upstream center");

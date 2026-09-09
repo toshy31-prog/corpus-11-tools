@@ -1,0 +1,1 @@
+import assert from"node:assert/strict";import{assessTemporalProbeAdaptation}from"../runtime.mjs";import{fullSetup}from"../fixtures.mjs";const result=assessTemporalProbeAdaptation(fullSetup(true));assert.deepEqual(result.failures,["late_probe_evasion_detected"]);console.log("held-out confrontation: late-window evasion after repeated probes is detected");

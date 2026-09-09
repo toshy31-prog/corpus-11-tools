@@ -1,0 +1,1 @@
+import assert from"node:assert/strict";import{assessProspectiveEdgeChallenge}from"../runtime.mjs";import{fullSetup}from"../fixtures.mjs";const r=assessProspectiveEdgeChallenge(fullSetup(true));assert.deepEqual(r.failures,["omitted_edge_challenge_not_prospective_or_invalid"]);console.log("held-out confrontation: result-aware retroactive lineage repair is refused");

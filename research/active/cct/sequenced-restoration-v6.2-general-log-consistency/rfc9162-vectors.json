@@ -1,0 +1,36 @@
+{
+  "source": "RFC 9162 section 2.1.5 symbolic d0..d6 example; SHA-256 values calculated independently with Python hashlib",
+  "sourceUrl": "https://www.rfc-editor.org/rfc/rfc9162.html#section-2.1.5",
+  "vectors": [
+    {
+      "first": 3,
+      "second": 7,
+      "firstRoot": "c64c5b9326951a2db82d5462565696286659d1c7a4a26a92703568f63462f7ba",
+      "secondRoot": "73a590fb266b81557040b146b9d479e2a1b5849b125167642f5b64866f1d5c7d",
+      "path": [
+        "f366df4718ef75064317794ff5300e0963e96dd93fe24203118055fa5a00be13",
+        "5e0c4e1130dfa84d27437ba073eb817e1896643d42ea100a0940f8752d496783",
+        "46c78708413a23175f51faf1c22604bccb44482d553b45943b189130ea8221c8",
+        "3cf05ff16d26c024828e93b3a14c5656e5abcbc5e6f0bce2cf8a169720599674"
+      ]
+    },
+    {
+      "first": 4,
+      "second": 7,
+      "firstRoot": "8df3870b33fae650e81938994f98eb4551b143b86c95d3dae4e6444e00715016",
+      "secondRoot": "73a590fb266b81557040b146b9d479e2a1b5849b125167642f5b64866f1d5c7d",
+      "path": ["3cf05ff16d26c024828e93b3a14c5656e5abcbc5e6f0bce2cf8a169720599674"]
+    },
+    {
+      "first": 6,
+      "second": 7,
+      "firstRoot": "b65368cd1f024732c21e9db86bcde27d7de95dc2c40d728dd979ffcf943556e3",
+      "secondRoot": "73a590fb266b81557040b146b9d479e2a1b5849b125167642f5b64866f1d5c7d",
+      "path": [
+        "a4f2a847cce0dce0519b1d6b83e4ca15166193dbb0c8f864e736665edbde1994",
+        "d750ca922fabc5422eec469d4370779b61d5488186cb871eeea299d8113d20bc",
+        "8df3870b33fae650e81938994f98eb4551b143b86c95d3dae4e6444e00715016"
+      ]
+    }
+  ]
+}

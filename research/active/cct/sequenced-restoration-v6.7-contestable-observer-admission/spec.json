@@ -1,0 +1,11 @@
+{
+  "schema": "cct-contestable-observer-admission/v1",
+  "id": "CCT-EXEC-6.7-CONTESTABLE-OBSERVER-ADMISSION-CANDIDATE-001",
+  "version": "6.7-candidate",
+  "parentCandidate": "CCT-EXEC-6.6-JOINT-OBSERVER-REGISTRY-TRANSITION-CANDIDATE-001",
+  "selectorRegistrySize": 3,
+  "selectorQuorumSize": 2,
+  "maximumMandateTicks": 100,
+  "successStatus": "contestable_observer_admission_candidate",
+  "notEstablished": ["legitimacy_of_selector_registry", "real_conflict_detection", "usable_external_appeal", "authorization", "deployment"]
+}

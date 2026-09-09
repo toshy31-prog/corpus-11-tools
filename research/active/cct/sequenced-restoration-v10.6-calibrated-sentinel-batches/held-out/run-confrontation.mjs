@@ -1,0 +1,1 @@
+import assert from"node:assert/strict";import{assessCalibratedSentinelBatches}from"../runtime.mjs";import{fullSetup}from"../fixtures.mjs";const result=assessCalibratedSentinelBatches(fullSetup(true));assert.deepEqual(result.failures,["sentinel_batch_set_invalid"]);console.log("held-out confrontation: digest-reused batches cannot inflate apparent replication");

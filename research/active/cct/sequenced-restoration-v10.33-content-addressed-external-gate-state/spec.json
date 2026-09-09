@@ -1,0 +1,9 @@
+{
+  "schema": "cct-content-addressed-external-gate-state/v1",
+  "id": "CCT-EXEC-10.33-CONTENT-ADDRESSED-EXTERNAL-GATE-STATE-CANDIDATE-001",
+  "version": "10.33-candidate",
+  "parentCandidate": "CCT-EXEC-10.32-GATE-STATE-NEGATIVE-CONTROL-CANDIDATE-001",
+  "configSchema": "cct-local-gate-state/v1",
+  "successStatus": "content_addressed_external_gate_state_candidate",
+  "notEstablished": ["production_configuration_origin", "production_gate_coupling", "process_isolation", "deployed_runtime_observation", "deployment"]
+}

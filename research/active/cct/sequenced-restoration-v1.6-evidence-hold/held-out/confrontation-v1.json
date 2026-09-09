@@ -1,0 +1,10 @@
+{
+  "id": "CCT-EVIDENCE-HOLD-HO-001",
+  "provenance": "internal_synthetic_adversarial",
+  "freeze_before_execution": true,
+  "scene": "A contested repair proof leaves rights and power debts open. Each available continuation protects one debt while exposing the other.",
+  "axes": ["evidence_integrity", "rights_continuity", "power_continuity"],
+  "contenders": ["cct-exec-1.6-evidence-hold", "partial-closure-acceptor"],
+  "no_scalar_winner": true,
+  "reversal_condition": "Revise 1.6 if it selects an action that leaves an open debt axis unprotected during contested evidence."
+}

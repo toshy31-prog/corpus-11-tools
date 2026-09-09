@@ -1,0 +1,8 @@
+{
+  "schema": "cct-bridge-presence/v1",
+  "id": "CCT-EXEC-1.8-BRIDGE-PRESENCE-CANDIDATE-001",
+  "version": "1.8-candidate",
+  "parentCandidate": "CCT-EXEC-1.7-EVIDENCE-BRIDGE-CANDIDATE-001",
+  "rule": "A declared bridge may be selected for contested-evidence continuity only after a bounded, witnessed exercise shows every lane and recourse route reachable without collapsing the declared separation of controllers or failure domains.",
+  "notEstablished": ["independence_in_fact", "authorization", "deployment", "institutional_effect", "external_robustness"]
+}

@@ -1,0 +1,1 @@
+import assert from"node:assert/strict";import{assessEffectTokenConservation}from"../runtime.mjs";import{fullSetup}from"../fixtures.mjs";const result=assessEffectTokenConservation(fullSetup(true));assert.deepEqual(result.failures,["effect_without_admission_token"]);console.log("held-out confrontation: a lateral execution reaches an effect sink without a minted admission token");

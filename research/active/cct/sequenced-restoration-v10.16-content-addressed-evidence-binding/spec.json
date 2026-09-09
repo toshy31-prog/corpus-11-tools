@@ -1,0 +1,10 @@
+{
+  "schema": "cct-content-addressed-evidence-binding/v1",
+  "id": "CCT-EXEC-10.16-CONTENT-ADDRESSED-EVIDENCE-BINDING-CANDIDATE-001",
+  "version": "10.16-candidate",
+  "parentCandidate": "CCT-EXEC-10.15-EVIDENCE-ROOT-TRANSPORT-CANDIDATE-001",
+  "contentFields": ["rawData", "samplingFrame", "generator", "protocol", "outcome"],
+  "manifestHashFields": ["rawDataRootHash", "samplingFrameHash", "generatorHash", "protocolHash", "outcomeHash"],
+  "successStatus": "content_addressed_evidence_binding_candidate",
+  "notEstablished": ["artifact_authenticity", "collector_identity", "material_independence", "target_transport", "real_data_collection", "deployment"]
+}

@@ -1,0 +1,1 @@
+import assert from"node:assert/strict";import{assessProspectiveFeatureAmendment}from"../runtime.mjs";import{fullSetup}from"../fixtures.mjs";const r=assessProspectiveFeatureAmendment(fullSetup(true));assert.deepEqual(r.failures,["feature_amendment_not_prospective_or_invalid"]);console.log("held-out confrontation: a result-aware retroactive feature amendment is refused");
