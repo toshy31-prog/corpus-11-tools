@@ -1,0 +1,15 @@
+{
+  "schema_version": "causal-pre-execution-seal-v0.4",
+  "campaign_id": "CCCL-OE-004",
+  "sealed_at_utc": "2026-09-09T00:50:34.724394566Z",
+  "scope": "internal_synthetic_only",
+  "independence_status": "independence_unknown",
+  "manifest_sha256": "21e482e40f61ae60b8448def4cdf2d7413dded6b29385e373157beda2bb92489",
+  "sealed_input_sha256": {
+    "protocols/observational_equivalence_v0.4.md": "5dbdb5e294d5cefa395f87635599cb91d806ffb571f835bb66957bc94e124db7",
+    "fixtures/observational_equivalence_models_v0.4.json": "1dc5439242ffc00dbb7d6b9a932ae514d66cb3499cf640fbdeb82bb88f188bc6",
+    "fixtures/held_out_intervention_v0.4.json": "f4867c5dd1de9c9436d067f86ccb7046130e7692df7ee124df594fe22d4203e4",
+    "tests/test_observational_equivalence_v0_4.py": "0daeb902ba5a908a92e287c17453ae29c5d71c4d411ae03ad0e2273986be6f7d",
+    "pre_execution_manifest_v0.4.json": "21e482e40f61ae60b8448def4cdf2d7413dded6b29385e373157beda2bb92489"
+  }
+}

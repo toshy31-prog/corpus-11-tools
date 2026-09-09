@@ -1,0 +1,124 @@
+{
+  "schema_version": "causal-observational-equivalence-v0.4",
+  "campaign_id": "CCCL-OE-004",
+  "scope": "internal_synthetic_only",
+  "independence_status": "independence_unknown",
+  "variables": {
+    "treatment": "X",
+    "outcome": "Y",
+    "domains": {"X": [0, 1], "Y": [0, 1]}
+  },
+  "queries": {
+    "observational": "P(X,Y)",
+    "interventional": ["E[Y|do(X=0)]", "E[Y|do(X=1)]", "ATE"]
+  },
+  "models": [
+    {
+      "model_id": "OR-noise-positive",
+      "graph_edges": [["U_X", "X"], ["U_Y", "Y"], ["X", "Y"]],
+      "exogenous_states": [
+        {"state_id": "a0", "probability": "1/4", "values": {"U_X": 0, "U_Y": 0}},
+        {"state_id": "a1", "probability": "1/4", "values": {"U_X": 0, "U_Y": 1}},
+        {"state_id": "a2", "probability": "1/4", "values": {"U_X": 1, "U_Y": 0}},
+        {"state_id": "a3", "probability": "1/4", "values": {"U_X": 1, "U_Y": 1}}
+      ],
+      "equations": [
+        {
+          "target": "X",
+          "expression": "X := U_X",
+          "parents": ["U_X"],
+          "table": [
+            {"when": {"U_X": 0}, "value": 0},
+            {"when": {"U_X": 1}, "value": 1}
+          ]
+        },
+        {
+          "target": "Y",
+          "expression": "Y := X OR U_Y",
+          "parents": ["X", "U_Y"],
+          "table": [
+            {"when": {"X": 0, "U_Y": 0}, "value": 0},
+            {"when": {"X": 0, "U_Y": 1}, "value": 1},
+            {"when": {"X": 1, "U_Y": 0}, "value": 1},
+            {"when": {"X": 1, "U_Y": 1}, "value": 1}
+          ]
+        }
+      ],
+      "declared_observational_distribution": {"0,0": "1/4", "0,1": "1/4", "1,0": "0", "1,1": "1/2"},
+      "frozen_rival_prediction": {"do_x_0_mean": "1/2", "do_x_1_mean": "1", "ate": "1/2"}
+    },
+    {
+      "model_id": "latent-selection-negative",
+      "graph_edges": [["U", "X"], ["U", "Y"], ["X", "Y"]],
+      "exogenous_states": [
+        {"state_id": "b0", "probability": "1/4", "values": {"U": 0}},
+        {"state_id": "b1", "probability": "1/4", "values": {"U": 1}},
+        {"state_id": "b2", "probability": "1/4", "values": {"U": 2}},
+        {"state_id": "b3", "probability": "1/4", "values": {"U": 3}}
+      ],
+      "equations": [
+        {
+          "target": "X",
+          "expression": "X := 1[U >= 2]",
+          "parents": ["U"],
+          "table": [
+            {"when": {"U": 0}, "value": 0},
+            {"when": {"U": 1}, "value": 0},
+            {"when": {"U": 2}, "value": 1},
+            {"when": {"U": 3}, "value": 1}
+          ]
+        },
+        {
+          "target": "Y",
+          "expression": "Y := f_Y(X,U)",
+          "parents": ["X", "U"],
+          "table": [
+            {"when": {"X": 0, "U": 0}, "value": 0},
+            {"when": {"X": 1, "U": 0}, "value": 0},
+            {"when": {"X": 0, "U": 1}, "value": 1},
+            {"when": {"X": 1, "U": 1}, "value": 0},
+            {"when": {"X": 0, "U": 2}, "value": 1},
+            {"when": {"X": 1, "U": 2}, "value": 1},
+            {"when": {"X": 0, "U": 3}, "value": 1},
+            {"when": {"X": 1, "U": 3}, "value": 1}
+          ]
+        }
+      ],
+      "declared_observational_distribution": {"0,0": "1/4", "0,1": "1/4", "1,0": "0", "1,1": "1/2"},
+      "frozen_rival_prediction": {"do_x_0_mean": "3/4", "do_x_1_mean": "1/2", "ate": "-1/4"}
+    }
+  ],
+  "partial_identification": {
+    "assumptions": ["binary_X", "binary_Y", "consistency", "no_ignorability_assumed"],
+    "declared_bounds": {
+      "e_y_do_1": ["1/2", "1"],
+      "e_y_do_0": ["1/4", "3/4"],
+      "ate": ["-1/4", "3/4"]
+    }
+  },
+  "frozen_claims": [
+    "the_models_are_observationally_identical_for_the_declared_joint_distribution",
+    "the_models_have_divergent_intervention_effects",
+    "observational_data_alone_partially_identifies_but_does_not_select_either_model",
+    "one_held_out_intervention_result_must_reject_at_least_one_rival_prediction"
+  ],
+  "failure_criteria": [
+    {"criterion_id": "C01", "phase": "contract", "condition": "closed_set_or_digest_mismatch"},
+    {"criterion_id": "C02", "phase": "contract", "condition": "graph_or_equation_mismatch"},
+    {"criterion_id": "C03", "phase": "contract", "condition": "observational_distributions_differ"},
+    {"criterion_id": "C04", "phase": "contract", "condition": "rival_intervention_predictions_do_not_diverge"},
+    {"criterion_id": "C05", "phase": "contract", "condition": "declared_partial_bounds_mismatch_or_exclude_a_rival"},
+    {"criterion_id": "C06", "phase": "contract", "condition": "independence_status_is_not_independence_unknown"},
+    {"criterion_id": "E01", "phase": "execution", "condition": "held_out_schema_or_campaign_mismatch"},
+    {"criterion_id": "E02", "phase": "execution", "condition": "no_rival_prediction_is_rejected"},
+    {"criterion_id": "E03", "phase": "execution", "condition": "no_rival_prediction_survives"},
+    {"criterion_id": "E04", "phase": "execution", "condition": "execution_receipt_already_exists"}
+  ],
+  "held_out_contract": {
+    "path": "fixtures/held_out_intervention_v0.4.json",
+    "arms": [0, 1],
+    "outcome_domain": [0, 1],
+    "units_per_arm": 4,
+    "contract_mode_access": "sha256_bytes_only_no_parse"
+  }
+}

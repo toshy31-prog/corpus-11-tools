@@ -1,0 +1,88 @@
+{
+  "schema": "causal-observational-equivalence/v1",
+  "campaign_id": "CCCL-OE-001-v0.3",
+  "synthetic_scope": "model_internal",
+  "external_validity": false,
+  "variables": {
+    "treatment": "X",
+    "outcome": "Y",
+    "exogenous": "U",
+    "domains": {"X": [0, 1], "Y": [0, 1], "U": [0, 1]}
+  },
+  "observational_distribution": [
+    {"X": 0, "Y": 0, "probability": "1/2"},
+    {"X": 0, "Y": 1, "probability": "0"},
+    {"X": 1, "Y": 0, "probability": "0"},
+    {"X": 1, "Y": 1, "probability": "1/2"}
+  ],
+  "models": [
+    {
+      "id": "direct_effect_one",
+      "conclusion_id": "C-direct-ATE-1",
+      "graph_edges": [["U", "X"], ["X", "Y"]],
+      "structural_equations": {"X_observational": "U", "Y": "X"},
+      "units": [
+        {"U": 0, "X_observed": 0, "Y0": 0, "Y1": 1, "count": 1},
+        {"U": 1, "X_observed": 1, "Y0": 0, "Y1": 1, "count": 1}
+      ],
+      "frozen_prediction": {
+        "E_Y_do_X_0": "0",
+        "E_Y_do_X_1": "1",
+        "ATE": "1"
+      },
+      "failure_condition": "Reject C-direct-ATE-1 if either frozen interventional mean differs from 0 or 1 respectively."
+    },
+    {
+      "id": "latent_common_cause_zero",
+      "conclusion_id": "C-common-ATE-0",
+      "graph_edges": [["U", "X"], ["U", "Y"]],
+      "structural_equations": {"X_observational": "U", "Y": "U"},
+      "units": [
+        {"U": 0, "X_observed": 0, "Y0": 0, "Y1": 0, "count": 1},
+        {"U": 1, "X_observed": 1, "Y0": 1, "Y1": 1, "count": 1}
+      ],
+      "frozen_prediction": {
+        "E_Y_do_X_0": "1/2",
+        "E_Y_do_X_1": "1/2",
+        "ATE": "0"
+      },
+      "failure_condition": "Reject C-common-ATE-0 if either frozen interventional mean differs from 1/2."
+    }
+  ],
+  "partial_identification": {
+    "assumptions": [
+      "binary_treatment",
+      "binary_outcome",
+      "consistency",
+      "observational_distribution_only",
+      "no_ignorability_assumption",
+      "no_graph_direction_assumption"
+    ],
+    "bounds": {
+      "E_Y1": ["1/2", "1"],
+      "E_Y0": ["0", "1/2"],
+      "ATE": ["0", "1"]
+    },
+    "verdict": "partially_identified",
+    "failure_condition": "Withdraw the bound if it is not derived from the frozen observational distribution and listed assumptions, or if it excludes either frozen model."
+  },
+  "held_out_intervention": {
+    "source": "internal_synthetic_frozen_witness",
+    "arms": [
+      {"do_X": 0, "outcomes": [{"Y": 0, "count": 1}, {"Y": 1, "count": 1}]},
+      {"do_X": 1, "outcomes": [{"Y": 0, "count": 1}, {"Y": 1, "count": 1}]}
+    ],
+    "expected_observed_effect": "0",
+    "expected_compatible_conclusions": ["C-common-ATE-0"],
+    "expected_rejected_conclusions": ["C-direct-ATE-1"]
+  },
+  "campaign_failure_conditions": [
+    "observational_predictions_differ",
+    "interventional_predictions_do_not_differ",
+    "partial_bounds_mismatch",
+    "frozen_model_outside_partial_bounds",
+    "no_conclusion_rejected",
+    "no_compatible_survivor",
+    "external_or_product_claim"
+  ]
+}

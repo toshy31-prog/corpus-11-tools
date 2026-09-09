@@ -1,0 +1,10 @@
+{
+  "schema_version": "causal-held-out-intervention-v0.4",
+  "campaign_id": "CCCL-OE-004",
+  "scope": "internal_synthetic_only",
+  "independence_status": "independence_unknown",
+  "arms": {
+    "do_x_0": [0, 1, 0, 1],
+    "do_x_1": [1, 1, 1, 1]
+  }
+}

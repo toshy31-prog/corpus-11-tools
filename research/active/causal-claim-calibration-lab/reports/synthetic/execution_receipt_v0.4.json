@@ -1,0 +1,23 @@
+{
+  "campaign_id": "CCCL-OE-004",
+  "executed_at_utc": "2026-09-09T00:51:11.242458Z",
+  "execution_count": 1,
+  "external_validity": "not_claimed",
+  "independence_status": "independence_unknown",
+  "observed_intervention_result": {
+    "ate": "1/2",
+    "do_x_0_mean": "1/2",
+    "do_x_1_mean": "1"
+  },
+  "rejected_models": [
+    "latent-selection-negative"
+  ],
+  "schema_version": "causal-execution-receipt-v0.4",
+  "scope": "internal_synthetic_only",
+  "sealed_held_out_sha256": "f4867c5dd1de9c9436d067f86ccb7046130e7692df7ee124df594fe22d4203e4",
+  "sealed_manifest_sha256": "21e482e40f61ae60b8448def4cdf2d7413dded6b29385e373157beda2bb92489",
+  "strongest_supported_conclusion": "this_internal_synthetic_intervention_rejects_one_of_two_frozen_rival_models",
+  "surviving_models": [
+    "OR-noise-positive"
+  ]
+}

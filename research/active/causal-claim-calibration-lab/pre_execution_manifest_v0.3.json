@@ -1,0 +1,63 @@
+{
+  "schema": "causal-claim-calibration-pre-execution-manifest/v1",
+  "campaign_id": "CCCL-OE-001-v0.3",
+  "status": "sealed_before_execution",
+  "execution_limit": 1,
+  "synthetic_scope": "model_internal",
+  "independence_status": "independence_unknown",
+  "runtime": {
+    "implementation": "CPython",
+    "version": "3.12.3",
+    "dependencies": []
+  },
+  "command": [
+    "/usr/bin/python3",
+    "research/active/causal-claim-calibration-lab/tests/test_observational_equivalence_v0_3.py"
+  ],
+  "sealed_files": {
+    "research/active/causal-claim-calibration-lab/protocols/observational_equivalence_v0.3.md": "4778f0bc2b8d18059ce4335b59c6fcd7db6d810b93de98c22d588776e8e12dac",
+    "research/active/causal-claim-calibration-lab/fixtures/observational_equivalence_v0.3.json": "d821d7e3cdcecb40aa01abbde97d10be1a1784b664b58bce7904d73e3fb5119e",
+    "research/active/causal-claim-calibration-lab/tests/test_observational_equivalence_v0_3.py": "fe2e69e02f8589410ec8f82af8b5eb75e6f519a24ef013ddb24e44a2209ba404"
+  },
+  "frozen_claims": {
+    "models": ["direct_effect_one", "latent_common_cause_zero"],
+    "conclusions": ["C-direct-ATE-1", "C-common-ATE-0"],
+    "observational_equivalence": true,
+    "interventional_effects": {"C-direct-ATE-1": "1", "C-common-ATE-0": "0"},
+    "partial_ATE_bounds": ["0", "1"],
+    "expected_rejected_conclusions": ["C-direct-ATE-1"],
+    "expected_compatible_conclusions": ["C-common-ATE-0"]
+  },
+  "failure_criteria": [
+    "sealed_file_hash_mismatch",
+    "observational_predictions_differ",
+    "interventional_predictions_do_not_differ",
+    "partial_bounds_mismatch",
+    "frozen_model_outside_partial_bounds",
+    "no_conclusion_rejected",
+    "no_compatible_survivor",
+    "external_or_product_claim"
+  ],
+  "closed_change_set": [
+    "research/active/causal-claim-calibration-lab/protocols/observational_equivalence_v0.3.md",
+    "research/active/causal-claim-calibration-lab/fixtures/observational_equivalence_v0.3.json",
+    "research/active/causal-claim-calibration-lab/tests/test_observational_equivalence_v0_3.py",
+    "research/active/causal-claim-calibration-lab/pre_execution_manifest_v0.3.json",
+    "research/active/causal-claim-calibration-lab/pre_execution_seal_v0.3.json",
+    "research/active/causal-claim-calibration-lab/reports/synthetic/2026-09-09-observational-equivalence-v0.3.md",
+    "research/active/causal-claim-calibration-lab/state/current_state.md"
+  ],
+  "permitted_post_execution_files": [
+    "research/active/causal-claim-calibration-lab/reports/synthetic/2026-09-09-observational-equivalence-v0.3.md",
+    "research/active/causal-claim-calibration-lab/state/current_state.md"
+  ],
+  "prohibitions": {
+    "network": true,
+    "modify_sealed_files_after_seal": true,
+    "modify_other_projects": true,
+    "external_validity_claim": true,
+    "product_integration": true,
+    "new_infrastructure_dependency_or_capability": true
+  },
+  "withdrawal_condition": "Withdraw the run at the first hash mismatch, unmatched model information, changed prediction, changed failure criterion, absent model loss, or claim beyond the frozen synthetic pair."
+}

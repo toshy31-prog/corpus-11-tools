@@ -1,0 +1,21 @@
+{
+  "schema": "causal-claim-calibration-pre-execution-seal/v1",
+  "campaign_id": "CCCL-OE-001-v0.3",
+  "manifest_path": "research/active/causal-claim-calibration-lab/pre_execution_manifest_v0.3.json",
+  "manifest_sha256": "ba06af577e0e95f5abfea1b67ce3c8507693b0176750243505aa73eb1a8947dd",
+  "sealed_before_execution": true,
+  "sealed_at_utc": "2026-09-09T00:12:43Z",
+  "sealed_by": "codex_local_research_operator",
+  "execution_limit": 1,
+  "synthetic_scope": "model_internal",
+  "independence_status": "independence_unknown",
+  "review_required_before_commit": "distinct_ai",
+  "prohibitions": [
+    "modify_sealed_files_after_seal",
+    "modify_other_projects",
+    "claim_external_validity",
+    "claim_external_independence",
+    "integrate_into_product",
+    "add_infrastructure_dependency_or_capability"
+  ]
+}
