@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "protocol_id": "partial-checkpoint-recovery-v0.3",
+  "scope": "pipeline_verified",
+  "evidence_regime": "internal_synthetic_only",
+  "external_validity": "not_claimed",
+  "independence_status": "independence_unknown",
+  "cutpoint": 2,
+  "completed_steps_before_mutation": [
+    "frame",
+    "compare"
+  ],
+  "mutation": {
+    "operation": "remove_artifact",
+    "artifact_index": 1,
+    "artifact_step": "compare",
+    "allowed_changed_top_level_keys": [
+      "artifacts"
+    ]
+  },
+  "rivals": {
+    "cursor_authoritative_resume": {
+      "claim": "The cursor is sufficient to resume the process; a matching decision can coexist with a divergent material package.",
+      "prediction": "restore_accepts_and_process_reaches_terminal_cursor",
+      "loses_if": "restore_rejects_before_resume"
+    },
+    "integrity_gated_resume": {
+      "claim": "Recovery must reject a checkpoint whose artifact prefix is inconsistent with its cursor.",
+      "prediction": "restore_rejects_before_resume",
+      "loses_if": "restore_accepts_and_process_finishes_with_material_divergence"
+    }
+  },
+  "admissible_classifications": {
+    "rejected_before_resume": {
+      "loser": "cursor_authoritative_resume"
+    },
+    "resumed_with_material_divergence": {
+      "loser": "integrity_gated_resume"
+    }
+  },
+  "fallback_classification": "candidate_set_incomplete",
+  "complete_recovery_requires": [
+    "process_resumed",
+    "restored_state_integrity",
+    "final_result_equivalence"
+  ],
+  "decision_match_alone_is_complete_recovery": false
+}
