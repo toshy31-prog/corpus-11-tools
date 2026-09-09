@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "protocol_id": "output-equivalence-remainder-v0.3",
+  "scope": "pipeline_verified",
+  "evidence_regime": "internal_synthetic_only",
+  "external_validity": "not_claimed",
+  "pre_registration_demonstrated": false,
+  "independence_status": "independence_unknown",
+  "source_channel": "voice",
+  "assisted_variant": {
+    "evidence_loss": false,
+    "load": 4
+  },
+  "varied_field": "load_threshold",
+  "threshold_cases": [
+    {
+      "threshold": 3,
+      "expected_success": false,
+      "expected_failure_reasons": [
+        "load_threshold_exceeded"
+      ],
+      "expected_margin": -1
+    },
+    {
+      "threshold": 4,
+      "expected_success": true,
+      "expected_failure_reasons": [],
+      "expected_margin": 0
+    },
+    {
+      "threshold": 5,
+      "expected_success": true,
+      "expected_failure_reasons": [],
+      "expected_margin": 1
+    }
+  ],
+  "equal_terminal_output_thresholds": [
+    4,
+    5
+  ],
+  "common_perturbation": {
+    "field": "load_threshold",
+    "delta": -1,
+    "transitions": [
+      {
+        "from": 4,
+        "to": 3,
+        "expected_success": false,
+        "expected_failure_reasons": [
+          "load_threshold_exceeded"
+        ]
+      },
+      {
+        "from": 5,
+        "to": 4,
+        "expected_success": true,
+        "expected_failure_reasons": []
+      }
+    ]
+  },
+  "rivals": {
+    "final_output_only_equivalence": {
+      "prediction": "equal_initial_terminal_outputs_imply_equivalence",
+      "loses_only_if": "same_negative_one_perturbation_separates_two_initial_successes"
+    },
+    "material_equivalence": {
+      "prediction": "different_synthetic_margins_and_separated_perturbed_verdicts_imply_non_equivalence",
+      "loses_if": "same_negative_one_perturbation_preserves_the_same_verdict"
+    }
+  },
+  "admissible_classification": {
+    "name": "common_perturbation_separates_equal_outputs",
+    "loser": "final_output_only_equivalence"
+  },
+  "fallback_classification": "candidate_set_incomplete",
+  "temporal_order_claimed": false
+}
