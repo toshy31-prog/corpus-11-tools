@@ -31,11 +31,12 @@ L'évaluation B pré-enregistrée des requêtes produit a rendu et vérifié 54
 restitutions à partir de 18 paquets fictifs scellés, sans routeur ni modèle.
 Son statut est `pipeline_verified` dans cette portée ; voir
 [`reports/reobservation/2026-09-05-product-query-evaluation-b.md`](../reports/reobservation/2026-09-05-product-query-evaluation-b.md).
-Dans l'arbre distribué, l'évaluation A du Corpus Open Model reste
-`incomplete_arm_a_blocked_arm_b_verified` ; voir le
-[README du modèle ouvert](../../corpus-open-model/README.md). Ce statut établit
-seulement la conservation déterministe de B et n'établit ni qualité de routage,
-ni gain neural, ni intégration produit.
+L'évaluation A du Corpus Open Model est désormais `pipeline_verified` dans sa
+portée fermée : trois champs déclaratifs exacts sur 18 requêtes synthétiques
+gelées ; voir le
+[rapport A](../../corpus-open-model/reports/2026-09-05-product-query-evaluation-a-pipeline-verified.md).
+Ce statut n'établit ni qualité générale de routage, ni gain neural, ni
+intégration produit.
 
 Le skill candidat `native_surface/corpus-native-conversation/` orchestre dans
 Codex la question brute, le routage, l'analyse, le scellement et la restitution.
