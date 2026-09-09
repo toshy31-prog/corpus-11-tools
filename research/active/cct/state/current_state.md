@@ -1,6 +1,22 @@
 # État courant — CCT
 
-Dernière mise à jour : 2026-09-05 — validations locales CCT-POL 1.1 et continuité mobile
+Dernière mise à jour : 2026-09-10 — promotion bornée de CCT-EXEC 10.35
+
+> Addendum 2026-09-10 — CCT-EXEC 10.35 devient la référence autoritative de
+> la lignée de recherche exécutable. CCT-EXEC 1.4 reste une référence
+> historique gelée, sans déplacement ni modification de ses artefacts. Les 120
+> candidates 1.5 à 10.34 forment une seule lignée dépendante, pas 120 preuves
+> indépendantes. La décision repose sur la consolidation au commit
+> `87d9dfbde3a35da14661bfa286d6bbc55bc52e63`, l'archivage autonome au commit
+> `9d6a498f8ff93e560aef2d94a28d9330d0a0c49f`, la validation isolée depuis Git
+> et la réobservation de ce dernier commit sur `origin/main`.
+>
+> Cette promotion reste interne à la recherche, locale et synthétique. Elle
+> n'établit aucune installation produit, séparation externe, indépendance
+> organisationnelle, validité externe, autorisation ou mise en œuvre réelle.
+> `independence_unknown` demeure inchangé. Le détail gouvernant la décision,
+> ses empreintes et la lecture de l'ancien `pending_final_seal` est conservé
+> dans [`../EXECUTABLE_LINEAGE_STATUS.md`](../EXECUTABLE_LINEAGE_STATUS.md).
 
 > Addendum 2026-09-04 — CCT-POL 1.1 est une révision politique candidate
 > distincte des artefacts gelés. Elle impose un registre du contre-champ, une

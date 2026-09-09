@@ -42,7 +42,7 @@ La Confédération des communs terrestres est une recherche institutionnelle act
 - [`sequenced-restoration-v5.1-debt-axis-nondegradation/`](sequenced-restoration-v5.1-debt-axis-nondegradation/) à [`sequenced-restoration-v5.4-axis-construct-calibration/`](sequenced-restoration-v5.4-axis-construct-calibration/) : non-dégradation sur les axes et intersections, appartenance observable et calibration locale des construits ;
 - [`sequenced-restoration-v5.5-axis-calibration-transport/`](sequenced-restoration-v5.5-axis-calibration-transport/) à [`sequenced-restoration-v10.22-upheld-challenge-quorum-recalculation/`](sequenced-restoration-v10.22-upheld-challenge-quorum-recalculation/) : transport borné, indépendance des preuves, journal append-only, refus du rejeu, quorums intersectants, rotation conjointe, admission distincte, révocation limitée, suspension expirante, adjudication séparée, réparation réobservée, adéquation contestable, valorisation préengagée, contestation des dépendances omises, lignées d'influence, sondes d'effet, contrôle placebo, audit d'équivalence, catalogue fermé, amendement prospectif, fermeture transitive, report obligatoire, observation des arêtes consommées, couverture des branches par double inventaire, rapprochement externe entrée–terminaison, jetons d'admission à usage unique, registre et sondes des puits, affectation aveugle, contrôle temporel, non-liaison entre campagnes, balayage multicanal, liaison multivariée, sélection préengagée, lignée d'entraînement, registre borné des travaux de recherche, révélation différée des étiquettes, attestation du gel, sentinelles fraîches post-gel, calibration multi-lots, lignées d’aléa conjointes, écran borné de corrélation, clôture de portée, plan de puissance rival, couverture minimax, admission prospective, racines transportées, liaison par contenu, attestations signées, registre révocable, centres effectifs, corroboration contestable, adjudication indépendante et recalcul du quorum ;
 - [`sequenced-restoration-v10.23-suspension-command-effect-chain/`](sequenced-restoration-v10.23-suspension-command-effect-chain/) à [`sequenced-restoration-v10.35-external-observer-separation-protocol/`](sequenced-restoration-v10.35-external-observer-separation-protocol/) : réobservation du retrait, garde et ancrage séparés, confrontation des contrôles effectifs, preuves réseau multirondes, mandats de propriété révocables, histoire monotone des acteurs et rotations d'autorités cosignées sans réactivation ;
-- [`EXECUTABLE_LINEAGE_STATUS.md`](EXECUTABLE_LINEAGE_STATUS.md) : état canonique borné de la lignée, distinguant gel, candidates locales et preuves externes manquantes ;
+- [`EXECUTABLE_LINEAGE_STATUS.md`](EXECUTABLE_LINEAGE_STATUS.md) : décision canonique de promotion bornée de CCT-EXEC 10.35, avec lignée, preuves et limites ;
 - [`external-simple-rival-pilot-v0.1/`](external-simple-rival-pilot-v0.1/) : porte comparative préenregistrée CCT–rival simple, en attente de deux paquets externes indépendants ;
 - [`held-out-campaign/`](held-out-campaign/) : gel v0.13, dossier d’auteur adverse, admission et composition de la prochaine campagne ;
 - [`field-calibration/`](field-calibration/) : campagne fictive séparée, sans assimilation des simulations à un effet institutionnel réel ;
@@ -51,10 +51,17 @@ La Confédération des communs terrestres est une recherche institutionnelle act
 
 ## État courant
 
-CCT-POL 1.1 est la révision politique candidate courante. CCT-EXEC 1.4 demeure
-le gel vérifié ; les couches 1.5 à 10.35 sont des candidates écrites et testées
-localement. Elles ne sont ni promues dans le gel, ni autorisées, ni déployées,
-ni réobservées indépendamment.
+CCT-POL 1.1 est la révision politique candidate courante. Pour la lignée de
+recherche exécutable, CCT-EXEC 10.35 est désormais la référence autoritative
+bornée. CCT-EXEC 1.4 reste une référence historique gelée, sans déplacement ni
+suppression de ses artefacts. Les 120 candidates intermédiaires de 1.5 à 10.34
+forment une seule lignée dépendante et ne constituent pas 120 preuves
+indépendantes.
+
+Cette promotion porte uniquement sur la cohérence locale et synthétique de la
+lignée de recherche. Elle n'établit ni installation produit, ni séparation
+externe, ni indépendance organisationnelle, ni validité externe. Son statut
+d'indépendance reste `independence_unknown`.
 
 La vérification locale courante couvre 136 fichiers `test.mjs` et 121
 confrontations tenues à l'écart. Ce décompte décrit les artefacts exécutés ; il
