@@ -26,6 +26,9 @@ const engine = stripImports(await readFile(new URL("./engine.js", import.meta.ur
   .replace(/^export\s+/gm, "");
 
 const game = stripImports(await readFile(new URL("./game.js", import.meta.url), "utf8"));
+const evolutionEngine = stripImports(await readFile(new URL("./evolution-engine.js", import.meta.url), "utf8"))
+  .replace(/^export\s+/gm, "");
+const evolutionGame = stripImports(await readFile(new URL("./evolution-game.js", import.meta.url), "utf8"));
 const validator = stripImports(await readFile(new URL("./campaign-validator.js", import.meta.url), "utf8"))
   .replace(/^export\s+/gm, "");
 const studio = stripImports(await readFile(new URL("./studio.js", import.meta.url), "utf8"));
@@ -40,5 +43,11 @@ await writeFile(
 await writeFile(
   new URL("./studio-browser.js", import.meta.url),
   `/* Generated builder bundle. */\n(() => {\n"use strict";\n${campaignDeclaration}${validator}\n${studio}\n})();\n`,
+  "utf8",
+);
+
+await writeFile(
+  new URL("./evolution-browser.js", import.meta.url),
+  `/* Generated from evolution-engine.js and evolution-game.js. */\n(() => {\n"use strict";\n${evolutionEngine}\n${evolutionGame}\n})();\n`,
   "utf8",
 );

@@ -11,6 +11,13 @@ Le prototype n'a aucune dépendance externe. Le moyen le plus simple est d'ouvri
 directement `index.html` dans un navigateur récent. La version navigateur est
 regroupée dans `browser.js`, donc Firefox accepte aussi l'ouverture en `file://`.
 
+`evolution.html` ouvre une seconde expérience : un monde spatial inspiré du
+croisement entre Evoland, Minecraft et une simulation RPG. Le joueur choisit
+le premier centre du monde — balise, foyer ou atelier — et chaque construction
+change des règles effectives : routes, énergie, rendement, repousse ou passages.
+La campagne systémique reste disponible dans `index.html` comme laboratoire de
+causalité.
+
 Le lien **Ouvrir le builder** mène à `studio.html`. Le studio permet de modifier
 et de créer des positions, seuils, actions et dimensions de bilan. Pour chaque action, il expose les
 textes, conditions, effets, relais et délais, tout en laissant disponible la

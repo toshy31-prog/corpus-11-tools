@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#171812" />
+    <meta name="description" content="CORPUS — prototype d'un monde dont les règles changent selon les usages du joueur." />
+    <title>CORPUS — Ce que tu rends possible</title>
+    <link rel="stylesheet" href="evolution.css" />
+  </head>
+  <body class="world-unmade">
+    <div class="evolution-shell">
+      <header class="evolution-header">
+        <div><p class="eyebrow">CORPUS · MONDE ÉVOLUTIF</p><h1>Ce que tu rends possible</h1></div>
+        <div class="phase-display"><span id="phase-index">◇</span><div><small>MONDE ACTUEL</small><strong id="phase-name"></strong></div></div>
+      </header>
+
+      <main class="world-layout">
+        <section class="world-panel" aria-label="Monde explorable">
+          <div class="world-topline">
+            <p id="phase-description"></p>
+            <span id="world-time" class="late-interface"></span>
+          </div>
+          <div id="world" class="world" role="grid" aria-label="Carte jouable"></div>
+          <div class="controls" aria-label="Contrôles de déplacement">
+            <div class="dpad">
+              <button data-move="0,-1" class="vertical-control" aria-label="Monter">↑</button>
+              <button data-move="-1,0" aria-label="Aller à gauche">←</button>
+              <button data-move="0,1" class="vertical-control" aria-label="Descendre">↓</button>
+              <button data-move="1,0" aria-label="Aller à droite">→</button>
+            </div>
+            <button id="interact-button" class="verb-button">E · Interagir</button>
+            <button id="return-marker" class="verb-button secondary-verb" hidden>Revenir à la balise</button>
+          </div>
+        </section>
+
+        <aside class="game-sidebar">
+          <section class="objective-card">
+            <p class="eyebrow">MAINTENANT</p>
+            <h2 id="objective"></h2>
+          </section>
+
+          <section class="message-card" aria-live="polite">
+            <p class="eyebrow">CE QUI VIENT D'ARRIVER</p>
+            <h2 id="message-title"></h2>
+            <p id="message-body"></p>
+          </section>
+
+          <section class="inventory-card evolving-interface">
+            <div><p class="eyebrow">CE QUE TU PORTES</p><h2>Matières</h2></div>
+            <div id="inventory" class="inventory"></div>
+            <p id="commons-note" class="commons-note"></p>
+          </section>
+
+          <section class="building-card evolving-interface">
+            <div><p class="eyebrow">CE QUI PEUT ÊTRE CONSTRUIT</p><h2>Faire apparaître</h2></div>
+            <div id="build-list" class="build-list"></div>
+          </section>
+
+          <section id="people-card" class="people-card">
+            <div><p class="eyebrow">LES AUTRES</p><h2>Rencontres</h2></div>
+            <div id="people-list" class="people-list"></div>
+          </section>
+
+          <section class="consequence-card">
+            <div><p class="eyebrow">CE QUE TES USAGES ONT CHANGÉ</p><h2>Conséquences actives</h2></div>
+            <ul id="consequence-list"></ul>
+            <p id="founding-choice" class="founding-choice"></p>
+          </section>
+        </aside>
+      </main>
+
+      <footer class="evolution-footer">
+        <p>Flèches ou WASD pour marcher · E pour agir · 1–4 pour construire · le monde continue entre tes gestes</p>
+        <div><a href="index.html">Campagne systémique</a><button id="restart-button">Recommencer ce monde</button></div>
+      </footer>
+    </div>
+    <script defer src="evolution-browser.js"></script>
+  </body>
+</html>
