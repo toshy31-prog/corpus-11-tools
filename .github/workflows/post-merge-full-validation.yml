@@ -122,6 +122,9 @@ jobs:
           fi
           printf 'Running %d Node test modules\n' "${#tests[@]}"
           node --test "${tests[@]}"
+      - name: Build and test the CORPUS game prototype
+        working-directory: projets/corpus-ce-qui-reste-possible
+        run: npm test
 
   cct:
     name: cct-integration

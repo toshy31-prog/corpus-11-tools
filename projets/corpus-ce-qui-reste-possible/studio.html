@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#111714" />
+    <title>Corpus Builder — Atelier de campagne</title>
+    <link rel="stylesheet" href="studio.css" />
+  </head>
+  <body>
+    <div class="studio-shell">
+      <header class="studio-header">
+        <div>
+          <p class="studio-overline">Corpus Builder · source déclarative</p>
+          <h1>Atelier de campagne</h1>
+        </div>
+        <div class="studio-header-actions">
+          <a href="index.html" class="studio-link">Jouer la campagne ↗</a>
+          <button id="validate-button" class="studio-button primary" type="button">Valider</button>
+          <button id="export-button" class="studio-button" type="button">Exporter JSON</button>
+        </div>
+      </header>
+
+      <main class="studio-grid">
+        <aside class="studio-sidebar">
+          <section class="campaign-identity">
+            <label>Titre<input id="campaign-title" type="text" /></label>
+            <label>Prémisse<textarea id="campaign-premise" rows="4"></textarea></label>
+            <label>Échéance, en heures<input id="campaign-deadline" type="number" min="1" /></label>
+          </section>
+
+          <nav class="studio-tabs" aria-label="Vues du builder">
+            <button class="studio-tab is-active" data-view="perspectives"><span>01</span>Perspectives</button>
+            <button class="studio-tab" data-view="timeline"><span>02</span>Chronologie</button>
+            <button class="studio-tab" data-view="actions"><span>03</span>Actions</button>
+            <button class="studio-tab" data-view="source"><span>04</span>Source JSON</button>
+          </nav>
+
+          <div id="campaign-stats" class="campaign-stats"></div>
+          <button id="reset-button" class="studio-text danger" type="button">Revenir à la version compilée</button>
+        </aside>
+
+        <section class="studio-workbench">
+          <header class="workbench-heading">
+            <div><p id="view-kicker" class="studio-overline"></p><h2 id="view-title"></h2></div>
+            <span id="draft-status" class="draft-status">version compilée</span>
+          </header>
+          <div id="workbench-content" class="workbench-content"></div>
+        </section>
+
+        <aside class="diagnostics-panel">
+          <header>
+            <p class="studio-overline">Validation continue</p>
+            <h2>Diagnostics</h2>
+          </header>
+          <div id="validation-summary" class="validation-summary"></div>
+          <div id="diagnostics-list" class="diagnostics-list"></div>
+          <div class="diagnostic-legend">
+            <p><strong>Ce contrôle établit :</strong> la cohérence statique du fichier.</p>
+            <p><strong>Il n'établit pas :</strong> que la campagne est juste, intéressante ou robuste en jeu.</p>
+          </div>
+        </aside>
+      </main>
+    </div>
+    <script defer src="studio-browser.js"></script>
+  </body>
+</html>

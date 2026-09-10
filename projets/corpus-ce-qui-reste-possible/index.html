@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#151b19" />
+    <meta name="description" content="CORPUS — un jeu de positions, de relais et de conséquences." />
+    <title>CORPUS — Ce qui reste possible</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="paper-noise" aria-hidden="true"></div>
+    <div class="app-shell">
+      <header class="masthead">
+        <div>
+          <p id="campaign-subtitle" class="overline">Campagne 01 · Vallée de Sereine</p>
+          <h1><span id="campaign-collection">Corpus</span> <b id="campaign-title">Ce qui reste possible</b></h1>
+        </div>
+        <div class="clock" aria-live="polite">
+          <a class="builder-link" href="studio.html">Ouvrir le builder ↗</a>
+          <span id="clock-label"></span>
+          <strong id="countdown"></strong>
+          <small id="save-state">état conservé sur cet appareil</small>
+        </div>
+      </header>
+
+      <main class="play-layout">
+        <aside class="positions panel" aria-labelledby="positions-title">
+          <div class="panel-title">
+            <p class="overline">Changer de position</p>
+            <h2 id="positions-title">Qui habiter ?</h2>
+          </div>
+          <p class="aside-note">Vous changez de regard. Les personnages, eux, ne partagent rien sans relais.</p>
+          <nav id="actor-list" class="actor-list" aria-label="Positions habitables"></nav>
+          <div class="world-note">
+            <span class="pulse-dot"></span>
+            <p><strong>Le monde continue hors champ.</strong><br />Les délais courent dans tous les lieux.</p>
+          </div>
+        </aside>
+
+        <section class="stage panel" aria-labelledby="scene-title">
+          <div class="scene-heading">
+            <div>
+              <p id="actor-role" class="overline"></p>
+              <h2 id="scene-title"></h2>
+            </div>
+            <span id="place-label" class="place-label"></span>
+          </div>
+
+          <div id="scene" class="scene" aria-label="Lieu actuellement habité"></div>
+
+          <article id="last-beat" class="last-beat" aria-live="polite"></article>
+
+          <div class="actions-heading">
+            <div>
+              <p class="overline">Ce qui est faisable d'ici</p>
+              <h2>Agir depuis cette position</h2>
+            </div>
+            <span id="action-count" class="counter"></span>
+          </div>
+          <div id="action-list" class="action-list"></div>
+        </section>
+
+        <aside class="situated panel">
+          <section aria-labelledby="known-title">
+            <div class="panel-title">
+              <p class="overline">Détectable ici</p>
+              <h2 id="known-title">Ce que cette personne sait</h2>
+            </div>
+            <div id="knowledge-list" class="knowledge-list"></div>
+          </section>
+
+          <section class="relay-section" aria-labelledby="relay-title">
+            <div class="panel-title compact">
+              <p class="overline">Supports en circulation</p>
+              <h2 id="relay-title">Relais</h2>
+            </div>
+            <div id="relay-list" class="relay-list"></div>
+          </section>
+        </aside>
+      </main>
+
+      <section class="timeline panel" aria-label="Chronologie de la campagne">
+        <div class="timeline-top">
+          <div>
+            <p class="overline">Temps politique</p>
+            <h2>Les seuils n'attendent pas le joueur</h2>
+          </div>
+          <button id="advance-button" class="quiet-button" type="button">Laisser courir jusqu'à vendredi</button>
+        </div>
+        <div id="timeline-track" class="timeline-track"></div>
+        <div class="utility-actions">
+          <button id="journal-button" class="text-button" type="button">Lire la chronologie</button>
+          <button id="export-button" class="text-button" type="button">Exporter cet état</button>
+          <button id="restart-button" class="text-button danger" type="button">Nouvelle campagne</button>
+        </div>
+      </section>
+    </div>
+
+    <dialog id="intro-dialog" class="modal intro-modal">
+      <form method="dialog">
+        <p class="overline">Mardi · 08 h 00</p>
+        <h2 id="intro-premise">Vendredi matin,<br />la famille Neris doit partir.</h2>
+        <p class="intro-copy">Le dossier public tient en trois lignes :</p>
+        <blockquote><strong>+18 %</strong> d'électricité<br /><strong>3</strong> foyers déplacés<br />compensation : <strong>validée</strong></blockquote>
+        <p>Vous n'êtes pas un chef omniscient. Vous pouvez habiter quatre personnes. Chacune voit un monde différent et n'agit qu'avec ce qui lui est réellement parvenu.</p>
+        <ol>
+          <li>Changer de position ne transmet aucune information.</li>
+          <li>Un ordre envoyé n'est pas encore un ordre appliqué.</li>
+          <li>Une victoire locale peut déplacer le coût ailleurs.</li>
+        </ol>
+        <button class="primary-button" value="start">Habiter Ina</button>
+      </form>
+    </dialog>
+
+    <dialog id="beat-dialog" class="modal beat-modal">
+      <div id="beat-content"></div>
+      <button id="continue-button" class="primary-button" type="button">Continuer</button>
+    </dialog>
+
+    <dialog id="journal-dialog" class="modal journal-modal">
+      <div class="modal-heading">
+        <div><p class="overline">Ce qui s'est effectivement produit</p><h2>Chronologie située</h2></div>
+        <button class="icon-button" data-close="journal-dialog" aria-label="Fermer">×</button>
+      </div>
+      <div id="journal-list" class="journal-list"></div>
+    </dialog>
+
+    <dialog id="outcome-dialog" class="modal outcome-modal">
+      <div id="outcome-content"></div>
+      <div class="modal-actions">
+        <button id="close-outcome" class="quiet-button" type="button">Revenir au monde</button>
+        <button id="outcome-restart" class="primary-button" type="button">Rejouer autrement</button>
+      </div>
+    </dialog>
+
+    <script defer src="browser.js"></script>
+  </body>
+</html>
