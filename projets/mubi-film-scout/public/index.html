@@ -106,13 +106,16 @@
             </summary>
             <div class="source-intro">
               <strong>Une seule saisie, sur cette machine.</strong>
-              <p>TMDB suffit pour utiliser le Scout. Les trois autres accès préparent l’ajout d’avis extérieurs ; vous pouvez les renseigner plus tard.</p>
+              <p>TMDB fournit le catalogue. Guardian, NYT et OMDb enrichissent les quatre propositions finales avec des avis et repères sourcés.</p>
             </div>
             <div class="diagnostic-strip" aria-label="Diagnostic local">
               <span><small>Serveur local</small><strong id="diagnostic-server">En ligne</strong></span>
               <span><small>Connexion TMDB</small><strong id="diagnostic-tmdb">Non testée</strong></span>
+              <span><small>The Guardian</small><strong id="diagnostic-guardian">Non testée</strong></span>
+              <span><small>New York Times</small><strong id="diagnostic-nyt">Non testée</strong></span>
+              <span><small>OMDb</small><strong id="diagnostic-omdb">Non testée</strong></span>
               <span><small>Dernière recherche réussie</small><strong id="diagnostic-search">Jamais</strong></span>
-              <button id="run-diagnostic" class="text-button" type="button">Tester TMDB maintenant</button>
+              <button id="run-diagnostic" class="text-button" type="button">Tester toutes les sources</button>
             </div>
             <div class="source-list">
               <div class="source-row">
@@ -122,19 +125,19 @@
                 <a href="https://www.themoviedb.org/settings/api" target="_blank" rel="noreferrer">Obtenir l’accès ↗</a>
               </div>
               <div class="source-row">
-                <span class="source-name"><strong>The Guardian</strong><small>Critique professionnelle — facultatif</small></span>
+                <span class="source-name"><strong>The Guardian</strong><small>Critiques et étoiles — intégré</small></span>
                 <span id="source-status-guardian" class="source-status">Non connecté</span>
                 <input id="guardian-key" type="password" autocomplete="off" placeholder="Clé API" aria-label="Clé API The Guardian">
                 <a href="https://open-platform.theguardian.com/access/" target="_blank" rel="noreferrer">Obtenir l’accès ↗</a>
               </div>
               <div class="source-row">
-                <span class="source-name"><strong>New York Times</strong><small>Critiques de films — facultatif</small></span>
+                <span class="source-name"><strong>New York Times</strong><small>Critiques de films — intégré</small></span>
                 <span id="source-status-nyt" class="source-status">Non connecté</span>
                 <input id="nyt-key" type="password" autocomplete="off" placeholder="Clé API" aria-label="Clé API New York Times">
                 <a href="https://developer.nytimes.com/get-started" target="_blank" rel="noreferrer">Obtenir l’accès ↗</a>
               </div>
               <div class="source-row">
-                <span class="source-name"><strong>OMDb</strong><small>Notes agrégées et métadonnées — facultatif</small></span>
+                <span class="source-name"><strong>OMDb</strong><small>Notes agrégées et distinctions — intégré</small></span>
                 <span id="source-status-omdb" class="source-status">Non connecté</span>
                 <input id="omdb-key" type="password" autocomplete="off" placeholder="Clé API" aria-label="Clé API OMDb">
                 <a href="https://www.omdbapi.com/apikey.aspx" target="_blank" rel="noreferrer">Obtenir l’accès ↗</a>
@@ -177,7 +180,7 @@
       <div class="credits">
         <a class="tmdb-credit" href="https://www.themoviedb.org" target="_blank" rel="noreferrer"><img src="./tmdb.svg" alt="The Movie Database"></a>
         <p>This product uses TMDB and the TMDB APIs but is not endorsed, certified, or otherwise approved by TMDB.</p>
-        <p>Disponibilités de visionnage : JustWatch. Outil personnel indépendant, sans affiliation ni approbation de MUBI ou JustWatch.</p>
+        <p>Disponibilités : JustWatch. Critiques : The Guardian et The New York Times. Notes tierces : OMDb. Outil indépendant sans affiliation ni approbation de ces services.</p>
       </div>
       <button id="forget" type="button">Effacer les films vus et l’accès temporaire de cet onglet</button>
     </footer>

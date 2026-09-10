@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createConnectionStore } from "./lib/connections.mjs";
+import { createExternalSourceClient } from "./lib/external-sources.mjs";
 import {
   GENRES,
   LENSES,
@@ -20,8 +21,14 @@ import {
 const ROOT = fileURLToPath(new URL("./public/", import.meta.url));
 const PORT = Number(process.env.PORT || 4180);
 const TMDB_ROOT = process.env.TMDB_ROOT || "https://api.themoviedb.org/3";
+const externalSources = createExternalSourceClient({
+  guardianRoot: process.env.GUARDIAN_ROOT,
+  nytRoot: process.env.NYT_ROOT,
+  omdbRoot: process.env.OMDB_ROOT
+});
 const SOURCE_CONFIG_PATH = process.env.SOURCE_CONFIG_PATH || fileURLToPath(new URL("./.sources.local.json", import.meta.url));
 const connections = createConnectionStore(SOURCE_CONFIG_PATH, process.env);
+const ACTIVE_SOURCE_IDS = Object.freeze(["tmdb", "guardian", "nyt", "omdb"]);
 let cachedProvider = null;
 const runtimeStatus = {
   startedAt: new Date().toISOString(),
@@ -29,7 +36,12 @@ const runtimeStatus = {
   lastTmdbCheckOk: null,
   lastTmdbLatencyMs: null,
   lastSuccessfulSearchAt: null,
-  lastFailedSearchAt: null
+  lastFailedSearchAt: null,
+  sourceChecks: Object.fromEntries(ACTIVE_SOURCE_IDS.map((id) => [id, {
+    lastCheckAt: null,
+    ok: null,
+    latencyMs: null
+  }]))
 };
 const MIME = {
   ".html": "text/html; charset=utf-8",
@@ -113,7 +125,7 @@ async function findMubiProvider(token) {
 }
 
 async function verifyMubi(movie, providerId, token) {
-  const params = new URLSearchParams({ language: "fr-FR", append_to_response: "watch/providers,keywords" });
+  const params = new URLSearchParams({ language: "fr-FR", append_to_response: "watch/providers,keywords,external_ids" });
   const data = await tmdb(`/movie/${movie.id}`, token, params);
   const offers = data["watch/providers"]?.results?.FR;
   const flatrate = offers?.flatrate || [];
@@ -145,6 +157,7 @@ async function verifyMubi(movie, providerId, token) {
     popularity: Number(data.popularity ?? movie.popularity ?? 0),
     runtime: Number(data.runtime || 0),
     originalLanguage: data.original_language || movie.original_language || "",
+    imdbId: /^tt\d{5,12}$/.test(data.external_ids?.imdb_id || "") ? data.external_ids.imdb_id : null,
     productionCountries: (data.production_countries || []).map(({ iso_3166_1 }) => iso_3166_1).filter(Boolean)
   };
 }
@@ -166,31 +179,67 @@ async function mapSettledWithConcurrency(items, limit, worker) {
   return results;
 }
 
-function diagnosticSnapshot(tmdbConfigured) {
-  return { server: true, tmdbConfigured, ...runtimeStatus };
+function diagnosticSnapshot(connectionStatus = {}) {
+  return {
+    server: true,
+    tmdbConfigured: Boolean(connectionStatus.tmdb?.configured),
+    ...runtimeStatus,
+    sourceChecks: Object.fromEntries(ACTIVE_SOURCE_IDS.map((id) => [id, {
+      configured: Boolean(connectionStatus[id]?.configured),
+      ...runtimeStatus.sourceChecks[id]
+    }]))
+  };
+}
+
+async function recordSourceCheck(id, task) {
+  const started = Date.now();
+  const state = runtimeStatus.sourceChecks[id];
+  state.lastCheckAt = new Date().toISOString();
+  try {
+    await task();
+    state.ok = true;
+  } catch {
+    state.ok = false;
+  }
+  state.latencyMs = Date.now() - started;
+  if (id === "tmdb") {
+    runtimeStatus.lastTmdbCheckAt = state.lastCheckAt;
+    runtimeStatus.lastTmdbCheckOk = state.ok;
+    runtimeStatus.lastTmdbLatencyMs = state.latencyMs;
+  }
+  return state.ok;
 }
 
 async function handleDiagnostic(request, response) {
   const token = await requestToken(request);
-  if (!token) {
+  const credentials = {
+    tmdb: token,
+    guardian: await connections.get("guardian"),
+    nyt: await connections.get("nyt"),
+    omdb: await connections.get("omdb")
+  };
+  const connectionStatus = await connections.status();
+  if (token) connectionStatus.tmdb.configured = true;
+  const configured = ACTIVE_SOURCE_IDS.filter((id) => credentials[id]);
+  if (!configured.length) {
     return sendJson(response, 428, {
       code: "TOKEN_REQUIRED",
-      message: "Enregistrez d’abord le jeton TMDB.",
-      diagnostics: diagnosticSnapshot(false)
+      message: "Enregistrez d’abord au moins une source.",
+      diagnostics: diagnosticSnapshot(connectionStatus)
     });
   }
-  const started = Date.now();
-  runtimeStatus.lastTmdbCheckAt = new Date().toISOString();
-  try {
-    await tmdb("/configuration", token);
-    runtimeStatus.lastTmdbCheckOk = true;
-    runtimeStatus.lastTmdbLatencyMs = Date.now() - started;
-    return sendJson(response, 200, { diagnostics: diagnosticSnapshot(true) });
-  } catch (error) {
-    runtimeStatus.lastTmdbCheckOk = false;
-    runtimeStatus.lastTmdbLatencyMs = Date.now() - started;
-    throw error;
-  }
+  const tests = {
+    tmdb: () => tmdb("/configuration", credentials.tmdb),
+    guardian: () => externalSources.check("guardian", credentials.guardian),
+    nyt: () => externalSources.check("nyt", credentials.nyt),
+    omdb: () => externalSources.check("omdb", credentials.omdb)
+  };
+  const results = await Promise.all(configured.map(async (id) => [id, await recordSourceCheck(id, tests[id])]));
+  const failed = results.filter(([, ok]) => !ok).map(([id]) => id);
+  return sendJson(response, 200, {
+    diagnostics: diagnosticSnapshot(connectionStatus),
+    summary: { tested: configured.length, operational: configured.length - failed.length, failed }
+  });
 }
 
 async function handleSearch(request, response) {
@@ -239,10 +288,17 @@ async function handleSearch(request, response) {
   const qualitativelyRanked = rankByQualitativePreferences(verified, qualitative);
   const ranked = selectWithLenses(qualitativelyRanked, filters, 12);
   const programme = buildProgramme(ranked);
+  const externalKeys = Object.fromEntries(await Promise.all(
+    ["guardian", "nyt", "omdb"].map(async (id) => [id, await connections.get(id)])
+  ));
+  const external = await externalSources.enrich(programme, externalKeys);
   const warnings = [];
   const pageFailures = pageSettled.filter(({ status }) => status === "rejected").length;
   if (pageFailures) warnings.push(`${pageFailures} page${pageFailures > 1 ? "s" : ""} du catalogue n’${pageFailures > 1 ? "ont" : "a"} pas pu être explorée${pageFailures > 1 ? "s" : ""}.`);
   if (failures.length) warnings.push(`${failures.length} disponibilité${failures.length > 1 ? "s n’ont" : " n’a"} pas pu être vérifiée${failures.length > 1 ? "s" : ""}.`);
+  for (const [source, coverage] of Object.entries(external.coverage)) {
+    if (coverage.failed) warnings.push(`${source === "guardian" ? "The Guardian" : source === "nyt" ? "The New York Times" : "OMDb"} : ${coverage.failed} consultation${coverage.failed > 1 ? "s ont" : " a"} échoué.`);
+  }
   runtimeStatus.lastSuccessfulSearchAt = new Date().toISOString();
 
   return sendJson(response, 200, {
@@ -259,8 +315,9 @@ async function handleSearch(request, response) {
     totalResults: discovery.total_results || 0,
     exploredPages,
     exploredCandidates: uniqueResults.length,
-    movies: programme,
-    attribution: "Données TMDB ; disponibilités fournies par JustWatch."
+    movies: external.movies,
+    sourceCoverage: external.coverage,
+    attribution: "Données TMDB ; disponibilités fournies par JustWatch ; critiques Guardian et NYT ; réception agrégée via OMDb."
   });
 }
 
@@ -291,7 +348,7 @@ const server = http.createServer(async (request, response) => {
       const connectionStatus = await connections.status();
       return sendJson(response, 200, {
         connections: connectionStatus,
-        diagnostics: diagnosticSnapshot(connectionStatus.tmdb.configured),
+        diagnostics: diagnosticSnapshot(connectionStatus),
         genres: GENRES,
         lenses: LENSES
       });

@@ -14,6 +14,9 @@ const clearSourcesButton = document.querySelector("#clear-sources");
 const runDiagnosticButton = document.querySelector("#run-diagnostic");
 const diagnosticServer = document.querySelector("#diagnostic-server");
 const diagnosticTmdb = document.querySelector("#diagnostic-tmdb");
+const diagnosticGuardian = document.querySelector("#diagnostic-guardian");
+const diagnosticNyt = document.querySelector("#diagnostic-nyt");
+const diagnosticOmdb = document.querySelector("#diagnostic-omdb");
 const diagnosticSearch = document.querySelector("#diagnostic-search");
 const memoryCount = document.querySelector("#memory-count");
 const interpretationNode = document.querySelector("#interpretation");
@@ -33,6 +36,13 @@ const sourceInputs = {
   guardian: document.querySelector("#guardian-key"),
   nyt: document.querySelector("#nyt-key"),
   omdb: document.querySelector("#omdb-key")
+};
+
+const diagnosticSourceNodes = {
+  tmdb: diagnosticTmdb,
+  guardian: diagnosticGuardian,
+  nyt: diagnosticNyt,
+  omdb: diagnosticOmdb
 };
 
 function loadPreferences() {
@@ -67,7 +77,7 @@ function renderConnections(nextConnections = {}) {
   }
   const tmdbReady = Boolean(connections.tmdb?.configured);
   sourceSummary.textContent = tmdbReady
-    ? `TMDB prêt · ${optionalCount}/3 source${optionalCount > 1 ? "s" : ""} d’avis préparée${optionalCount > 1 ? "s" : ""}`
+    ? `TMDB prêt · ${optionalCount}/3 source${optionalCount > 1 ? "s" : ""} extérieure${optionalCount > 1 ? "s" : ""} active${optionalCount > 1 ? "s" : ""}`
     : "TMDB à connecter";
   sourceSummary.classList.toggle("ready", tmdbReady);
   if (!tmdbReady) sourceCenter.open = true;
@@ -86,15 +96,24 @@ function renderDiagnostics(nextDiagnostics = {}) {
   diagnosticServer.textContent = diagnostics.server === false ? "Hors ligne" : "En ligne";
   diagnosticServer.className = diagnostics.server === false ? "error" : "ok";
   diagnosticSearch.textContent = formatDiagnosticDate(diagnostics.lastSuccessfulSearchAt);
-  diagnosticTmdb.className = "";
-  if (diagnostics.lastTmdbCheckOk === true) {
-    diagnosticTmdb.textContent = `Opérationnelle${diagnostics.lastTmdbLatencyMs ? ` · ${diagnostics.lastTmdbLatencyMs} ms` : ""}`;
-    diagnosticTmdb.className = "ok";
-  } else if (diagnostics.lastTmdbCheckOk === false) {
-    diagnosticTmdb.textContent = "Échec du dernier test";
-    diagnosticTmdb.className = "error";
-  } else {
-    diagnosticTmdb.textContent = diagnostics.tmdbConfigured ? "Configurée · à tester" : "Jeton manquant";
+  for (const [id, node] of Object.entries(diagnosticSourceNodes)) {
+    const state = diagnostics.sourceChecks?.[id] || (id === "tmdb" ? {
+      configured: diagnostics.tmdbConfigured,
+      ok: diagnostics.lastTmdbCheckOk,
+      latencyMs: diagnostics.lastTmdbLatencyMs
+    } : { configured: connections[id]?.configured });
+    node.className = "";
+    if (!state.configured) {
+      node.textContent = "Accès manquant";
+    } else if (state.ok === true) {
+      node.textContent = `Opérationnelle${state.latencyMs ? ` · ${state.latencyMs} ms` : ""}`;
+      node.className = "ok";
+    } else if (state.ok === false) {
+      node.textContent = "Échec du dernier test";
+      node.className = "error";
+    } else {
+      node.textContent = "Configurée · à tester";
+    }
   }
 }
 
@@ -154,7 +173,7 @@ async function runDiagnostic() {
   const token = tokenInput.value.trim() || sessionStorage.getItem(tokenKey) || "";
   let receivedDiagnostics = false;
   runDiagnosticButton.disabled = true;
-  setSourceMessage("Test de la connexion TMDB…");
+  setSourceMessage("Test des sources configurées…");
   try {
     const response = await fetch("/api/diagnostics/run", {
       method: "POST",
@@ -166,7 +185,13 @@ async function runDiagnostic() {
       renderDiagnostics(data.diagnostics);
     }
     if (!response.ok) throw new Error(data.message || "Le diagnostic a échoué.");
-    setSourceMessage("TMDB répond correctement.", "success");
+    const summary = data.summary;
+    setSourceMessage(
+      summary?.failed?.length
+        ? `${summary.operational}/${summary.tested} source(s) opérationnelle(s). Vérifiez les accès signalés en rouge.`
+        : `${summary?.operational || 0}/${summary?.tested || 0} source(s) opérationnelle(s).`,
+      summary?.failed?.length ? "error" : "success"
+    );
   } catch (error) {
     if (!receivedDiagnostics) renderDiagnostics({ lastTmdbCheckOk: false, lastTmdbCheckAt: new Date().toISOString() });
     setSourceMessage(error.message, "error");
@@ -267,7 +292,12 @@ function renderMovies(data) {
   moviesNode.replaceChildren();
 
   interpretationNode.replaceChildren();
-  const messages = [data.interpretationNotice, ...(data.warnings || [])].filter(Boolean);
+  const coverageLabels = Object.entries(data.sourceCoverage || {}).map(([source, coverage]) => {
+    const label = { guardian: "Guardian", nyt: "NYT", omdb: "OMDb" }[source] || source;
+    return `${label} ${coverage.matched}/${coverage.queried}`;
+  });
+  const coverageMessage = coverageLabels.length ? `Rapprochements externes sûrs : ${coverageLabels.join(" · ")}.` : null;
+  const messages = [data.interpretationNotice, coverageMessage, ...(data.warnings || [])].filter(Boolean);
   interpretationNode.hidden = messages.length === 0;
   for (const message of messages) {
     const paragraph = document.createElement("p");
@@ -299,6 +329,7 @@ function renderMovies(data) {
     const runtime = movie.runtime ? `${movie.runtime} min` : "durée inconnue";
     const language = movie.originalLanguage ? movie.originalLanguage.toUpperCase() : "—";
     const role = movie.role || { label: `Proposition ${index + 1}`, description: "Une piste pour votre soirée." };
+    const perspectives = renderPerspectives(movie.perspectives || []);
     card.innerHTML = `
       <div class="poster-wrap">${poster}<span class="rank">${String(index + 1).padStart(2, "0")}</span></div>
       <div class="movie-copy">
@@ -311,6 +342,7 @@ function renderMovies(data) {
         ${movie.originalTitle !== movie.title ? `<p class="original-title">${escapeHtml(movie.originalTitle)}</p>` : ""}
         ${reasons}
         <p class="overview">${escapeHtml(movie.overview || "Aucun synopsis français disponible.")}</p>
+        ${perspectives}
         <div class="card-actions">
           <a href="${offerUrl}" target="_blank" rel="noreferrer">Voir où regarder ↗</a>
           <button type="button">Déjà vu</button>
@@ -319,6 +351,38 @@ function renderMovies(data) {
     card.querySelector("button").addEventListener("click", (event) => markSeen(movie.id, event.currentTarget, card));
     moviesNode.append(card);
   }
+}
+
+function formatPerspectiveDate(value) {
+  if (!value) return "";
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? "" : date.toLocaleDateString("fr-FR", { year: "numeric", month: "short" });
+}
+
+function renderPerspectives(perspectives) {
+  if (!perspectives.length) return "";
+  const items = perspectives.map((perspective) => {
+    const allowedHosts = {
+      guardian: ["theguardian.com", "www.theguardian.com"],
+      nyt: ["nytimes.com", "www.nytimes.com"],
+      omdb: ["imdb.com", "www.imdb.com"]
+    }[perspective.source] || [];
+    const url = safeExternalUrl(perspective.url, allowedHosts);
+    const headline = escapeHtml(perspective.headline || perspective.kind || "Source extérieure");
+    const title = url ? `<a href="${url}" target="_blank" rel="noreferrer">${headline} ↗</a>` : `<strong>${headline}</strong>`;
+    const details = [perspective.byline, formatPerspectiveDate(perspective.publishedAt)].filter(Boolean).map(escapeHtml).join(" · ");
+    const ratings = (perspective.ratings || []).length
+      ? `<div class="external-ratings">${perspective.ratings.map((rating) => `<span><small>${escapeHtml(rating.source)}</small>${escapeHtml(rating.value)}</span>`).join("")}</div>`
+      : "";
+    return `<article class="external-view">
+      <div class="external-source"><span>${escapeHtml(perspective.label || perspective.source)}</span>${perspective.rating ? `<b>${escapeHtml(perspective.rating)}</b>` : ""}</div>
+      ${title}
+      ${perspective.summary ? `<p>${escapeHtml(perspective.summary)}</p>` : ""}
+      ${details ? `<small>${details}</small>` : ""}
+      ${ratings}
+    </article>`;
+  }).join("");
+  return `<section class="external-views" aria-label="Regards extérieurs"><h4>Regards extérieurs</h4>${items}</section>`;
 }
 
 function safeExternalUrl(value, allowedHosts, fallback = "") {

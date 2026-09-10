@@ -28,8 +28,14 @@ if (status) {
   const optional = optionalSources.filter((id) => status.connections[id]?.configured).length;
   console.log("✓ Serveur local : en ligne");
   console.log(`${status.connections.tmdb?.configured ? "✓" : "✗"} Jeton TMDB : ${status.connections.tmdb?.configured ? "configuré" : "manquant"}`);
-  console.log(`• Sources facultatives préparées : ${optional}/${optionalSources.length}`);
-  console.log(`• Dernier test TMDB : ${date(status.diagnostics?.lastTmdbCheckAt)}${status.diagnostics?.lastTmdbCheckOk === true ? " — réussi" : status.diagnostics?.lastTmdbCheckOk === false ? " — échoué" : ""}`);
+  console.log(`• Sources extérieures configurées : ${optional}/${optionalSources.length}`);
+  const labels = { tmdb: "TMDB", guardian: "The Guardian", nyt: "New York Times", omdb: "OMDb" };
+  for (const id of ["tmdb", ...optionalSources]) {
+    const check = status.diagnostics?.sourceChecks?.[id];
+    if (!check?.configured) continue;
+    console.log(`• ${labels[id]} : ${check.ok === true ? "opérationnelle" : check.ok === false ? "échec" : "non testée"} · ${date(check.lastCheckAt)}${check.latencyMs ? ` · ${check.latencyMs} ms` : ""}`);
+    if (live && check.ok === false) process.exitCode = 1;
+  }
   console.log(`• Dernière recherche réussie : ${date(status.diagnostics?.lastSuccessfulSearchAt)}`);
   if (!status.connections.tmdb?.configured) process.exitCode = 1;
 }

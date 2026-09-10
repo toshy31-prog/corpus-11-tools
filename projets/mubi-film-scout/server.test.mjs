@@ -28,12 +28,12 @@ function json(response, payload, status = 200) {
   response.end(JSON.stringify(payload));
 }
 
-async function startApp(t, tmdbRoot) {
+async function startApp(t, tmdbRoot, environment = {}) {
   const port = await freePort();
   const sourceConfigPath = join(tmpdir(), `mubi-film-scout-test-${port}.json`);
   const child = spawn(process.execPath, ["server.mjs"], {
     cwd: new URL(".", import.meta.url),
-    env: { ...process.env, PORT: String(port), TMDB_ROOT: tmdbRoot, TMDB_READ_TOKEN: "test-token", SOURCE_CONFIG_PATH: sourceConfigPath },
+    env: { ...process.env, PORT: String(port), TMDB_ROOT: tmdbRoot, TMDB_READ_TOKEN: "test-token", SOURCE_CONFIG_PATH: sourceConfigPath, ...environment },
     stdio: ["ignore", "pipe", "pipe"]
   });
   t.after(() => child.kill("SIGTERM"));
@@ -238,4 +238,80 @@ test("renvoie une erreur technique si toutes les vérifications échouent", asyn
   });
   assert.equal(response.status, 502);
   assert.match((await response.json()).message, /n’a pas pu vérifier/);
+});
+
+test("branche Guardian, NYT et OMDb sur les propositions finales sans exposer les clés", async (t) => {
+  const fixture = await startFixtureServer((request, response) => {
+    const url = new URL(request.url, "http://fixture");
+    if (url.pathname === "/configuration") return json(response, { images: {} });
+    if (url.pathname === "/watch/providers/movie") return json(response, { results: [{ provider_id: 11, provider_name: "MUBI" }] });
+    if (url.pathname === "/discover/movie") return json(response, {
+      total_pages: 1,
+      total_results: 1,
+      results: [{ id: 700, title: "Anatomie d’une chute", original_title: "Anatomy of a Fall", release_date: "2023-08-23", vote_average: 7.6, vote_count: 1000, genre_ids: [18] }]
+    });
+    if (url.pathname === "/movie/700") return json(response, {
+      id: 700,
+      title: "Anatomie d’une chute",
+      original_title: "Anatomy of a Fall",
+      release_date: "2023-08-23",
+      vote_average: 7.6,
+      vote_count: 1000,
+      runtime: 151,
+      external_ids: { imdb_id: "tt17009710" },
+      "watch/providers": { results: { FR: { flatrate: [{ provider_id: 11 }] } } }
+    });
+    if (url.pathname === "/guardian") return json(response, { response: { status: "ok", results: [{
+      webTitle: "Anatomy of a Fall review – gripping",
+      webUrl: "https://www.theguardian.com/film/example",
+      fields: { starRating: "5", headline: "Anatomy of a Fall review", trailText: "A precise verdict." }
+    }] } });
+    if (url.pathname === "/nyt") return json(response, { status: "OK", response: { docs: [{
+      headline: { main: "‘Anatomy of a Fall’ Review" },
+      abstract: "Ambiguity in the courtroom.",
+      web_url: "https://www.nytimes.com/2023/10/12/movies/anatomy-of-a-fall-review.html"
+    }] } });
+    if (url.pathname === "/omdb") return json(response, {
+      Response: "True",
+      Title: "Anatomy of a Fall",
+      imdbID: "tt17009710",
+      Ratings: [{ Source: "Internet Movie Database", Value: "7.6/10" }],
+      Awards: "Won 1 Oscar."
+    });
+    return json(response, {}, 404);
+  });
+  t.after(() => fixture.close());
+  const fixtureRoot = `http://127.0.0.1:${fixture.address().port}`;
+  const { port } = await startApp(t, fixtureRoot, {
+    GUARDIAN_ROOT: `${fixtureRoot}/guardian`,
+    NYT_ROOT: `${fixtureRoot}/nyt`,
+    OMDB_ROOT: `${fixtureRoot}/omdb`,
+    GUARDIAN_API_KEY: "guardian-test-secret",
+    NYT_API_KEY: "nyt-test-secret",
+    OMDB_API_KEY: "omdb-test-secret"
+  });
+  const response = await fetch(`http://127.0.0.1:${port}/api/search`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ filters: { maxRuntime: 180 } })
+  });
+  assert.equal(response.status, 200);
+  const text = await response.text();
+  assert.equal(text.includes("test-secret"), false);
+  const payload = JSON.parse(text);
+  assert.deepEqual(payload.movies[0].perspectives.map(({ source }) => source), ["guardian", "nyt", "omdb"]);
+  assert.equal(payload.sourceCoverage.guardian.matched, 1);
+  assert.equal(payload.sourceCoverage.nyt.matched, 1);
+  assert.equal(payload.sourceCoverage.omdb.matched, 1);
+
+  const diagnosticResponse = await fetch(`http://127.0.0.1:${port}/api/diagnostics/run`, { method: "POST" });
+  assert.equal(diagnosticResponse.status, 200);
+  const diagnosticText = await diagnosticResponse.text();
+  assert.equal(diagnosticText.includes("test-secret"), false);
+  const diagnostic = JSON.parse(diagnosticText);
+  assert.equal(diagnostic.summary.operational, 4);
+  assert.deepEqual(
+    Object.fromEntries(Object.entries(diagnostic.diagnostics.sourceChecks).map(([id, state]) => [id, state.ok])),
+    { tmdb: true, guardian: true, nyt: true, omdb: true }
+  );
 });

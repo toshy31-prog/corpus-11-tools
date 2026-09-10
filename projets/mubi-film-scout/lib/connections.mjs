@@ -1,6 +1,6 @@
 import { chmod, readFile, rename, writeFile } from "node:fs/promises";
 
-export const SOURCE_IDS = Object.freeze(["tmdb", "guardian", "nyt", "trakt", "omdb"]);
+export const SOURCE_IDS = Object.freeze(["tmdb", "guardian", "nyt", "omdb"]);
 
 function cleanValue(value) {
   if (typeof value !== "string") return "";
@@ -17,7 +17,6 @@ export function createConnectionStore(filePath, environment = {}) {
     tmdb: cleanValue(environment.TMDB_READ_TOKEN),
     guardian: cleanValue(environment.GUARDIAN_API_KEY),
     nyt: cleanValue(environment.NYT_API_KEY),
-    trakt: cleanValue(environment.TRAKT_CLIENT_ID),
     omdb: cleanValue(environment.OMDB_API_KEY)
   };
 

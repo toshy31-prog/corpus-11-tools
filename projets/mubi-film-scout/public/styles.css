@@ -90,7 +90,7 @@ legend { color: var(--muted); font-size: .78rem; text-transform: uppercase; lett
 .source-intro strong { font-size: .88rem; }
 .source-intro p, .source-privacy, .source-message, .fallback-link { color: var(--muted); font-size: .78rem; line-height: 1.5; }
 .source-intro p { margin: 4px 0 0; }
-.diagnostic-strip { display: grid; grid-template-columns: 1fr 1fr 1.25fr auto; align-items: end; gap: 14px; margin: 0 16px 18px; padding: 14px 0 17px; border-bottom: 1px solid var(--line); }
+.diagnostic-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); align-items: end; gap: 14px; margin: 0 16px 18px; padding: 14px 0 17px; border-bottom: 1px solid var(--line); }
 .diagnostic-strip span { display: flex; flex-direction: column; gap: 4px; }
 .diagnostic-strip small { color: var(--muted); font-size: .66rem; text-transform: uppercase; letter-spacing: .06em; }
 .diagnostic-strip strong { font-size: .78rem; }
@@ -154,6 +154,17 @@ h3 { margin: 7px 0 3px; font-size: 1.35rem; letter-spacing: -.02em; }
 .why { display: flex; flex-wrap: wrap; gap: 5px; margin: 10px 0 0; }
 .why span { color: #0b0b0a; background: var(--accent); padding: 4px 7px; font-size: .67rem; font-weight: 800; }
 .overview { color: var(--muted); line-height: 1.52; font-size: .88rem; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; min-height: 5.35em; }
+.external-views { margin: 16px 0; border-top: 1px solid var(--line); }
+.external-views h4 { margin: 14px 0 10px; color: var(--muted); font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; }
+.external-view { padding: 11px 0; border-top: 1px solid #242421; }
+.external-view:first-of-type { border-top: 0; }
+.external-source { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 5px; color: var(--accent); font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
+.external-view > a, .external-view > strong { color: var(--ink); font: 700 .9rem/1.35 Georgia, serif; text-decoration: none; }
+.external-view > p { margin: 6px 0 4px; color: var(--muted); font-size: .76rem; line-height: 1.45; }
+.external-view > small { color: #858580; font-size: .66rem; }
+.external-ratings { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.external-ratings span { display: flex; flex-direction: column; gap: 2px; padding: 6px 8px; border: 1px solid var(--line); color: var(--ink); font-size: .72rem; font-weight: 800; }
+.external-ratings small { color: var(--muted); font-size: .58rem; font-weight: 500; }
 .card-actions { border-top: 1px solid var(--line); padding-top: 12px; gap: 12px; }
 .card-actions a { color: var(--ink); font-size: .8rem; text-decoration: none; font-weight: 700; }
 .card-actions button { background: none; border: 0; color: var(--muted); padding: 0; cursor: pointer; font-size: .75rem; }

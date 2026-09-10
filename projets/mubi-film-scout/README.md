@@ -10,7 +10,9 @@ JustWatch.
 
 Le Scout utilise l’API officielle de TMDB. Les données de disponibilité de
 TMDB sont fournies par JustWatch ; l’application vérifie chaque résultat dans
-la région française avant de l’afficher.
+la région française avant de l’afficher. Les quatre propositions finales sont
+ensuite enrichies par The Guardian, le New York Times et OMDb lorsque leurs
+clés sont configurées.
 
 ## Lancer
 
@@ -38,9 +40,16 @@ avec des droits de lecture limités au compte utilisateur (`0600`) et une
 exclusion Git. Ce coffre local n’est donc pas un chiffrement. Le navigateur ne
 reçoit ensuite que leur état (« enregistré » ou non), jamais leur valeur.
 
-TMDB est le seul accès nécessaire au fonctionnement actuel. Les trois autres
-entrées préparent la couche d’avis externes : leur enregistrement ne signifie
-pas encore que leurs critiques sont affichées dans les résultats.
+TMDB est le seul accès nécessaire au fonctionnement. Les trois autres sources
+sont réellement interrogées pour les quatre films finaux : critiques et
+étoiles du Guardian, critiques retrouvées par Article Search au New York Times,
+puis notes agrégées et distinctions via OMDb. Un rapprochement n’est affiché
+que si le titre correspond suffisamment ; une absence sûre vaut mieux qu’un
+avis attribué au mauvais film.
+
+Ces regards extérieurs documentent les propositions mais ne sont pas fusionnés
+en score global et ne réordonnent pas silencieusement la sélection TMDB. Les
+résultats indiquent, pour chaque source, le nombre de rapprochements sûrs.
 
 Trakt n’est pas demandé : la création d’une nouvelle application API est
 actuellement réservée aux comptes VIP, sans bénéfice indispensable pour le
@@ -72,16 +81,17 @@ Le jeton de lecture se crée dans les paramètres du compte TMDB, rubrique API.
 - utiliser « Surprends-moi » pour tirer une sélection ailleurs que sur la
   première page des résultats.
 
-Le Centre des sources contient aussi un diagnostic explicite du serveur, de la
-configuration TMDB, du dernier test réseau et de la dernière recherche réussie.
-Le bouton de test contacte TMDB uniquement lorsqu’il est actionné. En terminal :
+Le Centre des sources contient aussi un diagnostic explicite du serveur, des
+quatre connexions, du dernier test réseau et de la dernière recherche réussie.
+Le bouton de test contacte uniquement les sources configurées lorsqu’il est
+actionné. En terminal :
 
 ```bash
 npm run doctor
 npm run doctor:live
 ```
 
-La seconde commande effectue un appel réel à TMDB.
+La seconde commande effectue un appel réel à chaque source configurée.
 
 ## Lentilles cumulables
 
@@ -125,13 +135,16 @@ npm run check
 ```
 
 Les tests n’appellent aucun service externe. Une recherche réelle nécessite un
-jeton TMDB et une connexion réseau.
+jeton TMDB et une connexion réseau. Le client Guardian gratuit est limité à un
+appel par seconde : le serveur sérialise donc ses recherches et met les réponses
+en cache pendant la session.
 
 ## Sources et attribution
 
 This product uses TMDB and the TMDB APIs but is not endorsed, certified, or
 otherwise approved by TMDB.
 
-Données et images : TMDB. Disponibilités de visionnage : JustWatch. MUBI Film
-Scout est un outil personnel indépendant, sans affiliation ni approbation de
-MUBI, TMDB ou JustWatch. Il n’automatise et n’extrait ni MUBI ni JustWatch.
+Données et images : TMDB. Disponibilités : JustWatch. Critiques : The Guardian
+et The New York Times. Réception agrégée : OMDb. MUBI Film Scout est un outil
+personnel indépendant, sans affiliation ni approbation de ces services. Il
+n’automatise et n’extrait ni MUBI ni JustWatch.
