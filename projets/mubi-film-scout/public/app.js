@@ -35,6 +35,20 @@ const catalogueGrid = document.querySelector("#catalogue-grid");
 const catalogueQuery = document.querySelector("#catalogue-query");
 const catalogueProgress = document.querySelector("#catalogue-progress");
 const catalogueMore = document.querySelector("#catalogue-more");
+const catalogueFetchMore = document.querySelector("#catalogue-fetch-more");
+const catalogueSort = document.querySelector("#catalogue-sort");
+const catalogueLanguage = document.querySelector("#catalogue-language");
+const catalogueVerified = document.querySelector("#catalogue-verified");
+const catalogueFreshness = document.querySelector("#catalogue-freshness");
+const restoreDismissedButton = document.querySelector("#restore-dismissed");
+const shortlistCountNode = document.querySelector("#shortlist-count");
+const shortlistSection = document.querySelector("#shortlist-section");
+const shortlistGrid = document.querySelector("#shortlist-grid");
+const comparisonNode = document.querySelector("#comparison");
+const compareShortlistButton = document.querySelector("#compare-shortlist");
+const clearShortlistButton = document.querySelector("#clear-shortlist");
+const selectionFeedback = document.querySelector("#selection-feedback");
+const importFile = document.querySelector("#import-file");
 
 let preferences = loadPreferences();
 let connections = {};
@@ -45,6 +59,12 @@ let surpriseMode = false;
 let catalogueMovies = [];
 let catalogueVisible = 24;
 let interpretationHasContent = false;
+let catalogueTotalPages = 1;
+let catalogueLoadedPages = new Set();
+let catalogueFetchedAt = null;
+let catalogueBusy = false;
+let lastSearchRequest = null;
+let currentProgramme = [];
 
 const sourceInputs = {
   tmdb: tokenInput,
@@ -62,9 +82,17 @@ const diagnosticSourceNodes = {
 
 function loadPreferences() {
   try {
-    return { seen: [], ...JSON.parse(localStorage.getItem(storageKey) || "{}") };
+    const stored = JSON.parse(localStorage.getItem(storageKey) || "{}");
+    return {
+      seen: [],
+      shortlist: [],
+      dismissed: [],
+      compare: [],
+      evaluations: [],
+      ...stored
+    };
   } catch {
-    return { seen: [] };
+    return { seen: [], shortlist: [], dismissed: [], compare: [], evaluations: [] };
   }
 }
 
@@ -74,8 +102,10 @@ function savePreferences() {
 }
 
 function updateMemoryCount() {
-  const count = preferences.seen.length;
-  memoryCount.textContent = `${count} film${count > 1 ? "s" : ""} déjà vu${count > 1 ? "s" : ""} mémorisé${count > 1 ? "s" : ""}`;
+  const seen = preferences.seen.length;
+  const kept = preferences.shortlist.length;
+  memoryCount.textContent = `${seen} vu${seen > 1 ? "s" : ""} · ${kept} à garder`;
+  shortlistCountNode.textContent = String(kept);
 }
 
 function renderConnections(nextConnections = {}) {
@@ -221,6 +251,8 @@ function setLoading() {
   moviesNode.replaceChildren();
   resultViews.hidden = true;
   catalogueSection.hidden = true;
+  shortlistSection.hidden = true;
+  selectionFeedback.hidden = true;
   statusNode.hidden = false;
   resultsSection.setAttribute("aria-busy", "true");
   statusNode.className = "empty-state loading";
@@ -233,6 +265,8 @@ function setMessage(message, type = "empty") {
   moviesNode.replaceChildren();
   resultViews.hidden = true;
   catalogueSection.hidden = true;
+  shortlistSection.hidden = true;
+  selectionFeedback.hidden = true;
   statusNode.hidden = false;
   statusNode.className = `empty-state ${type}`;
   statusNode.innerHTML = `<span class="empty-mark">${type === "error" ? "!" : "M"}</span><p>${escapeHtml(message)}</p>`;
@@ -339,14 +373,73 @@ function updateUnderstanding() {
     ${hasFreeText ? "<p>La précision libre sera testée contre le vocabulaire annoncé, sans prétendre à une compréhension générale.</p>" : ""}`;
 }
 
+function movieSnapshot(movie) {
+  return {
+    id: Number(movie.id),
+    title: movie.title || "Sans titre",
+    originalTitle: movie.originalTitle || "",
+    releaseDate: movie.releaseDate || "",
+    rating: Number(movie.rating) || 0,
+    runtime: Number(movie.runtime) || 0,
+    originalLanguage: movie.originalLanguage || "",
+    poster: movie.poster || null,
+    offerLink: movie.offerLink || "",
+    verified: Boolean(movie.verified || movie.runtime),
+    checkedAt: movie.checkedAt || catalogueFetchedAt || null
+  };
+}
+
+function isKept(id) {
+  return preferences.shortlist.some((movie) => Number(movie.id) === Number(id));
+}
+
 function markSeen(id, button, card) {
   preferences.seen = [...new Set([...preferences.seen, id])];
+  preferences.shortlist = preferences.shortlist.filter((movie) => Number(movie.id) !== Number(id));
+  preferences.compare = preferences.compare.filter((movieId) => Number(movieId) !== Number(id));
   savePreferences();
   button.textContent = "Déjà vu ✓";
   button.disabled = true;
   if (document.querySelector("#hide-seen").checked) {
     card.classList.add("dismissed");
     setTimeout(() => card.remove(), 280);
+  }
+  renderShortlist();
+  renderCatalogue();
+}
+
+function toggleShortlist(movie) {
+  const id = Number(movie.id);
+  if (isKept(id)) {
+    preferences.shortlist = preferences.shortlist.filter((item) => Number(item.id) !== id);
+    preferences.compare = preferences.compare.filter((movieId) => Number(movieId) !== id);
+  } else {
+    if (preferences.shortlist.length >= 8) {
+      window.alert("La sélection peut contenir huit films au maximum.");
+      return;
+    }
+    preferences.shortlist = [...preferences.shortlist, movieSnapshot(movie)];
+  }
+  savePreferences();
+  renderShortlist();
+  renderCatalogue();
+  renderProgrammeActionStates();
+}
+
+function dismissMovie(id) {
+  preferences.dismissed = [...new Set([...preferences.dismissed, Number(id)])];
+  preferences.shortlist = preferences.shortlist.filter((movie) => Number(movie.id) !== Number(id));
+  preferences.compare = preferences.compare.filter((movieId) => Number(movieId) !== Number(id));
+  savePreferences();
+  renderShortlist();
+  renderCatalogue();
+}
+
+function renderProgrammeActionStates() {
+  for (const button of moviesNode.querySelectorAll("[data-action='keep']")) {
+    const kept = isKept(button.dataset.movieId);
+    button.textContent = kept ? "Gardé ✓" : "À garder";
+    button.setAttribute("aria-pressed", String(kept));
   }
 }
 
@@ -361,13 +454,20 @@ function renderMovies(data) {
     return chip;
   }));
   moviesNode.replaceChildren();
+  currentProgramme = data.movies || [];
   catalogueMovies = data.catalogue || [];
   catalogueVisible = 24;
+  catalogueTotalPages = Number(data.totalPages) || 1;
+  catalogueLoadedPages = new Set(data.exploredPages || [1]);
+  catalogueFetchedAt = data.fetchedAt || new Date().toISOString();
   catalogueQuery.value = "";
   programmeCount.textContent = String(data.movies.length);
   catalogueCount.textContent = String(catalogueMovies.length);
+  refreshCatalogueLanguages();
   renderCatalogue();
+  renderShortlist();
   setResultView("programme");
+  selectionFeedback.hidden = false;
 
   interpretationNode.replaceChildren();
   const coverageLabels = Object.entries(data.sourceCoverage || {}).map(([source, coverage]) => {
@@ -375,7 +475,9 @@ function renderMovies(data) {
     return `${label} ${coverage.matched}/${coverage.queried}`;
   });
   const coverageMessage = coverageLabels.length ? `Rapprochements externes sûrs : ${coverageLabels.join(" · ")}.` : null;
-  const messages = [data.interpretationNotice, coverageMessage, ...(data.warnings || [])].filter(Boolean);
+  const failedChecks = (data.qualityChecks || []).filter(({ passed }) => !passed).map(({ label }) => label);
+  const qualityMessage = failedChecks.length ? `Contrôles à revoir : ${failedChecks.join(" · ")}.` : "Contrôles du programme : contraintes, unicité et disponibilités conformes.";
+  const messages = [data.interpretationNotice, qualityMessage, coverageMessage, ...(data.warnings || [])].filter(Boolean);
   interpretationHasContent = messages.length > 0;
   interpretationNode.hidden = !interpretationHasContent;
   for (const message of messages) {
@@ -424,10 +526,12 @@ function renderMovies(data) {
         ${perspectives}
         <div class="card-actions">
           <a href="${offerUrl}" target="_blank" rel="noreferrer">Voir où regarder ↗</a>
-          <button type="button">Déjà vu</button>
+          <button type="button" data-action="keep" data-movie-id="${Number(movie.id)}" aria-pressed="${isKept(movie.id)}">${isKept(movie.id) ? "Gardé ✓" : "À garder"}</button>
+          <button type="button" data-action="seen">Déjà vu</button>
         </div>
       </div>`;
-    card.querySelector("button").addEventListener("click", (event) => markSeen(movie.id, event.currentTarget, card));
+    card.querySelector("[data-action='keep']").addEventListener("click", () => toggleShortlist(movie));
+    card.querySelector("[data-action='seen']").addEventListener("click", (event) => markSeen(movie.id, event.currentTarget, card));
     moviesNode.append(card);
   }
 }
@@ -438,10 +542,30 @@ function normalizedCatalogueQuery() {
 
 function filteredCatalogueMovies() {
   const query = normalizedCatalogueQuery();
-  if (!query) return catalogueMovies;
-  return catalogueMovies.filter((movie) => [movie.title, movie.originalTitle]
-    .filter(Boolean)
-    .some((value) => value.toLocaleLowerCase("fr-FR").includes(query)));
+  const language = catalogueLanguage.value;
+  const dismissed = new Set(preferences.dismissed.map(Number));
+  const seen = new Set(preferences.seen.map(Number));
+  const filtered = catalogueMovies.filter((movie) => {
+    if (dismissed.has(Number(movie.id))) return false;
+    if (document.querySelector("#hide-seen").checked && seen.has(Number(movie.id))) return false;
+    if (catalogueVerified.checked && !movie.verified) return false;
+    if (language && movie.originalLanguage !== language) return false;
+    return !query || [movie.title, movie.originalTitle]
+      .filter(Boolean)
+      .some((value) => value.toLocaleLowerCase("fr-FR").includes(query));
+  });
+  const sort = catalogueSort.value;
+  if (sort === "rating") filtered.sort((left, right) => right.rating - left.rating || left.title.localeCompare(right.title, "fr"));
+  if (sort === "recent") filtered.sort((left, right) => String(right.releaseDate).localeCompare(String(left.releaseDate)));
+  if (sort === "oldest") filtered.sort((left, right) => String(left.releaseDate || "9999").localeCompare(String(right.releaseDate || "9999")));
+  return filtered;
+}
+
+function refreshCatalogueLanguages() {
+  const selected = catalogueLanguage.value;
+  const languages = [...new Set(catalogueMovies.map((movie) => movie.originalLanguage).filter(Boolean))].sort();
+  catalogueLanguage.replaceChildren(new Option("Toutes", ""), ...languages.map((language) => new Option(language.toUpperCase(), language)));
+  if (languages.includes(selected)) catalogueLanguage.value = selected;
 }
 
 function renderCatalogue() {
@@ -467,24 +591,145 @@ function renderCatalogue() {
         <p>${year}${movie.originalLanguage ? ` · VO ${escapeHtml(movie.originalLanguage.toUpperCase())}` : ""}</p>
         <h3><a href="${offerUrl}" target="_blank" rel="noreferrer">${escapeHtml(movie.title)}</a></h3>
         <span>${movie.rating ? `${movie.rating.toFixed(1)}/10` : "Non noté"}</span>
+        <div class="catalogue-actions">
+          <button type="button" data-action="keep" aria-pressed="${isKept(movie.id)}">${isKept(movie.id) ? "Gardé ✓" : "+ Garder"}</button>
+          <button type="button" data-action="seen">Vu</button>
+          <button type="button" data-action="dismiss" aria-label="Écarter ${escapeHtml(movie.title)}">Écarter</button>
+        </div>
       </div>`;
+    card.querySelector("[data-action='keep']").addEventListener("click", () => toggleShortlist(movie));
+    card.querySelector("[data-action='seen']").addEventListener("click", (event) => markSeen(movie.id, event.currentTarget, card));
+    card.querySelector("[data-action='dismiss']").addEventListener("click", () => dismissMovie(movie.id));
     catalogueGrid.append(card);
   }
   catalogueProgress.textContent = filtered.length
     ? `${visible.length} titre${visible.length > 1 ? "s" : ""} affiché${visible.length > 1 ? "s" : ""} sur ${filtered.length}`
     : "Aucun titre ne correspond à ce filtre.";
   catalogueMore.hidden = visible.length >= filtered.length;
+  restoreDismissedButton.hidden = preferences.dismissed.length === 0;
+  const nextPage = nextCataloguePage();
+  catalogueFetchMore.hidden = nextPage === null;
+  catalogueFetchMore.textContent = catalogueBusy ? "Chargement…" : nextPage ? `Charger la page ${nextPage}` : "Catalogue parcouru";
+  catalogueFetchMore.disabled = catalogueBusy;
+  catalogueFreshness.textContent = catalogueFetchedAt
+    ? `Disponibilité signalée, dernière consultation ${formatDiagnosticDate(catalogueFetchedAt)} · ${catalogueLoadedPages.size}/${catalogueTotalPages} page(s) chargée(s).`
+    : "";
+}
+
+function nextCataloguePage() {
+  for (let page = 1; page <= catalogueTotalPages; page += 1) {
+    if (!catalogueLoadedPages.has(page)) return page;
+  }
+  return null;
+}
+
+async function loadNextCataloguePage() {
+  const page = nextCataloguePage();
+  if (!page || catalogueBusy || !lastSearchRequest) return;
+  const token = tokenInput.value.trim() || sessionStorage.getItem(tokenKey) || "";
+  catalogueBusy = true;
+  renderCatalogue();
+  try {
+    const response = await fetch("/api/catalogue", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        ...(token ? { "x-tmdb-token": token } : {})
+      },
+      body: JSON.stringify({
+        ...lastSearchRequest,
+        filters: { ...lastSearchRequest.filters, seen: preferences.seen },
+        page
+      })
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message || "Impossible de charger cette page.");
+    catalogueLoadedPages.add(data.page);
+    catalogueTotalPages = data.totalPages;
+    catalogueFetchedAt = data.fetchedAt;
+    catalogueMovies = [...new Map([...catalogueMovies, ...(data.movies || [])].map((movie) => [Number(movie.id), movie])).values()];
+    catalogueVisible += 24;
+    catalogueCount.textContent = String(catalogueMovies.length);
+    refreshCatalogueLanguages();
+    if (!catalogueSection.hidden) {
+      resultTitle.textContent = `${catalogueMovies.length} titre${catalogueMovies.length > 1 ? "s" : ""} chargé${catalogueMovies.length > 1 ? "s" : ""}`;
+    }
+  } catch (error) {
+    window.alert(error.message);
+  } finally {
+    catalogueBusy = false;
+    renderCatalogue();
+  }
+}
+
+function renderShortlist() {
+  shortlistGrid.replaceChildren();
+  const compareIds = new Set(preferences.compare.map(Number));
+  for (const movie of preferences.shortlist) {
+    const card = document.createElement("article");
+    card.className = "shortlist-card";
+    const posterUrl = safeExternalUrl(movie.poster, ["image.tmdb.org"]);
+    card.innerHTML = `
+      <label class="compare-choice">
+        <input type="checkbox" ${compareIds.has(Number(movie.id)) ? "checked" : ""}>
+        <span>Comparer</span>
+      </label>
+      ${posterUrl ? `<img src="${posterUrl}" alt="Affiche de ${escapeHtml(movie.title)}" loading="lazy">` : '<div class="shortlist-poster-missing">Sans affiche</div>'}
+      <div><h3>${escapeHtml(movie.title)}</h3><p>${movie.releaseDate?.slice(0, 4) || "—"} · ${movie.runtime ? `${movie.runtime} min` : "durée inconnue"}</p><button type="button">Retirer</button></div>`;
+    const checkbox = card.querySelector("input");
+    checkbox.addEventListener("change", () => {
+      const id = Number(movie.id);
+      if (checkbox.checked && preferences.compare.length >= 4) {
+        checkbox.checked = false;
+        window.alert("Comparez quatre films au maximum.");
+        return;
+      }
+      preferences.compare = checkbox.checked
+        ? [...new Set([...preferences.compare, id])]
+        : preferences.compare.filter((movieId) => Number(movieId) !== id);
+      savePreferences();
+      compareShortlistButton.disabled = preferences.compare.length < 2;
+      comparisonNode.hidden = true;
+    });
+    card.querySelector("button").addEventListener("click", () => toggleShortlist(movie));
+    shortlistGrid.append(card);
+  }
+  if (!preferences.shortlist.length) {
+    const empty = document.createElement("p");
+    empty.className = "shortlist-empty";
+    empty.textContent = "Aucun film gardé. Utilisez « À garder » dans le programme ou le catalogue.";
+    shortlistGrid.append(empty);
+  }
+  compareShortlistButton.disabled = preferences.compare.length < 2;
+  comparisonNode.hidden = true;
+}
+
+function renderComparison() {
+  const selected = preferences.shortlist.filter((movie) => preferences.compare.map(Number).includes(Number(movie.id))).slice(0, 4);
+  if (selected.length < 2) return;
+  const rows = [
+    ["Année", (movie) => movie.releaseDate?.slice(0, 4) || "—"],
+    ["Durée", (movie) => movie.runtime ? `${movie.runtime} min` : "Inconnue"],
+    ["Langue", (movie) => movie.originalLanguage?.toUpperCase() || "—"],
+    ["Note TMDB", (movie) => movie.rating ? `${movie.rating.toFixed(1)}/10` : "Non noté"],
+    ["Disponibilité", (movie) => movie.verified ? "Vérifiée pendant la recherche" : "Signalée par le catalogue"]
+  ];
+  comparisonNode.innerHTML = `<h3>Comparaison factuelle</h3><div class="comparison-scroll"><table><thead><tr><th>Critère</th>${selected.map((movie) => `<th>${escapeHtml(movie.title)}</th>`).join("")}</tr></thead><tbody>${rows.map(([label, value]) => `<tr><th>${label}</th>${selected.map((movie) => `<td>${escapeHtml(value(movie))}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  comparisonNode.hidden = false;
 }
 
 function setResultView(view) {
   const showCatalogue = view === "catalogue";
-  moviesNode.hidden = showCatalogue;
+  const showShortlist = view === "shortlist";
+  moviesNode.hidden = showCatalogue || showShortlist;
   catalogueSection.hidden = !showCatalogue;
-  interpretationNode.hidden = showCatalogue || !interpretationHasContent;
-  resultStep.textContent = showCatalogue ? "02 — L’exploration" : "02 — Le programme";
+  shortlistSection.hidden = !showShortlist;
+  selectionFeedback.hidden = view !== "programme";
+  interpretationNode.hidden = view !== "programme" || !interpretationHasContent;
+  resultStep.textContent = showCatalogue ? "02 — L’exploration" : showShortlist ? "03 — Votre choix" : "02 — Le programme";
   resultTitle.textContent = showCatalogue
-    ? `${catalogueMovies.length} titre${catalogueMovies.length > 1 ? "s" : ""} à parcourir`
-    : "Quatre chemins possibles";
+    ? `${catalogueMovies.length} titre${catalogueMovies.length > 1 ? "s" : ""} chargé${catalogueMovies.length > 1 ? "s" : ""}`
+    : showShortlist ? `${preferences.shortlist.length} film${preferences.shortlist.length > 1 ? "s" : ""} à garder` : "Quatre chemins possibles";
   for (const button of resultViews.querySelectorAll("button")) {
     button.setAttribute("aria-pressed", String(button.dataset.resultView === view));
   }
@@ -508,6 +753,9 @@ function renderPerspectives(perspectives) {
     const headline = escapeHtml(perspective.headline || perspective.kind || "Source extérieure");
     const title = url ? `<a href="${url}" target="_blank" rel="noreferrer">${headline} ↗</a>` : `<strong>${headline}</strong>`;
     const details = [perspective.byline, formatPerspectiveDate(perspective.publishedAt)].filter(Boolean).map(escapeHtml).join(" · ");
+    const match = perspective.match
+      ? `<small class="match-evidence">Rapprochement ${perspective.match.certainty === "exact" ? "exact" : "probable"} · ${(perspective.match.evidence || []).map(escapeHtml).join(" · ")}</small>`
+      : "";
     const ratings = (perspective.ratings || []).length
       ? `<div class="external-ratings">${perspective.ratings.map((rating) => `<span><small>${escapeHtml(rating.source)}</small>${escapeHtml(rating.value)}</span>`).join("")}</div>`
       : "";
@@ -516,6 +764,7 @@ function renderPerspectives(perspectives) {
       ${title}
       ${perspective.summary ? `<p>${escapeHtml(perspective.summary)}</p>` : ""}
       ${details ? `<small>${details}</small>` : ""}
+      ${match}
       ${ratings}
     </article>`;
   }).join("");
@@ -550,6 +799,7 @@ async function search(event) {
   }
   if (tokenInput.value.trim()) sessionStorage.setItem(tokenKey, tokenInput.value.trim());
   saveFormState();
+  lastSearchRequest = { wish: document.querySelector("#wish").value, filters: currentFilters() };
 
   const controller = new AbortController();
   activeRequest = controller;
@@ -563,7 +813,7 @@ async function search(event) {
         "content-type": "application/json",
         ...(token ? { "x-tmdb-token": token } : {})
       },
-      body: JSON.stringify({ wish: document.querySelector("#wish").value, filters: currentFilters() }),
+      body: JSON.stringify(lastSearchRequest),
       signal: controller.signal
     });
     const data = await response.json();
@@ -580,6 +830,66 @@ async function search(event) {
       activeRequest = null;
       setSearchBusy(false);
     }
+  }
+}
+
+function recordEvaluation(value) {
+  const ids = currentProgramme.map(({ id }) => Number(id));
+  if (!ids.length) return;
+  preferences.evaluations = [
+    ...preferences.evaluations.filter((item) => item.programmeIds?.join(",") !== ids.join(",")),
+    {
+      at: new Date().toISOString(),
+      value,
+      wish: lastSearchRequest?.wish || "",
+      filters: lastSearchRequest?.filters || {},
+      programmeIds: ids
+    }
+  ].slice(-100);
+  savePreferences();
+  for (const button of selectionFeedback.querySelectorAll("button")) {
+    button.setAttribute("aria-pressed", String(button.dataset.feedback === value));
+  }
+}
+
+function exportLocalData() {
+  const payload = {
+    format: "mubi-film-scout-local-v1",
+    exportedAt: new Date().toISOString(),
+    preferences
+  };
+  const url = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" }));
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `mubi-film-scout-${new Date().toISOString().slice(0, 10)}.json`;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+async function importLocalData(file) {
+  if (!file) return;
+  try {
+    const payload = JSON.parse(await file.text());
+    if (payload.format !== "mubi-film-scout-local-v1" || !payload.preferences) throw new Error("Format d’export non reconnu.");
+    const incoming = payload.preferences;
+    preferences = {
+      ...loadPreferences(),
+      ...incoming,
+      seen: [...new Set((incoming.seen || []).map(Number).filter(Number.isInteger))],
+      dismissed: [...new Set((incoming.dismissed || []).map(Number).filter(Number.isInteger))],
+      shortlist: (incoming.shortlist || []).filter((movie) => Number.isInteger(Number(movie.id))).slice(0, 8),
+      compare: (incoming.compare || []).map(Number).filter(Number.isInteger).slice(0, 4),
+      evaluations: (incoming.evaluations || []).slice(-100)
+    };
+    savePreferences();
+    renderShortlist();
+    renderCatalogue();
+    renderProgrammeActionStates();
+    window.alert("Choix locaux importés.");
+  } catch (error) {
+    window.alert(error.message || "Import impossible.");
+  } finally {
+    importFile.value = "";
   }
 }
 
@@ -612,6 +922,7 @@ async function init() {
   restoreFormState();
   updateLensAvailability();
   updateMemoryCount();
+  renderShortlist();
   updateUnderstanding();
 }
 
@@ -637,10 +948,39 @@ catalogueQuery.addEventListener("input", () => {
   catalogueVisible = 24;
   renderCatalogue();
 });
+for (const control of [catalogueSort, catalogueLanguage, catalogueVerified]) {
+  control.addEventListener("change", () => {
+    catalogueVisible = 24;
+    renderCatalogue();
+  });
+}
 catalogueMore.addEventListener("click", () => {
   catalogueVisible += 24;
   renderCatalogue();
 });
+catalogueFetchMore.addEventListener("click", loadNextCataloguePage);
+compareShortlistButton.addEventListener("click", renderComparison);
+clearShortlistButton.addEventListener("click", () => {
+  if (!window.confirm("Vider la liste des films à garder ?")) return;
+  preferences.shortlist = [];
+  preferences.compare = [];
+  savePreferences();
+  renderShortlist();
+  renderCatalogue();
+  renderProgrammeActionStates();
+});
+restoreDismissedButton.addEventListener("click", () => {
+  preferences.dismissed = [];
+  savePreferences();
+  renderCatalogue();
+});
+selectionFeedback.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-feedback]");
+  if (button) recordEvaluation(button.dataset.feedback);
+});
+document.querySelector("#export-data").addEventListener("click", exportLocalData);
+document.querySelector("#import-data").addEventListener("click", () => importFile.click());
+importFile.addEventListener("change", () => importLocalData(importFile.files?.[0]));
 document.querySelector("#surprise").addEventListener("click", () => {
   document.querySelector("#wish").value = "Surprends-moi avec un film bien noté de moins de 2h10";
   document.querySelector('input[name="effect"][value="open"]').checked = true;
@@ -660,15 +1000,17 @@ document.querySelector("#oblique").addEventListener("click", () => {
   search();
 });
 document.querySelector("#forget").addEventListener("click", () => {
+  if (!window.confirm("Effacer les films vus, les films gardés, les évaluations et l’accès temporaire de cet onglet ?")) return;
   requestSequence += 1;
   activeRequest?.abort();
   activeRequest = null;
   setSearchBusy(false);
-  preferences = { ...preferences, seen: [] };
+  preferences = { seen: [], shortlist: [], dismissed: [], compare: [], evaluations: [] };
   sessionStorage.removeItem(tokenKey);
   tokenInput.value = "";
   savePreferences();
-  setMessage("Les films vus et le jeton de cet onglet ont été effacés.");
+  renderShortlist();
+  setMessage("Les choix locaux et le jeton temporaire de cet onglet ont été effacés.");
 });
 
 init().catch(() => setMessage("Impossible de joindre le serveur local.", "error"));

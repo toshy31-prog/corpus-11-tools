@@ -166,21 +166,44 @@
         <nav id="result-views" class="result-views" aria-label="Vue des résultats" hidden>
           <button type="button" data-result-view="programme" aria-pressed="true">Programme <span id="programme-count">4</span></button>
           <button type="button" data-result-view="catalogue" aria-pressed="false">Tous les titres explorés <span id="catalogue-count">0</span></button>
+          <button type="button" data-result-view="shortlist" aria-pressed="false">À garder <span id="shortlist-count">0</span></button>
         </nav>
         <div id="movies" class="movie-grid"></div>
+        <section id="selection-feedback" class="selection-feedback" hidden aria-labelledby="feedback-title">
+          <div><strong id="feedback-title">Cette sélection vous aide-t-elle à choisir ?</strong><span>Réponse stockée seulement dans ce navigateur.</span></div>
+          <button type="button" data-feedback="useful">Oui, elle aide</button>
+          <button type="button" data-feedback="review">À revoir</button>
+        </section>
         <section id="catalogue-section" class="catalogue-section" hidden aria-labelledby="catalogue-title">
           <div class="catalogue-heading">
             <div>
               <h2 id="catalogue-title">Tous les titres explorés</h2>
-              <p>Signalés sur MUBI France par TMDB/JustWatch. Le badge « vérifié » indique les titres contrôlés individuellement pendant cette recherche.</p>
+              <p>Signalés sur MUBI France par TMDB/JustWatch. Chargez les pages suivantes pour parcourir tout ce que cette source expose pour vos critères.</p>
             </div>
-            <label for="catalogue-query">Filtrer cette liste<input id="catalogue-query" type="search" placeholder="Titre ou titre original"></label>
+            <div class="catalogue-controls">
+              <label for="catalogue-query">Filtrer<input id="catalogue-query" type="search" placeholder="Titre ou titre original"></label>
+              <label for="catalogue-sort">Trier<select id="catalogue-sort"><option value="source">Ordre du Scout</option><option value="rating">Meilleure note</option><option value="recent">Plus récent</option><option value="oldest">Plus ancien</option></select></label>
+              <label for="catalogue-language">Langue<select id="catalogue-language"><option value="">Toutes</option></select></label>
+              <label class="catalogue-toggle"><input id="catalogue-verified" type="checkbox"> Vérifiés seulement</label>
+            </div>
           </div>
           <div id="catalogue-grid" class="catalogue-grid"></div>
           <div class="catalogue-footer">
-            <p id="catalogue-progress"></p>
-            <button id="catalogue-more" class="secondary-button" type="button">Afficher 24 titres de plus</button>
+            <div><p id="catalogue-progress"></p><small id="catalogue-freshness"></small></div>
+            <div class="catalogue-footer-actions">
+              <button id="restore-dismissed" class="text-button" type="button" hidden>Réafficher les films écartés</button>
+              <button id="catalogue-more" class="secondary-button" type="button">Afficher 24 titres de plus</button>
+              <button id="catalogue-fetch-more" class="secondary-button" type="button">Charger la page suivante</button>
+            </div>
           </div>
+        </section>
+        <section id="shortlist-section" class="shortlist-section" hidden aria-labelledby="shortlist-title">
+          <div class="shortlist-heading">
+            <div><p class="step">03 — Votre choix</p><h2 id="shortlist-title">Films à garder</h2><p>Conservez jusqu’à huit films et cochez-en quatre au maximum pour les comparer.</p></div>
+            <div class="shortlist-actions"><button id="compare-shortlist" class="secondary-button" type="button">Comparer</button><button id="clear-shortlist" class="text-button" type="button">Vider</button></div>
+          </div>
+          <div id="shortlist-grid" class="shortlist-grid"></div>
+          <div id="comparison" class="comparison" hidden></div>
         </section>
       </section>
     </main>
@@ -191,7 +214,12 @@
         <p>This product uses TMDB and the TMDB APIs but is not endorsed, certified, or otherwise approved by TMDB.</p>
         <p>Disponibilités : JustWatch. Critiques : The Guardian et The New York Times. Notes tierces : OMDb. Outil indépendant sans affiliation ni approbation de ces services.</p>
       </div>
-      <button id="forget" type="button">Effacer les films vus et l’accès temporaire de cet onglet</button>
+      <div class="data-actions">
+        <button id="export-data" type="button">Exporter mes choix</button>
+        <button id="import-data" type="button">Importer</button>
+        <input id="import-file" type="file" accept="application/json" hidden>
+        <button id="forget" type="button">Tout effacer localement</button>
+      </div>
     </footer>
     <script type="module" src="./app.js"></script>
   </body>

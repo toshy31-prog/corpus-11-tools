@@ -82,6 +82,10 @@ test("sert l’interface avec des en-têtes de sécurité", async (t) => {
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-security-policy"), /frame-ancestors 'none'/);
   assert.equal(response.headers.get("x-content-type-options"), "nosniff");
+  const html = await response.text();
+  assert.match(html, /data-result-view="shortlist"/);
+  assert.match(html, /id="catalogue-fetch-more"/);
+  assert.match(html, /id="export-data"/);
 });
 
 test("expose un diagnostic réseau sans exposer le jeton", async (t) => {
@@ -144,6 +148,35 @@ test("explore plusieurs pages avant d’enrichir les candidats", async (t) => {
   assert.deepEqual(payload.exploredPages, [1, 2, 3, 4, 5]);
   assert.equal(payload.exploredCandidates, 5);
   assert.equal(payload.movies.length, 4);
+});
+
+test("charge une page légère du catalogue sans appeler les détails des films", async (t) => {
+  const calls = [];
+  const fixture = await startFixtureServer((request, response) => {
+    const url = new URL(request.url, "http://fixture");
+    calls.push(url.pathname);
+    if (url.pathname === "/watch/providers/movie") return json(response, { results: [{ provider_id: 11, provider_name: "MUBI" }] });
+    if (url.pathname === "/discover/movie") return json(response, {
+      page: Number(url.searchParams.get("page")),
+      total_pages: 7,
+      total_results: 140,
+      results: [{ id: 402, title: "Page deux", original_title: "Page Two", release_date: "2018-01-01", vote_average: 7.1, vote_count: 90, original_language: "es", genre_ids: [18] }]
+    });
+    return json(response, {}, 404);
+  });
+  t.after(() => fixture.close());
+  const { port } = await startApp(t, `http://127.0.0.1:${fixture.address().port}`);
+  const response = await fetch(`http://127.0.0.1:${port}/api/catalogue`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ page: 2, filters: { minRating: 7 } })
+  });
+  assert.equal(response.status, 200);
+  const payload = await response.json();
+  assert.equal(payload.page, 2);
+  assert.equal(payload.totalPages, 7);
+  assert.equal(payload.movies[0].verified, false);
+  assert.equal(calls.some((path) => /^\/movie\/\d+$/.test(path)), false);
 });
 
 test("rejette les origines étrangères et les JSON invalides", async (t) => {

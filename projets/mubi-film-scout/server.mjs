@@ -4,6 +4,7 @@ import { extname, join, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createConnectionStore } from "./lib/connections.mjs";
 import { createExternalSourceClient } from "./lib/external-sources.mjs";
+import { evaluateProgramme } from "./lib/quality.mjs";
 import {
   GENRES,
   LENSES,
@@ -30,6 +31,8 @@ const SOURCE_CONFIG_PATH = process.env.SOURCE_CONFIG_PATH || fileURLToPath(new U
 const connections = createConnectionStore(SOURCE_CONFIG_PATH, process.env);
 const ACTIVE_SOURCE_IDS = Object.freeze(["tmdb", "guardian", "nyt", "omdb"]);
 let cachedProvider = null;
+const tmdbCache = new Map();
+const TMDB_CACHE_TTL_MS = 5 * 60 * 1000;
 const runtimeStatus = {
   startedAt: new Date().toISOString(),
   lastTmdbCheckAt: null,
@@ -93,28 +96,54 @@ async function requestToken(request) {
   return temporaryToken || connections.get("tmdb");
 }
 
-async function tmdb(path, token, params = new URLSearchParams()) {
-  const url = new URL(`${TMDB_ROOT}${path}`);
-  url.search = params;
-  const response = await fetch(url, {
-    headers: {
-      authorization: `Bearer ${token}`,
-      accept: "application/json"
-    },
-    signal: AbortSignal.timeout(12_000)
-  });
-  if (!response.ok) {
-    const details = await response.json().catch(() => ({}));
-    const error = new Error(details.status_message || `TMDB a répondu ${response.status}.`);
-    error.status = response.status === 401 ? 401 : response.status === 429 ? 503 : 502;
-    throw error;
-  }
-  return response.json();
+function requestAbortSignal(request) {
+  const controller = new AbortController();
+  request.once("aborted", () => controller.abort());
+  return controller.signal;
 }
 
-async function findMubiProvider(token) {
+async function tmdb(path, token, params = new URLSearchParams(), signal) {
+  const url = new URL(`${TMDB_ROOT}${path}`);
+  url.search = params;
+  const cacheKey = url.href;
+  const cached = tmdbCache.get(cacheKey);
+  if (cached && Date.now() - cached.savedAt < TMDB_CACHE_TTL_MS) return cached.data;
+  if (cached) tmdbCache.delete(cacheKey);
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 12_000);
+  const abort = () => controller.abort();
+  if (signal) {
+    if (signal.aborted) controller.abort();
+    else signal.addEventListener("abort", abort, { once: true });
+  }
+  try {
+    const response = await fetch(url, {
+      headers: {
+        authorization: `Bearer ${token}`,
+        accept: "application/json"
+      },
+      signal: controller.signal
+    });
+    if (!response.ok) {
+      const details = await response.json().catch(() => ({}));
+      const error = new Error(details.status_message || `TMDB a répondu ${response.status}.`);
+      error.status = response.status === 401 ? 401 : response.status === 429 ? 503 : 502;
+      throw error;
+    }
+    const data = await response.json();
+    tmdbCache.set(cacheKey, { savedAt: Date.now(), data });
+    if (tmdbCache.size > 500) tmdbCache.delete(tmdbCache.keys().next().value);
+    return data;
+  } finally {
+    clearTimeout(timeout);
+    signal?.removeEventListener("abort", abort);
+  }
+}
+
+async function findMubiProvider(token, signal) {
   if (cachedProvider) return cachedProvider;
-  const data = await tmdb("/watch/providers/movie", token, new URLSearchParams({ language: "fr-FR", watch_region: "FR" }));
+  const data = await tmdb("/watch/providers/movie", token, new URLSearchParams({ language: "fr-FR", watch_region: "FR" }), signal);
   const providers = data.results || [];
   const exact = providers.find((provider) => provider.provider_name.toLocaleLowerCase("fr-FR") === "mubi");
   const fallback = providers.find((provider) => /^mubi\b/i.test(provider.provider_name));
@@ -124,9 +153,9 @@ async function findMubiProvider(token) {
   return cachedProvider;
 }
 
-async function verifyMubi(movie, providerId, token) {
-  const params = new URLSearchParams({ language: "fr-FR", append_to_response: "watch/providers,keywords,external_ids" });
-  const data = await tmdb(`/movie/${movie.id}`, token, params);
+async function verifyMubi(movie, providerId, token, signal) {
+  const params = new URLSearchParams({ language: "fr-FR", append_to_response: "watch/providers,keywords,external_ids,credits" });
+  const data = await tmdb(`/movie/${movie.id}`, token, params, signal);
   const offers = data["watch/providers"]?.results?.FR;
   const flatrate = offers?.flatrate || [];
   if (!flatrate.some((provider) => provider.provider_id === providerId)) return null;
@@ -158,6 +187,7 @@ async function verifyMubi(movie, providerId, token) {
     runtime: Number(data.runtime || 0),
     originalLanguage: data.original_language || movie.original_language || "",
     imdbId: /^tt\d{5,12}$/.test(data.external_ids?.imdb_id || "") ? data.external_ids.imdb_id : null,
+    director: (data.credits?.crew || []).find(({ job }) => job === "Director")?.name || null,
     productionCountries: (data.production_countries || []).map(({ iso_3166_1 }) => iso_3166_1).filter(Boolean)
   };
 }
@@ -177,6 +207,8 @@ function compactDiscoveryMovie(movie, verifiedById) {
     genreIds: movie.genre_ids || [],
     why: movie.why || [],
     verified: Boolean(verified),
+    runtime: Number(verified?.runtime || 0),
+    checkedAt: verified ? new Date().toISOString() : null,
     offerLink: verified?.offerLink || `https://www.themoviedb.org/movie/${movie.id}/watch?locale=FR`
   };
 }
@@ -262,6 +294,7 @@ async function handleDiagnostic(request, response) {
 }
 
 async function handleSearch(request, response) {
+  const signal = requestAbortSignal(request);
   const token = await requestToken(request);
   if (!token) {
     return sendJson(response, 428, {
@@ -273,13 +306,13 @@ async function handleSearch(request, response) {
   const body = await readJson(request);
   const analysis = analyzeWish(body.wish, normalizeFilters(body.filters));
   const { filters, qualitative } = analysis;
-  const provider = await findMubiProvider(token);
-  const discovery = await tmdb("/discover/movie", token, buildDiscoverParams(filters, provider.provider_id, 1));
+  const provider = await findMubiProvider(token, signal);
+  const discovery = await tmdb("/discover/movie", token, buildDiscoverParams(filters, provider.provider_id, 1), signal);
   const exploredPages = buildExplorationPages(discovery.total_pages, filters);
   const pageSettled = await mapSettledWithConcurrency(
     exploredPages.filter((page) => page !== 1),
     4,
-    (page) => tmdb("/discover/movie", token, buildDiscoverParams(filters, provider.provider_id, page))
+    (page) => tmdb("/discover/movie", token, buildDiscoverParams(filters, provider.provider_id, page), signal)
   );
   const discoveryResults = [
     ...(discovery.results || []),
@@ -295,7 +328,7 @@ async function handleSearch(request, response) {
   const settled = await mapSettledWithConcurrency(
     candidates,
     6,
-    (movie) => verifyMubi(movie, provider.provider_id, token)
+    (movie) => verifyMubi(movie, provider.provider_id, token, signal)
   );
   const failures = settled.filter(({ status }) => status === "rejected");
   if (candidates.length && failures.length === candidates.length) {
@@ -336,12 +369,41 @@ async function handleSearch(request, response) {
     interpretationNotice: analysis.notice,
     warnings,
     totalResults: discovery.total_results || 0,
+    totalPages: Math.min(500, Number(discovery.total_pages) || 1),
+    fetchedAt: new Date().toISOString(),
     exploredPages,
     exploredCandidates: uniqueResults.length,
     movies: external.movies,
+    qualityChecks: evaluateProgramme(external.movies, filters),
     catalogue,
     sourceCoverage: external.coverage,
     attribution: "Données TMDB ; disponibilités fournies par JustWatch ; critiques Guardian et NYT ; réception agrégée via OMDb."
+  });
+}
+
+async function handleCatalogue(request, response) {
+  const signal = requestAbortSignal(request);
+  const token = await requestToken(request);
+  if (!token) return sendJson(response, 428, { code: "TOKEN_REQUIRED", message: "Ajoutez votre jeton TMDB." });
+  const body = await readJson(request);
+  const page = Math.max(1, Math.min(500, Math.floor(Number(body.page) || 1)));
+  const analysis = analyzeWish(body.wish, normalizeFilters(body.filters));
+  const provider = await findMubiProvider(token, signal);
+  const discovery = await tmdb("/discover/movie", token, buildDiscoverParams(analysis.filters, provider.provider_id, page), signal);
+  const unseen = (discovery.results || []).filter((movie) => (
+    !analysis.filters.hideSeen || !analysis.filters.seen.includes(movie.id)
+  ));
+  const ranked = selectWithLenses(
+    rankByQualitativePreferences(unseen, analysis.qualitative),
+    analysis.filters,
+    unseen.length
+  );
+  return sendJson(response, 200, {
+    page,
+    totalPages: Math.min(500, Number(discovery.total_pages) || 1),
+    totalResults: Number(discovery.total_results) || 0,
+    fetchedAt: new Date().toISOString(),
+    movies: ranked.map((movie) => compactDiscoveryMovie(movie, new Map()))
   });
 }
 
@@ -385,6 +447,7 @@ const server = http.createServer(async (request, response) => {
       return sendJson(response, 200, { connections: await connections.clear() });
     }
     if (request.method === "POST" && request.url === "/api/diagnostics/run") return await handleDiagnostic(request, response);
+    if (request.method === "POST" && request.url === "/api/catalogue") return await handleCatalogue(request, response);
     if (request.method === "POST" && request.url === "/api/search") {
       try {
         return await handleSearch(request, response);

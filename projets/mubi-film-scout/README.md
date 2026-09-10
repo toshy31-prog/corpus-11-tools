@@ -1,6 +1,7 @@
 # MUBI Film Scout
 
-MUBI Film Scout est un programmateur personnel de soirée, pas un catalogue bis.
+MUBI Film Scout est un programmateur personnel de soirée et un explorateur
+local du catalogue signalé pour MUBI France.
 Il transforme une envie en quatre propositions qui assument des fonctions
 différentes : le choix juste, le pas de côté, le pari et le contre-choix.
 
@@ -43,9 +44,11 @@ reçoit ensuite que leur état (« enregistré » ou non), jamais leur valeur.
 TMDB est le seul accès nécessaire au fonctionnement. Les trois autres sources
 sont réellement interrogées pour les quatre films finaux : critiques et
 étoiles du Guardian, critiques retrouvées par Article Search au New York Times,
-puis notes agrégées et distinctions via OMDb. Un rapprochement n’est affiché
-que si le titre correspond suffisamment ; une absence sûre vaut mieux qu’un
-avis attribué au mauvais film.
+puis notes agrégées et distinctions via OMDb. Un rapprochement Guardian ou NYT
+n’est affiché que si le titre, le contexte de critique cinéma et l’époque (ou
+le réalisateur) sont compatibles. L’interface expose la nature du
+rapprochement ; une absence sûre vaut mieux qu’un avis attribué au mauvais
+film.
 
 Ces regards extérieurs documentent les propositions mais ne sont pas fusionnés
 en score global et ne réordonnent pas silencieusement la sélection TMDB. Les
@@ -78,6 +81,9 @@ Le jeton de lecture se crée dans les paramètres du compte TMDB, rubrique API.
 - déplier les critères pour choisir une période, des genres et jusqu’à deux
   angles de découverte ;
 - marquer un film comme déjà vu pour ne plus le revoir dans les sélections ;
+- garder jusqu’à huit films, en comparer jusqu’à quatre, ou écarter localement
+  une proposition ;
+- exporter et réimporter les choix locaux au format JSON ;
 - utiliser « Surprends-moi » pour tirer une sélection ailleurs que sur la
   première page des résultats.
 
@@ -119,13 +125,22 @@ et contraste, et le mode aventureux cherche trois propositions plus profondes
 et éloignées. Les rôles affichés sur les quatre cartes changent en conséquence.
 Les choix du formulaire sont mémorisés localement pour la visite suivante.
 
-Après chaque recherche, deux vues sont disponibles : le programme éditorial de
-quatre films, enrichi par les sources extérieures, et « Tous les titres
-explorés ». Cette seconde vue affiche progressivement l’ensemble des résultats
-remontés pendant l’exploration, avec un filtre local par titre. Elle ne lance
-pas d’appels Guardian, NYT ou OMDb supplémentaires. Les films contrôlés
-individuellement auprès de TMDB portent un badge « Vérifié » ; les autres sont
-des titres signalés MUBI France par le filtre TMDB/JustWatch.
+Après chaque recherche, trois vues sont disponibles : le programme éditorial
+de quatre films, « Tous les titres explorés » et la sélection « À garder ».
+Le catalogue peut charger les pages TMDB suivantes à la demande, puis être
+filtré par titre, langue ou vérification et trié localement. Ce chargement ne
+lance pas d’appels Guardian, NYT ou OMDb. Les films contrôlés individuellement
+auprès de TMDB portent un badge « Vérifié » ; les autres sont des titres
+signalés MUBI France par le filtre TMDB/JustWatch. La date de consultation et le
+nombre de pages chargées restent visibles : le Scout ne présente pas ce flux
+tiers comme un inventaire certifié de MUBI.
+
+Chaque programme passe aussi cinq invariants explicites (nombre, unicité,
+durée, films vus et disponibilité), sans score global. Le bouton « Oui, elle
+aide / À revoir » constitue le banc d’observation réel : les réponses restent
+locales, peuvent être exportées et servir à comparer ultérieurement deux
+versions du moteur. Vingt envies de référence testent séparément le vocabulaire
+du champ libre, y compris un cas volontairement non reconnu (`polar`).
 
 L’interface affiche toujours les contraintes effectivement appliquées. Les
 préférences qualitatives reconnues (par exemple « effets spéciaux »,
@@ -146,7 +161,9 @@ npm run check
 ```
 
 Les tests n’appellent aucun service externe. Ils parcourent notamment les 594
-combinaisons jouables des intentions, durées, détours et lentilles. Une recherche réelle nécessite un
+combinaisons jouables des intentions, durées, détours et lentilles, les vingt
+envies de référence, les faux rapprochements de titres et la pagination légère
+du catalogue. Une recherche réelle nécessite un
 jeton TMDB et une connexion réseau. Le client Guardian gratuit est limité à un
 appel par seconde : le serveur sérialise donc ses recherches et met les réponses
 en cache pendant la session.

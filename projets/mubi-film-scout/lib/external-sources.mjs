@@ -31,8 +31,52 @@ export function titleMatches(movie, candidateText) {
     const tokens = titleTokens(variant);
     if (!tokens.length) return false;
     const present = tokens.filter((token) => new RegExp(`(^| )${token}( |$)`).test(haystack)).length;
-    return tokens.length === 1 ? tokens[0].length >= 5 && present === 1 : present / tokens.length >= 0.8;
+    // Un mot isolé est trop ambigu pour constituer à lui seul une identité de film.
+    // Il reste accepté lorsqu'il apparaît comme expression exacte ci-dessus, puis
+    // les clients Guardian/NYT exigent séparément un contexte de critique cinéma.
+    return tokens.length === 1 ? false : present / tokens.length >= 0.8;
   });
+}
+
+function articleYear(value) {
+  return /^\d{4}/.test(value || "") ? Number(String(value).slice(0, 4)) : null;
+}
+
+function filmReviewIdentity(movie, item, source) {
+  const headline = source === "guardian"
+    ? `${item.webTitle || ""} ${item.fields?.headline || ""}`
+    : `${item.headline?.main || ""} ${item.headline?.print_headline || ""}`;
+  const supportingText = source === "guardian"
+    ? `${headline} ${item.fields?.trailText || ""}`
+    : [headline, item.abstract, item.lead_paragraph, item.snippet].filter(Boolean).join(" ");
+  if (!titleMatches(movie, headline)) return null;
+
+  const normalizedHeadline = normalizeText(headline);
+  const reviewContext = source === "guardian"
+    ? /\breview\b|\bcritique\b/.test(normalizedHeadline)
+      || item.sectionId === "film"
+      || (item.tags || []).some((tag) => tag.id === "tone/reviews")
+    : /\breview\b|\bcritique\b/.test(normalizedHeadline)
+      || item.type_of_material === "Review"
+      || item.section_name === "Movies"
+      || item.news_desk === "Culture"
+      || /\/movies\//.test(item.web_url || "");
+  if (!reviewContext) return null;
+
+  const movieYear = Number(releaseYear(movie)) || null;
+  const publishedYear = articleYear(source === "guardian" ? item.webPublicationDate : item.pub_date);
+  const director = normalizeText(movie.director || "");
+  const directorPresent = Boolean(director && normalizeText(supportingText).includes(director));
+  const yearCompatible = !movieYear || !publishedYear || Math.abs(movieYear - publishedYear) <= 2;
+  if (!yearCompatible && !directorPresent) return null;
+
+  const evidence = ["titre exact", "contexte de critique cinéma"];
+  if (movieYear && publishedYear) evidence.push(yearCompatible ? "année compatible" : "réalisateur confirmé");
+  else if (directorPresent) evidence.push("réalisateur confirmé");
+  return {
+    certainty: yearCompatible && movieYear && publishedYear ? "exact" : "probable",
+    evidence
+  };
 }
 
 function decodeEntities(value) {
@@ -95,12 +139,16 @@ export async function guardianReview(movie, key, options = {}) {
     tag: "film/film,tone/reviews",
     "page-size": "5",
     "order-by": "relevance",
-    "show-fields": "starRating,headline,trailText,byline,short-url"
+    "show-fields": "starRating,headline,trailText,byline,short-url",
+    "show-tags": "all"
   });
   const data = await fetchJson(new URL(`?${params}`, root), "guardian", fetchImpl);
   if (data.response?.status !== "ok") throw sourceError("guardian", 502);
-  const result = (data.response.results || []).find((item) => titleMatches(movie, `${item.webTitle || ""} ${item.fields?.headline || ""}`));
-  if (!result) return null;
+  const matched = (data.response.results || [])
+    .map((item) => ({ item, match: filmReviewIdentity(movie, item, "guardian") }))
+    .find(({ match }) => match);
+  if (!matched) return null;
+  const { item: result, match } = matched;
   const rating = Number(result.fields?.starRating);
   return {
     source: "guardian",
@@ -111,7 +159,8 @@ export async function guardianReview(movie, key, options = {}) {
     byline: plainText(result.fields?.byline, 100),
     publishedAt: result.webPublicationDate || null,
     url: safeHttpsUrl(result.fields?.shortUrl || result.webUrl, ["theguardian.com"]),
-    rating: Number.isFinite(rating) && rating >= 0 && rating <= 5 ? `${rating}/5` : null
+    rating: Number.isFinite(rating) && rating >= 0 && rating <= 5 ? `${rating}/5` : null,
+    match
   };
 }
 
@@ -121,18 +170,17 @@ export async function nytReview(movie, key, options = {}) {
   const params = new URLSearchParams({
     "api-key": key,
     q: queryTitle(movie),
+    fq: 'section_name:("Movies" "Arts") AND type_of_material:("Review")',
     sort: "relevance",
     page: "0"
   });
   const data = await fetchJson(new URL(`?${params}`, root), "nyt", fetchImpl);
   if (data.status && data.status !== "OK") throw sourceError("nyt", 502);
-  const result = (data.response?.docs || []).find((item) => titleMatches(movie, [
-    item.headline?.main,
-    item.headline?.print_headline,
-    item.abstract,
-    item.lead_paragraph
-  ].filter(Boolean).join(" ")));
-  if (!result) return null;
+  const matched = (data.response?.docs || [])
+    .map((item) => ({ item, match: filmReviewIdentity(movie, item, "nyt") }))
+    .find(({ match }) => match);
+  if (!matched) return null;
+  const { item: result, match } = matched;
   return {
     source: "nyt",
     label: SOURCE_LABELS.nyt,
@@ -142,7 +190,8 @@ export async function nytReview(movie, key, options = {}) {
     byline: plainText(result.byline?.original, 100),
     publishedAt: result.pub_date || null,
     url: safeHttpsUrl(result.web_url, ["nytimes.com"]),
-    rating: null
+    rating: null,
+    match
   };
 }
 
@@ -176,7 +225,13 @@ export async function omdbReception(movie, key, options = {}) {
     publishedAt: null,
     url: imdbId ? `https://www.imdb.com/title/${imdbId}/` : null,
     rating: null,
-    ratings
+    ratings,
+    match: {
+      certainty: movie.imdbId && data.imdbID === movie.imdbId ? "exact" : "probable",
+      evidence: movie.imdbId && data.imdbID === movie.imdbId
+        ? ["identifiant IMDb identique"]
+        : ["titre et année compatibles"]
+    }
   };
 }
 

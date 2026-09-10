@@ -19,6 +19,38 @@ test("rapproche un titre original sans accepter un article générique", () => {
   assert.equal(titleMatches(movie, "The best courtroom films of the decade"), false);
 });
 
+test("refuse un homonyme hors contexte cinéma", async () => {
+  const delicatessen = { title: "Delicatessen", originalTitle: "Delicatessen", releaseDate: "1991-04-17" };
+  const review = await nytReview(delicatessen, "nyt-key", {
+    root: "https://nyt.test/articlesearch.json",
+    fetchImpl: async () => response({ status: "OK", response: { docs: [{
+      headline: { main: "A Wedding Celebration at Katz’s Delicatessen" },
+      abstract: "A New York restaurant hosts a celebration.",
+      section_name: "Style",
+      type_of_material: "News",
+      pub_date: "2024-06-01T00:00:00Z",
+      web_url: "https://www.nytimes.com/2024/06/01/style/delicatessen-wedding.html"
+    }] } })
+  });
+  assert.equal(review, null);
+});
+
+test("refuse la critique d’un homonyme sorti à une autre époque", async () => {
+  const godzilla1954 = { title: "Godzilla", originalTitle: "Gojira", releaseDate: "1954-11-03" };
+  const review = await nytReview(godzilla1954, "nyt-key", {
+    root: "https://nyt.test/articlesearch.json",
+    fetchImpl: async () => response({ status: "OK", response: { docs: [{
+      headline: { main: "‘Godzilla’ Review: The Monster Returns" },
+      abstract: "A contemporary franchise installment.",
+      section_name: "Movies",
+      type_of_material: "Review",
+      pub_date: "2014-05-15T00:00:00Z",
+      web_url: "https://www.nytimes.com/2014/05/15/movies/godzilla-review.html"
+    }] } })
+  });
+  assert.equal(review, null);
+});
+
 test("normalise une critique Guardian sourcée", async () => {
   const review = await guardianReview(movie, "guardian-key", {
     root: "https://guardian.test/search",
@@ -42,7 +74,7 @@ test("normalise une critique NYT et refuse une URL étrangère", async () => {
   const review = await nytReview(movie, "nyt-key", {
     root: "https://nyt.test/articlesearch.json",
     fetchImpl: async (url) => {
-      assert.equal(url.searchParams.get("fq"), null);
+      assert.match(url.searchParams.get("fq"), /type_of_material/);
       return response({ status: "OK", response: { docs: [{
         headline: { main: "‘Anatomy of a Fall’ Review: Ambiguity" },
         abstract: "A precise review.",
@@ -54,6 +86,7 @@ test("normalise une critique NYT et refuse une URL étrangère", async () => {
   });
   assert.equal(review.label, "The New York Times");
   assert.equal(review.url, null);
+  assert.equal(review.match.certainty, "exact");
 });
 
 test("récupère les notes OMDb par identifiant IMDb", async () => {
