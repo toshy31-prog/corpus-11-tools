@@ -24,12 +24,14 @@ const resultsSection = document.querySelector("#results-section");
 const submitButton = document.querySelector("#submit-search");
 const submitLabel = submitButton.querySelector(".button-label");
 const understandingNode = document.querySelector("#understanding");
+const lensCountNode = document.querySelector("#lens-count");
 
 let preferences = loadPreferences();
 let connections = {};
 let diagnostics = {};
 let activeRequest = null;
 let requestSequence = 0;
+let surpriseMode = false;
 
 const sourceInputs = {
   tmdb: tokenInput,
@@ -230,18 +232,64 @@ function currentFilters() {
   return {
     minYear: document.querySelector("#min-year").value,
     maxYear: document.querySelector("#max-year").value,
-    minRating: document.querySelector("#min-rating").value,
-    minVotes: document.querySelector("#min-votes").value,
-    maxRuntime: document.querySelector("#max-runtime").value,
     effect: document.querySelector('input[name="effect"]:checked').value,
     timeBudget: document.querySelector('input[name="time-budget"]:checked').value,
     detour: document.querySelector('input[name="detour"]:checked').value,
-    sort: document.querySelector("#sort").value,
+    sort: surpriseMode ? "surprise" : "quality",
     hideSeen: document.querySelector("#hide-seen").checked,
     genres: [...document.querySelectorAll("#genres input:checked")].map((input) => Number(input.value)),
     lenses: [...document.querySelectorAll("#lenses input:checked")].map((input) => input.value),
     seen: preferences.seen
   };
+}
+
+function formState() {
+  const filters = currentFilters();
+  return {
+    wish: document.querySelector("#wish").value,
+    minYear: filters.minYear,
+    maxYear: filters.maxYear,
+    effect: filters.effect,
+    timeBudget: filters.timeBudget,
+    detour: filters.detour,
+    hideSeen: filters.hideSeen,
+    genres: filters.genres,
+    lenses: filters.lenses
+  };
+}
+
+function saveFormState() {
+  preferences.form = formState();
+  savePreferences();
+}
+
+function restoreFormState() {
+  const state = preferences.form;
+  if (!state) return;
+  document.querySelector("#wish").value = state.wish || "";
+  for (const id of ["min-year", "max-year"]) {
+    if (state[id.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())]) {
+      document.querySelector(`#${id}`).value = state[id.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())];
+    }
+  }
+  for (const [name, value] of [["effect", state.effect], ["time-budget", state.timeBudget], ["detour", state.detour]]) {
+    const input = document.querySelector(`input[name="${name}"][value="${CSS.escape(value || "")}"]`);
+    if (input) input.checked = true;
+  }
+  document.querySelector("#hide-seen").checked = state.hideSeen !== false;
+  const genres = new Set(state.genres || []);
+  for (const input of document.querySelectorAll("#genres input")) input.checked = genres.has(Number(input.value));
+  const lenses = new Set((state.lenses || []).slice(0, 2));
+  for (const input of document.querySelectorAll("#lenses input")) input.checked = lenses.has(input.value);
+}
+
+function updateLensAvailability() {
+  const inputs = [...document.querySelectorAll("#lenses input")];
+  const selected = inputs.filter((input) => input.checked);
+  for (const input of inputs) input.disabled = selected.length >= 2 && !input.checked;
+  if (lensCountNode) {
+    lensCountNode.textContent = `${selected.length}/2 angle${selected.length > 1 ? "s" : ""} sélectionné${selected.length > 1 ? "s" : ""}`;
+  }
 }
 
 function updateUnderstanding() {
@@ -258,14 +306,19 @@ function updateUnderstanding() {
   };
   const timeLabels = { short: "90 minutes maximum", standard: "2 heures maximum", ample: "3 heures maximum" };
   const detourLabels = {
-    faithful: "rester près de la demande",
-    sidestep: "introduire un pas de côté",
-    adventurous: "chercher franchement l’inattendu"
+    faithful: "classer quatre réponses proches",
+    sidestep: "équilibrer proximité et contraste",
+    adventurous: "maximiser les écarts entre les quatre films"
   };
+  const detourReach = { faithful: "5 zones du catalogue", sidestep: "8 zones du catalogue", adventurous: "12 zones du catalogue" };
+  const selectedLenses = [...document.querySelectorAll("#lenses input:checked")]
+    .map((input) => input.closest("label")?.querySelector("strong")?.textContent)
+    .filter(Boolean);
   const hasFreeText = Boolean(document.querySelector("#wish").value.trim());
   understandingNode.innerHTML = `
-    <strong>Ce que le Scout utilisera réellement</strong>
-    <p>${escapeHtml(effectLabels[effect])} · ${escapeHtml(timeLabels[timeBudget])} · ${escapeHtml(detourLabels[detour])}.</p>
+    <strong>Effet réel sur la sélection</strong>
+    <p>${escapeHtml(effectLabels[effect])} · ${escapeHtml(timeLabels[timeBudget])} · ${escapeHtml(detourLabels[detour])} · ${escapeHtml(detourReach[detour])}.</p>
+    ${selectedLenses.length ? `<p>Angles actifs : ${selectedLenses.map(escapeHtml).join(" + ")}.</p>` : ""}
     ${hasFreeText ? "<p>La précision libre sera testée contre le vocabulaire annoncé, sans prétendre à une compréhension générale.</p>" : ""}`;
 }
 
@@ -412,6 +465,7 @@ async function search(event) {
     return;
   }
   if (tokenInput.value.trim()) sessionStorage.setItem(tokenKey, tokenInput.value.trim());
+  saveFormState();
 
   const controller = new AbortController();
   activeRequest = controller;
@@ -471,27 +525,41 @@ async function init() {
     label.innerHTML = `<input type="checkbox" value="${escapeHtml(lens.id)}"><span><strong>${escapeHtml(lens.label)}</strong><small>${escapeHtml(lens.description)}</small></span>`;
     lensRoot.append(label);
   }
+  restoreFormState();
+  updateLensAvailability();
   updateMemoryCount();
   updateUnderstanding();
 }
 
 form.addEventListener("submit", search);
-form.addEventListener("change", updateUnderstanding);
+form.addEventListener("change", () => {
+  surpriseMode = false;
+  updateLensAvailability();
+  updateUnderstanding();
+  saveFormState();
+});
 saveSourcesButton.addEventListener("click", saveSources);
 clearSourcesButton.addEventListener("click", clearSources);
 runDiagnosticButton.addEventListener("click", runDiagnostic);
-document.querySelector("#wish").addEventListener("input", updateUnderstanding);
+document.querySelector("#wish").addEventListener("input", () => {
+  surpriseMode = false;
+  updateUnderstanding();
+});
 document.querySelector("#surprise").addEventListener("click", () => {
   document.querySelector("#wish").value = "Surprends-moi avec un film bien noté de moins de 2h10";
-  document.querySelector("#sort").value = "surprise";
   document.querySelector('input[name="effect"][value="open"]').checked = true;
   document.querySelector('input[name="detour"][value="adventurous"]').checked = true;
+  surpriseMode = true;
   updateUnderstanding();
   search();
 });
 document.querySelector("#oblique").addEventListener("click", () => {
   document.querySelector('input[name="detour"][value="adventurous"]').checked = true;
   for (const input of document.querySelectorAll("#lenses input")) input.checked = false;
+  const oblique = document.querySelector('#lenses input[value="oblique"]');
+  if (oblique) oblique.checked = true;
+  surpriseMode = false;
+  updateLensAvailability();
   updateUnderstanding();
   search();
 });
@@ -500,7 +568,7 @@ document.querySelector("#forget").addEventListener("click", () => {
   activeRequest?.abort();
   activeRequest = null;
   setSearchBusy(false);
-  preferences = { seen: [] };
+  preferences = { ...preferences, seen: [] };
   sessionStorage.removeItem(tokenKey);
   tokenInput.value = "";
   savePreferences();

@@ -1,7 +1,7 @@
 {
   "name": "mubi-film-scout",
   "private": true,
-  "version": "0.8.0",
+  "version": "0.9.0",
   "type": "module",
   "description": "Sélecteur local de films disponibles sur MUBI France.",
   "engines": {

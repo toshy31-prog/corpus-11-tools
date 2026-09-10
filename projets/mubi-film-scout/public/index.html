@@ -11,9 +11,10 @@
   <body>
     <header class="hero">
       <div class="brand"><span class="brand-dot"></span> MUBI FILM SCOUT</div>
-      <p class="eyebrow">Votre catalogue, enfin praticable</p>
-      <h1>Quel film mérite<br><em>votre soirée ?</em></h1>
-      <p class="intro">Cadrez votre soirée. Le Scout compose quatre propositions distinctes parmi les films disponibles avec l’abonnement MUBI en France.</p>
+      <div class="hero-copy">
+        <div><p class="eyebrow">Votre catalogue, enfin praticable</p><h1>Quel film mérite <em>votre soirée ?</em></h1></div>
+        <p class="intro">Trois décisions, quatre propositions réellement différentes parmi les films disponibles avec MUBI en France.</p>
+      </div>
     </header>
 
     <main>
@@ -56,9 +57,9 @@
               <fieldset class="composer-question">
                 <legend>Le programmateur peut…</legend>
                 <div class="choice-grid compact-choices">
-                  <label><input type="radio" name="detour" value="faithful"><span>Rester fidèle</span></label>
-                  <label><input type="radio" name="detour" value="sidestep" checked><span>Faire un pas de côté</span></label>
-                  <label><input type="radio" name="detour" value="adventurous"><span>Me désarçonner</span></label>
+                  <label><input type="radio" name="detour" value="faithful"><span>Rester fidèle<small>4 réponses proches</small></span></label>
+                  <label><input type="radio" name="detour" value="sidestep" checked><span>Faire un pas de côté<small>équilibre et contraste</small></span></label>
+                  <label><input type="radio" name="detour" value="adventurous"><span>Me désarçonner<small>écarts maximums</small></span></label>
                 </div>
               </fieldset>
             </div>
@@ -75,17 +76,6 @@
             <div class="filters">
               <label>De l’année <input id="min-year" type="number" min="1874" value="1900"></label>
               <label>à <input id="max-year" type="number" min="1874"></label>
-              <label>Note minimale <input id="min-rating" type="number" min="0" max="10" step="0.1" value="6.8"></label>
-              <label>Nombre de votes min. <input id="min-votes" type="number" min="0" max="1000000" value="40"></label>
-              <label>Durée max. personnalisée <input id="max-runtime" type="number" min="40" max="600" value="180"><span>min</span></label>
-              <label>Trier par
-                <select id="sort">
-                  <option value="quality">mieux notés</option>
-                  <option value="popular">popularité</option>
-                  <option value="recent">plus récents</option>
-                  <option value="surprise">surprise</option>
-                </select>
-              </label>
               <label class="toggle"><input id="hide-seen" type="checkbox" checked> Masquer les films déjà vus</label>
             </div>
             <fieldset>
@@ -93,9 +83,10 @@
               <div id="genres" class="genre-grid"></div>
             </fieldset>
             <fieldset class="lens-fieldset">
-              <legend>Angles de découverte — cumulables</legend>
-              <p class="field-hint">Ils recomposent la sélection à partir de plusieurs pages, puis expliquent pourquoi chaque film remonte.</p>
+              <legend>Angles de découverte — deux maximum</legend>
+              <p class="field-hint">Quatre biais compatibles et lisibles. La durée, la surprise et le contraste sont déjà pilotés ailleurs.</p>
               <div id="lenses" class="lens-grid"></div>
+              <p id="lens-count" class="lens-count" aria-live="polite">0/2 angle sélectionné</p>
             </fieldset>
           </details>
 

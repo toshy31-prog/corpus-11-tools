@@ -75,8 +75,8 @@ Le jeton de lecture se crée dans les paramètres du compte TMDB, rubrique API.
 - ajouter, si nécessaire, une précision courte comme `science-fiction après
   2010` : ce champ n’est pas un dialogue avec un LLM et son vocabulaire reconnu
   est annoncé dans l’interface ;
-- déplier les critères pour choisir période, note, durée, genres, lentilles et
-  tri ;
+- déplier les critères pour choisir une période, des genres et jusqu’à deux
+  angles de découverte ;
 - marquer un film comme déjà vu pour ne plus le revoir dans les sélections ;
 - utiliser « Surprends-moi » pour tirer une sélection ailleurs que sur la
   première page des résultats.
@@ -93,7 +93,7 @@ npm run doctor:live
 
 La seconde commande effectue un appel réel à chaque source configurée.
 
-## Lentilles cumulables
+## Réglages différentiels
 
 Les lentilles ne correspondent pas à des colonnes TMDB. Le Scout explore
 environ 100 titres en mode fidèle, 160 avec un pas de côté et jusqu’à 240 en
@@ -104,17 +104,20 @@ partir de plusieurs signaux, sans afficher de score global :
 - **Pépite cachée** : forte réception, faible visibilité ;
 - **Dépaysement** : langues originales moins familières ;
 - **Mémoire vive** : films anciens qui tiennent encore ;
-- **Film oblique** : genres rares et marqueurs formels atypiques ;
-- **Court et dense** : durée resserrée et bonne réception ;
-- **Accident heureux** : écart pseudo-aléatoire stable ;
-- **Grand écart** : diversité de l’ensemble par époque, langue et genre.
+- **Film oblique** : genres rares et marqueurs formels atypiques.
 
-Plusieurs lentilles peuvent être cochées ensemble. « Sélection oblique » active
-un préréglage associant pépite cachée, dépaysement, film oblique et grand écart.
-Chaque carte indique les raisons principales de sa présence. Le résultat final
-est limité à quatre films : le premier épouse la demande, le second la déplace,
-le troisième prend un risque défendable et le quatrième résiste à la logique
-dominante du programme.
+Deux lentilles au maximum peuvent être cochées ensemble. Les trois anciennes
+lentilles « Court et dense », « Accident heureux » et « Grand écart » ont été
+retirées de l’interface : leurs fonctions sont déjà assumées, respectivement,
+par le temps disponible, le bouton « Surprends-moi » et le niveau de détour.
+« Sélection oblique » active désormais le seul angle Film oblique et la liberté
+maximale, sans couplage caché.
+
+Le niveau de détour change la composition elle-même : fidèle conserve les
+quatre meilleures réponses du même couloir, le pas de côté équilibre proximité
+et contraste, et le mode aventureux cherche trois propositions plus profondes
+et éloignées. Les rôles affichés sur les quatre cartes changent en conséquence.
+Les choix du formulaire sont mémorisés localement pour la visite suivante.
 
 L’interface affiche toujours les contraintes effectivement appliquées. Les
 préférences qualitatives reconnues (par exemple « effets spéciaux »,
@@ -122,7 +125,7 @@ préférences qualitatives reconnues (par exemple « effets spéciaux »,
 résultats à partir des genres, mots-clés, popularité et budget connus par TMDB,
 mais ne constituent pas une garantie absolue.
 
-Les préférences et films vus restent uniquement dans le stockage local du
+Les réglages et films vus restent uniquement dans le stockage local du
 navigateur. Le bouton du pied de page efface aussi l’accès temporaire de
 l’onglet. L’effacement du coffre persistant se fait séparément dans le Centre
 des sources, après confirmation.
@@ -134,7 +137,8 @@ npm test
 npm run check
 ```
 
-Les tests n’appellent aucun service externe. Une recherche réelle nécessite un
+Les tests n’appellent aucun service externe. Ils parcourent notamment les 594
+combinaisons jouables des intentions, durées, détours et lentilles. Une recherche réelle nécessite un
 jeton TMDB et une connexion réseau. Le client Guardian gratuit est limité à un
 appel par seconde : le serveur sérialise donc ses recherches et met les réponses
 en cache pendant la session.

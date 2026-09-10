@@ -35,7 +35,7 @@ test("traduit les choix explicites de soirée en contraintes réelles", () => {
   }, 2026);
   assert.equal(filters.effect, "captivate");
   assert.equal(filters.maxRuntime, 90);
-  assert.deepEqual(filters.lenses, ["elsewhere", "oblique", "wildcard", "contrast"]);
+  assert.deepEqual(filters.lenses, []);
 });
 
 test("comprend une envie rédigée en français", () => {
@@ -143,7 +143,8 @@ test("utilise les genres TMDB bruts dans la présélection qualitative", () => {
 test("cumule plusieurs lentilles sans produire de score visible", () => {
   const mainstream = { id: 1, rating: 7.6, votes: 5000, popularity: 100, runtime: 160, releaseDate: "2024-01-01", originalLanguage: "en", genreIds: [28] };
   const hidden = { id: 2, rating: 8, votes: 60, popularity: 2, runtime: 82, releaseDate: "1980-01-01", originalLanguage: "ka", genreIds: [18, 36] };
-  const filters = normalizeFilters({ lenses: ["hidden-gem", "elsewhere", "short-dense"] }, 2026);
+  const filters = normalizeFilters({ lenses: ["hidden-gem", "elsewhere", "oblique"] }, 2026);
+  assert.deepEqual(filters.lenses, ["hidden-gem", "elsewhere"]);
   const selected = selectWithLenses([mainstream, hidden], filters, 2);
   assert.equal(selected[0].id, 2);
   assert.ok(selected[0].why.includes("Pépite cachée"));
@@ -164,20 +165,81 @@ test("ne présente pas un film francophone ou anglophone comme dépaysement", ()
   assert.ok(reasons.get("ja").includes("Dépaysement · JA"));
 });
 
-test("grand écart diversifie la sélection finale", () => {
+test("le niveau de détour change réellement la composition et ses rôles", () => {
   const movies = [
-    { id: 1, rating: 8, releaseDate: "2024-01-01", originalLanguage: "fr", genreIds: [18] },
-    { id: 2, rating: 7.9, releaseDate: "2023-01-01", originalLanguage: "fr", genreIds: [18] },
-    { id: 3, rating: 7.8, releaseDate: "1950-01-01", originalLanguage: "ja", genreIds: [878] }
+    { id: 1, rating: 8, releaseDate: "2024-01-01", originalLanguage: "fr", genreIds: [18], popularity: 90 },
+    { id: 2, rating: 7.9, releaseDate: "2023-01-01", originalLanguage: "fr", genreIds: [18], popularity: 80 },
+    { id: 3, rating: 7.8, releaseDate: "2022-01-01", originalLanguage: "fr", genreIds: [18], popularity: 70 },
+    { id: 4, rating: 7.8, releaseDate: "2021-01-01", originalLanguage: "en", genreIds: [18], popularity: 60 },
+    { id: 5, rating: 7.7, releaseDate: "1950-01-01", originalLanguage: "ja", genreIds: [878], popularity: 8 },
+    { id: 6, rating: 7.6, releaseDate: "1980-01-01", originalLanguage: "ka", genreIds: [99], popularity: 2 }
   ];
-  const selected = selectWithLenses(movies, normalizeFilters({ lenses: ["contrast"] }, 2026), 2);
-  assert.deepEqual(selected.map(({ id }) => id), [1, 3]);
-  assert.ok(selected[1].why.includes("Grand écart"));
+  const faithful = buildProgramme(movies, { detour: "faithful" });
+  const adventurous = buildProgramme(movies, { detour: "adventurous" });
+  assert.deepEqual(faithful.map(({ id }) => id), [1, 2, 3, 4]);
+  assert.notDeepEqual(adventurous.map(({ id }) => id), faithful.map(({ id }) => id));
+  assert.deepEqual(adventurous.map(({ role }) => role.id), ["anchor", "elsewhere", "break", "accident"]);
 });
 
-test("publie sept lentilles de découverte distinctes", () => {
-  assert.equal(LENSES.length, 7);
+test("ne publie que quatre lentilles indépendantes et en borne le cumul", () => {
+  assert.equal(LENSES.length, 4);
   assert.equal(new Set(LENSES.map(({ id }) => id)).size, LENSES.length);
+  assert.deepEqual(
+    normalizeFilters({ lenses: LENSES.map(({ id }) => id) }, 2026).lenses,
+    ["hidden-gem", "elsewhere"]
+  );
+});
+
+test("les six effets conduisent à six têtes de sélection distinctes", () => {
+  const movies = [
+    { id: 1, genreIds: [37], title: "Libre", keywords: [] },
+    { id: 2, genreIds: [53, 9648], title: "Tension", keywords: ["investigation", "hostage"] },
+    { id: 3, genreIds: [99, 18], title: "Silence", keywords: ["meditation", "nature"] },
+    { id: 4, genreIds: [35, 10751], title: "Chaleur", keywords: ["friendship", "feel-good"] },
+    { id: 5, genreIds: [27, 18], title: "Nuit", keywords: ["grief", "nightmare"] },
+    { id: 6, genreIds: [14, 878], title: "Songe spatial", keywords: ["dream", "space", "visual effects"], popularity: 90, budget: 90000000 }
+  ];
+  const heads = ["open", "captivate", "contemplate", "comfort", "shake", "wonder"].map((effect) => {
+    const qualitative = analyzeWish("", { effect }, 2026).qualitative;
+    return rankByQualitativePreferences(movies, qualitative)[0].id;
+  });
+  assert.deepEqual(heads, [1, 2, 3, 4, 5, 6]);
+});
+
+test("exécute la matrice complète des réglages jouables", () => {
+  const effects = ["open", "captivate", "contemplate", "comfort", "shake", "wonder"];
+  const times = ["short", "standard", "ample"];
+  const detours = ["faithful", "sidestep", "adventurous"];
+  const lensIds = LENSES.map(({ id }) => id);
+  const lensSets = [[], ...lensIds.map((id) => [id])];
+  for (let left = 0; left < lensIds.length; left += 1) {
+    for (let right = left + 1; right < lensIds.length; right += 1) lensSets.push([lensIds[left], lensIds[right]]);
+  }
+  const movies = Array.from({ length: 18 }, (_, index) => ({
+    id: index + 1,
+    title: `Film ${index + 1}`,
+    rating: 6.9 + (index % 8) / 10,
+    votes: 45 + index * 21,
+    popularity: 2 + index * 4,
+    runtime: 70 + (index % 6) * 20,
+    releaseDate: `${1950 + index * 4}-01-01`,
+    originalLanguage: ["fr", "en", "ja", "ka", "es", "ko"][index % 6],
+    genreIds: [[53, 9648], [99, 18], [35, 10751], [27, 18], [14, 878], [37]][index % 6],
+    keywords: [["suspense"], ["meditation"], ["friendship"], ["nightmare"], ["dream", "space"], []][index % 6]
+  }));
+  let combinations = 0;
+  for (const effect of effects) for (const timeBudget of times) for (const detour of detours) for (const lenses of lensSets) {
+    const filters = normalizeFilters({ effect, timeBudget, detour, lenses }, 2026);
+    const eligible = movies.filter((movie) => movie.runtime <= filters.maxRuntime);
+    const qualitative = analyzeWish("", filters, 2026).qualitative;
+    const ranked = rankByQualitativePreferences(eligible, qualitative);
+    const selected = selectWithLenses(ranked, filters, 12);
+    const programme = buildProgramme(selected, filters);
+    assert.equal(programme.length, 4);
+    assert.equal(new Set(programme.map(({ id }) => id)).size, 4);
+    combinations += 1;
+  }
+  assert.equal(combinations, 594);
 });
 
 test("compose quatre positions éditoriales distinctes", () => {

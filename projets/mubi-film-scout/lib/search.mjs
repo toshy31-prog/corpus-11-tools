@@ -39,21 +39,6 @@ export const LENSES = Object.freeze([
     id: "oblique",
     label: "Film oblique",
     description: "Cherche les mélanges de genres rares et les formes atypiques."
-  },
-  {
-    id: "short-dense",
-    label: "Court et dense",
-    description: "Privilégie les durées resserrées sans sacrifier la réception."
-  },
-  {
-    id: "wildcard",
-    label: "Accident heureux",
-    description: "Introduit un écart stable qui déjoue l’ordre attendu."
-  },
-  {
-    id: "contrast",
-    label: "Grand écart",
-    description: "Diversifie le programme par époque, langue et genre."
   }
 ]);
 
@@ -79,6 +64,22 @@ export const PROGRAM_ROLES = Object.freeze([
     description: "Le film qui résiste le mieux à la logique dominante du programme."
   }
 ]);
+
+const PROGRAM_ROLES_BY_DETOUR = Object.freeze({
+  faithful: [
+    { id: "match", label: "Le choix juste", description: "La réponse la plus nette à votre demande." },
+    { id: "near", label: "L’alternative proche", description: "La même promesse, avec une légère variation de ton." },
+    { id: "safe", label: "La valeur sûre", description: "Une autre proposition solide dans le même couloir." },
+    { id: "nuance", label: "La nuance", description: "Le bord de votre demande, sans changement de cap." }
+  ],
+  sidestep: PROGRAM_ROLES,
+  adventurous: [
+    { id: "anchor", label: "Le point d’ancrage", description: "Une proposition qui garde un lien clair avec votre demande." },
+    { id: "elsewhere", label: "L’autre territoire", description: "Le plus grand déplacement de langue, d’époque ou de forme." },
+    { id: "break", label: "La rupture", description: "Une seconde bifurcation, distincte des deux premières." },
+    { id: "accident", label: "L’accident heureux", description: "Le choix le moins prévisible que le programme puisse défendre." }
+  ]
+});
 
 const LENS_IDS = new Set(LENSES.map(({ id }) => id));
 const EFFECTS = new Set(["open", "captivate", "contemplate", "comfort", "shake", "wonder"]);
@@ -171,13 +172,8 @@ export function normalizeFilters(input = {}, nowYear = new Date().getFullYear())
   const effect = EFFECTS.has(input.effect) ? input.effect : "open";
   const timeBudget = TIME_BUDGETS.has(input.timeBudget) ? input.timeBudget : "ample";
   const detour = DETOURS.has(input.detour) ? input.detour : "faithful";
-  const selectedLenses = (Array.isArray(input.lenses) ? input.lenses : []).filter((lens) => LENS_IDS.has(lens));
-  const detourLenses = {
-    faithful: [],
-    sidestep: ["hidden-gem", "contrast"],
-    adventurous: ["elsewhere", "oblique", "wildcard", "contrast"]
-  }[detour];
-  const lenses = [...new Set([...selectedLenses, ...detourLenses])];
+  const lenses = [...new Set((Array.isArray(input.lenses) ? input.lenses : [])
+    .filter((lens) => LENS_IDS.has(lens)))].slice(0, 2);
   const requestedRuntime = Math.round(boundedNumber(input.maxRuntime, 180, 40, 600));
   const timeLimit = { short: 90, standard: 120, ample: 180 }[timeBudget];
 
@@ -333,17 +329,26 @@ export function rankByQualitativePreferences(movies, qualitative = []) {
         .filter(Boolean)
         .join(" ")
         .toLocaleLowerCase("fr-FR");
-      let score = -index * 0.05;
+      let score = -index * 0.025;
+      const reasons = [];
       for (const profile of QUALITATIVE_PROFILES) {
         if (!profileIds.has(profile.id)) continue;
-        score += profile.genres.filter((genre) => movieGenres(movie).includes(genre)).length * 2;
-        score += profile.keywords.filter((keyword) => haystack.includes(keyword)).length * 1.5;
+        const genreHits = profile.genres.filter((genre) => movieGenres(movie).includes(genre)).length;
+        const keywordHits = profile.keywords.filter((keyword) => haystack.includes(keyword)).length;
+        const profileScore = genreHits * 3 + keywordHits * 2;
+        score += profileScore;
+        if (profileScore >= 3) reasons.push(`Élan · ${profile.label}`);
         if (profile.id === "spectacle") {
           score += Math.log10(Math.max(1, movie.popularity || 1)) * 0.7;
           score += Math.log10(Math.max(1, movie.budget || 1)) * 0.35;
         }
       }
-      return { movie, score };
+      return {
+        movie: reasons.length
+          ? { ...movie, why: [...new Set([...(movie.why || []), ...reasons])].slice(0, 3) }
+          : movie,
+        score
+      };
     })
     .sort((a, b) => b.score - a.score)
     .map(({ movie }) => movie);
@@ -393,7 +398,6 @@ export function selectWithLenses(movies, filters, limit = 12) {
   const votes = normalizeValues(movies.map((movie) => Math.log10(1 + movieValue(movie, "votes", "vote_count"))));
   const popularities = normalizeValues(movies.map((movie) => Math.log10(1 + movieValue(movie, "popularity"))));
   const ages = normalizeValues(movies.map((movie) => Math.max(0, new Date().getFullYear() - movieYear(movie))));
-  const runtimes = normalizeValues(movies.map((movie) => movieValue(movie, "runtime") || filters.maxRuntime));
   const genreFrequency = new Map();
   for (const movie of movies) {
     for (const genre of movieGenres(movie)) genreFrequency.set(genre, (genreFrequency.get(genre) || 0) + 1);
@@ -422,12 +426,7 @@ export function selectWithLenses(movies, filters, limit = 12) {
       const formSignal = /experimental|surrealis|avant-garde|absurd|dream|essay film|magical realism/.test(keywords) ? 1 : 0;
       lensScores.push(["Film oblique", Math.min(1, rarity * 1.8 + formSignal * 0.55 + (1 - popularities[index]) * 0.2)]);
     }
-    if (active.has("short-dense")) {
-      lensScores.push(["Court et dense", (1 - runtimes[index]) * 0.55 + ratings[index] * 0.45]);
-    }
-    if (active.has("wildcard")) lensScores.push(["Accident heureux", stableNoise(movie.id)]);
-
-    const total = base + lensScores.reduce((sum, [, score]) => sum + score, 0);
+    const total = base * 0.7 + lensScores.reduce((sum, [, score]) => sum + score * 0.85, 0);
     const why = lensScores
       .filter(([, score]) => score >= 0.45)
       .sort((left, right) => right[1] - left[1])
@@ -436,23 +435,7 @@ export function selectWithLenses(movies, filters, limit = 12) {
     return { movie: { ...movie, why }, total };
   }).sort((left, right) => right.total - left.total);
 
-  if (!active.has("contrast")) return scored.slice(0, limit).map(({ movie }) => movie);
-  const selected = [];
-  const remaining = [...scored];
-  while (selected.length < limit && remaining.length) {
-    const nextIndex = selected.length === 0
-      ? 0
-      : remaining.reduce((bestIndex, candidate, index) => {
-          const diversity = Math.min(...selected.map((chosen) => distanceBetween(candidate.movie, chosen.movie)));
-          const best = remaining[bestIndex];
-          const bestDiversity = Math.min(...selected.map((chosen) => distanceBetween(best.movie, chosen.movie)));
-          return candidate.total + diversity * 1.15 > best.total + bestDiversity * 1.15 ? index : bestIndex;
-        }, 0);
-    const [next] = remaining.splice(nextIndex, 1);
-    if (selected.length) next.movie.why = [...next.movie.why, "Grand écart"].slice(0, 3);
-    selected.push(next);
-  }
-  return selected.map(({ movie }) => movie);
+  return scored.slice(0, limit).map(({ movie }) => movie);
 }
 
 function bestCandidateIndex(movies, score) {
@@ -461,7 +444,13 @@ function bestCandidateIndex(movies, score) {
   ), 0);
 }
 
-export function buildProgramme(movies, limit = PROGRAM_ROLES.length) {
+export function buildProgramme(movies, filters = {}, limit = PROGRAM_ROLES.length) {
+  if (typeof filters === "number") {
+    limit = filters;
+    filters = {};
+  }
+  const detour = DETOURS.has(filters.detour) ? filters.detour : "sidestep";
+  const roles = PROGRAM_ROLES_BY_DETOUR[detour];
   const remaining = movies.map((movie, sourceIndex) => ({ ...movie, sourceIndex }));
   const selected = [];
   const take = (index, role) => {
@@ -473,37 +462,54 @@ export function buildProgramme(movies, limit = PROGRAM_ROLES.length) {
   };
 
   if (!remaining.length || limit <= 0) return [];
-  take(0, PROGRAM_ROLES[0]);
+  take(0, roles[0]);
+
+  if (detour === "faithful") {
+    while (remaining.length && selected.length < limit) take(0, roles[selected.length]);
+    return selected.map(({ sourceIndex, ...movie }) => movie);
+  }
 
   if (remaining.length && selected.length < limit) {
     const anchor = selected[0];
     const index = bestCandidateIndex(remaining, (movie) => {
       const rankValue = 1 - movie.sourceIndex / Math.max(1, movies.length - 1);
-      return distanceBetween(anchor, movie) * 0.7 + rankValue * 0.3;
+      const depthValue = 1 - rankValue;
+      return detour === "adventurous"
+        ? distanceBetween(anchor, movie) * 0.72 + depthValue * 0.28
+        : distanceBetween(anchor, movie) * 0.45 + rankValue * 0.55;
     });
-    take(index, PROGRAM_ROLES[1]);
+    take(index, roles[1]);
   }
 
   if (remaining.length && selected.length < limit) {
     const popularity = normalizeValues(remaining.map((movie) => Math.log10(1 + movieValue(movie, "popularity"))));
     const index = bestCandidateIndex(remaining, (movie, candidateIndex) => {
       const rankValue = 1 - movie.sourceIndex / Math.max(1, movies.length - 1);
-      const discoverySignal = (movie.why || []).some((reason) => /Pépite|oblique|Accident/.test(reason)) ? 1 : 0;
-      return stableNoise(movie.id) * 0.4 + (1 - popularity[candidateIndex]) * 0.25 + discoverySignal * 0.2 + rankValue * 0.15;
+      const discoverySignal = (movie.why || []).some((reason) => /Pépite|oblique|Dépaysement/.test(reason)) ? 1 : 0;
+      if (detour === "adventurous") {
+        const separation = Math.min(...selected.map((chosen) => distanceBetween(chosen, movie)));
+        const depthValue = 1 - rankValue;
+        return separation * 0.45 + depthValue * 0.27 + (1 - popularity[candidateIndex]) * 0.16 + stableNoise(movie.id) * 0.12;
+      }
+      const outsideHead = movie.sourceIndex >= Math.min(4, movies.length - 1) ? 1 : 0;
+      return outsideHead * 0.38 + stableNoise(movie.id) * 0.14 + (1 - popularity[candidateIndex]) * 0.12 + discoverySignal * 0.16 + rankValue * 0.2;
     });
-    take(index, PROGRAM_ROLES[2]);
+    take(index, roles[2]);
   }
 
   if (remaining.length && selected.length < limit) {
     const index = bestCandidateIndex(remaining, (movie) => {
       const rankValue = 1 - movie.sourceIndex / Math.max(1, movies.length - 1);
+      const depthValue = 1 - rankValue;
       const averageDistance = selected.reduce((sum, chosen) => sum + distanceBetween(chosen, movie), 0) / selected.length;
-      return averageDistance * 0.8 + rankValue * 0.2;
+      return detour === "adventurous"
+        ? averageDistance * 0.4 + depthValue * 0.32 + stableNoise(movie.id) * 0.28
+        : averageDistance * 0.5 + rankValue * 0.5;
     });
-    take(index, PROGRAM_ROLES[3]);
+    take(index, roles[3]);
   }
 
-  return selected.slice(0, Math.min(limit, PROGRAM_ROLES.length)).map(({ sourceIndex, ...movie }) => movie);
+  return selected.slice(0, Math.min(limit, roles.length)).map(({ sourceIndex, ...movie }) => movie);
 }
 
 export function describeFilters(filters) {

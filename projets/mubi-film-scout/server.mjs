@@ -284,10 +284,11 @@ async function handleSearch(request, response) {
   }
   const verified = settled
     .filter(({ status, value }) => status === "fulfilled" && value)
-    .map(({ value }) => value);
+    .map(({ value }) => value)
+    .filter((movie) => !movie.runtime || movie.runtime <= filters.maxRuntime);
   const qualitativelyRanked = rankByQualitativePreferences(verified, qualitative);
   const ranked = selectWithLenses(qualitativelyRanked, filters, 12);
-  const programme = buildProgramme(ranked);
+  const programme = buildProgramme(ranked, filters);
   const externalKeys = Object.fromEntries(await Promise.all(
     ["guardian", "nyt", "omdb"].map(async (id) => [id, await connections.get(id)])
   ));

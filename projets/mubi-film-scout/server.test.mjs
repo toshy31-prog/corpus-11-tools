@@ -173,10 +173,11 @@ test("renvoie des films MUBI enrichis et signale une vérification partielle", a
     if (url.pathname === "/discover/movie") return json(response, {
       page: 1,
       total_pages: 1,
-      total_results: 2,
+      total_results: 3,
       results: [
         { id: 101, title: "Le calme", original_title: "Le calme", overview: "", release_date: "2020-01-01", vote_average: 7.2, vote_count: 100, genre_ids: [18], popularity: 2 },
-        { id: 102, title: "Erreur", original_title: "Erreur", overview: "", release_date: "2021-01-01", vote_average: 7.4, vote_count: 100, genre_ids: [878], popularity: 20 }
+        { id: 102, title: "Erreur", original_title: "Erreur", overview: "", release_date: "2021-01-01", vote_average: 7.4, vote_count: 100, genre_ids: [878], popularity: 20 },
+        { id: 103, title: "Trop long", original_title: "Trop long", overview: "", release_date: "2019-01-01", vote_average: 7.3, vote_count: 100, genre_ids: [18], popularity: 3 }
       ]
     });
     if (url.pathname === "/movie/101") return json(response, {
@@ -186,11 +187,23 @@ test("renvoie des films MUBI enrichis et signale une vérification partielle", a
       release_date: "2020-01-01",
       vote_average: 7.2,
       vote_count: 100,
+      runtime: 80,
       poster_path: "/poster.jpg",
       keywords: { keywords: [{ name: "meditation" }] },
       "watch/providers": { results: { FR: { link: "https://www.themoviedb.org/movie/101/watch?locale=FR", flatrate: [{ provider_id: 11 }] } } }
     });
     if (url.pathname === "/movie/102") return json(response, { status_message: "temporary" }, 503);
+    if (url.pathname === "/movie/103") return json(response, {
+      id: 103,
+      title: "Trop long",
+      original_title: "Trop long",
+      release_date: "2019-01-01",
+      vote_average: 7.3,
+      vote_count: 100,
+      runtime: 110,
+      keywords: { keywords: [] },
+      "watch/providers": { results: { FR: { link: "https://www.themoviedb.org/movie/103/watch?locale=FR", flatrate: [{ provider_id: 11 }] } } }
+    });
     return json(response, {}, 404);
   });
   t.after(() => fixture.close());
@@ -209,8 +222,7 @@ test("renvoie des films MUBI enrichis et signale une vérification partielle", a
   assert.equal(payload.movies[0].id, 101);
   assert.equal(payload.movies[0].role.id, "match");
   assert.ok(payload.applied.some((label) => label.startsWith("≈")));
-  assert.ok(payload.applied.includes("↗ Pépite cachée"));
-  assert.ok(payload.applied.includes("↗ Grand écart"));
+  assert.equal(payload.applied.some((label) => label.startsWith("↗")), false);
   assert.equal(payload.filters.effect, "captivate");
   assert.equal(payload.filters.maxRuntime, 90);
   assert.ok(Array.isArray(payload.movies[0].why));
