@@ -11,6 +11,8 @@ let activeView = "perspectives";
 let activeActor = Object.keys(campaign.actors)[0];
 let actionFilter = "all";
 let sourceError = null;
+let lastIssues = [];
+let validationTimer = null;
 
 function restoreDraft() {
   try {
@@ -43,7 +45,7 @@ function bindField(selector, path, transform = (value) => value, rerender = fals
   const input = $(selector);
   if (!input) return;
   input.addEventListener("input", () => {
-    setAtPath(campaign, path, transform(input.value)); sourceError = null; persist(); renderDiagnostics(); renderStats();
+    setAtPath(campaign, path, transform(input.value)); sourceError = null; changed();
   });
   if (rerender) input.addEventListener("change", renderWorkbench);
 }
@@ -61,7 +63,7 @@ function bindIdentity() {
 }
 
 function renderStats() {
-  const summary = summarizeCampaign(campaign);
+  const summary = summarizeCampaign(campaign, lastIssues);
   $("#campaign-stats").innerHTML = [
     [summary.actors, "positions"], [summary.actions, "actions"], [summary.knowledge, "savoirs"], [summary.events, "seuils"],
   ].map(([value, label]) => `<div class="stat"><strong>${value}</strong><span>${label}</span></div>`).join("");
@@ -69,10 +71,11 @@ function renderStats() {
 
 function renderDiagnostics() {
   const issues = sourceError ? [{ level: "error", code: "JSON_PARSE", path: "campaign", message: sourceError }] : validateCampaign(campaign);
+  lastIssues = issues;
   const errors = issues.filter((item) => item.level === "error").length;
   const warnings = issues.filter((item) => item.level === "warning").length;
   $("#validation-summary").innerHTML = `<div class="validation-count error"><strong>${errors}</strong><span>erreur${errors === 1 ? "" : "s"}</span></div><div class="validation-count warning"><strong>${warnings}</strong><span>alerte${warnings === 1 ? "" : "s"}</span></div>`;
-  $("#diagnostics-list").innerHTML = issues.length ? issues.map((item) => `<article class="diagnostic" style="--level:${item.level === "error" ? "#b84e42" : "#d7a83d"}"><strong>${item.code}</strong><code>${escapeHtml(item.path)}</code><p>${escapeHtml(item.message)}</p></article>`).join("") : `<div class="all-clear"><strong>Structure exécutable.</strong><br>Références, relais et effets déclaratifs sont cohérents. L'accessibilité reste une surapproximation, pas une preuve de solvabilité.</div>`;
+  $("#diagnostics-list").innerHTML = issues.length ? issues.map((item) => `<article class="diagnostic" style="--level:${item.level === "error" ? "#b84e42" : "#d7a83d"}"><strong>${item.code}</strong><code>${escapeHtml(item.path)}</code><p>${escapeHtml(item.message)}</p></article>`).join("") : `<div class="all-clear"><strong>Structure et parcours cohérents.</strong><br>Références, relais et effets sont valides ; chaque action apparaît dans au moins une branche jouable avant l'échéance.</div>`;
 }
 
 function perspectiveView() {
@@ -141,7 +144,12 @@ function renderWorkbench() {
   bindWorkbench();
 }
 
-function changed() { sourceError = null; persist(); renderDiagnostics(); renderStats(); }
+function changed() {
+  sourceError = null;
+  persist();
+  clearTimeout(validationTimer);
+  validationTimer = setTimeout(() => { renderDiagnostics(); renderStats(); }, 140);
+}
 
 function bindWorkbench() {
   document.querySelectorAll("[data-actor]").forEach((button) => button.addEventListener("click", () => { activeActor = button.dataset.actor; renderWorkbench(); }));
@@ -162,7 +170,7 @@ function bindWorkbench() {
     campaign.actions[Number(input.dataset.actionIndex)][input.dataset.actionField] = value; changed(); renderWorkbench();
   }));
   $("#apply-source")?.addEventListener("click", () => {
-    try { campaign = JSON.parse($("#source-editor").value); sourceError = null; persist(); renderIdentity(); renderStats(); renderDiagnostics(); renderWorkbench(); }
+    try { campaign = JSON.parse($("#source-editor").value); sourceError = null; persist(); renderIdentity(); renderDiagnostics(); renderStats(); renderWorkbench(); }
     catch (error) { sourceError = error.message; renderDiagnostics(); }
   });
   $("#format-source")?.addEventListener("click", () => {
@@ -172,7 +180,7 @@ function bindWorkbench() {
 }
 
 function render() {
-  renderIdentity(); renderStats(); renderDiagnostics(); renderWorkbench();
+  renderIdentity(); renderDiagnostics(); renderStats(); renderWorkbench();
   if (localStorage.getItem(storageKey(campaign))) { $("#draft-status").textContent = "brouillon local"; $("#draft-status").classList.add("is-dirty"); }
 }
 
@@ -182,7 +190,10 @@ document.querySelectorAll("[data-view]").forEach((button) => button.addEventList
   renderWorkbench();
 }));
 
-$("#validate-button").addEventListener("click", () => { renderDiagnostics(); $("#diagnostics-list").scrollTo({ top: 0, behavior: "smooth" }); });
+$("#validate-button").addEventListener("click", () => {
+  clearTimeout(validationTimer); renderDiagnostics(); renderStats();
+  $("#diagnostics-list").scrollTo({ top: 0, behavior: "smooth" });
+});
 $("#export-button").addEventListener("click", () => {
   const blob = new Blob([JSON.stringify(campaign, null, 2)], { type: "application/json" });
   const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `${campaign.id || "campaign"}.campaign.json`; link.click(); URL.revokeObjectURL(link.href);

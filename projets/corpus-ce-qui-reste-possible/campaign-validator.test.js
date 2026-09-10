@@ -10,10 +10,36 @@ test("Sereine passes declarative validation without errors", () => {
   assert.deepEqual(errors, []);
 });
 
-test("the reachability result names its over-approximation", () => {
+test("the reachability result explores branches and time", () => {
   const result = analyzeReachability(campaign);
   assert.deepEqual(result.unreachable, []);
-  assert.equal(result.method, "positive fixed-point over-approximation");
+  assert.equal(result.method, "bounded branch-and-time exploration");
+  assert.equal(result.truncated, false);
+  assert.ok(result.exploredStates > 1);
+});
+
+test("mutually exclusive choices cannot unlock an impossible conjunction", () => {
+  const exclusive = structuredClone(campaign);
+  exclusive.deadline = 4;
+  exclusive.timeline = [{ id: "end", hour: 4, label: "Fin", when: "Bientôt", irreversible: false, endCampaign: true }];
+  exclusive.actions = [
+    { id: "choose-x", actor: "ina", verb: "Choisir", title: "Choisir X", description: "Ferme Y.", duration: 1, requires: { notWorld: ["recordsDistributed"] }, grants: { world: ["recordsCompared"] } },
+    { id: "choose-y", actor: "ina", verb: "Choisir", title: "Choisir Y", description: "Ferme X.", duration: 1, requires: { notWorld: ["recordsCompared"] }, grants: { world: ["recordsDistributed"] } },
+    { id: "need-both", actor: "ina", verb: "Cumuler", title: "Exiger les deux", description: "Cette action doit rester impossible.", duration: 1, requires: { world: ["recordsCompared", "recordsDistributed"] } },
+  ];
+  const result = analyzeReachability(exclusive);
+  assert.deepEqual(result.unreachable, ["need-both"]);
+  assert.equal(result.truncated, false);
+});
+
+test("the exploration respects the deadline", () => {
+  const timed = structuredClone(campaign);
+  timed.deadline = 2;
+  timed.timeline = [{ id: "end", hour: 2, label: "Fin", when: "Bientôt", irreversible: false, endCampaign: true }];
+  timed.actions = [
+    { id: "slow", actor: "ina", verb: "Attendre", title: "Trop lent", description: "Dépasse le temps disponible.", duration: 3 },
+  ];
+  assert.deepEqual(analyzeReachability(timed).unreachable, ["slow"]);
 });
 
 test("cross-position knowledge without a relay is rejected", () => {

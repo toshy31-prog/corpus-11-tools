@@ -1040,51 +1040,135 @@ function walkKeys(value, visit, path = "campaign") {
 }
 
 function analyzeReachability(campaign) {
-  const actors = campaign.actors || {};
-  const known = Object.fromEntries(Object.entries(actors).map(([id, actor]) => [id, new Set(actor.initialKnowledge || [])]));
-  const world = new Set();
-  const reached = new Set();
-  let changed = true;
+  const actorIds = Object.keys(campaign.actors || {});
+  const actions = campaign.actions || [];
+  const limit = 100000;
+  const initial = {
+    elapsed: 0,
+    ended: false,
+    world: new Set(),
+    known: Object.fromEntries(actorIds.map((id) => [id, new Set(campaign.actors[id].initialKnowledge || [])])),
+    completed: new Set(),
+    scheduled: [],
+    events: new Set(),
+  };
 
-  while (changed) {
-    changed = false;
-    for (const action of campaign.actions || []) {
-      if (reached.has(action.id) || !known[action.actor]) continue;
-      const requires = action.requires || {};
-      const hasKnowledge = (requires.knowledge || []).every((fact) => known[action.actor].has(fact));
-      const hasAnyKnowledge = !(requires.anyKnowledge || []).length
-        || requires.anyKnowledge.some((fact) => known[action.actor].has(fact));
-      const hasWorld = (requires.world || []).every((flag) => world.has(flag));
-      if (!hasKnowledge || !hasAnyKnowledge || !hasWorld) continue;
-
-      reached.add(action.id);
-      changed = true;
-      for (const flag of action.grants?.world || []) world.add(flag);
-      for (const grant of action.grants?.knowledge || []) known[grant.actor]?.add(grant.fact);
-      for (const relay of action.relays || []) known[relay.to]?.add(relay.fact);
-      for (const conditional of action.conditionalGrants || []) {
-        for (const flag of conditional.grants?.world || []) world.add(flag);
-        for (const grant of conditional.grants?.knowledge || []) known[grant.actor]?.add(grant.fact);
-        for (const relay of conditional.relays || []) known[relay.to]?.add(relay.fact);
+  const copy = (state) => ({
+    elapsed: state.elapsed,
+    ended: state.ended,
+    world: new Set(state.world),
+    known: Object.fromEntries(actorIds.map((id) => [id, new Set(state.known[id])])),
+    completed: new Set(state.completed),
+    scheduled: state.scheduled.map((item) => ({ ...item })),
+    events: new Set(state.events),
+  });
+  const conditionsHold = (state, requirements = {}, actor) => (
+    (requirements.knowledge || []).every((fact) => state.known[actor]?.has(fact))
+    && (requirements.notKnowledge || []).every((fact) => !state.known[actor]?.has(fact))
+    && (!(requirements.anyKnowledge || []).length || requirements.anyKnowledge.some((fact) => state.known[actor]?.has(fact)))
+    && (requirements.world || []).every((flag) => state.world.has(flag))
+    && (requirements.notWorld || []).every((flag) => !state.world.has(flag))
+    && (!(requirements.anyWorld || []).length || requirements.anyWorld.some((flag) => state.world.has(flag)))
+  );
+  const duration = (action, state) => {
+    const variant = (action.durationVariants || []).find((candidate) => (
+      (candidate.whenWorld || []).every((flag) => state.world.has(flag))
+      && (candidate.unlessWorld || []).every((flag) => !state.world.has(flag))
+    ));
+    return variant?.duration ?? action.duration;
+  };
+  const applyConsequences = (state, node, actor) => {
+    for (const flag of node.grants?.world || []) state.world.add(flag);
+    for (const flag of node.clears?.world || []) state.world.delete(flag);
+    for (const grant of node.grants?.knowledge || []) state.known[grant.actor]?.add(grant.fact);
+    for (const relay of node.relays || []) state.known[relay.to]?.add(relay.fact);
+    for (const conditional of node.conditionalGrants || []) {
+      if (conditionsHold(state, conditional.when, actor)) executeNode(state, conditional, actor);
+    }
+    if (node.cancelsScheduledFrom?.length) {
+      state.scheduled = state.scheduled.filter((item) => !node.cancelsScheduledFrom.includes(item.sourceAction));
+    }
+    for (const [index, scheduled] of (node.scheduled || []).entries()) {
+      if (scheduled.scheduleWhen && !conditionsHold(state, scheduled.scheduleWhen, actor)) continue;
+      state.scheduled.push({ at: state.elapsed + scheduled.after, actor, sourceAction: node.id, index, spec: scheduled });
+    }
+  };
+  const executeNode = (state, node, actor) => {
+    if (node.when && !conditionsHold(state, node.when, actor)) return;
+    applyConsequences(state, node, actor);
+    const branch = (node.branches || []).find((candidate) => !candidate.when || conditionsHold(state, candidate.when, actor));
+    if (branch) executeNode(state, branch, actor);
+  };
+  const advance = (state, amount, completedAction = null) => {
+    const from = state.elapsed;
+    const to = Math.min(campaign.deadline, from + amount);
+    const points = [...new Set([
+      ...state.scheduled.filter((item) => from < item.at && item.at <= to).map((item) => item.at),
+      ...(campaign.timeline || []).filter((event) => from < event.hour && event.hour <= to).map((event) => event.hour),
+      to,
+    ])].sort((a, b) => a - b);
+    let cursor = from;
+    for (const point of points) {
+      state.elapsed = point;
+      for (const item of state.scheduled.filter((candidate) => cursor < candidate.at && candidate.at <= point).sort((a, b) => a.at - b.at)) {
+        executeNode(state, item.spec, item.actor);
       }
-      for (const scheduled of action.scheduled || []) {
-        for (const flag of scheduled.grants?.world || []) world.add(flag);
-        for (const grant of scheduled.grants?.knowledge || []) known[grant.actor]?.add(grant.fact);
-        for (const relay of scheduled.relays || []) known[relay.to]?.add(relay.fact);
-        for (const branch of scheduled.branches || []) {
-          for (const flag of branch.grants?.world || []) world.add(flag);
-          for (const grant of branch.grants?.knowledge || []) known[grant.actor]?.add(grant.fact);
-          for (const relay of branch.relays || []) known[relay.to]?.add(relay.fact);
-        }
+      state.scheduled = state.scheduled.filter((item) => item.at > point);
+      if (point === to && completedAction) executeNode(state, completedAction, completedAction.actor);
+      for (const event of (campaign.timeline || []).filter((candidate) => cursor < candidate.hour && candidate.hour <= point && !state.events.has(candidate.id))) {
+        state.events.add(event.id);
+        executeNode(state, event, campaign.initialPerspective);
+        if (event.endCampaign) state.ended = true;
+      }
+      cursor = point;
+    }
+  };
+  const keyOf = (state) => JSON.stringify([
+    state.elapsed,
+    state.ended,
+    [...state.world].sort(),
+    actorIds.map((id) => [id, [...state.known[id]].sort()]),
+    [...state.completed].sort(),
+    state.scheduled.map((item) => [item.at, item.sourceAction, item.index]).sort(),
+    [...state.events].sort(),
+  ]);
+
+  const reached = new Set();
+  const queue = [initial];
+  const visited = new Set([keyOf(initial)]);
+  let truncated = false;
+  while (queue.length) {
+    const state = queue.shift();
+    const available = actions.filter((action) => (
+      !state.ended
+      && !state.completed.has(action.id)
+      && conditionsHold(state, action.requires, action.actor)
+      && state.elapsed + duration(action, state) <= campaign.deadline
+    ));
+    for (const action of available) reached.add(action.id);
+    if (reached.size === actions.length) break;
+    for (const action of available) {
+      const next = copy(state);
+      next.completed.add(action.id);
+      advance(next, duration(action, next), action);
+      const key = keyOf(next);
+      if (visited.has(key)) continue;
+      visited.add(key);
+      queue.push(next);
+      if (visited.size >= limit) {
+        truncated = true;
+        queue.length = 0;
+        break;
       }
     }
   }
   return {
     reached,
-    unreachable: (campaign.actions || []).filter((action) => !reached.has(action.id)).map((action) => action.id),
-    known,
-    world,
-    method: "positive fixed-point over-approximation",
+    unreachable: truncated ? [] : actions.filter((action) => !reached.has(action.id)).map((action) => action.id),
+    unresolved: truncated ? actions.filter((action) => !reached.has(action.id)).map((action) => action.id) : [],
+    exploredStates: visited.size,
+    truncated,
+    method: "bounded branch-and-time exploration",
   };
 }
 
@@ -1196,9 +1280,13 @@ function validateCampaign(campaign) {
     if (forbidden.has(key)) issues.push(issue("error", "GLOBAL_SCORE", path, "Le format ne doit pas réintroduire un score global."));
   });
 
+  if (issues.some((item) => item.level === "error")) return issues;
   const reachability = analyzeReachability(campaign);
+  if (reachability.truncated) {
+    issues.push(issue("warning", "REACHABILITY_LIMIT", "campaign.actions", `Exploration interrompue après ${reachability.exploredStates} états ; ${reachability.unresolved.length} action(s) restent indéterminées.`));
+  }
   for (const actionId of reachability.unreachable) {
-    issues.push(issue("warning", "UNREACHABLE_ACTION", `campaign.actions.${actionId}`, "La surapproximation déclarative ne trouve aucun enchaînement ouvrant cette action."));
+    issues.push(issue("warning", "UNREACHABLE_ACTION", `campaign.actions.${actionId}`, "Aucune branche jouable ne rend cette action accessible dans le temps imparti."));
   }
   return issues;
 }
@@ -1224,6 +1312,8 @@ let activeView = "perspectives";
 let activeActor = Object.keys(campaign.actors)[0];
 let actionFilter = "all";
 let sourceError = null;
+let lastIssues = [];
+let validationTimer = null;
 
 function restoreDraft() {
   try {
@@ -1256,7 +1346,7 @@ function bindField(selector, path, transform = (value) => value, rerender = fals
   const input = $(selector);
   if (!input) return;
   input.addEventListener("input", () => {
-    setAtPath(campaign, path, transform(input.value)); sourceError = null; persist(); renderDiagnostics(); renderStats();
+    setAtPath(campaign, path, transform(input.value)); sourceError = null; changed();
   });
   if (rerender) input.addEventListener("change", renderWorkbench);
 }
@@ -1274,7 +1364,7 @@ function bindIdentity() {
 }
 
 function renderStats() {
-  const summary = summarizeCampaign(campaign);
+  const summary = summarizeCampaign(campaign, lastIssues);
   $("#campaign-stats").innerHTML = [
     [summary.actors, "positions"], [summary.actions, "actions"], [summary.knowledge, "savoirs"], [summary.events, "seuils"],
   ].map(([value, label]) => `<div class="stat"><strong>${value}</strong><span>${label}</span></div>`).join("");
@@ -1282,10 +1372,11 @@ function renderStats() {
 
 function renderDiagnostics() {
   const issues = sourceError ? [{ level: "error", code: "JSON_PARSE", path: "campaign", message: sourceError }] : validateCampaign(campaign);
+  lastIssues = issues;
   const errors = issues.filter((item) => item.level === "error").length;
   const warnings = issues.filter((item) => item.level === "warning").length;
   $("#validation-summary").innerHTML = `<div class="validation-count error"><strong>${errors}</strong><span>erreur${errors === 1 ? "" : "s"}</span></div><div class="validation-count warning"><strong>${warnings}</strong><span>alerte${warnings === 1 ? "" : "s"}</span></div>`;
-  $("#diagnostics-list").innerHTML = issues.length ? issues.map((item) => `<article class="diagnostic" style="--level:${item.level === "error" ? "#b84e42" : "#d7a83d"}"><strong>${item.code}</strong><code>${escapeHtml(item.path)}</code><p>${escapeHtml(item.message)}</p></article>`).join("") : `<div class="all-clear"><strong>Structure exécutable.</strong><br>Références, relais et effets déclaratifs sont cohérents. L'accessibilité reste une surapproximation, pas une preuve de solvabilité.</div>`;
+  $("#diagnostics-list").innerHTML = issues.length ? issues.map((item) => `<article class="diagnostic" style="--level:${item.level === "error" ? "#b84e42" : "#d7a83d"}"><strong>${item.code}</strong><code>${escapeHtml(item.path)}</code><p>${escapeHtml(item.message)}</p></article>`).join("") : `<div class="all-clear"><strong>Structure et parcours cohérents.</strong><br>Références, relais et effets sont valides ; chaque action apparaît dans au moins une branche jouable avant l'échéance.</div>`;
 }
 
 function perspectiveView() {
@@ -1354,7 +1445,12 @@ function renderWorkbench() {
   bindWorkbench();
 }
 
-function changed() { sourceError = null; persist(); renderDiagnostics(); renderStats(); }
+function changed() {
+  sourceError = null;
+  persist();
+  clearTimeout(validationTimer);
+  validationTimer = setTimeout(() => { renderDiagnostics(); renderStats(); }, 140);
+}
 
 function bindWorkbench() {
   document.querySelectorAll("[data-actor]").forEach((button) => button.addEventListener("click", () => { activeActor = button.dataset.actor; renderWorkbench(); }));
@@ -1375,7 +1471,7 @@ function bindWorkbench() {
     campaign.actions[Number(input.dataset.actionIndex)][input.dataset.actionField] = value; changed(); renderWorkbench();
   }));
   $("#apply-source")?.addEventListener("click", () => {
-    try { campaign = JSON.parse($("#source-editor").value); sourceError = null; persist(); renderIdentity(); renderStats(); renderDiagnostics(); renderWorkbench(); }
+    try { campaign = JSON.parse($("#source-editor").value); sourceError = null; persist(); renderIdentity(); renderDiagnostics(); renderStats(); renderWorkbench(); }
     catch (error) { sourceError = error.message; renderDiagnostics(); }
   });
   $("#format-source")?.addEventListener("click", () => {
@@ -1385,7 +1481,7 @@ function bindWorkbench() {
 }
 
 function render() {
-  renderIdentity(); renderStats(); renderDiagnostics(); renderWorkbench();
+  renderIdentity(); renderDiagnostics(); renderStats(); renderWorkbench();
   if (localStorage.getItem(storageKey(campaign))) { $("#draft-status").textContent = "brouillon local"; $("#draft-status").classList.add("is-dirty"); }
 }
 
@@ -1395,7 +1491,10 @@ document.querySelectorAll("[data-view]").forEach((button) => button.addEventList
   renderWorkbench();
 }));
 
-$("#validate-button").addEventListener("click", () => { renderDiagnostics(); $("#diagnostics-list").scrollTo({ top: 0, behavior: "smooth" }); });
+$("#validate-button").addEventListener("click", () => {
+  clearTimeout(validationTimer); renderDiagnostics(); renderStats();
+  $("#diagnostics-list").scrollTo({ top: 0, behavior: "smooth" });
+});
 $("#export-button").addEventListener("click", () => {
   const blob = new Blob([JSON.stringify(campaign, null, 2)], { type: "application/json" });
   const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `${campaign.id || "campaign"}.campaign.json`; link.click(); URL.revokeObjectURL(link.href);

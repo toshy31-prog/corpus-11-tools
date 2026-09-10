@@ -39,6 +39,7 @@ auprès de joueuses et joueurs différents.
 
 Les conséquences jouables sont interprétées depuis la campagne. Les textes de
 résultat propres à Sereine, ses quatre illustrations et le bilan final restent
-spécialisés. L'analyse d'accessibilité est une surapproximation positive : elle
-peut prouver qu'aucun chemin déclaratif simple n'est trouvé, mais ne prouve pas
-qu'une trajectoire complète est réalisable dans le temps imparti.
+spécialisés. L'analyse d'accessibilité explore les branches, les conditions
+négatives, les effets différés et le temps. Elle annonce explicitement si sa
+limite de calcul est atteinte au lieu de déclarer les actions restantes
+impossibles.
