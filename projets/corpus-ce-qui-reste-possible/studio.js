@@ -41,6 +41,27 @@ function setAtPath(target, path, value) {
   cursor[key] = value;
 }
 
+function uniqueId(prefix, existing) {
+  let index = 1;
+  let candidate = `${prefix}-${index}`;
+  while (existing.includes(candidate)) candidate = `${prefix}-${++index}`;
+  return candidate;
+}
+
+function compactJson(value, fallback) {
+  return escapeHtml(JSON.stringify(value ?? fallback));
+}
+
+function countActorReferences(value, actorId) {
+  if (!value || typeof value !== "object") return 0;
+  let count = 0;
+  for (const [key, child] of Object.entries(value)) {
+    if (["actor", "from", "to", "holder"].includes(key) && child === actorId) count += 1;
+    else count += countActorReferences(child, actorId);
+  }
+  return count;
+}
+
 function bindField(selector, path, transform = (value) => value, rerender = false) {
   const input = $(selector);
   if (!input) return;
@@ -82,7 +103,7 @@ function perspectiveView() {
   if (!campaign.actors[activeActor]) activeActor = Object.keys(campaign.actors)[0];
   const actor = campaign.actors[activeActor];
   return `<div class="actor-editor-grid">
-    <div class="actor-picker">${Object.entries(campaign.actors).map(([id, item]) => `<button class="actor-pick ${id === activeActor ? "is-active" : ""}" style="--color:${escapeHtml(item.color)}" data-actor="${id}"><strong>${escapeHtml(item.name)}</strong><span>${escapeHtml(item.role)}</span></button>`).join("")}</div>
+    <div class="actor-picker">${Object.entries(campaign.actors).map(([id, item]) => `<button class="actor-pick ${id === activeActor ? "is-active" : ""}" style="--color:${escapeHtml(item.color)}" data-actor="${id}"><strong>${escapeHtml(item.name)}</strong><span>${escapeHtml(item.role)}</span></button>`).join("")}<button class="add-card" data-add-actor type="button">+ Nouvelle position</button></div>
     <div class="actor-form">
       <label class="editor-field">Nom<input data-actor-field="name" value="${escapeHtml(actor.name)}"></label>
       <label class="editor-field">Couleur<input data-actor-field="color" type="color" value="${escapeHtml(actor.color)}"></label>
@@ -90,17 +111,18 @@ function perspectiveView() {
       <label class="editor-field">Lieu<input data-actor-field="place" value="${escapeHtml(actor.place)}"></label>
       <label class="editor-field wide">Nom de la scène<input data-actor-field="scene" value="${escapeHtml(actor.scene)}"></label>
       <div class="editor-field wide">Savoirs présents au départ<div class="knowledge-checks">${Object.entries(campaign.knowledge).map(([id, text]) => `<label class="knowledge-check"><input type="checkbox" data-knowledge="${id}" ${actor.initialKnowledge.includes(id) ? "checked" : ""}><span><strong>${escapeHtml(id)}</strong><br>${escapeHtml(text)}</span></label>`).join("")}</div></div>
+      <button class="studio-text danger wide" data-delete-actor="${activeActor}" type="button">Supprimer cette position</button>
     </div>
   </div>`;
 }
 
 function timelineView() {
   const deadline = Math.max(1, campaign.deadline || 1);
-  return `<div class="timeline-editor">${campaign.timeline.map((event, index) => `<div class="timeline-row">
+  return `<div class="view-actions"><button class="studio-button" data-add-event type="button">+ Ajouter un seuil</button></div><div class="timeline-editor">${campaign.timeline.map((event, index) => `<div class="timeline-row">
     <label class="editor-field">Heure<input type="number" min="0" max="${deadline}" data-event="${index}" data-event-field="hour" value="${event.hour}"></label>
     <label class="editor-field">Nom<input data-event="${index}" data-event-field="label" value="${escapeHtml(event.label)}"></label>
     <label class="editor-field">Affichage<input data-event="${index}" data-event-field="when" value="${escapeHtml(event.when)}"></label>
-    <label class="knowledge-check"><input type="checkbox" data-event="${index}" data-event-field="irreversible" ${event.irreversible ? "checked" : ""}> Irréversible</label>
+    <div class="row-actions"><label class="knowledge-check"><input type="checkbox" data-event="${index}" data-event-field="irreversible" ${event.irreversible ? "checked" : ""}> Irréversible</label><button class="mini-button" data-duplicate-event="${index}" type="button">Dupliquer</button><button class="mini-button danger" data-delete-event="${index}" type="button">Supprimer</button></div>
   </div>`).join("")}</div>
   <div class="timeline-preview">${campaign.timeline.map((event) => `<div class="timeline-event" style="--at:${Math.min(100, Math.max(0, event.hour / deadline * 100))}%;--event-color:${event.irreversible ? "#b84e42" : "#487f72"}"><span>${escapeHtml(event.when)}</span><strong>${escapeHtml(event.label)}</strong></div>`).join("")}</div>`;
 }
@@ -118,10 +140,23 @@ function dependencyTags(action) {
 
 function actionsView() {
   const filtered = campaign.actions.filter((action) => actionFilter === "all" || action.actor === actionFilter);
-  return `<div class="actions-toolbar"><button class="filter-button ${actionFilter === "all" ? "is-active" : ""}" data-filter="all">Toutes</button>${Object.entries(campaign.actors).map(([id, actor]) => `<button class="filter-button ${actionFilter === id ? "is-active" : ""}" data-filter="${id}">${escapeHtml(actor.name)}</button>`).join("")}</div>
+  return `<div class="actions-toolbar"><button class="filter-button ${actionFilter === "all" ? "is-active" : ""}" data-filter="all">Toutes</button>${Object.entries(campaign.actors).map(([id, actor]) => `<button class="filter-button ${actionFilter === id ? "is-active" : ""}" data-filter="${id}">${escapeHtml(actor.name)}</button>`).join("")}<button class="studio-button add-action" data-add-action type="button">+ Nouvelle action</button></div>
   <div class="action-editor-list">${filtered.map((action) => {
     const index = campaign.actions.indexOf(action);
-    return `<article class="action-row"><header><div><em>${escapeHtml(action.verb)} · ${escapeHtml(action.actor)}</em><strong>${escapeHtml(action.title)}</strong></div><label class="editor-field">Durée<input type="number" min="1" data-action-index="${index}" data-action-field="duration" value="${action.duration}"></label></header><label class="editor-field">Titre<input data-action-index="${index}" data-action-field="title" value="${escapeHtml(action.title)}"></label><p>${escapeHtml(action.description)}</p><div class="action-deps">${dependencyTags(action)}</div></article>`;
+    return `<article class="action-row"><header><div><em>${escapeHtml(action.id)}</em><strong>${escapeHtml(action.title)}</strong></div><label class="editor-field">Durée<input type="number" min="1" data-action-index="${index}" data-action-field="duration" value="${action.duration}"></label></header>
+      <div class="action-fields"><label class="editor-field">Position<select data-action-index="${index}" data-action-field="actor">${Object.entries(campaign.actors).map(([id, actor]) => `<option value="${id}" ${id === action.actor ? "selected" : ""}>${escapeHtml(actor.name)}</option>`).join("")}</select></label><label class="editor-field">Verbe<input data-action-index="${index}" data-action-field="verb" value="${escapeHtml(action.verb)}"></label></div>
+      <label class="editor-field">Titre<input data-action-index="${index}" data-action-field="title" value="${escapeHtml(action.title)}"></label>
+      <label class="editor-field">Description<textarea rows="2" data-action-index="${index}" data-action-field="description">${escapeHtml(action.description)}</textarea></label>
+      <label class="editor-field">Tension<textarea rows="2" data-action-index="${index}" data-action-field="tension">${escapeHtml(action.tension || "")}</textarea></label>
+      <div class="action-deps">${dependencyTags(action)}</div>
+      <details class="causal-editor"><summary>Conditions et effets</summary>
+        <label class="editor-field">Préconditions JSON<textarea rows="3" data-action-index="${index}" data-action-json="requires">${compactJson(action.requires, {})}</textarea></label>
+        <label class="editor-field">Effets JSON<textarea rows="3" data-action-index="${index}" data-action-json="grants">${compactJson(action.grants, {})}</textarea></label>
+        <label class="editor-field">Relais JSON<textarea rows="3" data-action-index="${index}" data-action-json="relays">${compactJson(action.relays, [])}</textarea></label>
+        <label class="editor-field">Effets différés JSON<textarea rows="3" data-action-index="${index}" data-action-json="scheduled">${compactJson(action.scheduled, [])}</textarea></label>
+      </details>
+      <footer class="row-actions"><button class="mini-button" data-duplicate-action="${index}" type="button">Dupliquer</button><button class="mini-button danger" data-delete-action="${index}" type="button">Supprimer</button></footer>
+    </article>`;
   }).join("")}</div>`;
 }
 
@@ -153,6 +188,21 @@ function changed() {
 
 function bindWorkbench() {
   document.querySelectorAll("[data-actor]").forEach((button) => button.addEventListener("click", () => { activeActor = button.dataset.actor; renderWorkbench(); }));
+  $("[data-add-actor]")?.addEventListener("click", () => {
+    const id = uniqueId("position", Object.keys(campaign.actors));
+    campaign.actors[id] = { name: "Nouvelle position", role: "rôle à préciser", place: "lieu à préciser", color: "#668b72", scene: "Scène générique", initialKnowledge: [] };
+    activeActor = id; changed(); renderWorkbench();
+  });
+  $("[data-delete-actor]")?.addEventListener("click", (event) => {
+    const id = event.currentTarget.dataset.deleteActor;
+    const usedBy = countActorReferences({ actions: campaign.actions, timeline: campaign.timeline }, id);
+    if (Object.keys(campaign.actors).length <= 2) return window.alert("Une campagne Corpus conserve au moins deux positions.");
+    if (usedBy) return window.alert(`${usedBy} référence(s) utilisent encore cette position. Réattribuez-les avant de la supprimer.`);
+    if (!window.confirm(`Supprimer la position « ${campaign.actors[id].name} » ?`)) return;
+    delete campaign.actors[id];
+    if (campaign.initialPerspective === id) campaign.initialPerspective = Object.keys(campaign.actors)[0];
+    activeActor = Object.keys(campaign.actors)[0]; changed(); renderWorkbench();
+  });
   document.querySelectorAll("[data-actor-field]").forEach((input) => input.addEventListener("input", () => { campaign.actors[activeActor][input.dataset.actorField] = input.value; changed(); }));
   document.querySelectorAll("[data-knowledge]").forEach((input) => input.addEventListener("change", () => {
     const list = campaign.actors[activeActor].initialKnowledge;
@@ -164,10 +214,58 @@ function bindWorkbench() {
     const value = input.type === "checkbox" ? input.checked : input.dataset.eventField === "hour" ? Number(input.value) : input.value;
     campaign.timeline[Number(input.dataset.event)][input.dataset.eventField] = value; changed(); renderWorkbench();
   }));
+  $("[data-add-event]")?.addEventListener("click", () => {
+    const id = uniqueId("seuil", campaign.timeline.map((event) => event.id));
+    const hour = Math.min(campaign.deadline, Math.max(0, Math.round(campaign.deadline / 2)));
+    campaign.timeline.push({ id, hour, label: "Nouveau seuil", when: `${hour} h après le début`, irreversible: false });
+    campaign.timeline.sort((a, b) => a.hour - b.hour); changed(); renderWorkbench();
+  });
+  document.querySelectorAll("[data-duplicate-event]").forEach((button) => button.addEventListener("click", () => {
+    const source = campaign.timeline[Number(button.dataset.duplicateEvent)];
+    const copy = clone(source);
+    copy.id = uniqueId(`${source.id}-copie`, campaign.timeline.map((event) => event.id));
+    copy.label = `${source.label} · copie`;
+    campaign.timeline.push(copy); campaign.timeline.sort((a, b) => a.hour - b.hour); changed(); renderWorkbench();
+  }));
+  document.querySelectorAll("[data-delete-event]").forEach((button) => button.addEventListener("click", () => {
+    const index = Number(button.dataset.deleteEvent);
+    const event = campaign.timeline[index];
+    if (!window.confirm(`Supprimer le seuil « ${event.label} » ?`)) return;
+    campaign.timeline.splice(index, 1); changed(); renderWorkbench();
+  }));
   document.querySelectorAll("[data-filter]").forEach((button) => button.addEventListener("click", () => { actionFilter = button.dataset.filter; renderWorkbench(); }));
   document.querySelectorAll("[data-action-field]").forEach((input) => input.addEventListener("change", () => {
     const value = input.dataset.actionField === "duration" ? Number(input.value) : input.value;
     campaign.actions[Number(input.dataset.actionIndex)][input.dataset.actionField] = value; changed(); renderWorkbench();
+  }));
+  document.querySelectorAll("[data-action-json]").forEach((input) => input.addEventListener("change", () => {
+    try {
+      const value = JSON.parse(input.value);
+      campaign.actions[Number(input.dataset.actionIndex)][input.dataset.actionJson] = value;
+      input.removeAttribute("aria-invalid"); changed(); renderWorkbench();
+    } catch (error) {
+      input.setAttribute("aria-invalid", "true");
+      sourceError = `${input.dataset.actionJson} : ${error.message}`; renderDiagnostics(); renderStats();
+    }
+  }));
+  $("[data-add-action]")?.addEventListener("click", () => {
+    const actor = actionFilter !== "all" && campaign.actors[actionFilter] ? actionFilter : activeActor;
+    const id = uniqueId(`${actor}-action`, campaign.actions.map((action) => action.id));
+    campaign.actions.push({ id, actor, verb: "Agir", title: "Nouvelle action", duration: 1, description: "Décrire ce que cette position peut effectivement faire.", tension: "Décrire le coût, le délai ou la dépendance déplacée.", requires: {}, grants: {} });
+    actionFilter = actor; changed(); renderWorkbench();
+  });
+  document.querySelectorAll("[data-duplicate-action]").forEach((button) => button.addEventListener("click", () => {
+    const source = campaign.actions[Number(button.dataset.duplicateAction)];
+    const copy = clone(source);
+    copy.id = uniqueId(`${source.id}-copie`, campaign.actions.map((action) => action.id));
+    copy.title = `${source.title} · copie`;
+    campaign.actions.push(copy); changed(); renderWorkbench();
+  }));
+  document.querySelectorAll("[data-delete-action]").forEach((button) => button.addEventListener("click", () => {
+    const index = Number(button.dataset.deleteAction);
+    const action = campaign.actions[index];
+    if (!window.confirm(`Supprimer l'action « ${action.title} » ?`)) return;
+    campaign.actions.splice(index, 1); changed(); renderWorkbench();
   }));
   $("#apply-source")?.addEventListener("click", () => {
     try { campaign = JSON.parse($("#source-editor").value); sourceError = null; persist(); renderIdentity(); renderDiagnostics(); renderStats(); renderWorkbench(); }

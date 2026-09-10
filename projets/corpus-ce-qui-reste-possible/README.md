@@ -12,9 +12,10 @@ directement `index.html` dans un navigateur récent. La version navigateur est
 regroupée dans `browser.js`, donc Firefox accepte aussi l'ouverture en `file://`.
 
 Le lien **Ouvrir le builder** mène à `studio.html`. Le studio permet de modifier
-les positions, leurs savoirs initiaux, les seuils temporels, la durée et le titre
-des actions, ou directement toute la source JSON. Il conserve un brouillon local,
-valide en continu et exporte un fichier de campagne.
+et de créer des positions, seuils et actions. Pour chaque action, il expose les
+textes, conditions, effets, relais et délais, tout en laissant disponible la
+source JSON complète. Il conserve un brouillon local, valide en continu et
+exporte un fichier de campagne.
 
 Pour le servir localement avec Python 3 :
 

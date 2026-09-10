@@ -16,6 +16,11 @@ Le studio n'écrit jamais directement dans le dépôt. L'export et le remplaceme
 restent deux opérations distinctes afin qu'un brouillon ne devienne pas une
 version active sans décision explicite.
 
+Les vues permettent de créer, dupliquer et supprimer positions, actions et
+seuils. Les champs causaux complexes restent saisis sous forme de petits objets
+JSON attachés à chaque action, avec diagnostic immédiat en cas de syntaxe
+invalide.
+
 ## Parties déclaratives
 
 - `actors` : positions, lieux, couleurs et savoirs initiaux ;
