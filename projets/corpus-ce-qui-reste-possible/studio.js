@@ -103,7 +103,7 @@ function perspectiveView() {
   if (!campaign.actors[activeActor]) activeActor = Object.keys(campaign.actors)[0];
   const actor = campaign.actors[activeActor];
   return `<div class="actor-editor-grid">
-    <div class="actor-picker">${Object.entries(campaign.actors).map(([id, item]) => `<button class="actor-pick ${id === activeActor ? "is-active" : ""}" style="--color:${escapeHtml(item.color)}" data-actor="${id}"><strong>${escapeHtml(item.name)}</strong><span>${escapeHtml(item.role)}</span></button>`).join("")}<button class="add-card" data-add-actor type="button">+ Nouvelle position</button></div>
+    <div class="actor-picker">${Object.entries(campaign.actors).map(([id, item]) => `<button class="actor-pick ${id === activeActor ? "is-active" : ""}" style="--color:${escapeHtml(item.color)}" data-actor="${escapeHtml(id)}"><strong>${escapeHtml(item.name)}</strong><span>${escapeHtml(item.role)}</span></button>`).join("")}<button class="add-card" data-add-actor type="button">+ Nouvelle position</button></div>
     <div class="actor-form">
       <label class="editor-field">Nom<input data-actor-field="name" value="${escapeHtml(actor.name)}"></label>
       <label class="editor-field">Couleur<input data-actor-field="color" type="color" value="${escapeHtml(actor.color)}"></label>
@@ -140,7 +140,7 @@ function dependencyTags(action) {
 
 function actionsView() {
   const filtered = campaign.actions.filter((action) => actionFilter === "all" || action.actor === actionFilter);
-  return `<div class="actions-toolbar"><button class="filter-button ${actionFilter === "all" ? "is-active" : ""}" data-filter="all">Toutes</button>${Object.entries(campaign.actors).map(([id, actor]) => `<button class="filter-button ${actionFilter === id ? "is-active" : ""}" data-filter="${id}">${escapeHtml(actor.name)}</button>`).join("")}<button class="studio-button add-action" data-add-action type="button">+ Nouvelle action</button></div>
+  return `<div class="actions-toolbar"><button class="filter-button ${actionFilter === "all" ? "is-active" : ""}" data-filter="all">Toutes</button>${Object.entries(campaign.actors).map(([id, actor]) => `<button class="filter-button ${actionFilter === id ? "is-active" : ""}" data-filter="${escapeHtml(id)}">${escapeHtml(actor.name)}</button>`).join("")}<button class="studio-button add-action" data-add-action type="button">+ Nouvelle action</button></div>
   <div class="action-editor-list">${filtered.map((action) => {
     const index = campaign.actions.indexOf(action);
     return `<article class="action-row"><header><div><em>${escapeHtml(action.id)}</em><strong>${escapeHtml(action.title)}</strong></div><label class="editor-field">Durée<input type="number" min="1" data-action-index="${index}" data-action-field="duration" value="${action.duration}"></label></header>
@@ -284,7 +284,10 @@ function render() {
 
 document.querySelectorAll("[data-view]").forEach((button) => button.addEventListener("click", () => {
   activeView = button.dataset.view;
-  document.querySelectorAll("[data-view]").forEach((item) => item.classList.toggle("is-active", item === button));
+  document.querySelectorAll("[data-view]").forEach((item) => {
+    item.classList.toggle("is-active", item === button);
+    item.setAttribute("aria-selected", String(item === button));
+  });
   renderWorkbench();
 }));
 

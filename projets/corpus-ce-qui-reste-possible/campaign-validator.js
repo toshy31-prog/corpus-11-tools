@@ -1,4 +1,5 @@
 const issue = (level, code, path, message) => ({ level, code, path, message });
+const validId = (value) => typeof value === "string" && /^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(value);
 
 function duplicates(values) {
   const seen = new Set();
@@ -153,7 +154,7 @@ export function validateCampaign(campaign) {
   }
   if (campaign.schemaVersion !== 2) issues.push(issue("error", "SCHEMA_VERSION", "campaign.schemaVersion", "Version de schéma attendue : 2."));
   if (!Number.isInteger(campaign.stateVersion) || campaign.stateVersion < 1) issues.push(issue("error", "STATE_VERSION", "campaign.stateVersion", "Une version d'état entière et positive est obligatoire."));
-  if (!campaign.id) issues.push(issue("error", "CAMPAIGN_ID", "campaign.id", "Identifiant de campagne manquant."));
+  if (!validId(campaign.id)) issues.push(issue("error", "CAMPAIGN_ID", "campaign.id", "L'identifiant de campagne doit être non vide et ne contenir que lettres, chiffres, points, tirets ou soulignements."));
   if (!Number.isFinite(campaign.deadline) || campaign.deadline <= 0) issues.push(issue("error", "DEADLINE", "campaign.deadline", "L'échéance doit être un nombre positif."));
 
   const actors = campaign.actors || {};
@@ -167,7 +168,9 @@ export function validateCampaign(campaign) {
   if (!actorIds.has(campaign.initialPerspective)) issues.push(issue("error", "INITIAL_PERSPECTIVE", "campaign.initialPerspective", "La position initiale doit référencer un acteur déclaré."));
 
   for (const [actorId, actor] of Object.entries(actors)) {
+    if (!validId(actorId)) issues.push(issue("error", "ACTOR_ID", `campaign.actors.${actorId}`, "Identifiant de position invalide."));
     if (!actor.name || !actor.role || !actor.place) issues.push(issue("error", "ACTOR_FIELDS", `campaign.actors.${actorId}`, "Nom, rôle et lieu sont obligatoires."));
+    if (!/^#[0-9a-f]{6}$/i.test(actor.color || "")) issues.push(issue("error", "ACTOR_COLOR", `campaign.actors.${actorId}.color`, "La couleur doit utiliser le format hexadécimal #RRGGBB."));
     for (const fact of actor.initialKnowledge || []) {
       if (!knowledgeIds.has(fact)) issues.push(issue("error", "UNKNOWN_KNOWLEDGE", `campaign.actors.${actorId}.initialKnowledge`, `Savoir inconnu : ${fact}.`));
     }
@@ -226,6 +229,7 @@ export function validateCampaign(campaign) {
   for (const id of duplicates(actions.map((action) => action.id))) issues.push(issue("error", "DUPLICATE_ACTION", "campaign.actions", `Action dupliquée : ${id}.`));
   for (const action of actions) {
     const path = `campaign.actions.${action.id || "?"}`;
+    if (!validId(action.id)) issues.push(issue("error", "ACTION_ID", `${path}.id`, "Identifiant d'action invalide."));
     if (!actorIds.has(action.actor)) issues.push(issue("error", "UNKNOWN_ACTOR", `${path}.actor`, `Position inconnue : ${action.actor}.`));
     if (!action.title || !action.verb || !action.description) issues.push(issue("error", "ACTION_FIELDS", path, "Verbe, titre et description sont obligatoires."));
     if (!Number.isFinite(action.duration) || action.duration <= 0) issues.push(issue("error", "ACTION_DURATION", `${path}.duration`, "La durée doit être strictement positive."));
@@ -242,6 +246,7 @@ export function validateCampaign(campaign) {
   for (const id of duplicates(timeline.map((event) => event.id))) issues.push(issue("error", "DUPLICATE_EVENT", "campaign.timeline", `Événement dupliqué : ${id}.`));
   let previousHour = -Infinity;
   for (const event of timeline) {
+    if (!validId(event.id)) issues.push(issue("error", "EVENT_ID", `campaign.timeline.${event.id || "?"}.id`, "Identifiant de seuil invalide."));
     if (!Number.isFinite(event.hour) || event.hour < 0 || event.hour > campaign.deadline) issues.push(issue("error", "EVENT_HOUR", `campaign.timeline.${event.id}`, "L'événement doit se trouver entre le début et l'échéance."));
     if (event.hour < previousHour) issues.push(issue("warning", "EVENT_ORDER", `campaign.timeline.${event.id}`, "Les événements ne sont pas ordonnés chronologiquement."));
     previousHour = event.hour;

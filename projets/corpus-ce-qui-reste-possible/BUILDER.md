@@ -16,6 +16,11 @@ Le studio n'écrit jamais directement dans le dépôt. L'export et le remplaceme
 restent deux opérations distinctes afin qu'un brouillon ne devienne pas une
 version active sans décision explicite.
 
+Les identifiants et couleurs sont validés avant compilation, et les textes de
+campagne sont échappés lors de leur insertion dans l'interface. Cette frontière
+protège l'ouverture locale de campagnes échangées ; elle ne transforme pas un
+fichier reçu d'une source inconnue en contenu de confiance.
+
 Les vues permettent de créer, dupliquer et supprimer positions, actions et
 seuils. Les champs causaux complexes restent saisis sous forme de petits objets
 JSON attachés à chaque action, avec diagnostic immédiat en cas de syntaxe

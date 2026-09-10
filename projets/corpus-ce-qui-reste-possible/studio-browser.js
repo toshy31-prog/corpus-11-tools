@@ -1025,6 +1025,7 @@ const ACTIVE_CAMPAIGN = Object.freeze({
   ]
 });
 const issue = (level, code, path, message) => ({ level, code, path, message });
+const validId = (value) => typeof value === "string" && /^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(value);
 
 function duplicates(values) {
   const seen = new Set();
@@ -1179,7 +1180,7 @@ function validateCampaign(campaign) {
   }
   if (campaign.schemaVersion !== 2) issues.push(issue("error", "SCHEMA_VERSION", "campaign.schemaVersion", "Version de schéma attendue : 2."));
   if (!Number.isInteger(campaign.stateVersion) || campaign.stateVersion < 1) issues.push(issue("error", "STATE_VERSION", "campaign.stateVersion", "Une version d'état entière et positive est obligatoire."));
-  if (!campaign.id) issues.push(issue("error", "CAMPAIGN_ID", "campaign.id", "Identifiant de campagne manquant."));
+  if (!validId(campaign.id)) issues.push(issue("error", "CAMPAIGN_ID", "campaign.id", "L'identifiant de campagne doit être non vide et ne contenir que lettres, chiffres, points, tirets ou soulignements."));
   if (!Number.isFinite(campaign.deadline) || campaign.deadline <= 0) issues.push(issue("error", "DEADLINE", "campaign.deadline", "L'échéance doit être un nombre positif."));
 
   const actors = campaign.actors || {};
@@ -1193,7 +1194,9 @@ function validateCampaign(campaign) {
   if (!actorIds.has(campaign.initialPerspective)) issues.push(issue("error", "INITIAL_PERSPECTIVE", "campaign.initialPerspective", "La position initiale doit référencer un acteur déclaré."));
 
   for (const [actorId, actor] of Object.entries(actors)) {
+    if (!validId(actorId)) issues.push(issue("error", "ACTOR_ID", `campaign.actors.${actorId}`, "Identifiant de position invalide."));
     if (!actor.name || !actor.role || !actor.place) issues.push(issue("error", "ACTOR_FIELDS", `campaign.actors.${actorId}`, "Nom, rôle et lieu sont obligatoires."));
+    if (!/^#[0-9a-f]{6}$/i.test(actor.color || "")) issues.push(issue("error", "ACTOR_COLOR", `campaign.actors.${actorId}.color`, "La couleur doit utiliser le format hexadécimal #RRGGBB."));
     for (const fact of actor.initialKnowledge || []) {
       if (!knowledgeIds.has(fact)) issues.push(issue("error", "UNKNOWN_KNOWLEDGE", `campaign.actors.${actorId}.initialKnowledge`, `Savoir inconnu : ${fact}.`));
     }
@@ -1252,6 +1255,7 @@ function validateCampaign(campaign) {
   for (const id of duplicates(actions.map((action) => action.id))) issues.push(issue("error", "DUPLICATE_ACTION", "campaign.actions", `Action dupliquée : ${id}.`));
   for (const action of actions) {
     const path = `campaign.actions.${action.id || "?"}`;
+    if (!validId(action.id)) issues.push(issue("error", "ACTION_ID", `${path}.id`, "Identifiant d'action invalide."));
     if (!actorIds.has(action.actor)) issues.push(issue("error", "UNKNOWN_ACTOR", `${path}.actor`, `Position inconnue : ${action.actor}.`));
     if (!action.title || !action.verb || !action.description) issues.push(issue("error", "ACTION_FIELDS", path, "Verbe, titre et description sont obligatoires."));
     if (!Number.isFinite(action.duration) || action.duration <= 0) issues.push(issue("error", "ACTION_DURATION", `${path}.duration`, "La durée doit être strictement positive."));
@@ -1268,6 +1272,7 @@ function validateCampaign(campaign) {
   for (const id of duplicates(timeline.map((event) => event.id))) issues.push(issue("error", "DUPLICATE_EVENT", "campaign.timeline", `Événement dupliqué : ${id}.`));
   let previousHour = -Infinity;
   for (const event of timeline) {
+    if (!validId(event.id)) issues.push(issue("error", "EVENT_ID", `campaign.timeline.${event.id || "?"}.id`, "Identifiant de seuil invalide."));
     if (!Number.isFinite(event.hour) || event.hour < 0 || event.hour > campaign.deadline) issues.push(issue("error", "EVENT_HOUR", `campaign.timeline.${event.id}`, "L'événement doit se trouver entre le début et l'échéance."));
     if (event.hour < previousHour) issues.push(issue("warning", "EVENT_ORDER", `campaign.timeline.${event.id}`, "Les événements ne sont pas ordonnés chronologiquement."));
     previousHour = event.hour;
@@ -1404,7 +1409,7 @@ function perspectiveView() {
   if (!campaign.actors[activeActor]) activeActor = Object.keys(campaign.actors)[0];
   const actor = campaign.actors[activeActor];
   return `<div class="actor-editor-grid">
-    <div class="actor-picker">${Object.entries(campaign.actors).map(([id, item]) => `<button class="actor-pick ${id === activeActor ? "is-active" : ""}" style="--color:${escapeHtml(item.color)}" data-actor="${id}"><strong>${escapeHtml(item.name)}</strong><span>${escapeHtml(item.role)}</span></button>`).join("")}<button class="add-card" data-add-actor type="button">+ Nouvelle position</button></div>
+    <div class="actor-picker">${Object.entries(campaign.actors).map(([id, item]) => `<button class="actor-pick ${id === activeActor ? "is-active" : ""}" style="--color:${escapeHtml(item.color)}" data-actor="${escapeHtml(id)}"><strong>${escapeHtml(item.name)}</strong><span>${escapeHtml(item.role)}</span></button>`).join("")}<button class="add-card" data-add-actor type="button">+ Nouvelle position</button></div>
     <div class="actor-form">
       <label class="editor-field">Nom<input data-actor-field="name" value="${escapeHtml(actor.name)}"></label>
       <label class="editor-field">Couleur<input data-actor-field="color" type="color" value="${escapeHtml(actor.color)}"></label>
@@ -1441,7 +1446,7 @@ function dependencyTags(action) {
 
 function actionsView() {
   const filtered = campaign.actions.filter((action) => actionFilter === "all" || action.actor === actionFilter);
-  return `<div class="actions-toolbar"><button class="filter-button ${actionFilter === "all" ? "is-active" : ""}" data-filter="all">Toutes</button>${Object.entries(campaign.actors).map(([id, actor]) => `<button class="filter-button ${actionFilter === id ? "is-active" : ""}" data-filter="${id}">${escapeHtml(actor.name)}</button>`).join("")}<button class="studio-button add-action" data-add-action type="button">+ Nouvelle action</button></div>
+  return `<div class="actions-toolbar"><button class="filter-button ${actionFilter === "all" ? "is-active" : ""}" data-filter="all">Toutes</button>${Object.entries(campaign.actors).map(([id, actor]) => `<button class="filter-button ${actionFilter === id ? "is-active" : ""}" data-filter="${escapeHtml(id)}">${escapeHtml(actor.name)}</button>`).join("")}<button class="studio-button add-action" data-add-action type="button">+ Nouvelle action</button></div>
   <div class="action-editor-list">${filtered.map((action) => {
     const index = campaign.actions.indexOf(action);
     return `<article class="action-row"><header><div><em>${escapeHtml(action.id)}</em><strong>${escapeHtml(action.title)}</strong></div><label class="editor-field">Durée<input type="number" min="1" data-action-index="${index}" data-action-field="duration" value="${action.duration}"></label></header>
@@ -1585,7 +1590,10 @@ function render() {
 
 document.querySelectorAll("[data-view]").forEach((button) => button.addEventListener("click", () => {
   activeView = button.dataset.view;
-  document.querySelectorAll("[data-view]").forEach((item) => item.classList.toggle("is-active", item === button));
+  document.querySelectorAll("[data-view]").forEach((item) => {
+    item.classList.toggle("is-active", item === button);
+    item.setAttribute("aria-selected", String(item === button));
+  });
   renderWorkbench();
 }));
 

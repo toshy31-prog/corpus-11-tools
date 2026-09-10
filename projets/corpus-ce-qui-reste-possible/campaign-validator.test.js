@@ -92,3 +92,14 @@ test("unknown knowledge and world flags are rejected", () => {
   assert.ok(codes.includes("UNKNOWN_KNOWLEDGE"));
   assert.ok(codes.includes("UNKNOWN_WORLD_FLAG"));
 });
+
+test("identifiers and actor colors are safe to embed in the local interface", () => {
+  const broken = structuredClone(campaign);
+  broken.id = "bad\" onclick=\"alert(1)";
+  broken.actors.ina.color = "red;display:none";
+  broken.actions[0].id = "<script>";
+  const codes = validateCampaign(broken).map((item) => item.code);
+  assert.ok(codes.includes("CAMPAIGN_ID"));
+  assert.ok(codes.includes("ACTOR_COLOR"));
+  assert.ok(codes.includes("ACTION_ID"));
+});

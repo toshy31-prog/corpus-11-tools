@@ -1312,6 +1312,9 @@ function getOutcome(state) {
 const STORAGE_KEY = `corpus-game:${CAMPAIGN.id}:state-${CAMPAIGN.stateVersion}`;
 const LEGACY_STORAGE_KEY = "corpus-ce-qui-reste-possible-v2";
 const $ = (selector) => document.querySelector(selector);
+const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (character) => ({
+  "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+})[character]);
 
 const actorMeta = Object.fromEntries(Object.entries(CAMPAIGN.actors).map(([id, actor]) => [id, {
   color: actor.color, label: actor.name.split(" ")[0], scene: actor.scene,
@@ -1432,11 +1435,11 @@ function soraScene() {
 
 function genericScene() {
   const actor = state.actors[state.perspective];
-  return `<svg viewBox="0 0 900 410" role="img" aria-label="${actor.place}">
+  return `<svg viewBox="0 0 900 410" role="img" aria-label="${escapeHtml(actor.place)}">
     <rect width="900" height="410" fill="#a7bbb1"/>
-    <circle cx="450" cy="190" r="94" fill="${actor.color}" opacity=".24"/>
-    ${person(450, 270, actor.color, 1.2)}
-  </svg><div class="scene-caption">${actor.name} agit depuis ${actor.place}. Cette position utilise encore la scène générique du moteur.</div>`;
+    <circle cx="450" cy="190" r="94" fill="${escapeHtml(actor.color)}" opacity=".24"/>
+    ${person(450, 270, escapeHtml(actor.color), 1.2)}
+  </svg><div class="scene-caption">${escapeHtml(actor.name)} agit depuis ${escapeHtml(actor.place)}. Cette position utilise encore la scène générique du moteur.</div>`;
 }
 
 const scenes = { ina: inaScene, mara: maraScene, nilo: niloScene, sora: soraScene };
@@ -1445,8 +1448,8 @@ function renderActors() {
   $("#actor-list").innerHTML = ACTOR_ORDER.map((id) => {
     const actor = state.actors[id];
     const incoming = actor.inbox.length;
-    return `<button class="actor-button ${id === state.perspective ? "is-current" : ""}" style="--actor:${actorMeta[id].color}" data-actor="${id}" aria-pressed="${id === state.perspective}">
-      <strong>${actor.name}</strong><span>${actor.role}<br>${actor.place}</span>${incoming ? `<em title="${incoming} relais reçu(s)">${incoming}</em>` : ""}
+    return `<button class="actor-button ${id === state.perspective ? "is-current" : ""}" style="--actor:${escapeHtml(actorMeta[id].color)}" data-actor="${escapeHtml(id)}" aria-pressed="${id === state.perspective}">
+      <strong>${escapeHtml(actor.name)}</strong><span>${escapeHtml(actor.role)}<br>${escapeHtml(actor.place)}</span>${incoming ? `<em title="${incoming} relais reçu(s)">${incoming}</em>` : ""}
     </button>`;
   }).join("");
   $("#actor-list").querySelectorAll("[data-actor]").forEach((button) => button.addEventListener("click", () => {
@@ -1466,21 +1469,21 @@ function renderScene() {
   const beat = state.lastBeat;
   const beatColor = toneColors[beat.tone] || toneColors.neutral;
   $("#last-beat").style.setProperty("--beat", beatColor);
-  $("#last-beat").innerHTML = `<h3>${beat.title}</h3><p>${beat.body}</p>${beat.quote ? `<blockquote>${beat.quote}</blockquote>` : ""}`;
+  $("#last-beat").innerHTML = `<h3>${escapeHtml(beat.title)}</h3><p>${escapeHtml(beat.body)}</p>${beat.quote ? `<blockquote>${escapeHtml(beat.quote)}</blockquote>` : ""}`;
 }
 
 function renderActions() {
   const actions = getAvailableActions(state);
   $("#action-count").textContent = state.ended ? "échéance atteinte" : `${actions.length} possibilité${actions.length === 1 ? "" : "s"}`;
-  $("#action-list").innerHTML = actions.length ? actions.map((action) => `<button class="action-card" style="--actor:${actorMeta[action.actor].color}" data-action="${action.id}">
-    <span class="verb">${action.verb}</span><span class="duration">${action.duration} h</span><h3>${action.title}</h3><p>${action.description}</p><small class="tension" title="${action.tension}">Tension · ${action.tension}</small>
+  $("#action-list").innerHTML = actions.length ? actions.map((action) => `<button class="action-card" style="--actor:${escapeHtml(actorMeta[action.actor].color)}" data-action="${escapeHtml(action.id)}">
+    <span class="verb">${escapeHtml(action.verb)}</span><span class="duration">${action.duration} h</span><h3>${escapeHtml(action.title)}</h3><p>${escapeHtml(action.description)}</p><small class="tension" title="${escapeHtml(action.tension)}">Tension · ${escapeHtml(action.tension)}</small>
   </button>`).join("") : `<p class="no-actions">${state.ended ? "L'échéance est passée. Le bilan ne referme pas ce qui reste à faire." : "Rien de plus n'est faisable depuis cette position avant vendredi. Habitez quelqu'un d'autre ou laissez le temps courir."}</p>`;
   $("#action-list").querySelectorAll("[data-action]").forEach((button) => button.addEventListener("click", () => doAction(button.dataset.action)));
 }
 
 function renderKnowledge() {
   const facts = getActorKnowledge(state);
-  $("#knowledge-list").innerHTML = facts.map((fact) => `<article class="knowledge-card"><span>${fact.id.replaceAll("-", " ")}</span><p>${fact.text}</p></article>`).join("");
+  $("#knowledge-list").innerHTML = facts.map((fact) => `<article class="knowledge-card"><span>${escapeHtml(fact.id.replaceAll("-", " "))}</span><p>${escapeHtml(fact.text)}</p></article>`).join("");
 }
 
 function renderRelays() {
@@ -1488,7 +1491,7 @@ function renderRelays() {
   $("#relay-list").innerHTML = relays.length ? relays.map((relay) => {
     const incoming = relay.to === state.perspective;
     const other = state.actors[incoming ? relay.from : relay.to]?.name || (incoming ? relay.from : relay.to);
-    return `<article class="relay-card"><strong>${incoming ? "Reçu de" : "Envoyé à"} ${other}</strong><p>${relay.purpose}</p><small>${formatClock(relay.hour)} · ${relay.channel}</small></article>`;
+    return `<article class="relay-card"><strong>${incoming ? "Reçu de" : "Envoyé à"} ${escapeHtml(other)}</strong><p>${escapeHtml(relay.purpose)}</p><small>${formatClock(relay.hour)} · ${escapeHtml(relay.channel)}</small></article>`;
   }).join("") : `<p class="empty-relay">Aucun support n'est encore arrivé ici.<br />Le savoir du joueur ne remplit pas cette colonne.</p>`;
 }
 
@@ -1499,7 +1502,7 @@ function renderTime() {
   const progress = Math.min(100, (state.elapsed / state.deadline) * 100);
   $("#timeline-track").innerHTML = `<div id="timeline-fill" class="timeline-fill"></div><div class="timeline-now" id="timeline-now"><span>maintenant</span></div>${CAMPAIGN.timeline.map((event, index) => {
     const at = Math.min(100, event.hour / state.deadline * 100);
-    return `<div class="milestone ${index === CAMPAIGN.timeline.length - 1 ? "end" : ""}" style="--at:${at}%"><i></i><span>${event.when}</span><strong>${event.label}</strong></div>`;
+    return `<div class="milestone ${index === CAMPAIGN.timeline.length - 1 ? "end" : ""}" style="--at:${at}%"><i></i><span>${escapeHtml(event.when)}</span><strong>${escapeHtml(event.label)}</strong></div>`;
   }).join("")}`;
   $("#timeline-fill").style.width = `${progress}%`;
   $("#timeline-now").style.left = `${progress}%`;
@@ -1510,7 +1513,7 @@ function renderTime() {
 }
 
 function renderJournal() {
-  $("#journal-list").innerHTML = state.log.map((entry) => `<article class="journal-entry"><time>${formatClock(entry.hour)}<br>${state.actors[entry.actor]?.name || "Monde"}</time><div><h3>${entry.title}</h3><p>${entry.body}</p></div></article>`).join("");
+  $("#journal-list").innerHTML = state.log.map((entry) => `<article class="journal-entry"><time>${formatClock(entry.hour)}<br>${escapeHtml(state.actors[entry.actor]?.name || "Monde")}</time><div><h3>${escapeHtml(entry.title)}</h3><p>${escapeHtml(entry.body)}</p></div></article>`).join("");
 }
 
 function render() {
@@ -1524,13 +1527,13 @@ function render() {
 function showBeat() {
   const beat = state.lastBeat;
   $("#beat-dialog").style.setProperty("--beat", toneColors[beat.tone] || toneColors.neutral);
-  $("#beat-content").innerHTML = `<p class="overline">${formatClock(state.elapsed)} · ${state.actors[beat.actor].name}</p><h2>${beat.title}</h2><p>${beat.body}</p>${beat.quote ? `<blockquote>${beat.quote}</blockquote>` : ""}`;
+  $("#beat-content").innerHTML = `<p class="overline">${formatClock(state.elapsed)} · ${escapeHtml(state.actors[beat.actor].name)}</p><h2>${escapeHtml(beat.title)}</h2><p>${escapeHtml(beat.body)}</p>${beat.quote ? `<blockquote>${escapeHtml(beat.quote)}</blockquote>` : ""}`;
   $("#beat-dialog").showModal();
 }
 
 function showOutcome() {
   const outcome = getOutcome(state);
-  $("#outcome-content").innerHTML = `<p class="overline">Vendredi · 07 h 00 · Aucun score global</p><h2>${outcome.heading}</h2><p class="outcome-summary">${outcome.summary}</p><div class="outcome-grid">${outcome.dimensions.map((item) => `<article class="outcome-card"><span>${item.label}</span><strong>${item.state}</strong><p>${item.detail}</p></article>`).join("")}</div>`;
+  $("#outcome-content").innerHTML = `<p class="overline">Vendredi · 07 h 00 · Aucun score global</p><h2>${escapeHtml(outcome.heading)}</h2><p class="outcome-summary">${escapeHtml(outcome.summary)}</p><div class="outcome-grid">${outcome.dimensions.map((item) => `<article class="outcome-card"><span>${escapeHtml(item.label)}</span><strong>${escapeHtml(item.state)}</strong><p>${escapeHtml(item.detail)}</p></article>`).join("")}</div>`;
   $("#outcome-dialog").showModal();
 }
 
