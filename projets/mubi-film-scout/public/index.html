@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Un programmateur personnel de films disponibles sur MUBI France.">
+    <title>MUBI Film Scout</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <header class="hero">
+      <div class="brand"><span class="brand-dot"></span> MUBI FILM SCOUT</div>
+      <p class="eyebrow">Votre catalogue, enfin praticable</p>
+      <h1>Quel film mérite<br><em>votre soirée ?</em></h1>
+      <p class="intro">Cadrez votre soirée. Le Scout compose quatre propositions distinctes parmi les films disponibles avec l’abonnement MUBI en France.</p>
+    </header>
+
+    <main>
+      <section class="search-panel" aria-labelledby="search-title">
+        <div class="panel-heading">
+          <div>
+            <p class="step">01 — La situation</p>
+            <h2 id="search-title">Cadrez la soirée</h2>
+          </div>
+          <div class="panel-actions">
+            <button id="oblique" class="ghost-button" type="button">◇ Sélection oblique</button>
+            <button id="surprise" class="ghost-button" type="button">↝ Surprends-moi</button>
+          </div>
+        </div>
+
+        <form id="search-form">
+          <div class="evening-composer">
+            <fieldset class="composer-question">
+              <legend>J’attends du film…</legend>
+              <div class="choice-grid effect-choices">
+                <label><input type="radio" name="effect" value="captivate" checked><span>Me captiver<small>Tension, suspense</small></span></label>
+                <label><input type="radio" name="effect" value="contemplate"><span>Me poser<small>Contemplatif</small></span></label>
+                <label><input type="radio" name="effect" value="comfort"><span>Me réconforter<small>Léger, chaleureux</small></span></label>
+                <label><input type="radio" name="effect" value="shake"><span>Me secouer<small>Sombre, intense</small></span></label>
+                <label><input type="radio" name="effect" value="wonder"><span>M’émerveiller<small>Poétique, visuel</small></span></label>
+                <label><input type="radio" name="effect" value="open"><span>Rester ouvert<small>Aucun effet imposé</small></span></label>
+              </div>
+            </fieldset>
+
+            <div class="composer-split">
+              <fieldset class="composer-question">
+                <legend>J’ai le temps pour…</legend>
+                <div class="choice-grid compact-choices">
+                  <label><input type="radio" name="time-budget" value="short"><span>≤ 90 min</span></label>
+                  <label><input type="radio" name="time-budget" value="standard" checked><span>≤ 2 h</span></label>
+                  <label><input type="radio" name="time-budget" value="ample"><span>≤ 3 h</span></label>
+                </div>
+              </fieldset>
+
+              <fieldset class="composer-question">
+                <legend>Le programmateur peut…</legend>
+                <div class="choice-grid compact-choices">
+                  <label><input type="radio" name="detour" value="faithful"><span>Rester fidèle</span></label>
+                  <label><input type="radio" name="detour" value="sidestep" checked><span>Faire un pas de côté</span></label>
+                  <label><input type="radio" name="detour" value="adventurous"><span>Me désarçonner</span></label>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+
+          <div id="understanding" class="understanding" aria-live="polite"></div>
+
+          <label class="wish-label" for="wish">Précision facultative <span>— vocabulaire limité</span></label>
+          <input id="wish" class="wish-input" name="wish" type="text" placeholder="Ex. science-fiction après 2010, moins de 2 h">
+          <p class="wish-help">Comprend les genres, périodes, durées, notes et quelques ambiances. Si rien n’est reconnu, l’outil le dira.</p>
+
+          <details>
+            <summary>Ajuster les critères</summary>
+            <div class="filters">
+              <label>De l’année <input id="min-year" type="number" min="1874" value="1900"></label>
+              <label>à <input id="max-year" type="number" min="1874"></label>
+              <label>Note minimale <input id="min-rating" type="number" min="0" max="10" step="0.1" value="6.8"></label>
+              <label>Nombre de votes min. <input id="min-votes" type="number" min="0" max="1000000" value="40"></label>
+              <label>Durée max. personnalisée <input id="max-runtime" type="number" min="40" max="600" value="180"><span>min</span></label>
+              <label>Trier par
+                <select id="sort">
+                  <option value="quality">mieux notés</option>
+                  <option value="popular">popularité</option>
+                  <option value="recent">plus récents</option>
+                  <option value="surprise">surprise</option>
+                </select>
+              </label>
+              <label class="toggle"><input id="hide-seen" type="checkbox" checked> Masquer les films déjà vus</label>
+            </div>
+            <fieldset>
+              <legend>Genres</legend>
+              <div id="genres" class="genre-grid"></div>
+            </fieldset>
+            <fieldset class="lens-fieldset">
+              <legend>Angles de découverte — cumulables</legend>
+              <p class="field-hint">Ils recomposent la sélection à partir de plusieurs pages, puis expliquent pourquoi chaque film remonte.</p>
+              <div id="lenses" class="lens-grid"></div>
+            </fieldset>
+          </details>
+
+          <details id="source-center" class="source-center">
+            <summary>
+              <span>Centre des sources</span>
+              <small id="source-summary">TMDB à connecter</small>
+            </summary>
+            <div class="source-intro">
+              <strong>Une seule saisie, sur cette machine.</strong>
+              <p>TMDB suffit pour utiliser le Scout. Les trois autres accès préparent l’ajout d’avis extérieurs ; vous pouvez les renseigner plus tard.</p>
+            </div>
+            <div class="diagnostic-strip" aria-label="Diagnostic local">
+              <span><small>Serveur local</small><strong id="diagnostic-server">En ligne</strong></span>
+              <span><small>Connexion TMDB</small><strong id="diagnostic-tmdb">Non testée</strong></span>
+              <span><small>Dernière recherche réussie</small><strong id="diagnostic-search">Jamais</strong></span>
+              <button id="run-diagnostic" class="text-button" type="button">Tester TMDB maintenant</button>
+            </div>
+            <div class="source-list">
+              <div class="source-row">
+                <span class="source-name"><strong>TMDB</strong><small>Catalogue et disponibilité MUBI — requis</small></span>
+                <span id="source-status-tmdb" class="source-status">Non connecté</span>
+                <input id="token" type="password" autocomplete="off" placeholder="Jeton de lecture" aria-label="Jeton de lecture TMDB">
+                <a href="https://www.themoviedb.org/settings/api" target="_blank" rel="noreferrer">Obtenir l’accès ↗</a>
+              </div>
+              <div class="source-row">
+                <span class="source-name"><strong>The Guardian</strong><small>Critique professionnelle — facultatif</small></span>
+                <span id="source-status-guardian" class="source-status">Non connecté</span>
+                <input id="guardian-key" type="password" autocomplete="off" placeholder="Clé API" aria-label="Clé API The Guardian">
+                <a href="https://open-platform.theguardian.com/access/" target="_blank" rel="noreferrer">Obtenir l’accès ↗</a>
+              </div>
+              <div class="source-row">
+                <span class="source-name"><strong>New York Times</strong><small>Critiques de films — facultatif</small></span>
+                <span id="source-status-nyt" class="source-status">Non connecté</span>
+                <input id="nyt-key" type="password" autocomplete="off" placeholder="Clé API" aria-label="Clé API New York Times">
+                <a href="https://developer.nytimes.com/get-started" target="_blank" rel="noreferrer">Obtenir l’accès ↗</a>
+              </div>
+              <div class="source-row">
+                <span class="source-name"><strong>OMDb</strong><small>Notes agrégées et métadonnées — facultatif</small></span>
+                <span id="source-status-omdb" class="source-status">Non connecté</span>
+                <input id="omdb-key" type="password" autocomplete="off" placeholder="Clé API" aria-label="Clé API OMDb">
+                <a href="https://www.omdbapi.com/apikey.aspx" target="_blank" rel="noreferrer">Obtenir l’accès ↗</a>
+              </div>
+            </div>
+            <div class="source-actions">
+              <button id="save-sources" class="secondary-button" type="button">Enregistrer les accès saisis</button>
+              <button id="clear-sources" class="text-button" type="button">Oublier les accès locaux</button>
+            </div>
+            <p id="source-message" class="source-message" aria-live="polite"></p>
+            <p class="source-privacy"><strong>Stockage local non chiffré.</strong> Les secrets sont écrits en clair dans un fichier lisible uniquement par votre compte (<code>0600</code>), jamais réaffichés, et ne sont envoyés qu’aux services concernés. Les variables d’environnement restent prioritaires.</p>
+            <p class="fallback-link">Sans TMDB : <a href="https://www.justwatch.com/fr/plateforme/mubi/films" target="_blank" rel="noreferrer">ouvrir directement le catalogue MUBI sur JustWatch ↗</a></p>
+          </details>
+
+          <div class="submit-row">
+            <button id="submit-search" class="primary-button" type="submit"><span class="button-label">Composer ma soirée</span><span aria-hidden="true">→</span></button>
+            <p id="memory-count" class="memory-count">0 film déjà vu mémorisé</p>
+          </div>
+        </form>
+      </section>
+
+      <section id="results-section" class="results-section" aria-live="polite">
+        <div id="status" class="empty-state">
+          <span class="empty-mark">M</span>
+          <p>Votre programme apparaîtra ici.</p>
+        </div>
+        <div id="result-head" class="result-head" hidden>
+          <div>
+            <p class="step">02 — Le programme</p>
+            <h2 id="result-title">Quatre chemins possibles</h2>
+          </div>
+          <div id="applied" class="chips"></div>
+        </div>
+        <div id="interpretation" class="interpretation" hidden></div>
+        <div id="movies" class="movie-grid"></div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="credits">
+        <a class="tmdb-credit" href="https://www.themoviedb.org" target="_blank" rel="noreferrer"><img src="/tmdb.svg" alt="The Movie Database"></a>
+        <p>This product uses TMDB and the TMDB APIs but is not endorsed, certified, or otherwise approved by TMDB.</p>
+        <p>Disponibilités de visionnage : JustWatch. Outil personnel indépendant, sans affiliation ni approbation de MUBI ou JustWatch.</p>
+      </div>
+      <button id="forget" type="button">Effacer les films vus et l’accès temporaire de cet onglet</button>
+    </footer>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

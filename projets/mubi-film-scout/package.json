@@ -1,0 +1,18 @@
+{
+  "name": "mubi-film-scout",
+  "private": true,
+  "version": "0.7.0",
+  "type": "module",
+  "description": "Sélecteur local de films disponibles sur MUBI France.",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "launch": "node scripts/launch.mjs",
+    "doctor": "node scripts/doctor.mjs",
+    "doctor:live": "node scripts/doctor.mjs --live",
+    "test": "node --test",
+    "check": "node --check server.mjs && node --check public/app.js && node --check scripts/launch.mjs && node --check scripts/doctor.mjs"
+  }
+}
