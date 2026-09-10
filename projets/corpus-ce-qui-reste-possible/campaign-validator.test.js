@@ -103,3 +103,19 @@ test("identifiers and actor colors are safe to embed in the local interface", ()
   assert.ok(codes.includes("ACTOR_COLOR"));
   assert.ok(codes.includes("ACTION_ID"));
 });
+
+test("outcome branches use declared world flags and end with a fallback", () => {
+  const broken = structuredClone(campaign);
+  broken.outcome.variants[0].when = { world: ["perfectWorld"], knowledge: ["eviction"] };
+  broken.outcome.dimensions[0].variants.at(-1).when = { world: ["permitFrozen"] };
+  const codes = validateCampaign(broken).map((item) => item.code);
+  assert.ok(codes.includes("UNKNOWN_WORLD_FLAG"));
+  assert.ok(codes.includes("OUTCOME_PERSPECTIVE"));
+  assert.ok(codes.includes("OUTCOME_FALLBACK"));
+});
+
+test("the outcome cannot collapse to one dimension", () => {
+  const broken = structuredClone(campaign);
+  broken.outcome.dimensions = broken.outcome.dimensions.slice(0, 1);
+  assert.ok(validateCampaign(broken).some((item) => item.code === "OUTCOME_DIMENSIONS"));
+});

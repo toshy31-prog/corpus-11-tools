@@ -12,7 +12,7 @@ directement `index.html` dans un navigateur récent. La version navigateur est
 regroupée dans `browser.js`, donc Firefox accepte aussi l'ouverture en `file://`.
 
 Le lien **Ouvrir le builder** mène à `studio.html`. Le studio permet de modifier
-et de créer des positions, seuils et actions. Pour chaque action, il expose les
+et de créer des positions, seuils, actions et dimensions de bilan. Pour chaque action, il expose les
 textes, conditions, effets, relais et délais, tout en laissant disponible la
 source JSON complète. Il conserve un brouillon local, valide en continu et
 exporte un fichier de campagne. Les modifications peuvent être annulées et
@@ -75,7 +75,8 @@ les conditions, les durées variables, les effets, les relais, les effets
 différés et les seuils temporels. Une action ajoutée dans le JSON est donc
 exécutable sans fonction JavaScript portant le même identifiant.
 
-Les illustrations propres à Sereine et le bilan final restent spécialisés dans
-le code. Un acteur sans illustration dédiée reçoit une scène générique. Le
-builder est ainsi un moteur déclaratif d'actions et de causalité, mais pas encore
-un générateur visuel complet de campagnes.
+Les variantes et dimensions du bilan final sont maintenant déclarées dans la
+campagne. Les illustrations et les textes de résultat propres à Sereine restent
+spécialisés dans le code. Un acteur sans illustration dédiée reçoit une scène
+générique. Le builder n'est donc pas encore un générateur visuel complet de
+campagnes.

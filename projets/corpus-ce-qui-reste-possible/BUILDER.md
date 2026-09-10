@@ -1,4 +1,4 @@
-# Corpus Builder · format de campagne v2
+# Corpus Builder · format de campagne v3
 
 La source active est `campaigns/sereine.campaign.json`. Elle est lisible par le
 studio, le validateur et le moteur de jeu.
@@ -21,10 +21,10 @@ campagne sont échappés lors de leur insertion dans l'interface. Cette frontiè
 protège l'ouverture locale de campagnes échangées ; elle ne transforme pas un
 fichier reçu d'une source inconnue en contenu de confiance.
 
-Les vues permettent de créer, dupliquer et supprimer positions, actions et
-seuils. Les champs causaux complexes restent saisis sous forme de petits objets
-JSON attachés à chaque action, avec diagnostic immédiat en cas de syntaxe
-invalide.
+Les vues permettent de créer, dupliquer et supprimer positions, actions,
+seuils, issues et dimensions de bilan. Les champs causaux complexes restent
+saisis sous forme de petits objets JSON localisés, avec diagnostic immédiat en
+cas de syntaxe invalide.
 
 ## Parties déclaratives
 
@@ -33,7 +33,8 @@ invalide.
 - `worldFlags` : états matériels ou institutionnels possibles ;
 - `timeline` : seuils, branches conditionnelles, effets et irréversibilité ;
 - `actions` : auteur, durée, variantes, préconditions, effets, traces, relais et délais ;
-- `outcomeDimensions` : dimensions du bilan, jamais agrégées.
+- `outcome` : variantes ordonnées du bilan et dimensions conditionnelles,
+  jamais agrégées en score.
 
 ## Diagnostics actuels
 
@@ -47,9 +48,9 @@ auprès de joueuses et joueurs différents.
 
 ## Frontière actuelle
 
-Les conséquences jouables sont interprétées depuis la campagne. Les textes de
-résultat propres à Sereine, ses quatre illustrations et le bilan final restent
-spécialisés. L'analyse d'accessibilité explore les branches, les conditions
+Les conséquences jouables et le bilan vectoriel sont interprétés depuis la
+campagne. Les textes de résultat propres à Sereine et ses quatre illustrations
+restent spécialisés. L'analyse d'accessibilité explore les branches, les conditions
 négatives, les effets différés et le temps. Elle annonce explicitement si sa
 limite de calcul est atteinte au lieu de déclarer les actions restantes
 impossibles.

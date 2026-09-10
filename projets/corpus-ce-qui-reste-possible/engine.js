@@ -259,28 +259,14 @@ export function getActorKnowledge(state, actor = state.perspective) {
 }
 
 export function getOutcome(state) {
-  const stopped = state.world.permitFrozen || state.world.depotHold;
-  let heading = "Le monde a changé avant le recours";
-  let summary = "L'ordre a produit ses effets. Les voies encore ouvertes commencent désormais depuis un déplacement réalisé.";
-  if (stopped) {
-    heading = "Ce matin, personne ne part";
-    summary = state.world.permitFrozen
-      ? "La chaîne juridique a atteint les personnes capables d'arrêter les machines. Le fond reste à juger."
-      : "Un veto collectif tient encore. Sa continuité dépend de celles et ceux qui peuvent le maintenir.";
-  }
+  const select = (variants = []) => variants.find((variant) => !variant.when || conditionsMet(state, variant.when));
+  const summary = select(CAMPAIGN.outcome.variants);
   return {
-    heading,
-    summary,
-    dimensions: [
-      { label: "Sécurité immédiate", state: stopped ? "préservée" : "perdue", detail: stopped ? "L'expulsion n'est pas exécutée à l'échéance." : "La famille est déplacée sous contrainte." },
-      { label: "Capacité de rester", state: stopped ? (state.world.roadClosed ? "entravée" : "ouverte") : "fermée", detail: state.world.routeTransmitted ? "Le passage de marée maintient une relation fragile au lieu." : "La fermeture de la route coupe des usages absents du dossier." },
-      { label: "Recours", state: state.world.permitFrozen ? "effectif" : state.world.freezeSent ? "émis, non effectif" : state.world.recordsCompared ? "possible" : "faible", detail: state.world.permitFrozen ? "La suspension est reçue, appliquée et observable au dépôt." : state.world.freezeSent ? "Une signature existe, sans capacité d'arrêt vérifiée." : "Aucune suspension opposable n'agit sur le chantier." },
-      { label: "Moyens de vivre", state: state.world.harvestSaved ? "partiellement préservés" : "exposés", detail: state.world.harvestSaved ? "La récolte est sauvée ; la saison suivante ne l'est pas." : "Récolte, bêtes et revenus absorbent encore la perte." },
-      { label: "Capacité collective", state: state.world.publicAssembly ? "distribuée" : state.world.crewOrganized ? "locale" : "dépendante", detail: state.world.publicAssembly ? "Plusieurs groupes disposent de tâches et de mandats distincts." : "La suite repose encore sur peu de personnes et de canaux." },
-      { label: "Mémoire", state: state.world.recordsDistributed ? "répartie" : state.world.recordsCompared ? "centralisée" : "lacunaire", detail: state.world.recordsDistributed ? "Des copies expurgées survivent dans plusieurs milieux." : "La contradiction dépend encore d'un tiroir ou n'a pas été rendue visible." },
-      { label: "Parole d'Ina", state: state.world.protectedStory ? "transmise sous mandat" : state.world.interviewDeclined ? "retirée" : state.world.mandateDefined ? "protégée" : "sans cadre", detail: state.world.protectedStory ? "Le récit circule sans pièces brutes ni adresse." : state.world.interviewDeclined ? "Le refus est conservé sans être transformé en aveu." : "Aucune permission de diffusion n'a été établie." },
-      { label: "Coût du refus", state: state.world.niloLostWork ? "porté par Nilo" : state.world.crewOrganized ? "mutualisé" : "invisible", detail: state.world.niloLostWork ? "Le chantier a absorbé son refus ; Nilo en conserve la sanction." : "Le collectif réduit sans supprimer le risque individuel." },
-      { label: "Rive humide", state: state.world.wetlandDamaged ? "endommagée" : "non terrassée", detail: state.world.wetlandDamaged ? "Le remblai demeure même si une décision ultérieure change." : "L'absence de terrassement ne garantit pas la protection future du milieu." },
-    ],
+    heading: summary.heading,
+    summary: summary.summary,
+    dimensions: CAMPAIGN.outcome.dimensions.map((dimension) => {
+      const { when: _condition, ...presentation } = select(dimension.variants);
+      return { label: dimension.label, ...presentation };
+    }),
   };
 }

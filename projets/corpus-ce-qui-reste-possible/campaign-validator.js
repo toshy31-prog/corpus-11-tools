@@ -152,7 +152,7 @@ export function validateCampaign(campaign) {
   if (!campaign || typeof campaign !== "object") {
     return [issue("error", "CAMPAIGN_TYPE", "campaign", "La campagne doit être un objet JSON.")];
   }
-  if (campaign.schemaVersion !== 2) issues.push(issue("error", "SCHEMA_VERSION", "campaign.schemaVersion", "Version de schéma attendue : 2."));
+  if (campaign.schemaVersion !== 3) issues.push(issue("error", "SCHEMA_VERSION", "campaign.schemaVersion", "Version de schéma attendue : 3."));
   if (!Number.isInteger(campaign.stateVersion) || campaign.stateVersion < 1) issues.push(issue("error", "STATE_VERSION", "campaign.stateVersion", "Une version d'état entière et positive est obligatoire."));
   if (!validId(campaign.id)) issues.push(issue("error", "CAMPAIGN_ID", "campaign.id", "L'identifiant de campagne doit être non vide et ne contenir que lettres, chiffres, points, tirets ou soulignements."));
   if (!Number.isFinite(campaign.deadline) || campaign.deadline <= 0) issues.push(issue("error", "DEADLINE", "campaign.deadline", "L'échéance doit être un nombre positif."));
@@ -253,6 +253,46 @@ export function validateCampaign(campaign) {
     validateNode(event, `campaign.timeline.${event.id}`, null);
   }
   if (!timeline.some((event) => event.hour === campaign.deadline && event.endCampaign)) issues.push(issue("warning", "NO_DEADLINE_EVENT", "campaign.timeline", "Aucun événement terminal ne matérialise l'échéance."));
+
+  function validateOutcomeVariants(variants, path, fields) {
+    if (!Array.isArray(variants) || variants.length === 0) {
+      issues.push(issue("error", "OUTCOME_VARIANTS", path, "Au moins une variante de bilan est obligatoire."));
+      return;
+    }
+    for (const [index, variant] of variants.entries()) {
+      const variantPath = `${path}.${index}`;
+      validateRequirements(variant.when, `${variantPath}.when`);
+      if ([...(variant.when?.knowledge || []), ...(variant.when?.notKnowledge || []), ...(variant.when?.anyKnowledge || [])].length) {
+        issues.push(issue("error", "OUTCOME_PERSPECTIVE", `${variantPath}.when`, "Un bilan commun ne peut pas dépendre du savoir de la position actuellement affichée."));
+      }
+      if (fields.some((field) => !variant[field])) {
+        issues.push(issue("error", "OUTCOME_FIELDS", variantPath, `Champs obligatoires : ${fields.join(", ")}.`));
+      }
+      if (!variant.when && index !== variants.length - 1) {
+        issues.push(issue("error", "OUTCOME_SHADOW", variantPath, "La variante sans condition doit rester la dernière pour ne pas masquer les suivantes."));
+      }
+    }
+    if (variants.at(-1)?.when) issues.push(issue("error", "OUTCOME_FALLBACK", path, "La dernière variante doit fournir un bilan sans condition."));
+  }
+
+  if (!campaign.outcome || typeof campaign.outcome !== "object") {
+    issues.push(issue("error", "OUTCOME_REQUIRED", "campaign.outcome", "Un bilan vectoriel déclaratif est obligatoire."));
+  } else {
+    validateOutcomeVariants(campaign.outcome.variants, "campaign.outcome.variants", ["heading", "summary"]);
+    const dimensions = campaign.outcome.dimensions;
+    if (!Array.isArray(dimensions) || dimensions.length < 2) {
+      issues.push(issue("error", "OUTCOME_DIMENSIONS", "campaign.outcome.dimensions", "Le bilan doit conserver au moins deux dimensions non agrégées."));
+    } else {
+      for (const label of duplicates(dimensions.map((dimension) => dimension.label))) {
+        issues.push(issue("error", "DUPLICATE_OUTCOME_DIMENSION", "campaign.outcome.dimensions", `Dimension dupliquée : ${label}.`));
+      }
+      for (const [index, dimension] of dimensions.entries()) {
+        const path = `campaign.outcome.dimensions.${index}`;
+        if (!dimension.label) issues.push(issue("error", "OUTCOME_LABEL", `${path}.label`, "Chaque dimension exige un libellé."));
+        validateOutcomeVariants(dimension.variants, `${path}.variants`, ["state", "detail"]);
+      }
+    }
+  }
 
   const forbidden = new Set(["score", "totalScore", "justiceScore", "moralityScore", "pressure"]);
   walkKeys(campaign, (key, path) => {

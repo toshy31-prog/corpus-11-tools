@@ -183,7 +183,25 @@ test("the ending is a vector without a global score", () => {
   const outcome = getOutcome(state);
   assert.equal("score" in outcome, false);
   assert.equal(outcome.dimensions.length, 9);
+  assert.equal(outcome.heading, "Le monde a changé avant le recours");
+  assert.equal(outcome.dimensions[0].state, "perdue");
   assert.equal(state.world.forcedDisplacement, true);
+});
+
+test("the ending resolves ordered declarative variants", () => {
+  const state = createInitialState();
+  state.world.permitFrozen = true;
+  state.world.roadClosed = true;
+  state.world.routeTransmitted = true;
+  state.world.recordsCompared = true;
+  const outcome = getOutcome(state);
+  const dimensions = Object.fromEntries(outcome.dimensions.map((dimension) => [dimension.label, dimension]));
+  assert.equal(outcome.heading, "Ce matin, personne ne part");
+  assert.match(outcome.summary, /chaîne juridique/);
+  assert.equal(dimensions["Sécurité immédiate"].state, "préservée");
+  assert.equal(dimensions["Capacité de rester"].state, "entravée");
+  assert.equal(dimensions.Recours.state, "effectif");
+  assert.ok(outcome.dimensions.every((dimension) => !("when" in dimension)));
 });
 
 test("actions that cannot finish before the deadline disappear", () => {

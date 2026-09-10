@@ -195,6 +195,29 @@ function actionsView() {
   }).join("")}</div>`;
 }
 
+function outcomeView() {
+  const outcome = campaign.outcome || { variants: [], dimensions: [] };
+  return `<section class="outcome-editor">
+    <header class="outcome-section-heading"><div><p class="studio-overline">Ouverture du bilan</p><h3>Quel monde atteint l'échéance ?</h3></div><button class="studio-button" data-add-outcome-summary type="button">+ Variante</button></header>
+    <div class="outcome-rule-list">${(outcome.variants || []).map((variant, index) => `<article class="outcome-rule">
+      <label class="editor-field">Condition JSON<textarea rows="2" data-summary-variant="${index}" data-summary-json="when">${compactJson(variant.when, {})}</textarea></label>
+      <label class="editor-field">Titre<input data-summary-variant="${index}" data-summary-field="heading" value="${escapeHtml(variant.heading)}"></label>
+      <label class="editor-field">Résumé<textarea rows="2" data-summary-variant="${index}" data-summary-field="summary">${escapeHtml(variant.summary)}</textarea></label>
+      <button class="mini-button danger" data-delete-outcome-summary="${index}" type="button">Supprimer</button>
+    </article>`).join("")}</div>
+    <header class="outcome-section-heading"><div><p class="studio-overline">Vecteur final</p><h3>Ce qui est préservé, perdu ou encore contestable</h3></div><button class="studio-button" data-add-dimension type="button">+ Dimension</button></header>
+    <div class="dimension-list">${(outcome.dimensions || []).map((dimension, dimensionIndex) => `<article class="dimension-card">
+      <header><label class="editor-field">Dimension<input data-dimension="${dimensionIndex}" data-dimension-field="label" value="${escapeHtml(dimension.label)}"></label><button class="mini-button" data-add-dimension-variant="${dimensionIndex}" type="button">+ Variante</button><button class="mini-button danger" data-delete-dimension="${dimensionIndex}" type="button">Supprimer</button></header>
+      <div class="dimension-variants">${(dimension.variants || []).map((variant, variantIndex) => `<div class="dimension-variant">
+        <label class="editor-field">Condition JSON<textarea rows="2" data-dimension="${dimensionIndex}" data-dimension-variant="${variantIndex}" data-dimension-json="when">${compactJson(variant.when, {})}</textarea></label>
+        <label class="editor-field">Etat<input data-dimension="${dimensionIndex}" data-dimension-variant="${variantIndex}" data-dimension-variant-field="state" value="${escapeHtml(variant.state)}"></label>
+        <label class="editor-field wide">Détail<textarea rows="2" data-dimension="${dimensionIndex}" data-dimension-variant="${variantIndex}" data-dimension-variant-field="detail">${escapeHtml(variant.detail)}</textarea></label>
+        <button class="mini-button danger" data-delete-dimension-variant="${dimensionIndex}:${variantIndex}" type="button">Supprimer la variante</button>
+      </div>`).join("")}</div>
+    </article>`).join("")}</div>
+  </section>`;
+}
+
 function sourceView() {
   return `<div class="source-actions"><button id="apply-source" class="studio-button primary" type="button">Appliquer le JSON</button><button id="format-source" class="studio-button" type="button">Reformater</button><span class="source-note">Les diagnostics ne changent qu'après application.</span></div><textarea id="source-editor" class="source-editor" spellcheck="false">${escapeHtml(JSON.stringify(campaign, null, 2))}</textarea>`;
 }
@@ -203,6 +226,7 @@ const viewMeta = {
   perspectives: ["Positions situées", "Qui sait quoi, et depuis où ?", perspectiveView],
   timeline: ["Temps politique", "Quels seuils ferment quelles possibilités ?", timelineView],
   actions: ["Verbes et dépendances", "Que peut-on réellement faire ?", actionsView],
+  outcome: ["Bilan sans total", "Quelles conséquences restent incompatibles ?", outcomeView],
   source: ["Représentation complète", "Source JSON de la campagne", sourceView],
 };
 
@@ -302,6 +326,64 @@ function bindWorkbench() {
     const action = campaign.actions[index];
     if (!window.confirm(`Supprimer l'action « ${action.title} » ?`)) return;
     campaign.actions.splice(index, 1); changed(); renderWorkbench();
+  }));
+  document.querySelectorAll("[data-summary-field]").forEach((input) => input.addEventListener("input", () => {
+    campaign.outcome.variants[Number(input.dataset.summaryVariant)][input.dataset.summaryField] = input.value; changed();
+  }));
+  document.querySelectorAll("[data-summary-json]").forEach((input) => input.addEventListener("change", () => {
+    try {
+      const value = JSON.parse(input.value);
+      campaign.outcome.variants[Number(input.dataset.summaryVariant)][input.dataset.summaryJson] = Object.keys(value).length ? value : undefined;
+      input.removeAttribute("aria-invalid"); changed(); renderWorkbench();
+    } catch (error) {
+      input.setAttribute("aria-invalid", "true"); sourceError = `outcome.when : ${error.message}`; renderDiagnostics(); renderStats();
+    }
+  }));
+  $("[data-add-outcome-summary]")?.addEventListener("click", () => {
+    const variants = campaign.outcome.variants;
+    variants.splice(Math.max(0, variants.length - 1), 0, { when: { world: [campaign.worldFlags[0]] }, heading: "Nouvelle issue", summary: "Décrire ce qui distingue cette issue." });
+    changed(); renderWorkbench();
+  });
+  document.querySelectorAll("[data-delete-outcome-summary]").forEach((button) => button.addEventListener("click", () => {
+    const variants = campaign.outcome.variants;
+    if (variants.length <= 1) return window.alert("Le bilan exige au moins une issue sans condition.");
+    variants.splice(Number(button.dataset.deleteOutcomeSummary), 1); changed(); renderWorkbench();
+  }));
+  document.querySelectorAll("[data-dimension-field]").forEach((input) => input.addEventListener("input", () => {
+    campaign.outcome.dimensions[Number(input.dataset.dimension)][input.dataset.dimensionField] = input.value; changed();
+  }));
+  document.querySelectorAll("[data-dimension-variant-field]").forEach((input) => input.addEventListener("input", () => {
+    const dimension = campaign.outcome.dimensions[Number(input.dataset.dimension)];
+    dimension.variants[Number(input.dataset.dimensionVariant)][input.dataset.dimensionVariantField] = input.value; changed();
+  }));
+  document.querySelectorAll("[data-dimension-json]").forEach((input) => input.addEventListener("change", () => {
+    try {
+      const value = JSON.parse(input.value);
+      const dimension = campaign.outcome.dimensions[Number(input.dataset.dimension)];
+      dimension.variants[Number(input.dataset.dimensionVariant)][input.dataset.dimensionJson] = Object.keys(value).length ? value : undefined;
+      input.removeAttribute("aria-invalid"); changed(); renderWorkbench();
+    } catch (error) {
+      input.setAttribute("aria-invalid", "true"); sourceError = `outcome.dimension.when : ${error.message}`; renderDiagnostics(); renderStats();
+    }
+  }));
+  $("[data-add-dimension]")?.addEventListener("click", () => {
+    campaign.outcome.dimensions.push({ label: "Nouvelle dimension", variants: [{ state: "à qualifier", detail: "Décrire ce que cet état permet ou empêche encore." }] });
+    changed(); renderWorkbench();
+  });
+  document.querySelectorAll("[data-add-dimension-variant]").forEach((button) => button.addEventListener("click", () => {
+    const variants = campaign.outcome.dimensions[Number(button.dataset.addDimensionVariant)].variants;
+    variants.splice(Math.max(0, variants.length - 1), 0, { when: { world: [campaign.worldFlags[0]] }, state: "à qualifier", detail: "Décrire cette variante." });
+    changed(); renderWorkbench();
+  }));
+  document.querySelectorAll("[data-delete-dimension]").forEach((button) => button.addEventListener("click", () => {
+    if (campaign.outcome.dimensions.length <= 2) return window.alert("Un bilan Corpus conserve au moins deux dimensions non agrégées.");
+    campaign.outcome.dimensions.splice(Number(button.dataset.deleteDimension), 1); changed(); renderWorkbench();
+  }));
+  document.querySelectorAll("[data-delete-dimension-variant]").forEach((button) => button.addEventListener("click", () => {
+    const [dimensionIndex, variantIndex] = button.dataset.deleteDimensionVariant.split(":").map(Number);
+    const variants = campaign.outcome.dimensions[dimensionIndex].variants;
+    if (variants.length <= 1) return window.alert("Cette dimension exige au moins une variante sans condition.");
+    variants.splice(variantIndex, 1); changed(); renderWorkbench();
   }));
   $("#apply-source")?.addEventListener("click", () => {
     try { campaign = JSON.parse($("#source-editor").value); sourceError = null; changed(); renderIdentity(); renderDiagnostics(); renderStats(); renderWorkbench(); }
