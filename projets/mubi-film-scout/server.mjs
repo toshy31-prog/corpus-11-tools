@@ -162,6 +162,25 @@ async function verifyMubi(movie, providerId, token) {
   };
 }
 
+function compactDiscoveryMovie(movie, verifiedById) {
+  const verified = verifiedById.get(movie.id);
+  return {
+    id: movie.id,
+    title: movie.title || movie.original_title || "Sans titre",
+    originalTitle: movie.original_title || movie.title || "",
+    overview: movie.overview || "",
+    releaseDate: movie.release_date || "",
+    rating: Number(movie.vote_average) || 0,
+    votes: Number(movie.vote_count) || 0,
+    poster: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : null,
+    originalLanguage: movie.original_language || "",
+    genreIds: movie.genre_ids || [],
+    why: movie.why || [],
+    verified: Boolean(verified),
+    offerLink: verified?.offerLink || `https://www.themoviedb.org/movie/${movie.id}/watch?locale=FR`
+  };
+}
+
 async function mapSettledWithConcurrency(items, limit, worker) {
   const results = new Array(items.length);
   let cursor = 0;
@@ -289,6 +308,9 @@ async function handleSearch(request, response) {
   const qualitativelyRanked = rankByQualitativePreferences(verified, qualitative);
   const ranked = selectWithLenses(qualitativelyRanked, filters, 12);
   const programme = buildProgramme(ranked, filters);
+  const verifiedById = new Map(verified.map((movie) => [movie.id, movie]));
+  const catalogueRanking = selectWithLenses(preliminaryRanking, filters, preliminaryRanking.length);
+  const catalogue = catalogueRanking.map((movie) => compactDiscoveryMovie(movie, verifiedById));
   const externalKeys = Object.fromEntries(await Promise.all(
     ["guardian", "nyt", "omdb"].map(async (id) => [id, await connections.get(id)])
   ));
@@ -317,6 +339,7 @@ async function handleSearch(request, response) {
     exploredPages,
     exploredCandidates: uniqueResults.length,
     movies: external.movies,
+    catalogue,
     sourceCoverage: external.coverage,
     attribution: "Données TMDB ; disponibilités fournies par JustWatch ; critiques Guardian et NYT ; réception agrégée via OMDb."
   });

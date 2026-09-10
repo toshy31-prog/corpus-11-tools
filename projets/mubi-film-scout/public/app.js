@@ -4,6 +4,8 @@ const form = document.querySelector("#search-form");
 const statusNode = document.querySelector("#status");
 const moviesNode = document.querySelector("#movies");
 const resultHead = document.querySelector("#result-head");
+const resultStep = document.querySelector("#result-step");
+const resultTitle = document.querySelector("#result-title");
 const appliedNode = document.querySelector("#applied");
 const tokenInput = document.querySelector("#token");
 const sourceCenter = document.querySelector("#source-center");
@@ -25,6 +27,14 @@ const submitButton = document.querySelector("#submit-search");
 const submitLabel = submitButton.querySelector(".button-label");
 const understandingNode = document.querySelector("#understanding");
 const lensCountNode = document.querySelector("#lens-count");
+const resultViews = document.querySelector("#result-views");
+const programmeCount = document.querySelector("#programme-count");
+const catalogueCount = document.querySelector("#catalogue-count");
+const catalogueSection = document.querySelector("#catalogue-section");
+const catalogueGrid = document.querySelector("#catalogue-grid");
+const catalogueQuery = document.querySelector("#catalogue-query");
+const catalogueProgress = document.querySelector("#catalogue-progress");
+const catalogueMore = document.querySelector("#catalogue-more");
 
 let preferences = loadPreferences();
 let connections = {};
@@ -32,6 +42,9 @@ let diagnostics = {};
 let activeRequest = null;
 let requestSequence = 0;
 let surpriseMode = false;
+let catalogueMovies = [];
+let catalogueVisible = 24;
+let interpretationHasContent = false;
 
 const sourceInputs = {
   tmdb: tokenInput,
@@ -206,6 +219,8 @@ function setLoading() {
   resultHead.hidden = true;
   interpretationNode.hidden = true;
   moviesNode.replaceChildren();
+  resultViews.hidden = true;
+  catalogueSection.hidden = true;
   statusNode.hidden = false;
   resultsSection.setAttribute("aria-busy", "true");
   statusNode.className = "empty-state loading";
@@ -216,6 +231,8 @@ function setMessage(message, type = "empty") {
   resultHead.hidden = true;
   interpretationNode.hidden = true;
   moviesNode.replaceChildren();
+  resultViews.hidden = true;
+  catalogueSection.hidden = true;
   statusNode.hidden = false;
   statusNode.className = `empty-state ${type}`;
   statusNode.innerHTML = `<span class="empty-mark">${type === "error" ? "!" : "M"}</span><p>${escapeHtml(message)}</p>`;
@@ -337,12 +354,20 @@ function renderMovies(data) {
   statusNode.hidden = true;
   resultsSection.setAttribute("aria-busy", "false");
   resultHead.hidden = false;
+  resultViews.hidden = false;
   appliedNode.replaceChildren(...data.applied.map((label) => {
     const chip = document.createElement("span");
     chip.textContent = label;
     return chip;
   }));
   moviesNode.replaceChildren();
+  catalogueMovies = data.catalogue || [];
+  catalogueVisible = 24;
+  catalogueQuery.value = "";
+  programmeCount.textContent = String(data.movies.length);
+  catalogueCount.textContent = String(catalogueMovies.length);
+  renderCatalogue();
+  setResultView("programme");
 
   interpretationNode.replaceChildren();
   const coverageLabels = Object.entries(data.sourceCoverage || {}).map(([source, coverage]) => {
@@ -351,7 +376,8 @@ function renderMovies(data) {
   });
   const coverageMessage = coverageLabels.length ? `Rapprochements externes sûrs : ${coverageLabels.join(" · ")}.` : null;
   const messages = [data.interpretationNotice, coverageMessage, ...(data.warnings || [])].filter(Boolean);
-  interpretationNode.hidden = messages.length === 0;
+  interpretationHasContent = messages.length > 0;
+  interpretationNode.hidden = !interpretationHasContent;
   for (const message of messages) {
     const paragraph = document.createElement("p");
     paragraph.textContent = message;
@@ -403,6 +429,64 @@ function renderMovies(data) {
       </div>`;
     card.querySelector("button").addEventListener("click", (event) => markSeen(movie.id, event.currentTarget, card));
     moviesNode.append(card);
+  }
+}
+
+function normalizedCatalogueQuery() {
+  return catalogueQuery.value.trim().toLocaleLowerCase("fr-FR");
+}
+
+function filteredCatalogueMovies() {
+  const query = normalizedCatalogueQuery();
+  if (!query) return catalogueMovies;
+  return catalogueMovies.filter((movie) => [movie.title, movie.originalTitle]
+    .filter(Boolean)
+    .some((value) => value.toLocaleLowerCase("fr-FR").includes(query)));
+}
+
+function renderCatalogue() {
+  const filtered = filteredCatalogueMovies();
+  const visible = filtered.slice(0, catalogueVisible);
+  catalogueGrid.replaceChildren();
+  for (const movie of visible) {
+    const card = document.createElement("article");
+    card.className = "catalogue-card";
+    const posterUrl = safeExternalUrl(movie.poster, ["image.tmdb.org"]);
+    const offerUrl = safeExternalUrl(
+      movie.offerLink,
+      ["www.themoviedb.org", "themoviedb.org"],
+      `https://www.themoviedb.org/movie/${Number(movie.id)}/watch?locale=FR`
+    );
+    const year = movie.releaseDate?.slice(0, 4) || "—";
+    card.innerHTML = `
+      <a class="catalogue-poster" href="${offerUrl}" target="_blank" rel="noreferrer">
+        ${posterUrl ? `<img src="${posterUrl}" alt="Affiche de ${escapeHtml(movie.title)}" loading="lazy">` : '<span class="poster-missing">Sans affiche</span>'}
+        ${movie.verified ? '<span class="verified-badge">Vérifié</span>' : ""}
+      </a>
+      <div class="catalogue-copy">
+        <p>${year}${movie.originalLanguage ? ` · VO ${escapeHtml(movie.originalLanguage.toUpperCase())}` : ""}</p>
+        <h3><a href="${offerUrl}" target="_blank" rel="noreferrer">${escapeHtml(movie.title)}</a></h3>
+        <span>${movie.rating ? `${movie.rating.toFixed(1)}/10` : "Non noté"}</span>
+      </div>`;
+    catalogueGrid.append(card);
+  }
+  catalogueProgress.textContent = filtered.length
+    ? `${visible.length} titre${visible.length > 1 ? "s" : ""} affiché${visible.length > 1 ? "s" : ""} sur ${filtered.length}`
+    : "Aucun titre ne correspond à ce filtre.";
+  catalogueMore.hidden = visible.length >= filtered.length;
+}
+
+function setResultView(view) {
+  const showCatalogue = view === "catalogue";
+  moviesNode.hidden = showCatalogue;
+  catalogueSection.hidden = !showCatalogue;
+  interpretationNode.hidden = showCatalogue || !interpretationHasContent;
+  resultStep.textContent = showCatalogue ? "02 — L’exploration" : "02 — Le programme";
+  resultTitle.textContent = showCatalogue
+    ? `${catalogueMovies.length} titre${catalogueMovies.length > 1 ? "s" : ""} à parcourir`
+    : "Quatre chemins possibles";
+  for (const button of resultViews.querySelectorAll("button")) {
+    button.setAttribute("aria-pressed", String(button.dataset.resultView === view));
   }
 }
 
@@ -544,6 +628,18 @@ runDiagnosticButton.addEventListener("click", runDiagnostic);
 document.querySelector("#wish").addEventListener("input", () => {
   surpriseMode = false;
   updateUnderstanding();
+});
+resultViews.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-result-view]");
+  if (button) setResultView(button.dataset.resultView);
+});
+catalogueQuery.addEventListener("input", () => {
+  catalogueVisible = 24;
+  renderCatalogue();
+});
+catalogueMore.addEventListener("click", () => {
+  catalogueVisible += 24;
+  renderCatalogue();
 });
 document.querySelector("#surprise").addEventListener("click", () => {
   document.querySelector("#wish").value = "Surprends-moi avec un film bien noté de moins de 2h10";

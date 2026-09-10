@@ -136,6 +136,10 @@ legend { color: var(--muted); font-size: .78rem; text-transform: uppercase; lett
 .interpretation { margin: -8px 0 28px; padding: 12px 15px; border-left: 2px solid var(--accent); background: #171716; color: var(--muted); font-size: .8rem; line-height: 1.45; }
 .interpretation p { margin: 0; }
 .interpretation p + p { margin-top: 5px; color: #ffbd75; }
+.result-views { display: inline-flex; gap: 4px; margin: 0 0 28px; padding: 4px; border: 1px solid var(--line); background: #111110; }
+.result-views button { border: 0; background: transparent; color: var(--muted); padding: 10px 13px; cursor: pointer; font-size: .86rem; font-weight: 750; }
+.result-views button[aria-pressed="true"] { background: var(--accent); color: #090908; }
+.result-views span { margin-left: 7px; opacity: .7; font-variant-numeric: tabular-nums; }
 .chips { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 7px; }
 .chips span { padding: 7px 10px; border: 1px solid var(--line); color: var(--muted); font-size: .72rem; }
 .movie-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 46px 22px; }
@@ -173,6 +177,27 @@ h3 { margin: 7px 0 3px; font-size: 1.2rem; letter-spacing: -.02em; }
 .card-actions button { background: none; border: 0; color: var(--muted); padding: 0; cursor: pointer; font-size: .75rem; }
 .card-actions button:disabled { color: var(--accent); }
 
+.catalogue-section { border-top: 1px solid var(--line); padding-top: 26px; }
+.catalogue-heading { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, 320px); align-items: end; gap: 32px; margin-bottom: 24px; }
+.catalogue-heading h2 { margin-bottom: 8px; }
+.catalogue-heading p { max-width: 680px; margin: 0; color: var(--muted); font-size: .86rem; line-height: 1.5; }
+.catalogue-heading label { color: var(--muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .07em; }
+.catalogue-heading input[type="search"] { width: 100%; margin-top: 8px; padding: 12px; border: 1px solid var(--line); background: #111110; color: var(--ink); outline: none; }
+.catalogue-heading input[type="search"]:focus { border-color: var(--accent); }
+.catalogue-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 28px 14px; }
+.catalogue-card { min-width: 0; }
+.catalogue-poster { position: relative; display: block; aspect-ratio: 2 / 3; overflow: hidden; background: #191918; color: var(--muted); text-decoration: none; }
+.catalogue-poster img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
+.catalogue-card:hover .catalogue-poster img { transform: scale(1.025); }
+.verified-badge { position: absolute; left: 7px; bottom: 7px; padding: 5px 7px; background: var(--accent); color: #090908; font-size: .68rem; font-weight: 850; text-transform: uppercase; letter-spacing: .04em; }
+.catalogue-copy { padding-top: 10px; }
+.catalogue-copy > p, .catalogue-copy > span { margin: 0; color: var(--muted); font-size: .74rem; }
+.catalogue-copy h3 { margin: 4px 0; font-size: 1rem; line-height: 1.2; }
+.catalogue-copy h3 a { color: var(--ink); text-decoration: none; }
+.catalogue-copy h3 a:hover { color: var(--accent); }
+.catalogue-footer { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--line); }
+.catalogue-footer p { color: var(--muted); font-size: .86rem; }
+
 footer { border-top: 1px solid var(--line); padding: 25px 0 40px; color: var(--muted); display: flex; justify-content: space-between; align-items: flex-start; gap: 36px; font-size: .72rem; }
 .credits { max-width: 720px; }
 .credits p { margin: 7px 0 0; line-height: 1.45; }
@@ -195,6 +220,7 @@ footer { border-top: 1px solid var(--line); padding: 25px 0 40px; color: var(--m
   .movie-grid { grid-template-columns: 1fr 1fr; }
   .primary-button { width: 100%; }
   .chips { justify-content: flex-start; }
+  .catalogue-heading { grid-template-columns: 1fr; gap: 18px; }
 }
 
 @media (max-width: 1020px) and (min-width: 481px) {
@@ -208,5 +234,9 @@ footer { border-top: 1px solid var(--line); padding: 25px 0 40px; color: var(--m
   .diagnostic-strip { grid-template-columns: 1fr; }
   .source-row { grid-template-columns: 1fr; }
   .source-row input[type="password"], .source-row a { grid-column: 1; }
+  .result-views { display: flex; width: 100%; }
+  .result-views button { flex: 1; }
+  .catalogue-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .catalogue-footer { align-items: stretch; flex-direction: column; }
   h1 { font-size: 3.3rem; }
 }

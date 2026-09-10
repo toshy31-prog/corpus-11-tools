@@ -119,6 +119,14 @@ et contraste, et le mode aventureux cherche trois propositions plus profondes
 et éloignées. Les rôles affichés sur les quatre cartes changent en conséquence.
 Les choix du formulaire sont mémorisés localement pour la visite suivante.
 
+Après chaque recherche, deux vues sont disponibles : le programme éditorial de
+quatre films, enrichi par les sources extérieures, et « Tous les titres
+explorés ». Cette seconde vue affiche progressivement l’ensemble des résultats
+remontés pendant l’exploration, avec un filtre local par titre. Elle ne lance
+pas d’appels Guardian, NYT ou OMDb supplémentaires. Les films contrôlés
+individuellement auprès de TMDB portent un badge « Vérifié » ; les autres sont
+des titres signalés MUBI France par le filtre TMDB/JustWatch.
+
 L’interface affiche toujours les contraintes effectivement appliquées. Les
 préférences qualitatives reconnues (par exemple « effets spéciaux »,
 « contemplatif » ou « poétique ») sont signalées par `≈` : elles réordonnent les

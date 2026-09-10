@@ -221,6 +221,11 @@ test("renvoie des films MUBI enrichis et signale une vérification partielle", a
   assert.equal(payload.movies.length, 1);
   assert.equal(payload.movies[0].id, 101);
   assert.equal(payload.movies[0].role.id, "match");
+  assert.equal(payload.catalogue.length, 3);
+  assert.deepEqual(new Set(payload.catalogue.map(({ id }) => id)), new Set([101, 102, 103]));
+  assert.equal(payload.catalogue.find(({ id }) => id === 101).verified, true);
+  assert.equal(payload.catalogue.find(({ id }) => id === 102).verified, false);
+  assert.equal("perspectives" in payload.catalogue[0], false);
   assert.ok(payload.applied.some((label) => label.startsWith("≈")));
   assert.equal(payload.applied.some((label) => label.startsWith("↗")), false);
   assert.equal(payload.filters.effect, "captivate");

@@ -157,13 +157,31 @@
         </div>
         <div id="result-head" class="result-head" hidden>
           <div>
-            <p class="step">02 — Le programme</p>
+            <p id="result-step" class="step">02 — Le programme</p>
             <h2 id="result-title">Quatre chemins possibles</h2>
           </div>
           <div id="applied" class="chips"></div>
         </div>
         <div id="interpretation" class="interpretation" hidden></div>
+        <nav id="result-views" class="result-views" aria-label="Vue des résultats" hidden>
+          <button type="button" data-result-view="programme" aria-pressed="true">Programme <span id="programme-count">4</span></button>
+          <button type="button" data-result-view="catalogue" aria-pressed="false">Tous les titres explorés <span id="catalogue-count">0</span></button>
+        </nav>
         <div id="movies" class="movie-grid"></div>
+        <section id="catalogue-section" class="catalogue-section" hidden aria-labelledby="catalogue-title">
+          <div class="catalogue-heading">
+            <div>
+              <h2 id="catalogue-title">Tous les titres explorés</h2>
+              <p>Signalés sur MUBI France par TMDB/JustWatch. Le badge « vérifié » indique les titres contrôlés individuellement pendant cette recherche.</p>
+            </div>
+            <label for="catalogue-query">Filtrer cette liste<input id="catalogue-query" type="search" placeholder="Titre ou titre original"></label>
+          </div>
+          <div id="catalogue-grid" class="catalogue-grid"></div>
+          <div class="catalogue-footer">
+            <p id="catalogue-progress"></p>
+            <button id="catalogue-more" class="secondary-button" type="button">Afficher 24 titres de plus</button>
+          </div>
+        </section>
       </section>
     </main>
 
