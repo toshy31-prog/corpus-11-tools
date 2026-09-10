@@ -75,8 +75,8 @@ les conditions, les durées variables, les effets, les relais, les effets
 différés et les seuils temporels. Une action ajoutée dans le JSON est donc
 exécutable sans fonction JavaScript portant le même identifiant.
 
-Les variantes et dimensions du bilan final sont maintenant déclarées dans la
-campagne. Les illustrations et les textes de résultat propres à Sereine restent
-spécialisés dans le code. Un acteur sans illustration dédiée reçoit une scène
-générique. Le builder n'est donc pas encore un générateur visuel complet de
-campagnes.
+L'ouverture, les résultats narratifs des actions, les variantes et les dimensions
+du bilan final sont maintenant déclarés dans la campagne. Les quatre
+illustrations propres à Sereine restent spécialisées dans le code. Un acteur sans
+illustration dédiée reçoit une scène générique. Le builder n'est donc pas encore
+un générateur visuel complet de campagnes.

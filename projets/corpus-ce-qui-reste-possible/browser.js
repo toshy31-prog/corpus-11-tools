@@ -2,7 +2,7 @@
 (() => {
 "use strict";
 const ACTIVE_CAMPAIGN = Object.freeze({
-  "schemaVersion": 3,
+  "schemaVersion": 4,
   "stateVersion": 3,
   "id": "sereine-01",
   "title": "Ce qui reste possible",
@@ -15,6 +15,21 @@ const ACTIVE_CAMPAIGN = Object.freeze({
   },
   "deadline": 71,
   "initialPerspective": "ina",
+  "opening": {
+    "lastBeat": {
+      "actor": "ina",
+      "title": "La lettre sur la table",
+      "body": "Ina relit l'heure, pas le motif. Vendredi, 07 h. Dehors, les pêches sont presque mûres et personne n'a encore déplacé les bêtes.",
+      "quote": "Ils ont compté trois maisons. Ils n'ont pas compté ce qui passe entre elles.",
+      "tone": "alert"
+    },
+    "log": {
+      "actor": "ina",
+      "title": "Une décision arrive avant ses conséquences",
+      "body": "L'arrêté est reçu mardi matin. Il ne produit encore ni départ, ni suspension, ni réparation.",
+      "tone": "alert"
+    }
+  },
   "actors": {
     "ina": {
       "name": "Ina Neris",
@@ -285,6 +300,12 @@ const ACTIVE_CAMPAIGN = Object.freeze({
       "duration": 2,
       "description": "La famille fixe ensemble les usages permis de son histoire et de ses papiers.",
       "tension": "Protéger la parole prend du temps avant de produire un effet extérieur.",
+      "result": {
+        "title": "Une limite avant la preuve",
+        "body": "Les factures pourront aller au recours. Ni l'adresse, ni les enregistrements bruts ne devront être publiés.",
+        "quote": "Aidez-nous, oui. Parler à notre place, non.",
+        "tone": "care"
+      },
       "grants": {
         "knowledge": [
           {
@@ -315,6 +336,12 @@ const ACTIVE_CAMPAIGN = Object.freeze({
       "duration": 2,
       "description": "Retrouver ce qui relie administrativement Ina à la maison.",
       "tension": "La trace est utilisable seulement si elle atteint un lieu capable de la recevoir.",
+      "result": {
+        "title": "Douze hivers dans une boîte",
+        "body": "Électricité, soins à domicile, réparations du toit : les pièces contredisent la catégorie « saisonnière » sans expliquer qui l'a changée.",
+        "quote": "Une maison saisonnière qui reçoit l'infirmière chaque janvier.",
+        "tone": "discovery"
+      },
       "grants": {
         "knowledge": [
           {
@@ -339,6 +366,12 @@ const ACTIVE_CAMPAIGN = Object.freeze({
       "duration": 2,
       "description": "Envoyer les pièces au seul bureau qui peut les relier au permis.",
       "tension": "L'usage reste borné au recours ; la réception ne garantit pas l'action.",
+      "result": {
+        "title": "Reçu n'est pas encore agi",
+        "body": "Mara possède maintenant les pièces et leur mandat. Aucun permis n'est encore suspendu.",
+        "quote": "Je peux les recevoir. Je ne promets pas encore ce que le registre acceptera.",
+        "tone": "relay"
+      },
       "requires": {
         "knowledge": [
           "bills"
@@ -393,6 +426,12 @@ const ACTIVE_CAMPAIGN = Object.freeze({
       ],
       "description": "Sauver les pêches, les caisses et une saison de revenu.",
       "tension": "Protège les moyens de vivre sans modifier l'arrêté.",
+      "result": {
+        "title": "Ce qui peut encore être porté",
+        "body": "La récolte quitte la vallée. La terre, le four et la saison suivante restent sur place.",
+        "quote": "Ce n'est pas gagner. C'est ne pas tout devoir en plus.",
+        "tone": "care"
+      },
       "grants": {
         "world": [
           "harvestSaved"
@@ -415,6 +454,12 @@ const ACTIVE_CAMPAIGN = Object.freeze({
       ],
       "description": "Faire apprendre le rythme du gué à d'autres habitantes.",
       "tension": "Une route n'est pas son tracé : elle dépend de personnes capables de la refaire.",
+      "result": {
+        "title": "Le passage change de mémoire",
+        "body": "Quatre personnes apprennent à lire les pierres de marée. Si la route ferme, l'accès restera fragile mais praticable.",
+        "quote": "La carte dira où. Les pieds doivent encore savoir quand.",
+        "tone": "care"
+      },
       "grants": {
         "knowledge": [
           {
@@ -444,6 +489,12 @@ const ACTIVE_CAMPAIGN = Object.freeze({
       "duration": 3,
       "description": "Enregistrer un récit sans adresse, ni image, ni documents bruts.",
       "tension": "Le montage donnera à la rédaction un pouvoir sur l'ordre des paroles.",
+      "result": {
+        "title": "Une voix, pas une extraction",
+        "body": "Sora reçoit une version publiable. L'enregistrement brut reste sous le contrôle d'Ina.",
+        "quote": "Vous pouvez raconter la coupure. Pas donner notre porte en spectacle.",
+        "tone": "relay"
+      },
       "requires": {
         "world": [
           "interviewRequested",
@@ -491,6 +542,12 @@ const ACTIVE_CAMPAIGN = Object.freeze({
       "duration": 1,
       "description": "Ne pas devenir le visage public du conflit.",
       "tension": "La rédaction perd une voix ; la famille conserve son retrait.",
+      "result": {
+        "title": "Un non qui reste un non",
+        "body": "Sora note le refus sans l'expliquer par la peur, l'ignorance ou l'accord tacite.",
+        "quote": "Je ne vous dois pas ma voix pour mériter de rester.",
+        "tone": "refusal"
+      },
       "requires": {
         "world": [
           "interviewRequested"
@@ -513,6 +570,12 @@ const ACTIVE_CAMPAIGN = Object.freeze({
       "duration": 3,
       "description": "Comparer la fiche papier de 2183 à l'annexe numérique du barrage.",
       "tension": "La comparaison laisse une trace nominative de consultation.",
+      "result": {
+        "title": "Deux fiches, aucune transition",
+        "body": "« Habitation principale » devient « dépendance saisonnière ». Aucun acte n'autorise ce changement de catégorie.",
+        "quote": "Le système montre l'état final. Il a perdu le passage qui devait le rendre valable.",
+        "tone": "discovery"
+      },
       "grants": {
         "knowledge": [
           {
@@ -543,6 +606,12 @@ const ACTIVE_CAMPAIGN = Object.freeze({
       "duration": 3,
       "description": "Confier l'incohérence, sans données familiales, au dépôt et à La Traverse.",
       "tension": "La trace devient plus résistante, mais échappe aussi à un détenteur unique.",
+      "result": {
+        "title": "L'anomalie ne tient plus dans un tiroir",
+        "body": "Deux copies circulent sans les coordonnées d'Ina. La destruction d'un dossier ne suffirait plus à effacer la contradiction.",
+        "quote": "Je partage ce qu'ils doivent pouvoir contester, pas ce qu'ils n'ont pas à posséder.",
+        "tone": "relay"
+      },
       "requires": {
         "knowledge": [
           "discrepancy"
@@ -586,6 +655,12 @@ const ACTIVE_CAMPAIGN = Object.freeze({
       "duration": 2,
       "description": "Ouvrir un canal vers la personne que la fiche a simplifiée.",
       "tension": "La charge de réparer le registre revient encore à la personne mal classée.",
+      "result": {
+        "title": "La preuve demandée à celle qui supporte l'erreur",
+        "body": "Ina sait désormais exactement ce qui manque au bureau. L'appel ne lui rend ni temps, ni accès, ni présomption de résidence.",
+        "quote": "Je peux ouvrir la voie. Je ne peux pas produire votre vie à votre place.",
+        "tone": "cost"
+      },
       "requires": {
         "knowledge": [
           "discrepancy"
@@ -619,6 +694,12 @@ const ACTIVE_CAMPAIGN = Object.freeze({
       "duration": 3,
       "description": "Émettre une suspension provisoire vers le registre et le dépôt.",
       "tension": "Signer, transmettre, recevoir et appliquer resteront quatre états différents.",
+      "result": {
+        "title": "La signature quitte le bureau",
+        "body": "La suspension est envoyée. Elle n'est pas encore reçue par le dépôt et le permis reste matériellement actif jusque-là.",
+        "quote": "À partir d'ici, le réseau peut encore échouer.",
+        "tone": "relay"
+      },
       "requires": {
         "knowledge": [
           "discrepancy",
@@ -686,6 +767,12 @@ const ACTIVE_CAMPAIGN = Object.freeze({
       "duration": 3,
       "description": "Faire du risque individuel une décision discutée collectivement.",
       "tension": "Le temps de se coordonner est pris sur des pauses non payées.",
+      "result": {
+        "title": "Six personnes deviennent un seuil",
+        "body": "Quatre conducteurs donnent mandat à Nilo pour refuser ensemble un départ juridiquement douteux. Deux ne se prononcent pas.",
+        "quote": "Seul, je suis remplaçable. Ensemble, pas aujourd'hui.",
+        "tone": "care"
+      },
       "grants": {
         "knowledge": [
           {
@@ -715,6 +802,12 @@ const ACTIVE_CAMPAIGN = Object.freeze({
       "duration": 1,
       "description": "Nilo rend sa propre machine indisponible immédiatement.",
       "tension": "Le contrat prévoit un remplacement ; la sanction, elle, reste personnelle.",
+      "result": {
+        "title": "Un refus réel, un arrêt très court",
+        "body": "Nilo est écarté du planning. Une agence cherche déjà un remplaçant. Son refus existe même s'il ne suffit pas à arrêter le chantier.",
+        "quote": "Ils peuvent prendre mon badge. Ils ne prendront pas mon oui.",
+        "tone": "refusal"
+      },
       "requires": {
         "notWorld": [
           "crewOrganized"
@@ -746,6 +839,12 @@ const ACTIVE_CAMPAIGN = Object.freeze({
       "duration": 3,
       "description": "Retenir les machines au nom du mandat des conducteurs et de l'anomalie reçue.",
       "tension": "Sans recours ou visibilité, la compagnie peut déplacer le contrat vers un autre dépôt.",
+      "result": {
+        "title": "Le moteur reste froid",
+        "body": "Le planning indique toujours « départ confirmé ». Dans le dépôt, aucune clé ne tourne. La compagnie contacte déjà un autre opérateur.",
+        "quote": "Le tableau peut dire parti. L'engin est devant moi.",
+        "tone": "action"
+      },
       "requires": {
         "world": [
           "crewOrganized"
@@ -831,6 +930,12 @@ const ACTIVE_CAMPAIGN = Object.freeze({
       "duration": 1,
       "description": "Relier l'ordre reçu aux clés, au planning et aux conducteurs.",
       "tension": "L'effet doit encore être observé au carrefour.",
+      "result": {
+        "title": "L'ordre devient capacité d'arrêt",
+        "body": "Nilo annule le départ dans le planning, retire les clés et fait contresigner les six conducteurs. Le gel devient opposable au dépôt.",
+        "quote": "Maintenant seulement, la signature agit ici.",
+        "tone": "action"
+      },
       "requires": {
         "world": [
           "freezeReceived"
@@ -862,6 +967,12 @@ const ACTIVE_CAMPAIGN = Object.freeze({
       "duration": 2,
       "description": "Ouvrir un canal sans présumer qu'Ina doit l'accepter.",
       "tension": "Une voix publique peut protéger, exposer ou simplement être refusée.",
+      "result": {
+        "title": "La demande attend sa réponse",
+        "body": "Ina reçoit les conditions proposées. Le silence ou le refus ne seront pas publiés comme un aveu.",
+        "quote": "Je peux offrir un micro. Je ne peux pas réclamer une voix.",
+        "tone": "relay"
+      },
       "requires": {
         "notWorld": [
           "interviewDeclined"
@@ -895,6 +1006,12 @@ const ACTIVE_CAMPAIGN = Object.freeze({
       "duration": 2,
       "description": "Vérifier si la pluralité apparente vient de sources réellement différentes.",
       "tension": "Cette vérification retire une certitude sans fournir encore un récit alternatif.",
+      "result": {
+        "title": "Onze titres, une seule origine",
+        "body": "Chaque article reprend la même dépêche, traduite deux fois puis raccourcie. Aucun journaliste n'a visité la vallée.",
+        "quote": "La répétition faisait foule. La chaîne tient dans une pièce.",
+        "tone": "discovery"
+      },
       "grants": {
         "knowledge": [
           {
@@ -921,6 +1038,12 @@ const ACTIVE_CAMPAIGN = Object.freeze({
       "duration": 1,
       "description": "Publier la seule version immédiatement certifiable par la rédaction.",
       "tension": "La vitesse donne au cadrage administratif une longueur d'avance matérielle.",
+      "result": {
+        "title": "La première version devient le décor",
+        "body": "Le projet circule comme une opération compensée. Les corrections futures devront désormais défaire ce point de départ.",
+        "quote": "C'était publiable. Ce n'était pas le monde entier.",
+        "tone": "cost"
+      },
       "requires": {
         "notWorld": [
           "recordPublication",
@@ -942,6 +1065,12 @@ const ACTIVE_CAMPAIGN = Object.freeze({
       "duration": 3,
       "description": "Expliquer les deux fiches sans identifier la famille ni diffuser les pièces.",
       "tension": "La compagnie apprendra quelle faille est utilisée et pourra adapter sa réponse.",
+      "result": {
+        "title": "La contradiction entre dans l'espace public",
+        "body": "L'article décrit le changement de catégorie et son absence de trace. La compagnie annonce un audit sans suspendre le chantier.",
+        "quote": "Nous publions la faille, pas la famille.",
+        "tone": "action"
+      },
       "requires": {
         "knowledge": [
           "discrepancy"
@@ -961,6 +1090,12 @@ const ACTIVE_CAMPAIGN = Object.freeze({
       "duration": 4,
       "description": "Faire entendre les relations au lieu sans rendre la source localisable.",
       "tension": "Le montage sélectionne encore l'ordre et la durée des paroles.",
+      "result": {
+        "title": "Ce que « trois foyers » ne pouvait pas porter",
+        "body": "La diffusion fait entendre le four partagé, les soins et le troupeau. L'adresse et les documents bruts restent hors antenne.",
+        "quote": "Le lieu n'est pas devenu une preuve. Il est redevenu habité.",
+        "tone": "care"
+      },
       "requires": {
         "knowledge": [
           "protected-story"
@@ -980,6 +1115,12 @@ const ACTIVE_CAMPAIGN = Object.freeze({
       "duration": 4,
       "description": "Mettre en présence habitants, conducteurs, bureau des sols et juristes.",
       "tension": "Rendre la coordination visible peut accélérer la contre-stratégie de la compagnie.",
+      "result": {
+        "title": "La suite n'a plus un seul détenteur",
+        "body": "Trois groupes se donnent des tâches et des mandats distincts. Même si vous quittez une position, la coordination peut continuer.",
+        "quote": "Personne ne prend tout. C'est la condition pour que ça tienne.",
+        "tone": "care"
+      },
       "requires": {
         "anyKnowledge": [
           "discrepancy",
@@ -1419,47 +1560,14 @@ function createInitialState() {
     scheduled: [],
     events: [],
     world: Object.fromEntries(CAMPAIGN.worldFlags.map((flag) => [flag, false])),
-    lastBeat: {
-      actor: "ina",
-      title: "La lettre sur la table",
-      body: "Ina relit l'heure, pas le motif. Vendredi, 07 h. Dehors, les pêches sont presque mûres et personne n'a encore déplacé les bêtes.",
-      quote: "Ils ont compté trois maisons. Ils n'ont pas compté ce qui passe entre elles.",
-      tone: "alert",
-    },
+    lastBeat: clone(CAMPAIGN.opening.lastBeat),
     log: [{
       id: "opening",
-      actor: "ina",
+      ...clone(CAMPAIGN.opening.log),
       hour: 0,
-      title: "Une décision arrive avant ses conséquences",
-      body: "L'arrêté est reçu mardi matin. Il ne produit encore ni départ, ni suspension, ni réparation.",
-      tone: "alert",
     }],
   };
 }
-
-const actionBeats = {
-  "ina-mandate": { title: "Une limite avant la preuve", body: "Les factures pourront aller au recours. Ni l'adresse, ni les enregistrements bruts ne devront être publiés.", quote: "Aidez-nous, oui. Parler à notre place, non.", tone: "care" },
-  "ina-bills": { title: "Douze hivers dans une boîte", body: "Électricité, soins à domicile, réparations du toit : les pièces contredisent la catégorie « saisonnière » sans expliquer qui l'a changée.", quote: "Une maison saisonnière qui reçoit l'infirmière chaque janvier.", tone: "discovery" },
-  "ina-send-mara": { title: "Reçu n'est pas encore agi", body: "Mara possède maintenant les pièces et leur mandat. Aucun permis n'est encore suspendu.", quote: "Je peux les recevoir. Je ne promets pas encore ce que le registre acceptera.", tone: "relay" },
-  "ina-harvest": { title: "Ce qui peut encore être porté", body: "La récolte quitte la vallée. La terre, le four et la saison suivante restent sur place.", quote: "Ce n'est pas gagner. C'est ne pas tout devoir en plus.", tone: "care" },
-  "ina-path": { title: "Le passage change de mémoire", body: "Quatre personnes apprennent à lire les pierres de marée. Si la route ferme, l'accès restera fragile mais praticable.", quote: "La carte dira où. Les pieds doivent encore savoir quand.", tone: "care" },
-  "ina-interview": { title: "Une voix, pas une extraction", body: "Sora reçoit une version publiable. L'enregistrement brut reste sous le contrôle d'Ina.", quote: "Vous pouvez raconter la coupure. Pas donner notre porte en spectacle.", tone: "relay" },
-  "ina-decline": { title: "Un non qui reste un non", body: "Sora note le refus sans l'expliquer par la peur, l'ignorance ou l'accord tacite.", quote: "Je ne vous dois pas ma voix pour mériter de rester.", tone: "refusal" },
-  "mara-compare": { title: "Deux fiches, aucune transition", body: "« Habitation principale » devient « dépendance saisonnière ». Aucun acte n'autorise ce changement de catégorie.", quote: "Le système montre l'état final. Il a perdu le passage qui devait le rendre valable.", tone: "discovery" },
-  "mara-copy": { title: "L'anomalie ne tient plus dans un tiroir", body: "Deux copies circulent sans les coordonnées d'Ina. La destruction d'un dossier ne suffirait plus à effacer la contradiction.", quote: "Je partage ce qu'ils doivent pouvoir contester, pas ce qu'ils n'ont pas à posséder.", tone: "relay" },
-  "mara-request": { title: "La preuve demandée à celle qui supporte l'erreur", body: "Ina sait désormais exactement ce qui manque au bureau. L'appel ne lui rend ni temps, ni accès, ni présomption de résidence.", quote: "Je peux ouvrir la voie. Je ne peux pas produire votre vie à votre place.", tone: "cost" },
-  "mara-freeze": { title: "La signature quitte le bureau", body: "La suspension est envoyée. Elle n'est pas encore reçue par le dépôt et le permis reste matériellement actif jusque-là.", quote: "À partir d'ici, le réseau peut encore échouer.", tone: "relay" },
-  "nilo-crew": { title: "Six personnes deviennent un seuil", body: "Quatre conducteurs donnent mandat à Nilo pour refuser ensemble un départ juridiquement douteux. Deux ne se prononcent pas.", quote: "Seul, je suis remplaçable. Ensemble, pas aujourd'hui.", tone: "care" },
-  "nilo-alone": { title: "Un refus réel, un arrêt très court", body: "Nilo est écarté du planning. Une agence cherche déjà un remplaçant. Son refus existe même s'il ne suffit pas à arrêter le chantier.", quote: "Ils peuvent prendre mon badge. Ils ne prendront pas mon oui.", tone: "refusal" },
-  "nilo-hold": { title: "Le moteur reste froid", body: "Le planning indique toujours « départ confirmé ». Dans le dépôt, aucune clé ne tourne. La compagnie contacte déjà un autre opérateur.", quote: "Le tableau peut dire parti. L'engin est devant moi.", tone: "action" },
-  "nilo-acknowledge": { title: "L'ordre devient capacité d'arrêt", body: "Nilo annule le départ dans le planning, retire les clés et fait contresigner les six conducteurs. Le gel devient opposable au dépôt.", quote: "Maintenant seulement, la signature agit ici.", tone: "action" },
-  "sora-call-ina": { title: "La demande attend sa réponse", body: "Ina reçoit les conditions proposées. Le silence ou le refus ne seront pas publiés comme un aveu.", quote: "Je peux offrir un micro. Je ne peux pas réclamer une voix.", tone: "relay" },
-  "sora-trace-loop": { title: "Onze titres, une seule origine", body: "Chaque article reprend la même dépêche, traduite deux fois puis raccourcie. Aucun journaliste n'a visité la vallée.", quote: "La répétition faisait foule. La chaîne tient dans une pièce.", tone: "discovery" },
-  "sora-relay-release": { title: "La première version devient le décor", body: "Le projet circule comme une opération compensée. Les corrections futures devront désormais défaire ce point de départ.", quote: "C'était publiable. Ce n'était pas le monde entier.", tone: "cost" },
-  "sora-publish-record": { title: "La contradiction entre dans l'espace public", body: "L'article décrit le changement de catégorie et son absence de trace. La compagnie annonce un audit sans suspendre le chantier.", quote: "Nous publions la faille, pas la famille.", tone: "action" },
-  "sora-publish-story": { title: "Ce que « trois foyers » ne pouvait pas porter", body: "La diffusion fait entendre le four partagé, les soins et le troupeau. L'adresse et les documents bruts restent hors antenne.", quote: "Le lieu n'est pas devenu une preuve. Il est redevenu habité.", tone: "care" },
-  "sora-assembly": { title: "La suite n'a plus un seul détenteur", body: "Trois groupes se donnent des tâches et des mandats distincts. Même si vous quittez une position, la coordination peut continuer.", quote: "Personne ne prend tout. C'est la condition pour que ça tienne.", tone: "care" },
-};
 
 function resolveDuration(action, state) {
   const variant = (action.durationVariants || []).find((candidate) => {
@@ -1527,7 +1635,7 @@ function performAction(inputState, actionId) {
   let beat;
   moveTime(state, action.duration, () => {
     executeNode(state, action, action.actor);
-    beat = action.result || actionBeats[action.id] || { title: action.title, body: action.description, tone: "neutral" };
+    beat = action.result || { title: action.title, body: action.description, tone: "neutral" };
   });
   state.lastBeat = { actor: action.actor, ...beat };
   addLog(state, action.actor, beat.title, beat.body, beat.tone);

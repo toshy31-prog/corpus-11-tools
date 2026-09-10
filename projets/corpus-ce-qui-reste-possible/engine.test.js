@@ -30,6 +30,11 @@ test("the runtime identity and action copy come from the compiled campaign", () 
   const runtime = ACTIONS.find((action) => action.id === "mara-freeze");
   assert.equal(runtime.title, declared.title);
   assert.equal(runtime.duration, declared.duration);
+  assert.deepEqual(runtime.result, declared.result);
+  assert.ok(CAMPAIGN.actions.every((action) => action.result?.title && action.result?.body));
+  const initial = createInitialState();
+  assert.deepEqual(initial.lastBeat, CAMPAIGN.opening.lastBeat);
+  assert.equal(initial.log[0].title, CAMPAIGN.opening.log.title);
 });
 
 test("declared durations, conditions and effects are executable without an action handler", () => {

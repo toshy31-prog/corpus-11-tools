@@ -187,6 +187,7 @@ function actionsView() {
       <details class="causal-editor"><summary>Conditions et effets</summary>
         <label class="editor-field">Préconditions JSON<textarea rows="3" data-action-index="${index}" data-action-json="requires">${compactJson(action.requires, {})}</textarea></label>
         <label class="editor-field">Effets JSON<textarea rows="3" data-action-index="${index}" data-action-json="grants">${compactJson(action.grants, {})}</textarea></label>
+        <label class="editor-field">Résultat narratif JSON<textarea rows="3" data-action-index="${index}" data-action-json="result">${compactJson(action.result, {})}</textarea></label>
         <label class="editor-field">Relais JSON<textarea rows="3" data-action-index="${index}" data-action-json="relays">${compactJson(action.relays, [])}</textarea></label>
         <label class="editor-field">Effets différés JSON<textarea rows="3" data-action-index="${index}" data-action-json="scheduled">${compactJson(action.scheduled, [])}</textarea></label>
       </details>
@@ -197,7 +198,16 @@ function actionsView() {
 
 function outcomeView() {
   const outcome = campaign.outcome || { variants: [], dimensions: [] };
+  const opening = campaign.opening || { lastBeat: {}, log: {} };
   return `<section class="outcome-editor">
+    <header class="outcome-section-heading"><div><p class="studio-overline">Entrée en jeu</p><h3>Depuis quelle situation commence-t-on ?</h3></div></header>
+    <div class="opening-editor">${Object.entries({ lastBeat: "Scène d'ouverture", log: "Première trace chronologique" }).map(([key, label]) => `<article class="outcome-rule opening-rule">
+      <strong>${label}</strong>
+      <label class="editor-field">Position<select data-opening="${key}" data-opening-field="actor">${Object.entries(campaign.actors).map(([id, actor]) => `<option value="${id}" ${id === opening[key]?.actor ? "selected" : ""}>${escapeHtml(actor.name)}</option>`).join("")}</select></label>
+      <label class="editor-field">Titre<input data-opening="${key}" data-opening-field="title" value="${escapeHtml(opening[key]?.title)}"></label>
+      <label class="editor-field">Texte<textarea rows="2" data-opening="${key}" data-opening-field="body">${escapeHtml(opening[key]?.body)}</textarea></label>
+      ${key === "lastBeat" ? `<label class="editor-field">Citation<textarea rows="2" data-opening="${key}" data-opening-field="quote">${escapeHtml(opening[key]?.quote)}</textarea></label>` : ""}
+    </article>`).join("")}</div>
     <header class="outcome-section-heading"><div><p class="studio-overline">Ouverture du bilan</p><h3>Quel monde atteint l'échéance ?</h3></div><button class="studio-button" data-add-outcome-summary type="button">+ Variante</button></header>
     <div class="outcome-rule-list">${(outcome.variants || []).map((variant, index) => `<article class="outcome-rule">
       <label class="editor-field">Condition JSON<textarea rows="2" data-summary-variant="${index}" data-summary-json="when">${compactJson(variant.when, {})}</textarea></label>
@@ -311,7 +321,7 @@ function bindWorkbench() {
   $("[data-add-action]")?.addEventListener("click", () => {
     const actor = actionFilter !== "all" && campaign.actors[actionFilter] ? actionFilter : activeActor;
     const id = uniqueId(`${actor}-action`, campaign.actions.map((action) => action.id));
-    campaign.actions.push({ id, actor, verb: "Agir", title: "Nouvelle action", duration: 1, description: "Décrire ce que cette position peut effectivement faire.", tension: "Décrire le coût, le délai ou la dépendance déplacée.", requires: {}, grants: {} });
+    campaign.actions.push({ id, actor, verb: "Agir", title: "Nouvelle action", duration: 1, description: "Décrire ce que cette position peut effectivement faire.", tension: "Décrire le coût, le délai ou la dépendance déplacée.", requires: {}, grants: {}, result: { title: "Ce qui vient de changer", body: "Décrire l'effet observable sans le confondre avec l'intention.", tone: "neutral" } });
     actionFilter = actor; changed(); renderWorkbench();
   });
   document.querySelectorAll("[data-duplicate-action]").forEach((button) => button.addEventListener("click", () => {
@@ -326,6 +336,9 @@ function bindWorkbench() {
     const action = campaign.actions[index];
     if (!window.confirm(`Supprimer l'action « ${action.title} » ?`)) return;
     campaign.actions.splice(index, 1); changed(); renderWorkbench();
+  }));
+  document.querySelectorAll("[data-opening-field]").forEach((input) => input.addEventListener("change", () => {
+    campaign.opening[input.dataset.opening][input.dataset.openingField] = input.value; changed();
   }));
   document.querySelectorAll("[data-summary-field]").forEach((input) => input.addEventListener("input", () => {
     campaign.outcome.variants[Number(input.dataset.summaryVariant)][input.dataset.summaryField] = input.value; changed();

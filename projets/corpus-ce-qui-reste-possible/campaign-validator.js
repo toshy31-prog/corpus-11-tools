@@ -152,7 +152,7 @@ export function validateCampaign(campaign) {
   if (!campaign || typeof campaign !== "object") {
     return [issue("error", "CAMPAIGN_TYPE", "campaign", "La campagne doit être un objet JSON.")];
   }
-  if (campaign.schemaVersion !== 3) issues.push(issue("error", "SCHEMA_VERSION", "campaign.schemaVersion", "Version de schéma attendue : 3."));
+  if (campaign.schemaVersion !== 4) issues.push(issue("error", "SCHEMA_VERSION", "campaign.schemaVersion", "Version de schéma attendue : 4."));
   if (!Number.isInteger(campaign.stateVersion) || campaign.stateVersion < 1) issues.push(issue("error", "STATE_VERSION", "campaign.stateVersion", "Une version d'état entière et positive est obligatoire."));
   if (!validId(campaign.id)) issues.push(issue("error", "CAMPAIGN_ID", "campaign.id", "L'identifiant de campagne doit être non vide et ne contenir que lettres, chiffres, points, tirets ou soulignements."));
   if (!Number.isFinite(campaign.deadline) || campaign.deadline <= 0) issues.push(issue("error", "DEADLINE", "campaign.deadline", "L'échéance doit être un nombre positif."));
@@ -166,6 +166,15 @@ export function validateCampaign(campaign) {
 
   if (actorIds.size < 2) issues.push(issue("warning", "ACTOR_PLURALITY", "campaign.actors", "Moins de deux positions : le changement de perspective ne sera pas jouable."));
   if (!actorIds.has(campaign.initialPerspective)) issues.push(issue("error", "INITIAL_PERSPECTIVE", "campaign.initialPerspective", "La position initiale doit référencer un acteur déclaré."));
+
+  for (const [key, presentation] of Object.entries(campaign.opening || {})) {
+    const path = `campaign.opening.${key}`;
+    if (!presentation.title || !presentation.body) issues.push(issue("error", "OPENING_FIELDS", path, "Chaque texte d'ouverture exige un titre et un corps."));
+    if (!actorIds.has(presentation.actor)) issues.push(issue("error", "UNKNOWN_ACTOR", `${path}.actor`, `Acteur d'ouverture inconnu : ${presentation.actor}.`));
+  }
+  if (!campaign.opening?.lastBeat || !campaign.opening?.log) {
+    issues.push(issue("error", "OPENING_REQUIRED", "campaign.opening", "L'ouverture doit déclarer le premier battement et la première entrée de chronologie."));
+  }
 
   for (const [actorId, actor] of Object.entries(actors)) {
     if (!validId(actorId)) issues.push(issue("error", "ACTOR_ID", `campaign.actors.${actorId}`, "Identifiant de position invalide."));

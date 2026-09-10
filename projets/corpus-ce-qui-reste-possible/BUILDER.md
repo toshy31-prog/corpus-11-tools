@@ -1,4 +1,4 @@
-# Corpus Builder · format de campagne v3
+# Corpus Builder · format de campagne v4
 
 La source active est `campaigns/sereine.campaign.json`. Elle est lisible par le
 studio, le validateur et le moteur de jeu.
@@ -31,8 +31,10 @@ cas de syntaxe invalide.
 - `actors` : positions, lieux, couleurs et savoirs initiaux ;
 - `knowledge` : faits nommés utilisables par les préconditions ;
 - `worldFlags` : états matériels ou institutionnels possibles ;
+- `opening` : battement initial et première trace de la chronologie ;
 - `timeline` : seuils, branches conditionnelles, effets et irréversibilité ;
-- `actions` : auteur, durée, variantes, préconditions, effets, traces, relais et délais ;
+- `actions` : auteur, durée, variantes, préconditions, effets, traces, relais,
+  délais et résultat narratif ;
 - `outcome` : variantes ordonnées du bilan et dimensions conditionnelles,
   jamais agrégées en score.
 

@@ -119,3 +119,12 @@ test("the outcome cannot collapse to one dimension", () => {
   broken.outcome.dimensions = broken.outcome.dimensions.slice(0, 1);
   assert.ok(validateCampaign(broken).some((item) => item.code === "OUTCOME_DIMENSIONS"));
 });
+
+test("the opening references a declared position and complete copy", () => {
+  const broken = structuredClone(campaign);
+  broken.opening.lastBeat.actor = "nobody";
+  delete broken.opening.log.body;
+  const codes = validateCampaign(broken).map((item) => item.code);
+  assert.ok(codes.includes("UNKNOWN_ACTOR"));
+  assert.ok(codes.includes("OPENING_FIELDS"));
+});
