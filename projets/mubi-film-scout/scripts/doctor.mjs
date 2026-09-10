@@ -24,10 +24,11 @@ if (status) {
     if (!response.ok) console.error(`✗ Test TMDB : ${payload.message}`);
   }
 
-  const optional = ["guardian", "nyt", "trakt", "omdb"].filter((id) => status.connections[id]?.configured).length;
+  const optionalSources = ["guardian", "nyt", "omdb"];
+  const optional = optionalSources.filter((id) => status.connections[id]?.configured).length;
   console.log("✓ Serveur local : en ligne");
   console.log(`${status.connections.tmdb?.configured ? "✓" : "✗"} Jeton TMDB : ${status.connections.tmdb?.configured ? "configuré" : "manquant"}`);
-  console.log(`• Sources facultatives préparées : ${optional}/4`);
+  console.log(`• Sources facultatives préparées : ${optional}/${optionalSources.length}`);
   console.log(`• Dernier test TMDB : ${date(status.diagnostics?.lastTmdbCheckAt)}${status.diagnostics?.lastTmdbCheckOk === true ? " — réussi" : status.diagnostics?.lastTmdbCheckOk === false ? " — échoué" : ""}`);
   console.log(`• Dernière recherche réussie : ${date(status.diagnostics?.lastSuccessfulSearchAt)}`);
   if (!status.connections.tmdb?.configured) process.exitCode = 1;
