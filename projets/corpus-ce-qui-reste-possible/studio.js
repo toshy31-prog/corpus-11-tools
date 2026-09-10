@@ -13,6 +13,11 @@ let actionFilter = "all";
 let sourceError = null;
 let lastIssues = [];
 let validationTimer = null;
+let historyTimer = null;
+let currentSnapshot = JSON.stringify(campaign);
+let pendingBefore = null;
+const undoStack = [];
+const redoStack = [];
 
 function restoreDraft() {
   try {
@@ -50,6 +55,36 @@ function uniqueId(prefix, existing) {
 
 function compactJson(value, fallback) {
   return escapeHtml(JSON.stringify(value ?? fallback));
+}
+
+function updateHistoryButtons() {
+  $("#undo-button").disabled = undoStack.length === 0 && pendingBefore === null;
+  $("#redo-button").disabled = redoStack.length === 0;
+}
+
+function flushHistory() {
+  clearTimeout(historyTimer);
+  if (pendingBefore !== null && pendingBefore !== currentSnapshot) undoStack.push(pendingBefore);
+  pendingBefore = null;
+  updateHistoryButtons();
+}
+
+function recordHistory() {
+  const nextSnapshot = JSON.stringify(campaign);
+  if (nextSnapshot === currentSnapshot) return;
+  if (pendingBefore === null) pendingBefore = currentSnapshot;
+  currentSnapshot = nextSnapshot;
+  redoStack.length = 0;
+  clearTimeout(historyTimer);
+  historyTimer = setTimeout(flushHistory, 450);
+  updateHistoryButtons();
+}
+
+function restoreSnapshot(snapshot) {
+  campaign = JSON.parse(snapshot);
+  currentSnapshot = snapshot;
+  sourceError = null;
+  persist(); renderIdentity(); renderDiagnostics(); renderStats(); renderWorkbench(); updateHistoryButtons();
 }
 
 function countActorReferences(value, actorId) {
@@ -181,6 +216,7 @@ function renderWorkbench() {
 
 function changed() {
   sourceError = null;
+  recordHistory();
   persist();
   clearTimeout(validationTimer);
   validationTimer = setTimeout(() => { renderDiagnostics(); renderStats(); }, 140);
@@ -268,7 +304,7 @@ function bindWorkbench() {
     campaign.actions.splice(index, 1); changed(); renderWorkbench();
   }));
   $("#apply-source")?.addEventListener("click", () => {
-    try { campaign = JSON.parse($("#source-editor").value); sourceError = null; persist(); renderIdentity(); renderDiagnostics(); renderStats(); renderWorkbench(); }
+    try { campaign = JSON.parse($("#source-editor").value); sourceError = null; changed(); renderIdentity(); renderDiagnostics(); renderStats(); renderWorkbench(); }
     catch (error) { sourceError = error.message; renderDiagnostics(); }
   });
   $("#format-source")?.addEventListener("click", () => {
@@ -280,6 +316,7 @@ function bindWorkbench() {
 function render() {
   renderIdentity(); renderDiagnostics(); renderStats(); renderWorkbench();
   if (localStorage.getItem(storageKey(campaign))) { $("#draft-status").textContent = "brouillon local"; $("#draft-status").classList.add("is-dirty"); }
+  updateHistoryButtons();
 }
 
 document.querySelectorAll("[data-view]").forEach((button) => button.addEventListener("click", () => {
@@ -295,6 +332,18 @@ $("#validate-button").addEventListener("click", () => {
   clearTimeout(validationTimer); renderDiagnostics(); renderStats();
   $("#diagnostics-list").scrollTo({ top: 0, behavior: "smooth" });
 });
+$("#undo-button").addEventListener("click", () => {
+  flushHistory();
+  const snapshot = undoStack.pop();
+  if (!snapshot) return updateHistoryButtons();
+  redoStack.push(currentSnapshot); restoreSnapshot(snapshot);
+});
+$("#redo-button").addEventListener("click", () => {
+  flushHistory();
+  const snapshot = redoStack.pop();
+  if (!snapshot) return updateHistoryButtons();
+  undoStack.push(currentSnapshot); restoreSnapshot(snapshot);
+});
 $("#export-button").addEventListener("click", () => {
   const blob = new Blob([JSON.stringify(campaign, null, 2)], { type: "application/json" });
   const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `${campaign.id || "campaign"}.campaign.json`; link.click(); URL.revokeObjectURL(link.href);
@@ -302,6 +351,7 @@ $("#export-button").addEventListener("click", () => {
 $("#reset-button").addEventListener("click", () => {
   if (!window.confirm("Effacer le brouillon local et revenir à la version compilée ?")) return;
   localStorage.removeItem(storageKey(campaign)); campaign = clone(ACTIVE_CAMPAIGN); localStorage.removeItem(storageKey()); sourceError = null;
+  currentSnapshot = JSON.stringify(campaign); pendingBefore = null; undoStack.length = 0; redoStack.length = 0;
   $("#draft-status").textContent = "version compilée"; $("#draft-status").classList.remove("is-dirty"); render();
 });
 

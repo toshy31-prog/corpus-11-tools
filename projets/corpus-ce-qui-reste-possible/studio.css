@@ -25,6 +25,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px
 .studio-header-actions { display: flex; align-items: center; gap: 8px; }
 .studio-link { margin-right: 12px; color: #d4ded8; font: 400 .63rem var(--mono); text-underline-offset: 4px; }
 .studio-button { border: 1px solid currentColor; padding: 10px 13px; background: transparent; color: inherit; cursor: pointer; font: 500 .62rem var(--mono); }
+.studio-button:disabled { cursor: not-allowed; opacity: .38; }
 .studio-button.primary { background: var(--ochre); border-color: var(--ochre); color: #151a18; }
 .studio-grid { display: grid; grid-template-columns: 260px minmax(560px, 1fr) 320px; min-height: 790px; background: var(--paper); box-shadow: 0 24px 70px rgba(0,0,0,.34); }
 .studio-sidebar, .diagnostics-panel { padding: 22px 18px; background: #e4e0d5; }

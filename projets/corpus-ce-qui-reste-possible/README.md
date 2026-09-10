@@ -15,7 +15,8 @@ Le lien **Ouvrir le builder** mène à `studio.html`. Le studio permet de modifi
 et de créer des positions, seuils et actions. Pour chaque action, il expose les
 textes, conditions, effets, relais et délais, tout en laissant disponible la
 source JSON complète. Il conserve un brouillon local, valide en continu et
-exporte un fichier de campagne.
+exporte un fichier de campagne. Les modifications peuvent être annulées et
+rétablies sans toucher à la version compilée du dépôt.
 
 Pour le servir localement avec Python 3 :
 
