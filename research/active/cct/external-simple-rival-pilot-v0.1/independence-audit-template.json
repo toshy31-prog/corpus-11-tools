@@ -1,0 +1,16 @@
+{
+  "protocolId": "CCT-EXTERNAL-SIMPLE-RIVAL-PILOT-0.1",
+  "status": "unverified",
+  "candidateAuthorIds": ["", ""],
+  "reviewers": [
+    { "reviewerId": "", "organizationId": "", "controlRoot": "", "evidenceDigests": [] },
+    { "reviewerId": "", "organizationId": "", "controlRoot": "", "evidenceDigests": [] }
+  ],
+  "findings": {
+    "sharedEmployment": "unknown",
+    "sharedDecisiveFunding": "unknown",
+    "sharedImplementation": "unknown",
+    "sharedCollectionRoot": "unknown",
+    "undisclosedAssistance": "unknown"
+  }
+}

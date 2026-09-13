@@ -1,0 +1,25 @@
+{
+  "candidateId": "cct_or_simple_rival",
+  "scenarioId": "VITAL-WATER-DISTRIBUTION-72H-0.1",
+  "informationBudget": 12,
+  "actionBudget": 8,
+  "informationUsed": 0,
+  "fixture": false,
+  "decisions": [],
+  "outcomes": {
+    "vitalAccessLossPersonHours": 0,
+    "rightsViolations": 0,
+    "administrativePersonHours": 0,
+    "recoveryMinutes": 0,
+    "irreversibleControlConcentration": 0
+  },
+  "provenance": {
+    "authorId": "",
+    "organizationId": "",
+    "collectionRoot": "",
+    "fundingRoot": "",
+    "implementationRoot": "",
+    "outsideRepository": true,
+    "protocolFrozenBeforeCollection": true
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "freezeId": "CCT-EXTERNAL-SIMPLE-RIVAL-PILOT-0.1-FREEZE-ENGINE-2026-09-09",
+  "createdAt": "2026-09-09",
+  "status": "amended_and_frozen_before_external_collection",
+  "previousFreezeDigest": "3501c4234772af89df99c4899793df3c8bdfee0af6e4b09a4449ad61e6c5dbd9",
+  "files": {
+    "protocol.json": "9a8f8e6111ea1dbce0657e8fba4161378527bfd426ceef8efce3b562af72a753",
+    "scenario.json": "94e5636f507d15c10227fe20f01a425c8836babc630a11b6574c875a36e98568",
+    "submission-template.json": "41ed44998a14d05d245742789ff9bf32fcf048c55c0f91907f7604e1dca3372d",
+    "independence-audit-template.json": "fc33e7e900bed5aef15df38ee5b2af3c97a92220cf7e1ae0a59c88c84d2e8ad1",
+    "action-catalog.json": "1f444cb947014583a95cebf586d73269786e58d1a0b94b8cb94e6b2e38b8d521",
+    "outcome-engine.mjs": "a74ba028165d42e90bc479a404cb987c740f727523da4ea7d9a621d2fdb23e9d"
+  },
+  "externalCollectionOccurred": false,
+  "amendmentReason": "The first freeze omitted the information-use field and the outcome engine. It was superseded before any external collection.",
+  "territorialTrialAuthorized": false
+}

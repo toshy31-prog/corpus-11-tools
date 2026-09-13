@@ -1,0 +1,33 @@
+{
+  "registryId": "WATER-72H-ENGINE-PROFILES-0.1",
+  "profiles": [
+    {
+      "id": "conservative_worst_case",
+      "supplyMultipliers": [0.85, 1, 1.15],
+      "aggregation": "axis_worst_case",
+      "administrativeCostMultiplier": 1,
+      "southRoadBlockedHours": 18
+    },
+    {
+      "id": "nominal_resource_case",
+      "supplyMultipliers": [1],
+      "aggregation": "axis_worst_case",
+      "administrativeCostMultiplier": 0.75,
+      "southRoadBlockedHours": 18
+    },
+    {
+      "id": "extended_disruption_case",
+      "supplyMultipliers": [0.85],
+      "aggregation": "axis_worst_case",
+      "administrativeCostMultiplier": 1.5,
+      "southRoadBlockedHours": 30
+    }
+  ],
+  "constructStatus": {
+    "vitalAccessLossPersonHours": "defined_proxy_not_field_validated",
+    "rightsViolations": "event_count_proxy_not_severity_measure",
+    "administrativePersonHours": "catalog_cost_proxy_not_observed_burden",
+    "recoveryMinutes": "daily_resolution_proxy",
+    "irreversibleControlConcentration": "binary_rule_proxy_not_effective_control_measure"
+  }
+}

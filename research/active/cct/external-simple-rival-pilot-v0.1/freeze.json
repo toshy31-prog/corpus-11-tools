@@ -1,0 +1,21 @@
+{
+  "freezeId": "CCT-EXTERNAL-SIMPLE-RIVAL-PILOT-0.1-FREEZE-SENSITIVITY-2026-09-09",
+  "createdAt": "2026-09-09",
+  "status": "amended_and_frozen_before_external_collection",
+  "previousFreezeDigest": "3c2925f743a5bf9e1aa77c327672268ec7f5354ef095ae3343aba9e85c81af9d",
+  "files": {
+    "protocol.json": "9a8f8e6111ea1dbce0657e8fba4161378527bfd426ceef8efce3b562af72a753",
+    "scenario.json": "94e5636f507d15c10227fe20f01a425c8836babc630a11b6574c875a36e98568",
+    "submission-template.json": "41ed44998a14d05d245742789ff9bf32fcf048c55c0f91907f7604e1dca3372d",
+    "independence-audit-template.json": "fc33e7e900bed5aef15df38ee5b2af3c97a92220cf7e1ae0a59c88c84d2e8ad1",
+    "action-catalog.json": "1f444cb947014583a95cebf586d73269786e58d1a0b94b8cb94e6b2e38b8d521",
+    "engine-profiles.json": "075c92ab02680b5e1fcd822e27783526ddc11d18400fdf403a86150e70eaf9a2",
+    "outcome-engine.mjs": "8ddf311d2847b119cd838bdc2429119502e182d3cdfb558125a477de357a40a9",
+    "audit-independence.mjs": "f446402e03d054017ef690592dbe7b9435536d66ba35e84a81eb7633384588ac",
+    "evaluate.mjs": "943c1dd8d67132c19f6836ee0e169f1ff05a7cff7f926a66d3f688f912a549e2",
+    "evaluate-sensitivity.mjs": "f1dd0b268d88612fe6f24263ada2945607bca66e95e597b93a1887b1282540b9"
+  },
+  "externalCollectionOccurred": false,
+  "amendmentReason": "The single engine could select a winner through untested modeling choices. Three profiles and the full decision chain were frozen before any external collection.",
+  "territorialTrialAuthorized": false
+}

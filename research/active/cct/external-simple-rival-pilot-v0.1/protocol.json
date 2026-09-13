@@ -1,0 +1,18 @@
+{
+  "protocolId": "CCT-EXTERNAL-SIMPLE-RIVAL-PILOT-0.1",
+  "status": "preregistered_awaiting_external_inputs",
+  "scenarioId": "VITAL-WATER-DISTRIBUTION-72H-0.1",
+  "informationBudget": 12,
+  "actionBudget": 8,
+  "axes": [
+    "vitalAccessLossPersonHours",
+    "rightsViolations",
+    "administrativePersonHours",
+    "recoveryMinutes",
+    "irreversibleControlConcentration"
+  ],
+  "decisionRule": "weak_pareto_noncompensatory",
+  "requiredCandidates": ["cct", "simple_rival"],
+  "externalityRule": "distinct_authors_and_collection_roots_outside_this_repository",
+  "territorialTrialAuthorized": false
+}

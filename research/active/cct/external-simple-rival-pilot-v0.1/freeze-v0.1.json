@@ -1,0 +1,13 @@
+{
+  "freezeId": "CCT-EXTERNAL-SIMPLE-RIVAL-PILOT-0.1-FREEZE-2026-09-09",
+  "createdAt": "2026-09-09",
+  "status": "frozen_before_external_collection",
+  "files": {
+    "protocol.json": "9a8f8e6111ea1dbce0657e8fba4161378527bfd426ceef8efce3b562af72a753",
+    "scenario.json": "94e5636f507d15c10227fe20f01a425c8836babc630a11b6574c875a36e98568",
+    "submission-template.json": "27fd0108e6acfa93adaa9557fc16c1e840d84f1179b2bcdaa4e805a3db91e3ae",
+    "independence-audit-template.json": "fc33e7e900bed5aef15df38ee5b2af3c97a92220cf7e1ae0a59c88c84d2e8ad1"
+  },
+  "externalCollectionOccurred": false,
+  "territorialTrialAuthorized": false
+}

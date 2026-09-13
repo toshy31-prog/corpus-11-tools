@@ -1,0 +1,30 @@
+{
+  "scenarioId": "VITAL-WATER-DISTRIBUTION-72H-0.1",
+  "status": "frozen_synthetic_tabletop_scenario",
+  "territorialAction": false,
+  "population": 10000,
+  "durationHours": 72,
+  "baselineDailyLitersPerPerson": 50,
+  "availableSupplyDailyLiters": 360000,
+  "minimumVitalDailyLitersPerPerson": 20,
+  "zones": [
+    { "id": "north", "population": 4000, "networkLossRate": 0.1, "offlineShare": 0.15 },
+    { "id": "central", "population": 3500, "networkLossRate": 0.25, "offlineShare": 0.08 },
+    { "id": "south", "population": 2500, "networkLossRate": 0.4, "offlineShare": 0.3 }
+  ],
+  "shock": {
+    "treatmentPlantCapacityLossRate": 0.4,
+    "roadAccessToSouthBlockedHours": 18,
+    "identityServiceUnavailableHours": 24,
+    "forecastUncertaintyRate": 0.15
+  },
+  "protectedConstraints": {
+    "noIdentityExclusiveAccess": true,
+    "minimumAppealWindowHours": 12,
+    "temporaryPowerMaximumHours": 72,
+    "noPermanentControlTransfer": true
+  },
+  "informationBudget": 12,
+  "actionBudget": 8,
+  "submissionWindowHours": 6
+}

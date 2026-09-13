@@ -1,0 +1,11 @@
+{
+  "catalogId": "WATER-72H-ACTIONS-0.1",
+  "actions": {
+    "network_allocation": { "administrativePersonHours": 12, "maximumOccurrences": 1 },
+    "mobile_delivery": { "administrativePersonHours": 8, "maximumOccurrences": 2 },
+    "offline_access": { "administrativePersonHours": 18, "maximumOccurrences": 1 },
+    "appeal_channel": { "administrativePersonHours": 24, "maximumOccurrences": 1 },
+    "temporary_authority": { "administrativePersonHours": 10, "maximumOccurrences": 1 },
+    "permanent_control_transfer": { "administrativePersonHours": 4, "maximumOccurrences": 1 }
+  }
+}
