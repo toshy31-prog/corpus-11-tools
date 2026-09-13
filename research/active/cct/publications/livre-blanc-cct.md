@@ -122,6 +122,14 @@ Les communs écologiques sont gouvernés selon leurs cycles propres : eau, sols,
 
 Le devoir de réduction n’est pas distribué à l’aveugle. Les usages discrétionnaires, la consommation de luxe et les bénéfices tirés de l’extraction assument une part plus forte de l’effort. La sobriété devient injuste lorsqu’elle est imposée à celles et ceux qui n’ont déjà pas de marge matérielle ; elle devient crédible lorsqu’elle réduit d’abord les privilèges de consommation et finance les capacités communes.
 
+La présomption de protection d’un milieu fonctionnel ne signifie pas que tout budget supplémentaire doit aller à la protection avant la restauration. La décision compare la menace évitable, le bénéfice additionnel, le délai et les moyens nécessaires, sous les garanties écologiques et sociales. Une restauration peut être urgente dans un paysage déjà très dégradé ; cela ne transforme pas une restauration promise ailleurs en remplacement acquis d’un habitat détruit.
+
+Le choix technique part du mécanisme de dégradation. Réduire la pression et restaurer peuvent être conduits ensemble. Lorsque la régénération spontanée suit une trajectoire compatible avec les objectifs, une plantation supplémentaire doit justifier son apport. Lorsqu’un blocage empêche cette récupération, une intervention ciblée peut être nécessaire. Ni la régénération naturelle ni la restauration active ne bénéficient d’une supériorité générale indépendante du milieu, de l’objectif et du délai.
+
+Les résultats sont suivis séparément pour les habitats, les espèces, l’eau, les sols et les personnes affectées. Un milieu qui reverdit n’a pas nécessairement retrouvé toutes ses fonctions. Une mesure peut aussi ralentir un déclin sans l’arrêter : son bénéfice relatif est reconnu et la perte restante demeure ouverte. Les hectares, les plants et le carbone ne sont pas agrégés en un score qui effacerait les autres pertes.
+
+Ces clarifications s’appuient sur la [confrontation aux recherches de conservation et de restauration du 13 septembre 2026](../../../artifacts/cct-ecosystemes-arbitrages-2026-09-13.md). Elles précisent la proposition ; elles ne démontrent pas un avantage propre de la CCT sur les méthodes de conservation existantes.
+
 ## 14. Justice, réparation et accès réel au recours
 
 La justice proposée cherche d’abord à arrêter un dommage, protéger la personne concernée et rendre une capacité d’usage. La sanction peut avoir une place, notamment contre la violence, l’exploitation ou la capture organisée, mais elle ne clôt pas à elle seule la perte. Une réparation suffisante examine ce qui doit être rendu, qui reste empêché, qui portera le coût, comment éviter la répétition et quel recours demeure si la mesure échoue.

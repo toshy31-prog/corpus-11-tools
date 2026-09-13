@@ -2,6 +2,11 @@
 
 Le livre blanc existe sous deux formes éditoriales coordonnées.
 
+Le [dossier sur les arbitrages écologiques](../../../artifacts/cct-ecosystemes-arbitrages-2026-09-13.md)
+confronte protection, régénération et restauration à cinq références extérieures.
+Les clarifications sont intégrées au §13 de la source Markdown du livre blanc ;
+les rendus DOCX/PDF existants ne comprennent pas encore cet ajout.
+
 Le [mode d’emploi opérationnel candidat](mode-emploi-operationnel-cct.md)
 relie compétence, arbitrage, moyens, exécution, recours et réparation. Il fournit
 trois exercices fictifs résolus et réutilise le protocole de pré-adoption existant.
