@@ -6,6 +6,7 @@ export function validateSpec(spec) {
 
   required(spec.document_kind === "cct_political_revision_contract", "document_kind");
   required(spec.lifecycle?.state === "written_and_statically_validated", "lifecycle.state");
+  for (const state of ["authorized", "deployed", "institutional_effect", "post_shock_observation", "external_robustness"]) required(spec.lifecycle?.not_established?.includes(state), `lifecycle.not_established.${state}`);
   for (const field of ["absent_affected", "detection_limits", "beneficiaries_and_cost_bearers", "reversal_condition", "affected_agency"]) required(spec.non_negotiable_obligations?.counterview?.required_fields?.includes(field), `counterview.${field}`);
   required(spec.non_negotiable_obligations?.counterview?.omission_rule === "unjustified_omission_is_suspendable", "counterview.omission_rule");
   required(spec.non_negotiable_obligations?.attribution?.identity_proxy_forbidden, "attribution.identity_proxy_forbidden");

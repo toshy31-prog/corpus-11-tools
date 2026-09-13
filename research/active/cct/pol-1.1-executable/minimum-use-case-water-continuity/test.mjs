@@ -24,3 +24,19 @@ test("a claimed water-continuity pilot fails if it uses deprivation or hides its
     "missing:non_negotiable.repair_and_contingency_fund_required"
   ]);
 });
+
+test("a water design fails if it displaces local responsibility, weakens safety, or claims authorization", () => {
+  const mutated = structuredClone(intervention);
+  mutated.non_negotiable.existing_responsible_operator_retained = false;
+  mutated.non_negotiable.local_refusal_and_recourse = false;
+  mutated.non_negotiable.safe_water_quality_check = false;
+  mutated.status = "authorized";
+  mutated.not_established = mutated.not_established.filter((state) => state !== "local_authorization");
+  assert.deepEqual(validateMinimumUseCase(mutated).sort(), [
+    "missing:non_negotiable.existing_responsible_operator_retained",
+    "missing:non_negotiable.local_refusal_and_recourse",
+    "missing:non_negotiable.safe_water_quality_check",
+    "missing:not_established.local_authorization",
+    "missing:status"
+  ]);
+});

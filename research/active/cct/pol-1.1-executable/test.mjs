@@ -20,3 +20,13 @@ test("mutations deleting core safeguards are rejected", () => {
     "missing:margins.single_common_failure_insufficient"
   ]);
 });
+
+test("the candidate cannot omit its authorization and evidence ceilings", () => {
+  const mutated = structuredClone(candidate);
+  mutated.lifecycle.state = "authorized";
+  mutated.lifecycle.not_established = mutated.lifecycle.not_established.filter((state) => state !== "institutional_effect");
+  assert.deepEqual(validateSpec(mutated).sort(), [
+    "missing:lifecycle.not_established.institutional_effect",
+    "missing:lifecycle.state"
+  ]);
+});

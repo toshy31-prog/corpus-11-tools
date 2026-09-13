@@ -24,3 +24,23 @@ test("a vehicle fails if it converts a pledge into aid or makes recipients absor
     "missing:required_resource_components.recipient_administrative_burden_covered"
   ]);
 });
+
+test("a vehicle fails if it centralizes control, exposes people, or claims an effect before one exists", () => {
+  const mutated = structuredClone(vehicle);
+  mutated.governance.separate_financial_custody_and_independent_review = false;
+  mutated.governance.personal_data_or_beneficiary_lists_forbidden = false;
+  mutated.governance.funds_cannot_buy_coercive_or_discriminatory_capacity = false;
+  mutated.governance.funding_cannot_condition_vital_access_or_service_authority = false;
+  mutated.disbursement_rules.no_exclusive_supplier_or_platform_for_vital_continuity = false;
+  mutated.disbursement_rules.repair_fund_reserved_before_start = false;
+  mutated.not_established = mutated.not_established.filter((state) => state !== "material_effect");
+  assert.deepEqual(validateResourceVehicle(mutated).sort(), [
+    "missing:disbursement_rules.no_exclusive_supplier_or_platform_for_vital_continuity",
+    "missing:disbursement_rules.repair_fund_reserved_before_start",
+    "missing:governance.funding_cannot_condition_vital_access_or_service_authority",
+    "missing:governance.funds_cannot_buy_coercive_or_discriminatory_capacity",
+    "missing:governance.personal_data_or_beneficiary_lists_forbidden",
+    "missing:governance.separate_financial_custody_and_independent_review",
+    "missing:not_established.material_effect"
+  ]);
+});

@@ -22,6 +22,17 @@ node --test test-worlds.mjs
 node run-campaign.mjs
 ```
 
+Une soumission extérieure doit passer par
+[`external-scenario-submission-template.json`](external-scenario-submission-template.json).
+Le validateur [`validate-external-submission.mjs`](validate-external-submission.mjs)
+refuse les placeholders, une provenance d'auteur absente, les entrées d'état
+non lisibles par machine et toute comparaison qui ne partage pas les budgets,
+les informations et l'ontologie d'action. Une soumission dont la relation de
+l'auteur est `unknown` ou `dependent` ne peut être admise qu'au développement
+interne ; seule une relation `independent` la rend éligible à une arène
+indépendante. Le modèle est illustratif et échoue volontairement tant qu'il
+n'est pas remplacé par une soumission réelle.
+
 `run-campaign.mjs` écrit un rapport interne de développement. Il n'est pas un
 résultat expérimental indépendant et ne peut désigner aucun gagnant global.
 

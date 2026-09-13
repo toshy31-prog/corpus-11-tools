@@ -24,3 +24,17 @@ test("a mobile unit is rejected if it becomes a dependency or conditions surviva
     "missing:non_negotiable.vector_is_not_the_only_vital_channel"
   ]);
 });
+
+test("the sky rejects a unit that bypasses local authority, discriminates, or claims deployment", () => {
+  const mutated = structuredClone(sky);
+  mutated.non_negotiable.local_authority_or_documented_necessity_required = false;
+  mutated.non_negotiable.no_identity_based_allocation = false;
+  mutated.non_negotiable.recourse_and_stop_are_usable = false;
+  mutated.not_established = mutated.not_established.filter((state) => state !== "deployment");
+  assert.deepEqual(validateSky(mutated).sort(), [
+    "missing:non_negotiable.local_authority_or_documented_necessity_required",
+    "missing:non_negotiable.no_identity_based_allocation",
+    "missing:non_negotiable.recourse_and_stop_are_usable",
+    "missing:not_established.deployment"
+  ]);
+});

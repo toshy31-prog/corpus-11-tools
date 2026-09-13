@@ -12,6 +12,8 @@ amortisseurs écologiques ou les données agrégées de traitement.
 ```bash
 node validate.mjs
 node --test test.mjs
+# Vérifie les contrats locaux, l'arène adversariale et leurs mutations négatives.
+node verify-contracts.mjs
 ```
 
 Le statut maximal est `written_and_statically_validated`. Une prochaine étape

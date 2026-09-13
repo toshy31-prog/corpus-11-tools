@@ -59,3 +59,7 @@ financé ni opérationnel.
 La [cartographie des porteurs réels au Mozambique](host-map-mozambique.md)
 identifie la chaîne institutionnelle pertinente sans impliquer qu'un accord ou
 un contact existe.
+
+La [matrice d'admission du contexte public](public-context-admission-matrix-2026-09-05.md)
+sépare les faits établis par les sources publiques des informations qui
+restent nécessaires avant toute soumission ou pré-adoption.
