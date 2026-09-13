@@ -4,6 +4,8 @@
 
 Version de travail du 10 septembre 2026
 
+Complément du 13 septembre 2026 : le [mode d’emploi opérationnel candidat](mode-emploi-operationnel-cct.md) articule les responsabilités, l’arbitrage, les moyens, le recours et la réparation. Ses règles complémentaires restent à ratifier ; elles ne ferment pas les options de cette consultation et n’autorisent aucun essai territorial.
+
 ## Résumé exécutif
 
 La Confédération des communs terrestres est une proposition de gouvernance mondiale écosocialiste et libertaire. Elle cherche à rendre gouvernables des interdépendances devenues planétaires sans créer un pouvoir mondial souverain. Son principe directeur consiste à centraliser seulement les garanties et coordinations que l’échelle matérielle impose, puis à distribuer l’initiative, l’exécution, le contrôle, le recours et la révocation.

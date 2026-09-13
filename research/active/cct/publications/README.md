@@ -2,6 +2,12 @@
 
 Le livre blanc existe sous deux formes éditoriales coordonnées.
 
+Le [mode d’emploi opérationnel candidat](mode-emploi-operationnel-cct.md)
+relie compétence, arbitrage, moyens, exécution, recours et réparation. Il fournit
+trois exercices fictifs résolus et réutilise le protocole de pré-adoption existant.
+Ses règles complémentaires restent proposées à ratification. Ce document Markdown
+autonome n’est pas intégré aux rendus DOCX/PDF existants.
+
 Le [`livre-vert-cct.md`](livre-vert-cct.md) est le document de consultation :
 il transforme l'architecture et les résultats de recherche en choix ouverts,
 options rivales, questions et conditions de retrait. Il ne vaut ni adoption ni
