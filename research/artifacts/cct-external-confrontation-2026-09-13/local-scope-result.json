@@ -1,0 +1,13 @@
+{
+  "scope": "local_characterization_not_external_evidence",
+  "same_decisions_same_outcomes_across_candidate_labels": true,
+  "unrecognized_pressure_metadata_does_not_affect_outcomes": true,
+  "base_outcomes": {
+    "vitalAccessLossPersonHours": 0,
+    "rightsViolations": 0,
+    "administrativePersonHours": 72,
+    "recoveryMinutes": 1440,
+    "irreversibleControlConcentration": 0
+  },
+  "interpretation": "Matching actions are evaluated identically by design. The engine does not establish which institution produces these actions or whether a hydraulic network can deliver them."
+}

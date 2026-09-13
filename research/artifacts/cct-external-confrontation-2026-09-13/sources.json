@@ -1,0 +1,55 @@
+{
+  "accessed": "2026-09-13",
+  "selection_and_analysis": "same local Corpus session",
+  "sources": [
+    {
+      "id": "professional_maintenance",
+      "url": "https://doi.org/10.1016/j.worlddev.2022.106094",
+      "authors": "Smith; Atwii Ongom; Davis",
+      "date": "2023",
+      "observed_status": "public article; no raw data reanalysis",
+      "dependence_cluster": "uganda-maintenance"
+    },
+    {
+      "id": "community_monitoring",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8307738/",
+      "authors": "Bernedo Del Carpio; Alpizar; Ferraro",
+      "date": "2021",
+      "observed_status": "paper read; archive hash verified; no statistical rerun",
+      "dependence_cluster": "metaketa"
+    },
+    {
+      "id": "metaketa_synthesis",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8307849/",
+      "authors": "Slough et al.",
+      "date": "2021",
+      "observed_status": "includes Costa Rica; not an independent replication of it",
+      "dependence_cluster": "metaketa"
+    },
+    {
+      "id": "decision_game",
+      "url": "https://doi.org/10.60686/t-fsd3668",
+      "authors": "Herne; Lappalainen; Kuyper",
+      "date": "2023-09-04",
+      "observed_status": "downloaded; identifier and final-balance discrepancies retained",
+      "dependence_cluster": "fsd3668"
+    },
+    {
+      "id": "hydraulic_engine",
+      "url": "https://github.com/OpenWaterAnalytics/EPANET/releases/tag/v2.2",
+      "authors": "EPA / OpenWaterAnalytics",
+      "date": "2020",
+      "observed_status": "source downloaded, compiled, six example simulations",
+      "dependence_cluster": "epanet"
+    },
+    {
+      "id": "hydraulic_documentation",
+      "url": "https://usepa.github.io/WNTR/hydraulics.html",
+      "authors": "EPA / WNTR",
+      "date": "accessed 2026-09-13",
+      "observed_status": "shares equations with EPANET; not a second independent physics",
+      "dependence_cluster": "epanet"
+    }
+  ],
+  "independence_limit": "external provenance precedes Corpus; full organizational and funding audit not performed; no independent reviewer of CCT"
+}

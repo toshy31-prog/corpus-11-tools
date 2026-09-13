@@ -1,0 +1,19 @@
+{
+  "url": "https://osf.io/download/n5zr8/",
+  "project": "https://osf.io/bmndv/",
+  "sha256": "b9ef3e464e86af561da33e58097dc6ebc64c9d5ad999d7b44749b03cb4b3eda3",
+  "bytes": 893097,
+  "upstream_version": 1,
+  "upstream_modified": "2021-05-24T22:49:25.283001",
+  "files": [
+    "code/10. CR_Data-analysis_c.do",
+    "code/11. Fig 5_Total number of weekly monitor reports_c.do",
+    "data/reports_week.dta",
+    "data/vars-cons.dta",
+    "data/vars-cons-cross-endline.dta",
+    "data/vars-cons-cross-hh.dta",
+    "data/vars-cons-cross-wq.dta"
+  ],
+  "status": "downloaded_hash_verified_not_statistically_replayed",
+  "raw_data_redistributed": false
+}

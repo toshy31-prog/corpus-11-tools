@@ -1,0 +1,18 @@
+/tmp/cct-external-20260913/EPANET-4d8d82ddc260fce216af9321fc3d9a4646ac6827/src/project.c: In function ‘openhydfile’:
+/tmp/cct-external-20260913/EPANET-4d8d82ddc260fce216af9321fc3d9a4646ac6827/src/project.c:144:9: warning: ignoring return value of ‘fread’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  144 |         fread(&magic, sizeof(INT4), 1, pr->outfile.HydFile);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/cct-external-20260913/EPANET-4d8d82ddc260fce216af9321fc3d9a4646ac6827/src/project.c:146:9: warning: ignoring return value of ‘fread’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  146 |         fread(&version, sizeof(INT4), 1, pr->outfile.HydFile);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/cct-external-20260913/EPANET-4d8d82ddc260fce216af9321fc3d9a4646ac6827/src/report.c: In function ‘writeresults’:
+/tmp/cct-external-20260913/EPANET-4d8d82ddc260fce216af9321fc3d9a4646ac6827/src/report.c:586:17: warning: ignoring return value of ‘fread’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  586 |                 fread((x[j - DEMAND]) + 1, sizeof(REAL4), net->Nnodes, outFile);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/cct-external-20260913/EPANET-4d8d82ddc260fce216af9321fc3d9a4646ac6827/src/report.c:593:17: warning: ignoring return value of ‘fread’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  593 |                 fread((x[j - FLOW]) + 1, sizeof(REAL4), net->Nlinks, outFile);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/cct-external-20260913/EPANET-4d8d82ddc260fce216af9321fc3d9a4646ac6827/src/util/filemanager.c: In function ‘gets_file’:
+/tmp/cct-external-20260913/EPANET-4d8d82ddc260fce216af9321fc3d9a4646ac6827/src/util/filemanager.c:136:5: warning: ignoring return value of ‘fgets’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  136 |     fgets(str, num, file_handle->file);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

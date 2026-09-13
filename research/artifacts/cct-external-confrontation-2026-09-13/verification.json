@@ -1,0 +1,8 @@
+{
+  "fresh_download_hashes_match": true,
+  "fresh_replay_aggregates_match": true,
+  "fresh_replay_six_hydraulic_runs_match": true,
+  "fresh_arm_aggregates_match": true,
+  "local_links_resolve": true,
+  "replication_is_independent_review": false
+}

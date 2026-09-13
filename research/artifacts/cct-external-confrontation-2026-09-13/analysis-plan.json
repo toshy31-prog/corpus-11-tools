@@ -1,0 +1,51 @@
+{
+  "status": "exploratory_plan_before_aggregate_computation_not_blind_preregistration",
+  "exposure": "Catalogue, variable labels and initial CSV rows read before plan; no aggregate computed yet. Paper outcomes already read.",
+  "date": "2026-09-13",
+  "cct_head": "5be8d559a3d93de387695ee44c7adb719094bbc3",
+  "epanet_commit": "4d8d82ddc260fce216af9321fc3d9a4646ac6827",
+  "hydraulic_runs": {
+    "networks": [
+      "Net1",
+      "Net2",
+      "Net3"
+    ],
+    "operation": "replay original upstream controls and original duration; DDA and PDA",
+    "PDA_parameters_local_choice": {
+      "minimum_pressure": 0,
+      "required_pressure": 20,
+      "pressure_exponent": 0.5,
+      "pressure_units": "native pressure units checked from flow units"
+    },
+    "observables": [
+      "minimum junction pressure",
+      "total delivered volume at positive demand junctions",
+      "total demand deficit volume",
+      "engine warnings"
+    ],
+    "comparison_scope": "model sensitivity; no CCT policy mapped to these networks"
+  },
+  "human_decisions": {
+    "dataset": "FSD3668 version 1.0 2023-09-04",
+    "observable": "group-period extraction by position, residual resource and extraction imbalance",
+    "deduplicate": [
+      "Session",
+      "Group",
+      "Period"
+    ],
+    "do_not_infer": [
+      "causal effect of position",
+      "effect of CCT",
+      "outcomes of alternative rules with unchanged human choices"
+    ],
+    "lineage_anomaly": "CSV fsd_no says 3661; official downloaded package and file names say FSD3668; retain discrepancy, no silent correction"
+  },
+  "local_model_probe": "same decisions with swapped candidate label and varied unrepresented hydraulic metadata; descriptive scope audit, not external counter-review",
+  "no_external_cct_submission_created": true,
+  "input_sha256": {
+    "epanet.tar.gz": "054a9ee13426fb2d48be7c8b73749921520d9eadfb454da803374c4b4f02d24c",
+    "daF3668_eng.csv": "df4447709a86a10d9fad03879f92e34fb2e47c4246dcd4181d61c31c70dfb45f",
+    "labF3668_eng.html": "f2eeec0d28db8173b354902be6e88b652d01f6b45ab81d6644308e3681e3bf10",
+    "FSD3668_eng.xml": "de89c7adfc652b135e5bf14dde1c05b787538ebc6cee1464835bde354dc93cfd"
+  }
+}

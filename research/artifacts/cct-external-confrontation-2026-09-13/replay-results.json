@@ -1,0 +1,110 @@
+{
+  "human_decisions": {
+    "source_sha256": "df4447709a86a10d9fad03879f92e34fb2e47c4246dcd4181d61c31c70dfb45f",
+    "rows": 1710,
+    "groups": 57,
+    "group_periods": 570,
+    "unique_participants_by_session_subject": 171,
+    "valid_group_periods": 550,
+    "excluded_group_periods": {
+      "inconsistent_group_resource_trace": 20
+    },
+    "fsd_no_values": [
+      "3661"
+    ],
+    "treatment_values": [
+      "0",
+      "1",
+      "2"
+    ],
+    "mean_extraction_by_position": [
+      18.376363636363635,
+      15.652727272727272,
+      13.474545454545455
+    ],
+    "unequal_extraction_group_periods": 224,
+    "zero_third_extraction_group_periods": 103,
+    "mean_remaining_pool": 0.0,
+    "scope": "descriptive_received_file_only; archive identifier discrepancy unresolved; no causal or CCT inference"
+  },
+  "hydraulic_generator": {
+    "engine_version": 20200,
+    "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "library_sha256": "7ba0e4c2718e9fec806e2dba81f159442161d1c5b065a1e5a6296533af32e141",
+    "runs": [
+      {
+        "network": "Net1",
+        "mode": "DDA",
+        "input_sha256": "7dc5446f381d1c788ac144860da79e443bff2d80bacf7ed3cc5669a41f92beeb",
+        "junctions": 9,
+        "hydraulic_states": 27,
+        "duration_seconds": 86400,
+        "minimum_junction_pressure_psi": 106.81072820167984,
+        "delivered_us_gallons_positive_junction_demands": 1584000.0,
+        "demand_deficit_us_gallons": 0.0,
+        "warnings": []
+      },
+      {
+        "network": "Net1",
+        "mode": "PDA",
+        "input_sha256": "7dc5446f381d1c788ac144860da79e443bff2d80bacf7ed3cc5669a41f92beeb",
+        "junctions": 9,
+        "hydraulic_states": 27,
+        "duration_seconds": 86400,
+        "minimum_junction_pressure_psi": 106.81039215863161,
+        "delivered_us_gallons_positive_junction_demands": 1584011.843997442,
+        "demand_deficit_us_gallons": 0.0,
+        "warnings": []
+      },
+      {
+        "network": "Net2",
+        "mode": "DDA",
+        "input_sha256": "8f82ee1a2eba0fd11ccde4ca7aaf0eab1900bf263b1d6891c638b5ee1b30cec4",
+        "junctions": 35,
+        "hydraulic_states": 56,
+        "duration_seconds": 198000,
+        "minimum_junction_pressure_psi": 26.536189719924387,
+        "delivered_us_gallons_positive_junction_demands": 1059944.9639999995,
+        "demand_deficit_us_gallons": 0.0,
+        "warnings": []
+      },
+      {
+        "network": "Net2",
+        "mode": "PDA",
+        "input_sha256": "8f82ee1a2eba0fd11ccde4ca7aaf0eab1900bf263b1d6891c638b5ee1b30cec4",
+        "junctions": 35,
+        "hydraulic_states": 56,
+        "duration_seconds": 198000,
+        "minimum_junction_pressure_psi": 26.535592793565534,
+        "delivered_us_gallons_positive_junction_demands": 1059991.1015840832,
+        "demand_deficit_us_gallons": 0.0,
+        "warnings": []
+      },
+      {
+        "network": "Net3",
+        "mode": "DDA",
+        "input_sha256": "d95b068194ba747605bea851d608333e577ac667658aaa1680cf1c07e43faf53",
+        "junctions": 92,
+        "hydraulic_states": 27,
+        "duration_seconds": 86400,
+        "minimum_junction_pressure_psi": -0.8864330545093765,
+        "delivered_us_gallons_positive_junction_demands": 15764639.022000002,
+        "demand_deficit_us_gallons": 0.0,
+        "warnings": []
+      },
+      {
+        "network": "Net3",
+        "mode": "PDA",
+        "input_sha256": "d95b068194ba747605bea851d608333e577ac667658aaa1680cf1c07e43faf53",
+        "junctions": 92,
+        "hydraulic_states": 27,
+        "duration_seconds": 86400,
+        "minimum_junction_pressure_psi": -0.8863517841154971,
+        "delivered_us_gallons_positive_junction_demands": 15764673.738914514,
+        "demand_deficit_us_gallons": 0.0,
+        "warnings": []
+      }
+    ],
+    "scope": "external engine and example networks; local execution and PDA parameters; no independent policy decisions or counter-review"
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "status": "post_hoc_descriptive_only",
+  "source_sha256": "df4447709a86a10d9fad03879f92e34fb2e47c4246dcd4181d61c31c70dfb45f",
+  "labels": {
+    "0": "no communication",
+    "1": "unstructured chat",
+    "2": "structured deliberation"
+  },
+  "exclusions": [],
+  "arms": {
+    "0": {
+      "group_periods": 180,
+      "groups": 18,
+      "sessions": 3,
+      "mean_contribution_per_group": 19.83888888888889,
+      "mean_extraction_by_position": [
+        17.405555555555555,
+        11.761111111111111,
+        8.05
+      ],
+      "unequal_extraction_group_periods": 136,
+      "third_position_zero_extraction": 63,
+      "mean_within_group_max_minus_min_extraction": 10.727777777777778,
+      "residual_field_inconsistent_group_periods": 2,
+      "mean_derived_residual": 0.13333333333333333
+    },
+    "1": {
+      "group_periods": 170,
+      "groups": 17,
+      "sessions": 3,
+      "mean_contribution_per_group": 25.623529411764707,
+      "mean_extraction_by_position": [
+        18.694117647058825,
+        16.51764705882353,
+        14.870588235294118
+      ],
+      "unequal_extraction_group_periods": 52,
+      "third_position_zero_extraction": 26,
+      "mean_within_group_max_minus_min_extraction": 4.088235294117647,
+      "residual_field_inconsistent_group_periods": 6,
+      "mean_derived_residual": 0.1588235294117647
+    },
+    "2": {
+      "group_periods": 220,
+      "groups": 22,
+      "sessions": 4,
+      "mean_contribution_per_group": 27.145454545454545,
+      "mean_extraction_by_position": [
+        19.0,
+        18.25,
+        16.245454545454546
+      ],
+      "unequal_extraction_group_periods": 56,
+      "third_position_zero_extraction": 19,
+      "mean_within_group_max_minus_min_extraction": 3.5090909090909093,
+      "residual_field_inconsistent_group_periods": 12,
+      "mean_derived_residual": 0.39545454545454545
+    }
+  },
+  "cautions": [
+    "repeated group-periods are not independent samples",
+    "treatment assignment not reconstructed",
+    "archive identifier discrepancy unresolved",
+    "derived residual does not overwrite source CPR3",
+    "no CCT arm; no evidence of CCT effect"
+  ]
+}
