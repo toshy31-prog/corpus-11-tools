@@ -7,6 +7,19 @@ vue omnisciente ou à un score moral.
 
 ## Jouer
 
+La version la plus simple à conserver et à lancer est :
+
+- `dist/CORPUS-Jeu.html` : fichier autonome, ouvrable par double-clic sur tout
+  ordinateur équipé d'un navigateur récent ;
+- `CORPUS.desktop` : lanceur d'application pour le bureau Linux actuel ;
+- `launch-corpus-game.sh` : lanceur portable qui reconstruit le paquet s'il manque.
+
+Pour régénérer le fichier autonome après une modification :
+
+```bash
+npm run package:game
+```
+
 Le prototype n'a aucune dépendance externe. Le moyen le plus simple est d'ouvrir
 directement `index.html` dans un navigateur récent. La version navigateur est
 regroupée dans `browser.js`, donc Firefox accepte aussi l'ouverture en `file://`.

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=CORPUS — Ce que tu rends possible
+Comment=Monde politique évolutif façonné par les usages du joueur
+Exec=/home/olivier/Documents/ChatGPT/Corpus/projets/corpus-ce-qui-reste-possible/launch-corpus-game.sh
+Path=/home/olivier/Documents/ChatGPT/Corpus/projets/corpus-ce-qui-reste-possible
+Icon=applications-games
+Terminal=false
+Categories=Game;Simulation;
+StartupNotify=true

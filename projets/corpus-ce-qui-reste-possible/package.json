@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "build": "node build-browser.mjs",
+    "package:game": "npm run build && node package-standalone.mjs",
     "validate": "node validate-campaign.mjs",
     "start": "npm run validate && python3 -m http.server 4173",
-    "test": "npm run build && node --test engine.test.js campaign-validator.test.js evolution-engine.test.js && npm run validate && node --check browser.js && node --check studio-browser.js && node --check evolution-browser.js"
+    "test": "npm run package:game && node --test engine.test.js campaign-validator.test.js evolution-engine.test.js && npm run validate && node --check browser.js && node --check studio-browser.js && node --check evolution-browser.js"
   }
 }
