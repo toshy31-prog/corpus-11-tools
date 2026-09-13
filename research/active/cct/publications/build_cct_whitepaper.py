@@ -62,6 +62,7 @@ TOC_GROUPS = (
         "Transition, épreuves et reconstruction",
         (
             "17. Stratégie de transition",
+            "Lignée exécutable de la restauration et de la continuité",
             "18. Tests de résistance",
             "19. Tableau de bord minimal",
             "20. Décisions politiques encore ouvertes",
@@ -173,8 +174,7 @@ def add_inline(paragraph, text: str) -> None:
 
 
 def add_page_field(paragraph) -> None:
-    paragraph.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-    run = paragraph.add_run("Page "); set_run(run, size=8.5, color=MUTED)
+    paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
     fld = OxmlElement("w:fldSimple"); fld.set(qn("w:instr"), "PAGE")
     paragraph._p.append(fld)
 
@@ -228,7 +228,7 @@ def configure_document(doc: Document) -> None:
         style = styles[name]
         style.font.name = "Aptos Display" if name != "Heading 3" else "Aptos"
         style.font.size = Pt(size); style.font.bold = name != "Subtitle"
-        style.font.color.rgb = RGBColor.from_string(color)
+        style.font.color.rgb = RGBColor.from_string("000000")
         style.paragraph_format.space_before = Pt(before); style.paragraph_format.space_after = Pt(after)
         style.paragraph_format.keep_with_next = True
     for name in ("List Bullet", "List Number"):
@@ -247,7 +247,7 @@ def configure_document(doc: Document) -> None:
     hp = header.paragraphs[0]
     hp.text = "CONFÉDÉRATION DES COMMUNS TERRESTRES   /   LIVRE BLANC"
     hp.alignment = WD_ALIGN_PARAGRAPH.LEFT
-    set_run(hp.runs[0], size=8.1, color=MUTED, bold=True)
+    set_run(hp.runs[0], size=8.1, color="000000", bold=True)
     add_page_field(section.footer.paragraphs[0])
 
 
@@ -291,13 +291,13 @@ def add_cover(doc: Document) -> None:
     for _ in range(5):
         p = doc.add_paragraph(); p.paragraph_format.space_after = Pt(14)
     p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = p.add_run("LIVRE BLANC CONSTITUTIONNEL ET EXPÉRIMENTAL"); set_run(r, size=9.5, color=GOLD, bold=True)
+    r = p.add_run("LIVRE BLANC CONSTITUTIONNEL ET EXPÉRIMENTAL"); set_run(r, size=9.5, color="000000", bold=True)
     p.paragraph_format.space_after = Pt(24)
     p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = p.add_run("Confédération des\ncommuns terrestres"); set_run(r, size=32, color=NAVY, bold=True, font="Aptos Display")
+    r = p.add_run("Confédération des\ncommuns terrestres"); set_run(r, size=32, color="000000", bold=True, font="Aptos Display")
     p.paragraph_format.space_after = Pt(15)
     p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = p.add_run("Une architecture écosocialiste libertaire pour coordonner le monde sans souverain mondial illimité"); set_run(r, size=14, color=TEAL, italic=True)
+    r = p.add_run("Une architecture écosocialiste libertaire pour coordonner le monde sans souverain mondial illimité"); set_run(r, size=14, color="000000", italic=True)
     p.paragraph_format.space_after = Pt(42)
     p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     r = p.add_run("ÉTAT DE RECHERCHE  •  SEPTEMBRE 2026"); set_run(r, size=11, color=MUTED, bold=True)
@@ -343,6 +343,9 @@ def add_table(doc: Document, rows: list[list[str]]) -> None:
         widths = [2200, 3000, 4160]
     elif cols == 5:
         widths = [3000, 1270, 1270, 1270, 2550]
+    elif cols == 6:
+        widths = [1900, 800, 1600, 1500, 1400, 2160]
+    table_font_size = 8.3 if cols >= 6 else 8.8
     table = doc.add_table(rows=len(rows), cols=cols)
     table.style = "Table Grid"
     for r_index, row in enumerate(rows):
@@ -353,7 +356,7 @@ def add_table(doc: Document, rows: list[list[str]]) -> None:
             add_inline(p, text)
             p.paragraph_format.space_after = Pt(0); p.paragraph_format.line_spacing = 1.08
             for run in p.runs:
-                set_run(run, size=8.8, color=WHITE if r_index == 0 else INK, bold=(r_index == 0))
+                set_run(run, size=table_font_size, color=WHITE if r_index == 0 else INK, bold=(r_index == 0))
             if r_index == 0:
                 set_cell_shading(cell, NAVY)
             elif r_index % 2 == 0:
@@ -431,7 +434,7 @@ def add_markdown(doc: Document, text: str, *, strip_model_front=False) -> None:
             chapter = re.match(r"(\d+)\.", title)
             if style_level == 1 and chapter and int(chapter.group(1)) in BREAK_CHAPTERS:
                 p.paragraph_format.page_break_before = True
-            if style_level == 1 and title.startswith("Annexe A"):
+            if style_level == 1 and title.startswith(("Annexe A", "Annexe C")):
                 p.paragraph_format.page_break_before = True
             continue
         if line.startswith(">"):
@@ -466,7 +469,29 @@ def main() -> None:
 
 Les essais synthétiques ont révélé que des protections solides isolément peuvent échouer ensemble lorsqu’elles partagent les mêmes réseaux, experts, clés, fournisseurs ou réserves. Ils ont aussi conservé trois erreurs de méthode : un avantage initial indu, des tirages non appariés et une mesure d’empreinte erronée. Les mécanismes retenus en portent la trace : voies hors ligne pour les droits vitaux, règle publique de pénurie, registre des dépendances, budget de charge, extinction séparée des pouvoirs temporaires et test de polycrise.
 
-Les prototypes exécutables ont confirmé une limite plus étroite : une règle ne rend pas une action possible, un gain matériel ne devient pas une capacité vérifiée sans attestation indépendante, et une réparation peut exiger plusieurs étapes. Une restauration séquencée concorde avec un oracle indépendant dans une abstraction finie ; elle ne crée ni les ressources, ni les témoins, ni les institutions réelles dont dépendrait son usage. Son statut reste local, non promouvable et sans transport externe établi.
+Les prototypes exécutables ont confirmé une limite plus étroite : une règle ne rend pas une action possible, un gain matériel ne devient pas une capacité vérifiée sans attestation indépendante, et une réparation peut exiger plusieurs étapes. Une restauration séquencée concorde avec un oracle indépendant dans une abstraction finie ; elle ne crée ni les ressources, ni les témoins, ni les institutions réelles dont dépendrait son usage.
+
+### Lignée exécutable de la restauration et de la continuité
+
+CCT-EXEC 1.4 reste le gel vérifié de la restauration séquencée. Chaque dette conserve son échéance et ne se ferme qu'avec son reçu propre. Les couches suivantes restent candidates : 1.5 refuse la réutilisation visible d'une même collecte comme confirmation plurielle ; 1.6 protège chaque dette ouverte pendant l'attente de preuve ; 1.7 ajoute un pont de continuité à voies, contrôleurs, domaines de panne et recours distincts, sans clôturer la dette.
+
+Les candidates 1.8 et 1.9 séparent ensuite déclaration, exercice local et soutien indépendant borné. La candidate 2.0 retire chaque voie à tour de rôle ; 2.1 exige la protection à chaque tick du basculement ; 2.2 perturbe ensemble les voies partageant une dépendance ; 2.3 exige la détectabilité de neuf classes minimales ; 2.4 compose des racines sous le seuil. La 2.5 confronte les 36 paires dans les deux ordres. La 2.6 ajoute un plan affine de 12 triples ; la 2.7 lui adjoint un second plan disjoint. Leurs 24 triples et 144 ordres donnent à chaque paire deux troisièmes contextes distincts.
+
+La candidate 2.8 classe les paires par marge de protection, choisit six contextes supplémentaires selon les risques déclarés et engage le plan avant exercice. Ses six triples ajoutent 36 ordres. La candidate 2.9 exige pour chaque marge et risque au moins deux attestations antérieures, avec racines de source, contrôleurs et domaines de panne distincts, ainsi qu'une épreuve aveugle. Elle compile la marge minimale et le risque maximal. Elle refuse une marge sous 12 observations ou un risque sous 30 observations, hors de l'intervalle de 0 à 1 ou dont l'erreur de calibration dépasse 0,1.
+
+La candidate 3.0 exige ensuite deux contextes synthétiques tenus à l'écart pour chaque signal, distincts des sources et l'un de l'autre. Après engagement du protocole, elle mesure directement la marge comme un écart de taux de protection et le risque comme une fréquence d'échec, avec au moins 100 observations par contexte. Elle refuse une erreur relative de marge supérieure à 20 %, une erreur absolue de risque supérieure à 0,1 ou toute divergence entre les six contextes sélectionnés depuis les sources et depuis les mesures cibles.
+
+Les candidates 3.1 à 3.5 ajoutent l'incertitude simultanée, l'évaluation au niveau de grappes indépendantes et une lignée globale des unités, événements, générateurs et attestations. Elles refusent la pseudoréplication, les racines réutilisées entre contextes ou signaux et une concentration supérieure à 50 % sur un attestant ou un domaine de panne.
+
+Les candidates 3.6 à 4.0 ajoutent 90 perturbations préengagées, recalculent 4 050 effets depuis des comptes avant et après, exigent une assignation bloquée avec attrition bornée, limitent l'exposition entre bras et dérivent 1 800 étiquettes de bras par rang SHA-256 dans 20 strates par sonde. Les candidates 4.1 et 4.2 contrôlent ensuite trois covariables prétraitement et 270 placebos antérieurs à l'intervention.
+
+Les candidates 4.3 à 4.5 empêchent que l'agrégation ou une frontière unique masque un déséquilibre. Elles contrôlent trois groupes d'exposition, engagent 10 800 comptes placebo au niveau des grappes et réalisent 810 comparaisons distributives. Une grille de 15 groupes porte ensuite le total à 4 050 comparaisons simultanées et détecte les écarts placés juste sous le seuil initial.
+
+Les candidates 4.6 à 4.8 balayent les seuils observés puis leurs paires et enferment cette recherche dans un registre préengagé de trois covariables avec un budget explicite. Les candidates 4.9 et 5.0 n'admettent une variable nouvelle que pour une campagne future, après définition, prédiction, engagement antérieur et gain hors échantillon suffisamment précis.
+
+Les candidates 5.1 à 5.4 empêchent qu'un gain global masque une perte sur un axe de dette ou leur intersection. Elles exigent deux canaux indépendants pour l'appartenance aux axes, puis une calibration contre des cas de référence aveugles positifs et négatifs. La 5.5 limite le transport aux contextes cibles effectivement réobservés. Les candidates 5.6 à 6.2 gouvernent l'indépendance, la garde, l'inclusion et la cohérence générale du journal, avec une seconde implémentation Python bornée. Les candidates 6.3 à 6.5 refusent le rejeu d'une ancienne tête, confrontent les pins d'observateurs distincts et exigent un quorum de trois signatures sur quatre. La 6.6 impose un quorum ancien, un quorum nouveau et deux signataires communs à toute rotation. La 6.7 exige une sélection séparée avec mandat expirant ; la 6.8 limite la révocation automatique à l'équivoque cryptographiquement prouvée. Les candidates 6.9 à 8.9 gouvernent la suspension, la réparation et la contestation des dépendances, remontent les lignées d'influence, exigent un effet décisionnel sous retrait apparié, auditent l'équivalence des placebos, refusent les influences communes transitives, admettent une arête omise seulement pour une campagne future, exigent son report dans le manifeste scellé puis deux reçus de runtime indépendants attestant qu'elle a effectivement été consommée. Les 9.0 à 9.6 contrôlent ensuite branches, enveloppes, jetons et puits d'effet, puis aveuglent et entrelacent les sondes pour rendre visible une application réservée au test ou une évasion tardive. Les 9.7 à 10.35 préengagent les campagnes et recherches, lient les preuves par contenu, confrontent les centres effectifs, réobservent le retrait et imposent des histoires monotones de propriété et d'autorité avec rotations cosignées sans réactivation.
+
+Ces mécanismes changent des décisions dans les scénarios locaux et possèdent des conditions de renversement exécutables. Ils sont écrits et testés ; ils ne sont ni promus dans le gel 1.4, ni autorisés, ni déployés, ni réobservés indépendamment. Les essais 2.1 à 10.35 restent synthétiques et bornés : la charge réelle, l'exhaustivité des interactions, branches, puits, groupes et seuils, la randomisation réelle, l'indépendance d'organisations réelles, un journal et des observateurs externes, la durabilité des pins, la visibilité complète en partition, la légitimité des registres, le recours utilisable, l'horodatage opposable, la justice des compensations, la validité des construits, les empreintes latentes et l'adaptation entre campagnes restent à observer.
 
 ## 18. Tests de résistance""",
     )
@@ -501,7 +526,8 @@ La proposition doit être reconstruite ou retirée si des observations indépend
 ## 23. Conclusion""",
     )
     add_markdown(doc, model_text)
-    add_markdown(doc, """# Annexe — Carte de validation\n\n| Élément | Écrit | Logiciel | Synthétique | Structurel borné | Terrain / réobservation |\n|---|---:|---:|---:|---:|---:|\n| Architecture politique complète | Oui | Partiel | Non | Non | Non |\n| Continuité et planification | Oui | Oui | Oui | Non | Non |\n| Droits portables et recours | Oui | Partiel | Non | Non | Non |\n| Pouvoirs temporaires et restitution | Oui | Oui | Partiel | Non | Non |\n| Restauration séquencée | Oui | Oui | Non | Oui | Non |\n\nCes colonnes ne se compensent pas : un test logiciel établit une exécution définie, une simulation établit un résultat dans son monde, et une vérification structurelle établit une propriété de son abstraction. Aucune ne valide à elle seule un effet territorial ni une capacité institutionnelle générale.""")
+    annexes = (HERE / "livre-blanc-annexes.md").read_text(encoding="utf-8")
+    add_markdown(doc, annexes)
     props = doc.core_properties
     props.title = "Confédération des communs terrestres — Livre blanc"
     props.subject = "Architecture écosocialiste libertaire, modèle institutionnel et programme expérimental"

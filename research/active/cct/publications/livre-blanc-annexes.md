@@ -56,7 +56,8 @@ Les cinq prototypes commencent en mode fantôme : leurs décisions simulées n�
 
 | Élément | Écrit | Testé logiciellement | Autorisé sur terrain | Déployé réel | Réobservé indépendamment |
 |---|---:|---:|---:|---:|---:|
-| Architecture CCT v0.11 | Oui | Sans objet | Non | Non | Non |
+| Architecture historique v0.13 | Oui | Sans objet | Non | Non | Non |
+| Révision politique CCT-POL 1.1 | Oui | Contrats locaux | Non | Non | Non |
 | Simulateur CCT-7X | Oui | Oui | Sans objet | Synthétique | Non |
 | Jumeau P001-DT-003 | Oui | Oui | Sans objet | Synthétique | Non |
 | Jumeau P002-DT-002 | Oui | Oui | Sans objet | Synthétique | Non |
@@ -66,8 +67,56 @@ Les cinq prototypes commencent en mode fantôme : leurs décisions simulées n�
 | P-004 territorial | Oui | Non | Non | Non | Non |
 | CCT-L50-001 | Oui | Oui, structure | Sans objet | Conceptuel | Non |
 | P-005 territorial | Oui | Non | Non | Non | Non |
+| CCT-EXEC 1.4 gelée | Oui | Oui, gel vérifié | Sans objet | Local | Non |
+| CCT-EXEC 1.5 provenance | Oui | Oui, synthétique | Non | Non | Non |
+| CCT-EXEC 1.6 attente probatoire | Oui | Oui, synthétique | Non | Non | Non |
+| CCT-EXEC 1.7 pont de continuité | Oui | Oui, synthétique | Non | Non | Non |
+| CCT-EXEC 1.8 présence du pont | Oui | Oui, synthétique | Non | Non | Non |
+| CCT-EXEC 1.9 lignage des exercices | Oui | Oui, synthétique | Non | Non | Non |
+| CCT-EXEC 2.0 panne d'une voie | Oui | Oui, structure | Non | Non | Non |
+| CCT-EXEC 2.1 basculement temporel | Oui | Oui, synthétique borné | Non | Non | Non |
+| CCT-EXEC 2.2 causes communes | Oui | Oui, dépendances déclarées | Non | Non | Non |
+| CCT-EXEC 2.3 détectabilité | Oui | Oui, synthétique borné | Non | Non | Non |
+| CCT-EXEC 2.4 composition sous le seuil | Oui | Oui, synthétique borné | Non | Non | Non |
+| CCT-EXEC 2.5 interactions entre classes | Oui | Oui, 36 paires synthétiques | Non | Non | Non |
+| CCT-EXEC 2.6 interactions triples | Oui | Oui, 12 triples et 72 ordres | Non | Non | Non |
+| CCT-EXEC 2.7 doubles contextes triples | Oui | Oui, 24 triples et 144 ordres | Non | Non | Non |
+| CCT-EXEC 2.8 contextes dirigés par le risque | Oui | Oui, 6 triples et 36 ordres engagés avant exercice | Non | Non | Non |
+| CCT-EXEC 2.9 provenance des signaux | Oui | Oui, attestations et calibration synthétiques | Non | Non | Non |
+| CCT-EXEC 3.0 transport tenu à l'écart | Oui | Oui, 2 contextes synthétiques par signal | Non | Non | Non |
+| CCT-EXEC 3.1 incertitude simultanée | Oui | Oui, 162 intervalles de Wilson synthétiques | Non | Non | Non |
+| CCT-EXEC 3.2 grappes indépendantes | Oui | Oui, 90 intervalles au niveau des grappes | Non | Non | Non |
+| CCT-EXEC 3.3 lignée des grappes | Oui | Oui, racines distinctes entre contextes | Non | Non | Non |
+| CCT-EXEC 3.4 lignée du portefeuille | Oui | Oui, racines distinctes entre 45 signaux | Non | Non | Non |
+| CCT-EXEC 3.5 attestations de lignée | Oui | Oui, 7 200 attestations synthétiques | Non | Non | Non |
+| CCT-EXEC 3.6 perturbations croisées | Oui | Oui, 90 perturbations synthétiques | Non | Non | Non |
+| CCT-EXEC 3.7 effets observés | Oui | Oui, 4 050 effets issus de comptes | Non | Non | Non |
+| CCT-EXEC 3.8 assignation et attrition | Oui | Oui, assignation bloquée synthétique | Non | Non | Non |
+| CCT-EXEC 3.9 interférence entre grappes | Oui | Oui, exposition entre bras bornée | Non | Non | Non |
+| CCT-EXEC 4.0 randomisation reproductible | Oui | Oui, 1 800 étiquettes dérivées | Non | Non | Non |
+| CCT-EXEC 4.1 équilibre prétraitement | Oui | Oui, 3 covariables synthétiques | Non | Non | Non |
+| CCT-EXEC 4.2 placebos prétraitement | Oui | Oui, 270 intervalles simultanés | Non | Non | Non |
+| CCT-EXEC 4.3 équilibre distributif | Oui | Oui, 3 groupes d'exposition synthétiques | Non | Non | Non |
+| CCT-EXEC 4.4 placebos distributifs | Oui | Oui, 10 800 comptes et 810 comparaisons | Non | Non | Non |
+| CCT-EXEC 4.5 sensibilité aux seuils | Oui | Oui, 15 groupes et 4 050 comparaisons | Non | Non | Non |
+| CCT-EXEC 4.6 à 4.8 balayages et registre d'exposition | Oui | Oui, seuils observés, paires et budget borné | Non | Non | Non |
+| CCT-EXEC 4.9 amendement du registre | Oui | Oui, engagement antérieur pour campagne future | Non | Non | Non |
+| CCT-EXEC 5.0 valeur hors échantillon | Oui | Oui, gain de score et puissance synthétiques | Non | Non | Non |
+| CCT-EXEC 5.1 à 5.3 non-dégradation et appartenance | Oui | Oui, axes, intersections et doubles canaux synthétiques | Non | Non | Non |
+| CCT-EXEC 5.4 calibration des construits | Oui | Oui, références aveugles synthétiques | Non | Non | Non |
+| CCT-EXEC 5.5 transport ciblé | Oui | Oui, deux contextes synthétiques | Non | Non | Non |
+| CCT-EXEC 5.6 à 5.7 indépendance et contenu des preuves | Oui | Oui, lignées et engagements synthétiques | Non | Non | Non |
+| CCT-EXEC 5.8 garde indépendante avant résultats | Oui | Oui, deux signatures Ed25519 synthétiques | Non | Non | Non |
+| CCT-EXEC 5.9 inclusion dans un journal | Oui | Oui, preuve de Merkle et tête signée synthétiques | Non | Non | Non |
+| CCT-EXEC 6.0 accord inter-témoins | Oui | Oui, deux témoins à clés épinglées synthétiques | Non | Non | Non |
+| CCT-EXEC 6.1 cohérence bornée du journal | Oui | Oui, extension append-only 2 vers 3 synthétique | Non | Non | Non |
+| CCT-EXEC 6.2 cohérence générale du journal | Oui | Oui, tailles arbitraires et trois vecteurs RFC dérivés séparément | Non | Non | Non |
+| CCT-EXEC 6.3 à 6.5 anti-rejeu et partitions | Oui | Oui, pin monotone, vues signées et quorum 3-sur-4 synthétiques | Non | Non | Non |
+| CCT-EXEC 6.6 à 6.8 gouvernance des observateurs | Oui | Oui, rotation conjointe, admission distincte et équivoque signée synthétiques | Non | Non | Non |
+| CCT-EXEC 6.9 à 9.6 suspension, réparation et couverture | Oui | Oui, expiration, réparation, dépendances, branches, enveloppes, jetons, puits et adaptation temporelle synthétiques | Non | Non | Non |
+| CCT-EXEC 9.7 à 10.35 non-liaison, contrôle effectif et autorités | Oui | Oui, préengagements, lignées, attestations, révocations et rotations synthétiques | Non | Non | Non |
 
-Les tests logiciels établissent la reproductibilité, l’appariement des scénarios, l’égalité des budgets déclarés et la cohérence d’exécution. Ils n’établissent ni la validité des paramètres, ni un effet causal, ni l’acceptabilité politique.
+Ces tests établissent reproductibilité, cohérence locale et barrières synthétiques contre certains rejeux, partitions, suspensions abusives et clôtures documentaires de réparation. Les 8.9 à 9.6 détectent dans leurs scénarios une arête ignorée, une branche non instrumentée, une enveloppe sans terminaison, un effet latéral sans jeton, un puits omis ou permissif, un marquage visible des sondes et une évasion tardive. Les 9.7 à 10.35 ajoutent des barrières contre la liaison entre campagnes, la sélection rétrospective, les attestations sans contrôle effectif, le rejeu d'une histoire de révocation et la rotation unilatérale ou réactivante d'une autorité. Elles ne prouvent ni la complétude ni l'infalsifiabilité d'une instrumentation réelle, ni l'absence d'adaptation entre campagnes. Ces tests n'établissent ni paramètres réels, indépendance organisationnelle, journal externe, horodatage opposable, visibilité complète en partition, légitimité des registres, recours utilisable, justice des unités de compensation, validité externe, effet territorial ou acceptabilité. Les candidates 1.5 à 10.35 ne remplacent pas le gel 1.4.
 
 # Annexe D — Charte constitutionnelle courte
 
@@ -75,6 +124,4 @@ Les tests logiciels établissent la reproductibilité, l’appariement des scén
 
 # Annexe E — Conditions de retrait ou de révision
 
-La CCT doit être révisée en profondeur si des observations indépendantes montrent durablement que ses collèges paralysent les crises, que ses communs se ferment en corporations, que la subsidiarité exporte les dommages, que les corridors produisent plus de privations que leurs rivaux, que le niveau mondial devient irrévocable, que les droits portables ne protègent pas la sortie, que les pouvoirs d’urgence ne sont pas rendus ou que la complexité impose plus de dépendance qu’elle ne crée de contrôle.
-
-Un tel résultat ne valide pas automatiquement le capitalisme centralisé ou l’État-nation souverain. Il rouvre la comparaison entre architectures concurrentes et oblige à publier les pertes que chacune déplace.
+Réviser la CCT si des preuves indépendantes durables établissent : paralysie ; corporatisation ; dommages exportés ; corridors privatifs ; irrévocabilité mondiale ; sortie sans protection ; urgence non rendue ; ou dépendance accrue. Aucun rival n’est validé sans publier ses pertes.

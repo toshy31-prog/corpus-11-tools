@@ -12,7 +12,7 @@ La planification ne fixe pas chaque quantité. Elle établit des corridors : un 
 
 La transition n’est pas un calendrier aveugle. Avant chaque transfert critique, les dépendances, compétences, stocks, licences, financements et solutions de remplacement sont cartographiés et testés. Pour les services vitaux, une cellule de continuité temporaire peut coordonner la réponse, mais elle ne peut modifier les droits ou les fins du service. Son mandat est borné, journalisé et accompagné dès l’ouverture d’une capacité indépendante de restitution.
 
-Le modèle a été cassé et reconstruit au cours de sept cycles adversariaux : paralysie multi-échelle, capture administrative, manipulation de la planification, oppression locale, agression extérieure, sabotage de transition et surcharge institutionnelle. Deux jumeaux numériques ont ensuite approfondi les faiblesses de transition et de planification. Cinquante tests-limites supplémentaires ont révélé dix ruptures, surtout lorsque plusieurs protections partagent les mêmes ressources ou tombent ensemble. Ces essais ont modifié l’architecture, mais ils ne constituent pas une validation empirique.
+Le modèle a été cassé et reconstruit au cours de sept cycles adversariaux. Deux jumeaux numériques et cinquante tests-limites ont ensuite approfondi les faiblesses de transition, de planification et de polycrise. La lignée CCT-EXEC a rendu exécutables la dette de réparation, la provenance des reçus, la continuité pendant une preuve contestée, le basculement temporel, les causes communes, leur détectabilité, leur composition sous le seuil, leurs interactions et plusieurs contrôles de transport et de non-dégradation. Les candidates suivantes gouvernent l'indépendance des preuves jusqu'au journal Merkle. Les couches 6.3 à 9.6 contrôlent notamment rejeu, partitions, gouvernance des observateurs, réparation, dépendances omises, consommation des arêtes et sondes des puits d'effet. Les couches 9.7 à 10.35 ajoutent non-liaison entre campagnes, préengagement des recherches, contrôle du gel et de la puissance, transport des racines, attestations signées, centres effectifs, réobservation du retrait, ancrages externes déclarés et rotation cosignée des autorités sans réactivation. CCT-EXEC 1.4 reste le gel vérifié ; les couches 1.5 à 10.35 restent des candidates locales. Ces essais ont modifié l’architecture, mais ils ne constituent pas une validation empirique.
 
 ## Ce que la CCT garantit
 
@@ -34,10 +34,10 @@ Le modèle a été cassé et reconstruit au cours de sept cycles adversariaux : 
 
 ## Statut du document
 
-Ce livre blanc présente une proposition institutionnelle consolidée et un programme d’expérimentation. Il ne décrit ni un ordre existant ni une constitution prête à être imposée. Les mécanismes sont écrits et testés synthétiquement ; ils ne sont pas autorisés, déployés ou réobservés indépendamment sur des territoires réels.
+Ce livre blanc présente CCT-POL 1.1, la lignée exécutable jusqu'à la candidate 10.35 et un programme d'expérimentation. Il ne décrit ni un ordre existant ni une constitution prête à être imposée. Les mécanismes sont écrits et testés localement ou synthétiquement ; ils ne sont pas autorisés, déployés ou réobservés indépendamment sur des territoires réels.
 
 # Guide de lecture
 
-Les chapitres 1 à 6 définissent les principes, les échelles et la démocratie. Les chapitres 7 à 12 traitent de l’économie, de l’écologie, de la connaissance et de la justice. Les chapitres 13 à 17 organisent la coopération mondiale, la sécurité, l’expérimentation et la transition. Les chapitres 18 à 24 exposent les premiers tests et le statut des résultats. Les chapitres 25 à 28 présentent les cinquante tests-limites, quinze invariants, six reconstructions et P-005 Polycrise.
+Les premières parties définissent les principes, les échelles et la démocratie. Les suivantes traitent de l’économie, de l’écologie, de la connaissance, de la justice et de la transition. Les dernières présentent les épreuves, la lignée exécutable, les limites de validation et les conditions de retrait.
 
 Les propositions constitutionnelles se lisent comme des garanties et des limites. Les mécanismes détaillés restent des hypothèses de conception. Les résultats numériques servent à découvrir des dépendances et à réfuter des mécaniques internes ; ils ne prédisent pas la performance d’une société réelle.
