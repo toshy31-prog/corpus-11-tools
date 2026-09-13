@@ -1,0 +1,18 @@
+{
+  "schema": "corpus-independent-replication-output-contract/v1",
+  "comparable_paths": [
+    "/protocol_id",
+    "/core",
+    "/collision",
+    "/extension",
+    "/mutation_results"
+  ],
+  "research_contract": {
+    "output_schema": "provenance-interoperability-replication-output/v1",
+    "protocol_id": "provenance-interoperability-core-mutations-v0.2",
+    "core_scalar_count": 15,
+    "profiles_required": 2,
+    "extension_field": "display_note",
+    "collision_verdict": "rejected"
+  }
+}

@@ -1,0 +1,213 @@
+{
+  "campaign_decision": "passage",
+  "campaign_id": "FOE-001-transversal-campaign-v0.1",
+  "controls": [
+    {
+      "conforming": true,
+      "differences": [],
+      "expected": {
+        "variants": {
+          "common_mode": {
+            "control": "eligible",
+            "evaluated": "not_eligible",
+            "lineage_verdict": "shared_failure_mode"
+          },
+          "incomplete_lineage": {
+            "control": "eligible",
+            "evaluated": "withhold",
+            "lineage_verdict": "independence_unknown"
+          },
+          "independent": {
+            "control": "eligible",
+            "evaluated": "eligible",
+            "lineage_verdict": "independent"
+          }
+        }
+      },
+      "id": "evidence",
+      "observed": {
+        "variants": {
+          "common_mode": {
+            "control": "eligible",
+            "evaluated": "not_eligible",
+            "lineage_verdict": "shared_failure_mode"
+          },
+          "incomplete_lineage": {
+            "control": "eligible",
+            "evaluated": "withhold",
+            "lineage_verdict": "independence_unknown"
+          },
+          "independent": {
+            "control": "eligible",
+            "evaluated": "eligible",
+            "lineage_verdict": "independent"
+          }
+        }
+      }
+    },
+    {
+      "conforming": true,
+      "differences": [],
+      "expected": {
+        "collision": "rejected",
+        "extension": {
+          "preserved": true
+        },
+        "roundtrips": {
+          "entity": {
+            "core_preserved": true
+          },
+          "graph": {
+            "core_preserved": true
+          }
+        }
+      },
+      "id": "provenance",
+      "observed": {
+        "collision": "rejected",
+        "extension": {
+          "preserved": true
+        },
+        "roundtrips": {
+          "entity": {
+            "core_preserved": true
+          },
+          "graph": {
+            "core_preserved": true
+          }
+        }
+      }
+    },
+    {
+      "conforming": true,
+      "differences": [],
+      "expected": {
+        "variants": {
+          "declared_migration": "declared_rule_change",
+          "stable": "stable",
+          "unexplained_migration": "unexplained_drift"
+        }
+      },
+      "id": "migration",
+      "observed": {
+        "variants": {
+          "declared_migration": "declared_rule_change",
+          "stable": "stable",
+          "unexplained_migration": "unexplained_drift"
+        }
+      }
+    },
+    {
+      "conforming": true,
+      "differences": [],
+      "expected": {
+        "variants": {
+          "common_mode": {
+            "cluster": [
+              "L1",
+              "L2",
+              "unresolved"
+            ]
+          },
+          "incomplete_lineage": {
+            "cluster": [
+              "L1",
+              "L2",
+              "unresolved"
+            ]
+          },
+          "independent": {
+            "cluster": [
+              "L1",
+              "L2",
+              "independent"
+            ]
+          }
+        }
+      },
+      "id": "diversity",
+      "observed": {
+        "variants": {
+          "common_mode": {
+            "cluster": [
+              "L1",
+              "L2",
+              "unresolved"
+            ]
+          },
+          "incomplete_lineage": {
+            "cluster": [
+              "L1",
+              "L2",
+              "unresolved"
+            ]
+          },
+          "independent": {
+            "cluster": [
+              "L1",
+              "L2",
+              "independent"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "decision_reasons": [],
+  "declared_dependencies": [
+    {
+      "fingerprint": "CPython 3.12.3",
+      "id": "python-standard-library"
+    },
+    {
+      "fingerprint": "sha256:5d5265c9f02654b17c302547a88d6756e6146481484c2e6db331f3bec8105ef7",
+      "id": "evidence"
+    },
+    {
+      "fingerprint": "sha256:a2724592fd7ca6dc9b5f65cf73358919ac7ab0bfb8c3cbd1c46294345cbfd0dd",
+      "id": "provenance"
+    },
+    {
+      "fingerprint": "sha256:c3bd9386d2096acb8f925ed52c0509af702792eab885321d9416f3ff77fce84c",
+      "id": "migration"
+    },
+    {
+      "fingerprint": "sha256:8484fc735d9130d335d4c7738385b844a9d0b2d28b54c12297fa18ef3f5d1056",
+      "id": "diversity"
+    }
+  ],
+  "dependency_observation_limit": "only the sealed runner, four adapter files, and Python runtime are declared here; this does not detect undeclared host-level dependencies",
+  "limitations": [
+    "FOE-001 is a frozen fictional fixture",
+    "the receipt does not establish external independence",
+    "the receipt does not authorize product integration or a general Corpus claim"
+  ],
+  "manifest_sha256": "sha256:203ef9323ae7572febfb29435f2d183ee8ac1ec3135af5afa9f869e55b1a1437",
+  "observed_dependencies": [
+    {
+      "fingerprint": "CPython 3.12.3",
+      "id": "python-standard-library"
+    },
+    {
+      "fingerprint": "sha256:5d5265c9f02654b17c302547a88d6756e6146481484c2e6db331f3bec8105ef7",
+      "id": "evidence"
+    },
+    {
+      "fingerprint": "sha256:a2724592fd7ca6dc9b5f65cf73358919ac7ab0bfb8c3cbd1c46294345cbfd0dd",
+      "id": "provenance"
+    },
+    {
+      "fingerprint": "sha256:c3bd9386d2096acb8f925ed52c0509af702792eab885321d9416f3ff77fce84c",
+      "id": "migration"
+    },
+    {
+      "fingerprint": "sha256:8484fc735d9130d335d4c7738385b844a9d0b2d28b54c12297fa18ef3f5d1056",
+      "id": "diversity"
+    }
+  ],
+  "runtime": {
+    "implementation": "CPython",
+    "version": "3.12.3"
+  },
+  "schema": "foe-001-transversal-campaign-receipt/v1"
+}

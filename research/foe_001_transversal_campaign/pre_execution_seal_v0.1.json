@@ -1,0 +1,12 @@
+{
+  "schema": "foe-001-transversal-campaign-seal/v1",
+  "manifest_path": "pre_execution_manifest_v0.1.json",
+  "manifest_sha256": "sha256:203ef9323ae7572febfb29435f2d183ee8ac1ec3135af5afa9f869e55b1a1437",
+  "status": "sealed_before_execution",
+  "execution_limit": 1,
+  "prohibitions": [
+    "No modification of the FOE-001 protocol or fixture.",
+    "No adjustment after observing campaign outputs.",
+    "No product integration or external conclusion."
+  ]
+}

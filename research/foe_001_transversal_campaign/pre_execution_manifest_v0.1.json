@@ -1,0 +1,133 @@
+{
+  "schema": "foe-001-transversal-campaign-manifest/v1",
+  "campaign_id": "FOE-001-transversal-campaign-v0.1",
+  "execution_limit": 1,
+  "runtime": {
+    "implementation": "CPython",
+    "version": "3.12.3"
+  },
+  "artifacts": [
+    {
+      "id": "protocol",
+      "path": "research/FOUNDATIONS_OF_EVIDENCE_PROTOCOL_v0.1.md",
+      "sha256": "sha256:ad523be81c6a4f3478b8d88de41b85b99ee30b368c0f7729942d3cdbabd63711"
+    },
+    {
+      "id": "fixture",
+      "path": "research/fixtures/foundations_of_evidence_foe_001.json",
+      "sha256": "sha256:0fde7cb2e30ee0352ab9f0101666698e485559fede42d7ec5df930daa22d41b1"
+    },
+    {
+      "id": "runner",
+      "path": "research/scripts/run_foe_001_transversal_campaign.py",
+      "sha256": "sha256:d492fe24f8e3cff28ee7c95184518263feaa23957709e47c6e7f6bbb16bf0092"
+    },
+    {
+      "id": "evidence",
+      "path": "research/active/independent-evidence-arena/tests/foe_001_adapter.py",
+      "sha256": "sha256:5d5265c9f02654b17c302547a88d6756e6146481484c2e6db331f3bec8105ef7"
+    },
+    {
+      "id": "provenance",
+      "path": "research/active/provenance-interoperability-lab/tests/foe_001_adapter.py",
+      "sha256": "sha256:a2724592fd7ca6dc9b5f65cf73358919ac7ab0bfb8c3cbd1c46294345cbfd0dd"
+    },
+    {
+      "id": "migration",
+      "path": "research/active/semantic-migration-lab/tests/foe_001_adapter.py",
+      "sha256": "sha256:c3bd9386d2096acb8f925ed52c0509af702792eab885321d9416f3ff77fce84c"
+    },
+    {
+      "id": "diversity",
+      "path": "research/active/epistemic-diversity-and-common-mode-failure-lab/tests/foe_001_adapter.py",
+      "sha256": "sha256:8484fc735d9130d335d4c7738385b844a9d0b2d28b54c12297fa18ef3f5d1056"
+    }
+  ],
+  "declared_dependencies": [
+    {
+      "id": "python-standard-library",
+      "fingerprint": "CPython 3.12.3"
+    },
+    {
+      "id": "evidence",
+      "fingerprint": "sha256:5d5265c9f02654b17c302547a88d6756e6146481484c2e6db331f3bec8105ef7"
+    },
+    {
+      "id": "provenance",
+      "fingerprint": "sha256:a2724592fd7ca6dc9b5f65cf73358919ac7ab0bfb8c3cbd1c46294345cbfd0dd"
+    },
+    {
+      "id": "migration",
+      "fingerprint": "sha256:c3bd9386d2096acb8f925ed52c0509af702792eab885321d9416f3ff77fce84c"
+    },
+    {
+      "id": "diversity",
+      "fingerprint": "sha256:8484fc735d9130d335d4c7738385b844a9d0b2d28b54c12297fa18ef3f5d1056"
+    }
+  ],
+  "expectations": {
+    "evidence": {
+      "variants": {
+        "independent": {
+          "lineage_verdict": "independent",
+          "evaluated": "eligible",
+          "control": "eligible"
+        },
+        "common_mode": {
+          "lineage_verdict": "shared_failure_mode",
+          "evaluated": "not_eligible",
+          "control": "eligible"
+        },
+        "incomplete_lineage": {
+          "lineage_verdict": "independence_unknown",
+          "evaluated": "withhold",
+          "control": "eligible"
+        }
+      }
+    },
+    "provenance": {
+      "roundtrips": {
+        "entity": {
+          "core_preserved": true
+        },
+        "graph": {
+          "core_preserved": true
+        }
+      },
+      "collision": "rejected",
+      "extension": {
+        "preserved": true
+      }
+    },
+    "migration": {
+      "variants": {
+        "stable": "stable",
+        "declared_migration": "declared_rule_change",
+        "unexplained_migration": "unexplained_drift"
+      }
+    },
+    "diversity": {
+      "variants": {
+        "independent": {
+          "cluster": ["L1", "L2", "independent"]
+        },
+        "common_mode": {
+          "cluster": ["L1", "L2", "unresolved"]
+        },
+        "incomplete_lineage": {
+          "cluster": ["L1", "L2", "unresolved"]
+        }
+      }
+    }
+  },
+  "decision_rule": {
+    "passage": "the four observed controls exactly match the sealed expectations and declared dependencies",
+    "réparation_ciblée": "a non-severe control difference is localized in the receipt",
+    "arrêt_reprise": "a dependency differs from its declaration, a collision is silently absorbed, a common or incomplete lineage is treated as independent, or an unexplained migration is not visible"
+  },
+  "limitations": [
+    "The expected unexplained_migration variant must be visibly classified unexplained_drift; its detection is not silently treated as stability.",
+    "A conforming campaign is limited to the frozen fictional fixture and does not establish external independence, general Corpus validity, or product integration.",
+    "Host-level dependencies are not observed by this receipt."
+  ]
+}
