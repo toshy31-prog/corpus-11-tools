@@ -26,11 +26,22 @@ function stock(state, inventory) {
 
 test("the player starts in an open world without a prescribed phase", () => {
   let state = createEvolutionState();
+  assert.equal(state.version, 5);
   assert.equal("phase" in state, false);
   assert.equal(state.foundingChoice, null);
   state = movePlayer(state, 0, -1);
   assert.equal(state.player.y, 4);
   assert.equal(getWorldForm(state).id, "unmade");
+});
+
+test("repeated player passages leave a persistent route trace", () => {
+  let state = createEvolutionState();
+  for (let passage = 0; passage < 3; passage += 1) {
+    state = movePlayer(state, 1, 0);
+    state = movePlayer(state, -1, 0);
+  }
+  assert.equal(state.traffic["5,5"], 3);
+  assert.equal(state.traffic["4,5"], 4);
 });
 
 test("the first construction is a real player-authored branch", () => {

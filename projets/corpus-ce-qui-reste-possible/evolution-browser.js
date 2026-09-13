@@ -15,7 +15,7 @@ const TERRAIN = Object.freeze(Array.from({ length: WORLD_HEIGHT }, (_, y) =>
 ));
 
 const RESOURCE_SEED = [
-  ["wood-1", "wood", 5, 4], ["wood-2", "wood", 6, 7], ["wood-3", "wood", 11, 8], ["wood-4", "wood", 14, 2],
+  ["wood-1", "wood", 5, 5], ["wood-2", "wood", 6, 7], ["wood-3", "wood", 11, 8], ["wood-4", "wood", 14, 2],
   ["stone-1", "stone", 8, 5], ["stone-2", "stone", 12, 6], ["stone-3", "stone", 3, 9],
   ["fiber-1", "fiber", 6, 2], ["fiber-2", "fiber", 4, 8], ["fiber-3", "fiber", 13, 8],
 ];
@@ -115,9 +115,9 @@ function getRegrowDelay(state, resource) {
 
 function createEvolutionState() {
   return {
-    version: 3,
+    version: 5,
     tick: 0,
-    player: { x: 2, y: 5, facing: "right" },
+    player: { x: 4, y: 5, facing: "right" },
     inventory: { wood: 0, stone: 0, fiber: 0 },
     commons: { wood: 0, stone: 0, fiber: 0 },
     resources: RESOURCE_SEED.map(([id, type, x, y]) => ({ id, type, x, y, active: true, depletedAt: null, pressure: 0 })),
@@ -128,7 +128,8 @@ function createEvolutionState() {
     structures: [],
     foundingChoice: null,
     practices: { steps: 0, gathered: 0, conversations: 0, built: 0 },
-    visited: ["2,5"],
+    visited: ["4,5"],
+    traffic: { "4,5": 1 },
     journal: [],
     lastMessage: {
       title: "Le monde n'a pas encore de centre",
@@ -205,6 +206,7 @@ function movePlayer(inputState, dx, dy) {
   state.practices.steps += 1;
   const visit = `${x},${y}`;
   if (!state.visited.includes(visit)) state.visited.push(visit);
+  state.traffic[visit] = (state.traffic[visit] || 0) + 1;
   if (dx < 0) state.player.facing = "left";
   if (dx > 0) state.player.facing = "right";
   if (dy < 0) state.player.facing = "up";
@@ -347,36 +349,71 @@ function getConsequences(state) {
 }
 
 function getObjective(state) {
-  if (!state.practices.gathered && !state.met.length) return "Explore librement : récolte une matière ou rencontre quelqu'un.";
-  if (!state.foundingChoice) return "Choisis ce qui organisera d'abord ce monde : balise, foyer ou atelier.";
+  if (!state.practices.gathered && !state.met.length) return "Approche une matière ou une personne, puis presse E.";
+  if (!state.foundingChoice) {
+    const buildable = getAvailableBuilds(state).find((recipe) => recipe.visible && recipe.available);
+    return buildable
+      ? "Tu peux maintenant poser un premier centre. Ouvre Construire avec B."
+      : "Rassemble encore des matières. Les possibilités sont visibles avec B.";
+  }
   if (state.foundingChoice === "marker" && !hasStructure(state, "hearth")) return "Cartographier ne suffit pas : rencontres-tu les habitants ou intensifies-tu les prélèvements ?";
   if (state.foundingChoice === "hearth" && Object.values(state.npcs).some((npc) => !npc.helped)) return "Écoute les besoins des habitants et décide lesquels soutenir.";
   if (state.foundingChoice === "workshop" && !state.structures.some((item) => item.type === "bridge")) return "L'atelier permet un pont : faut-il transformer une frontière d'eau ?";
   return "Le monde reste ouvert : compose, aide, prélève, traverse et observe ce que tes choix déplacent.";
 }
 
-const STORAGE_KEY = "corpus-evolution:world:v3";
+const STORAGE_KEY = "corpus-evolution:world:v5";
 const $ = (selector) => document.querySelector(selector);
 
 function restore() {
   try {
     const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    return stored?.version === 3 ? stored : createEvolutionState();
+    return stored?.version === 5 ? stored : createEvolutionState();
   } catch {
     return createEvolutionState();
   }
 }
 
 let state = restore();
+let drawerOpen = false;
 
 function save() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch {
+    // Le jeu reste jouable lorsque le navigateur refuse le stockage sur file://.
+  }
+}
+
+const gridDistance = (a, b) => Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
+
+function getInteractionContext(capabilities) {
+  const npcEntry = Object.entries(state.npcs).find(([, npc]) => gridDistance(state.player, npc) <= 1);
+  if (npcEntry) {
+    const [id, npc] = npcEntry;
+    return { x: npc.x, y: npc.y, label: `E · Parler à ${state.met.includes(id) || capabilities.named ? npc.name : "quelqu'un"}` };
+  }
+  const resource = state.resources.find((item) => item.active && gridDistance(state.player, item) <= 1);
+  if (resource) {
+    const names = { wood: "du bois", stone: "de la pierre", fiber: "des fibres" };
+    return { x: resource.x, y: resource.y, label: capabilities.named ? `E · Prendre ${names[resource.type]}` : "E · Prélever cette matière" };
+  }
+  const hearth = state.structures.find((item) => item.type === "hearth" && gridDistance(state.player, item) <= 1);
+  if (hearth) return { x: hearth.x, y: hearth.y, label: "E · Ouvrir le dépôt" };
+  const structure = state.structures.find((item) => gridDistance(state.player, item) <= 1);
+  if (structure) return { x: structure.x, y: structure.y, label: "E · Examiner ce lieu" };
+  return { x: null, y: null, label: "E · Observer" };
 }
 
 function entityAt(x, y, capabilities) {
   const entities = [];
   const resource = state.resources.find((item) => item.active && item.x === x && item.y === y);
   if (resource) entities.push({ kind: `resource ${resource.type}`, label: capabilities.named ? { wood: "bois", stone: "pierre", fiber: "fibres" }[resource.type] : "matière" });
+  const depleted = state.resources.find((item) => !item.active && item.x === x && item.y === y);
+  if (depleted) {
+    const traces = { wood: "souche", stone: "éclats", fiber: "tiges coupées" };
+    entities.push({ kind: `depletion ${depleted.type}`, label: capabilities.named ? traces[depleted.type] : "trace" });
+  }
   for (const structure of state.structures.filter((item) => item.x === x && item.y === y)) {
     const labels = { marker: "balise", hearth: "foyer", workshop: "atelier", bridge: "pont" };
     entities.push({ kind: `structure ${structure.type}`, label: labels[structure.type] });
@@ -388,14 +425,20 @@ function entityAt(x, y, capabilities) {
   return entities;
 }
 
-function renderWorld(capabilities) {
+function renderWorld(capabilities, context) {
   const cells = [];
   for (let y = 0; y < WORLD_HEIGHT; y += 1) {
     for (let x = 0; x < WORLD_WIDTH; x += 1) {
       const entities = entityAt(x, y, capabilities);
       const visited = state.visited.includes(`${x},${y}`) ? "visited" : "unvisited";
+      const traffic = state.traffic[`${x},${y}`] || 0;
+      const pathTrace = traffic >= 7 ? "road" : traffic >= 3 ? "trail" : "";
+      const focusTarget = context.x === x && context.y === y ? "focus-target" : "";
+      const horizontalTraffic = (state.traffic[`${x - 1},${y}`] || 0) + (state.traffic[`${x + 1},${y}`] || 0);
+      const verticalTraffic = (state.traffic[`${x},${y - 1}`] || 0) + (state.traffic[`${x},${y + 1}`] || 0);
+      const trailAngle = horizontalTraffic > verticalTraffic ? "90deg" : "0deg";
       const accessibleLabel = entities.map((entity) => entity.label).filter(Boolean).join(", ");
-      cells.push(`<div class="tile ${TERRAIN[y][x]} ${visited}" role="gridcell" aria-label="case ${x}, ${y}${accessibleLabel ? ` : ${accessibleLabel}` : ""}">${entities.map((entity) => `<span class="entity ${entity.kind}" ${entity.color ? `style="--npc-color:${entity.color}"` : ""}>${entity.label && (capabilities.named || entity.kind.includes("structure")) ? `<small class="entity-label">${entity.label}</small>` : ""}</span>`).join("")}</div>`);
+      cells.push(`<div class="tile ${TERRAIN[y][x]} ${visited} ${pathTrace} ${focusTarget}" style="--trail-angle:${trailAngle}" role="gridcell" aria-label="case ${x}, ${y}${accessibleLabel ? ` : ${accessibleLabel}` : ""}">${entities.map((entity) => `<span class="entity ${entity.kind}" ${entity.color ? `style="--npc-color:${entity.color}"` : ""}>${entity.label && (capabilities.named || entity.kind.includes("structure")) ? `<small class="entity-label">${entity.label}</small>` : ""}</span>`).join("")}</div>`);
     }
   }
   $("#world").innerHTML = cells.join("");
@@ -415,9 +458,13 @@ function renderBuilds() {
   const builds = getAvailableBuilds(state).filter((recipe) => recipe.visible && !(recipe.unique && state.structures.some((item) => item.type === recipe.id)));
   $("#build-list").innerHTML = builds.map((recipe, index) => {
     const cost = Object.entries(recipe.cost).map(([type, amount]) => `${amount} ${{ wood: "bois", stone: "pierre", fiber: "fibres" }[type]}`).join(" · ");
-    return `<button data-build="${recipe.id}" ${recipe.available ? "" : "disabled"}><strong>${index + 1} · ${recipe.label}</strong><small>${recipe.effect}</small><em>${cost}${recipe.blockedReason ? ` · ${recipe.blockedReason}` : ""}</em></button>`;
+    return `<button data-build="${recipe.id}" data-key="${index + 1}" ${recipe.available ? "" : "disabled"}><strong>${recipe.label}</strong><small>${recipe.effect}</small><em>${cost}${recipe.blockedReason ? ` · ${recipe.blockedReason}` : ""}</em></button>`;
   }).join("");
-  document.querySelectorAll("[data-build]").forEach((button) => button.addEventListener("click", () => commit(buildStructure(state, button.dataset.build))));
+  document.querySelectorAll("[data-build]").forEach((button) => button.addEventListener("click", () => {
+    const before = state.structures.length;
+    commit(buildStructure(state, button.dataset.build));
+    if (state.structures.length > before) setDrawer(false);
+  }));
   if (focusedBuild) document.querySelector(`[data-build="${focusedBuild}"]`)?.focus();
 }
 
@@ -438,7 +485,8 @@ function renderConsequences() {
 function render() {
   const capabilities = getCapabilities(state);
   const form = getWorldForm(state);
-  document.body.className = `world-${form.id}`;
+  const context = getInteractionContext(capabilities);
+  document.body.className = `world-${form.id}${drawerOpen ? " drawer-open" : ""}`;
   $("#phase-index").textContent = form.symbol;
   $("#phase-name").textContent = form.name;
   $("#phase-description").textContent = form.short;
@@ -451,11 +499,20 @@ function render() {
     : "Aucun premier centre choisi.";
   $("#return-marker").hidden = !capabilities.named;
   $("#people-card").hidden = !capabilities.people;
-  renderWorld(capabilities);
+  $("#interact-button").textContent = context.label;
+  $("#game-drawer").setAttribute("aria-hidden", String(!drawerOpen));
+  renderWorld(capabilities, context);
   renderInventory();
   renderBuilds();
   renderPeople(capabilities);
   renderConsequences();
+}
+
+function setDrawer(open) {
+  drawerOpen = open;
+  render();
+  if (drawerOpen) $("#drawer-close").focus();
+  else $("#build-toggle").focus();
 }
 
 function commit(nextState) {
@@ -471,6 +528,9 @@ document.querySelectorAll("[data-move]").forEach((button) => button.addEventList
 
 $("#interact-button").addEventListener("click", () => commit(interact(state)));
 $("#return-marker").addEventListener("click", () => commit(returnToMarker(state)));
+$("#build-toggle").addEventListener("click", () => setDrawer(true));
+$("#drawer-close").addEventListener("click", () => setDrawer(false));
+$("#drawer-scrim").addEventListener("click", () => setDrawer(false));
 
 window.addEventListener("keydown", (event) => {
   if (["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement?.tagName)) return;
@@ -481,13 +541,23 @@ window.addEventListener("keydown", (event) => {
     ArrowDown: [0, 1], s: [0, 1],
   };
   const move = moves[event.key];
+  if (event.key === "Escape" && drawerOpen) {
+    event.preventDefault();
+    setDrawer(false);
+    return;
+  }
+  if (event.key.toLowerCase() === "b") {
+    event.preventDefault();
+    setDrawer(!drawerOpen);
+    return;
+  }
   if (move) {
     event.preventDefault();
     commit(movePlayer(state, ...move));
   } else if (["e", "Enter", " "].includes(event.key)) {
     event.preventDefault();
     commit(interact(state));
-  } else if (["1", "2", "3", "4"].includes(event.key)) {
+  } else if (drawerOpen && ["1", "2", "3", "4"].includes(event.key)) {
     const recipes = getAvailableBuilds(state).filter((recipe) => recipe.visible && !(recipe.unique && state.structures.some((item) => item.type === recipe.id)));
     const recipe = recipes[Number(event.key) - 1];
     if (recipe) {

@@ -6,6 +6,10 @@ ce qui reste seulement projeté.
 ## Ce qui existe réellement
 
 - `evolution.html` est une boucle spatiale jouable au clavier ou à la souris.
+- L'interface tient sur un écran : objectif, inventaire et action contextuelle
+  restent sur le monde ; recettes et audit des conséquences sont dans un tiroir.
+- Les prélèvements laissent des traces matérielles et les passages répétés créent
+  progressivement des sentiers puis des routes.
 - Le monde tourne indépendamment des gestes : habitantes, énergie, dépôts et
   repousses avancent selon un temps déterministe.
 - Le premier centre est choisi par le joueur, sans ordre obligatoire : balise,

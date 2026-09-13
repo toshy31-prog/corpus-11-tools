@@ -12,7 +12,7 @@ export const TERRAIN = Object.freeze(Array.from({ length: WORLD_HEIGHT }, (_, y)
 ));
 
 const RESOURCE_SEED = [
-  ["wood-1", "wood", 5, 4], ["wood-2", "wood", 6, 7], ["wood-3", "wood", 11, 8], ["wood-4", "wood", 14, 2],
+  ["wood-1", "wood", 5, 5], ["wood-2", "wood", 6, 7], ["wood-3", "wood", 11, 8], ["wood-4", "wood", 14, 2],
   ["stone-1", "stone", 8, 5], ["stone-2", "stone", 12, 6], ["stone-3", "stone", 3, 9],
   ["fiber-1", "fiber", 6, 2], ["fiber-2", "fiber", 4, 8], ["fiber-3", "fiber", 13, 8],
 ];
@@ -112,9 +112,9 @@ function getRegrowDelay(state, resource) {
 
 export function createEvolutionState() {
   return {
-    version: 3,
+    version: 5,
     tick: 0,
-    player: { x: 2, y: 5, facing: "right" },
+    player: { x: 4, y: 5, facing: "right" },
     inventory: { wood: 0, stone: 0, fiber: 0 },
     commons: { wood: 0, stone: 0, fiber: 0 },
     resources: RESOURCE_SEED.map(([id, type, x, y]) => ({ id, type, x, y, active: true, depletedAt: null, pressure: 0 })),
@@ -125,7 +125,8 @@ export function createEvolutionState() {
     structures: [],
     foundingChoice: null,
     practices: { steps: 0, gathered: 0, conversations: 0, built: 0 },
-    visited: ["2,5"],
+    visited: ["4,5"],
+    traffic: { "4,5": 1 },
     journal: [],
     lastMessage: {
       title: "Le monde n'a pas encore de centre",
@@ -202,6 +203,7 @@ export function movePlayer(inputState, dx, dy) {
   state.practices.steps += 1;
   const visit = `${x},${y}`;
   if (!state.visited.includes(visit)) state.visited.push(visit);
+  state.traffic[visit] = (state.traffic[visit] || 0) + 1;
   if (dx < 0) state.player.facing = "left";
   if (dx > 0) state.player.facing = "right";
   if (dy < 0) state.player.facing = "up";
@@ -344,8 +346,13 @@ export function getConsequences(state) {
 }
 
 export function getObjective(state) {
-  if (!state.practices.gathered && !state.met.length) return "Explore librement : récolte une matière ou rencontre quelqu'un.";
-  if (!state.foundingChoice) return "Choisis ce qui organisera d'abord ce monde : balise, foyer ou atelier.";
+  if (!state.practices.gathered && !state.met.length) return "Approche une matière ou une personne, puis presse E.";
+  if (!state.foundingChoice) {
+    const buildable = getAvailableBuilds(state).find((recipe) => recipe.visible && recipe.available);
+    return buildable
+      ? "Tu peux maintenant poser un premier centre. Ouvre Construire avec B."
+      : "Rassemble encore des matières. Les possibilités sont visibles avec B.";
+  }
   if (state.foundingChoice === "marker" && !hasStructure(state, "hearth")) return "Cartographier ne suffit pas : rencontres-tu les habitants ou intensifies-tu les prélèvements ?";
   if (state.foundingChoice === "hearth" && Object.values(state.npcs).some((npc) => !npc.helped)) return "Écoute les besoins des habitants et décide lesquels soutenir.";
   if (state.foundingChoice === "workshop" && !state.structures.some((item) => item.type === "bridge")) return "L'atelier permet un pont : faut-il transformer une frontière d'eau ?";

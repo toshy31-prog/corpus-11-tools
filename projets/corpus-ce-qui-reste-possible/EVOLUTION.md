@@ -14,6 +14,13 @@ n'a pas de suite de phases obligatoire.
 5. composer ensuite plusieurs logiques sans effacer le premier choix ;
 6. poursuivre dans un monde ouvert plutôt que débloquer une fin prescrite.
 
+La couche jouable ne présente plus toutes les variables en permanence. Une
+action contextuelle signale la matière, la personne ou le lieu à portée ; la
+construction s'ouvre à la demande. Les prélèvements restent visibles sous forme
+de souches, éclats ou tiges coupées. Les cases fréquemment parcourues deviennent
+des sentiers puis des routes : l'usage modifie ainsi le décor avant même qu'une
+institution soit construite.
+
 La balise nomme les entités, change le trajet de Mara et crée un retour spatial.
 Le foyer change les trajets et l'énergie des habitantes, puis fait circuler le
 travail des personnes aidées dans un dépôt commun. L'atelier double les récoltes,

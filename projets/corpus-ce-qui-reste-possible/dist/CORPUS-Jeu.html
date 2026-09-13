@@ -3,197 +3,270 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#171812" />
-    <meta name="description" content="CORPUS — prototype d'un monde dont les règles changent selon les usages du joueur." />
+    <meta name="theme-color" content="#10130f" />
+    <meta name="description" content="CORPUS — un monde dont les règles et les lieux changent selon les usages du joueur." />
     <title>CORPUS — Ce que tu rends possible</title>
     <style>
 :root {
-  --ink: #181913;
-  --paper: #efe9d8;
-  --night: #171812;
-  --line: rgba(24,25,19,.2);
-  --accent: #e6b83f;
-  --grass: #668a5f;
-  --path: #b69a67;
-  --water: #648a92;
-  --cliff: #383a31;
+  --ink: #161a14;
+  --paper: #f3eddb;
+  --night: #10130f;
+  --panel: rgba(17, 21, 16, .94);
+  --line: rgba(243, 237, 219, .2);
+  --accent: #e8bd4e;
+  --grass-a: #718b62;
+  --grass-b: #617a55;
+  --path-a: #c3a978;
+  --path-b: #a98d61;
+  --water-a: #5e8d97;
+  --water-b: #4e7984;
+  --cliff-a: #33382f;
+  --cliff-b: #292d27;
   --serif: Georgia, "Times New Roman", serif;
   --mono: "SFMono-Regular", Consolas, monospace;
 }
 
 * { box-sizing: border-box; }
-body { margin: 0; min-width: 320px; min-height: 100vh; color: var(--paper); background: var(--night); font-family: system-ui, sans-serif; transition: background 900ms ease; }
-button, a { font: inherit; }
+html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; }
+body { min-width: 320px; color: var(--paper); background: var(--night); font-family: system-ui, sans-serif; transition: background 800ms ease; }
+button, a { color: inherit; font: inherit; }
 button { cursor: pointer; }
-.evolution-shell { width: min(1440px, calc(100% - 30px)); margin: auto; padding: 22px 0; }
-.evolution-header { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 16px; }
-.eyebrow { margin: 0; font: 600 .57rem/1.3 var(--mono); letter-spacing: .14em; text-transform: uppercase; opacity: .62; }
-h1 { margin: 4px 0 0; font: 400 clamp(1.8rem, 4vw, 3.4rem)/1 var(--serif); }
-.phase-display { display: flex; align-items: center; gap: 10px; }
-.phase-display > span { display: grid; place-items: center; width: 48px; height: 48px; border: 1px solid currentColor; font: 500 1.2rem var(--serif); }
-.phase-display small, .phase-display strong { display: block; }
-.phase-display small { font: 500 .52rem var(--mono); opacity: .6; }
-.phase-display strong { margin-top: 3px; font: 500 .88rem var(--serif); }
-.world-layout { display: grid; grid-template-columns: minmax(620px, 1fr) 330px; gap: 12px; }
-.world-panel, .game-sidebar > section { border: 1px solid rgba(239,233,216,.18); background: rgba(255,255,255,.035); }
-.world-panel { padding: 13px; }
-.world-topline { display: flex; justify-content: space-between; min-height: 28px; font: 500 .62rem var(--mono); }
-.world-topline p { margin: 0; opacity: .72; }
-.world { --cell: min(4.7vw, 52px); display: grid; grid-template-columns: repeat(18, var(--cell)); grid-template-rows: repeat(12, var(--cell)); justify-content: center; overflow: hidden; border: 5px solid #0e0f0c; background: #282a23; image-rendering: pixelated; }
-.tile { position: relative; width: var(--cell); height: var(--cell); border: 0; transition: opacity 450ms, filter 700ms, background 700ms; }
-.tile.unvisited { filter: brightness(.72) saturate(.72); }
-.world-marker .tile.unvisited { filter: brightness(.9) saturate(.85); }
-.tile.grass { background: var(--grass); }
-.tile.path { background: var(--path); }
-.tile.water { background: var(--water); }
-.tile.cliff { background: var(--cliff); }
-.tile.grass::before { content: ""; position: absolute; inset: 25% 18%; border: solid rgba(255,255,255,.09); border-width: 0 0 2px 1px; transform: skew(-12deg); }
-.tile.water::before { content: "~"; color: rgba(255,255,255,.45); font: 600 1rem var(--mono); }
-.entity { position: absolute; z-index: 3; left: 50%; top: 50%; transform: translate(-50%,-50%); display: grid; place-items: center; width: 62%; height: 62%; color: #171812; font: 800 .65rem var(--mono); filter: drop-shadow(2px 3px 0 rgba(0,0,0,.25)); }
-.entity.player { width: 58%; height: 72%; background: #f1e8d1; border: 3px solid #171812; }
-.entity.player::after { content: ""; width: 35%; height: 18%; background: #171812; }
-.entity.resource.wood { background: #594b31; }
-.entity.resource.stone { clip-path: polygon(15% 70%,30% 20%,75% 10%,95% 70%); background: #b9b7a7; }
-.entity.resource.fiber { background: repeating-linear-gradient(90deg, #d3c55d 0 3px, transparent 3px 7px); }
-.entity.npc { border-radius: 50% 50% 30% 30%; background: var(--npc-color); border: 2px solid #171812; }
-.entity.structure.marker { width: 18%; height: 82%; background: #e4d5a8; box-shadow: 8px -8px 0 -2px #d56f50; }
-.entity.structure.hearth { border-radius: 50%; background: #e16c46; box-shadow: -8px 5px 0 #75634e, 8px 5px 0 #75634e; }
-.entity.structure.workshop { background: #d2a758; border: 4px solid #5b4630; transform: translate(-50%,-50%) rotate(8deg); }
-.entity.structure.workshop::after { content: "⚒"; transform: rotate(-8deg); font-size: .9rem; }
-.entity.structure.bridge { width: 92%; height: 55%; background: repeating-linear-gradient(90deg, #8a6339 0 18%, #c3985b 18% 34%); border: 2px solid #4c3926; }
-.entity-label { position: absolute; z-index: 5; left: 50%; bottom: 92%; transform: translateX(-50%); padding: 2px 4px; white-space: nowrap; background: #171812; color: #f1e8d1; font: 500 .46rem var(--mono); }
-
-.controls { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
-.dpad { display: grid; grid-template-columns: repeat(4, 44px); gap: 5px; }
-.dpad button, .verb-button, .build-list button { min-height: 42px; border: 1px solid currentColor; background: transparent; color: inherit; }
-.verb-button { padding: 0 20px; background: var(--paper); color: var(--ink); font: 700 .67rem var(--mono); }
-.secondary-verb { background: transparent; color: var(--paper); }
-.game-sidebar { display: grid; align-content: start; gap: 8px; }
-.game-sidebar > section { padding: 14px; }
-.game-sidebar h2 { margin: 5px 0 0; font: 500 1.05rem/1.15 var(--serif); }
-.message-card { min-height: 145px; }
-.message-card p:last-child { margin: 9px 0 0; color: rgba(239,233,216,.74); font-size: .7rem; line-height: 1.45; }
-.inventory, .people-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top: 10px; }
-.inventory div, .person { padding: 8px; border: 1px solid rgba(239,233,216,.16); }
-.inventory strong, .inventory span, .person strong, .person span { display: block; }
-.inventory strong { font: 500 1.2rem var(--serif); }
-.inventory span, .person span { font: 500 .5rem var(--mono); opacity: .68; }
-.build-list { display: grid; gap: 6px; margin-top: 10px; }
-.build-list button { padding: 9px; text-align: left; font: 500 .62rem var(--mono); }
-.build-list button strong, .build-list button small, .build-list button em { display: block; }
-.build-list button small { margin-top: 4px; opacity: .75; line-height: 1.35; }
-.build-list button em { margin-top: 5px; color: var(--accent); font-size: .52rem; font-style: normal; }
-.build-list button:disabled { cursor: not-allowed; opacity: .35; }
-.people-list { grid-template-columns: 1fr; }
-.person { border-left: 4px solid var(--person-color); }
-.person p { margin: 5px 0 0; font-size: .6rem; opacity: .7; }
-.commons-note, .founding-choice { margin: 9px 0 0; font: 500 .56rem/1.45 var(--mono); opacity: .68; }
-.consequence-card ul { display: grid; gap: 6px; margin: 10px 0 0; padding: 0; list-style: none; }
-.consequence-card li { padding-left: 12px; border-left: 3px solid var(--accent); font-size: .65rem; line-height: 1.4; }
-.evolution-footer { display: flex; justify-content: space-between; gap: 20px; align-items: center; padding: 14px 2px; font: 500 .57rem var(--mono); color: rgba(239,233,216,.62); }
-.evolution-footer div { display: flex; gap: 14px; }
-.evolution-footer a, .evolution-footer button { border: 0; padding: 0; background: none; color: inherit; text-decoration: underline; text-underline-offset: 4px; }
-
-.world-unmade { --paper: #f1f0e9; background: #141510; }
-.world-unmade .world { filter: grayscale(.62) contrast(1.12); }
-.world-unmade .entity.npc { filter: grayscale(1) contrast(.7); }
-.world-marker { --accent: #73b4aa; background: radial-gradient(circle at 50% 0, #27433f, #121816 70%); }
-.world-marker .world { box-shadow: 0 0 0 1px rgba(115,180,170,.25), 0 18px 60px rgba(0,0,0,.35); }
-.world-hearth { --accent: #e17b5f; background: radial-gradient(circle at 50% 0, #54372d, #181411 70%); }
-.world-hearth .entity.npc { filter: saturate(1.25); }
-.world-workshop { --accent: #d2a758; background: linear-gradient(135deg, #30291c, #151611 68%); }
-.world-workshop .tile { box-shadow: inset 0 0 0 1px rgba(255,255,255,.055); }
-.world-composed { --accent: #e6b83f; background: radial-gradient(circle at 40% 0, #35483c, #141914 65%); }
-.world-composed .world { box-shadow: 0 18px 60px rgba(0,0,0,.4); }
+button:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 [hidden] { display: none !important; }
 
-@media (max-width: 1100px) {
-  .world-layout { grid-template-columns: 1fr; }
-  .game-sidebar { grid-template-columns: 1fr 1fr; }
-  .world { --cell: min(5vw, 48px); }
-}
-@media (max-width: 700px) {
-  .evolution-shell { width: calc(100% - 12px); padding-top: 10px; }
-  .evolution-header { align-items: start; }
-  .phase-display div { display: none; }
-  .world-panel { padding: 5px; overflow: hidden; }
-  .world { --cell: calc((100vw - 32px) / 18); border-width: 3px; }
-  .game-sidebar { grid-template-columns: 1fr; }
-  .controls { position: sticky; bottom: 5px; }
-  .dpad { grid-template-columns: repeat(4, 39px); }
-  .evolution-footer { display: block; }
-  .evolution-footer div { margin-top: 10px; }
+.game-shell { display: grid; grid-template-rows: 58px minmax(0, 1fr) 30px; height: 100dvh; padding: 0 14px; }
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 18px; border-bottom: 1px solid var(--line); }
+.brand { display: flex; align-items: baseline; gap: 12px; min-width: 0; }
+.corpus-mark { color: var(--accent); font: 800 .85rem/1 var(--mono); letter-spacing: .18em; }
+.world-title { overflow: hidden; color: rgba(243,237,219,.7); font: 400 1rem/1 var(--serif); text-overflow: ellipsis; white-space: nowrap; }
+.world-form { display: flex; align-items: center; gap: 9px; }
+.world-form > span { display: grid; place-items: center; width: 35px; height: 35px; border: 1px solid currentColor; color: var(--accent); font: 700 .8rem var(--mono); }
+.world-form small, .world-form strong { display: block; }
+.world-form small { color: rgba(243,237,219,.48); font: 600 .48rem var(--mono); letter-spacing: .12em; }
+.world-form strong { margin-top: 2px; font: 500 .78rem var(--serif); }
+
+.playfield { display: grid; grid-template-rows: minmax(0, 1fr) 78px; min-height: 0; }
+.world-frame { position: relative; display: grid; place-items: center; min-height: 0; overflow: hidden; background: radial-gradient(circle at 50% 45%, rgba(255,255,255,.035), transparent 60%); }
+.world { --cell: min(calc((100vw - 44px) / 18), calc((100dvh - 188px) / 12), 64px); position: relative; display: grid; grid-template-columns: repeat(18, var(--cell)); grid-template-rows: repeat(12, var(--cell)); overflow: hidden; border: 6px solid #080a08; outline: 1px solid rgba(255,255,255,.16); background: #252a23; box-shadow: 0 24px 70px rgba(0,0,0,.42); image-rendering: pixelated; }
+.tile { position: relative; width: var(--cell); height: var(--cell); transition: filter 450ms, background 650ms, box-shadow 300ms; }
+.tile::before, .tile::after { pointer-events: none; }
+.tile.unvisited { filter: brightness(.7) saturate(.62); }
+.tile.visited { box-shadow: inset 0 0 20px rgba(244,234,198,.035); }
+.tile.grass { background: linear-gradient(145deg, var(--grass-a), var(--grass-b)); }
+.tile.grass::before { content: ""; position: absolute; inset: 18% 12%; background: repeating-linear-gradient(105deg, transparent 0 12px, rgba(244,238,211,.11) 13px 14px, transparent 15px 25px); opacity: .6; }
+.tile.path { background: linear-gradient(145deg, var(--path-a), var(--path-b)); }
+.tile.path::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 25% 32%, rgba(69,53,35,.16) 0 5%, transparent 6%), radial-gradient(circle at 72% 66%, rgba(255,245,211,.12) 0 4%, transparent 5%); }
+.tile.water { overflow: hidden; background: linear-gradient(160deg, var(--water-a), var(--water-b)); }
+.tile.water::before { content: ""; position: absolute; inset: 14% -25%; background: repeating-linear-gradient(0deg, transparent 0 11px, rgba(219,244,239,.3) 12px 14px, transparent 15px 23px); animation: water-flow 3s linear infinite; }
+.tile.cliff { background: linear-gradient(135deg, var(--cliff-a), var(--cliff-b)); }
+.tile.cliff::before { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, transparent 48%, rgba(255,255,255,.06) 49% 52%, transparent 53%); }
+.tile.grass.trail::after { content: ""; position: absolute; z-index: 1; inset: 0 36%; background: rgba(177,147,98,.52); transform: rotate(var(--trail-angle, 0deg)); }
+.tile.grass.road::after { content: ""; position: absolute; z-index: 1; inset: 0 27%; background: linear-gradient(90deg, #80643e, #b2915c 28% 72%, #80643e); transform: rotate(var(--trail-angle, 0deg)); }
+.tile.focus-target { z-index: 2; box-shadow: inset 0 0 0 3px rgba(255,235,154,.92), inset 0 0 22px rgba(255,221,95,.32); animation: target-pulse 1.1s ease-in-out infinite alternate; }
+
+.entity { position: absolute; z-index: 4; left: 50%; top: 50%; transform: translate(-50%,-50%); display: block; width: 62%; height: 70%; filter: drop-shadow(3px 4px 0 rgba(0,0,0,.25)); }
+.entity.player { z-index: 8; width: 44%; height: 56%; border-radius: 7px 7px 4px 4px; background: #efe2be; border: 3px solid #181b16; box-shadow: 0 0 0 4px rgba(247,220,130,.22); }
+.entity.player::before { content: ""; position: absolute; left: 50%; top: -45%; width: 70%; aspect-ratio: 1; transform: translateX(-50%); border: 3px solid #181b16; border-radius: 45% 45% 38% 38%; background: #dd8f68; }
+.entity.player::after { content: ""; position: absolute; left: 18%; right: 18%; bottom: -24%; height: 28%; border: solid #181b16; border-width: 0 5px; }
+.entity.resource.wood { width: 70%; height: 76%; }
+.entity.resource.wood::before { content: ""; position: absolute; left: 50%; bottom: 4%; width: 24%; height: 52%; transform: translateX(-50%); background: #62442d; border: 2px solid #2e281f; }
+.entity.resource.wood::after { content: ""; position: absolute; left: 50%; top: 0; width: 76%; aspect-ratio: 1; transform: translateX(-50%); border: 3px solid #263425; border-radius: 48% 52% 45% 55%; background: radial-gradient(circle at 34% 28%, #8da967 0 25%, transparent 26%), #4e754a; }
+.entity.resource.stone { width: 70%; height: 58%; clip-path: polygon(4% 82%, 17% 35%, 41% 8%, 78% 18%, 98% 81%); background: linear-gradient(145deg, #d0d0c2, #777c73); border-bottom: 4px solid #4a504a; }
+.entity.resource.stone::after { content: ""; position: absolute; left: 35%; top: 20%; width: 26%; height: 5px; background: rgba(255,255,255,.4); transform: rotate(-20deg); }
+.entity.resource.fiber { width: 74%; height: 72%; background: repeating-linear-gradient(82deg, transparent 0 7px, #ddca57 8px 12px, transparent 13px 18px); border-bottom: 5px solid #71672d; transform: translate(-50%,-50%) skew(-5deg); }
+.entity.depletion.wood { width: 48%; height: 22%; border: 3px solid #39291e; border-radius: 50%; background: #8a6542; }
+.entity.depletion.wood::before { content: ""; position: absolute; inset: 30%; border-radius: 50%; border: 2px solid #5b402d; }
+.entity.depletion.stone { width: 74%; height: 14%; background: repeating-linear-gradient(135deg, #777 0 5px, transparent 6px 13px); opacity: .55; }
+.entity.depletion.fiber { width: 72%; height: 20%; border-top: 5px dashed #756b37; opacity: .7; }
+.entity.npc { z-index: 7; width: 46%; height: 52%; border-radius: 7px 7px 4px 4px; background: var(--npc-color); border: 3px solid #171a15; }
+.entity.npc::before { content: ""; position: absolute; left: 50%; top: -46%; width: 68%; aspect-ratio: 1; transform: translateX(-50%); border: 3px solid #171a15; border-radius: 50%; background: color-mix(in srgb, var(--npc-color), #f1cfad 55%); }
+.entity.npc::after { content: "··"; position: absolute; left: 50%; top: -35%; transform: translateX(-50%); color: #171a15; font: 900 .55rem/1 var(--mono); letter-spacing: .12em; }
+.entity.structure.marker { width: 18%; height: 86%; background: #e4d5a8; box-shadow: 11px -10px 0 -2px #d56f50; }
+.entity.structure.hearth { width: 60%; height: 52%; border-radius: 50%; background: radial-gradient(circle, #fff0a8 0 15%, #f28b48 16% 46%, #783d2d 47% 68%, transparent 69%); animation: fire-breathe .8s ease-in-out infinite alternate; }
+.entity.structure.workshop { width: 76%; height: 68%; background: #d2a758; border: 4px solid #5b4630; transform: translate(-50%,-50%) rotate(5deg); }
+.entity.structure.workshop::after { content: "⚒"; position: absolute; inset: 0; display: grid; place-items: center; transform: rotate(-5deg); font-size: 1.05rem; }
+.entity.structure.bridge { width: 96%; height: 70%; background: repeating-linear-gradient(90deg, #714d2d 0 13%, #c08f53 14% 29%); border: 3px solid #44301f; }
+.entity-label { position: absolute; z-index: 10; left: 50%; bottom: 112%; transform: translateX(-50%); padding: 3px 5px; white-space: nowrap; border: 1px solid rgba(255,255,255,.25); border-radius: 3px; background: rgba(12,15,12,.92); color: #f4efd9; font: 700 .48rem var(--mono); }
+
+.objective-hud, .inventory-hud, .world-caption { position: absolute; z-index: 15; border: 1px solid rgba(255,255,255,.18); background: rgba(12,15,12,.88); box-shadow: 0 8px 26px rgba(0,0,0,.22); backdrop-filter: blur(5px); }
+.objective-hud { top: 18px; left: 18px; width: min(390px, calc(100% - 36px)); padding: 10px 13px; border-left: 4px solid var(--accent); }
+.objective-hud small { display: block; margin-bottom: 3px; color: var(--accent); font: 700 .48rem var(--mono); letter-spacing: .14em; }
+.objective-hud strong { font: 500 .9rem/1.25 var(--serif); }
+.inventory-hud { top: 18px; right: 18px; padding: 8px; }
+.inventory { display: flex; gap: 5px; }
+.inventory div { display: flex; align-items: baseline; gap: 4px; min-width: 54px; padding: 5px 7px; background: rgba(255,255,255,.055); }
+.inventory strong { color: var(--accent); font: 700 .9rem var(--mono); }
+.inventory span { font: 500 .48rem var(--mono); opacity: .74; }
+.commons-note { display: block; margin-top: 5px; font: 500 .48rem var(--mono); opacity: .7; }
+.world-caption { right: 18px; bottom: 16px; display: flex; gap: 14px; max-width: 68%; padding: 6px 9px; color: rgba(243,237,219,.68); font: 500 .48rem/1.3 var(--mono); }
+
+.actionbar { display: grid; grid-template-columns: auto minmax(260px, 1fr) auto; align-items: center; gap: 14px; min-width: 0; border-top: 1px solid var(--line); }
+.dpad { display: grid; grid-template-columns: repeat(4, 42px); gap: 5px; }
+.dpad button, .primary-verb, .secondary-verb { min-height: 42px; border: 1px solid var(--line); border-radius: 3px; background: rgba(255,255,255,.035); }
+.dpad button:hover, .secondary-verb:hover { background: rgba(255,255,255,.1); }
+.event-toast { min-width: 0; padding-left: 13px; border-left: 3px solid var(--accent); }
+.event-toast small, .event-toast strong, .event-toast span { display: block; }
+.event-toast small { color: var(--accent); font: 700 .46rem var(--mono); letter-spacing: .13em; }
+.event-toast strong { margin-top: 2px; overflow: hidden; font: 600 .76rem var(--serif); text-overflow: ellipsis; white-space: nowrap; }
+.event-toast span { margin-top: 2px; overflow: hidden; color: rgba(243,237,219,.6); font-size: .6rem; text-overflow: ellipsis; white-space: nowrap; }
+.verbs { display: flex; gap: 7px; }
+.primary-verb, .secondary-verb { padding: 0 15px; font: 700 .6rem var(--mono); white-space: nowrap; }
+.primary-verb { border-color: var(--paper); background: var(--paper); color: var(--ink); }
+
+.game-drawer { position: fixed; z-index: 40; top: 0; right: 0; width: min(430px, 94vw); height: 100dvh; overflow-y: auto; padding: 18px; transform: translateX(105%); border-left: 1px solid var(--line); background: var(--panel); box-shadow: -24px 0 70px rgba(0,0,0,.5); transition: transform 260ms ease; }
+.drawer-open .game-drawer { transform: translateX(0); }
+.game-drawer > header { display: flex; justify-content: space-between; align-items: start; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+.game-drawer small { color: var(--accent); font: 700 .5rem var(--mono); letter-spacing: .14em; }
+.game-drawer h2 { margin: 3px 0 0; font: 500 1.6rem var(--serif); }
+#drawer-close { width: 38px; height: 38px; border: 1px solid var(--line); border-radius: 50%; background: transparent; font-size: 1.35rem; }
+.building-card > p { margin: 14px 0; color: rgba(243,237,219,.62); font-size: .7rem; line-height: 1.5; }
+.build-list { display: grid; gap: 8px; }
+.build-list button { position: relative; padding: 11px 12px 11px 52px; border: 1px solid var(--line); border-radius: 4px; background: rgba(255,255,255,.035); color: inherit; text-align: left; }
+.build-list button::before { content: attr(data-key); position: absolute; left: 11px; top: 12px; display: grid; place-items: center; width: 28px; height: 28px; border: 1px solid currentColor; border-radius: 4px; color: var(--accent); font: 800 .65rem var(--mono); }
+.build-list button strong, .build-list button small, .build-list button em { display: block; }
+.build-list button strong { font: 600 .78rem var(--serif); }
+.build-list button small { margin-top: 3px; opacity: .72; line-height: 1.35; }
+.build-list button em { margin-top: 5px; color: var(--accent); font: 500 .5rem var(--mono); font-style: normal; }
+.build-list button:not(:disabled):hover { border-color: var(--accent); background: rgba(232,189,78,.09); }
+.build-list button:disabled { cursor: not-allowed; opacity: .35; }
+.game-drawer details { margin-top: 14px; border-top: 1px solid var(--line); padding-top: 13px; }
+.game-drawer summary { cursor: pointer; font: 600 .8rem var(--serif); }
+.people-list { display: grid; gap: 6px; margin-top: 10px; }
+.person { padding: 8px 10px; border-left: 4px solid var(--person-color); background: rgba(255,255,255,.035); }
+.person strong, .person span { display: block; }
+.person strong { font: 600 .7rem var(--serif); }
+.person span, .person p { font-size: .55rem; opacity: .65; }
+.person p { margin: 5px 0 0; }
+.consequence-card ul { display: grid; gap: 7px; margin: 11px 0 0; padding: 0; list-style: none; }
+.consequence-card li { padding-left: 11px; border-left: 3px solid var(--accent); font-size: .62rem; line-height: 1.45; }
+.founding-choice { margin: 9px 0 0; font: 500 .52rem/1.4 var(--mono); opacity: .58; }
+.drawer-scrim { position: fixed; z-index: 35; inset: 0; display: none; border: 0; background: rgba(0,0,0,.58); }
+.drawer-open .drawer-scrim { display: block; }
+
+.game-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: rgba(243,237,219,.45); font: 500 .48rem var(--mono); }
+.game-footer div { display: flex; gap: 12px; }
+.game-footer a, .game-footer button { border: 0; padding: 0; background: none; color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+
+.world-unmade { background: #10130f; }
+.world-unmade .world { filter: grayscale(.45) contrast(1.06); }
+.world-unmade .entity.npc { filter: grayscale(.7); }
+.world-marker { --accent: #7fd0c3; background: radial-gradient(circle at 50% 20%, #263f3b, #101411 68%); }
+.world-marker .tile.unvisited { filter: brightness(.88) saturate(.82); }
+.world-marker .world { outline-color: rgba(127,208,195,.45); }
+.world-hearth { --accent: #ef8c61; background: radial-gradient(circle at 50% 20%, #4a3028, #14100e 70%); }
+.world-hearth .entity.npc { filter: saturate(1.25); }
+.world-workshop { --accent: #e0b858; background: linear-gradient(145deg, #2f281d, #10120f 68%); }
+.world-workshop .tile { box-shadow: inset 0 0 0 1px rgba(255,255,255,.055); }
+.world-composed { --accent: #e8bd4e; background: radial-gradient(circle at 40% 10%, #34483b, #10130f 68%); }
+
+@keyframes water-flow { to { transform: translateY(23px); } }
+@keyframes target-pulse { to { box-shadow: inset 0 0 0 3px #fff0ae, inset 0 0 30px rgba(255,221,95,.56); } }
+@keyframes fire-breathe { to { transform: translate(-50%,-54%) scale(1.08); filter: drop-shadow(0 0 9px #f28b48); } }
+
+@media (max-width: 760px) {
+  .game-shell { grid-template-rows: 48px minmax(0, 1fr) 24px; padding: 0 6px; }
+  .world-title, .world-form div, .game-footer > span { display: none; }
+  .playfield { grid-template-rows: minmax(0, 1fr) 104px; }
+  .world { --cell: min(calc((100vw - 22px) / 18), calc((100dvh - 196px) / 12)); border-width: 3px; }
+  .objective-hud { top: 8px; left: 8px; width: calc(100% - 16px); }
+  .inventory-hud { top: auto; right: 8px; bottom: 8px; }
+  .world-caption { display: none; }
+  .actionbar { grid-template-columns: auto 1fr; grid-template-rows: 48px 48px; gap: 5px 8px; }
+  .dpad { grid-row: 1 / 3; grid-template-columns: repeat(2, 42px); }
+  .event-toast { align-self: end; }
+  .event-toast span { display: none; }
+  .verbs { align-self: start; }
+  .primary-verb, .secondary-verb { min-height: 38px; padding: 0 10px; font-size: .52rem; }
+  .game-footer { justify-content: end; }
 }
 
 </style>
   </head>
   <body class="world-unmade">
-    <div class="evolution-shell">
-      <header class="evolution-header">
-        <div><p class="eyebrow">CORPUS · MONDE ÉVOLUTIF</p><h1>Ce que tu rends possible</h1></div>
-        <div class="phase-display"><span id="phase-index">◇</span><div><small>MONDE ACTUEL</small><strong id="phase-name"></strong></div></div>
+    <main class="game-shell">
+      <header class="topbar">
+        <div class="brand">
+          <span class="corpus-mark">CORPUS</span>
+          <span class="world-title">Ce que tu rends possible</span>
+        </div>
+        <div class="world-form">
+          <span id="phase-index">◇</span>
+          <div><small>MONDE ACTUEL</small><strong id="phase-name"></strong></div>
+        </div>
       </header>
 
-      <main class="world-layout">
-        <section class="world-panel" aria-label="Monde explorable">
-          <div class="world-topline">
-            <p id="phase-description"></p>
-            <span id="world-time" class="late-interface"></span>
-          </div>
+      <section class="playfield" aria-label="Monde explorable">
+        <div class="world-frame">
           <div id="world" class="world" role="grid" aria-label="Carte jouable"></div>
-          <div class="controls" aria-label="Contrôles de déplacement">
-            <div class="dpad">
-              <button data-move="0,-1" class="vertical-control" aria-label="Monter">↑</button>
-              <button data-move="-1,0" aria-label="Aller à gauche">←</button>
-              <button data-move="0,1" class="vertical-control" aria-label="Descendre">↓</button>
-              <button data-move="1,0" aria-label="Aller à droite">→</button>
-            </div>
-            <button id="interact-button" class="verb-button">E · Interagir</button>
-            <button id="return-marker" class="verb-button secondary-verb" hidden>Revenir à la balise</button>
+
+          <section class="objective-hud">
+            <small>MAINTENANT</small>
+            <strong id="objective"></strong>
+          </section>
+
+          <section class="inventory-hud" aria-label="Inventaire">
+            <div id="inventory" class="inventory"></div>
+            <span id="commons-note" class="commons-note"></span>
+          </section>
+
+          <div class="world-caption">
+            <span id="phase-description"></span>
+            <span id="world-time"></span>
           </div>
+        </div>
+
+        <div class="actionbar">
+          <div class="dpad" aria-label="Contrôles de déplacement">
+            <button data-move="0,-1" aria-label="Monter">↑</button>
+            <button data-move="-1,0" aria-label="Aller à gauche">←</button>
+            <button data-move="0,1" aria-label="Descendre">↓</button>
+            <button data-move="1,0" aria-label="Aller à droite">→</button>
+          </div>
+
+          <section class="event-toast" aria-live="polite">
+            <small>LE MONDE RÉPOND</small>
+            <strong id="message-title"></strong>
+            <span id="message-body"></span>
+          </section>
+
+          <div class="verbs">
+            <button id="interact-button" class="primary-verb">E · Observer</button>
+            <button id="return-marker" class="secondary-verb" hidden>↩ Balise</button>
+            <button id="build-toggle" class="secondary-verb">B · Construire</button>
+          </div>
+        </div>
+      </section>
+
+      <aside id="game-drawer" class="game-drawer" aria-label="Atelier et état du monde" aria-hidden="true">
+        <header>
+          <div><small>FAIRE MONDE</small><h2>Construire</h2></div>
+          <button id="drawer-close" aria-label="Fermer">×</button>
+        </header>
+
+        <section class="building-card">
+          <p>Pose une capacité dans le lieu. Son coût et ses effets persistent.</p>
+          <div id="build-list" class="build-list"></div>
         </section>
 
-        <aside class="game-sidebar">
-          <section class="objective-card">
-            <p class="eyebrow">MAINTENANT</p>
-            <h2 id="objective"></h2>
-          </section>
+        <details id="people-card" class="people-card">
+          <summary>Habitants rencontrés</summary>
+          <div id="people-list" class="people-list"></div>
+        </details>
 
-          <section class="message-card" aria-live="polite">
-            <p class="eyebrow">CE QUI VIENT D'ARRIVER</p>
-            <h2 id="message-title"></h2>
-            <p id="message-body"></p>
-          </section>
+        <details class="consequence-card" open>
+          <summary>Transformations visibles</summary>
+          <ul id="consequence-list"></ul>
+          <p id="founding-choice" class="founding-choice"></p>
+        </details>
+      </aside>
 
-          <section class="inventory-card evolving-interface">
-            <div><p class="eyebrow">CE QUE TU PORTES</p><h2>Matières</h2></div>
-            <div id="inventory" class="inventory"></div>
-            <p id="commons-note" class="commons-note"></p>
-          </section>
+      <button id="drawer-scrim" class="drawer-scrim" aria-label="Fermer le panneau" tabindex="-1"></button>
 
-          <section class="building-card evolving-interface">
-            <div><p class="eyebrow">CE QUI PEUT ÊTRE CONSTRUIT</p><h2>Faire apparaître</h2></div>
-            <div id="build-list" class="build-list"></div>
-          </section>
-
-          <section id="people-card" class="people-card">
-            <div><p class="eyebrow">LES AUTRES</p><h2>Rencontres</h2></div>
-            <div id="people-list" class="people-list"></div>
-          </section>
-
-          <section class="consequence-card">
-            <div><p class="eyebrow">CE QUE TES USAGES ONT CHANGÉ</p><h2>Conséquences actives</h2></div>
-            <ul id="consequence-list"></ul>
-            <p id="founding-choice" class="founding-choice"></p>
-          </section>
-        </aside>
-      </main>
-
-      <footer class="evolution-footer">
-        <p>Flèches ou WASD pour marcher · E pour agir · 1–4 pour construire · le monde continue entre tes gestes</p>
-        <div><span title="Disponible dans le dossier complet du projet">Version autonome</span><button id="restart-button">Recommencer ce monde</button></div>
+      <footer class="game-footer">
+        <span>WASD / flèches · E agir · B construire · le temps continue</span>
+        <div><span title="Disponible dans le dossier complet du projet">Version autonome</span><button id="restart-button">Recommencer</button></div>
       </footer>
-    </div>
+    </main>
     <script>
 /* Generated from evolution-engine.js and evolution-game.js. */
 (() => {
@@ -212,7 +285,7 @@ const TERRAIN = Object.freeze(Array.from({ length: WORLD_HEIGHT }, (_, y) =>
 ));
 
 const RESOURCE_SEED = [
-  ["wood-1", "wood", 5, 4], ["wood-2", "wood", 6, 7], ["wood-3", "wood", 11, 8], ["wood-4", "wood", 14, 2],
+  ["wood-1", "wood", 5, 5], ["wood-2", "wood", 6, 7], ["wood-3", "wood", 11, 8], ["wood-4", "wood", 14, 2],
   ["stone-1", "stone", 8, 5], ["stone-2", "stone", 12, 6], ["stone-3", "stone", 3, 9],
   ["fiber-1", "fiber", 6, 2], ["fiber-2", "fiber", 4, 8], ["fiber-3", "fiber", 13, 8],
 ];
@@ -312,9 +385,9 @@ function getRegrowDelay(state, resource) {
 
 function createEvolutionState() {
   return {
-    version: 3,
+    version: 5,
     tick: 0,
-    player: { x: 2, y: 5, facing: "right" },
+    player: { x: 4, y: 5, facing: "right" },
     inventory: { wood: 0, stone: 0, fiber: 0 },
     commons: { wood: 0, stone: 0, fiber: 0 },
     resources: RESOURCE_SEED.map(([id, type, x, y]) => ({ id, type, x, y, active: true, depletedAt: null, pressure: 0 })),
@@ -325,7 +398,8 @@ function createEvolutionState() {
     structures: [],
     foundingChoice: null,
     practices: { steps: 0, gathered: 0, conversations: 0, built: 0 },
-    visited: ["2,5"],
+    visited: ["4,5"],
+    traffic: { "4,5": 1 },
     journal: [],
     lastMessage: {
       title: "Le monde n'a pas encore de centre",
@@ -402,6 +476,7 @@ function movePlayer(inputState, dx, dy) {
   state.practices.steps += 1;
   const visit = `${x},${y}`;
   if (!state.visited.includes(visit)) state.visited.push(visit);
+  state.traffic[visit] = (state.traffic[visit] || 0) + 1;
   if (dx < 0) state.player.facing = "left";
   if (dx > 0) state.player.facing = "right";
   if (dy < 0) state.player.facing = "up";
@@ -544,36 +619,71 @@ function getConsequences(state) {
 }
 
 function getObjective(state) {
-  if (!state.practices.gathered && !state.met.length) return "Explore librement : récolte une matière ou rencontre quelqu'un.";
-  if (!state.foundingChoice) return "Choisis ce qui organisera d'abord ce monde : balise, foyer ou atelier.";
+  if (!state.practices.gathered && !state.met.length) return "Approche une matière ou une personne, puis presse E.";
+  if (!state.foundingChoice) {
+    const buildable = getAvailableBuilds(state).find((recipe) => recipe.visible && recipe.available);
+    return buildable
+      ? "Tu peux maintenant poser un premier centre. Ouvre Construire avec B."
+      : "Rassemble encore des matières. Les possibilités sont visibles avec B.";
+  }
   if (state.foundingChoice === "marker" && !hasStructure(state, "hearth")) return "Cartographier ne suffit pas : rencontres-tu les habitants ou intensifies-tu les prélèvements ?";
   if (state.foundingChoice === "hearth" && Object.values(state.npcs).some((npc) => !npc.helped)) return "Écoute les besoins des habitants et décide lesquels soutenir.";
   if (state.foundingChoice === "workshop" && !state.structures.some((item) => item.type === "bridge")) return "L'atelier permet un pont : faut-il transformer une frontière d'eau ?";
   return "Le monde reste ouvert : compose, aide, prélève, traverse et observe ce que tes choix déplacent.";
 }
 
-const STORAGE_KEY = "corpus-evolution:world:v3";
+const STORAGE_KEY = "corpus-evolution:world:v5";
 const $ = (selector) => document.querySelector(selector);
 
 function restore() {
   try {
     const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    return stored?.version === 3 ? stored : createEvolutionState();
+    return stored?.version === 5 ? stored : createEvolutionState();
   } catch {
     return createEvolutionState();
   }
 }
 
 let state = restore();
+let drawerOpen = false;
 
 function save() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch {
+    // Le jeu reste jouable lorsque le navigateur refuse le stockage sur file://.
+  }
+}
+
+const gridDistance = (a, b) => Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
+
+function getInteractionContext(capabilities) {
+  const npcEntry = Object.entries(state.npcs).find(([, npc]) => gridDistance(state.player, npc) <= 1);
+  if (npcEntry) {
+    const [id, npc] = npcEntry;
+    return { x: npc.x, y: npc.y, label: `E · Parler à ${state.met.includes(id) || capabilities.named ? npc.name : "quelqu'un"}` };
+  }
+  const resource = state.resources.find((item) => item.active && gridDistance(state.player, item) <= 1);
+  if (resource) {
+    const names = { wood: "du bois", stone: "de la pierre", fiber: "des fibres" };
+    return { x: resource.x, y: resource.y, label: capabilities.named ? `E · Prendre ${names[resource.type]}` : "E · Prélever cette matière" };
+  }
+  const hearth = state.structures.find((item) => item.type === "hearth" && gridDistance(state.player, item) <= 1);
+  if (hearth) return { x: hearth.x, y: hearth.y, label: "E · Ouvrir le dépôt" };
+  const structure = state.structures.find((item) => gridDistance(state.player, item) <= 1);
+  if (structure) return { x: structure.x, y: structure.y, label: "E · Examiner ce lieu" };
+  return { x: null, y: null, label: "E · Observer" };
 }
 
 function entityAt(x, y, capabilities) {
   const entities = [];
   const resource = state.resources.find((item) => item.active && item.x === x && item.y === y);
   if (resource) entities.push({ kind: `resource ${resource.type}`, label: capabilities.named ? { wood: "bois", stone: "pierre", fiber: "fibres" }[resource.type] : "matière" });
+  const depleted = state.resources.find((item) => !item.active && item.x === x && item.y === y);
+  if (depleted) {
+    const traces = { wood: "souche", stone: "éclats", fiber: "tiges coupées" };
+    entities.push({ kind: `depletion ${depleted.type}`, label: capabilities.named ? traces[depleted.type] : "trace" });
+  }
   for (const structure of state.structures.filter((item) => item.x === x && item.y === y)) {
     const labels = { marker: "balise", hearth: "foyer", workshop: "atelier", bridge: "pont" };
     entities.push({ kind: `structure ${structure.type}`, label: labels[structure.type] });
@@ -585,14 +695,20 @@ function entityAt(x, y, capabilities) {
   return entities;
 }
 
-function renderWorld(capabilities) {
+function renderWorld(capabilities, context) {
   const cells = [];
   for (let y = 0; y < WORLD_HEIGHT; y += 1) {
     for (let x = 0; x < WORLD_WIDTH; x += 1) {
       const entities = entityAt(x, y, capabilities);
       const visited = state.visited.includes(`${x},${y}`) ? "visited" : "unvisited";
+      const traffic = state.traffic[`${x},${y}`] || 0;
+      const pathTrace = traffic >= 7 ? "road" : traffic >= 3 ? "trail" : "";
+      const focusTarget = context.x === x && context.y === y ? "focus-target" : "";
+      const horizontalTraffic = (state.traffic[`${x - 1},${y}`] || 0) + (state.traffic[`${x + 1},${y}`] || 0);
+      const verticalTraffic = (state.traffic[`${x},${y - 1}`] || 0) + (state.traffic[`${x},${y + 1}`] || 0);
+      const trailAngle = horizontalTraffic > verticalTraffic ? "90deg" : "0deg";
       const accessibleLabel = entities.map((entity) => entity.label).filter(Boolean).join(", ");
-      cells.push(`<div class="tile ${TERRAIN[y][x]} ${visited}" role="gridcell" aria-label="case ${x}, ${y}${accessibleLabel ? ` : ${accessibleLabel}` : ""}">${entities.map((entity) => `<span class="entity ${entity.kind}" ${entity.color ? `style="--npc-color:${entity.color}"` : ""}>${entity.label && (capabilities.named || entity.kind.includes("structure")) ? `<small class="entity-label">${entity.label}</small>` : ""}</span>`).join("")}</div>`);
+      cells.push(`<div class="tile ${TERRAIN[y][x]} ${visited} ${pathTrace} ${focusTarget}" style="--trail-angle:${trailAngle}" role="gridcell" aria-label="case ${x}, ${y}${accessibleLabel ? ` : ${accessibleLabel}` : ""}">${entities.map((entity) => `<span class="entity ${entity.kind}" ${entity.color ? `style="--npc-color:${entity.color}"` : ""}>${entity.label && (capabilities.named || entity.kind.includes("structure")) ? `<small class="entity-label">${entity.label}</small>` : ""}</span>`).join("")}</div>`);
     }
   }
   $("#world").innerHTML = cells.join("");
@@ -612,9 +728,13 @@ function renderBuilds() {
   const builds = getAvailableBuilds(state).filter((recipe) => recipe.visible && !(recipe.unique && state.structures.some((item) => item.type === recipe.id)));
   $("#build-list").innerHTML = builds.map((recipe, index) => {
     const cost = Object.entries(recipe.cost).map(([type, amount]) => `${amount} ${{ wood: "bois", stone: "pierre", fiber: "fibres" }[type]}`).join(" · ");
-    return `<button data-build="${recipe.id}" ${recipe.available ? "" : "disabled"}><strong>${index + 1} · ${recipe.label}</strong><small>${recipe.effect}</small><em>${cost}${recipe.blockedReason ? ` · ${recipe.blockedReason}` : ""}</em></button>`;
+    return `<button data-build="${recipe.id}" data-key="${index + 1}" ${recipe.available ? "" : "disabled"}><strong>${recipe.label}</strong><small>${recipe.effect}</small><em>${cost}${recipe.blockedReason ? ` · ${recipe.blockedReason}` : ""}</em></button>`;
   }).join("");
-  document.querySelectorAll("[data-build]").forEach((button) => button.addEventListener("click", () => commit(buildStructure(state, button.dataset.build))));
+  document.querySelectorAll("[data-build]").forEach((button) => button.addEventListener("click", () => {
+    const before = state.structures.length;
+    commit(buildStructure(state, button.dataset.build));
+    if (state.structures.length > before) setDrawer(false);
+  }));
   if (focusedBuild) document.querySelector(`[data-build="${focusedBuild}"]`)?.focus();
 }
 
@@ -635,7 +755,8 @@ function renderConsequences() {
 function render() {
   const capabilities = getCapabilities(state);
   const form = getWorldForm(state);
-  document.body.className = `world-${form.id}`;
+  const context = getInteractionContext(capabilities);
+  document.body.className = `world-${form.id}${drawerOpen ? " drawer-open" : ""}`;
   $("#phase-index").textContent = form.symbol;
   $("#phase-name").textContent = form.name;
   $("#phase-description").textContent = form.short;
@@ -648,11 +769,20 @@ function render() {
     : "Aucun premier centre choisi.";
   $("#return-marker").hidden = !capabilities.named;
   $("#people-card").hidden = !capabilities.people;
-  renderWorld(capabilities);
+  $("#interact-button").textContent = context.label;
+  $("#game-drawer").setAttribute("aria-hidden", String(!drawerOpen));
+  renderWorld(capabilities, context);
   renderInventory();
   renderBuilds();
   renderPeople(capabilities);
   renderConsequences();
+}
+
+function setDrawer(open) {
+  drawerOpen = open;
+  render();
+  if (drawerOpen) $("#drawer-close").focus();
+  else $("#build-toggle").focus();
 }
 
 function commit(nextState) {
@@ -668,6 +798,9 @@ document.querySelectorAll("[data-move]").forEach((button) => button.addEventList
 
 $("#interact-button").addEventListener("click", () => commit(interact(state)));
 $("#return-marker").addEventListener("click", () => commit(returnToMarker(state)));
+$("#build-toggle").addEventListener("click", () => setDrawer(true));
+$("#drawer-close").addEventListener("click", () => setDrawer(false));
+$("#drawer-scrim").addEventListener("click", () => setDrawer(false));
 
 window.addEventListener("keydown", (event) => {
   if (["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement?.tagName)) return;
@@ -678,13 +811,23 @@ window.addEventListener("keydown", (event) => {
     ArrowDown: [0, 1], s: [0, 1],
   };
   const move = moves[event.key];
+  if (event.key === "Escape" && drawerOpen) {
+    event.preventDefault();
+    setDrawer(false);
+    return;
+  }
+  if (event.key.toLowerCase() === "b") {
+    event.preventDefault();
+    setDrawer(!drawerOpen);
+    return;
+  }
   if (move) {
     event.preventDefault();
     commit(movePlayer(state, ...move));
   } else if (["e", "Enter", " "].includes(event.key)) {
     event.preventDefault();
     commit(interact(state));
-  } else if (["1", "2", "3", "4"].includes(event.key)) {
+  } else if (drawerOpen && ["1", "2", "3", "4"].includes(event.key)) {
     const recipes = getAvailableBuilds(state).filter((recipe) => recipe.visible && !(recipe.unique && state.structures.some((item) => item.type === recipe.id)));
     const recipe = recipes[Number(event.key) - 1];
     if (recipe) {
