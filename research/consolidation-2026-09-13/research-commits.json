@@ -1,0 +1,137 @@
+[
+  {
+    "group": "cct-contracts",
+    "commit": "352afbe902be07994bd29202f22d4f81b7cea0e2",
+    "files": [
+      "research/active/cct/pol-1.1-executable/README.md",
+      "research/active/cct/pol-1.1-executable/arena/README.md",
+      "research/active/cct/pol-1.1-executable/arena/test-external-submission.mjs",
+      "research/active/cct/pol-1.1-executable/arena/validate-external-submission.mjs",
+      "research/active/cct/pol-1.1-executable/cct-sky/test.mjs",
+      "research/active/cct/pol-1.1-executable/contract.mjs",
+      "research/active/cct/pol-1.1-executable/minimum-use-case-water-continuity/README.md",
+      "research/active/cct/pol-1.1-executable/minimum-use-case-water-continuity/public-context-admission-matrix-2026-09-05.md",
+      "research/active/cct/pol-1.1-executable/minimum-use-case-water-continuity/test.mjs",
+      "research/active/cct/pol-1.1-executable/resource-vehicle/contract.mjs",
+      "research/active/cct/pol-1.1-executable/resource-vehicle/resource-vehicle.json",
+      "research/active/cct/pol-1.1-executable/resource-vehicle/test.mjs",
+      "research/active/cct/pol-1.1-executable/test.mjs",
+      "research/active/cct/pol-1.1-executable/verify-contracts.mjs"
+    ]
+  },
+  {
+    "group": "cct-external-pilot",
+    "commit": "9d6195ab6c542f4a8ccaea83ca52ac433e96d7de",
+    "files": [
+      "research/active/cct/external-simple-rival-pilot-v0.1/COLLECTION_DESIGN_DECISION.md",
+      "research/active/cct/external-simple-rival-pilot-v0.1/README.md",
+      "research/active/cct/external-simple-rival-pilot-v0.1/action-catalog.json",
+      "research/active/cct/external-simple-rival-pilot-v0.1/audit-independence.mjs",
+      "research/active/cct/external-simple-rival-pilot-v0.1/engine-profiles.json",
+      "research/active/cct/external-simple-rival-pilot-v0.1/evaluate-sensitivity.mjs",
+      "research/active/cct/external-simple-rival-pilot-v0.1/evaluate.mjs",
+      "research/active/cct/external-simple-rival-pilot-v0.1/freeze-v0.1.json",
+      "research/active/cct/external-simple-rival-pilot-v0.1/freeze-v0.2.json",
+      "research/active/cct/external-simple-rival-pilot-v0.1/freeze.json",
+      "research/active/cct/external-simple-rival-pilot-v0.1/independence-audit-template.json",
+      "research/active/cct/external-simple-rival-pilot-v0.1/outcome-engine.mjs",
+      "research/active/cct/external-simple-rival-pilot-v0.1/protocol.json",
+      "research/active/cct/external-simple-rival-pilot-v0.1/scenario.json",
+      "research/active/cct/external-simple-rival-pilot-v0.1/submission-template.json",
+      "research/active/cct/external-simple-rival-pilot-v0.1/submissions/README.md",
+      "research/active/cct/external-simple-rival-pilot-v0.1/test-sensitivity.mjs",
+      "research/active/cct/external-simple-rival-pilot-v0.1/test.mjs",
+      "research/active/cct/external-simple-rival-pilot-v0.1/verify-freeze.mjs"
+    ]
+  },
+  {
+    "group": "cct-publications",
+    "commit": "89bebb720890b5bf6b1e1a1a1a52f2888bf3437e",
+    "files": [
+      "research/active/cct/output/docx/CCT-livre-blanc.docx",
+      "research/active/cct/output/docx/CCT-livre-vert.docx",
+      "research/active/cct/output/pdf/CCT-livre-blanc.pdf",
+      "research/active/cct/publications/README.md",
+      "research/active/cct/publications/build_cct_green_book.py",
+      "research/active/cct/publications/build_cct_whitepaper.py",
+      "research/active/cct/publications/livre-blanc-annexes.md",
+      "research/active/cct/publications/livre-blanc-cct.md",
+      "research/active/cct/publications/livre-blanc-frontmatter.md",
+      "research/active/cct/publications/livre-vert-cct.md"
+    ]
+  },
+  {
+    "group": "cct-history",
+    "commit": "686e2b1d8e0897fa2b8574f2dee71d12c6800921",
+    "files": [
+      "research/active/cct/state/last_automation_run.md"
+    ]
+  },
+  {
+    "group": "replication",
+    "commit": "14e23b0d8d6f4ae837008a0220f8d1a8f445097b",
+    "files": [
+      "research/ADVERSARIAL_MUTATION_EXTRACTION_AUDIT.md",
+      "research/EXTERNAL_INDEPENDENT_REPLICATION_PACKAGE_ADMISSION_CONTRACT.md",
+      "research/FOE-001_INDEPENDENT_REPLICATION_DIAGNOSTIC.md",
+      "research/INDEPENDENT_REPLICATION_BUBBLEWRAP_REOBSERVATION_2026-09-05.md",
+      "research/INDEPENDENT_REPLICATION_HARNESS_REOBSERVATION_2026-09-05.md",
+      "research/active/provenance-interoperability-lab/replication/ADOPTION_REPORT.md",
+      "research/active/provenance-interoperability-lab/replication/SECOND_IMPLEMENTATION_BRIEF.md",
+      "research/active/provenance-interoperability-lab/replication/output_contract.json",
+      "research/active/provenance-interoperability-lab/replication_reference_adapter.py",
+      "research/active/provenance-interoperability-lab/second_implementation/provenance_independent.py",
+      "research/active/provenance-interoperability-lab/tests/test_independent_replication.py",
+      "research/artifacts/foe-001-transversal-campaign-v0.1-2026-09-05/receipt.json",
+      "research/foe_001_replication_adapter.py",
+      "research/foe_001_transversal_campaign/pre_execution_manifest_v0.1.json",
+      "research/foe_001_transversal_campaign/pre_execution_seal_v0.1.json",
+      "research/scripts/run_foe_001_transversal_campaign.py",
+      "research/scripts/test_foe_001_independent_replication.py",
+      "research/scripts/test_run_foe_001_transversal_campaign.py"
+    ]
+  },
+  {
+    "group": "open-model",
+    "commit": "bafe5182db1d28473ee77a27b5c4a5e4b91e3f7f",
+    "files": [
+      "research/active/corpus-open-model/product_query_evaluation_a/README.md",
+      "research/active/corpus-open-model/product_query_evaluation_a/baseline.py",
+      "research/active/corpus-open-model/product_query_evaluation_a/expectations_v0.1.json",
+      "research/active/corpus-open-model/product_query_evaluation_a/pre_execution_manifest_v0.1.json",
+      "research/active/corpus-open-model/product_query_evaluation_a/pre_execution_seal_v0.1.json",
+      "research/active/corpus-open-model/product_query_evaluation_a/route_inventory_v0.1.json",
+      "research/active/corpus-open-model/reports/2026-09-05-product-query-evaluation-a-pipeline-verified.md",
+      "research/active/corpus-open-model/state/current_state.md",
+      "research/active/corpus-open-model/tests/test_product_query_evaluation_a_baseline.py",
+      "research/scripts/run_product_query_evaluation_a_v0.py"
+    ]
+  },
+  {
+    "group": "research-index",
+    "commit": "5f7776e5445fbf097e81099b4b96d6daca7ec4e8",
+    "files": [
+      "research/CORPUS_DEVELOPMENT_WORKFLOW_GAP_AUDIT.md",
+      "research/PORTFOLIO_NEXT_STEP.md",
+      "research/README.md",
+      "research/active/README.md",
+      "research/portfolio.json",
+      "research/scripts/check_research_inventory.py"
+    ]
+  },
+  {
+    "group": "pr22-study",
+    "commit": "eeaf3d724cab8d8a372fdf6fd9781073f07389fc",
+    "files": [
+      "research/artifacts/pr22-study-2026-09-13/ETUDE.md",
+      "research/artifacts/pr22-study-2026-09-13/characterization.tap",
+      "research/artifacts/pr22-study-2026-09-13/characterization.test.mjs",
+      "research/artifacts/pr22-study-2026-09-13/manifest.json",
+      "research/artifacts/pr22-study-2026-09-13/original.tap",
+      "research/artifacts/pr22-study-2026-09-13/source/CODEX_HANDOFF.md",
+      "research/artifacts/pr22-study-2026-09-13/source/README.md",
+      "research/artifacts/pr22-study-2026-09-13/source/adjudication.mjs",
+      "research/artifacts/pr22-study-2026-09-13/source/test.mjs"
+    ]
+  }
+]

@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: requires the same dominance across every registered engine
+ok 1 - requires the same dominance across every registered engine
+  ---
+  duration_ms: 0.937609
+  ...
+# Subtest: reports dependence on the model instead of selecting a winner
+ok 2 - reports dependence on the model instead of selecting a winner
+  ---
+  duration_ms: 0.109181
+  ...
+# Subtest: exposes opposite winners as a contradiction across engines
+ok 3 - exposes opposite winners as a contradiction across engines
+  ---
+  duration_ms: 0.098619
+  ...
+# Subtest: fails closed when any engine rejects the packet
+ok 4 - fails closed when any engine rejects the packet
+  ---
+  duration_ms: 0.173396
+  ...
+# Subtest: executes the same external packet through all frozen profiles
+ok 5 - executes the same external packet through all frozen profiles
+  ---
+  duration_ms: 1.345695
+  ...
+# Subtest: admits a CCT result only when it is noncompensatorily dominant
+ok 6 - admits a CCT result only when it is noncompensatorily dominant
+  ---
+  duration_ms: 2.053355
+  ...
+# Subtest: keeps crossed advantages inconclusive
+ok 7 - keeps crossed advantages inconclusive
+  ---
+  duration_ms: 0.277479
+  ...
+# Subtest: rejects a shared author or collection root
+ok 8 - rejects a shared author or collection root
+  ---
+  duration_ms: 0.217461
+  ...
+# Subtest: rejects shared organizational, funding or implementation roots
+ok 9 - rejects shared organizational, funding or implementation roots
+  ---
+  duration_ms: 0.357449
+  ...
+# Subtest: rejects fixtures, unmatched budgets and forged outcomes
+ok 10 - rejects fixtures, unmatched budgets and forged outcomes
+  ---
+  duration_ms: 1.253868
+  ...
+# Subtest: fails closed without a separated evidence-backed audit
+ok 11 - fails closed without a separated evidence-backed audit
+  ---
+  duration_ms: 0.358123
+  ...
+# Subtest: enforces material and information budgets under the adverse supply bound
+ok 12 - enforces material and information budgets under the adverse supply bound
+  ---
+  duration_ms: 0.207874
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 110.167232

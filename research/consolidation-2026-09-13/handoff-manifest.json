@@ -1,0 +1,29 @@
+{
+  "research_commit": "eeaf3d724cab8d8a372fdf6fd9781073f07389fc",
+  "status": "prepared_not_sent",
+  "files": {
+    "research/active/cct/external-review-handoff-2026-09-13/README.md": "82f5380de2f03132a48f41164d36d145277c9e9897b6c59af6a85dd8b9a4d2f4",
+    "research/active/cct/external-review-handoff-2026-09-13/invitation.md": "a56c8e5edec0f81c8947174da312a3da75017ad53f1a667e0c63f8fa4c8ee505",
+    "research/active/cct/external-simple-rival-pilot-v0.1/COLLECTION_DESIGN_DECISION.md": "4178b734e6405298ad641d9674bea949d2e70751610e4712cfc2ece739be2e6b",
+    "research/active/cct/external-simple-rival-pilot-v0.1/README.md": "5c9f3f7d16a1a4d44351fd024f30f26979e1fceadaa93871cde2a9d554bb534b",
+    "research/active/cct/external-simple-rival-pilot-v0.1/action-catalog.json": "1f444cb947014583a95cebf586d73269786e58d1a0b94b8cb94e6b2e38b8d521",
+    "research/active/cct/external-simple-rival-pilot-v0.1/audit-independence.mjs": "f446402e03d054017ef690592dbe7b9435536d66ba35e84a81eb7633384588ac",
+    "research/active/cct/external-simple-rival-pilot-v0.1/engine-profiles.json": "075c92ab02680b5e1fcd822e27783526ddc11d18400fdf403a86150e70eaf9a2",
+    "research/active/cct/external-simple-rival-pilot-v0.1/evaluate-sensitivity.mjs": "f1dd0b268d88612fe6f24263ada2945607bca66e95e597b93a1887b1282540b9",
+    "research/active/cct/external-simple-rival-pilot-v0.1/evaluate.mjs": "943c1dd8d67132c19f6836ee0e169f1ff05a7cff7f926a66d3f688f912a549e2",
+    "research/active/cct/external-simple-rival-pilot-v0.1/freeze-v0.1.json": "3501c4234772af89df99c4899793df3c8bdfee0af6e4b09a4449ad61e6c5dbd9",
+    "research/active/cct/external-simple-rival-pilot-v0.1/freeze-v0.2.json": "3c2925f743a5bf9e1aa77c327672268ec7f5354ef095ae3343aba9e85c81af9d",
+    "research/active/cct/external-simple-rival-pilot-v0.1/freeze.json": "1fd874ba1ab620ad20493d33d08fd38f54015d827fb9c10c9b96ac8dd421261a",
+    "research/active/cct/external-simple-rival-pilot-v0.1/independence-audit-template.json": "fc33e7e900bed5aef15df38ee5b2af3c97a92220cf7e1ae0a59c88c84d2e8ad1",
+    "research/active/cct/external-simple-rival-pilot-v0.1/outcome-engine.mjs": "8ddf311d2847b119cd838bdc2429119502e182d3cdfb558125a477de357a40a9",
+    "research/active/cct/external-simple-rival-pilot-v0.1/protocol.json": "9a8f8e6111ea1dbce0657e8fba4161378527bfd426ceef8efce3b562af72a753",
+    "research/active/cct/external-simple-rival-pilot-v0.1/scenario.json": "94e5636f507d15c10227fe20f01a425c8836babc630a11b6574c875a36e98568",
+    "research/active/cct/external-simple-rival-pilot-v0.1/submission-template.json": "41ed44998a14d05d245742789ff9bf32fcf048c55c0f91907f7604e1dca3372d",
+    "research/active/cct/external-simple-rival-pilot-v0.1/submissions/README.md": "ceae8a00d521ed56b81ce1223ea646905822755951c64ef8eb2a30c1481bf75d",
+    "research/active/cct/external-simple-rival-pilot-v0.1/test-sensitivity.mjs": "0057ad120384aee94b4d00ae4009fadfb951ae4ef592b1eaf468efbffd15c674",
+    "research/active/cct/external-simple-rival-pilot-v0.1/test.mjs": "cf597c0329a46b553e2a9e60f2ded235b3e07f80dea8dd6354d2d21d5af4f9ff",
+    "research/active/cct/external-simple-rival-pilot-v0.1/verify-freeze.mjs": "ca72857c194b9898209e23a18a83a5d2c508a66b0f405aed822acf0900c33c85",
+    "research/active/cct/publications/livre-blanc-cct.md": "7af286f90d10d639244207611d7251c383d5b869948c9a94d7c4dff6c5386ea5",
+    "research/active/cct/publications/livre-vert-cct.md": "15c10aee45dd3f267aa915f7b139d1e323bb22b211368dadadc84f33c8a7d7e6"
+  }
+}

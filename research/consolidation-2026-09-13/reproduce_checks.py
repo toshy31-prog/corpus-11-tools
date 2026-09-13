@@ -1,0 +1,7 @@
+import subprocess,json,pathlib,concurrent.futures,sys
+root=pathlib.Path(sys.argv[1]).resolve(); out=pathlib.Path(sys.argv[2]);out.mkdir(parents=True,exist_ok=True)
+commands=[['git','diff','--check'],['python3','research/scripts/check_research_inventory.py'],['node','research/active/cct/pol-1.1-executable/verify-contracts.mjs'],['node','research/active/cct/external-simple-rival-pilot-v0.1/verify-freeze.mjs'],['node','--test','research/active/cct/external-simple-rival-pilot-v0.1/test.mjs','research/active/cct/external-simple-rival-pilot-v0.1/test-sensitivity.mjs'],['python3','research/scripts/test_foe_001_independent_replication.py'],['python3','research/scripts/test_run_foe_001_transversal_campaign.py'],['python3','research/active/provenance-interoperability-lab/tests/test_independent_replication.py'],['python3','research/active/corpus-open-model/tests/test_product_query_evaluation_a_baseline.py'],['node','--test','research/artifacts/pr22-study-2026-09-13/source/test.mjs','research/artifacts/pr22-study-2026-09-13/characterization.test.mjs']]
+def run(item):
+ i,cmd=item;p=subprocess.run(cmd,cwd=root,capture_output=True,text=True);(out/f'{i:02}.log').write_text(p.stdout+p.stderr);return {'command':cmd,'exit_code':p.returncode,'log':f'{i:02}.log'}
+with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool: results=list(pool.map(run,enumerate(commands)))
+(out/'results.json').write_text(json.dumps(results,indent=2));print(json.dumps(results,indent=2));sys.exit(any(r['exit_code'] for r in results))

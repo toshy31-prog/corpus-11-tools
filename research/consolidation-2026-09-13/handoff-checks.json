@@ -1,0 +1,42 @@
+[
+  {
+    "command": [
+      "node",
+      "verify-freeze.mjs"
+    ],
+    "exit_code": 0,
+    "expected": "success"
+  },
+  {
+    "command": [
+      "node",
+      "--test",
+      "test.mjs",
+      "test-sensitivity.mjs"
+    ],
+    "exit_code": 0,
+    "expected": "success"
+  },
+  {
+    "command": [
+      "node",
+      "evaluate.mjs",
+      "submissions/cct.json",
+      "submissions/simple-rival.json",
+      "submissions/independence-audit.json"
+    ],
+    "exit_code": 2,
+    "expected": "reject_missing_submissions"
+  },
+  {
+    "command": [
+      "node",
+      "evaluate-sensitivity.mjs",
+      "submissions/cct.json",
+      "submissions/simple-rival.json",
+      "submissions/independence-audit.json"
+    ],
+    "exit_code": 2,
+    "expected": "reject_missing_submissions"
+  }
+]

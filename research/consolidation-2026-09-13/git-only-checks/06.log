@@ -1,0 +1,9 @@
+test_localized_difference_produces_reparation_ciblee (__main__.FoeCampaignReceiptTests.test_localized_difference_produces_reparation_ciblee) ... ok
+test_matching_controls_produce_passage (__main__.FoeCampaignReceiptTests.test_matching_controls_produce_passage) ... ok
+test_receipt_exposes_control_differences_without_running_campaign (__main__.FoeCampaignReceiptTests.test_receipt_exposes_control_differences_without_running_campaign) ... ok
+test_silent_absorption_or_undeclared_dependency_stops_campaign (__main__.FoeCampaignReceiptTests.test_silent_absorption_or_undeclared_dependency_stops_campaign) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.000s
+
+OK

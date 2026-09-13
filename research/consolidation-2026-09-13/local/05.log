@@ -1,0 +1,7 @@
+test_attestation_helper_is_callable_without_a_test_instance (__main__.Foe001IndependentReplicationTests.test_attestation_helper_is_callable_without_a_test_instance) ... ok
+test_foe_001_agrees_under_a_local_projection_without_external_claim (__main__.Foe001IndependentReplicationTests.test_foe_001_agrees_under_a_local_projection_without_external_claim) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.034s
+
+OK

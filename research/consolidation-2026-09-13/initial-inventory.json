@@ -1,0 +1,541 @@
+{
+  "head": "c5572f049ae08f4085e3950e3f037e54b1087d54",
+  "entries": [
+    {
+      "status": " M",
+      "path": "research/PORTFOLIO_NEXT_STEP.md",
+      "group": "research-index"
+    },
+    {
+      "status": " M",
+      "path": "research/README.md",
+      "group": "research-index"
+    },
+    {
+      "status": " M",
+      "path": "research/active/README.md",
+      "group": "research-index"
+    },
+    {
+      "status": " M",
+      "path": "research/active/cct/output/docx/CCT-livre-blanc.docx",
+      "group": "cct-publications"
+    },
+    {
+      "status": " M",
+      "path": "research/active/cct/output/pdf/CCT-livre-blanc.pdf",
+      "group": "cct-publications"
+    },
+    {
+      "status": " M",
+      "path": "research/active/cct/pol-1.1-executable/README.md",
+      "group": "cct-contracts"
+    },
+    {
+      "status": " M",
+      "path": "research/active/cct/pol-1.1-executable/arena/README.md",
+      "group": "cct-contracts"
+    },
+    {
+      "status": " M",
+      "path": "research/active/cct/pol-1.1-executable/cct-sky/test.mjs",
+      "group": "cct-contracts"
+    },
+    {
+      "status": " M",
+      "path": "research/active/cct/pol-1.1-executable/contract.mjs",
+      "group": "cct-contracts"
+    },
+    {
+      "status": " M",
+      "path": "research/active/cct/pol-1.1-executable/minimum-use-case-water-continuity/README.md",
+      "group": "cct-contracts"
+    },
+    {
+      "status": " M",
+      "path": "research/active/cct/pol-1.1-executable/minimum-use-case-water-continuity/test.mjs",
+      "group": "cct-contracts"
+    },
+    {
+      "status": " M",
+      "path": "research/active/cct/pol-1.1-executable/resource-vehicle/contract.mjs",
+      "group": "cct-contracts"
+    },
+    {
+      "status": " M",
+      "path": "research/active/cct/pol-1.1-executable/resource-vehicle/resource-vehicle.json",
+      "group": "cct-contracts"
+    },
+    {
+      "status": " M",
+      "path": "research/active/cct/pol-1.1-executable/resource-vehicle/test.mjs",
+      "group": "cct-contracts"
+    },
+    {
+      "status": " M",
+      "path": "research/active/cct/pol-1.1-executable/test.mjs",
+      "group": "cct-contracts"
+    },
+    {
+      "status": " M",
+      "path": "research/active/cct/publications/build_cct_whitepaper.py",
+      "group": "cct-publications"
+    },
+    {
+      "status": " M",
+      "path": "research/active/cct/publications/livre-blanc-annexes.md",
+      "group": "cct-publications"
+    },
+    {
+      "status": " M",
+      "path": "research/active/cct/publications/livre-blanc-cct.md",
+      "group": "cct-publications"
+    },
+    {
+      "status": " M",
+      "path": "research/active/cct/publications/livre-blanc-frontmatter.md",
+      "group": "cct-publications"
+    },
+    {
+      "status": " M",
+      "path": "research/active/cct/state/last_automation_run.md",
+      "group": "cct-history"
+    },
+    {
+      "status": " M",
+      "path": "research/active/corpus-open-model/state/current_state.md",
+      "group": "open-model"
+    },
+    {
+      "status": " M",
+      "path": "research/portfolio.json",
+      "group": "research-index"
+    },
+    {
+      "status": "??",
+      "path": ".codex/",
+      "group": "deferred"
+    },
+    {
+      "status": "??",
+      "path": "CORPUS_ATLAS.md",
+      "group": "deferred"
+    },
+    {
+      "status": "??",
+      "path": "CORPUS_GAP_MAP.md",
+      "group": "deferred"
+    },
+    {
+      "status": "??",
+      "path": "CORPUS_REARRANGEMENTS.md",
+      "group": "deferred"
+    },
+    {
+      "status": "??",
+      "path": "CORPUS_UBUNTU_AUXILIARIES.md",
+      "group": "deferred"
+    },
+    {
+      "status": "??",
+      "path": "corpus_atlas.json",
+      "group": "deferred"
+    },
+    {
+      "status": "??",
+      "path": "exports/",
+      "group": "deferred"
+    },
+    {
+      "status": "??",
+      "path": "projets/youtube-scout/",
+      "group": "deferred"
+    },
+    {
+      "status": "??",
+      "path": "research/ADVERSARIAL_MUTATION_EXTRACTION_AUDIT.md",
+      "group": "replication"
+    },
+    {
+      "status": "??",
+      "path": "research/CORPUS_DEVELOPMENT_WORKFLOW_GAP_AUDIT.md",
+      "group": "research-index"
+    },
+    {
+      "status": "??",
+      "path": "research/EXTERNAL_INDEPENDENT_REPLICATION_PACKAGE_ADMISSION_CONTRACT.md",
+      "group": "replication"
+    },
+    {
+      "status": "??",
+      "path": "research/FOE-001_INDEPENDENT_REPLICATION_DIAGNOSTIC.md",
+      "group": "replication"
+    },
+    {
+      "status": "??",
+      "path": "research/INDEPENDENT_REPLICATION_BUBBLEWRAP_REOBSERVATION_2026-09-05.md",
+      "group": "replication"
+    },
+    {
+      "status": "??",
+      "path": "research/INDEPENDENT_REPLICATION_HARNESS_REOBSERVATION_2026-09-05.md",
+      "group": "replication"
+    },
+    {
+      "status": "??",
+      "path": "research/active/cct/external-simple-rival-pilot-v0.1/",
+      "group": "cct-external-pilot"
+    },
+    {
+      "status": "??",
+      "path": "research/active/cct/output/docx/CCT-livre-vert.docx",
+      "group": "cct-publications"
+    },
+    {
+      "status": "??",
+      "path": "research/active/cct/pol-1.1-executable/arena/test-external-submission.mjs",
+      "group": "cct-contracts"
+    },
+    {
+      "status": "??",
+      "path": "research/active/cct/pol-1.1-executable/arena/validate-external-submission.mjs",
+      "group": "cct-contracts"
+    },
+    {
+      "status": "??",
+      "path": "research/active/cct/pol-1.1-executable/minimum-use-case-water-continuity/public-context-admission-matrix-2026-09-05.md",
+      "group": "cct-contracts"
+    },
+    {
+      "status": "??",
+      "path": "research/active/cct/pol-1.1-executable/verify-contracts.mjs",
+      "group": "cct-contracts"
+    },
+    {
+      "status": "??",
+      "path": "research/active/cct/publications/README.md",
+      "group": "cct-publications"
+    },
+    {
+      "status": "??",
+      "path": "research/active/cct/publications/build_cct_green_book.py",
+      "group": "cct-publications"
+    },
+    {
+      "status": "??",
+      "path": "research/active/cct/publications/livre-vert-cct.md",
+      "group": "cct-publications"
+    },
+    {
+      "status": "??",
+      "path": "research/active/corpus-open-model/product_query_evaluation_a/",
+      "group": "open-model"
+    },
+    {
+      "status": "??",
+      "path": "research/active/corpus-open-model/reports/2026-09-05-product-query-evaluation-a-pipeline-verified.md",
+      "group": "open-model"
+    },
+    {
+      "status": "??",
+      "path": "research/active/corpus-open-model/tests/test_product_query_evaluation_a_baseline.py",
+      "group": "open-model"
+    },
+    {
+      "status": "??",
+      "path": "research/active/provenance-interoperability-lab/replication/",
+      "group": "replication"
+    },
+    {
+      "status": "??",
+      "path": "research/active/provenance-interoperability-lab/replication_reference_adapter.py",
+      "group": "replication"
+    },
+    {
+      "status": "??",
+      "path": "research/active/provenance-interoperability-lab/second_implementation/",
+      "group": "replication"
+    },
+    {
+      "status": "??",
+      "path": "research/active/provenance-interoperability-lab/tests/test_independent_replication.py",
+      "group": "replication"
+    },
+    {
+      "status": "??",
+      "path": "research/artifacts/",
+      "group": "replication"
+    },
+    {
+      "status": "??",
+      "path": "research/foe_001_replication_adapter.py",
+      "group": "replication"
+    },
+    {
+      "status": "??",
+      "path": "research/foe_001_transversal_campaign/",
+      "group": "replication"
+    },
+    {
+      "status": "??",
+      "path": "research/scripts/check_research_inventory.py",
+      "group": "research-index"
+    },
+    {
+      "status": "??",
+      "path": "research/scripts/run_foe_001_transversal_campaign.py",
+      "group": "replication"
+    },
+    {
+      "status": "??",
+      "path": "research/scripts/run_product_query_evaluation_a_v0.py",
+      "group": "open-model"
+    },
+    {
+      "status": "??",
+      "path": "research/scripts/test_foe_001_independent_replication.py",
+      "group": "replication"
+    },
+    {
+      "status": "??",
+      "path": "research/scripts/test_run_foe_001_transversal_campaign.py",
+      "group": "replication"
+    }
+  ],
+  "sha256": {
+    ".codex/config.toml": "de2e192551e97043e74df74d37c99cb4659d3f2b095f1e6239830e29e30bd074",
+    ".codex/environments/environment.toml": "610f326f8f04da1888b166373a8deb9af4f8474f09ecc34315b3030e7065a959",
+    "CORPUS_ATLAS.md": "689982cad1e751b1e875aa23556c77e38d194d21a6a7a5cdc6dd7b05b778a463",
+    "CORPUS_GAP_MAP.md": "548fb40f7de2565a2b4aab08c74c1704d27dce840abf66e866c767bc907970b2",
+    "CORPUS_REARRANGEMENTS.md": "cc6f1ae7c426d8b4981cd7e04b060f841cdf560384f6531f396ef1f5a5888100",
+    "CORPUS_UBUNTU_AUXILIARIES.md": "92be5283276872e705e1d8dde3dd1de0e9539595bfa7d67a4565a8712369ff8d",
+    "corpus_atlas.json": "da4f997c7079d6b9d788f602a8be7b0207351205d6b4c4e00541631a56922832",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/00_INSTRUCTIONS_GENERALES_GPT.md": "5c254c8fe7cca3eab7bdb8d743143e2dab354a763b4497b65fab08a6bc5690a7",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/01_ROUTAGE_REPONSE_ET_ARRET.md": "e73004db23630fd01b2396ea25fda71f1d5f0b79b77bb014d6bc10d290d8a75e",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/02_PREUVE_CAUSALITE_ET_INCERTITUDE.md": "42a97e77969c2f329553cd577316c6a5c3c37ee93b1c4049a3fb355a6adb9532",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/03_CAPACITE_POUVOIR_SECURITE_ET_TEMPS.md": "4d751f8adea1c9fc6f6b7459eae1fd640465d6c0dee19cc29f354db399a61088",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/04_RELATIONS_TRANSMISSION_MEMOIRE_ET_RECOURS.md": "3c89a7dd699125a5f9d2131019042059bff935e489fcb8976e328f7516191e0c",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/05_TRANSFORMATION_RESTE_ET_RETOURNEMENT.md": "59b2c57f0423acdc3918267d59e5bbe6bbe83c5e68b13f7b8542e179db004b1a",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/06_EXPLORATION_ET_AGENCE_UTILISATEUR.md": "5fc40194cd91e75a09bbe7efbdbdff085b03855a10d22fccefc392f58a8af9d5",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/07_CONSCIENCE_IDENTITE_ET_REFUS.md": "1ac3b637b4d8dd6c753979dae112ca7c17c15810f94a6f2c22e6072b19d39c97",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/08_HISTOIRE_CADRAGE_ET_QUALIFICATION.md": "4a957899cec9008741d7c62e153be7e802edc30b7bc3b4af6be587585feee2f1",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/09_IMAGE_OBSERVABLES_ET_REPRESENTATION.md": "c25514d5c50b33db9dcb8fa9515f15436efb12bd113a62353fca8b0268b740a5",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/10_TESTS_RIVAUX_ET_ROBUSTESSE.md": "e4201a61ec40bdd34e52a4e250bdd6e7f8115a936f9e928406a8b6c6846f2abf",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/11_CONTINUITE_VERSION_ET_PROVENANCE.md": "addd092ce9cd705f9d419b0147d612dbbc1a07578b01c5e7b9b56f9e1af5d1ce",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/12_MAINTENANCE_GOUVERNANCE_ET_REPRISE.md": "ebd8947925807415806eb987278e252db391b4a3af46980685947f5ce9547b9f",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/13_VALIDATION_ET_LIMITES_DE_L_EXPORT.md": "47144e69d8a5d02327834bcb450a61ca8a97b96c1b1ab6953ae19e94ca9f19d0",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/14_MONDES_MODELES_ECHELLES_ET_TRANSPORT.md": "7f51e8f66dfef2d531c729541ba6e10599c010a225aa128217e6bd426c552ac7",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/15_SENSORIUM_DETECTION_ET_COUTS_CACHES.md": "a3661c54c9b581c9bcd54778d60babbe94b8cc5d80f5b06024f7fa0a92a27483",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/16_SOURCES_LANGUES_MEDIAS_ET_POSITION.md": "e98b6aaa135e5772d0c4baa5e94821798e1002e0ff3487c3905019aa3588eff4",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/17_EXTRACTION_PRIVILEGES_ET_CAPACITES_COLLECTIVES.md": "36a19b8ee1acc5b3820381adbfc6fa8844a10021d20650133c0025e128966cba",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/18_FICTION_EXTERIEURE_AU_CORPUS.md": "0c16967f7203ea2ed7f11de1b4086fe386599233461ec440aa8c6921af5249ee",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/Ce_qui_ne_doit_appartenir_a_personne_seul.pdf": "f37e30b50d7add031506b80a355ead2d490b1bba9d3a070f7a06317cf82b3060",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/README.md": "9744604c809f635ea00e4bce199a30c57fcf0133b192e247064fbb58107716dc",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/Sommaire_histoire_humaine_non_centree.pdf": "1d236ff2429dd3f390ff6c0f2138f5ff281ee81aafdb96562f1a03a2eff47a00",
+    "research/ADVERSARIAL_MUTATION_EXTRACTION_AUDIT.md": "f8ab224b48994577165ea8de3e582ea42ec65bf65682e61fb3e11172852fd164",
+    "research/CORPUS_DEVELOPMENT_WORKFLOW_GAP_AUDIT.md": "c4ee6fc6842b60360fc86057510bf6966c1c8419d1c2df85f22c1fca987873d2",
+    "research/EXTERNAL_INDEPENDENT_REPLICATION_PACKAGE_ADMISSION_CONTRACT.md": "c5108e101e6cb8881e688fddd5373c46b2de703d97c8ac377232e92851aa4da4",
+    "research/FOE-001_INDEPENDENT_REPLICATION_DIAGNOSTIC.md": "2b0e4474ac880bb0c474f136ac32c5ebab0bbd270a89277ae5eb7207c1b84baa",
+    "research/INDEPENDENT_REPLICATION_BUBBLEWRAP_REOBSERVATION_2026-09-05.md": "d1e35783a7f0254b505fbbe95d6a77eeb44f5b9c77df84cd01b0585de02281bc",
+    "research/INDEPENDENT_REPLICATION_HARNESS_REOBSERVATION_2026-09-05.md": "dae603dd86ece55e997f6abacd0051992f2a0c30b364de88e1ee5cf22408518c",
+    "research/active/cct/external-simple-rival-pilot-v0.1/COLLECTION_DESIGN_DECISION.md": "4178b734e6405298ad641d9674bea949d2e70751610e4712cfc2ece739be2e6b",
+    "research/active/cct/external-simple-rival-pilot-v0.1/README.md": "5c9f3f7d16a1a4d44351fd024f30f26979e1fceadaa93871cde2a9d554bb534b",
+    "research/active/cct/external-simple-rival-pilot-v0.1/action-catalog.json": "1f444cb947014583a95cebf586d73269786e58d1a0b94b8cb94e6b2e38b8d521",
+    "research/active/cct/external-simple-rival-pilot-v0.1/audit-independence.mjs": "f446402e03d054017ef690592dbe7b9435536d66ba35e84a81eb7633384588ac",
+    "research/active/cct/external-simple-rival-pilot-v0.1/engine-profiles.json": "075c92ab02680b5e1fcd822e27783526ddc11d18400fdf403a86150e70eaf9a2",
+    "research/active/cct/external-simple-rival-pilot-v0.1/evaluate-sensitivity.mjs": "f1dd0b268d88612fe6f24263ada2945607bca66e95e597b93a1887b1282540b9",
+    "research/active/cct/external-simple-rival-pilot-v0.1/evaluate.mjs": "943c1dd8d67132c19f6836ee0e169f1ff05a7cff7f926a66d3f688f912a549e2",
+    "research/active/cct/external-simple-rival-pilot-v0.1/freeze-v0.1.json": "3501c4234772af89df99c4899793df3c8bdfee0af6e4b09a4449ad61e6c5dbd9",
+    "research/active/cct/external-simple-rival-pilot-v0.1/freeze-v0.2.json": "3c2925f743a5bf9e1aa77c327672268ec7f5354ef095ae3343aba9e85c81af9d",
+    "research/active/cct/external-simple-rival-pilot-v0.1/freeze.json": "1fd874ba1ab620ad20493d33d08fd38f54015d827fb9c10c9b96ac8dd421261a",
+    "research/active/cct/external-simple-rival-pilot-v0.1/independence-audit-template.json": "fc33e7e900bed5aef15df38ee5b2af3c97a92220cf7e1ae0a59c88c84d2e8ad1",
+    "research/active/cct/external-simple-rival-pilot-v0.1/outcome-engine.mjs": "8ddf311d2847b119cd838bdc2429119502e182d3cdfb558125a477de357a40a9",
+    "research/active/cct/external-simple-rival-pilot-v0.1/protocol.json": "9a8f8e6111ea1dbce0657e8fba4161378527bfd426ceef8efce3b562af72a753",
+    "research/active/cct/external-simple-rival-pilot-v0.1/scenario.json": "94e5636f507d15c10227fe20f01a425c8836babc630a11b6574c875a36e98568",
+    "research/active/cct/external-simple-rival-pilot-v0.1/submission-template.json": "41ed44998a14d05d245742789ff9bf32fcf048c55c0f91907f7604e1dca3372d",
+    "research/active/cct/external-simple-rival-pilot-v0.1/submissions/README.md": "ceae8a00d521ed56b81ce1223ea646905822755951c64ef8eb2a30c1481bf75d",
+    "research/active/cct/external-simple-rival-pilot-v0.1/test-sensitivity.mjs": "0057ad120384aee94b4d00ae4009fadfb951ae4ef592b1eaf468efbffd15c674",
+    "research/active/cct/external-simple-rival-pilot-v0.1/test.mjs": "cf597c0329a46b553e2a9e60f2ded235b3e07f80dea8dd6354d2d21d5af4f9ff",
+    "research/active/cct/external-simple-rival-pilot-v0.1/verify-freeze.mjs": "ca72857c194b9898209e23a18a83a5d2c508a66b0f405aed822acf0900c33c85",
+    "research/active/cct/output/docx/CCT-livre-vert.docx": "b0e68b66684dc19744a27b145f0b4bfa15687ddcd4098d44423c6322feb7e35d",
+    "research/active/cct/pol-1.1-executable/arena/test-external-submission.mjs": "a8ef3196243a4483174a4376e6ee9cbf46602d5cc3a36c49ea4e6c7ec4fc11ac",
+    "research/active/cct/pol-1.1-executable/arena/validate-external-submission.mjs": "ce6154f8bd86904d2d1bf7b8589ab5fa3c975bfe8c76edf9cef8b45f56f6e27b",
+    "research/active/cct/pol-1.1-executable/minimum-use-case-water-continuity/public-context-admission-matrix-2026-09-05.md": "34f11e85858de0c7e3dfaabd26c7ad8aca15fe763942b836e4f5808dba45b560",
+    "research/active/cct/pol-1.1-executable/verify-contracts.mjs": "66aae3287ad414091488f7b94e55c06711043435b114e2100116922196e08257",
+    "research/active/cct/publications/README.md": "8cbd76714cf24805f882f22395bc492e92f8caf7ac418d66768e5aacc491c34c",
+    "research/active/cct/publications/build_cct_green_book.py": "2077ef8112df9240a0bea23869314202d29f0a0ec8661e00e12e2127bb6f3d4c",
+    "research/active/cct/publications/livre-vert-cct.md": "15c10aee45dd3f267aa915f7b139d1e323bb22b211368dadadc84f33c8a7d7e6",
+    "research/active/corpus-open-model/product_query_evaluation_a/README.md": "6ef99203873db7504c197cfae193b5b7b12ec8c1b55221b1c6b4319aa3e54ebe",
+    "research/active/corpus-open-model/product_query_evaluation_a/baseline.py": "72700e6a02f285e2b254fcce6ea5c219b8453dcd223ff36b5377b4233502a7ca",
+    "research/active/corpus-open-model/product_query_evaluation_a/expectations_v0.1.json": "91257b3fb77f864c7de5b334fc47008f3815c5f4781b9530d296045e230d29f3",
+    "research/active/corpus-open-model/product_query_evaluation_a/pre_execution_manifest_v0.1.json": "66de670802f4d128724cb4c3ddb4a376ad27a77be2bc897695125b1821f84a7b",
+    "research/active/corpus-open-model/product_query_evaluation_a/pre_execution_seal_v0.1.json": "bc9b02e213fb606a607af5a785f5e9a100a25e862c3799d34f0ada478da81156",
+    "research/active/corpus-open-model/product_query_evaluation_a/route_inventory_v0.1.json": "9d0d5bdb9346c2061dc6b3acab5b4361cdeb5c9364d50cb860cfed1d43f5f755",
+    "research/active/corpus-open-model/reports/2026-09-05-product-query-evaluation-a-pipeline-verified.md": "803b72f3de46b1e8fffa3bf4ba21c05e78c1293e32f358446c02e29b65a20080",
+    "research/active/corpus-open-model/tests/test_product_query_evaluation_a_baseline.py": "de0c65a367a2247f2d0acab965b4f52d311d5f9549198b12e5821f9475d8f22e",
+    "research/active/provenance-interoperability-lab/replication/ADOPTION_REPORT.md": "fc9e1986184ff95a7b3a2c7773a6597cbfa1ce6ada5568b02f59247d5fa8df8e",
+    "research/active/provenance-interoperability-lab/replication/SECOND_IMPLEMENTATION_BRIEF.md": "79f683ec457a80f5023bcd5fce92a8ca8e93e32a24fca0b378c6fe0919610d32",
+    "research/active/provenance-interoperability-lab/replication/output_contract.json": "ed6a8f5f443ebeb3c4bc1a5b08265792f3f72affc27bdf97a0d9ab025af54bc6",
+    "research/active/provenance-interoperability-lab/replication_reference_adapter.py": "5440fb8bfa7a06b4dd668324aecb72e0cea94d5fefac7c3b37f18317d316530b",
+    "research/active/provenance-interoperability-lab/second_implementation/provenance_independent.py": "6e1eadc946ba92349a7ffc717ae1c58a7b49e51bc02b31bfb8c5b5dab039d999",
+    "research/active/provenance-interoperability-lab/tests/test_independent_replication.py": "08ef4766e5419a12d178e9c2c7e6c4921ebaa48ef5ee93c11dcc65acd5f08774",
+    "research/artifacts/foe-001-transversal-campaign-v0.1-2026-09-05/receipt.json": "8d30d014e0a28ce5600b9ea6621feb190c3a34f312dcb05b3be9088a18769273",
+    "research/artifacts/pr22-study-2026-09-13/ETUDE.md": "9a475eacddff14282d0358acdef374841ee8f60544e4312d60e84bd0568708a3",
+    "research/artifacts/pr22-study-2026-09-13/characterization.tap": "bf67e13f2734dfc7b7279946667a662e06750d885717d2f80660124ff880913d",
+    "research/artifacts/pr22-study-2026-09-13/characterization.test.mjs": "5044fcf02ff032d1eeef95954226f207823b9e7091b8d807baa595bc7f986b8b",
+    "research/artifacts/pr22-study-2026-09-13/manifest.json": "b78d8ac6e1c80fb06cf8589181eaaef7922aefe3d072b309ac2d1f0dffa5107c",
+    "research/artifacts/pr22-study-2026-09-13/original.tap": "3bfc5a7ff2ac43a26655825911411e927ad49699b3d99926c5eab406ca6d7ec5",
+    "research/artifacts/pr22-study-2026-09-13/source/CODEX_HANDOFF.md": "66161cfdf6c92c2f8c86231ab05e85def77be10667896364ad9dbbf8910af3a6",
+    "research/artifacts/pr22-study-2026-09-13/source/README.md": "d42fa679ae6717da1229d806c2e6e10bc54727902c18a58a9bfa8f6ecbf739b5",
+    "research/artifacts/pr22-study-2026-09-13/source/adjudication.mjs": "402650f8b2074fed43a04024bf30f7f79ade50fe62192afe40e3acdf0fd67e26",
+    "research/artifacts/pr22-study-2026-09-13/source/test.mjs": "de7805fe5aa1ac4307ee228c9eee074bcf42f3e06240b0b00e99f99b1b570158",
+    "research/foe_001_replication_adapter.py": "c61117612550864f21a476037297541008a4c5901bdfbaae5233fd2177666ba2",
+    "research/foe_001_transversal_campaign/pre_execution_manifest_v0.1.json": "203ef9323ae7572febfb29435f2d183ee8ac1ec3135af5afa9f869e55b1a1437",
+    "research/foe_001_transversal_campaign/pre_execution_seal_v0.1.json": "01f82b7b93b59db23ea314f454fd18dfcc092275b47120862d9e75c740a5f09b",
+    "research/scripts/check_research_inventory.py": "46c6e174c6696e14ab178fd1e28247d643cb2bf9ba7a502911dc806228d19300",
+    "research/scripts/run_foe_001_transversal_campaign.py": "d492fe24f8e3cff28ee7c95184518263feaa23957709e47c6e7f6bbb16bf0092",
+    "research/scripts/run_product_query_evaluation_a_v0.py": "dae0bbb7029fd4c56bc6092a2682b9efe93be84c656bd5e6953aadb2ea4711a7",
+    "research/scripts/test_foe_001_independent_replication.py": "91c7a4f0712cc79c1f106e11df358641398f1a2ae015233abd3ed5e93e718b26",
+    "research/scripts/test_run_foe_001_transversal_campaign.py": "af3899265c71b1f624e00e1aec017df3cc8488d418d1254cb3b1a0cef07ba25b",
+    "research/PORTFOLIO_NEXT_STEP.md": "0a9124a1cf880c77fc7137ae8fcd762c6b98fdccbfce481982706dc9dc2d70ac",
+    "research/README.md": "bf0a0d3c5cde1b25f790bdc7fb1fcd07da84c926bc500e2ef9c2e54260c92d61",
+    "research/active/README.md": "13b22e30c057fe4c435bd440bc6bd624ef45ba25d27b212902fdd256c2c0ab8a",
+    "research/active/cct/output/docx/CCT-livre-blanc.docx": "063d8377cbae38c3a2eeefd0b200cd047a12c3baed1616a787309de3c486e233",
+    "research/active/cct/output/pdf/CCT-livre-blanc.pdf": "f99e58ff5bed20bcdf5565ef7bd85cd489b6ae5bd44cb0eead7e4394cbed4372",
+    "research/active/cct/pol-1.1-executable/README.md": "9b678e3ad9af17a8bf82a20bb11579c9b6e1c5cd74855db068ef88c0d69d6f5f",
+    "research/active/cct/pol-1.1-executable/arena/README.md": "b6621c3e7f319cb03dce146b4dfe6bcd85e583a7fd77bf68806dc789035b72f4",
+    "research/active/cct/pol-1.1-executable/cct-sky/test.mjs": "a259fbf8503c694264e214eb4af999bb62d39bbd371a7a03c2901958371f657f",
+    "research/active/cct/pol-1.1-executable/contract.mjs": "98edb45391163efaab744b9793502b546521579c39aa4f049c2c096480d06209",
+    "research/active/cct/pol-1.1-executable/minimum-use-case-water-continuity/README.md": "67a3b2fdd1763ef27a745b0675042e8d498c49f981aae9bfbf451c116b809166",
+    "research/active/cct/pol-1.1-executable/minimum-use-case-water-continuity/test.mjs": "b266a6c2098b509e1afac76cc8299ffb135f5c0156a0ef884837760a93872344",
+    "research/active/cct/pol-1.1-executable/resource-vehicle/contract.mjs": "bea22302ab7a0787ef353841728375c11afb7b13d3bfae31ef0e30b90787525c",
+    "research/active/cct/pol-1.1-executable/resource-vehicle/resource-vehicle.json": "2c8ef3860af6f1265af2acbc16a5179f8e98c7040f7b0da6aaef34647482a817",
+    "research/active/cct/pol-1.1-executable/resource-vehicle/test.mjs": "d15f1c5900d356c45686b2f4d077b10ab468c45debc09c7da0b17c13f1d79082",
+    "research/active/cct/pol-1.1-executable/test.mjs": "79ed3f833b1b0f57a0f661e755af3ea08f4dfab0c856fb8ed8752d3ba21ebeee",
+    "research/active/cct/publications/build_cct_whitepaper.py": "a87065ff425d4a7999b67f903f7bcb6e11cf7386c99ef9dc400833314cc49993",
+    "research/active/cct/publications/livre-blanc-annexes.md": "fffbd5363143964ff9956155a876d4db122b27126187877a509323934aca8f2b",
+    "research/active/cct/publications/livre-blanc-cct.md": "7af286f90d10d639244207611d7251c383d5b869948c9a94d7c4dff6c5386ea5",
+    "research/active/cct/publications/livre-blanc-frontmatter.md": "39a01f8a89bac9ebee6b995435ed0e5847f14a273348acbcbb0eac16a2d81af7",
+    "research/active/cct/state/last_automation_run.md": "6b8d6ca7bf54b4301c536d235c94a059b5be6a98cb7ee5604cf034f680986200",
+    "research/active/corpus-open-model/state/current_state.md": "52b4cfc064306a63df1c396d6a1444e87cbbe548597e7ca01942e1afced84095",
+    "research/portfolio.json": "5bec2575fa998578a1a6bb61925cc3705b696d7fedeab99bcb86fc8b61c791b8"
+  },
+  "file_groups": {
+    ".codex/config.toml": "deferred",
+    ".codex/environments/environment.toml": "deferred",
+    "CORPUS_ATLAS.md": "deferred",
+    "CORPUS_GAP_MAP.md": "deferred",
+    "CORPUS_REARRANGEMENTS.md": "deferred",
+    "CORPUS_UBUNTU_AUXILIARIES.md": "deferred",
+    "corpus_atlas.json": "deferred",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/00_INSTRUCTIONS_GENERALES_GPT.md": "deferred",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/01_ROUTAGE_REPONSE_ET_ARRET.md": "deferred",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/02_PREUVE_CAUSALITE_ET_INCERTITUDE.md": "deferred",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/03_CAPACITE_POUVOIR_SECURITE_ET_TEMPS.md": "deferred",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/04_RELATIONS_TRANSMISSION_MEMOIRE_ET_RECOURS.md": "deferred",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/05_TRANSFORMATION_RESTE_ET_RETOURNEMENT.md": "deferred",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/06_EXPLORATION_ET_AGENCE_UTILISATEUR.md": "deferred",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/07_CONSCIENCE_IDENTITE_ET_REFUS.md": "deferred",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/08_HISTOIRE_CADRAGE_ET_QUALIFICATION.md": "deferred",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/09_IMAGE_OBSERVABLES_ET_REPRESENTATION.md": "deferred",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/10_TESTS_RIVAUX_ET_ROBUSTESSE.md": "deferred",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/11_CONTINUITE_VERSION_ET_PROVENANCE.md": "deferred",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/12_MAINTENANCE_GOUVERNANCE_ET_REPRISE.md": "deferred",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/13_VALIDATION_ET_LIMITES_DE_L_EXPORT.md": "deferred",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/14_MONDES_MODELES_ECHELLES_ET_TRANSPORT.md": "deferred",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/15_SENSORIUM_DETECTION_ET_COUTS_CACHES.md": "deferred",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/16_SOURCES_LANGUES_MEDIAS_ET_POSITION.md": "deferred",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/17_EXTRACTION_PRIVILEGES_ET_CAPACITES_COLLECTIVES.md": "deferred",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/18_FICTION_EXTERIEURE_AU_CORPUS.md": "deferred",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/Ce_qui_ne_doit_appartenir_a_personne_seul.pdf": "deferred",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/README.md": "deferred",
+    "exports/CORPUS_GPT_AUTONOME_1_6_2/Sommaire_histoire_humaine_non_centree.pdf": "deferred",
+    "research/ADVERSARIAL_MUTATION_EXTRACTION_AUDIT.md": "replication",
+    "research/CORPUS_DEVELOPMENT_WORKFLOW_GAP_AUDIT.md": "research-index",
+    "research/EXTERNAL_INDEPENDENT_REPLICATION_PACKAGE_ADMISSION_CONTRACT.md": "replication",
+    "research/FOE-001_INDEPENDENT_REPLICATION_DIAGNOSTIC.md": "replication",
+    "research/INDEPENDENT_REPLICATION_BUBBLEWRAP_REOBSERVATION_2026-09-05.md": "replication",
+    "research/INDEPENDENT_REPLICATION_HARNESS_REOBSERVATION_2026-09-05.md": "replication",
+    "research/active/cct/external-simple-rival-pilot-v0.1/COLLECTION_DESIGN_DECISION.md": "cct-external-pilot",
+    "research/active/cct/external-simple-rival-pilot-v0.1/README.md": "cct-external-pilot",
+    "research/active/cct/external-simple-rival-pilot-v0.1/action-catalog.json": "cct-external-pilot",
+    "research/active/cct/external-simple-rival-pilot-v0.1/audit-independence.mjs": "cct-external-pilot",
+    "research/active/cct/external-simple-rival-pilot-v0.1/engine-profiles.json": "cct-external-pilot",
+    "research/active/cct/external-simple-rival-pilot-v0.1/evaluate-sensitivity.mjs": "cct-external-pilot",
+    "research/active/cct/external-simple-rival-pilot-v0.1/evaluate.mjs": "cct-external-pilot",
+    "research/active/cct/external-simple-rival-pilot-v0.1/freeze-v0.1.json": "cct-external-pilot",
+    "research/active/cct/external-simple-rival-pilot-v0.1/freeze-v0.2.json": "cct-external-pilot",
+    "research/active/cct/external-simple-rival-pilot-v0.1/freeze.json": "cct-external-pilot",
+    "research/active/cct/external-simple-rival-pilot-v0.1/independence-audit-template.json": "cct-external-pilot",
+    "research/active/cct/external-simple-rival-pilot-v0.1/outcome-engine.mjs": "cct-external-pilot",
+    "research/active/cct/external-simple-rival-pilot-v0.1/protocol.json": "cct-external-pilot",
+    "research/active/cct/external-simple-rival-pilot-v0.1/scenario.json": "cct-external-pilot",
+    "research/active/cct/external-simple-rival-pilot-v0.1/submission-template.json": "cct-external-pilot",
+    "research/active/cct/external-simple-rival-pilot-v0.1/submissions/README.md": "cct-external-pilot",
+    "research/active/cct/external-simple-rival-pilot-v0.1/test-sensitivity.mjs": "cct-external-pilot",
+    "research/active/cct/external-simple-rival-pilot-v0.1/test.mjs": "cct-external-pilot",
+    "research/active/cct/external-simple-rival-pilot-v0.1/verify-freeze.mjs": "cct-external-pilot",
+    "research/active/cct/output/docx/CCT-livre-vert.docx": "cct-publications",
+    "research/active/cct/pol-1.1-executable/arena/test-external-submission.mjs": "cct-contracts",
+    "research/active/cct/pol-1.1-executable/arena/validate-external-submission.mjs": "cct-contracts",
+    "research/active/cct/pol-1.1-executable/minimum-use-case-water-continuity/public-context-admission-matrix-2026-09-05.md": "cct-contracts",
+    "research/active/cct/pol-1.1-executable/verify-contracts.mjs": "cct-contracts",
+    "research/active/cct/publications/README.md": "cct-publications",
+    "research/active/cct/publications/build_cct_green_book.py": "cct-publications",
+    "research/active/cct/publications/livre-vert-cct.md": "cct-publications",
+    "research/active/corpus-open-model/product_query_evaluation_a/README.md": "open-model",
+    "research/active/corpus-open-model/product_query_evaluation_a/baseline.py": "open-model",
+    "research/active/corpus-open-model/product_query_evaluation_a/expectations_v0.1.json": "open-model",
+    "research/active/corpus-open-model/product_query_evaluation_a/pre_execution_manifest_v0.1.json": "open-model",
+    "research/active/corpus-open-model/product_query_evaluation_a/pre_execution_seal_v0.1.json": "open-model",
+    "research/active/corpus-open-model/product_query_evaluation_a/route_inventory_v0.1.json": "open-model",
+    "research/active/corpus-open-model/reports/2026-09-05-product-query-evaluation-a-pipeline-verified.md": "open-model",
+    "research/active/corpus-open-model/tests/test_product_query_evaluation_a_baseline.py": "open-model",
+    "research/active/provenance-interoperability-lab/replication/ADOPTION_REPORT.md": "replication",
+    "research/active/provenance-interoperability-lab/replication/SECOND_IMPLEMENTATION_BRIEF.md": "replication",
+    "research/active/provenance-interoperability-lab/replication/output_contract.json": "replication",
+    "research/active/provenance-interoperability-lab/replication_reference_adapter.py": "replication",
+    "research/active/provenance-interoperability-lab/second_implementation/provenance_independent.py": "replication",
+    "research/active/provenance-interoperability-lab/tests/test_independent_replication.py": "replication",
+    "research/artifacts/foe-001-transversal-campaign-v0.1-2026-09-05/receipt.json": "replication",
+    "research/artifacts/pr22-study-2026-09-13/ETUDE.md": "pr22-study",
+    "research/artifacts/pr22-study-2026-09-13/characterization.tap": "pr22-study",
+    "research/artifacts/pr22-study-2026-09-13/characterization.test.mjs": "pr22-study",
+    "research/artifacts/pr22-study-2026-09-13/manifest.json": "pr22-study",
+    "research/artifacts/pr22-study-2026-09-13/original.tap": "pr22-study",
+    "research/artifacts/pr22-study-2026-09-13/source/CODEX_HANDOFF.md": "pr22-study",
+    "research/artifacts/pr22-study-2026-09-13/source/README.md": "pr22-study",
+    "research/artifacts/pr22-study-2026-09-13/source/adjudication.mjs": "pr22-study",
+    "research/artifacts/pr22-study-2026-09-13/source/test.mjs": "pr22-study",
+    "research/foe_001_replication_adapter.py": "replication",
+    "research/foe_001_transversal_campaign/pre_execution_manifest_v0.1.json": "replication",
+    "research/foe_001_transversal_campaign/pre_execution_seal_v0.1.json": "replication",
+    "research/scripts/check_research_inventory.py": "research-index",
+    "research/scripts/run_foe_001_transversal_campaign.py": "replication",
+    "research/scripts/run_product_query_evaluation_a_v0.py": "open-model",
+    "research/scripts/test_foe_001_independent_replication.py": "replication",
+    "research/scripts/test_run_foe_001_transversal_campaign.py": "replication",
+    "research/PORTFOLIO_NEXT_STEP.md": "research-index",
+    "research/README.md": "research-index",
+    "research/active/README.md": "research-index",
+    "research/active/cct/output/docx/CCT-livre-blanc.docx": "cct-publications",
+    "research/active/cct/output/pdf/CCT-livre-blanc.pdf": "cct-publications",
+    "research/active/cct/pol-1.1-executable/README.md": "cct-contracts",
+    "research/active/cct/pol-1.1-executable/arena/README.md": "cct-contracts",
+    "research/active/cct/pol-1.1-executable/cct-sky/test.mjs": "cct-contracts",
+    "research/active/cct/pol-1.1-executable/contract.mjs": "cct-contracts",
+    "research/active/cct/pol-1.1-executable/minimum-use-case-water-continuity/README.md": "cct-contracts",
+    "research/active/cct/pol-1.1-executable/minimum-use-case-water-continuity/test.mjs": "cct-contracts",
+    "research/active/cct/pol-1.1-executable/resource-vehicle/contract.mjs": "cct-contracts",
+    "research/active/cct/pol-1.1-executable/resource-vehicle/resource-vehicle.json": "cct-contracts",
+    "research/active/cct/pol-1.1-executable/resource-vehicle/test.mjs": "cct-contracts",
+    "research/active/cct/pol-1.1-executable/test.mjs": "cct-contracts",
+    "research/active/cct/publications/build_cct_whitepaper.py": "cct-publications",
+    "research/active/cct/publications/livre-blanc-annexes.md": "cct-publications",
+    "research/active/cct/publications/livre-blanc-cct.md": "cct-publications",
+    "research/active/cct/publications/livre-blanc-frontmatter.md": "cct-publications",
+    "research/active/cct/state/last_automation_run.md": "cct-history",
+    "research/active/corpus-open-model/state/current_state.md": "open-model",
+    "research/portfolio.json": "research-index"
+  }
+}

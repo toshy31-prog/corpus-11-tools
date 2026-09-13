@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: requires the same dominance across every registered engine
+ok 1 - requires the same dominance across every registered engine
+  ---
+  duration_ms: 0.827598
+  ...
+# Subtest: reports dependence on the model instead of selecting a winner
+ok 2 - reports dependence on the model instead of selecting a winner
+  ---
+  duration_ms: 0.096616
+  ...
+# Subtest: exposes opposite winners as a contradiction across engines
+ok 3 - exposes opposite winners as a contradiction across engines
+  ---
+  duration_ms: 0.080088
+  ...
+# Subtest: fails closed when any engine rejects the packet
+ok 4 - fails closed when any engine rejects the packet
+  ---
+  duration_ms: 0.160989
+  ...
+# Subtest: executes the same external packet through all frozen profiles
+ok 5 - executes the same external packet through all frozen profiles
+  ---
+  duration_ms: 1.277699
+  ...
+# Subtest: admits a CCT result only when it is noncompensatorily dominant
+ok 6 - admits a CCT result only when it is noncompensatorily dominant
+  ---
+  duration_ms: 1.994325
+  ...
+# Subtest: keeps crossed advantages inconclusive
+ok 7 - keeps crossed advantages inconclusive
+  ---
+  duration_ms: 0.256388
+  ...
+# Subtest: rejects a shared author or collection root
+ok 8 - rejects a shared author or collection root
+  ---
+  duration_ms: 0.22085
+  ...
+# Subtest: rejects shared organizational, funding or implementation roots
+ok 9 - rejects shared organizational, funding or implementation roots
+  ---
+  duration_ms: 0.33681
+  ...
+# Subtest: rejects fixtures, unmatched budgets and forged outcomes
+ok 10 - rejects fixtures, unmatched budgets and forged outcomes
+  ---
+  duration_ms: 1.200636
+  ...
+# Subtest: fails closed without a separated evidence-backed audit
+ok 11 - fails closed without a separated evidence-backed audit
+  ---
+  duration_ms: 0.375578
+  ...
+# Subtest: enforces material and information budgets under the adverse supply bound
+ok 12 - enforces material and information budgets under the adverse supply bound
+  ---
+  duration_ms: 0.192757
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 106.174786

@@ -1,0 +1,8 @@
+test_baseline_does_not_embed_query_identifiers_or_case_names (__main__.ProductQueryABaselineTests.test_baseline_does_not_embed_query_identifiers_or_case_names) ... ok
+test_expectations_are_complete_but_do_not_contain_factual_conclusions (__main__.ProductQueryABaselineTests.test_expectations_are_complete_but_do_not_contain_factual_conclusions) ... ok
+test_six_closed_categories_have_multilingual_lexical_anchors (__main__.ProductQueryABaselineTests.test_six_closed_categories_have_multilingual_lexical_anchors) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.001s
+
+OK

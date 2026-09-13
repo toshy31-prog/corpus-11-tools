@@ -1,0 +1,130 @@
+TAP version 13
+# Subtest: H1: index présent, octets absents : PASS sans lecture
+ok 1 - H1: index présent, octets absents : PASS sans lecture
+  ---
+  duration_ms: 1.029814
+  ...
+# Subtest: H2: octets présents, décodeur absent : PASS
+ok 2 - H2: octets présents, décodeur absent : PASS
+  ---
+  duration_ms: 0.103307
+  ...
+# Subtest: H3: paquet réduit sans incertitude ni observations : PASS
+ok 3 - H3: paquet réduit sans incertitude ni observations : PASS
+  ---
+  duration_ms: 0.099903
+  ...
+# Subtest: H4: changement de seuil possible à partir de la valeur gardée
+ok 4 - H4: changement de seuil possible à partir de la valeur gardée
+  ---
+  duration_ms: 0.084852
+  ...
+# Subtest: H5: une moyenne identique ne permet pas de reconstruire le maximum
+ok 5 - H5: une moyenne identique ne permet pas de reconstruire le maximum
+  ---
+  duration_ms: 0.109682
+  ...
+# Subtest: H6: désaccord des observateurs absent du résultat conservé
+ok 6 - H6: désaccord des observateurs absent du résultat conservé
+  ---
+  duration_ms: 0.081468
+  ...
+# Subtest: H7: source perdue après promotion : ancien PASS inchangé
+ok 7 - H7: source perdue après promotion : ancien PASS inchangé
+  ---
+  duration_ms: 0.6514
+  ...
+# Subtest: H8: irréversibilité bornée sans provenance : rejet inconditionnel
+ok 8 - H8: irréversibilité bornée sans provenance : rejet inconditionnel
+  ---
+  duration_ms: 0.111467
+  ...
+# Subtest: A1: hash ne correspondant pas aux octets : PASS
+ok 9 - A1: hash ne correspondant pas aux octets : PASS
+  ---
+  duration_ms: 0.15964
+  ...
+# Subtest: A2: verdict falsifié après calcul FAIL : promu PASS
+ok 10 - A2: verdict falsifié après calcul FAIL : promu PASS
+  ---
+  duration_ms: 0.114369
+  ...
+# Subtest: A3: valeur fournie contradictoire avec le paquet : PASS
+ok 11 - A3: valeur fournie contradictoire avec le paquet : PASS
+  ---
+  duration_ms: 0.107398
+  ...
+# Subtest: A4: entrée NaN invalide : PASS
+ok 12 - A4: entrée NaN invalide : PASS
+  ---
+  duration_ms: 0.075009
+  ...
+# Subtest: A4: entrée null invalide : PASS
+ok 13 - A4: entrée null invalide : PASS
+  ---
+  duration_ms: 0.044614
+  ...
+# Subtest: A4: entrée texte invalide : PASS
+ok 14 - A4: entrée texte invalide : PASS
+  ---
+  duration_ms: 0.035873
+  ...
+# Subtest: A4: entrée seuil absent invalide : PASS
+ok 15 - A4: entrée seuil absent invalide : PASS
+  ---
+  duration_ms: 0.044664
+  ...
+# Subtest: A5: suppression du bloc de réversibilité contourne le résolveur
+ok 16 - A5: suppression du bloc de réversibilité contourne le résolveur
+  ---
+  duration_ms: 0.065327
+  ...
+# Subtest: A6: résolveur asynchrone retournant false accepté comme vrai
+ok 17 - A6: résolveur asynchrone retournant false accepté comme vrai
+  ---
+  duration_ms: 0.132929
+  ...
+# Subtest: A7: exception du résolveur non convertie en statut
+ok 18 - A7: exception du résolveur non convertie en statut
+  ---
+  duration_ms: 0.380935
+  ...
+# Subtest: adjudication preserves source material and records its compression
+ok 19 - adjudication preserves source material and records its compression
+  ---
+  duration_ms: 2.475665
+  ...
+# Subtest: the same preserved packet can be replayed under another threshold
+ok 20 - the same preserved packet can be replayed under another threshold
+  ---
+  duration_ms: 0.119884
+  ...
+# Subtest: dead provenance invalidates an otherwise successful verdict
+ok 21 - dead provenance invalidates an otherwise successful verdict
+  ---
+  duration_ms: 0.176133
+  ...
+# Subtest: declared resolvability without a resolver is itself an invalid epistemic state
+ok 22 - declared resolvability without a resolver is itself an invalid epistemic state
+  ---
+  duration_ms: 0.081991
+  ...
+# Subtest: resolvable material allows audited promotion
+ok 23 - resolvable material allows audited promotion
+  ---
+  duration_ms: 0.104276
+  ...
+# Subtest: removing provenance is rejected rather than silently treated as evidence
+ok 24 - removing provenance is rejected rather than silently treated as evidence
+  ---
+  duration_ms: 0.177176
+  ...
+1..24
+# tests 24
+# suites 0
+# pass 24
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 114.203897

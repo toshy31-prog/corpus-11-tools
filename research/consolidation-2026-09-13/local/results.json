@@ -1,0 +1,87 @@
+[
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "log": "00.log"
+  },
+  {
+    "command": [
+      "python3",
+      "research/scripts/check_research_inventory.py"
+    ],
+    "exit_code": 0,
+    "log": "01.log"
+  },
+  {
+    "command": [
+      "node",
+      "research/active/cct/pol-1.1-executable/verify-contracts.mjs"
+    ],
+    "exit_code": 0,
+    "log": "02.log"
+  },
+  {
+    "command": [
+      "node",
+      "research/active/cct/external-simple-rival-pilot-v0.1/verify-freeze.mjs"
+    ],
+    "exit_code": 0,
+    "log": "03.log"
+  },
+  {
+    "command": [
+      "node",
+      "--test",
+      "research/active/cct/external-simple-rival-pilot-v0.1/test.mjs",
+      "research/active/cct/external-simple-rival-pilot-v0.1/test-sensitivity.mjs"
+    ],
+    "exit_code": 0,
+    "log": "04.log"
+  },
+  {
+    "command": [
+      "python3",
+      "research/scripts/test_foe_001_independent_replication.py"
+    ],
+    "exit_code": 0,
+    "log": "05.log"
+  },
+  {
+    "command": [
+      "python3",
+      "research/scripts/test_run_foe_001_transversal_campaign.py"
+    ],
+    "exit_code": 0,
+    "log": "06.log"
+  },
+  {
+    "command": [
+      "python3",
+      "research/active/provenance-interoperability-lab/tests/test_independent_replication.py"
+    ],
+    "exit_code": 0,
+    "log": "07.log"
+  },
+  {
+    "command": [
+      "python3",
+      "research/active/corpus-open-model/tests/test_product_query_evaluation_a_baseline.py"
+    ],
+    "exit_code": 0,
+    "log": "08.log"
+  },
+  {
+    "command": [
+      "node",
+      "--test",
+      "research/artifacts/pr22-study-2026-09-13/source/test.mjs",
+      "research/artifacts/pr22-study-2026-09-13/characterization.test.mjs"
+    ],
+    "exit_code": 0,
+    "log": "09.log"
+  }
+]
