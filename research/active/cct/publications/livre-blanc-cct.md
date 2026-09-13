@@ -40,6 +40,8 @@ La citoyenneté ne peut pas dépendre d’un guichet unique, d’une identité n
 
 Ces droits doivent être portables. Une personne confrontée à une fermeture locale, à une capture administrative ou à une violence majoritaire doit pouvoir saisir un interlocuteur extérieur sans demander la permission de l’autorité qu’elle conteste. Cette porte extérieure doit ouvrir une aide concrète, pas seulement enregistrer une plainte.
 
+Cette exigence ne prouve pas l’efficacité du recours. Son évaluation distingue la réponse obtenue, la mesure décidée, son exécution et la correction constatée par les personnes concernées. Un conflit de responsabilité débloqué ne démontre pas, à lui seul, la capacité de faire agir une autorité qui refuse délibérément de corriger le dommage.
+
 La continuité doit aussi survivre aux pannes. Les services vitaux conservent des voies locales ou analogiques, des moyens de traduction, des preuves de présence minimales et des procédures de réconciliation qui n’ajoutent pas de sanction à la personne lorsque l’infrastructure échoue. Une architecture qui protège les droits seulement dans son mode normal ne les protège pas encore.
 
 ## 4. Une économie pour l’usage et l’autonomie
@@ -153,6 +155,14 @@ Ces corrections ont une conséquence simple : aucun résultat favorable ne peut 
 Les tests de scénarios ont également forcé à écrire ce qui manquait : voies hors ligne pour les droits vitaux, protocole public de pénurie, registre des dépendances effectives, budget de charge constitutionnelle, extinction séparée des pouvoirs temporaires et épreuve composée de plusieurs garanties simultanées.
 
 Leur valeur est négative autant que positive. Ils ont rendu certaines prétentions moins soutenables et certaines conditions de perte plus précises. Ils n’ont pas établi le fonctionnement d’une société réelle.
+
+Les confrontations documentaires menées le 13 septembre 2026 ont ajouté une autre limite. Dans l’exercice rétrospectif sur ACT Health, la lecture du texte CCT n’a fourni aucune prévision directionnelle sur le temps d’attente dans les centres de santé. L’absence de réduction établie dans les résultats consultés ne transforme pas cette abstention en réussite. Aucun avantage décisionnel comparatif n’a été démontré par cet exercice. Les règles CCT peuvent écarter certaines options, mais les comparaisons effectuées sur les besoins vitaux et la continuité des services n’ont pas établi de choix distinct des références extérieures examinées. Voir la [confrontation ACT Health et l’examen des règles de décision](../../../artifacts/cct-act-health-decision-2026-09-13.md).
+
+La lecture du dossier Grenfell n’a pas établi de fait décisif que seule la CCT aurait permis de découvrir. Des avertissements techniques et des critiques de gestion existaient avant l’incendie. Le problème de leur transmission et de leur traduction en actes ne se résout pas par l’ajout d’une formulation théorique. Des cas publiés par des médiateurs montrent ensuite qu’un recours extérieur peut débloquer une correction, mais aussi qu’une réponse ou une annonce de travaux ne suffit pas à l’établir. Ces récits ne mesurent ni l’effet moyen des recours ni la supériorité de la CCT. Voir la [confrontation Grenfell et les cas de recours](../../../artifacts/cct-grenfell-apport-decisionnel-2026-09-13.md).
+
+Ces travaux utilisent des sources produites hors du corpus ; leur sélection et leur interprétation restent réalisées dans cette recherche. Ils ne constituent pas la contre-évaluation indépendante recherchée. Une utilité propre de la CCT reste à démontrer face à des approches sérieuses existantes, sans assimiler compatibilité après coup, décision explicite, nouveauté et efficacité.
+
+Le [bilan des confrontations publiques](bilan-confrontations-publiques-2026-09-13.md) rassemble les six notes, leurs verdicts et les conditions de reprise. Il distingue la consolidation documentaire de cette série de la validation empirique encore à obtenir.
 
 ## 18. Les mécanismes exécutables : une aide, pas une substitution
 
