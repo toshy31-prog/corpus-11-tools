@@ -1,0 +1,44 @@
+{
+  "pr": 22,
+  "head": "ffb7bd6f41581168b05dd8851693a1369fa53f5e",
+  "remote_base_at_review": "414ef0edaf7b20bb187c4aa181987b7799ff63c3",
+  "local_head": "0b3cd740c25e6fb63ccb2e6ed4e844fe0be8328b",
+  "node": "v18.19.1",
+  "independence": "independence_unknown",
+  "source_sha256": {
+    "adjudication.mjs": "402650f8b2074fed43a04024bf30f7f79ade50fe62192afe40e3acdf0fd67e26",
+    "README.md": "d42fa679ae6717da1229d806c2e6e10bc54727902c18a58a9bfa8f6ecbf739b5",
+    "test.mjs": "de7805fe5aa1ac4307ee228c9eee074bcf42f3e06240b0b00e99f99b1b570158",
+    "CODEX_HANDOFF.md": "66161cfdf6c92c2f8c86231ab05e85def77be10667896364ad9dbbf8910af3a6"
+  },
+  "architecture": [
+    {
+      "path": "skills/corpus-11-routing/references/epistemic-governance.md",
+      "local_sha256": "90fcc51f7e5f161861f25b559a0215c76ca13d0acbfcfd560e8f3fcf06574d7b",
+      "installed_present": true,
+      "installed_sha256": "90fcc51f7e5f161861f25b559a0215c76ca13d0acbfcfd560e8f3fcf06574d7b",
+      "identical": true
+    },
+    {
+      "path": "labs/epistemic-trajectory/trajectory.mjs",
+      "local_sha256": "bbc65522083f2f5dd30ec0f333f16bcb16b4dd3c731a145b61cae714c04e6064",
+      "installed_present": true,
+      "installed_sha256": "bbc65522083f2f5dd30ec0f333f16bcb16b4dd3c731a145b61cae714c04e6064",
+      "identical": true
+    },
+    {
+      "path": "labs/experiment-lab/governance/execution-closure.mjs",
+      "local_sha256": "f395b2b3b11c248e91e42a199f327908ccc8cc46a1aa7ac2c3e4ecaaf2b87467",
+      "installed_present": true,
+      "installed_sha256": "f395b2b3b11c248e91e42a199f327908ccc8cc46a1aa7ac2c3e4ecaaf2b87467",
+      "identical": true
+    },
+    {
+      "path": "labs/python/corpus_labs/event_store.py",
+      "local_sha256": "cc0bcdada27fe6701afc309184c60bcd84fc93221fda03e5a285d283f53a8ecb",
+      "installed_present": true,
+      "installed_sha256": "cc0bcdada27fe6701afc309184c60bcd84fc93221fda03e5a285d283f53a8ecb",
+      "identical": true
+    }
+  ]
+}

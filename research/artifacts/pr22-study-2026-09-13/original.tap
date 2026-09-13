@@ -1,0 +1,40 @@
+TAP version 13
+# Subtest: adjudication preserves source material and records its compression
+ok 1 - adjudication preserves source material and records its compression
+  ---
+  duration_ms: 2.180674
+  ...
+# Subtest: the same preserved packet can be replayed under another threshold
+ok 2 - the same preserved packet can be replayed under another threshold
+  ---
+  duration_ms: 0.129103
+  ...
+# Subtest: dead provenance invalidates an otherwise successful verdict
+ok 3 - dead provenance invalidates an otherwise successful verdict
+  ---
+  duration_ms: 0.193261
+  ...
+# Subtest: declared resolvability without a resolver is itself an invalid epistemic state
+ok 4 - declared resolvability without a resolver is itself an invalid epistemic state
+  ---
+  duration_ms: 0.095192
+  ...
+# Subtest: resolvable material allows audited promotion
+ok 5 - resolvable material allows audited promotion
+  ---
+  duration_ms: 0.112878
+  ...
+# Subtest: removing provenance is rejected rather than silently treated as evidence
+ok 6 - removing provenance is rejected rather than silently treated as evidence
+  ---
+  duration_ms: 0.164898
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 89.302825

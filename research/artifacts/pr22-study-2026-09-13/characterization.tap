@@ -1,0 +1,100 @@
+TAP version 13
+# Subtest: H1: index présent, octets absents : PASS sans lecture
+ok 1 - H1: index présent, octets absents : PASS sans lecture
+  ---
+  duration_ms: 0.95046
+  ...
+# Subtest: H2: octets présents, décodeur absent : PASS
+ok 2 - H2: octets présents, décodeur absent : PASS
+  ---
+  duration_ms: 0.108975
+  ...
+# Subtest: H3: paquet réduit sans incertitude ni observations : PASS
+ok 3 - H3: paquet réduit sans incertitude ni observations : PASS
+  ---
+  duration_ms: 0.100989
+  ...
+# Subtest: H4: changement de seuil possible à partir de la valeur gardée
+ok 4 - H4: changement de seuil possible à partir de la valeur gardée
+  ---
+  duration_ms: 0.088541
+  ...
+# Subtest: H5: une moyenne identique ne permet pas de reconstruire le maximum
+ok 5 - H5: une moyenne identique ne permet pas de reconstruire le maximum
+  ---
+  duration_ms: 0.117769
+  ...
+# Subtest: H6: désaccord des observateurs absent du résultat conservé
+ok 6 - H6: désaccord des observateurs absent du résultat conservé
+  ---
+  duration_ms: 0.077432
+  ...
+# Subtest: H7: source perdue après promotion : ancien PASS inchangé
+ok 7 - H7: source perdue après promotion : ancien PASS inchangé
+  ---
+  duration_ms: 0.624295
+  ...
+# Subtest: H8: irréversibilité bornée sans provenance : rejet inconditionnel
+ok 8 - H8: irréversibilité bornée sans provenance : rejet inconditionnel
+  ---
+  duration_ms: 0.147286
+  ...
+# Subtest: A1: hash ne correspondant pas aux octets : PASS
+ok 9 - A1: hash ne correspondant pas aux octets : PASS
+  ---
+  duration_ms: 0.166371
+  ...
+# Subtest: A2: verdict falsifié après calcul FAIL : promu PASS
+ok 10 - A2: verdict falsifié après calcul FAIL : promu PASS
+  ---
+  duration_ms: 0.108341
+  ...
+# Subtest: A3: valeur fournie contradictoire avec le paquet : PASS
+ok 11 - A3: valeur fournie contradictoire avec le paquet : PASS
+  ---
+  duration_ms: 0.090192
+  ...
+# Subtest: A4: entrée NaN invalide : PASS
+ok 12 - A4: entrée NaN invalide : PASS
+  ---
+  duration_ms: 0.06869
+  ...
+# Subtest: A4: entrée null invalide : PASS
+ok 13 - A4: entrée null invalide : PASS
+  ---
+  duration_ms: 0.044811
+  ...
+# Subtest: A4: entrée texte invalide : PASS
+ok 14 - A4: entrée texte invalide : PASS
+  ---
+  duration_ms: 0.0353
+  ...
+# Subtest: A4: entrée seuil absent invalide : PASS
+ok 15 - A4: entrée seuil absent invalide : PASS
+  ---
+  duration_ms: 0.127619
+  ...
+# Subtest: A5: suppression du bloc de réversibilité contourne le résolveur
+ok 16 - A5: suppression du bloc de réversibilité contourne le résolveur
+  ---
+  duration_ms: 0.065058
+  ...
+# Subtest: A6: résolveur asynchrone retournant false accepté comme vrai
+ok 17 - A6: résolveur asynchrone retournant false accepté comme vrai
+  ---
+  duration_ms: 0.133623
+  ...
+# Subtest: A7: exception du résolveur non convertie en statut
+ok 18 - A7: exception du résolveur non convertie en statut
+  ---
+  duration_ms: 0.352553
+  ...
+1..18
+# tests 18
+# suites 0
+# pass 18
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 89.434383
