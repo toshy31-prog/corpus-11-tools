@@ -60,5 +60,12 @@
   `57,1 %` sur 56 triplets équilibrés, après sélection validation BCE `0,6026`.
   Le scoreur textuel de triplets est `not_selected`; le graphe déclaré actuel
   est trop petit et synthétique pour établir cette discrimination.
-- **Prochain seuil :** jeu indépendant pré-enregistré de requêtes ambiguës,
-  adversariales et multilingues ; audit de licence avant toute diffusion.
+- **Évaluation A des requêtes produit v0.1 :** `pipeline_verified` sur les 18
+  requêtes synthétiques pré-enregistrées : le baseline lexical fermé produit
+  exactement `route`, `scope_limit` et `withdrawal_condition`, sans conclusion
+  factuelle. La trace est archivée dans
+  `reports/2026-09-05-product-query-evaluation-a-pipeline-verified.md`.
+- **Clôture :** aucune intégration au plugin, aucun réglage et aucune relance de
+  ce jeu observé. Un prochain travail exige un candidat de routeur réellement
+  distinct et un nouveau jeu indépendant gelé avant comparaison ; il ne peut
+  pas ajuster le baseline actuel.

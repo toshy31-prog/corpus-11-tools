@@ -1,0 +1,31 @@
+{
+  "schema": "product-query-evaluation-a-pre-execution-manifest/v1",
+  "campaign_id": "PRODUCT-QUERY-EVALUATION-A-v0.1-closed-lexical-baseline",
+  "status": "sealed_before_execution",
+  "execution_limit": 1,
+  "protocol": {"id": "PRODUCT-QUERY-EVALUATION", "version": "0.1"},
+  "baseline": {
+    "id": "closed-multilingual-lexical-baseline-v0.1",
+    "route_count": 6,
+    "query_count": 18,
+    "description": "Deterministic lexical anchors and predeclared multilingual templates; not a model or general router."
+  },
+  "environment": {"python_implementation": "CPython", "python_version": "3.12.3", "dependencies": []},
+  "files": {
+    "research/PRODUCT_QUERY_EVALUATION_PROTOCOL_v0.1.md": "7db15a1e81b3fa863feb51a1dfd7b1a764aff00aa8625f8d96fe68813288b1f3",
+    "research/fixtures/product_query_evaluation_v0.1.json": "285e3a8e0a83b10af182d056750c24dc965c4941516a1686aa6e8cdafba6cd3b",
+    "research/active/corpus-open-model/product_query_evaluation_a/baseline.py": "72700e6a02f285e2b254fcce6ea5c219b8453dcd223ff36b5377b4233502a7ca",
+    "research/active/corpus-open-model/product_query_evaluation_a/route_inventory_v0.1.json": "9d0d5bdb9346c2061dc6b3acab5b4361cdeb5c9364d50cb860cfed1d43f5f755",
+    "research/active/corpus-open-model/product_query_evaluation_a/expectations_v0.1.json": "91257b3fb77f864c7de5b334fc47008f3815c5f4781b9530d296045e230d29f3",
+    "research/scripts/run_product_query_evaluation_a_v0.py": "dae0bbb7029fd4c56bc6092a2682b9efe93be84c656bd5e6953aadb2ea4711a7"
+  },
+  "prohibitions": {
+    "network": true,
+    "training": true,
+    "tuning_after_observation": true,
+    "factual_conclusion": true,
+    "plugin_integration": true,
+    "external_claim": true
+  },
+  "withdrawal_condition": "Stop at the first changed sealed input, environment mismatch, missing route template, expectation divergence, incomplete output, or factual conclusion."
+}

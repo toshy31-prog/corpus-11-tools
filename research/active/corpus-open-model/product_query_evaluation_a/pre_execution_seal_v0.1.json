@@ -1,0 +1,7 @@
+{
+  "schema": "product-query-evaluation-a-seal/v1",
+  "campaign_id": "PRODUCT-QUERY-EVALUATION-A-v0.1-closed-lexical-baseline",
+  "sealed_before_execution": true,
+  "manifest_sha256": "66de670802f4d128724cb4c3ddb4a376ad27a77be2bc897695125b1821f84a7b",
+  "scope": "One local deterministic execution of 18 frozen synthetic queries; no network, training, tuning, plugin integration, external claim, or factual conclusion."
+}

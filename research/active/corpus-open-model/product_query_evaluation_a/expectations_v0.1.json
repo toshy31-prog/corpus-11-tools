@@ -1,0 +1,23 @@
+{
+  "schema": "product-query-evaluation-a-expectations/v1",
+  "outputs": [
+    {"query_id":"A1-fr","route":"declared_scope_ambiguity","scope_limit":"Portée limitée à savoir si S2 concerne N1.","withdrawal_condition":"Retirer toute conclusion positive si S2 ne peut être rattachée à N1."},
+    {"query_id":"A1-en","route":"declared_scope_ambiguity","scope_limit":"Scope limited to whether S2 concerns N1.","withdrawal_condition":"Withdraw any positive conclusion if S2 cannot be tied to N1."},
+    {"query_id":"A1-de","route":"declared_scope_ambiguity","scope_limit":"Geltungsbereich beschränkt auf die Frage, ob S2 N1 betrifft.","withdrawal_condition":"Jede positive Schlussfolgerung zurückziehen, wenn S2 nicht N1 zugeordnet werden kann."},
+    {"query_id":"A2-fr","route":"declared_attribution_ambiguity","scope_limit":"Portée limitée à l’attribution absente de S2.","withdrawal_condition":"Retirer toute conclusion positive tant que l’attribution de S2 manque."},
+    {"query_id":"A2-en","route":"declared_attribution_ambiguity","scope_limit":"Scope limited to the absent attribution of S2.","withdrawal_condition":"Withdraw any positive conclusion while attribution of S2 is absent."},
+    {"query_id":"A2-de","route":"declared_attribution_ambiguity","scope_limit":"Geltungsbereich beschränkt auf die fehlende Zuschreibung von S2.","withdrawal_condition":"Jede positive Schlussfolgerung zurückziehen, solange die Zuschreibung von S2 fehlt."},
+    {"query_id":"D1-fr","route":"declared_shared_generator","scope_limit":"Portée limitée au générateur commun G-shared.","withdrawal_condition":"Retirer toute conclusion positive lorsque les sources partagent un générateur."},
+    {"query_id":"D1-en","route":"declared_shared_generator","scope_limit":"Scope limited to shared generator G-shared.","withdrawal_condition":"Withdraw any positive conclusion when sources share a generator."},
+    {"query_id":"D1-de","route":"declared_shared_generator","scope_limit":"Geltungsbereich beschränkt auf den gemeinsamen Generator G-shared.","withdrawal_condition":"Jede positive Schlussfolgerung zurückziehen, wenn Quellen einen Generator teilen."},
+    {"query_id":"D2-fr","route":"declared_shared_failure_mode","scope_limit":"Portée limitée au mode d’échec commun F-shared.","withdrawal_condition":"Retirer toute conclusion positive lorsque les sources partagent un mode d’échec."},
+    {"query_id":"D2-en","route":"declared_shared_failure_mode","scope_limit":"Scope limited to shared failure mode F-shared.","withdrawal_condition":"Withdraw any positive conclusion when sources share a failure mode."},
+    {"query_id":"D2-de","route":"declared_shared_failure_mode","scope_limit":"Geltungsbereich beschränkt auf den gemeinsamen Fehlermodus F-shared.","withdrawal_condition":"Jede positive Schlussfolgerung zurückziehen, wenn Quellen einen Fehlermodus teilen."},
+    {"query_id":"D3-fr","route":"declared_withdrawal_condition","scope_limit":"Portée limitée à l’indépendance continue des deux sources.","withdrawal_condition":"Retirer toute conclusion positive si l’indépendance cesse ou n’est pas établie."},
+    {"query_id":"D3-en","route":"declared_withdrawal_condition","scope_limit":"Scope limited to the continuing independence of the two sources.","withdrawal_condition":"Withdraw any positive conclusion if independence ceases or is not established."},
+    {"query_id":"D3-de","route":"declared_withdrawal_condition","scope_limit":"Geltungsbereich beschränkt auf die fortbestehende Unabhängigkeit der zwei Quellen.","withdrawal_condition":"Jede positive Schlussfolgerung zurückziehen, wenn die Unabhängigkeit endet oder nicht belegt ist."},
+    {"query_id":"M1-fr","route":"declared_multilingual_shared_generator","scope_limit":"Portée limitée au générateur commun G-shared malgré les langues distinctes.","withdrawal_condition":"Retirer toute conclusion positive lorsque les sources partagent un générateur."},
+    {"query_id":"M1-en","route":"declared_multilingual_shared_generator","scope_limit":"Scope limited to shared generator G-shared despite distinct languages.","withdrawal_condition":"Withdraw any positive conclusion when sources share a generator."},
+    {"query_id":"M1-de","route":"declared_multilingual_shared_generator","scope_limit":"Geltungsbereich beschränkt auf den gemeinsamen Generator G-shared trotz verschiedener Sprachen.","withdrawal_condition":"Jede positive Schlussfolgerung zurückziehen, wenn Quellen einen Generator teilen."}
+  ]
+}
