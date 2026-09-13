@@ -54,6 +54,34 @@ précisent les matériaux acquis et les limites restant ouvertes.
 
 ## Pré-enregistrement requis avant ouverture
 
+### Distinguer fonctionnement, accès, usage et déclaration
+
+Complément de conception du 13 septembre 2026, motivé par la
+[confrontation documentaire WASH en Inde](../../../../artifacts/cct-wash-inde-resultats-2026-09-13.md).
+Il ne modifie aucun protocole gelé et ne transpose pas les effets scolaires
+à un réseau d'eau.
+
+Avant la collecte, distinguer quatre observations : équipement fonctionnel,
+service effectivement accessible, usage agrégé et expérience déclarée. Pour
+chacune, fixer événement, unité, population de référence, dénominateur, fenêtre,
+mode de collecte et incertitude. Des déclarations portant sur « la dernière
+fois » ne sont pas directement comparables à une observation sur deux heures.
+Ne pas additionner ces mesures ni retenir après coup la plus favorable.
+
+Une divergence déclenche l'examen des fenêtres, des obstacles d'accès et des
+limites de mesure ; elle ne prouve pas que les usagers mentent. L'observation
+n'est pas infaillible : créneau peu représentatif et présence de l'observateur
+peuvent modifier le constat. Toute collecte reste consentie selon le protocole,
+minimisée et sans suivi nominatif des usages.
+
+Une hausse de consommation n'est pas un objectif universel. Une capacité sûre
+et accessible peut être utile sans hausse d'usage ; un bénéfice vécu exige ses
+propres observations. Fixer aussi une fenêtre après retrait du soutien
+exceptionnel avant de revendiquer une capacité durable. À défaut, borner le
+résultat à la période où le soutien demeure actif.
+
+### Informations à fixer
+
 1. Baseline, période de référence, site(s), exclusions et conditions non
    comparables.
 2. Seuils locaux de service acceptable et délais de secours, décidés par les
