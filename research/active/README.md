@@ -4,6 +4,20 @@ Cet index sépare les recherches par **objet à observer**, et non par les outil
 Corpus qu’elles peuvent employer. Une simulation, un audit ou un produit ne
 constitue pas à lui seul une validation de l’objet recherché.
 
+## Périmètre de l'index
+
+- `research/active/` établit la présence physique. Tous ses dossiers de premier
+  niveau apparaissent dans cet index, soit comme recherche, soit comme
+  infrastructure R&D active.
+- Ce README est un index humain. Il n'attribue aucun statut scientifique et
+  liste les extensions imbriquées séparément de leur projet parent.
+- [`../portfolio.json`](../portfolio.json) gouverne seulement les dossiers qui
+  déclarent un état courant, une portée, une prochaine décision, un blocage et
+  des contrôles sûrs fermés. Il peut donc avoir un périmètre différent.
+- `cinema-indexability/` est physiquement présent et indexé ici, mais reste
+  explicitement hors du portefeuille gouverné tant qu'il ne possède ni
+  `state/current_state.md` ni contrôle sûr déclaré.
+
 | Recherche | Objet propre | Premier résultat qui compte | Ne pas confondre avec |
 | --- | --- | --- | --- |
 | [`corpus-hypotheses/`](corpus-hypotheses/) | structures formelles de récupération, désinscription, orientation et factorisation | observable qui discrimine un mécanisme d’un contrôle rival | une loi physique ou une propriété injectée dans le jouet |
@@ -27,9 +41,21 @@ constitue pas à lui seul une validation de l’objet recherché.
 | [`epistemic-diversity-and-common-mode-failure-lab/`](epistemic-diversity-and-common-mode-failure-lab/) | indépendance réelle entre agents | erreur non répliquée par des voies appariées | diversité nominale |
 | [`research-interruptibility-and-recovery-lab/`](research-interruptibility-and-recovery-lab/) | arrêt et reprise de recherche | récupération de preuve et de décision après interruption | sauvegarde de fichiers seule |
 | [`portfolio-option-value-lab/`](portfolio-option-value-lab/) | allocation réversible du portefeuille | changement de priorité qui améliore une décision | nombre de dossiers ouverts |
+| [`cinema-indexability/`](cinema-indexability/) | couplage entre forme située et circulation transnationale des films | comparaison qui départage effet d'infrastructure et sélection du corpus | une preuve de pivot historique ou une hiérarchie esthétique |
 | [`corpus-open-model/`](corpus-open-model/) | noyau IA open source structuré par les carriers Corpus | routage et provenance vérifiables sans LLM | entraînement implicite sur l'ensemble du dépôt |
+
+## Infrastructure R&D active
+
+| Dossier | Fonction | Statut d'index | Ne pas confondre avec |
+| --- | --- | --- | --- |
+| [`model-response-comparison-harness/`](model-response-comparison-harness/) | sceller, anonymiser et comparer des réponses importées, puis vérifier une restitution locale | dossier physique indexé et projet gouverné par `portfolio.json`, mais classé ici comme instrument R&D plutôt que recherche scientifique autonome | un lanceur de modèles, une API, une surface intégrée au plugin ou une validation utilisateur |
 
 ## Règle de circulation
 
 Un résultat local demeure dans son dossier. Seule une primitive générique,
 testée au-delà de ce contexte, peut être proposée dans [`../../transfers/`](../../transfers/).
+
+Le contrôle documentaire minimal s'exécute avec
+`python3 research/scripts/check_research_inventory.py`. Il compare uniquement
+présences, inclusions, exclusions et assertions littérales déjà déclarées ; il
+ne décide aucun statut scientifique.

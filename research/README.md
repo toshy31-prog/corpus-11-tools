@@ -11,8 +11,15 @@ Une recherche peut utiliser les skills et laboratoires de Corpus. Elle ne devien
 
 ## Organisation
 
+- [`active/`](active/) établit la présence physique des dossiers actifs ; cette
+  présence ne les inscrit pas automatiquement dans le portefeuille gouverné ;
 - [`active/README.md`](active/README.md) est l’index opérationnel : objet,
-  premier test, dépendances et condition d’arrêt de chaque recherche ouverte ;
+  premier test, dépendances et condition d’arrêt des recherches, plus une
+  section distincte pour l'infrastructure R&D active ;
+- [`portfolio.json`](portfolio.json) est le portefeuille gouverné. Il inclut
+  seulement les dossiers dotés d'un état courant, d'une portée, d'une prochaine
+  décision, d'un blocage et de contrôles sûrs déclarés. Ses inclusions et
+  exclusions sont explicites et ne sont pas déduites du seul nom d'un dossier ;
 - [`PORTFOLIO_NEXT_STEP.md`](PORTFOLIO_NEXT_STEP.md) fixe la prochaine
   campagne transversale et ses portes de décision, sans modifier les statuts
   scientifiques locaux ;
@@ -50,13 +57,25 @@ Une recherche peut utiliser les skills et laboratoires de Corpus. Elle ne devien
 | [`active/epistemic-diversity-and-common-mode-failure-lab/`](active/epistemic-diversity-and-common-mode-failure-lab/) | active | indépendance modélisée entre agents et modes communs d’échec |
 | [`active/research-interruptibility-and-recovery-lab/`](active/research-interruptibility-and-recovery-lab/) | active | pause, reprise et récupération des recherches agentiques |
 | [`active/portfolio-option-value-lab/`](active/portfolio-option-value-lab/) | active | valeur d’ouvrir, fusionner ou arrêter un dossier |
+| [`active/cinema-indexability/`](active/cinema-indexability/) | active, hors portefeuille gouverné | étude qualitative du couplage entre formes situées et circulation transnationale ; aucun état automatisable ni contrôle sûr déclaré |
 | [`active/corpus-open-model/`](active/corpus-open-model/) | active | noyau IA open source, hybride et traçable, fondé sur les carriers Corpus |
 | [`completed/corpus-ui-workspace/`](completed/corpus-ui-workspace/) | abandonnée | prototype d’interface Corpus gelé, archive Git et acquis conversationnels candidats |
 
 Les moteurs génériques utilisés par ces projets se trouvent dans [`../corpus-11-tools/labs/`](../corpus-11-tools/labs/).
+
+## Infrastructure R&D active
+
+| Dossier | État | Fonction |
+| --- | --- | --- |
+| [`active/model-response-comparison-harness/`](active/model-response-comparison-harness/) | active et gouverné par `portfolio.json` | instrument local de scellement, anonymisation et comparaison de réponses ; il ne lance aucun modèle et n'est pas intégré au plugin |
 
 ## Extensions rattachées
 
 - [`active/cct/field-calibration/`](active/cct/field-calibration/) : calibration
   par mondes fictifs appariés du modèle CCT ;
 - [`active/fusion-alpha-feedback/f0-data-global-tae-matrix/`](active/fusion-alpha-feedback/f0-data-global-tae-matrix/) : chaîne de données et matrice de calcul qui peut décider du prochain investissement de calcul TAE.
+
+Le contrôle `python3 research/scripts/check_research_inventory.py` vérifie que
+les dossiers de premier niveau sont indexés ou explicitement exclus du
+portefeuille, et que les assertions de statut référencées ne se contredisent
+pas littéralement. Il ne détermine jamais un verdict scientifique.

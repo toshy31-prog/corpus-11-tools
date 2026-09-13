@@ -1,5 +1,44 @@
 {
   "schema_version": 1,
+  "index_contract": {
+    "schema_version": 1,
+    "roles": {
+      "research/active/": "présence physique des dossiers de recherche et d'infrastructure R&D actifs ; un dossier présent n'est pas automatiquement gouverné par le portefeuille",
+      "research/active/README.md": "index humain exhaustif des dossiers actifs de premier niveau, répartis entre recherches et infrastructure R&D, avec extensions imbriquées listées séparément",
+      "research/README.md": "index humain des recherches actives, de l'infrastructure R&D active, des cycles terminés et des extensions rattachées",
+      "research/portfolio.json": "portefeuille gouverné des dossiers qui déclarent un état courant, une portée, une prochaine décision, un blocage et une liste fermée de contrôles sûrs"
+    },
+    "human_index_policy": {
+      "include_all_top_level_active_directories": true,
+      "research_infrastructure": [
+        "active/model-response-comparison-harness"
+      ],
+      "nested_extensions": [
+        "active/cct/field-calibration",
+        "active/fusion-alpha-feedback/f0-data-global-tae-matrix"
+      ]
+    },
+    "portfolio_policy": {
+      "include_declared_projects_only": true,
+      "declared_exclusions": [
+        {
+          "path": "active/cinema-indexability",
+          "reason": "dossier de recherche qualitatif physiquement présent et indexé humainement, mais sans state/current_state.md ni contrôle sûr déclaré ; il reste hors de la routine gouvernée jusqu'à une décision documentaire propre à son projet"
+        }
+      ]
+    },
+    "status_assertions": [
+      {
+        "id": "product-query-evaluation-a",
+        "owner": "active/model-response-comparison-harness/state/current_state.md",
+        "evidence": "active/corpus-open-model/reports/2026-09-05-product-query-evaluation-a-pipeline-verified.md",
+        "owner_evidence_link": "../../corpus-open-model/reports/2026-09-05-product-query-evaluation-a-pipeline-verified.md",
+        "owner_required_literal": "L'évaluation A du Corpus Open Model est désormais `pipeline_verified`",
+        "evidence_required_literal": "`pipeline_verified`",
+        "forbidden_literal": "L'évaluation A du Corpus Open Model demeure suspendue"
+      }
+    ]
+  },
   "projects": [
     {
       "id": "corpus-hypotheses",
@@ -52,8 +91,8 @@
       "mode": "fictional-blinded-evaluation",
       "safe_checks": ["initial_protocols", "independent_lineage_graphs", "foundations_of_evidence_foe_001"],
       "synthetic_scope": "pipeline_verified",
-      "next_decision": "Préparer avec les dossiers produit un jeu de requêtes pré-enregistré, ambigu, adversarial et multilingue ; il évaluera séparément le modèle ouvert et la surface native sans autoriser leur intégration.",
-      "blocker": "La séparation procédurale dépend de l’exhaustivité et de l’exactitude des identités et empreintes du DAG fictif."
+      "next_decision": "La campagne transversale FOE-001 v0.1 a observé passage sur son fixture gelé ; ne rouvrir qu’avec un nouveau paquet pré-enregistré réellement distinct, sans tirer d’intégration produit de ce résultat.",
+      "blocker": "Le passage FOE-001 établit seulement les quatre contrôles déclarés sur le fixture fictif gelé ; les dépendances hôte non observées et toute indépendance externe restent hors de portée."
     },
     {
       "id": "cct-field-calibration",
@@ -213,9 +252,9 @@
       "path": "active/corpus-open-model",
       "mode": "bounded-local-model-research",
       "safe_checks": ["ecosystem_episode_ledger"],
-      "synthetic_scope": "model_internal",
-      "next_decision": "Constituer un jeu indépendant pré-enregistré de requêtes ambiguës, adversariales et multilingues, puis auditer les licences avant toute diffusion.",
-      "blocker": "Les évaluations et artefacts établissent seulement des résultats locaux ; aucun gain de compréhension sémantique, de robustesse conversationnelle, de sécurité générale ou de déploiement n’est établi."
+      "synthetic_scope": "pipeline_verified",
+      "next_decision": "N'ouvrir une comparaison que lorsqu'un candidat de routeur réellement distinct et un nouveau jeu indépendant sont gelés ; ne pas ajuster le baseline de l'évaluation A.",
+      "blocker": "L'évaluation A vérifie seulement les trois champs déclaratifs sur 18 requêtes synthétiques gelées ; aucun gain de compréhension sémantique, de robustesse conversationnelle, de sécurité générale ou de déploiement n’est établi."
     },
     {
       "id": "model-response-comparison-harness",

@@ -1,27 +1,27 @@
 # Décision de portefeuille — fondations de preuve
 
 Date de décision : 2026-09-05  
-Statut : plan de pilotage ; ne modifie ni le statut scientifique ni les conclusions des dossiers.
+Statut : campagne exécutée une fois ; verdict observé `passage`, limité au
+fixture FOE-001 gelé.
 
 ## Décision
 
-Ne pas ouvrir de nouveau programme. La prochaine unité de travail est une
-**campagne transversale de fondations de preuve**. Elle doit produire un même
-cas fictif, fixé avant exécution, qui permet de tester conjointement
-l'indépendance des preuves, la conservation de leur sens pendant une migration
-et leur échange entre formats.
+Ne pas ouvrir de nouveau programme. La **campagne transversale de fondations
+de preuve** a exécuté une fois le cas fictif FOE-001 scellé. Son reçu est
+[`receipt.json`](artifacts/foe-001-transversal-campaign-v0.1-2026-09-05/receipt.json) :
+les quatre contrôles sont conformes et la décision est `passage`.
 
-La campagne est prioritaire parce que ses résultats peuvent modifier la portée
-de plusieurs recherches et des futures intégrations produit. Elle ne prétend
-pas valider une méthode ou un système hors du protocole construit.
+Ce passage ne modifie pas les conclusions scientifiques des dossiers, ne
+valide pas Corpus en général, n'établit aucune indépendance externe et
+n'autorise aucune intégration produit.
 
 ## Portefeuille pendant la campagne
 
 | Voie | Décision de pilotage | Condition de sortie |
 | --- | --- | --- |
 | Hypothèses Corpus ; CCT et field calibration ; fusion et matrice F0 | Veille active : ne pas prolonger les séries actuelles. | Un observable, une famille de mondes et un rival indépendants, fixés avant calcul et capables de renverser la conclusion locale. |
-| Preuves indépendantes ; provenance ; migrations sémantiques ; diversité épistémique | Priorité 1 : constituent le noyau de la campagne. | Les quatre contrôles ci-dessous ont été exécutés et leur portée est consignée. |
-| Corpus Open Model ; harness de réponse native | Priorité 2 : aucun passage à l'intégration avant le verdict de la campagne. | Les paquets de test peuvent être rejoués sans perte de sens ni dépendance commune non déclarée. |
+| Preuves indépendantes ; provenance ; migrations sémantiques ; diversité épistémique | Campagne FOE-001 exécutée une fois : `passage` sur le fixture gelé. | Aucun nouveau paquet ni conclusion générale sans protocole distinct scellé. |
+| Corpus Open Model ; harness de réponse native | Aucune action ouverte par ce passage. | Toute évaluation produit reste un travail séparé ; le reçu FOE-001 ne l'intègre pas. |
 | Tous les autres dossiers actifs | Maintien de leur prochaine décision locale, sans nouvelle dépendance créée par cette campagne. | Décision locale déjà déclarée dans `portfolio.json`. |
 
 ## Contrat de la campagne
@@ -73,16 +73,17 @@ les implémentations et les exécutions.
 Le cadrage est maintenant gelé dans
 [`FOUNDATIONS_OF_EVIDENCE_PROTOCOL_v0.1.md`](FOUNDATIONS_OF_EVIDENCE_PROTOCOL_v0.1.md).
 
-## Règle de capacité
+## Clôture de campagne
 
-Ne pas faire progresser plus d'une porte de décision à la fois. La prochaine
-action est donc le **cadrage du cas commun gelé**, et non l'exécution parallèle
-des quatre laboratoires. Les dossiers en veille ne sont pas clos : leur
-réouverture conserve les conditions déjà inscrites dans `portfolio.json`.
+Le manifeste pré-exécution et son scellé sont dans
+[`foe_001_transversal_campaign/`](foe_001_transversal_campaign/). La campagne
+est close : ne pas la relancer, ni ajuster ses adaptateurs à partir du reçu.
+Les dossiers en veille conservent leurs conditions déjà inscrites dans
+`portfolio.json`.
 
 ## Critère de succès de pilotage
 
-Le succès est un dossier de décision re-jouable : contrat gelé, quatre traces
-d'exécution, pertes ou dépendances localisées, et décision explicite de
-passage, réparation ou arrêt. Ce n'est pas une preuve d'efficacité hors des
-mondes et des implémentations testés.
+Le reçu contient le contrat gelé, les quatre observations, les écarts, les
+dépendances déclarées et la décision explicite `passage`. Il ne dépasse pas les
+mondes et implémentations testés ; les dépendances hôte non observées restent
+une limite explicite.
