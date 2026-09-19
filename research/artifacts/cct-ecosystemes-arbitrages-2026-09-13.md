@@ -2,6 +2,8 @@
 
 13 septembre 2026. Synthèse ciblée de recherches extérieures et recommandations candidates. Aucun contact, engagement financier ou travail de terrain. Aucun résultat présenté comme une validation indépendante de la CCT.
 
+Complément du 19 septembre 2026 : le §8 examine les coûts sociaux de la conservation et précise les garanties proposées au §13 du livre blanc. Les cinq références initiales et leurs conclusions restent distinguées de ces trois cas supplémentaires.
+
 ## Conclusion utilisable
 
 **Protéger les fonctions écologiques encore présentes, réduire les pressions qui les dégradent et choisir la restauration selon le blocage constaté.** La régénération naturelle et la restauration active sont des options à comparer, parfois à combiner. Ni le nombre de plants ni la surface annoncée ne suffisent à établir le résultat.
@@ -84,6 +86,47 @@ Cette condition n’exige pas de suspendre les actions de conservation déjà ju
 
 Synthèse écrite à partir de résultats extérieurs, intégrée au texte candidat en Markdown. Pas de nouvelle couche logicielle, pas de test de terrain, pas de validation indépendante, pas de score global. Les rendus DOCX/PDF et protocoles gelés ne sont pas modifiés. Aucun contact ni suivi automatique n’est engagé.
 
-## Vérification locale
+## 8. Protéger le milieu et les moyens d’existence — complément du 19 septembre 2026
+
+### Question et sélection
+
+Une restriction d’accès ou de prélèvement peut-elle améliorer l’état écologique tout en déplaçant la charge vers des personnes qui ne reçoivent pas l’aide ? Trois recherches extérieures éclairent respectivement l’effet d’un paiement, la répartition des coûts et une gestion communautaire. Cette sélection ciblée n’est ni une revue exhaustive ni un classement entre pays. Les résultats étaient connus avant leur utilisation ici ; aucun protocole CCT n’est testé par ces études.
+
+### Faits observés, estimations et limites
+
+**Ouganda — un paiement efficace pour les arbres, sans garantie sociale complète.** Dans l’essai randomisé de Jayachandran et al. (2017), 60 des 121 villages reçoivent une offre de paiement aux propriétaires forestiers pendant deux ans. Le couvert arboré diminue de 4,2 % dans les villages traités, contre 9,1 % dans les témoins. L’enquête rapporte aussi une restriction accrue de l’accès d’autrui au bois de chauffe. Les auteurs en déduisent un risque pour les voisins pauvres, sans établir leur perte nette complète. Ce résultat porte sur une offre à l’échelle des villages, pas seulement sur les inscrits. Le couvert arboré ne mesure pas toute la biodiversité ; les déplacements de coupe hors région et la permanence après paiement ne sont pas établis par cette comparaison. [Article Science, exemplaire de l’autrice](https://seemajayachandran.com/cashforcarbon.pdf), DOI 10.1126/science.aan4098.
+
+**Madagascar — indemnisation annoncée et pertes couvertes diffèrent.** Poudyal et al. (2018) étudient les restrictions autour du corridor Ankeniheny-Zahamena et d’aires voisines. Ils combinent choix hypothétiques de 453 ménages, enquêtes de revenus et examen des compensations ; 62 bénéficiaires évaluent leur aide deux ans après réception. Les auteurs estiment que plus de la moitié des ménages éligibles n’a pas reçu de compensation et que les aides restent insuffisantes au regard des coûts estimés. Ce n’est pas un relevé causal des revenus perdus : préférences déclarées, actualisation et estimation de la population conditionnent les montants. L’étude documente une insuffisance sociale historique, pas le bilan écologique net ni l’état actuel du programme. [Article PeerJ](https://pmc.ncbi.nlm.nih.gov/articles/PMC6035863/), DOI 10.7717/peerj.5106.
+
+**Népal — un bénéfice conjoint possible, variable selon les lieux.** Oldekop et al. (2019) mobilisent données forestières, recensement et télédétection avec contrôle de facteurs concurrents. Leur synthèse rapporte, entre 2000 et 2012, des réductions relatives moyennes de déforestation de 37 % et de pauvreté de 4,3 %, liées à la gestion communautaire. Les zones plus pauvres obtiennent un moindre effet sur la déforestation. Ces estimations observationnelles ne constituent ni une randomisation ni une garantie pour chaque ménage. Elles ne permettent pas de conclure qu’un transfert de compétence sans moyens suffit. [Synthèse des auteurs, Université de Manchester](https://hummedia.manchester.ac.uk/institutes/gdi/research/Deforestation-poverty-Nepal-research-brief.pdf) ; [article Nature Sustainability](https://www.nature.com/articles/s41893-019-0277-3), DOI 10.1038/s41893-019-0277-3.
+
+**Accès aux sources.** Pour l’Ouganda : résumé, résultats sur le couvert, déplacements de coupe et enquête ménages, pages internes 1–5 de l’article. Pour Madagascar : résumé, méthodes et discussion restitués par l’index du moteur ; l’ouverture directe du texte intégral a échoué. Pour le Népal : synthèse des auteurs de deux pages ; l’article et le manuscrit accepté n’ont pas pu être ouverts. Aucune annexe statistique ni donnée brute n’a été réanalysée. Les résumés, dépôts et articles d’un même travail ne comptent pas comme réplications indépendantes.
+
+### Recommandations candidates : ce qui change dans une décision
+
+Les règles suivantes sont une proposition politique et opérationnelle, éclairée par ces résultats. Elles ne sont ni une conséquence obligatoire des chiffres ni une garantie d’efficacité.
+
+| Situation du dossier | Décision proposée | Vérification qui peut imposer une révision |
+|---|---|---|
+| Des titulaires reçoivent un paiement, mais d’autres personnes perdent un usage | Inclure usagers sans titre, non-participants et personnes éloignées dans l’instruction ; financer une solution utilisable pour leurs besoins affectés | Accès réel, temps de trajet, dépenses et pertes restantes, séparés selon les groupes concernés |
+| L’aide est budgétée ou distribuée, sans résultat établi | Conserver la perte ouverte jusqu’à observation d’une capacité d’existence restaurée ; réviser montant, forme ou accès à l’aide si nécessaire | Versement reçu et possibilité effective de se nourrir, se chauffer ou exercer l’activité de remplacement ; dépense du programme et bénéfice reçu restent distincts |
+| Une responsabilité est transférée à une communauté | Préciser pouvoirs effectifs, moyens, travail rémunéré et recours des minorités ; comparer avec les institutions existantes | Charge réellement supportée, personnes exclues, résultats écologiques et capacité de contester les dirigeants locaux |
+| Un financement de conservation arrive à échéance | Prévoir le relais ou la révision de la mesure, avec les ressources de continuité ; ne pas promettre une protection perpétuelle | Disponibilité du financement, pertes sociales à la sortie et reprise éventuelle des pressions écologiques |
+
+L’aide destinée à garantir l’existence reste distincte d’un contrat de conservation : un paiement ne permet pas d’acheter un abandon du recours, de rendre la survie conditionnelle à la participation à une étude ou de compenser fictivement un dommage écologique ailleurs. Un instrument financier peut être examiné ; son efficacité écologique ne décide pas à elle seule de son admissibilité sociale.
+
+**Conséquence concrète pour un dossier futur.** « Les propriétaires ont été payés » ne suffit plus à renseigner « coûts sociaux couverts ». Avant une restriction nouvelle qui peut être différée, le dossier doit établir qui perd quoi et quelle solution financée devient utilisable avant cette perte. S’il manque une alternative pour un besoin vital, la restriction proposée doit être corrigée ou différée, avec examen des dommages de l’attente. Si un dommage écologique imminent rend l’attente dangereuse, appliquer la compétence d’urgence existante et les garanties du livre blanc §5 : protection matérielle mobilisable, durée bornée, réexamen et pertes non couvertes explicites. Cette branche ne crée aucun pouvoir de coercition et ne permet pas de déclarer le conflit résolu.
+
+### Rival et portée du complément
+
+Le rival sérieux reste un programme ordinaire de conservation qui évalue déjà les effets écologiques, les usages, la distribution des coûts et les garanties sociales. Lui attribuer les mêmes informations peut conduire aux mêmes corrections. Une exigence déjà présente dans ces pratiques n’est pas une innovation démontrée de la CCT.
+
+Le gain local est une règle plus explicite pour instruire et réviser une restriction. Une moyenne favorable, un paiement versé et une compétence transférée ne suffisent pas à fermer les pertes individuelles. La supériorité de la CCT, la légitimité d’une intervention particulière et un écosystème effectivement protégé restent non établis par ce complément.
+
+## Vérification locale du 13 septembre 2026
 
 Les huit liens locaux des trois fichiers ont été résolus. Les titres du livre blanc et ses sections hors §13 ont été comparés au commit de départ et sont inchangés. `git diff --check` ne signale pas d’erreur. Aucun test logiciel ou calcul de méta-analyse n’est présenté comme validation des recommandations.
+
+## Vérification locale du complément du 19 septembre 2026
+
+Les neuf liens locaux et leurs ancres sont valides. Les titres du livre blanc et ses sections hors §13 restent identiques à l’état de départ `84776ce5`. Le périmètre comprend uniquement ce dossier, le livre blanc Markdown et l’index des publications. `git diff --check` ne signale pas d’erreur. Les contrôles portent sur les documents ; les estimations des articles n’ont pas été reproduites.
