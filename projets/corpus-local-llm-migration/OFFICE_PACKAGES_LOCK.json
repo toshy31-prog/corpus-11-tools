@@ -1,0 +1,42 @@
+[
+  {
+    "file": "libreoffice-draw_4%3a24.2.7-0ubuntu0.24.04.6_amd64.deb",
+    "sha256": "4681fd7c7672ed07e5e6b8503b484e4a84e25ed7ad04563fcb4cb1a0364a8734"
+  },
+  {
+    "file": "libreoffice-impress_4%3a24.2.7-0ubuntu0.24.04.6_amd64.deb",
+    "sha256": "e1a818b9ef99bbffda1c83a87323fe0c2a84b53fe844680bbc23d43fb300fe24"
+  },
+  {
+    "file": "libreoffice-uiconfig-draw_4%3a24.2.7-0ubuntu0.24.04.6_all.deb",
+    "sha256": "ad408d73055a32842dccfa754fe791cc3c46676e63890cd873b9a0b73ff6eef2"
+  },
+  {
+    "file": "libreoffice-uiconfig-impress_4%3a24.2.7-0ubuntu0.24.04.6_all.deb",
+    "sha256": "ecb135d71307c17827db0137c633dce298d5fbeff26005fba99221793a530405"
+  },
+  {
+    "file": "libpagemaker-0.0-0_0.0.4-1build4_amd64.deb",
+    "sha256": "9b505355828e82cc8a3d4e2663a5815b00ff4cbd9b89c5ae36f124b7f4be2e2f"
+  },
+  {
+    "file": "lp-solve_5.5.2.5-2ubuntu0.1_amd64.deb",
+    "sha256": "20a3b3c638a4bf4cdd2b2a3d7b111e0d0b7b4ec161e648d616e68807b05f08d6"
+  },
+  {
+    "file": "libfreehand-0.1-1_0.1.2-3build3_amd64.deb",
+    "sha256": "03f2baa00a1566d5a18a5a5591ca100b55a0661aef32546616a68a24332faf65"
+  },
+  {
+    "file": "libmspub-0.1-1_0.1.4-3build7_amd64.deb",
+    "sha256": "8c19f0738147c50558bd163e983317f4900005df4c75123b7af9e8d4ce23d416"
+  },
+  {
+    "file": "libreoffice-calc_4%3a24.2.7-0ubuntu0.24.04.6_amd64.deb",
+    "sha256": "492b7fe6b715057339f935b4cbfe513784d393505dde319793c33443c6b96c7e"
+  },
+  {
+    "file": "libreoffice-uiconfig-calc_4%3a24.2.7-0ubuntu0.24.04.6_all.deb",
+    "sha256": "bb22b7e668417a9f7c36d18215c0aebe0ddb52150669e6974a7b944b332aa06f"
+  }
+]

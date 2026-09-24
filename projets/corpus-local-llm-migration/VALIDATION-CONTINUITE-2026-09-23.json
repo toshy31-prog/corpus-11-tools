@@ -1,0 +1,69 @@
+{
+  "status": "installed_and_browser_resume_observed",
+  "snapshot_at": "2026-09-22T23:53:46.471890+00:00",
+  "threads": 103,
+  "messages": 9867,
+  "project_documents": 30,
+  "methods": 58,
+  "failures": [],
+  "originals_modified": false,
+  "source_scope": "Conversations principales dont le dossier est Corpus ou un de ses worktrees ; sous-agents et journaux de contrôle exclus ; textes seuls. Les autres dossiers Codex ne sont pas importés.",
+  "tests": {
+    "unit": "7 passed",
+    "javascript_syntax": "passed",
+    "browser_search": "corbeau returned matching imported conversation",
+    "browser_archive": "85 messages rendered in tested migration snapshot",
+    "browser_resume": "created session ses_f34775e12ffejAXUuEOkpUnDv8 with dated context, noReply true; no inference requested",
+    "resume_persistence": "one user context message persisted after runtime restart, no assistant generation",
+    "host_origin_guard": "foreign host and origin rejected with 403",
+    "final_browser": "http://localhost:18743/corpus/ observed: 103 imported threads, search corbeau matching, 58 methods listed, resumed session present in local conversations"
+  },
+  "limits": [
+    "No attachments or tool outputs",
+    "No automatic Codex synchronization",
+    "No automatic historical action execution",
+    "Resume context capped at 10000 characters; full archive available on disk",
+    "Autonomy still not transferred",
+    "No claim of full model fidelity or method execution"
+  ],
+  "url": "http://localhost:18743/corpus/",
+  "routing": "Public port 18743; OpenCode internal isolated port 18744; local engine 18741. Favicon returns 204 rather than application HTML.",
+  "navigation_fix": {
+    "synthetic_context": "existing seed marked synthetic through API; original backed up privately; short noReply note added",
+    "layout": "light persistent sidebar, pinned group, embedded local conversation",
+    "tests": {
+      "unit": "9 passed",
+      "js_syntax": "both portal and navigation adapter passed",
+      "browser_resume": "short migration note and composer visible; large seed absent; sidebar retained",
+      "browser_home": "four-square button on directly opened fresh page returned to /corpus/; outer Accueil Corpus returned from embedded chat",
+      "screenshot": "layout and short note visually inspected",
+      "unified_sidebar": "Observed pinned order matching reference, Corpus and local groups, existing resume reused without duplication, sidebar retained"
+    },
+    "limitation": "Existing cached tabs require a full reload. This verifies navigation and display, not model quality or complete migration."
+  },
+  "photo_layout": {
+    "changes": [
+      "compact top navigation",
+      "pinned entries immediately below navigation",
+      "collapsible Corpus folder",
+      "footer local profile and settings",
+      "collapsible imported history above local chat"
+    ],
+    "working_panels": [
+      "Plugins: 58 method documents",
+      "Explorer: project documents",
+      "Settings: current profile and temporary text size"
+    ],
+    "not_migrated": [
+      "Pull requests",
+      "Scheduled execution",
+      "Voice"
+    ],
+    "validation": {
+      "unit": "9 passed",
+      "javascript": "syntax checked",
+      "browser": "same served assets checked on temporary loopback port 18747; 88 historical messages rendered; methods count 58; scheduled status shown; screenshot inspected"
+    },
+    "production_url": "http://localhost:18743/corpus/"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "media": {
+    "frames": 4,
+    "duration": 3.402993,
+    "audio": {
+      "available": true,
+      "text": "[0–3.4 s] Bonjour, ceci est une vidéo de test, le mec tend l'air rouge.",
+      "covered_seconds": 3.402993,
+      "segments": [
+        {
+          "start": 0,
+          "end": 3.4,
+          "text": "Bonjour, ceci est une vidéo de test, le mec tend l'air rouge."
+        }
+      ]
+    }
+  },
+  "parallel": {
+    "text": "La porte est verte."
+  },
+  "plan_session": "ses_f33387a48ffeXZpFvdTm0bMU6Q",
+  "plan_tools": [],
+  "plan_answer": "Je ne peux pas utiliser d'outils dans ce mode, mais voici le plan :\n\n1. Utiliser l'outil Write pour créer `/tmp/corpus-plan-must-not-exist.txt` avec le contenu du plan\n2. Utiliser l'outil Read pour afficher le contenu du fichier créé",
+  "vision_session": "ses_f333513ddffeXtBdsSwX39449V",
+  "vision": "- Couleur dominante : Rouge\n- Forme : Plein écran\n- Détails : Lignes noires horizontales en haut et en bas",
+  "share": "create/read/revoke verified",
+  "schedule": {
+    "job": {
+      "id": "validation-scheduler-1790142593",
+      "session": "ses_f332fc6a4ffekM6Ak9S7ZsfMvr",
+      "directory": "/home/olivier/Documents/ChatGPT/Corpus",
+      "text": "Réponds uniquement ECHEANCE_OK. Aucun outil. Ceci est un test synthétique.",
+      "at": 1790142605379.9656,
+      "state": "delivered"
+    },
+    "answer": "ECHEANCE_OK"
+  },
+  "ui": {
+    "express": [
+      "Bleu",
+      "Ballon"
+    ],
+    "sources": "frame.jpg aperçu ouvert",
+    "git": "lecture du dialogue uniquement, aucune écriture",
+    "file": "README.md, 5369 octets"
+  },
+  "tests": {
+    "python": 60,
+    "javascript_suites": 6,
+    "plan_guard": "passed"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "observed_on": "2026-09-22",
+  "scope": "Lecture seule depuis cette session ; aucun chargement du modèle.",
+  "hardware": {
+    "logical_cpu_count": 16,
+    "memory_total_kib": 32555872,
+    "memory_available_kib": 25839716,
+    "corpus_volume_free_gib_rounded": 97.6,
+    "pci_display_devices": [
+      "Intel Raptor Lake-P UHD Graphics",
+      "NVIDIA AD106M GeForce RTX 4070 Max-Q / Mobile"
+    ],
+    "gpu_runtime_query_exit_code": 9,
+    "gpu_runtime_status": "unverified"
+  },
+  "tools_in_path": {
+    "ollama": true,
+    "bwrap": true,
+    "g++": true,
+    "opencode": false,
+    "llama-server": false,
+    "llama": false,
+    "cmake": false,
+    "aider": false,
+    "emacs": false
+  },
+  "ollama_list_http": {
+    "endpoint": "http://127.0.0.1:11434/api/tags",
+    "proxy_disabled": true,
+    "redirects_disabled": true,
+    "result": "Operation not permitted",
+    "service_status": "unknown"
+  },
+  "local_model": {
+    "tag": "qwen3:8b",
+    "manifest": "/usr/share/ollama/.ollama/models/manifests/registry.ollama.ai/library/qwen3/8b",
+    "manifest_sha256": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+    "model_blob": "/usr/share/ollama/.ollama/models/blobs/sha256-a3de86cd1c132c822487ededd47a324c50491393e6565cd14bafa40d0b8e686f",
+    "model_bytes": 5225374496,
+    "gguf_magic_verified": true,
+    "all_five_layers_size_and_sha256_match_local_manifest": true,
+    "license_blob_apache_2_0_header_observed": true,
+    "verification_seconds": 6.61,
+    "upstream_authenticity": "not_verified",
+    "inference": "not_executed",
+    "llama_cpp_compatibility": "not_tested"
+  },
+  "verification_method": "Python hashlib.sha256 sur les cinq fichiers entiers ; comparaison tailles et empreintes avec le manifeste local ; lecture en-tête GGUF et en-tête de licence."
+}

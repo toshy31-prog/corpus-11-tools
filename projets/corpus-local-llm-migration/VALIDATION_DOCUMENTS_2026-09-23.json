@@ -1,0 +1,326 @@
+{
+  "formats": {
+    "txt": {
+      "id": "17c914fb7bba4e5fa9355fdbd02de05a",
+      "format": "txt",
+      "content": "# Corpus\n\nDocument français : été, œuf, € et **gras**.\n\n# Résultats\n\n- Premier point\n- Deuxième point",
+      "rows": [
+        [
+          "Article",
+          "Quantité"
+        ],
+        [
+          "Café",
+          3
+        ],
+        [
+          "Thé",
+          2.5
+        ]
+      ],
+      "state": "completed",
+      "created": 1790148423.7038376,
+      "url": "/corpus/documents/17c914fb7bba4e5fa9355fdbd02de05a/document.txt",
+      "bytes": 109,
+      "finished": 1790148423.7045333
+    },
+    "md": {
+      "id": "0f21eb1f5c334b4291fc2a9276b06b3c",
+      "format": "md",
+      "content": "# Corpus\n\nDocument français : été, œuf, € et **gras**.\n\n# Résultats\n\n- Premier point\n- Deuxième point",
+      "rows": [
+        [
+          "Article",
+          "Quantité"
+        ],
+        [
+          "Café",
+          3
+        ],
+        [
+          "Thé",
+          2.5
+        ]
+      ],
+      "state": "completed",
+      "created": 1790148423.9051561,
+      "url": "/corpus/documents/0f21eb1f5c334b4291fc2a9276b06b3c/document.md",
+      "bytes": 109,
+      "finished": 1790148423.9058862
+    },
+    "html": {
+      "id": "eb84f1dfeb9b45a6a675a018ee95589f",
+      "format": "html",
+      "content": "# Corpus\n\nDocument français : été, œuf, € et **gras**.\n\n# Résultats\n\n- Premier point\n- Deuxième point",
+      "rows": [
+        [
+          "Article",
+          "Quantité"
+        ],
+        [
+          "Café",
+          3
+        ],
+        [
+          "Thé",
+          2.5
+        ]
+      ],
+      "state": "completed",
+      "created": 1790148424.106455,
+      "url": "/corpus/documents/eb84f1dfeb9b45a6a675a018ee95589f/document.html",
+      "bytes": 3858,
+      "finished": 1790148424.1363177
+    },
+    "rtf": {
+      "id": "464eb1a861dd46cb9baa246e184788ba",
+      "format": "rtf",
+      "content": "# Corpus\n\nDocument français : été, œuf, € et **gras**.\n\n# Résultats\n\n- Premier point\n- Deuxième point",
+      "rows": [
+        [
+          "Article",
+          "Quantité"
+        ],
+        [
+          "Café",
+          3
+        ],
+        [
+          "Thé",
+          2.5
+        ]
+      ],
+      "state": "completed",
+      "created": 1790148424.7114177,
+      "url": "/corpus/documents/464eb1a861dd46cb9baa246e184788ba/document.rtf",
+      "bytes": 571,
+      "finished": 1790148424.7305746
+    },
+    "csv": {
+      "id": "fab01302e1374641a8d7c0631584cd67",
+      "format": "csv",
+      "content": "# Corpus\n\nDocument français : été, œuf, € et **gras**.\n\n# Résultats\n\n- Premier point\n- Deuxième point",
+      "rows": [
+        [
+          "Article",
+          "Quantité"
+        ],
+        [
+          "Café",
+          3
+        ],
+        [
+          "Thé",
+          2.5
+        ]
+      ],
+      "state": "completed",
+      "created": 1790148427.9220598,
+      "url": "/corpus/documents/fab01302e1374641a8d7c0631584cd67/document.csv",
+      "bytes": 38,
+      "finished": 1790148427.9227936
+    },
+    "tsv": {
+      "id": "6cc864faa0764739bcf627c6a89ddc32",
+      "format": "tsv",
+      "content": "# Corpus\n\nDocument français : été, œuf, € et **gras**.\n\n# Résultats\n\n- Premier point\n- Deuxième point",
+      "rows": [
+        [
+          "Article",
+          "Quantité"
+        ],
+        [
+          "Café",
+          3
+        ],
+        [
+          "Thé",
+          2.5
+        ]
+      ],
+      "state": "completed",
+      "created": 1790148428.123434,
+      "url": "/corpus/documents/6cc864faa0764739bcf627c6a89ddc32/document.tsv",
+      "bytes": 38,
+      "finished": 1790148428.1240947
+    },
+    "odt": {
+      "id": "4be9eda64add4877892d69263d8dd7ba",
+      "format": "odt",
+      "content": "# Validation MCP\n\nDocument local créé via le même outil que Qwen.",
+      "rows": [],
+      "state": "completed",
+      "created": 1790148912.7815142,
+      "url": "/corpus/documents/4be9eda64add4877892d69263d8dd7ba/document.odt",
+      "bytes": 6930,
+      "finished": 1790148912.813106
+    },
+    "docx": {
+      "id": "71d41806fde3497b9bb0416619829a9a",
+      "format": "docx",
+      "content": "# Corpus\n\nDocument français : été, œuf, € et **gras**.\n\n# Résultats\n\n- Premier point\n- Deuxième point",
+      "rows": [
+        [
+          "Article",
+          "Quantité"
+        ],
+        [
+          "Café",
+          3
+        ],
+        [
+          "Thé",
+          2.5
+        ]
+      ],
+      "state": "completed",
+      "created": 1790148424.509334,
+      "url": "/corpus/documents/71d41806fde3497b9bb0416619829a9a/document.docx",
+      "bytes": 10032,
+      "finished": 1790148424.5383153
+    },
+    "pdf": {
+      "id": "aef1ad4ab5b04378aa38ad580c0f4cbe",
+      "format": "pdf",
+      "content": "# Validation du studio\n\nCréation locale réussie.",
+      "rows": [],
+      "state": "completed",
+      "created": 1790148787.869851,
+      "url": "/corpus/documents/aef1ad4ab5b04378aa38ad580c0f4cbe/document.pdf",
+      "bytes": 15969,
+      "finished": 1790148789.3915524
+    },
+    "epub": {
+      "id": "538befbea4c2472eb0ee2679d1bcff25",
+      "format": "epub",
+      "content": "# Corpus\n\nDocument français : été, œuf, € et **gras**.\n\n# Résultats\n\n- Premier point\n- Deuxième point",
+      "rows": [
+        [
+          "Article",
+          "Quantité"
+        ],
+        [
+          "Café",
+          3
+        ],
+        [
+          "Thé",
+          2.5
+        ]
+      ],
+      "state": "completed",
+      "created": 1790148426.1161523,
+      "url": "/corpus/documents/538befbea4c2472eb0ee2679d1bcff25/document.epub",
+      "bytes": 5405,
+      "finished": 1790148426.144518
+    },
+    "pptx": {
+      "id": "776d9745b5b74059adc5d0bf1f5dfc15",
+      "format": "pptx",
+      "content": "# Corpus\n\nDocument français : été, œuf, € et **gras**.\n\n# Résultats\n\n- Premier point\n- Deuxième point",
+      "rows": [
+        [
+          "Article",
+          "Quantité"
+        ],
+        [
+          "Café",
+          3
+        ],
+        [
+          "Thé",
+          2.5
+        ]
+      ],
+      "state": "completed",
+      "created": 1790148426.3176212,
+      "url": "/corpus/documents/776d9745b5b74059adc5d0bf1f5dfc15/document.pptx",
+      "bytes": 28537,
+      "finished": 1790148426.3666043
+    },
+    "odp": {
+      "id": "62123137424842788a3bc5169a035b4a",
+      "format": "odp",
+      "content": "# Corpus\n\nDocument français : été, œuf, € et **gras**.\n\n# Résultats\n\n- Premier point\n- Deuxième point",
+      "rows": [
+        [
+          "Article",
+          "Quantité"
+        ],
+        [
+          "Café",
+          3
+        ],
+        [
+          "Thé",
+          2.5
+        ]
+      ],
+      "state": "completed",
+      "created": 1790148426.5191643,
+      "url": "/corpus/documents/62123137424842788a3bc5169a035b4a/document.odp",
+      "bytes": 22433,
+      "finished": 1790148427.7829583
+    },
+    "ods": {
+      "id": "8285f91727dc4e98af5dddbbf4d48c60",
+      "format": "ods",
+      "content": "# Corpus\n\nDocument français : été, œuf, € et **gras**.\n\n# Résultats\n\n- Premier point\n- Deuxième point",
+      "rows": [
+        [
+          "Article",
+          "Quantité"
+        ],
+        [
+          "Café",
+          3
+        ],
+        [
+          "Thé",
+          2.5
+        ]
+      ],
+      "state": "completed",
+      "created": 1790148428.3255537,
+      "url": "/corpus/documents/8285f91727dc4e98af5dddbbf4d48c60/document.ods",
+      "bytes": 9082,
+      "finished": 1790148429.371118
+    },
+    "xlsx": {
+      "id": "fba1758efc0d4adc8d65538a794a1e65",
+      "format": "xlsx",
+      "content": "# Corpus\n\nDocument français : été, œuf, € et **gras**.\n\n# Résultats\n\n- Premier point\n- Deuxième point",
+      "rows": [
+        [
+          "Article",
+          "Quantité"
+        ],
+        [
+          "Café",
+          3
+        ],
+        [
+          "Thé",
+          2.5
+        ]
+      ],
+      "state": "completed",
+      "created": 1790148429.52828,
+      "url": "/corpus/documents/fba1758efc0d4adc8d65538a794a1e65/document.xlsx",
+      "bytes": 5520,
+      "finished": 1790148430.4384968
+    }
+  },
+  "python_tests": 82,
+  "queue_test": "passed: prompt_async without abort, remaining queue preserved",
+  "browser_pdf_job": "aef1ad4ab5b04378aa38ad580c0f4cbe",
+  "mcp_odt_job": "4be9eda64add4877892d69263d8dd7ba",
+  "queue_ui": "menu and compact row visually observed",
+  "steering": "message received while assistant still active",
+  "limits": [
+    "no arbitrary existing file conversion",
+    "single sheet, no formulas",
+    "no pixel-by-pixel equivalence claim",
+    "Qwen document tool choice not evaluated"
+  ]
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "repository": "audio-cpp/audio.cpp-gguf",
+    "revision": "406756ee8e3b16e902ce40112986c1010775f888",
+    "source_file": "Qwen3-TTS-12Hz-1.7B-VoiceDesign-GGUF/qwen3-tts-12hz-1.7b-voicedesign-q8_0.gguf",
+    "file": "qwen-tts-design.gguf",
+    "size": 2816988960,
+    "sha256": "1bcef9a8c021072fca40e00498e00af9091fbe6d3ae4f87567cfee885d6c7554"
+  },
+  {
+    "repository": "audio-cpp/audio.cpp-gguf",
+    "revision": "406756ee8e3b16e902ce40112986c1010775f888",
+    "source_file": "ACE-Step1.5-GGUF/turbo/ace-step-1.5-turbo-q8_0.gguf",
+    "file": "ace-step-turbo.gguf",
+    "size": 6185460032,
+    "sha256": "cd7bf272588f548d4a253f57483132ef0f8f54a549f26471b09caa72c654270b"
+  }
+]

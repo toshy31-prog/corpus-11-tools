@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Corpus
+Comment=Corpus sur ce PC : conversation, création et projets, sans inférence distante
+Exec=/usr/bin/python3 /home/olivier/Documents/ChatGPT/Corpus/projets/corpus-local-llm-migration/launch_desktop.py
+Path=/home/olivier/Documents/ChatGPT/Corpus
+Icon=/home/olivier/Documents/ChatGPT/Corpus/projets/corpus-local-llm-migration/corpus-tray-symbolic.svg
+Terminal=false
+Categories=Development;Utility;

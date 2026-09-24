@@ -1,0 +1,31 @@
+'use strict';
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const source=fs.readFileSync(__dirname+'/portal/app.js','utf8');
+function production(name){let from=source.indexOf('function '+name+'(');assert(from>=0,name);if(source.slice(from-6,from)==='async ')from-=6;const tail=source.slice(from),next=tail.slice(20).search(/\n(?:async )?function |\n(?:const|let) [A-Za-z_$]|\n\/\/|\ninstallFooterMenus\(|\ndocument.addEventListener|\nsetInterval/);return next<0?tail:tail.slice(0,20+next);}
+function harness(overrides={}){
+ let focus;const calls=[],listeners={};
+ class Node{
+  constructor(tag,text,cls){Object.assign(this,{tagName:tag.toUpperCase(),ownText:text??'',className:cls||'',children:[],dataset:{},attrs:{},style:{},scrollTop:0,scrollHeight:1000,clientHeight:300,hidden:false,value:'',disabled:false});this.classList={contains:name=>this.className.split(' ').includes(name),add:(...names)=>{for(const n of names)if(!this.classList.contains(n))this.className+=' '+n;},remove:(...names)=>{this.className=this.className.split(' ').filter(n=>!names.includes(n)).join(' ');},toggle:(name,state)=>{if(state??!this.classList.contains(name))this.classList.add(name);else this.classList.remove(name);}};}
+  get textContent(){return this.ownText+this.children.map(n=>n.textContent).join('');}set textContent(value){this.ownText=String(value);this.children=[];}
+  get isConnected(){return this===body||!!this.parentNode?.isConnected;}
+  append(...nodes){for(const n of nodes){n.remove();n.parentNode=this;this.children.push(n);}}
+  prepend(...nodes){for(const n of nodes.reverse()){n.remove();n.parentNode=this;this.children.unshift(n);}}
+  before(node){const parent=this.parentNode;if(!parent)return;node.remove();node.parentNode=parent;parent.children.splice(parent.children.indexOf(this),0,node);}
+  replaceChildren(...nodes){for(const n of this.children)n.parentNode=null;this.children=[];this.ownText='';this.append(...nodes);}
+  remove(){if(this.parentNode)this.parentNode.children=this.parentNode.children.filter(n=>n!==this);this.parentNode=null;}
+  setAttribute(key,value){this.attrs[key]=String(value);if(key.startsWith('data-'))this.dataset[key.slice(5).replace(/-([a-z])/g,(_,c)=>c.toUpperCase())]=String(value);}getAttribute(key){return this.attrs[key];}
+  focus(){focus=this;}click(){return this.onclick?.();}addEventListener(name,fn){this['on'+name]=fn;}contains(node){for(let p=node;p;p=p.parentNode)if(p===this)return true;return false;}getBoundingClientRect(){return {left:100,right:200,top:100,bottom:140,width:100,height:40};}
+  matches(selector){if(selector.includes(','))return selector.split(',').some(value=>this.matches(value.trim()));const id=selector.match(/^#([\w-]+)/);if(id&&this.id!==id[1])return false;const tag=selector.match(/^([a-z][a-z0-9]*)/i);if(tag&&this.tagName!==tag[1].toUpperCase())return false;for(const name of selector.replace(/\[[^\]]*\]/g,'').matchAll(/\.([\w-]+)/g))if(!this.classList.contains(name[1]))return false;for(const attr of selector.matchAll(/\[([^=\]]+)(?:="([^"]*)")?\]/g)){let value;if(attr[1]==='open')value=this.open?true:undefined;else if(attr[1].startsWith('data-'))value=this.dataset[attr[1].slice(5).replace(/-([a-z])/g,(_,c)=>c.toUpperCase())];else value=this.attrs[attr[1]];if(value===undefined||attr[2]!==undefined&&String(value)!==attr[2])return false;}return true;}
+  querySelectorAll(selector){return this.children.flatMap(n=>[...(n.matches(selector)?[n]:[]),...n.querySelectorAll(selector)]);}
+  querySelector(selector){return this.querySelectorAll(selector)[0]||null;}
+  closest(selector){for(let n=this;n;n=n.parentNode)if(n.matches(selector))return n;return null;}
+ }
+
+ const body=new Node('body'),main=new Node('main');body.append(main);
+ const document={body,get activeElement(){return focus;},getElementById:id=>body.querySelector('#'+id),querySelector:selector=>body.querySelector(selector),querySelectorAll:selector=>body.querySelectorAll(selector),addEventListener(name,fn){listeners[name]=fn;}};
+ const ctx=vm.createContext({document,$:id=>document.getElementById(id),el:(...args)=>new Node(...args),URLSearchParams,Date,Set,Map,AbortController,Promise,location:{search:'?session=parent'},nativeCurrent:'parent',requestSerial:1,locals:[],library:{root:'/Corpus',threads:[{id:'archive'}]},chatProject:()=>'/parent',corpusIcon:()=>new Node('svg'),settingsIcon:()=>new Node('svg'),paintProfileAvatar:node=>node.textContent='OL',preferences:{name:'Olivier',username:'olivess'},companionPrefs:{visible:false},saveCompanions(){},renderCompanion(){},status:text=>calls.push(['status',text]),openSettings:section=>calls.push(['settings',section]),environmentPopover:anchor=>{body.querySelector('.environment-popover')?.remove();const menu=new Node('div',undefined,'environment-popover');body.append(menu);return menu;},fetchJSON:async(path,options)=>{const value=JSON.parse(options.body);calls.push(value);if(value.action==='workspace')return {workspace:'opaque'};if(value.action==='create')return {id:'temporary-'+calls.length,kind:value.kind,title:'Temporary',messages:[]};if(value.action==='send')return {text:'Answer',createdAt:123,context:{parent:true}};if(value.action==='retain')return {retained:true,session:{id:'saved',title:'Saved',directory:'/parent'}};return {};},corpusConfirm:async()=>true,corpusPrompt:async()=> 'codex/new',render:()=>calls.push(['render']),openSession:(...args)=>calls.push(['open',...args]),refreshParallelChatSummaries(){},activateRightPanel:id=>calls.push(['panel',id]),syncRightPanels(){},stampMessage(){},appendSubagentText:(node,text)=>node.append(new Node('p',text)),generalSettings:{sendKey:'enter'},generalShouldSend:()=>false,setInterval(){},window:{addEventListener:(name,fn)=>listeners[name]=fn},fetch:async()=>({}),normalizeNativeDocuments:value=>value||[],...overrides});
+ const load=(...names)=>{for(const name of names)vm.runInContext(production(name),ctx);};
+ const add=(id,tag='section',parent=main,cls='')=>{const node=new Node(tag,undefined,cls);node.id=id;parent.append(node);return node;};
+ return {ctx,Node,body,main,document,load,add,calls,listeners,get focus(){return focus;},run:code=>vm.runInContext(code,ctx)};
+}
+module.exports={harness,source,production};

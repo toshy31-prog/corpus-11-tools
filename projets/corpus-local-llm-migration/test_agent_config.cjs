@@ -1,0 +1,10 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const source=fs.readFileSync(__dirname+'/portal/app.js','utf8').split('// Configuration du fil natif :')[1].split('function drawAgentConfiguration')[0];
+const box={localStorage:{getItem:()=>null}};vm.createContext(box);vm.runInContext('//'+source,box);
+const get=()=>vm.runInContext('agentSessionDefaults()',box),set=s=>vm.runInContext(s,box);
+assert.equal(get().model.variant,'direct');assert.equal(get().permission.find(r=>r.permission==='bash').action,'ask');
+set("agentConfig.access='read'");const read=get().permission;assert.equal(read[0].permission,'*');assert.equal(read[0].action,'deny');assert.equal(read.find(r=>r.permission==='read').action,'allow');assert.equal(read.find(r=>r.permission==='bash').action,'deny');
+set("agentConfig.web='deny';agentConfig.reasoning='reflexion'");assert.equal(get().model.variant,'reflexion');assert.equal(get().permission.find(r=>r.permission==='corpus-browser_browser_request').action,'deny');
+set("agentConfig.access='project';agentConfig.approval='deny'");assert.equal(get().permission.find(r=>r.permission==='corpus-browser_*').action,'deny');
+set("agentConfig.detail='full'");assert.match(vm.runInContext('agentResponseInstructions()',box),/Développe/);
+console.log('Configuration : défauts, lecture restrictive, Web désactivé, refus des actions et mode Qwen vérifiés.');

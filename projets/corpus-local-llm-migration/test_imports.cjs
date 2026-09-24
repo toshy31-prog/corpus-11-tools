@@ -1,0 +1,6 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');const src=fs.readFileSync(__dirname+'/portal/app.js','utf8');const context={};vm.createContext(context);vm.runInContext(src.slice(src.indexOf("function messageDate("),src.indexOf("function messageStamp(")),context);vm.runInContext(src.slice(src.indexOf('function normalizeImportedChats('),src.indexOf('let localImportedChats=')),context);const parse=context.normalizeImportedChats;
+assert.equal(parse({title:'A',messages:[{role:'user',content:'Bonjour'},{role:'system',content:'ne pas importer'}]})[0].messages.length,1);
+assert.equal(parse([{title:'Chat',current_node:'b',mapping:{a:{parent:null,message:{author:{role:'user'},content:{parts:['Salut']}}},b:{parent:'a',message:{author:{role:'assistant'},content:{parts:['Bonjour']}}},other:{message:{author:{role:'user'},content:{parts:['Branche exclue']}}}}}])[0].messages.length,2);
+assert.throws(()=>parse({messages:[]}));assert.throws(()=>parse(Array(501).fill({})));assert.throws(()=>parse({foo:1}));console.log('Import formats, branch selection, role filtering and invalid input: OK');
+
+assert.equal(parse({messages:[{role:'user',text:'daté',create_time:1700000000}]})[0].messages[0].createdAt,'2023-11-14T22:13:20.000Z');

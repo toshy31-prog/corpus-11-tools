@@ -1,0 +1,14 @@
+[Unit]
+Description=Corpus local offline interface and model
+
+[Service]
+Type=simple
+WorkingDirectory=/home/olivier/Documents/ChatGPT/Corpus
+ExecStart=/usr/bin/python3 /home/olivier/Documents/ChatGPT/Corpus/projets/corpus-local-llm-migration/corpus_local.py web --moe
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+KillMode=control-group
+
+[Install]
+WantedBy=default.target

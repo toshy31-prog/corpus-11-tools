@@ -1,0 +1,13 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+const source=fs.readFileSync(__dirname+'/portal/app.js','utf8').split('// Fin du noyau de personnalisation')[0];
+const p=vm.runInNewContext(source+';CorpusPersonalization'),state=p.fresh();
+state.since=1;const messages=[{info:{id:'u',role:'user',time:{created:2}},parts:[{type:'text',text:'Retiens que je préfère les réponses courtes.'}]},{info:{id:'a',role:'assistant',parentID:'u',time:{completed:3}},parts:[]}];
+assert.equal(p.collect(state,messages,'s'),false);state.enabled=true;
+assert.equal(p.collect(state,messages,'s'),true);assert.equal(state.entries.length,1);p.collect(state,messages,'s');assert.equal(state.entries.length,1);
+assert.match(p.context(state),/réponses courtes/);state.enabled=false;assert.equal(p.context(state),'');state.instructions='Réponds en français';assert.match(p.context(state),/français/);
+const tool=p.fresh();tool.enabled=true;tool.since=1;messages[1].parts=[{type:'tool'}];p.collect(tool,messages,'s');assert.equal(tool.entries.length,0);
+const allowed=p.fresh();allowed.enabled=true;allowed.tools=true;allowed.since=1;p.collect(allowed,messages,'s');assert.equal(allowed.entries.length,1);
+const cleared=p.fresh();cleared.enabled=true;p.collect(cleared,messages,'s');assert.equal(cleared.entries.length,0);
+assert.equal(p.save({setItem(){throw Error('quota');}},state),false);assert.equal(p.read({getItem(){throw Error('denied');}}).enabled,false);
+assert.equal(p.normalize({instructions:123,entries:[null,{}]}).entries.length,0);
+console.log('Personnalisation : collecte explicite, filtrage outils, déduplication, désactivation, coupure temporelle et stockage vérifiés.');

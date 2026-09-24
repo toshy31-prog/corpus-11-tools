@@ -1,0 +1,100 @@
+{
+  "date": "2026-09-23",
+  "runtime": "stable-diffusion.cpp master-899-28b454b",
+  "tests": {
+    "python_unittest": 69,
+    "javascript_cjs_suites": 6,
+    "plan_guard": "passed"
+  },
+  "real_renders": [
+    {
+      "model": "flux-klein",
+      "prompt": "A small red ceramic fox on a pale blue table, studio photograph, soft light, crisp detail",
+      "width": 512,
+      "height": 512,
+      "frames": 17,
+      "seed": 42,
+      "fps": 8,
+      "steps": 4,
+      "id": "759ac249f5234a8e94871457a53da857",
+      "created": 1790143494.3733523,
+      "state": "completed",
+      "has_reference": false,
+      "started": 1790143494.3739414,
+      "output": "image.png",
+      "finished": 1790143514.4792132
+    },
+    {
+      "model": "flux-klein",
+      "prompt": "Change the red ceramic fox to cobalt blue. Keep the same fox sculpture and pale blue table, composition and soft studio lighting.",
+      "width": 512,
+      "height": 512,
+      "frames": 17,
+      "seed": 43,
+      "fps": 8,
+      "steps": 4,
+      "id": "729e173eeb584e47ad8d89e984fb7fd1",
+      "created": 1790143667.5566487,
+      "state": "completed",
+      "has_reference": true,
+      "started": 1790143667.5573342,
+      "output": "image.png",
+      "finished": 1790143689.5750456
+    },
+    {
+      "model": "wan-5b",
+      "prompt": "A blue ceramic fox statue on a pale blue table. The camera moves slowly to the left around the statue. Soft studio lighting.",
+      "width": 832,
+      "height": 480,
+      "frames": 65,
+      "seed": 42,
+      "fps": 24,
+      "steps": 3,
+      "id": "43a85f18b4fd48e6a6f37893f5457d45",
+      "created": 1790145202.7645373,
+      "state": "completed",
+      "has_reference": true,
+      "engine_revision": "28b454b",
+      "started": 1790145203.408567,
+      "output": "video.mp4",
+      "finished": 1790145267.9988987
+    },
+    {
+      "model": "flux-klein",
+      "prompt": "illustration de forêt et de lune, style linogravure, deux couleurs",
+      "width": 512,
+      "height": 512,
+      "frames": 33,
+      "seed": 2087500115,
+      "fps": 24,
+      "steps": 4,
+      "id": "6e5cc9cbebef49fc98745369194ee3f4",
+      "created": 1790145552.3356798,
+      "state": "completed",
+      "has_reference": false,
+      "engine_revision": "28b454b",
+      "started": 1790145564.2581532,
+      "output": "image.png",
+      "finished": 1790145592.640278
+    }
+  ],
+  "qwen_session": "ses_f330688e5ffePpD2bYJv4Y1fGz",
+  "browser": {
+    "studio": "observed",
+    "chat_generated_image": "observed",
+    "video_readyState": 4,
+    "video_dimensions": [
+      832,
+      480
+    ],
+    "video_duration_seconds": 2.708333
+  },
+  "limits": [
+    "No generated audio",
+    "No exhaustive style benchmark",
+    "Qwen end-to-end image generation verified; interpretation of generated image not verified",
+    "Short video can deform the reference",
+    "Browser entry /corpus/ verified; an earlier stale tab displayed OpenCode after service restart"
+  ],
+  "git_modified": false
+}

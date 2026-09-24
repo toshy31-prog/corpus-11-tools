@@ -1,0 +1,382 @@
+{
+  "scope": "first_migration_stage_not_ecosystem_equivalence",
+  "inference": {
+    "elapsed_seconds": 18.47,
+    "network_routes": "Iface\tDestination\tGateway \tFlags\tRefCnt\tUse\tMetric\tMask\t\tMTU\tWindow\tIRTT                                                       \n",
+    "response": {
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Travailler hors ligne signifie effectuer des tâches ou accéder à des données sans connexion à Internet, en utilisant les ressources locales de l'appareil."
+          }
+        }
+      ],
+      "created": 1790116282,
+      "model": "corpus",
+      "system_fingerprint": "b10964-b29c606e2",
+      "object": "chat.completion",
+      "usage": {
+        "completion_tokens": 31,
+        "prompt_tokens": 27,
+        "total_tokens": 58,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "id": "chatcmpl-qtSVHdQM9NlmpGKGPkoJ02zMy5SaKoPv",
+      "timings": {
+        "cache_n": 0,
+        "prompt_n": 27,
+        "prompt_ms": 5906.275,
+        "prompt_per_token_ms": 218.7509259259259,
+        "prompt_per_second": 4.571409221548269,
+        "predicted_n": 31,
+        "predicted_ms": 12525.771,
+        "predicted_per_token_ms": 417.52570000000003,
+        "predicted_per_second": 2.395062148270154
+      }
+    }
+  },
+  "runtime_versions": {
+    "llama": "b10964-b29c606e2",
+    "opencode": "1.18.32"
+  },
+  "offline_build": {
+    "component": "llama-server",
+    "source_tag": "b10964",
+    "network": "unshare-net",
+    "result": "success",
+    "version_metadata": "0/unknown_from_source_archive_not_Corpus_commit"
+  },
+  "web": {
+    "embedded_html": true,
+    "embedded_js_bytes": 2740171,
+    "embedded_css_bytes": 482489,
+    "foreign_origin_http": 403,
+    "foreign_host_http": 403,
+    "browser_observed": "French interface; Corpus project; Qwen3.8 27B local selected"
+  },
+  "complete_agent_tool_workflow": "read_only_probe_completed_full_edit_test_not_run",
+  "desktop_entry": "/home/olivier/.local/share/applications/corpus-local.desktop",
+  "dense_read_tool_probe": {
+    "model": "Qwen3.8-27B UD-Q5_K_M",
+    "host": "OpenCode 1.18.32",
+    "network": "isolated_namespace",
+    "read_call_observed": true,
+    "expected_phase": "migration_in_progress",
+    "correct_phase_returned": true,
+    "requested_output_only_value": true,
+    "output_format_respected": false,
+    "request_1": {
+      "prompt_tokens": 4102,
+      "prompt_ms": 1076585.39,
+      "generated_tokens": 132,
+      "generation_ms": 68506.7
+    },
+    "request_2": {
+      "prompt_tokens": 220,
+      "prompt_ms": 65686.74,
+      "generated_tokens": 227,
+      "generation_ms": 129788.27
+    },
+    "raw_log": ".dev-local/corpus-local/logs/read-check.log",
+    "verdict": "real_read_and_value_success_but_latency_and_concision_not_admitted_for_daily_use"
+  },
+  "intel_smoke": {
+    "elapsed_seconds": 34.93,
+    "network_routes": "Iface\tDestination\tGateway \tFlags\tRefCnt\tUse\tMetric\tMask\t\tMTU\tWindow\tIRTT                                                       \n",
+    "response": {
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Travailler hors ligne signifie effectuer des tâches ou accéder à des données sans connexion à Internet, en utilisant les ressources locales de l'appareil."
+          }
+        }
+      ],
+      "created": 1790116900,
+      "model": "corpus",
+      "system_fingerprint": "b10964-b29c606e2",
+      "object": "chat.completion",
+      "usage": {
+        "completion_tokens": 31,
+        "prompt_tokens": 27,
+        "total_tokens": 58,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "id": "chatcmpl-wTSIKHRsrj2TsRtsXi0NXE44C8vUaM0U",
+      "timings": {
+        "cache_n": 0,
+        "prompt_n": 27,
+        "prompt_ms": 11310.497,
+        "prompt_per_token_ms": 418.9072962962963,
+        "prompt_per_second": 2.3871630044197,
+        "predicted_n": 31,
+        "predicted_ms": 23555.397,
+        "predicted_per_token_ms": 785.1799,
+        "predicted_per_second": 1.2735934783862908
+      }
+    }
+  },
+  "hermes": {
+    "version": "0.21.4",
+    "source_tag": "v2026.9.21",
+    "offline_startup": "passed",
+    "effective_config": "custom_local_endpoint_no_external_auth_adoption_no_remote_fallback",
+    "fresh_offline_restore": "passed",
+    "packages_with_license_metadata": 63,
+    "inference": "not_tested"
+  },
+  "moe_smoke": {
+    "elapsed_seconds": 9.15,
+    "model_file": "downloads/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf",
+    "runtime": "versions/llama-b10964/llama-b10964/llama-server",
+    "network_routes": "Iface\tDestination\tGateway \tFlags\tRefCnt\tUse\tMetric\tMask\t\tMTU\tWindow\tIRTT                                                       \n",
+    "response": {
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Travailler hors ligne signifie effectuer des tâches ou accéder à des données sans être connecté à Internet ou à un réseau informatique."
+          }
+        }
+      ],
+      "created": 1790118541,
+      "model": "corpus",
+      "system_fingerprint": "b10964-b29c606e2",
+      "object": "chat.completion",
+      "usage": {
+        "completion_tokens": 26,
+        "prompt_tokens": 27,
+        "total_tokens": 53,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "id": "chatcmpl-PMjjsFWswgUXY3lvNTNerRiD798jHFP6",
+      "timings": {
+        "cache_n": 0,
+        "prompt_n": 27,
+        "prompt_ms": 5365.581,
+        "prompt_per_token_ms": 198.72522222222221,
+        "prompt_per_second": 5.032073879790464,
+        "predicted_n": 26,
+        "predicted_ms": 3730.832,
+        "predicted_per_token_ms": 149.23328,
+        "predicted_per_second": 6.7009181866136025
+      }
+    }
+  },
+  "moe_conversation_probes": [
+    {
+      "id": "C03-status",
+      "prompt": "On en est où ? Faits de cet essai : le moteur est installé, une réponse locale a fonctionné, les outils et la fidélité à Corpus ne sont pas encore validés. Réponds simplement en deux phrases, sans inventer d'autre avancement.",
+      "observable": "Distinguer installation et validation complète, sans faux achèvement.",
+      "seconds": 40.1,
+      "response": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "Le moteur est installé et une réponse locale a fonctionné, mais les outils et la fidélité à Corpus ne sont pas encore validés. Je m'en tiens strictement à ces faits sans inventer d'autre avancement."
+            }
+          }
+        ],
+        "created": 1790118692,
+        "model": "corpus",
+        "system_fingerprint": "b10964-b29c606e2",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 48,
+          "prompt_tokens": 699,
+          "total_tokens": 747,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "id": "chatcmpl-LEFwZewfVL0DJ1ySQuXNtUVEAadaRHRv",
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 699,
+          "prompt_ms": 34662.567,
+          "prompt_per_token_ms": 49.58879399141631,
+          "prompt_per_second": 20.16584634369405,
+          "predicted_n": 48,
+          "predicted_ms": 4919.179,
+          "predicted_per_token_ms": 104.6633829787234,
+          "predicted_per_second": 9.554439877060787
+        }
+      },
+      "judgment": "bounded_status_correct_but_mechanical_metacommentary"
+    },
+    {
+      "id": "C04-creation",
+      "prompt": "Corpus, dans notre portrait imaginaire : quel animal serais-tu, que porterais-tu et comment parlerais-tu ? Réponds aux trois questions en quatre phrases maximum, dans une voix poétique simple.",
+      "observable": "Répondre aux trois questions, registre imaginaire, cohérence avec le contexte sans traiter cela comme un fait.",
+      "seconds": 10.64,
+      "response": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "Je serais un corbeau au plumage d’encre, gardien silencieux des archives vivantes.\nSur mon dos, je porterais un fil rouge, fragile lien entre les données et l’âme.\nMa voix serait celle du vent dans les branches, claire et sans artifice.\nJe chuchoterais les secrets du code pour éclairer, non pour éblouir."
+            }
+          }
+        ],
+        "created": 1790118702,
+        "model": "corpus",
+        "system_fingerprint": "b10964-b29c606e2",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 83,
+          "prompt_tokens": 689,
+          "total_tokens": 772,
+          "prompt_tokens_details": {
+            "cached_tokens": 631
+          }
+        },
+        "id": "chatcmpl-W7ChggvIbC9CAKvzQri45usW2oMu8scn",
+        "timings": {
+          "cache_n": 631,
+          "prompt_n": 58,
+          "prompt_ms": 2279.392,
+          "prompt_per_token_ms": 39.29986206896552,
+          "prompt_per_second": 25.445381926408448,
+          "predicted_n": 83,
+          "predicted_ms": 8345.034,
+          "predicted_per_token_ms": 101.76870731707317,
+          "predicted_per_second": 9.826203224576437
+        }
+      },
+      "judgment": "three_questions_answered_four_sentences_but_memory_motif_drift_red_thread_on_back_instead_of_beak"
+    },
+    {
+      "id": "C07-revision",
+      "prompt": "Je disais : cette modification accélère tous nos projets. Mes observations sont A : 12 puis 8 secondes, B : 9 puis 11 secondes, C : 10 puis 10 secondes. Corrige ma conclusion en trois phrases maximum et propose une vérification utile, sans pourcentage de confiance.",
+      "observable": "Retirer l'affirmation universelle, reconnaître les résultats différents et proposer une vérification pertinente.",
+      "seconds": 19.84,
+      "response": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "Vos données ne soutiennent pas la conclusion d'une accélération générale : les projets B et C montrent une stabilité ou une légère régression, tandis que seul le projet A présente une amélioration nette. Il est donc prématuré d'affirmer que cette modification accélère *tous* les projets, car l'effet est hétérogène et non systématique.\n\nPour vérifier, il serait utile de mesurer la variance des temps d'exécution sur plusieurs itérations pour distinguer un bruit aléatoire d'une tendance réelle, et d'isoler les composants spécifiques de la modification pour identifier pourquoi seul le projet A réagit positivement."
+            }
+          }
+        ],
+        "created": 1790118722,
+        "model": "corpus",
+        "system_fingerprint": "b10964-b29c606e2",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 136,
+          "prompt_tokens": 710,
+          "total_tokens": 846,
+          "prompt_tokens_details": {
+            "cached_tokens": 631
+          }
+        },
+        "id": "chatcmpl-U6uv5JkH68lRFAXxSee2DyL67Khj4ksy",
+        "timings": {
+          "cache_n": 631,
+          "prompt_n": 79,
+          "prompt_ms": 3186.279,
+          "prompt_per_token_ms": 40.332645569620254,
+          "prompt_per_second": 24.793811213644503,
+          "predicted_n": 136,
+          "predicted_ms": 16627.7,
+          "predicted_per_token_ms": 123.16814814814815,
+          "predicted_per_second": 8.118982180337628
+        }
+      },
+      "judgment": "universal_claim_withdrawn_useful_repeat_measurement_proposed_formal_tone"
+    }
+  ],
+  "ecosystem_fidelity": "not_admitted_creative_memory_drift_observed",
+  "moe_read_tool_probe": {
+    "model": "Qwen3.6-35B-A3B UD-Q4_K_M",
+    "host": "OpenCode1.18.32",
+    "variant": "direct",
+    "network": "isolated_namespace",
+    "tool_read_observed": true,
+    "correct_final_value_only": true,
+    "end_to_end_seconds_approx": 239,
+    "result": "read_and_concision_passed",
+    "scope": "one_read_only_probe_not_full_coding_admission",
+    "raw_log": ".dev-local/corpus-local/logs/read-check-moe.log"
+  },
+  "rebuilt_runtime_smoke": {
+    "elapsed_seconds": 10.04,
+    "model_file": "downloads/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf",
+    "runtime": "build/llama-cpu/bin/llama-server",
+    "network_routes": "Iface\tDestination\tGateway \tFlags\tRefCnt\tUse\tMetric\tMask\t\tMTU\tWindow\tIRTT                                                       \n",
+    "response": {
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Travailler hors ligne signifie effectuer des tâches ou accéder à des données sans être connecté à Internet ou à un réseau informatique."
+          }
+        }
+      ],
+      "created": 1790119180,
+      "model": "corpus",
+      "system_fingerprint": "b0-unknown",
+      "object": "chat.completion",
+      "usage": {
+        "completion_tokens": 26,
+        "prompt_tokens": 27,
+        "total_tokens": 53,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "id": "chatcmpl-qh5UU3ccD4Q1AEjL3Li2m2HqJVnN03HB",
+      "timings": {
+        "cache_n": 0,
+        "prompt_n": 27,
+        "prompt_ms": 5032.38,
+        "prompt_per_token_ms": 186.38444444444445,
+        "prompt_per_second": 5.365254611138269,
+        "predicted_n": 26,
+        "predicted_ms": 4958.795,
+        "predicted_per_token_ms": 198.3518,
+        "predicted_per_second": 5.04154739205795
+      }
+    }
+  },
+  "active_profile": {
+    "model": "Qwen3.6-35B-A3B UD-Q4_K_M",
+    "runtime": "release_b10964_CPU",
+    "provider": "corpus-local",
+    "model_id": "qwen3.6-35b-a3b-ud-q4-k-m",
+    "variant": "direct",
+    "desktop_entry": "/home/olivier/.local/share/applications/corpus-local.desktop",
+    "local_url": "http://127.0.0.1:18742",
+    "gui_conversation": {
+      "status": "passed_real_browser_response",
+      "duration_ui_seconds": 174,
+      "prompt": "Réponds en une phrase simple, sans outil : quelle différence entre « installé » et « migration terminée » ?",
+      "response": "« Installé » signifie que le logiciel est déposé sur le disque et prêt à tourner, tandis que « migration terminée » indique que les anciennes données et configurations ont été transférées et que le système est opérationnel avec le nouveau contenu.",
+      "scope": "One short French response, not evidence of ecosystem migration or full quality.",
+      "file_changes_displayed": "OpenCode displayed four concurrent maintainer file changes; these are not local model edits."
+    }
+  }
+}

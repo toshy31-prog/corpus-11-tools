@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "observed_on": "2026-09-22",
+  "status": "documentary_research_only",
+  "scope": "Official model cards, exact licenses where accessible, quantization producer metadata, host docs; no model execution",
+  "report": "COMPARAISON-CANDIDATS.md",
+  "priorities": [
+    {
+      "role": "current_pc_first_evaluation",
+      "model": "Qwen/Qwen3.8-27B",
+      "weights_license": "Apache-2.0",
+      "license_evidence": "full_text_read",
+      "license_url": "https://huggingface.co/Qwen/Qwen3.8-27B/blob/main/LICENSE",
+      "artifact": {
+        "repository": "unsloth/Qwen3.8-27B-GGUF",
+        "file": "Qwen3.8-27B-UD-Q5_K_M.gguf",
+        "displayed_size_gb": 19.8,
+        "published_sha256": "2de73110cb254cbf09b54b717578dadff12ef1194e7271527e68202f39ba4bfd",
+        "url": "https://huggingface.co/unsloth/Qwen3.8-27B-GGUF/blob/main/Qwen3.8-27B-UD-Q5_K_M.gguf",
+        "downloaded": false,
+        "local_hash_verified": false,
+        "revision_pinned": false
+      },
+      "performance_evidence": "official benchmarks and separate Artificial Analysis evaluation; chosen GGUF and Corpus behavior untested",
+      "evaluation_url": "https://artificialanalysis.ai/models/qwen3-8-27b",
+      "admitted": false
+    },
+    {
+      "role": "ambitious_dedicated_machine",
+      "model": "deepseek-ai/DeepSeek-V4-Flash-0731",
+      "weights_license": "MIT",
+      "license_evidence": "official_card_explicit_code_and_weights_statement",
+      "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731",
+      "artifact": {
+        "repository": "unsloth/DeepSeek-V4-Flash-0731-GGUF",
+        "directory": "UD-Q4_K_XL",
+        "displayed_size_gb": 155,
+        "url": "https://huggingface.co/unsloth/DeepSeek-V4-Flash-0731-GGUF/tree/main/UD-Q4_K_XL",
+        "downloaded": false
+      },
+      "planning_ram_gib": 256,
+      "sizing_status": "study_envelope_not_tested_configuration_or_purchase_advice",
+      "admitted": false
+    }
+  ],
+  "alternatives": [
+    {
+      "model": "mistralai/Mistral-Small-4-119B-2603",
+      "role": "generalist_station_comparator",
+      "license": "Apache-2.0 per official card",
+      "quantization": "UD-Q4_K_M",
+      "displayed_size_gb": 73.8,
+      "url": "https://huggingface.co/unsloth/Mistral-Small-4-119B-2603-GGUF/tree/main/UD-Q4_K_M"
+    },
+    {
+      "model": "Qwen/Qwen3-Coder-Next",
+      "role": "optional_code_specialist",
+      "license": "Apache-2.0 per official card",
+      "quantization": "Q4_K_M",
+      "displayed_size_gb": 48.5,
+      "url": "https://huggingface.co/unsloth/Qwen3-Coder-Next-GGUF/tree/main"
+    },
+    {
+      "model": "Qwen/Qwen3.6-35B-A3B",
+      "role": "conditional_latency_comparator",
+      "license": "Apache-2.0 per official card",
+      "url": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B"
+    },
+    {
+      "model": "allenai/Olmo-3-32B-Think",
+      "role": "training_openness_reference_not_primary_french_candidate",
+      "license": "Apache-2.0 per official card",
+      "url": "https://huggingface.co/allenai/Olmo-3-32B-Think"
+    }
+  ],
+  "not_retained_for_unrestricted_free_target": [
+    {
+      "model": "Qwen/Qwen3.8-Flash-Next",
+      "source": "https://huggingface.co/Qwen/Qwen3.8-Flash-Next/blob/main/LICENSE",
+      "reason": "Separate licensing for specified commercial MaaS/AI Work Assistant activity; internal-use exception.",
+      "decision": "not_selected_for_default_free_target",
+      "personal_local_use_not_declared_prohibited": true
+    },
+    {
+      "model": "zai-org/GLM-5.3",
+      "source": "https://huggingface.co/zai-org/GLM-5.3/blob/main/LICENSE",
+      "reason": "Security review above a revenue threshold for specified MaaS activity.",
+      "decision": "not_selected_for_default_free_target",
+      "personal_local_use_not_declared_prohibited": true
+    },
+    {
+      "model": "moonshotai/Kimi-K3",
+      "source": "https://huggingface.co/moonshotai/Kimi-K3/blob/main/LICENSE",
+      "reason": "Additional commercial licensing and branding conditions with stated exceptions.",
+      "decision": "not_selected_for_default_free_target",
+      "personal_local_use_not_declared_prohibited": true
+    },
+    {
+      "model": "MiniMaxAI/MiniMax-M3",
+      "source": "https://huggingface.co/MiniMaxAI/MiniMax-M3/blob/main/LICENSE",
+      "reason": "Commercial notice/authorization and use restrictions.",
+      "decision": "not_selected_for_default_free_target",
+      "personal_local_use_not_declared_prohibited": true
+    },
+    {
+      "model": "mistralai/Mistral-Medium-3.5-128B",
+      "source": "https://huggingface.co/mistralai/Mistral-Medium-3.5-128B/raw/main/LICENSE",
+      "reason": "Modified MIT with company/employer revenue restriction.",
+      "decision": "not_selected_for_default_free_target",
+      "personal_local_use_not_declared_prohibited": true
+    }
+  ],
+  "hosts": {
+    "initial": "OpenCode",
+    "transversal_comparator": "Hermes Agent",
+    "reserve": "Pi",
+    "inference": "llama.cpp",
+    "all_integration_tests": "not_run"
+  },
+  "hardware_observation": {
+    "at": "2026-09-22T21:49:43.232061+00:00",
+    "logical_cpus": 16,
+    "memory_total_kib": 32555872,
+    "memory_available_kib": 25113788,
+    "gpu_acceleration": "not_requalified",
+    "disk_free": "not_remeasured_this_turn"
+  },
+  "limits": [
+    "No offline runtime validation",
+    "No candidate evaluated on Corpus",
+    "No trained-model full reproducibility inferred from weight license",
+    "No exact host/runtime versions pinned",
+    "Complete dependency and hardware freedom audit pending",
+    "Web metadata mutable; recheck before acquisition"
+  ]
+}
