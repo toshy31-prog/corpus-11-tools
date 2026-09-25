@@ -145,3 +145,9 @@ La constitution v1 ne possède volontairement aucune primitive de suppression.
 Une dérive connue est un objet explicite du manifeste ; elle n'est ni oubliée,
 ni automatiquement corrigée. Les migrations suivantes doivent réduire ce drift
 et mettre à jour le manifeste avec des preuves.
+
+## MACHINE Phase 4C — binding local du host
+
+Git conserve le contrat portable mais jamais les chemins propres à une machine. `~/.config/corpus/machine.json` peut fournir des valeurs `CORPUS_*` locales, notamment `CORPUS_VAULT_ROOT`. Une variable d'environnement explicite garde la priorité sur ce fichier.
+
+Les tests qui appellent `resolve_contract()` avec un environnement explicite n'héritent pas de la configuration du host. Le control plane distingue ainsi un Vault non configuré, configuré mais indisponible, ou effectivement disponible sur un montage externe distinct.

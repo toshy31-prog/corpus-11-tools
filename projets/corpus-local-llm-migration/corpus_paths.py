@@ -12,6 +12,34 @@ import shlex
 import sys
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+MACHINE_CONFIG_NAME = "machine.json"
+_MACHINE_ENV_KEYS = {
+    "CORPUS_HOST_HOME",
+    "CORPUS_RUNTIME_ROOT",
+    "CORPUS_MODELS_ROOT",
+    "CORPUS_TOOLCHAINS_ROOT",
+    "CORPUS_DATA_ROOT",
+    "CORPUS_STATE_ROOT",
+    "CORPUS_CACHE_ROOT",
+    "CORPUS_CONFIG_ROOT",
+    "CORPUS_VAULT_ROOT",
+}
+
+def _machine_environment(path):
+    if path is None or not path.is_file():
+        return {}
+    payload = json.loads(path.read_text())
+    if payload.get("schema_version") != 1:
+        raise RuntimeError(f"machine config schema_version invalide : {path}")
+    values = payload.get("environment", {})
+    if not isinstance(values, dict):
+        raise RuntimeError(f"machine config environment invalide : {path}")
+    unknown = sorted(set(values) - _MACHINE_ENV_KEYS)
+    if unknown:
+        raise RuntimeError(f"machine config clés inconnues : {unknown}")
+    if any(not isinstance(value, str) or not value for value in values.values()):
+        raise RuntimeError(f"machine config valeurs invalides : {path}")
+    return dict(values)
 
 def _absolute(value, name):
     path = Path(value).expanduser()
@@ -19,9 +47,29 @@ def _absolute(value, name):
         raise RuntimeError(f"{name} doit être un chemin absolu : {value!r}")
     return path.resolve(strict=False)
 
-def resolve_contract(environ=None, *, home=None, repo_root=None):
-    env = dict(os.environ if environ is None else environ)
+def resolve_contract(environ=None, *, home=None, repo_root=None, machine_config=None):
+    explicit_environ = environ is not None
+    host_env = dict(os.environ if environ is None else environ)
     repository = _absolute(repo_root or REPO_ROOT, "repo_root")
+    initial_home = _absolute(
+        host_env.get("CORPUS_HOST_HOME")
+        or (str(home) if home is not None else None)
+        or host_env.get("HOME")
+        or str(Path.home()),
+        "CORPUS_HOST_HOME",
+    )
+    initial_xdg_config = _absolute(
+        host_env.get("XDG_CONFIG_HOME", initial_home / ".config"),
+        "XDG_CONFIG_HOME",
+    )
+    if machine_config is not None:
+        machine_config_path = _absolute(machine_config, "machine_config")
+    elif explicit_environ:
+        machine_config_path = None
+    else:
+        machine_config_path = initial_xdg_config / "corpus" / MACHINE_CONFIG_NAME
+    machine_env = _machine_environment(machine_config_path)
+    env = {**machine_env, **host_env}
     host_home = _absolute(
         env.get("CORPUS_HOST_HOME")
         or (str(home) if home is not None else None)
@@ -47,6 +95,8 @@ def resolve_contract(environ=None, *, home=None, repo_root=None):
     return {
         "repo": repository,
         "host_home": host_home,
+        "machine_config": machine_config_path,
+        "machine_environment": machine_env,
         "runtime": runtime,
         "models": models,
         "llm_models": models / "llm",

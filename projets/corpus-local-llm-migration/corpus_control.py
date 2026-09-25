@@ -147,6 +147,18 @@ def doctor(policy=None, paths=None):
         if not path.is_absolute():
             add("FAIL", f"territory.{name}.relative", f"{name}: chemin non absolu: {path}")
         roots[name] = path.resolve(strict=False)
+        if spec.get("optional_mount"):
+            if not path.is_dir():
+                add("WARN", f"territory.{name}.unavailable", f"{name}: configuré mais indisponible: {path}")
+            else:
+                mount = subprocess.run(
+                    ["findmnt", "-T", str(path), "-n", "-o", "TARGET"],
+                    capture_output=True, text=True, check=False, timeout=30,
+                ).stdout.strip()
+                if not mount or mount == "/":
+                    add("WARN", f"territory.{name}.not_external", f"{name}: présent mais pas sur un montage externe distinct: {path}")
+                else:
+                    add("PASS", f"territory.{name}.available", f"{name}: disponible sur {mount}: {path}")
 
     reverse = {}
     for name, path in roots.items():

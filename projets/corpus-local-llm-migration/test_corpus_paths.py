@@ -1,4 +1,5 @@
 from pathlib import Path
+import json
 import tempfile
 import unittest
 import corpus_paths
@@ -45,6 +46,37 @@ class CorpusPathContractTests(unittest.TestCase):
             )
             self.assertEqual(paths["runtime"], root / "home/.local/share/corpus/runtime")
             self.assertEqual(paths["state"], root / "state-only")
+
+    def test_explicit_environ_does_not_read_host_machine_config(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            paths = corpus_paths.resolve_contract(
+                {"HOME": str(root / "home")},
+                repo_root=root / "repo",
+            )
+            self.assertIsNone(paths["machine_config"])
+            self.assertEqual(paths["machine_environment"], {})
+
+    def test_machine_config_can_bind_vault_without_git_default(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            machine = root / "machine.json"
+            vault = root / "external-vault"
+            machine.write_text(json.dumps({
+                "schema_version": 1,
+                "environment": {"CORPUS_VAULT_ROOT": str(vault)},
+            }))
+            paths = corpus_paths.resolve_contract(
+                {"HOME": str(root / "home")},
+                repo_root=root / "repo",
+                machine_config=machine,
+            )
+            self.assertEqual(paths["vault"], vault)
+            self.assertEqual(paths["machine_config"], machine.resolve())
+            self.assertEqual(
+                paths["machine_environment"]["CORPUS_VAULT_ROOT"],
+                str(vault),
+            )
 
     def test_vault_has_no_hardcoded_default(self):
         with tempfile.TemporaryDirectory() as temp:
