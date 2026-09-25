@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import re
 
 
@@ -59,6 +59,37 @@ def markdown_targets_from_text(text: str) -> set[str]:
     return set(MARKDOWN_LINK.findall(text))
 
 
+def project_identity_errors(projects: list) -> list[str]:
+    """Reject ambiguous identities before set-based coverage hides duplicates."""
+    errors: list[str] = []
+    seen: dict[str, set[str]] = {"id": set(), "path": set()}
+    for index, project in enumerate(projects):
+        if not isinstance(project, dict):
+            errors.append(f"projects[{index}]: must be an object")
+            continue
+        for field in seen:
+            value = project.get(field)
+            if not isinstance(value, str) or not value.strip():
+                errors.append(f"projects[{index}]: {field} must be a nonempty string")
+            elif value in seen[field]:
+                errors.append(f"portfolio.json: duplicate project {field}: {value}")
+            else:
+                seen[field].add(value)
+                if field == "path":
+                    path = PurePosixPath(value)
+                    if (
+                        path.is_absolute()
+                        or len(path.parts) < 2
+                        or path.parts[0] != "active"
+                        or ".." in path.parts
+                        or path.as_posix() != value
+                    ):
+                        errors.append(
+                            f"projects[{index}]: path must be canonical and relative under active/: {value!r}"
+                        )
+    return errors
+
+
 def repository_errors(root: Path = ROOT) -> list[str]:
     research = root / "research"
     active = research / "active"
@@ -71,6 +102,7 @@ def repository_errors(root: Path = ROOT) -> list[str]:
     projects = data.get("projects")
     if not isinstance(projects, list):
         return ["portfolio.json: projects must be a list"]
+    errors.extend(project_identity_errors(projects))
     project_paths = {
         str(project.get("path"))
         for project in projects
@@ -157,6 +189,26 @@ def repository_errors(root: Path = ROOT) -> list[str]:
 
 
 def self_test() -> None:
+    first = {"id": "a", "path": "active/a"}
+    assert project_identity_errors([first, {"id": "b", "path": "active/b"}]) == []
+    assert len(project_identity_errors([first, dict(first)])) == 2
+    assert project_identity_errors([first, {"id": "a", "path": "active/b"}]) == [
+        "portfolio.json: duplicate project id: a"
+    ]
+    assert project_identity_errors([first, {"id": "b", "path": "active/a"}]) == [
+        "portfolio.json: duplicate project path: active/a"
+    ]
+    assert project_identity_errors([None, {"id": "", "path": 7}])
+    assert project_identity_errors([
+        first, {"id": "nested", "path": "active/a/extension"}
+    ]) == []
+    for alias in (
+        "active/a/extension/..", "active/a/../a", "active/./a",
+        "active//a", "active/a/", "./active/a", "/active/a",
+        "active", "archive/a",
+    ):
+        assert any("path must be canonical" in error for error in
+                   project_identity_errors([first, {"id": "alias", "path": alias}]))
     assert coverage_errors({"active/a", "active/b"}, {"active/a"}, {"active/b"}) == []
     assert coverage_errors({"active/a", "active/b"}, {"active/a"}, set()) == [
         "physical paths neither governed nor excluded: active/b"

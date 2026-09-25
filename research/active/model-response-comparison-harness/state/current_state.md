@@ -40,8 +40,28 @@ intégration produit.
 
 Le skill candidat `native_surface/corpus-native-conversation/` orchestre dans
 Codex la question brute, le routage, l'analyse, le scellement et la restitution.
-Il reste `repository-present`, non installé ni ré-observé dans le plugin.
+Sa copie de recherche reste `repository-present`. La disponibilité du plugin
+de développement est distincte ; voir ci-dessous.
 
 Une passe locale sur cinq tâches et quinze restitutions est conservée dans
 `reports/reobservation/2026-09-05-native-surface-five-runs.md`. Elle teste les
-scripts et la procédure, mais ne change pas le statut global du skill.
+scripts et la procédure, sans établir une intégration à la release principale.
+
+## Disponibilité observée le 19 septembre 2026
+
+- **Dépôt de recherche** : `native_surface/` contient le renderer, les scripts
+  et le skill candidat. Cette présence seule ne prouve pas leur chargement.
+- **Plugin de développement** : `corpus-native-conversation-dev`, version
+  `0.1.0+codex.20260904235116`, expose le skill `corpus-native-conversation`
+  dans la session Codex de cette observation. Son manifeste local a été lu ;
+  aucune installation ni invocation du skill n’a été effectuée ici.
+- **Release principale** : le plugin de développement est un paquet distinct
+  de `corpus-11-tools`. Cette observation n’établit pas l’intégration du
+  candidat à la release principale ni sa stabilité.
+
+Le [rapport de déclenchement du 5 septembre](../reports/reobservation/2026-09-05-native-surface-real-skill-trigger.md)
+documente un chargement réel du plugin de développement et un paquet vérifié,
+avec des limites sur le déclenchement naturel et la restitution finale visible.
+Il s’agit d’un résultat historique, non d’un test relancé le 19 septembre.
+La disponibilité actuelle ne constitue ni une nouvelle évaluation du routage,
+ni une preuve de gain analytique ou de fonctionnement de bout en bout.

@@ -32,6 +32,8 @@ def directory_size(path: Path) -> int:
 
 
 def collect() -> dict[str, object]:
+    branches = git_lines("branch", "--show-current")
+    branch = branches[0] if branches else f"HEAD détachée ({git_lines('rev-parse', '--short', 'HEAD')[0]})"
     ignored = git_lines("ls-files", "--others", "--ignored", "--exclude-standard")
     # `git ls-files` lists ignored files, not necessarily their containing directory.
     artifact_roots = [
@@ -42,12 +44,15 @@ def collect() -> dict[str, object]:
     ]
     return {
         "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
-        "branch": git_lines("branch", "--show-current")[0],
+        "branch": branch,
         "git_status": git_lines("status", "--short", "--branch"),
         "skills": relative_paths("**/SKILL.md"),
         "plugin_manifests": sorted(set(relative_paths("**/.codex-plugin/plugin.json") + relative_paths("**/marketplace.json"))),
         "transfer_candidates": relative_paths("transfers/candidates/*"),
-        "archives": relative_paths("research/archive/**/ARCHIVE.md"),
+        "archives": sorted(set(
+            relative_paths("research/archive/**/ARCHIVE.md")
+            + relative_paths("research/completed/*/README.md")
+        )),
         "untracked": git_lines("ls-files", "--others", "--exclude-standard"),
         "ignored_artifacts": [
             {"path": str(path.relative_to(ROOT)), "bytes": directory_size(path)}
@@ -72,7 +77,7 @@ def render(data: dict[str, object]) -> str:
     lines += [""] + paths("Skills récupérables", list(data["skills"]))
     lines += [""] + paths("Manifests de plugins", list(data["plugin_manifests"]))
     lines += [""] + paths("Candidats de transfert", list(data["transfer_candidates"]))
-    lines += [""] + paths("Dossiers archivés", list(data["archives"]))
+    lines += [""] + paths("Recherches archivées ou terminées", list(data["archives"]))
     lines += [""] + paths("Fichiers non suivis à trier", list(data["untracked"]))
     artifacts = list(data["ignored_artifacts"])
     lines += ["", "## Artefacts locaux conservés"]
@@ -93,7 +98,7 @@ def main() -> int:
     output = args.output if args.output.is_absolute() else ROOT / args.output
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(render(data), encoding="utf-8")
-    print(output.relative_to(ROOT))
+    print(output.relative_to(ROOT) if output.is_relative_to(ROOT) else output)
     return 0
 
 

@@ -101,7 +101,9 @@ Les programmes produisent un snapshot, un graphe, des poids et un rapport sous
 observé, reconstruisibles à tout moment.
 
 Le script unique `python3 research/active/corpus-open-model/src/run_lab.py`
-reconstruit snapshot, graphe et rapport, sans Codex, GPT, API ni GPU.
+reconstruit snapshot, graphe, audit et rapports, puis entraîne le routeur v0,
+sans Codex, GPT, API ni GPU. Il réécrit les artefacts correspondants.
+Ajouter `--help` pour consulter son aide sans calcul, entraînement ni écriture.
 
 ## Portée et condition d'arrêt
 

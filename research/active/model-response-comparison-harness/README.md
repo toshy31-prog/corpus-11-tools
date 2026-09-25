@@ -14,7 +14,9 @@ personnalisé est en pause ; le harness reste un contrôle R&D de non-déformati
 
 Le premier candidat exécutable est dans [`native_surface/`](native_surface/).
 Il rend un paquet analytique scellé par gabarit déterministe et le vérifie après
-production ; il ne constitue pas encore une intégration au plugin installé.
+production. Le skill qui l’orchestre est disponible séparément dans le plugin
+de développement ; cela ne constitue pas une intégration à la release principale
+de Corpus 11 Tools. Voir les [statuts et limites](state/current_state.md#disponibilité-observée-le-19-septembre-2026).
 
 Le jalon 1 établit `pipeline_verified` sur fixtures synthétiques. Le jalon 2
 admet des prompts réels explicitement confirmés non sensibles, avec exactement

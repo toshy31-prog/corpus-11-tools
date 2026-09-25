@@ -5,8 +5,10 @@ reçoit ni demande libre à router, ni catalogue de skills, ni instruction de
 raisonnement. Sa restitution déterministe garde mot pour mot la conclusion
 matérielle, les incertitudes utiles et les conditions de renversement.
 
-Il reste dans `research/` : il n'est pas un skill installé et ne modifie pas le
-runtime Corpus.
+Cette copie reste dans `research/`. Le skill-orchestrateur est aussi exposé
+par un plugin de développement distinct ; sa disponibilité ne signifie pas
+une intégration à la release principale de Corpus 11 Tools. Voir les
+[statuts et limites observés](../state/current_state.md#disponibilité-observée-le-19-septembre-2026).
 
 `corpus-native-conversation/` est le skill-orchestrateur de développement. À
 partir d'une question libre, Codex effectue le routage et l'analyse Corpus dans

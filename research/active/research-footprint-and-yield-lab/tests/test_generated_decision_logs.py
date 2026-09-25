@@ -62,6 +62,22 @@ def matched_for_comparison(left: dict[str, object], right: dict[str, object]) ->
     )
 
 
+def compare_costs(reference: dict[str, object], candidate: dict[str, object]) -> dict[str, object]:
+    if not matched_for_comparison(reference, candidate):
+        return {"verdict": "unmatched", "delta": None}
+    delta = {key: candidate[key] - reference[key] for key in ("tokens", "minutes", "calls")}
+    values = list(delta.values())
+    if all(value == 0 for value in values):
+        verdict = "equal_costs"
+    elif all(value <= 0 for value in values):
+        verdict = "candidate_dominates"
+    elif all(value >= 0 for value in values):
+        verdict = "reference_dominates"
+    else:
+        verdict = "tradeoff"
+    return {"verdict": verdict, "delta": delta}
+
+
 def main() -> None:
     baseline = metrics(LOGS["baseline"])
     structured = metrics(LOGS["structured"])
@@ -93,9 +109,28 @@ def main() -> None:
     output_mutant = deepcopy(LOGS["structured"])
     output_mutant["events"][0]["output"] = "different-analysis"
     assert not matched_for_comparison(baseline, metrics(output_mutant))
+    assert compare_costs(baseline, structured)["verdict"] == "candidate_dominates"
+    assert compare_costs(structured, baseline)["verdict"] == "reference_dominates"
+    assert compare_costs(structured, structured)["verdict"] == "equal_costs"
+    assert compare_costs(structured, metrics(question_mutant))["verdict"] == "unmatched"
+
+    delayed = deepcopy(LOGS["structured"])
+    delayed["events"][0].update(tokens=300, minutes=40)
+    rival = metrics(delayed)
+    assert compare_costs(structured, rival) == {
+        "verdict": "tradeoff", "delta": {"tokens": -300, "minutes": 20, "calls": 0},
+    }
+    assert compare_costs(rival, structured) == {
+        "verdict": "tradeoff", "delta": {"tokens": 300, "minutes": -20, "calls": 0},
+    }
+    lost_output = deepcopy(delayed)
+    lost_output["events"][0]["output"] = "decision-a"
+    assert metrics(lost_output)["final_state"] == structured["final_state"]
+    assert compare_costs(structured, metrics(lost_output)) == {"verdict": "unmatched", "delta": None}
     print(
         "PASS generated footprint logs: exact question/outcome match enforced; "
-        "zero-yield retained; three cost components dominate"
+        "zero-yield retained; historical dominance preserved; "
+        "cost/delay rival is a tradeoff (-300 tokens, +20 minutes, 0 calls); output loss unmatched"
     )
 
 

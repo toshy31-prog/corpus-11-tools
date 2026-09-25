@@ -98,6 +98,10 @@ SAFE_CHECKS: dict[str, tuple[Path, list[str]]] = {
         ROOT,
         [sys.executable, "research/active/material-trace-lab/tests/test_order_confluence.py"],
     ),
+    "material_atomic_sync_v1": (
+        ROOT,
+        [sys.executable, "research/active/material-trace-lab/tests/test_atomic_sync_v1.py"],
+    ),
     "multilingual_controlled_grammar": (
         ROOT,
         [sys.executable, "research/active/multilingual-research-fidelity-lab/tests/test_controlled_grammar.py"],
@@ -125,6 +129,10 @@ SAFE_CHECKS: dict[str, tuple[Path, list[str]]] = {
     "footprint_generated_logs": (
         ROOT,
         [sys.executable, "research/active/research-footprint-and-yield-lab/tests/test_generated_decision_logs.py"],
+    ),
+    "footprint_output_content": (
+        ROOT,
+        [sys.executable, "research/active/research-footprint-and-yield-lab/tests/test_output_content_gate.py"],
     ),
     "semantic_transition_manifest": (
         ROOT,
@@ -338,9 +346,11 @@ def record_routine(projects: list[dict[str, object]]) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--check", action="store_true", help="validate all project contracts")
+    parser.add_argument("--check", action="store_true", help="validate selected project contracts (all by default)")
+    parser.add_argument("--project", action="append", default=[], metavar="ID",
+                        help="select a project by manifest id; repeat for several; global manifest guards remain active")
     parser.add_argument("--run-safe-checks", action="store_true", help="run declared read-only local checks")
-    parser.add_argument("--record", action="store_true", help="record a successful routine in every dossier")
+    parser.add_argument("--record", action="store_true", help="record a successful routine in selected dossiers (all by default)")
     parser.add_argument("--tree", action="store_true", help="print compact active architecture")
     args = parser.parse_args()
     if args.record:
@@ -366,6 +376,14 @@ def main() -> int:
     if uncovered:
         print("FAIL uncovered active dossiers: " + ", ".join(uncovered))
         return 1
+
+    if args.project:
+        requested = set(args.project)
+        unknown = sorted(requested - {str(project["id"]) for project in projects})
+        if unknown:
+            parser.error("unknown project id(s): " + ", ".join(unknown))
+        projects = [project for project in projects if project["id"] in requested]
+        print("SELECTED projects: " + ", ".join(str(project["id"]) for project in projects))
 
     valid = True
     if args.check:
