@@ -2,10 +2,18 @@
 from __future__ import annotations
 
 import argparse
+import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
-from corpus_paths import CAPABILITIES_RUNTIME_ROOT, DOCLING_MODELS_ROOT
+from corpus_paths import (
+    CAPABILITIES_RUNTIME_ROOT,
+    DOCLING_MODELS_ROOT,
+    HUGGINGFACE_CACHE_ROOT,
+    HUGGINGFACE_HUB_CACHE_ROOT,
+    contract_environment,
+)
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
@@ -26,9 +34,42 @@ MODELS_REPO = "docling-project/docling-models"
 MODELS_REV = "fc0f2d45e2218ea24bce5045f58a389aed16dc23"
 
 
-def run(*args: str) -> None:
+def run(*args: str, env=None) -> None:
     print("+", *args)
-    subprocess.run(args, check=True)
+    subprocess.run(args, check=True, env=env)
+
+
+def hf_environment():
+    env = dict(os.environ)
+    env.update(contract_environment())
+    env['HF_HOME'] = str(HUGGINGFACE_CACHE_ROOT)
+    env['HF_HUB_CACHE'] = str(HUGGINGFACE_HUB_CACHE_ROOT)
+    return env
+
+
+def materialize_snapshot(snapshot: Path, destination: Path) -> None:
+    snapshot = snapshot.resolve(strict=True)
+    destination.mkdir(parents=True, exist_ok=True)
+    for item in sorted(snapshot.rglob('*')):
+        if not item.is_file():
+            continue
+        source = item.resolve(strict=True)
+        relative = item.relative_to(snapshot)
+        target = destination / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if target.exists() or target.is_symlink():
+            try:
+                if os.path.samefile(source, target):
+                    continue
+            except OSError:
+                pass
+            if target.is_dir():
+                raise RuntimeError(f'Cible modèle inattendue (répertoire): {target}')
+            target.unlink()
+        if source.stat().st_dev == target.parent.stat().st_dev:
+            os.link(source, target)
+        else:
+            shutil.copy2(source, target)
 
 
 def install_python() -> None:
@@ -45,22 +86,34 @@ def download_hf(repo: str, revision: str, destination: Path) -> None:
 from huggingface_hub import snapshot_download
 import sys
 
-repo, revision, destination = sys.argv[1:4]
-
-snapshot_download(
+repo, revision, cache = sys.argv[1:4]
+path = snapshot_download(
     repo_id=repo,
     revision=revision,
-    local_dir=destination,
+    cache_dir=cache,
 )
+print(path)
 """
-    run(
-        str(PYTHON),
-        "-c",
-        code,
-        repo,
-        revision,
-        str(destination),
+    HUGGINGFACE_HUB_CACHE_ROOT.mkdir(parents=True, exist_ok=True)
+    result = subprocess.run(
+        [
+            str(PYTHON),
+            "-c",
+            code,
+            repo,
+            revision,
+            str(HUGGINGFACE_HUB_CACHE_ROOT),
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+        env=hf_environment(),
     )
+    lines = [line.strip() for line in result.stdout.splitlines() if line.strip()]
+    if not lines:
+        raise RuntimeError(f"snapshot_download n'a retourné aucun chemin pour {repo}")
+    snapshot = Path(lines[-1])
+    materialize_snapshot(snapshot, destination)
 
 
 def install_models() -> None:
@@ -96,6 +149,7 @@ def install_models() -> None:
             "torch:ch",
             "--output-dir",
             str(ARTIFACTS),
+            env=hf_environment(),
         )
 
 

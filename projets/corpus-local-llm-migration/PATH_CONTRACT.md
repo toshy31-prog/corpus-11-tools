@@ -90,6 +90,12 @@ Les producteurs et l'inventaire convergent maintenant avec les consommateurs : `
 
 Qwen3.8 est uniquement COLD : il n'est plus une cible de reconstruction HOT. Le prochain changement peut donc être purement physique, sans nouveau reroot des consommateurs ou producteurs.
 
+## MODELS Phase 2A3 — cache Docling reconstructible
+
+Docling est physiquement autonome sous `CORPUS_MODELS_ROOT/docling`. Le cache Hugging Face n'est donc jamais une dépendance d'inférence. Les téléchargements de reconstruction utilisent `CORPUS_CACHE_ROOT/huggingface` et `.../hub`; les snapshots pinnés sont ensuite matérialisés dans MODELS par hardlinks lorsque cache et modèles partagent le même filesystem, avec copie comme fallback cross-filesystem.
+
+`local_tools_mcp.py` transmet le contrat Corpus au worker Docling et utilise également le cache canonique, jamais `CORPUS_RUNTIME_ROOT/corpus-capabilities/huggingface`.
+
 ## Correction sémantique
 
 L'ancien setup employait `CORPUS_STATE_ROOT` comme nom du runtime. Ce sens est

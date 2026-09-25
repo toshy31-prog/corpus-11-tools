@@ -65,6 +65,8 @@ def resolve_contract(environ=None, *, home=None, repo_root=None):
         "office_runtime": runtime / "corpus-office",
         "updates_runtime": runtime / "corpus-updates",
         "build_cache": cache / "build",
+        "huggingface_cache": cache / "huggingface",
+        "huggingface_hub_cache": cache / "huggingface/hub",
         "maintenance_state": state / "maintenance",
         "compat_dev_local": repository / ".dev-local",
     }
@@ -90,6 +92,8 @@ MEDIA_RUNTIME_ROOT = _PATHS["media_runtime"]
 OFFICE_RUNTIME_ROOT = _PATHS["office_runtime"]
 UPDATES_RUNTIME_ROOT = _PATHS["updates_runtime"]
 BUILD_CACHE_ROOT = _PATHS["build_cache"]
+HUGGINGFACE_CACHE_ROOT = _PATHS["huggingface_cache"]
+HUGGINGFACE_HUB_CACHE_ROOT = _PATHS["huggingface_hub_cache"]
 MAINTENANCE_STATE_ROOT = _PATHS["maintenance_state"]
 COMPAT_DEV_LOCAL_ROOT = _PATHS["compat_dev_local"]
 

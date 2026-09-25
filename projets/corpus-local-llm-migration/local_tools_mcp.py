@@ -1,7 +1,13 @@
 """MCP stdio : le modèle demande des actions, seul le portail les approuve."""
 import json,socket,sys,subprocess
 from pathlib import Path
-from corpus_paths import CAPABILITIES_RUNTIME_ROOT, LOCAL_RUNTIME_ROOT
+from corpus_paths import (
+    CAPABILITIES_RUNTIME_ROOT,
+    HUGGINGFACE_CACHE_ROOT,
+    HUGGINGFACE_HUB_CACHE_ROOT,
+    LOCAL_RUNTIME_ROOT,
+    contract_environment,
+)
 ROOT=Path(__file__).resolve().parents[2]
 SOCKET=LOCAL_RUNTIME_ROOT/'tools.sock'
 CAP=CAPABILITIES_RUNTIME_ROOT
@@ -48,11 +54,12 @@ for line in sys.stdin:
                     'LANG':'C.UTF-8',
                     'CORPUS_ROOT':str(ROOT),
                     'CUDA_VISIBLE_DEVICES':'',
-                    'HF_HOME':str(CAP/'huggingface'),
-                    'HF_HUB_CACHE':str(CAP/'huggingface/hub'),
+                    'HF_HOME':str(HUGGINGFACE_CACHE_ROOT),
+                    'HF_HUB_CACHE':str(HUGGINGFACE_HUB_CACHE_ROOT),
                     'HF_HUB_OFFLINE':'1',
                     'TRANSFORMERS_OFFLINE':'1',
                 }
+                env.update(contract_environment())
                 proc=subprocess.run([str(DOCLING_PYTHON),str(DOCLING_HELPER),path,str(limit)],capture_output=True,text=True,timeout=300,env=env)
                 if proc.returncode: value={'error':proc.stderr.strip() or proc.stdout.strip() or f'Docling exit {proc.returncode}'}
                 else: value=json.loads(proc.stdout)

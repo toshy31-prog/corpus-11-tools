@@ -74,6 +74,8 @@ class CorpusPathContractTests(unittest.TestCase):
             self.assertEqual(paths["models"], root / "home/.local/share/corpus/models/hot")
             self.assertEqual(paths["toolchains"], root / "home/.local/share/corpus/toolchains")
             self.assertEqual(paths["build_cache"], root / "home/.cache/corpus/build")
+            self.assertEqual(paths["huggingface_cache"], root / "home/.cache/corpus/huggingface")
+            self.assertEqual(paths["huggingface_hub_cache"], root / "home/.cache/corpus/huggingface/hub")
             self.assertEqual(paths["maintenance_state"], root / "home/.local/state/corpus/maintenance")
             self.assertNotEqual(paths["models"], paths["runtime"])
             self.assertNotEqual(paths["toolchains"], paths["runtime"])
