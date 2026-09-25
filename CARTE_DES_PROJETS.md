@@ -41,6 +41,8 @@ Des sources Rust, projets Godot et, dans une copie, le lanceur `JOUER-3D.sh` ont
 
 **Conclusion : sources retrouvées dans des copies de restauration ; dossier courant incomplet.** Ni l’exhaustivité ni la version à retenir de ces copies ne sont établies. Avant restauration, comparer les copies au paquet distribué et conserver les différences. Aucune restauration effectuée.
 
+**Réobservation — 25 septembre 2026.** Ce constat décrit l’état du 19 septembre et n’est plus l’état courant. Les deux restaurations ont depuis été comparées. `restore-jb1mlf6l` a été retenue comme source de récupération : elle est plus complète et cinq fichiers Godot majeurs (`main.gd`, `backend.gd`, `landscape.gd`, `models.gd`, `main.tscn`) correspondent octet pour octet au paquet distribué. Les sources ont été restaurées dans `projets/corpus-monde-vivant/`, tandis que `target/`, `.godot/`, `dist/` et les archives binaires préservées restent exclus du versionnement. Le contrôle `check.sh` passe avec 19 tests Rust réussis (3 serveur et 16 noyau). Le binaire Rust release antérieurement présent est identique au `CORPUS-Core` distribué. La récupération validée est versionnée depuis le commit `66b15bf0`. La divergence observée de `game-3d/project.godot` avec la copie distribuée reste conservée comme différence de provenance ; elle n’a pas été écrasée automatiquement.
+
 ### 2. Prototypes navigateur retirés — archive récupérable
 
 La campagne Sereine, Corpus Builder et Corpus Évolution navigateur ont été retirés ensemble, avec accord explicite. Corpus 3D est conservé.
