@@ -1,0 +1,212 @@
+{
+  "source": "/home/olivier/Documents/ChatGPT/Corpus/projets/corpus-ce-qui-reste-possible",
+  "archive": "/home/olivier/Documents/ChatGPT/Corpus/backups/corpus-ce-qui-reste-possible-2026-09-19-verifiee.tar.gz",
+  "archive_sha256": "5c954dffafa7ae7a4f4bb44605ff47219c86381a0c21e60de9629cc6e797c894",
+  "verification": "Archive extraite dans un dossier temporaire ; chemins, types, permissions, tailles et SHA-256 identiques ; source relue après extraction.",
+  "entries": {
+    ".": {
+      "type": "directory",
+      "mode": 509
+    },
+    "AUDIT-EVOLUTION.md": {
+      "type": "file",
+      "mode": 436,
+      "size": 3668,
+      "sha256": "59a965fcd5e4aa3a6d1a758893c39a35543cf7d1b5861f345a2acb4e81252f3a"
+    },
+    "BUILDER.md": {
+      "type": "file",
+      "mode": 436,
+      "size": 2710,
+      "sha256": "2f0a576bb042d09f556158ca30b5bb5a710265eedf52deb906367ba8181541fd"
+    },
+    "CORPUS.desktop": {
+      "type": "file",
+      "mode": 509,
+      "size": 425,
+      "sha256": "2e6cbb6eef16fee1ecda5bb2f58c796f838799c4007a89489aa3af73adf9b9df"
+    },
+    "CORPUS_GAME_TRANSLATION.md": {
+      "type": "file",
+      "mode": 436,
+      "size": 7458,
+      "sha256": "eb0ca2781f85c1b0f87e32b0479e268f44eb8840faea36b76330e3b97d23a5cc"
+    },
+    "EVOLUTION.md": {
+      "type": "file",
+      "mode": 436,
+      "size": 2546,
+      "sha256": "88b0b2cbf27f2f9b075182b103acdf15fb7f9beba64fe9af89450f0f78b98180"
+    },
+    "README.md": {
+      "type": "file",
+      "mode": 436,
+      "size": 4361,
+      "sha256": "8b55aed312d2ab09d8362fa0c6b215a2d87d56dec909633d8d6b79fd5e940c42"
+    },
+    "browser.js": {
+      "type": "file",
+      "mode": 436,
+      "size": 71764,
+      "sha256": "07f8770e7841d8656ad7e17b5d9efe635c9b56013409b301408fb62a96fa12a2"
+    },
+    "build-browser.mjs": {
+      "type": "file",
+      "mode": 436,
+      "size": 2422,
+      "sha256": "52b572f119e5a80211e5590b29e8404818c5aedb89e251d5c4ada759e1c0a344"
+    },
+    "campaign-validator.js": {
+      "type": "file",
+      "mode": 436,
+      "size": 20238,
+      "sha256": "0c2033bb69cdb3258ec7dc3dd33541beda3411e1a16f5c19a14b188906561ded"
+    },
+    "campaign-validator.test.js": {
+      "type": "file",
+      "mode": 436,
+      "size": 6117,
+      "sha256": "8fe3eccbfec9eea8f23ae27c4f54a7157fcfa824243771ef2c881ee3d1975485"
+    },
+    "campaign.generated.js": {
+      "type": "file",
+      "mode": 436,
+      "size": 42613,
+      "sha256": "e931b20cab4a800c9fb4e36ff860fe4dc4043d69fc2b10aba9ef77071a5010cb"
+    },
+    "campaigns": {
+      "type": "directory",
+      "mode": 509
+    },
+    "campaigns/sereine.campaign.json": {
+      "type": "file",
+      "mode": 436,
+      "size": 31866,
+      "sha256": "9c93ef2f3e0ca1d5b407dab8154e62c737ecb45eb7192043dba382272e5d42fa"
+    },
+    "dist": {
+      "type": "directory",
+      "mode": 509
+    },
+    "dist/CORPUS-Jeu.html": {
+      "type": "file",
+      "mode": 436,
+      "size": 48237,
+      "sha256": "3eb4853fa0ec33aa9441aa2d73ce316aab5db1cdba4396d1955b0f0ff67be508"
+    },
+    "engine.js": {
+      "type": "file",
+      "mode": 436,
+      "size": 9729,
+      "sha256": "89a8fe5fdeeb368381d575b0d7412642368c9a364dd896e4d273f1a987659478"
+    },
+    "engine.test.js": {
+      "type": "file",
+      "mode": 436,
+      "size": 9004,
+      "sha256": "eb8762e513028deea7bcec66e39891889cde7901b8989b6aec5c0ad725e10f9f"
+    },
+    "evolution-browser.js": {
+      "type": "file",
+      "mode": 436,
+      "size": 27840,
+      "sha256": "85fec8a8a448a8ac74d739ed52082898deea855b43194e3631862ed8c6b229bc"
+    },
+    "evolution-engine.js": {
+      "type": "file",
+      "mode": 436,
+      "size": 17283,
+      "sha256": "a548e7608b284f85842d36cc2eb22ba005f9413d72c92d57a8a1e3592923b2ac"
+    },
+    "evolution-engine.test.js": {
+      "type": "file",
+      "mode": 436,
+      "size": 4626,
+      "sha256": "b0901dc78ddadba1ad2eb7cd618ba5aba5d621f2d1a6ae0dc566a64f58418344"
+    },
+    "evolution-game.js": {
+      "type": "file",
+      "mode": 436,
+      "size": 10843,
+      "sha256": "08e93fa60f684b72b1370f0074cd2eb88bae7f1248eaf4a2992f9ab9f34dd9c8"
+    },
+    "evolution.css": {
+      "type": "file",
+      "mode": 436,
+      "size": 16503,
+      "sha256": "b97862bddd74c98ee14356239876f819f1909746441c43720332de73f9694ca2"
+    },
+    "evolution.html": {
+      "type": "file",
+      "mode": 436,
+      "size": 3917,
+      "sha256": "cc8dda19992420ca1b1220c145f95e2dccfacc4b80b10d128284134702942379"
+    },
+    "game.js": {
+      "type": "file",
+      "mode": 436,
+      "size": 19772,
+      "sha256": "f0fd4b8fd365f4182e880b30782d9adbf4f56d2a2057de4d9700814d8df98f35"
+    },
+    "index.html": {
+      "type": "file",
+      "mode": 436,
+      "size": 6253,
+      "sha256": "b99431078fcb7c7dd66c3154c23943a68a3e5796a7e3aa1bd04ca0fa269d40c7"
+    },
+    "launch-corpus-game.sh": {
+      "type": "file",
+      "mode": 509,
+      "size": 756,
+      "sha256": "8e6bea57aa8de66efb3cfbeffea09aff6158b7cc5e29626665f7d790900291b5"
+    },
+    "package-standalone.mjs": {
+      "type": "file",
+      "mode": 436,
+      "size": 1279,
+      "sha256": "f35bae94422f997e23262b333e30e33600d3e3db36e2c74015bbd3d89143d6aa"
+    },
+    "package.json": {
+      "type": "file",
+      "mode": 436,
+      "size": 579,
+      "sha256": "afc805bc013e92eb9e40b4ed0f6d85d0b1dbb44b7a7e046e7ee7daa8363faed3"
+    },
+    "studio-browser.js": {
+      "type": "file",
+      "mode": 436,
+      "size": 94239,
+      "sha256": "d3655b4aa5d209905f24e28a2529e493321f7f6d051d6e10af550623da8c8efa"
+    },
+    "studio.css": {
+      "type": "file",
+      "mode": 436,
+      "size": 12076,
+      "sha256": "42a6d3b5de27d043d0665c394164f61dc33bc3e4f335fea66f2fcbff3687aacf"
+    },
+    "studio.html": {
+      "type": "file",
+      "mode": 436,
+      "size": 3547,
+      "sha256": "5e86ce7e91b77232c650b7ec771dc61368748c707b2e9cbb78b030df545c3a6a"
+    },
+    "studio.js": {
+      "type": "file",
+      "mode": 436,
+      "size": 31546,
+      "sha256": "6a16baad25fcc4fa578a0473eb765180a39dcaebec79210038145ade50f5327d"
+    },
+    "styles.css": {
+      "type": "file",
+      "mode": 436,
+      "size": 15467,
+      "sha256": "727a0ad403fc6fa7c2f1c65f672a9dac71e2979cae1b782d1d7acc3b3a379cd5"
+    },
+    "validate-campaign.mjs": {
+      "type": "file",
+      "mode": 436,
+      "size": 854,
+      "sha256": "6c09d8964c68126743a3db276caf954795ee9c87010194e0ae721bd7b59f90ca"
+    }
+  }
+}
