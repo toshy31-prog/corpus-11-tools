@@ -8,8 +8,8 @@ import re
 import urllib.request
 from pathlib import Path
 import chat_actions
-from corpus_paths import LOCAL_RUNTIME_ROOT
-DB = LOCAL_RUNTIME_ROOT/'schedules.sqlite'
+from corpus_paths import STATE_ROOT
+DB = STATE_ROOT/'scheduler/schedules.sqlite'
 
 def connect():
     DB.parent.mkdir(parents=True, exist_ok=True)

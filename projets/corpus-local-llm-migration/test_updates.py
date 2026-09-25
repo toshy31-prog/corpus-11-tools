@@ -33,7 +33,7 @@ class LocalInventory(unittest.TestCase):
                            'RUNTIME_ROOT': self.root / '.dev-local',
                            'LOCAL_RUNTIME_ROOT': self.root / '.dev-local/corpus-local',
                            'MEDIA_RUNTIME_ROOT': self.root / '.dev-local/corpus-media',
-                           'UPDATES_RUNTIME_ROOT': self.root / '.dev-local/corpus-updates',
+                           'STATE_ROOT': self.root / '.state-root',
                            'SYSTEM_STATUS': self.root / 'dpkg-status', 'NVIDIA_VERSION': self.root / 'nvidia-version',
                            'SYSTEM_BIN': self.root / 'bin'}.items():
             self.stack.enter_context(patch.object(u, key, value))

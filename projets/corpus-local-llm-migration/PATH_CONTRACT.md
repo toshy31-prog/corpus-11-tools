@@ -50,6 +50,14 @@ organe par organe.
 
 Les preuves, audits et receipts de maintenance vont sous `CORPUS_STATE_ROOT/maintenance`.
 
+## Migration physique — Wave 1A
+
+Les préférences applicatives Corpus (`browser-settings.json`, `plugins.json`, `git-settings.json`, `hooks.json`) vivent désormais sous `CORPUS_CONFIG_ROOT/corpus-local`.
+
+Le scheduler persistant vit sous `CORPUS_STATE_ROOT/scheduler` et l'état de découverte des mises à jour sous `CORPUS_STATE_ROOT/updates`.
+
+Les environnements/worktrees, logs, données OpenCode, modèles, caches, toolchains et receipts d'autonomie ne sont pas déplacés par cette vague.
+
 ## Correction sémantique
 
 L'ancien setup employait `CORPUS_STATE_ROOT` comme nom du runtime. Ce sens est

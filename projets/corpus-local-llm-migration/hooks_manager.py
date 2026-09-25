@@ -1,8 +1,8 @@
 """Hooks de worktree : configuration persistée et demande d'exécution explicite."""
 import json,threading,uuid
 from pathlib import Path
-from corpus_paths import LOCAL_RUNTIME_ROOT
-BASE=LOCAL_RUNTIME_ROOT
+from corpus_paths import CONFIG_ROOT
+BASE=CONFIG_ROOT/'corpus-local'
 LOCK=threading.RLock()
 def operate(data=None):
  with LOCK:

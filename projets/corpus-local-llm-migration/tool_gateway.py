@@ -1,9 +1,10 @@
 """Demandes du modèle -> approbation humaine -> navigateur séparé."""
 import json,os,socketserver,subprocess,threading,uuid,time,re
 from pathlib import Path
-from corpus_paths import LOCAL_RUNTIME_ROOT
+from corpus_paths import CONFIG_ROOT, LOCAL_RUNTIME_ROOT
 HERE=Path(__file__).resolve().parent
 BASE=LOCAL_RUNTIME_ROOT
+SETTINGS=CONFIG_ROOT/'corpus-local/browser-settings.json'
 LOCK=threading.RLock();WORKER_LOCK=threading.Lock();REQUESTS={};WORKER=None
 ACTIONS={'tab-new','tab-select','tab-close','forward','launch','navigate','snapshot','screenshot','click','fill','back','reload','clear','close','download','ssh','git','hook'}
 
@@ -15,8 +16,7 @@ def browser_info():
             'running':False,'visible':False,'profile':'Session temporaire dédiée à Corpus'}
 
 def preferences():
-    file=BASE/'browser-settings.json'
-    return json.loads(file.read_text()) if file.exists() else {'enabled':True}
+    return json.loads(SETTINGS.read_text()) if SETTINGS.exists() else {'enabled':True}
 
 def submit(data):
     if not isinstance(data,dict) or data.get('action') not in ACTIONS:raise ValueError('Action navigateur invalide.')
@@ -111,7 +111,7 @@ def operate(data=None):
     if action=='settings':
         if not isinstance(data.get('enabled'),bool):raise ValueError('État invalide.')
         with LOCK:
-            path=BASE/'browser-settings.json';temp=path.with_suffix('.tmp');temp.write_text(json.dumps({'enabled':data['enabled']}));temp.replace(path)
+            path=SETTINGS;path.parent.mkdir(parents=True,exist_ok=True);temp=path.with_suffix('.tmp');temp.write_text(json.dumps({'enabled':data['enabled']}));temp.replace(path)
             if not data['enabled']:
                 for request in REQUESTS.values():
                     if request['status']=='pending':request['status']='rejected'

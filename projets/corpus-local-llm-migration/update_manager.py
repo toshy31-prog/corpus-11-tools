@@ -7,11 +7,11 @@ import subprocess
 import urllib.request
 import urllib.parse
 from pathlib import Path
-from corpus_paths import LOCAL_RUNTIME_ROOT, MEDIA_RUNTIME_ROOT, RUNTIME_ROOT, UPDATES_RUNTIME_ROOT
+from corpus_paths import LOCAL_RUNTIME_ROOT, MEDIA_RUNTIME_ROOT, RUNTIME_ROOT, STATE_ROOT
 
 PROJECT = Path(__file__).resolve().parent
 ROOT = PROJECT.parents[1]
-STATE = UPDATES_RUNTIME_ROOT / 'state.json'
+STATE = STATE_ROOT / 'updates/state.json'
 LOCK = threading.RLock()
 STARTED = False
 BUSY = False

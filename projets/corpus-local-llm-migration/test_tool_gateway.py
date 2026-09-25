@@ -4,8 +4,8 @@ from unittest.mock import patch
 import tool_gateway as g
 class ApprovalTests(unittest.TestCase):
  def setUp(self):
-  self.directory=tempfile.TemporaryDirectory();self.old=g.BASE;g.BASE=Path(self.directory.name);g.REQUESTS.clear()
- def tearDown(self):g.BASE=self.old;g.REQUESTS.clear();self.directory.cleanup()
+  self.directory=tempfile.TemporaryDirectory();self.old=g.BASE;self.old_settings=g.SETTINGS;g.BASE=Path(self.directory.name);g.SETTINGS=g.BASE/'browser-settings.json';g.REQUESTS.clear()
+ def tearDown(self):g.BASE=self.old;g.SETTINGS=self.old_settings;g.REQUESTS.clear();self.directory.cleanup()
  def test_no_execution_before_approval_and_no_replay(self):
   with patch.object(g,'execute',return_value={'title':'Test'}) as run:
    req=g.submit({'action':'snapshot'});run.assert_not_called()
