@@ -64,6 +64,34 @@ class CorpusPathContractTests(unittest.TestCase):
                     repo_root=root / "repo",
                 )
 
+    def test_models_and_toolchains_have_first_class_defaults(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            paths = corpus_paths.resolve_contract(
+                {"HOME": str(root / "home")},
+                repo_root=root / "repo",
+            )
+            self.assertEqual(paths["models"], root / "home/.local/share/corpus/models/hot")
+            self.assertEqual(paths["toolchains"], root / "home/.local/share/corpus/toolchains")
+            self.assertEqual(paths["build_cache"], root / "home/.cache/corpus/build")
+            self.assertEqual(paths["maintenance_state"], root / "home/.local/state/corpus/maintenance")
+            self.assertNotEqual(paths["models"], paths["runtime"])
+            self.assertNotEqual(paths["toolchains"], paths["runtime"])
+
+    def test_models_and_toolchains_overrides_are_independent(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            paths = corpus_paths.resolve_contract(
+                {
+                    "HOME": str(root / "home"),
+                    "CORPUS_MODELS_ROOT": str(root / "models"),
+                    "CORPUS_TOOLCHAINS_ROOT": str(root / "toolchains"),
+                },
+                repo_root=root / "repo",
+            )
+            self.assertEqual(paths["models"], root / "models")
+            self.assertEqual(paths["toolchains"], root / "toolchains")
+
     def test_setup_uses_runtime_root(self):
         setup = (corpus_paths.REPO_ROOT / "scripts/setup-corpus-ubuntu.sh").read_text()
         self.assertIn("corpus_runtime_root=", setup)

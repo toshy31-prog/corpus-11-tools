@@ -35,6 +35,8 @@ def resolve_contract(environ=None, *, home=None, repo_root=None):
     xdg_config = _absolute(env.get("XDG_CONFIG_HOME", host_home / ".config"), "XDG_CONFIG_HOME")
 
     runtime = _absolute(env.get("CORPUS_RUNTIME_ROOT", xdg_data / "corpus/runtime"), "CORPUS_RUNTIME_ROOT")
+    models = _absolute(env.get("CORPUS_MODELS_ROOT", xdg_data / "corpus/models/hot"), "CORPUS_MODELS_ROOT")
+    toolchains = _absolute(env.get("CORPUS_TOOLCHAINS_ROOT", xdg_data / "corpus/toolchains"), "CORPUS_TOOLCHAINS_ROOT")
     data = _absolute(env.get("CORPUS_DATA_ROOT", xdg_data / "corpus/data"), "CORPUS_DATA_ROOT")
     state = _absolute(env.get("CORPUS_STATE_ROOT", xdg_state / "corpus"), "CORPUS_STATE_ROOT")
     cache = _absolute(env.get("CORPUS_CACHE_ROOT", xdg_cache / "corpus"), "CORPUS_CACHE_ROOT")
@@ -46,6 +48,8 @@ def resolve_contract(environ=None, *, home=None, repo_root=None):
         "repo": repository,
         "host_home": host_home,
         "runtime": runtime,
+        "models": models,
+        "toolchains": toolchains,
         "data": data,
         "state": state,
         "cache": cache,
@@ -56,12 +60,16 @@ def resolve_contract(environ=None, *, home=None, repo_root=None):
         "media_runtime": runtime / "corpus-media",
         "office_runtime": runtime / "corpus-office",
         "updates_runtime": runtime / "corpus-updates",
+        "build_cache": cache / "build",
+        "maintenance_state": state / "maintenance",
         "compat_dev_local": repository / ".dev-local",
     }
 
 _PATHS = resolve_contract()
 HOST_HOME = _PATHS["host_home"]
 RUNTIME_ROOT = _PATHS["runtime"]
+MODELS_ROOT = _PATHS["models"]
+TOOLCHAINS_ROOT = _PATHS["toolchains"]
 DATA_ROOT = _PATHS["data"]
 STATE_ROOT = _PATHS["state"]
 CACHE_ROOT = _PATHS["cache"]
@@ -73,12 +81,16 @@ CAPABILITIES_RUNTIME_ROOT = _PATHS["capabilities_runtime"]
 MEDIA_RUNTIME_ROOT = _PATHS["media_runtime"]
 OFFICE_RUNTIME_ROOT = _PATHS["office_runtime"]
 UPDATES_RUNTIME_ROOT = _PATHS["updates_runtime"]
+BUILD_CACHE_ROOT = _PATHS["build_cache"]
+MAINTENANCE_STATE_ROOT = _PATHS["maintenance_state"]
 COMPAT_DEV_LOCAL_ROOT = _PATHS["compat_dev_local"]
 
 def contract_environment():
     values = {
         "CORPUS_HOST_HOME": HOST_HOME,
         "CORPUS_RUNTIME_ROOT": RUNTIME_ROOT,
+        "CORPUS_MODELS_ROOT": MODELS_ROOT,
+        "CORPUS_TOOLCHAINS_ROOT": TOOLCHAINS_ROOT,
         "CORPUS_DATA_ROOT": DATA_ROOT,
         "CORPUS_STATE_ROOT": STATE_ROOT,
         "CORPUS_CACHE_ROOT": CACHE_ROOT,
