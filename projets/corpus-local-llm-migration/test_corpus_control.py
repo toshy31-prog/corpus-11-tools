@@ -1,0 +1,48 @@
+from pathlib import Path
+import json
+import tempfile
+import unittest
+
+import corpus_control
+
+
+class CorpusControlTests(unittest.TestCase):
+    def test_policy_schema_and_unique_ids(self):
+        policy=corpus_control.load_policy()
+        self.assertEqual(policy["schema_version"],1)
+        organ_ids=[x["id"] for x in policy["organs"]]
+        debt_ids=[x["id"] for x in policy["debts"]]
+        self.assertEqual(len(organ_ids),len(set(organ_ids)))
+        self.assertEqual(len(debt_ids),len(set(debt_ids)))
+
+    def test_every_territory_has_contract_path_key(self):
+        policy=corpus_control.load_policy()
+        paths=corpus_control.current_paths()
+        for name,spec in policy["territories"].items():
+            if spec.get("optional_mount"):
+                continue
+            self.assertIn(spec["path_key"],paths,name)
+
+    def test_resolve_spec_is_pure(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp)
+            paths={"runtime":root/"runtime","local_runtime":root/"runtime/local"}
+            item={"path_key":"local_runtime","relative":"home"}
+            self.assertEqual(corpus_control.resolve_spec(item,paths),root/"runtime/local/home")
+            self.assertFalse((root/"runtime").exists())
+
+    def test_gc_v1_is_preview_only(self):
+        source=Path(corpus_control.__file__).read_text()
+        self.assertIn("Seul `gc --dry-run` existe",source)
+        self.assertNotIn("shutil.rmtree",source)
+        self.assertNotIn(".unlink(",source)
+
+    def test_data_and_config_are_primary_truth(self):
+        policy=corpus_control.load_policy()
+        self.assertEqual(policy["territories"]["data"]["truth"],"primary")
+        self.assertEqual(policy["territories"]["config"]["truth"],"primary")
+        self.assertEqual(policy["territories"]["cache"]["truth"],"none")
+
+
+if __name__=="__main__":
+    unittest.main()

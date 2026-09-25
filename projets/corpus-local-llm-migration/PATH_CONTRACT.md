@@ -127,3 +127,21 @@ abandonné :
 
 - `CORPUS_RUNTIME_ROOT` = runtime ;
 - `CORPUS_STATE_ROOT` = état mutable au sens XDG.
+
+## CONTROL PLANE Phase 4B — constitution de cycle de vie
+
+`CORPUS_LIFECYCLE.json` formalise les territoires comme des contrats de cycle de vie,
+pas seulement comme des chemins : rôle, autorité, mutabilité, source de vérité,
+reconstructibilité, politique de backup et politique de GC.
+
+`corpus_control.py` fournit quatre observations non destructrices :
+
+- `scripts/corpus map` : territoire, taille, présence et montage ;
+- `scripts/corpus doctor` : invariants physiques, organes requis et dépendances interdites ;
+- `scripts/corpus drift` : exceptions/dettes encore présentes ;
+- `scripts/corpus gc --dry-run` : uniquement les objets explicitement marqués supprimables.
+
+La constitution v1 ne possède volontairement aucune primitive de suppression.
+Une dérive connue est un objet explicite du manifeste ; elle n'est ni oubliée,
+ni automatiquement corrigée. Les migrations suivantes doivent réduire ce drift
+et mettre à jour le manifeste avec des preuves.

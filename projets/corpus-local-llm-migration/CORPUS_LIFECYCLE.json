@@ -1,0 +1,420 @@
+{
+  "schema_version": 1,
+  "purpose": "Constitution de cycle de vie du Corpus: territoires, organes, exceptions et dérives observables.",
+  "territories": {
+    "runtime": {
+      "path_key": "runtime",
+      "role": "Payloads d'exécution HOT: environnements, applications et exécutables actifs.",
+      "authority": "runtime-manager",
+      "mutability": "mutable",
+      "truth": "derived",
+      "recovery": "rebuild-or-rematerialize",
+      "backup": "manifests-and-irreplaceable-exceptions-only",
+      "gc": "never-by-age-alone"
+    },
+    "models": {
+      "path_key": "models",
+      "role": "Poids de modèles HOT actifs.",
+      "authority": "model-manager",
+      "mutability": "managed",
+      "truth": "mixed-pinned-assets",
+      "recovery": "locked-source-or-vault",
+      "backup": "expensive-or-irreplaceable-assets",
+      "gc": "only-if-unreferenced-and-recoverable"
+    },
+    "toolchains": {
+      "path_key": "toolchains",
+      "role": "Sources, outils et graines durables nécessaires à la reconstruction.",
+      "authority": "rebuild-manager",
+      "mutability": "managed",
+      "truth": "recovery-seed",
+      "recovery": "git-archive-vault-or-pinned-source",
+      "backup": "yes-if-offline-recovery-depends-on-it",
+      "gc": "only-after-recovery-proof"
+    },
+    "data": {
+      "path_key": "data",
+      "role": "Données persistantes produites ou conservées pour l'utilisateur.",
+      "authority": "user-data",
+      "mutability": "mutable",
+      "truth": "primary",
+      "recovery": "backup-required",
+      "backup": "yes",
+      "gc": "never-without-explicit-user-intent"
+    },
+    "state": {
+      "path_key": "state",
+      "role": "État mutable, journaux, receipts, diagnostics et preuves de maintenance.",
+      "authority": "state-manager",
+      "mutability": "mutable",
+      "truth": "operational-history",
+      "recovery": "mixed",
+      "backup": "selected-proofs-and-history",
+      "gc": "policy-bounded"
+    },
+    "cache": {
+      "path_key": "cache",
+      "role": "Caches, téléchargements et sorties de build reconstructibles.",
+      "authority": "cache-manager",
+      "mutability": "ephemeral",
+      "truth": "none",
+      "recovery": "recompute-or-refetch",
+      "backup": "no",
+      "gc": "allowed-when-not-a-hidden-dependency"
+    },
+    "config": {
+      "path_key": "config",
+      "role": "Préférences et configuration persistantes.",
+      "authority": "user-config",
+      "mutability": "mutable",
+      "truth": "primary",
+      "recovery": "backup-required",
+      "backup": "yes",
+      "gc": "never-without-explicit-user-intent"
+    },
+    "vault": {
+      "path_key": "vault",
+      "role": "COLD, recovery, archives et patrimoine externe.",
+      "authority": "recovery-manager",
+      "mutability": "append-mostly",
+      "truth": "cold-recovery",
+      "recovery": "self-verifying",
+      "backup": "secondary-recovery-domain",
+      "gc": "only-after-verification-and-explicit-approval",
+      "optional_mount": true
+    }
+  },
+  "organs": [
+    {
+      "id": "local-runtime",
+      "path_key": "local_runtime",
+      "territory": "runtime",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "local-apps",
+      "path_key": "local_apps",
+      "territory": "runtime",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "browser-env",
+      "path_key": "local_browser_env",
+      "territory": "runtime",
+      "required": true,
+      "kind": "dir",
+      "python_packages": {
+        "playwright": "1.63.0",
+        "greenlet": "3.5.6",
+        "pyee": "13.0.1",
+        "typing_extensions": "4.16.0"
+      },
+      "forbidden_python_packages": [
+        "cmake",
+        "uv"
+      ]
+    },
+    {
+      "id": "build-tools",
+      "path_key": "local_build_tools",
+      "territory": "toolchains",
+      "required": true,
+      "kind": "dir",
+      "executables": {
+        "bin/cmake": "cmake version 4.4.3",
+        "bin/uv": "uv 0.12.17"
+      }
+    },
+    {
+      "id": "build-tool-wheels",
+      "path_key": "local_build_wheelhouse",
+      "territory": "toolchains",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "toolchain-sources",
+      "path_key": "toolchain_sources",
+      "territory": "toolchains",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "local-build-cache",
+      "path_key": "local_build_cache",
+      "territory": "cache",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "uv-cache",
+      "path_key": "uv_cache",
+      "territory": "cache",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "capabilities-runtime",
+      "path_key": "capabilities_runtime",
+      "territory": "runtime",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "media-runtime",
+      "path_key": "media_runtime",
+      "territory": "runtime",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "office-runtime",
+      "path_key": "office_runtime",
+      "territory": "runtime",
+      "required": true,
+      "kind": "dir"
+    }
+  ],
+  "probes": [
+    {
+      "id": "hermes-runtime-origin",
+      "type": "python-import-under",
+      "python": {
+        "path_key": "local_runtime",
+        "relative": "hermes-env/bin/python"
+      },
+      "module": "hermes_cli",
+      "under": {
+        "path_key": "local_apps",
+        "relative": "hermes-agent-2026.9.21"
+      },
+      "severity": "fail"
+    }
+  ],
+  "forbidden_paths": [
+    {
+      "id": "legacy-build-env",
+      "path_key": "local_runtime",
+      "relative": "build-env",
+      "reason": "Phase 4A split"
+    },
+    {
+      "id": "legacy-sources",
+      "path_key": "local_runtime",
+      "relative": "sources",
+      "reason": "Sources canonicalisées sous TOOLCHAINS"
+    },
+    {
+      "id": "legacy-build",
+      "path_key": "local_runtime",
+      "relative": "build",
+      "reason": "Builds canonicalisés sous CACHE"
+    },
+    {
+      "id": "legacy-toolchains",
+      "path_key": "local_runtime",
+      "relative": "toolchains",
+      "reason": "Toolchains canonicalisés"
+    },
+    {
+      "id": "legacy-uv-cache",
+      "path_key": "local_runtime",
+      "relative": "uv-cache",
+      "reason": "UV cache canonicalisé sous CACHE"
+    },
+    {
+      "id": "hermes-verify-copy",
+      "path_key": "local_runtime",
+      "relative": "hermes-restore-check",
+      "reason": "Artefact temporaire de validation"
+    }
+  ],
+  "intentional_exceptions": [
+    {
+      "id": "qwen38-cold-locator",
+      "path_key": "local_runtime",
+      "relative": "downloads/Qwen3.8-27B-UD-Q5_K_M.gguf",
+      "reason": "Locator COLD on-demand vers le Vault; ne doit pas être assimilé à une archive CACHE."
+    }
+  ],
+  "debts": [
+    {
+      "id": "opencode-synthetic-home",
+      "path_key": "local_runtime",
+      "relative": "home",
+      "class": "xdg-sandbox",
+      "severity": "medium",
+      "expected": "separate-lifecycle",
+      "reason": "HOME synthétique OpenCode actuellement imbriqué dans RUNTIME."
+    },
+    {
+      "id": "opencode-synthetic-config",
+      "path_key": "local_runtime",
+      "relative": "config",
+      "class": "xdg-sandbox",
+      "severity": "medium",
+      "expected": "separate-lifecycle",
+      "reason": "CONFIG synthétique imbriqué dans RUNTIME."
+    },
+    {
+      "id": "opencode-synthetic-data",
+      "path_key": "local_runtime",
+      "relative": "data",
+      "class": "xdg-sandbox",
+      "severity": "medium",
+      "expected": "separate-lifecycle",
+      "reason": "DATA synthétique imbriqué dans RUNTIME."
+    },
+    {
+      "id": "opencode-synthetic-cache",
+      "path_key": "local_runtime",
+      "relative": "cache",
+      "class": "xdg-sandbox",
+      "severity": "medium",
+      "expected": "separate-lifecycle",
+      "reason": "CACHE synthétique imbriqué dans RUNTIME."
+    },
+    {
+      "id": "opencode-synthetic-state",
+      "path_key": "local_runtime",
+      "relative": "state",
+      "class": "xdg-sandbox",
+      "severity": "medium",
+      "expected": "separate-lifecycle",
+      "reason": "STATE synthétique imbriqué dans RUNTIME."
+    },
+    {
+      "id": "attachments-in-runtime",
+      "path_key": "runtime",
+      "relative": "corpus-attachments",
+      "class": "data-placement",
+      "severity": "medium",
+      "expected": "data",
+      "reason": "Pièces jointes persistantes ressemblant à DATA."
+    },
+    {
+      "id": "documents-in-runtime",
+      "path_key": "runtime",
+      "relative": "corpus-documents",
+      "class": "data-placement",
+      "severity": "medium",
+      "expected": "data",
+      "reason": "Documents générés persistants ressemblant à DATA."
+    },
+    {
+      "id": "voice-model-in-runtime",
+      "path_key": "local_runtime",
+      "relative": "voice-model",
+      "class": "model-placement",
+      "severity": "review",
+      "expected": "speech-models-or-runtime-exception",
+      "reason": "Payload 141 MiB à classifier avec ses consommateurs."
+    },
+    {
+      "id": "slot-cache-in-runtime",
+      "path_key": "local_runtime",
+      "relative": "slot-cache",
+      "class": "cache-placement",
+      "severity": "review",
+      "expected": "cache-or-state",
+      "reason": "Cache 106 MiB à classifier par source de vérité et reconstructibilité."
+    },
+    {
+      "id": "continuity-in-runtime",
+      "path_key": "local_runtime",
+      "relative": "continuity",
+      "class": "state-placement",
+      "severity": "review",
+      "expected": "state-or-data",
+      "reason": "État de continuité à classifier avant déplacement."
+    },
+    {
+      "id": "media-audio-archive",
+      "path_key": "media_runtime",
+      "relative": "audio-runtime.tar.gz",
+      "class": "archive-placement",
+      "severity": "review",
+      "expected": "cache-or-vault",
+      "reason": "Archive de runtime sous RUNTIME."
+    },
+    {
+      "id": "media-runtime-archive",
+      "path_key": "media_runtime",
+      "relative": "runtime.zip",
+      "class": "archive-placement",
+      "severity": "review",
+      "expected": "cache-or-vault",
+      "reason": "Archive de runtime sous RUNTIME."
+    },
+    {
+      "id": "media-jobs",
+      "path_key": "media_runtime",
+      "relative": "jobs",
+      "class": "state-or-data-placement",
+      "severity": "review",
+      "expected": "state-or-data",
+      "reason": "Jobs média à classifier par persistance."
+    },
+    {
+      "id": "runtime-autonomy",
+      "path_key": "runtime",
+      "relative": "autonomy",
+      "class": "state-placement",
+      "severity": "review",
+      "expected": "state",
+      "reason": "Ancien état autonomie sous RUNTIME."
+    },
+    {
+      "id": "coverage-cct-log",
+      "path_key": "runtime",
+      "relative": "coverage-cct-20260913.log",
+      "class": "gc-candidate",
+      "severity": "low",
+      "expected": "state-or-delete",
+      "reason": "Ancien log de couverture.",
+      "gc_candidate": true
+    },
+    {
+      "id": "coverage-checks-log",
+      "path_key": "runtime",
+      "relative": "coverage-checks-20260913.log",
+      "class": "gc-candidate",
+      "severity": "low",
+      "expected": "state-or-delete",
+      "reason": "Ancien log de couverture.",
+      "gc_candidate": true
+    },
+    {
+      "id": "coverage-node-log",
+      "path_key": "runtime",
+      "relative": "coverage-node-20260913.log",
+      "class": "gc-candidate",
+      "severity": "low",
+      "expected": "state-or-delete",
+      "reason": "Ancien log de couverture.",
+      "gc_candidate": true
+    },
+    {
+      "id": "coverage-python-log",
+      "path_key": "runtime",
+      "relative": "coverage-python-20260913.log",
+      "class": "gc-candidate",
+      "severity": "low",
+      "expected": "state-or-delete",
+      "reason": "Ancien log de couverture.",
+      "gc_candidate": true
+    },
+    {
+      "id": "coverage-python-scripts-log",
+      "path_key": "runtime",
+      "relative": "coverage-python-scripts-20260913.log",
+      "class": "gc-candidate",
+      "severity": "low",
+      "expected": "state-or-delete",
+      "reason": "Ancien log de couverture.",
+      "gc_candidate": true
+    }
+  ]
+}

@@ -1,0 +1,375 @@
+#!/usr/bin/env python3
+"""Corpus control plane: constitution, map, doctor, drift and safe GC preview."""
+from __future__ import annotations
+
+import argparse
+import importlib.metadata as metadata
+import importlib.util
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+
+import corpus_paths
+
+HERE = Path(__file__).resolve().parent
+POLICY_PATH = HERE / "CORPUS_LIFECYCLE.json"
+
+
+def load_policy(path=POLICY_PATH):
+    data = json.loads(Path(path).read_text())
+    if data.get("schema_version") != 1:
+        raise RuntimeError("Version de constitution Corpus non supportée.")
+    return data
+
+
+def current_paths():
+    return dict(corpus_paths._PATHS)
+
+
+def resolve_spec(spec, paths=None):
+    paths = paths or current_paths()
+    base = paths.get(spec["path_key"])
+    if base is None:
+        return None
+    path = Path(base)
+    relative = spec.get("relative")
+    return path / relative if relative else path
+
+
+def bytes_used(path):
+    if path is None or (not path.exists() and not path.is_symlink()):
+        return 0
+    result = subprocess.run(
+        ["du", "-sx", "-B1", str(path)],
+        capture_output=True, text=True, check=False, timeout=300,
+    )
+    try:
+        return int(result.stdout.split()[0])
+    except Exception:
+        return None
+
+
+def human(n):
+    if n is None:
+        return "?"
+    value = float(n)
+    for unit in ("B", "KiB", "MiB", "GiB", "TiB"):
+        if value < 1024 or unit == "TiB":
+            return f"{value:.1f} {unit}"
+        value /= 1024
+
+
+def mount_info(path):
+    if path is None:
+        return None
+    probe = path
+    while not probe.exists() and probe != probe.parent:
+        probe = probe.parent
+    result = subprocess.run(
+        ["findmnt", "-T", str(probe), "-n", "-o", "SOURCE,FSTYPE,TARGET"],
+        capture_output=True, text=True, check=False, timeout=30,
+    )
+    return result.stdout.strip() or None
+
+
+def path_exists(path, kind="any"):
+    if path is None:
+        return False
+    if kind == "dir":
+        return path.is_dir() and not path.is_symlink()
+    if kind == "file":
+        return path.is_file() and not path.is_symlink()
+    return path.exists() or path.is_symlink()
+
+
+def python_packages(python):
+    code = (
+        "import importlib.metadata as m,json;"
+        "print(json.dumps({(d.metadata.get('Name') or '').replace('-','_'):d.version "
+        "for d in m.distributions() if d.metadata.get('Name')}))"
+    )
+    p = subprocess.run(
+        [str(python), "-c", code],
+        capture_output=True, text=True, check=False, timeout=120,
+    )
+    if p.returncode:
+        return None, p.stdout + p.stderr
+    try:
+        return json.loads(p.stdout.splitlines()[-1]), ""
+    except Exception as exc:
+        return None, str(exc)
+
+
+def territory_rows(policy=None, paths=None):
+    policy = policy or load_policy()
+    paths = paths or current_paths()
+    rows = []
+    for name, spec in policy["territories"].items():
+        path = paths.get(spec["path_key"])
+        path = Path(path) if path is not None else None
+        exists = bool(path and (path.exists() or path.is_symlink()))
+        rows.append({
+            "territory": name,
+            "path": str(path) if path else None,
+            "exists": exists,
+            "bytes": bytes_used(path) if exists else 0,
+            "mount": mount_info(path) if path else None,
+            "role": spec["role"],
+            "truth": spec["truth"],
+            "recovery": spec["recovery"],
+            "backup": spec["backup"],
+            "gc": spec["gc"],
+        })
+    return rows
+
+
+def doctor(policy=None, paths=None):
+    policy = policy or load_policy()
+    paths = paths or current_paths()
+    checks = []
+
+    def add(level, ident, message, **extra):
+        checks.append({"level": level, "id": ident, "message": message, **extra})
+
+    # Canonical roots: absolute and distinct (vault may be absent).
+    roots = {}
+    for name, spec in policy["territories"].items():
+        value = paths.get(spec["path_key"])
+        if value is None:
+            if spec.get("optional_mount"):
+                add("WARN", f"territory.{name}.unconfigured", f"{name}: non configuré sur cette machine.")
+                continue
+            add("FAIL", f"territory.{name}.missing", f"{name}: root contractuel absent.")
+            continue
+        path = Path(value)
+        if not path.is_absolute():
+            add("FAIL", f"territory.{name}.relative", f"{name}: chemin non absolu: {path}")
+        roots[name] = path.resolve(strict=False)
+
+    reverse = {}
+    for name, path in roots.items():
+        reverse.setdefault(str(path), []).append(name)
+    for path, names in reverse.items():
+        if len(names) > 1:
+            add("FAIL", "territories.alias", f"Territoires aliasés {names}: {path}")
+
+    # Compatibility link remains explicit evidence, not canonical API.
+    compat = corpus_paths.compatibility_status()
+    if compat["is_symlink"] and compat["matches_runtime"]:
+        add("PASS", "compat.dev-local", ".dev-local pointe vers le runtime canonique.")
+    else:
+        add("FAIL", "compat.dev-local", f".dev-local incompatible: {compat}")
+
+    # Required organs stay inside their declared territory.
+    for organ in policy["organs"]:
+        path = resolve_spec(organ, paths)
+        if not path_exists(path, organ.get("kind", "any")):
+            add("FAIL" if organ.get("required") else "WARN", f"organ.{organ['id']}.missing", f"{organ['id']}: absent: {path}")
+            continue
+        territory_root = roots.get(organ["territory"])
+        if territory_root is not None:
+            try:
+                path.resolve(strict=False).relative_to(territory_root)
+            except ValueError:
+                add("FAIL", f"organ.{organ['id']}.territory", f"{organ['id']} hors territoire {organ['territory']}: {path}")
+                continue
+
+        if organ.get("python_packages"):
+            py = path / "bin/python"
+            packages, error = python_packages(py)
+            if packages is None:
+                add("FAIL", f"organ.{organ['id']}.python", f"{organ['id']}: inventaire Python impossible: {error}")
+            else:
+                for package, expected in organ["python_packages"].items():
+                    actual = packages.get(package.replace("-", "_"))
+                    level = "PASS" if actual == expected else "FAIL"
+                    add(level, f"organ.{organ['id']}.pkg.{package}", f"{package}: {actual!r} attendu {expected!r}")
+                for package in organ.get("forbidden_python_packages", []):
+                    actual = packages.get(package.replace("-", "_"))
+                    add("FAIL" if actual else "PASS", f"organ.{organ['id']}.forbidden.{package}", f"{package}: {'présent '+actual if actual else 'absent'}")
+
+        for rel, expected in organ.get("executables", {}).items():
+            exe = path / rel
+            p = subprocess.run([str(exe), "--version"], capture_output=True, text=True, check=False, timeout=60)
+            output = (p.stdout + p.stderr).strip()
+            ok = p.returncode == 0 and expected in output
+            add("PASS" if ok else "FAIL", f"organ.{organ['id']}.exe.{rel}", f"{rel}: {output.splitlines()[0] if output else 'échec'}")
+
+    # Known obsolete paths must stay absent.
+    for item in policy["forbidden_paths"]:
+        path = resolve_spec(item, paths)
+        exists = bool(path and (path.exists() or path.is_symlink()))
+        add("FAIL" if exists else "PASS", f"forbidden.{item['id']}", f"{path}: {'PRÉSENT' if exists else 'absent'} — {item['reason']}")
+
+    # Probes represent runtime dependency laws.
+    for probe in policy.get("probes", []):
+        if probe["type"] == "python-import-under":
+            python = resolve_spec(probe["python"], paths)
+            under = resolve_spec(probe["under"], paths)
+            if not python or not python.is_file() or not under:
+                add("FAIL", f"probe.{probe['id']}", f"Probe impossible: python={python}, under={under}")
+                continue
+            code = (
+                "import importlib.util,pathlib,sys;"
+                f"s=importlib.util.find_spec({probe['module']!r});"
+                "p=(pathlib.Path(s.origin).resolve() if s and s.origin else None);"
+                "print(p or 'NONE')"
+            )
+            p = subprocess.run([str(python), "-c", code], capture_output=True, text=True, check=False, timeout=120)
+            origin_text = p.stdout.strip().splitlines()[-1] if p.stdout.strip() else "NONE"
+            try:
+                origin = Path(origin_text)
+                origin.resolve(strict=False).relative_to(under.resolve(strict=False))
+                ok = p.returncode == 0
+            except Exception:
+                ok = False
+            add("PASS" if ok else "FAIL", f"probe.{probe['id']}", f"{probe['module']} -> {origin_text}; attendu sous {under}")
+
+    return checks
+
+
+def drift(policy=None, paths=None):
+    policy = policy or load_policy()
+    paths = paths or current_paths()
+    rows = []
+    for item in policy.get("debts", []):
+        path = resolve_spec(item, paths)
+        exists = bool(path and (path.exists() or path.is_symlink()))
+        if not exists:
+            continue
+        rows.append({
+            **item,
+            "path": str(path),
+            "bytes": bytes_used(path),
+        })
+    return rows
+
+
+def gc_preview(policy=None, paths=None):
+    return [row for row in drift(policy, paths) if row.get("gc_candidate")]
+
+
+def print_table(rows, columns):
+    if not rows:
+        print("<aucun>")
+        return
+    widths = {}
+    for key, label in columns:
+        widths[key] = max(len(label), *(len(str(row.get(key, ""))) for row in rows))
+    header = "  ".join(label.ljust(widths[key]) for key, label in columns)
+    print(header)
+    print("  ".join("-" * widths[key] for key, _ in columns))
+    for row in rows:
+        print("  ".join(str(row.get(key, "")).ljust(widths[key]) for key, _ in columns))
+
+
+def cmd_constitution(args):
+    policy = load_policy()
+    if args.json:
+        print(json.dumps(policy, ensure_ascii=False, indent=2))
+        return 0
+    print("CORPUS CONSTITUTION v1")
+    for name, spec in policy["territories"].items():
+        print(f"- {name.upper():10} {spec['role']}")
+        print(f"  truth={spec['truth']} recovery={spec['recovery']} backup={spec['backup']} gc={spec['gc']}")
+    return 0
+
+
+def cmd_map(args):
+    rows = territory_rows()
+    for row in rows:
+        row["size"] = human(row["bytes"])
+    if args.json:
+        print(json.dumps(rows, ensure_ascii=False, indent=2))
+    else:
+        print_table(rows, [
+            ("territory", "TERRITOIRE"),
+            ("size", "TAILLE"),
+            ("exists", "EXISTE"),
+            ("path", "CHEMIN"),
+        ])
+    return 0
+
+
+def cmd_doctor(args):
+    rows = doctor()
+    if args.json:
+        print(json.dumps(rows, ensure_ascii=False, indent=2))
+    else:
+        for row in rows:
+            print(f"{row['level']:<4} {row['id']}: {row['message']}")
+        counts = {level: sum(r["level"] == level for r in rows) for level in ("PASS","WARN","FAIL")}
+        print(f"\nPASS={counts['PASS']} WARN={counts['WARN']} FAIL={counts['FAIL']}")
+    return 1 if any(row["level"] == "FAIL" for row in rows) else 0
+
+
+def cmd_drift(args):
+    rows = drift()
+    for row in rows:
+        row["size"] = human(row["bytes"])
+    if args.json:
+        print(json.dumps(rows, ensure_ascii=False, indent=2))
+    else:
+        print_table(rows, [
+            ("severity","SEV"),
+            ("class","CLASSE"),
+            ("size","TAILLE"),
+            ("id","ID"),
+            ("path","CHEMIN"),
+        ])
+        print(f"\nDRIFT={len(rows)}")
+    return 0
+
+
+def cmd_gc(args):
+    if not args.dry_run:
+        raise SystemExit("Seul `gc --dry-run` existe dans la constitution v1.")
+    rows = gc_preview()
+    for row in rows:
+        row["size"] = human(row["bytes"])
+    if args.json:
+        print(json.dumps(rows, ensure_ascii=False, indent=2))
+    else:
+        print("GC DRY-RUN — aucune suppression")
+        print_table(rows, [
+            ("size","TAILLE"),
+            ("id","ID"),
+            ("path","CHEMIN"),
+            ("reason","RAISON"),
+        ])
+    return 0
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    sub = parser.add_subparsers(dest="command", required=True)
+
+    p = sub.add_parser("constitution")
+    p.add_argument("--json", action="store_true")
+    p.set_defaults(func=cmd_constitution)
+
+    p = sub.add_parser("map")
+    p.add_argument("--json", action="store_true")
+    p.set_defaults(func=cmd_map)
+
+    p = sub.add_parser("doctor")
+    p.add_argument("--json", action="store_true")
+    p.set_defaults(func=cmd_doctor)
+
+    p = sub.add_parser("drift")
+    p.add_argument("--json", action="store_true")
+    p.set_defaults(func=cmd_drift)
+
+    p = sub.add_parser("gc")
+    p.add_argument("--dry-run", action="store_true")
+    p.add_argument("--json", action="store_true")
+    p.set_defaults(func=cmd_gc)
+
+    args = parser.parse_args(argv)
+    return args.func(args)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
