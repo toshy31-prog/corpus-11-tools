@@ -10,27 +10,52 @@ avec l’abonnement **MUBI en France**, sans automatiser ni extraire le site
 JustWatch.
 
 Le Scout utilise l’API officielle de TMDB. Les données de disponibilité de
-TMDB sont fournies par JustWatch ; l’application vérifie chaque résultat dans
-la région française avant de l’afficher. Les quatre propositions finales sont
-ensuite enrichies par The Guardian, le New York Times et OMDb lorsque leurs
-clés sont configurées.
+TMDB sont fournies par JustWatch ; l’application vérifie individuellement les
+films du programme dans la région française. Le catalogue, lui, distingue les
+titres simplement signalés des fiches vérifiées. Les critiques Guardian, NYT
+et OMDb arrivent séparément, après les films.
+
+## Version 0.16.3 — récupération et consolidation
+
+La version **0.16.3** récupère la livraison 0.16.2 conservée dans une sauvegarde
+Git et la fusionne avec les protections d’import, le lancement contrôlé et
+l’export texte récents. Voir [RECUPERATION-0.16.3.md](./RECUPERATION-0.16.3.md)
+pour les vérifications du 22 septembre et les limites restantes.
+La [consolidation 0.16.1](./CONSOLIDATION-0.16.1.md) décrit les choix de classement.
+
+Le détail des fonctions, de leurs limites et des vérifications se trouve dans
+[LIVRAISON-0.16.md](./LIVRAISON-0.16.md).
+
+- Accès direct au catalogue ; affichage progressif ; fiches latérales.
+- Verrouiller/remplacer un film, exclure pour ce soir, élargissements chiffrés.
+- Bibliothèque sans plafond applicatif, listes, avis et profil explicites.
+- Collections importables et petit corpus éditorial sourcé de cinq films.
+- Rapprochements par axe, choix à deux, doubles séances, parcours de trois films.
+- Décodage validable du texte ; adaptateur LLM local facultatif.
+
+Les contrôles avancés de l’atelier sont repliés par défaut. Aucun nouvel accès
+API n’est nécessaire. Le moteur fonctionne sans modèle de langage.
 
 ## Lancer
 
 Prérequis : Node.js 18 ou supérieur et un jeton de lecture TMDB.
 
-Le lancement le plus simple ouvre le navigateur et démarre le serveur s’il ne
-tourne pas déjà :
+Depuis la racine de votre copie du dépôt Corpus, le lancement le plus simple
+ouvre le navigateur et démarre le serveur s’il ne tourne pas déjà :
 
 ```bash
+cd projets/mubi-film-scout
 ./launch.sh
 ```
 
-Le même lancement est disponible avec `npm run launch`. Pour un démarrage au
-premier plan :
+Une fois dans ce dossier, le même lancement est disponible avec `npm run launch`.
+Le lanceur vérifie l'identité du service déjà présent sur le port. S'il signale
+un service non identifié, vérifiez ce qui occupe ce port avant de le relancer,
+ou choisissez un autre `PORT`. Une ancienne instance MUBI démarrée avant l'ajout
+de cette identification doit être arrêtée puis redémarrée pour être reconnue.
+Pour un démarrage au premier plan, toujours depuis ce dossier :
 
 ```bash
-cd /home/olivier/Documents/ChatGPT/Corpus/projets/mubi-film-scout
 npm start
 ```
 
@@ -81,11 +106,24 @@ Le jeton de lecture se crée dans les paramètres du compte TMDB, rubrique API.
 - déplier les critères pour choisir une période, des genres et jusqu’à deux
   angles de découverte ;
 - marquer un film comme déjà vu pour ne plus le revoir dans les sélections ;
-- garder jusqu’à huit films, en comparer jusqu’à quatre, ou écarter localement
+- garder des films sans plafond applicatif, en comparer jusqu’à quatre, ou écarter localement
   une proposition ;
+- dans « À garder », télécharger une liste texte des titres, années et durées,
+  consultable hors application, sans films vus, évaluations ni réglages ;
 - exporter et réimporter les choix locaux au format JSON ;
 - utiliser « Surprends-moi » pour tirer une sélection ailleurs que sur la
   première page des résultats.
+
+L’import JSON accepte les exports `mubi-film-scout-local-v1` jusqu’à 2 Mio (2 097 152 octets).
+Les listes, identifiants, films gardés, évaluations et réglages sont contrôlés
+avant remplacement. Les doublons sont retirés et les films à comparer doivent
+figurer parmi les films gardés ; les limites restent de quatre comparés et
+cent évaluations récentes, sans plafond applicatif de films gardés.
+Le profil, les collections et l’historique de l’atelier sont conservés après
+validation et nettoyage des champs. Un fichier invalide ou une erreur
+de stockage conserve les choix actuels. Si vous modifiez vos choix pendant la
+lecture, l’import est refusé et peut être relancé ; un nouvel import remplace
+une lecture encore en attente. L’action d’oubli annule aussi les imports en cours.
 
 Le Centre des sources contient aussi un diagnostic explicite du serveur, des
 quatre connexions, du dernier test réseau et de la dernière recherche réussie.
@@ -166,7 +204,44 @@ envies de référence, les faux rapprochements de titres et la pagination légè
 du catalogue. Une recherche réelle nécessite un
 jeton TMDB et une connexion réseau. Le client Guardian gratuit est limité à un
 appel par seconde : le serveur sérialise donc ses recherches et met les réponses
-en cache pendant la session.
+en cache. La disponibilité et le catalogue expirent après 15 minutes sur disque
+(le petit cache mémoire TMDB expire après 5 minutes), les critiques après sept
+jours, les absences de critique après un jour. Les erreurs ne sont pas mises
+en cache comme des absences. Les dates de relevé ne sont pas réécrites lors
+d’une lecture de cache. Le fichier local `.runtime/catalogue-cache.json`
+est ignoré par Git, avec droits `0600` et clés de cache hachées.
+
+Le nouveau banc couvre en plus **792 combinaisons** (dont la durée sans limite) :
+
+```bash
+npm run benchmark
+```
+
+Il s’agit d’un catalogue synthétique fixe : ses résultats prouvent des
+différences de comportement, pas une qualité de recommandation dans la vie réelle.
+
+## Modèle de langage local facultatif
+
+L’adaptateur accepte un serveur local exposant un endpoint de type
+`chat/completions` (requête `model`, `messages`, `temperature` ; réponse
+`choices[0].message.content` contenant un objet JSON). Il ne télécharge aucun
+modèle, ne souscrit aucun service et n’envoie rien à un hébergeur distant.
+
+Configurer **un serveur déjà installé** avant de lancer le Scout :
+
+```bash
+SCOUT_LLM_URL=http://127.0.0.1:1234/v1/chat/completions \
+SCOUT_LLM_MODEL=nom-du-modele-local \
+npm start
+```
+
+Ces valeurs sont un exemple de configuration, pas la preuve qu’un modèle existe
+sur votre machine. Sans elles, le bouton LLM est désactivé. Les résultats du
+modèle passent par une liste de champs autorisés et la normalisation du moteur,
+puis sont présentés comme un brouillon à appliquer explicitement. Le modèle ne
+décide ni d’une disponibilité, ni d’une note, ni d’un fait sur un film. Son
+adaptateur est testé avec un serveur simulé ; aucune inférence réelle n’est
+revendiquée sans modèle configuré.
 
 ## Sources et attribution
 

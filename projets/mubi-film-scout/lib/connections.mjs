@@ -1,4 +1,6 @@
-import { chmod, readFile, rename, writeFile } from "node:fs/promises";
+import { chmod, readFile, rename, open, unlink } from "node:fs/promises";
+import { randomUUID } from "node:crypto";
+import { setTimeout as pause } from "node:timers/promises";
 
 export const SOURCE_IDS = Object.freeze(["tmdb", "guardian", "nyt", "omdb"]);
 
@@ -36,11 +38,32 @@ export function createConnectionStore(filePath, environment = {}) {
   }
 
   async function writeStored(values) {
-    const temporaryPath = `${filePath}.tmp`;
-    await writeFile(temporaryPath, `${JSON.stringify(values, null, 2)}\n`, { mode: 0o600 });
-    await chmod(temporaryPath, 0o600);
-    await rename(temporaryPath, filePath);
-    await chmod(filePath, 0o600);
+    const temporaryPath = `${filePath}.${randomUUID()}.tmp`;
+    try {
+      const handle = await open(temporaryPath, "wx", 0o600);
+      try { await handle.writeFile(`${JSON.stringify(values, null, 2)}\n`); await handle.sync(); }
+      finally { await handle.close(); }
+      await rename(temporaryPath, filePath);
+      await chmod(filePath, 0o600);
+    } finally { await unlink(temporaryPath).catch(() => {}); }
+  }
+
+  // Exclusive across stores and processes. A stale lock fails closed rather
+  // than deleting a lock that could still belong to another writer.
+  async function transaction(task) {
+    const lockPath = `${filePath}.lock`;
+    const deadline = Date.now() + 3000;
+    let lock;
+    while (!lock) {
+      try { lock = await open(lockPath, "wx", 0o600); }
+      catch (error) {
+        if (error.code !== "EEXIST") throw error;
+        if (Date.now() >= deadline) throw Object.assign(new Error("Le coffre est occupé ou son verrou doit être vérifié. Aucun accès n’a été modifié ; réessayez."), { status: 409 });
+        await pause(25);
+      }
+    }
+    try { return await task(); }
+    finally { await lock.close(); await unlink(lockPath); }
   }
 
   async function get(id) {
@@ -61,18 +84,15 @@ export function createConnectionStore(filePath, environment = {}) {
     if (!values || typeof values !== "object" || Array.isArray(values)) {
       throw Object.assign(new Error("Configuration invalide."), { status: 400 });
     }
-    const stored = await readStored();
-    for (const id of SOURCE_IDS) {
-      const value = cleanValue(values[id]);
-      if (value) stored[id] = value;
-    }
-    await writeStored(stored);
-    return status();
+    const cleaned = Object.fromEntries(SOURCE_IDS.map((id) => [id, cleanValue(values[id])]).filter(([, value]) => value));
+    return transaction(async () => {
+      await writeStored({ ...await readStored(), ...cleaned });
+      return status();
+    });
   }
 
   async function clear() {
-    await writeStored({});
-    return status();
+    return transaction(async () => { await writeStored({}); return status(); });
   }
 
   return { get, status, save, clear };

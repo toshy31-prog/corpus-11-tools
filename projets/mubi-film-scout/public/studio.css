@@ -1,0 +1,89 @@
+/* Compact first decision; depth is opt-in. */
+.workshop-nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 18px; }
+.workshop-nav button[aria-pressed="true"] { background: var(--accent); color: var(--paper); }
+.workshop button:disabled { opacity: .45; cursor: not-allowed; }
+.workshop .genre-pills { margin: 18px 0; display: flex; flex-wrap: wrap; gap: 7px; min-width: 0; }
+.workshop .genre-pills legend { color: var(--ink); text-transform: none; font-size: .9rem; letter-spacing: 0; }
+.workshop .genre-pills label { margin: 0; position: relative; }
+.genre-pills input { position: absolute; opacity: 0; }
+.genre-pills span { display: block; padding: 8px 10px; border: 1px solid var(--line); border-radius: 18px; cursor: pointer; font-size: .8rem; }
+.genre-pills input:checked + span { color: var(--paper); background: var(--accent); border-color: var(--accent); }
+.genre-pills input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 3px; }
+#profile-tool > label, #programme-builder > label, #together-tool > label { display: grid; gap: 8px; max-width: 420px; }
+#profile-tool > label:first-of-type { display: flex; max-width: none; }
+#profile-tool button, #programme-builder button { margin: 6px 12px 12px 0; }
+#together-tool .studio-columns { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 30px; }
+#workshop-hint { border-left: 2px solid var(--accent); padding-left: 12px; }
+.movie-card { display: flex; flex-direction: column; height: 100%; }
+.movie-card .movie-copy { display: flex; flex-direction: column; flex: 1; }
+.movie-card .movie-copy .card-actions { margin-top: auto; }
+.movie-card .overview { min-height: 3em; max-height: 3.2em; }
+.movie-card .programme-role span { min-height: 4.2em; }
+.movie-card .poster-wrap { flex-shrink: 0; }
+.movie-grid { align-items: stretch !important; }
+h1 { text-wrap: balance; }
+.hero-copy { margin-top: 24px; }
+h1 { font-size: clamp(2.2rem, 4.5vw, 3.8rem); }
+.search-panel { padding: clamp(18px, 2.5vw, 28px); }
+.panel-heading h2 { font-size: 2rem; margin-bottom: 16px; }
+.composer-question { padding-bottom: 16px; }
+.choice-grid label > span { min-height: 54px; padding: 9px 12px; }
+.compact-choices { grid-template-columns: repeat(auto-fit, minmax(105px, 1fr)); }
+.submit-row { margin: 18px 0; }
+.understanding { margin-bottom: 18px; padding: 10px 14px; }
+.movie-grid { align-items: start; }
+.movie-card .poster-wrap { aspect-ratio: 2 / 2.5; overflow: hidden; }
+.movie-card .poster-wrap img { height: 100%; object-fit: cover; }
+.movie-card .programme-role span { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.movie-card .overview { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.movie-card .original-title, .movie-card .why { display: none; }
+.movie-card .card-actions { flex-wrap: wrap; gap: 10px; }
+.movie-copy > p { font-size: .82rem; }
+.movie-meta { line-height: 1.5; }
+.studio-section { margin: 16px 0; }
+.studio-actions, .studio-card-actions, #home-actions, #active-criteria, #programme-tools { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+.studio-card-actions { border-top: 1px solid var(--line); margin-top: 14px; padding-top: 8px; }
+.studio-card-actions button { font-size: .78rem; }
+.studio-notice:empty { display: none; }
+.studio-notice { padding: 12px; border-left: 3px solid var(--accent); background: var(--panel); }
+.studio-columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
+.studio-section label, .workshop label { display: block; margin-bottom: 12px; font-size: .85rem; }
+.studio-section input[type="search"], .workshop input[type="file"] { max-width: 100%; padding: 10px; color: var(--ink); background: var(--paper); border: 1px solid var(--line); }
+.chip-button { border: 1px solid var(--line); background: var(--paper); color: var(--ink); padding: 8px 10px; cursor: pointer; font-size: .8rem; }
+#active-criteria > strong { width: 100%; font-size: .75rem; color: var(--muted); }
+#programme-tools { margin-bottom: 20px; }
+#pool-progress { font-size: .8rem; color: var(--muted); }
+#compact-diagnostics { font-size: .8rem; margin: 16px 0; }
+#compact-diagnostics summary { padding: 12px 0; }
+#source-progress { color: var(--muted); margin-left: 14px; font-weight: 400; }
+.replaced-control { display: none !important; }
+#catalogue-extra, #library-tools { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; }
+#catalogue-coverage { width: 100%; }
+.workshop { background: var(--panel); padding: 0 24px 24px; }
+.workshop > summary { font-size: 1.1rem; }
+.workshop .studio-section { border-top: 1px solid var(--line); padding-top: 16px; }
+.workshop select, .workshop input[type="number"] { max-width: 400px; }
+.workshop p { color: var(--muted); font-size: .86rem; line-height: 1.5; }
+.mini-film { padding: 12px 0; border-bottom: 1px solid var(--line); }
+.mini-film p { margin: 6px 0; }
+#movie-drawer { position: fixed; margin: 0 0 0 auto; inset: 0; width: min(680px, 100%); height: 100dvh; max-height: 100dvh; border: 1px solid var(--line); padding: 24px; color: var(--ink); background: var(--panel); overflow-y: auto; }
+#movie-drawer::backdrop { background: #000b; }
+#movie-drawer h2 { font-size: 2rem; margin-top: 24px; }
+#movie-drawer h3 { margin-top: 28px; }
+#movie-drawer p { line-height: 1.55; }
+#movie-drawer a { color: var(--accent); }
+#movie-drawer select { max-width: 100%; }
+#movie-drawer .external-views { margin-top: 20px; }
+#drawer-body { overflow-wrap: anywhere; }
+#close-drawer { position: sticky; top: 0; background: var(--panel); z-index: 2; }
+@media (max-width: 650px) {
+  .hero-copy { display: block; }.intro { margin-top: 20px; }
+  .panel-heading { display: block; }.panel-actions { gap: 14px; margin-bottom: 20px; }
+  .composer-split { grid-template-columns: 1fr; gap: 4px; }
+  .effect-choices { grid-template-columns: repeat(2, 1fr); }
+  .submit-row { display: block; }.primary-button { min-width: 0; width: 100%; }
+  .result-head { display: block; }.result-views { display: flex; flex-wrap: wrap; }
+  #movie-drawer { padding: 18px; }.workshop { padding-inline: 16px; }
+  .studio-columns { grid-template-columns: 1fr 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }

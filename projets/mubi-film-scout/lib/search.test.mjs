@@ -267,3 +267,8 @@ test("décrit les contraintes réellement appliquées", () => {
   const filters = normalizeFilters({ minYear: 1980, maxYear: 1999, minRating: 7.2, maxRuntime: 120, genres: [18] }, 2026);
   assert.deepEqual(describeFilters(filters), ["MUBI France", "1980–1999", "note ≥ 7.2", "votes ≥ 40", "≤ 120 min", "Drame"]);
 });
+test("une exclusion non prise en charge ne devient pas un filtre d’inclusion", () => {
+  const result = analyzeWish("sans documentaire, une comédie", {});
+  assert.deepEqual(result.filters.genres, [35]);
+  assert.ok(result.unrecognized.some((part) => part.includes("sans")));
+});

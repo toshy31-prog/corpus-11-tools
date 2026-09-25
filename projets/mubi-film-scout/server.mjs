@@ -3,13 +3,18 @@ import { readFile } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createConnectionStore } from "./lib/connections.mjs";
-import { createExternalSourceClient } from "./lib/external-sources.mjs";
+import { SERVICE_ID } from "./lib/server-readiness.mjs";
+import { createExternalSourceClient, sourceFailure } from "./lib/external-sources.mjs";
 import { evaluateProgramme } from "./lib/quality.mjs";
+import { createPersistentCache } from "./lib/persistent-cache.mjs";
+import { APP_VERSION, instanceId } from "./lib/identity.mjs";
+import { prioritizeIntent } from "./public/discovery.mjs";
 import {
   GENRES,
   LENSES,
   analyzeWish,
-  buildProgramme,
+  buildExpandedProgramme,
+  broadenCandidates,
   buildDiscoverParams,
   buildExplorationPages,
   describeFilters,
@@ -22,10 +27,12 @@ import {
 const ROOT = fileURLToPath(new URL("./public/", import.meta.url));
 const PORT = Number(process.env.PORT || 4180);
 const TMDB_ROOT = process.env.TMDB_ROOT || "https://api.themoviedb.org/3";
+const diskCache = createPersistentCache(process.env.CACHE_PATH || fileURLToPath(new URL("./.runtime/catalogue-cache.json", import.meta.url)));
 const externalSources = createExternalSourceClient({
   guardianRoot: process.env.GUARDIAN_ROOT,
   nytRoot: process.env.NYT_ROOT,
-  omdbRoot: process.env.OMDB_ROOT
+  omdbRoot: process.env.OMDB_ROOT,
+  persistentCache: diskCache
 });
 const SOURCE_CONFIG_PATH = process.env.SOURCE_CONFIG_PATH || fileURLToPath(new URL("./.sources.local.json", import.meta.url));
 const connections = createConnectionStore(SOURCE_CONFIG_PATH, process.env);
@@ -49,9 +56,11 @@ const runtimeStatus = {
 const MIME = {
   ".html": "text/html; charset=utf-8",
   ".js": "text/javascript; charset=utf-8",
+  ".mjs": "text/javascript; charset=utf-8",
   ".css": "text/css; charset=utf-8",
   ".svg": "image/svg+xml",
   ".png": "image/png"
+  , ".json": "application/json; charset=utf-8"
 };
 
 const SECURITY_HEADERS = {
@@ -105,10 +114,12 @@ function requestAbortSignal(request) {
 async function tmdb(path, token, params = new URLSearchParams(), signal) {
   const url = new URL(`${TMDB_ROOT}${path}`);
   url.search = params;
-  const cacheKey = url.href;
+  const cacheKey = `${url.href}:${token}`;
   const cached = tmdbCache.get(cacheKey);
   if (cached && Date.now() - cached.savedAt < TMDB_CACHE_TTL_MS) return cached.data;
   if (cached) tmdbCache.delete(cacheKey);
+  const stored = await diskCache.get(cacheKey);
+  if (stored) return { ...stored.data, scoutFetchedAt: new Date(stored.savedAt).toISOString() };
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 12_000);
@@ -132,6 +143,9 @@ async function tmdb(path, token, params = new URLSearchParams(), signal) {
       throw error;
     }
     const data = await response.json();
+    const ttl = path === "/configuration" || path === "/watch/providers/movie" ? 86400_000 : 900_000;
+    await diskCache.set(cacheKey, data, ttl).catch(() => {});
+    data.scoutFetchedAt = new Date().toISOString();
     tmdbCache.set(cacheKey, { savedAt: Date.now(), data });
     if (tmdbCache.size > 500) tmdbCache.delete(tmdbCache.keys().next().value);
     return data;
@@ -153,12 +167,13 @@ async function findMubiProvider(token, signal) {
   return cachedProvider;
 }
 
-async function verifyMubi(movie, providerId, token, signal) {
-  const params = new URLSearchParams({ language: "fr-FR", append_to_response: "watch/providers,keywords,external_ids,credits" });
+async function verifyMubi(movie, providerId, token, signal, requireAvailable = true) {
+  const params = new URLSearchParams({ language: "fr-FR", append_to_response: "watch/providers,keywords,external_ids,credits,alternative_titles" });
   const data = await tmdb(`/movie/${movie.id}`, token, params, signal);
   const offers = data["watch/providers"]?.results?.FR;
   const flatrate = offers?.flatrate || [];
-  if (!flatrate.some((provider) => provider.provider_id === providerId)) return null;
+  const available = flatrate.some((provider) => provider.provider_id === providerId);
+  if (!available && requireAvailable) return null;
   const fallbackOffer = `https://www.themoviedb.org/movie/${movie.id}/watch?locale=FR`;
   let offerLink = fallbackOffer;
   try {
@@ -172,13 +187,20 @@ async function verifyMubi(movie, providerId, token, signal) {
     : null;
   return {
     id: movie.id,
+    collectionId: data.belongs_to_collection?.id || null,
+    verified: available,
+    checkedAt: data.scoutFetchedAt || new Date().toISOString(),
+    availability: { country: "FR", provider: "MUBI", type: "subscription", available, source: "TMDB / JustWatch" },
+    audioLanguages: null,
+    subtitles: null,
     title: data.title || movie.title,
     originalTitle: data.original_title || movie.original_title,
     overview: data.overview || movie.overview,
     releaseDate: data.release_date || movie.release_date,
     rating: Number(data.vote_average ?? movie.vote_average ?? 0),
     votes: Number(data.vote_count ?? movie.vote_count ?? 0),
-    genreIds: Array.isArray(movie.genre_ids) ? movie.genre_ids : [],
+    genreIds: Array.isArray(data.genres) ? data.genres.map(({ id }) => id) : movie.genre_ids || [],
+    alternativeTitles: (data.alternative_titles?.titles || []).filter((t) => ["US", "GB", "FR"].includes(t.iso_3166_1)).map((t) => t.title).slice(0, 6),
     poster: posterPath ? `https://image.tmdb.org/t/p/w500${posterPath}` : null,
     offerLink,
     keywords: (data.keywords?.keywords || []).map(({ name }) => name).filter(Boolean),
@@ -188,6 +210,7 @@ async function verifyMubi(movie, providerId, token, signal) {
     originalLanguage: data.original_language || movie.original_language || "",
     imdbId: /^tt\d{5,12}$/.test(data.external_ids?.imdb_id || "") ? data.external_ids.imdb_id : null,
     director: (data.credits?.crew || []).find(({ job }) => job === "Director")?.name || null,
+    cast: (data.credits?.cast || []).slice(0, 8).map(({ name, character }) => ({ name, character })),
     productionCountries: (data.production_countries || []).map(({ iso_3166_1 }) => iso_3166_1).filter(Boolean)
   };
 }
@@ -208,7 +231,8 @@ function compactDiscoveryMovie(movie, verifiedById) {
     why: movie.why || [],
     verified: Boolean(verified),
     runtime: Number(verified?.runtime || 0),
-    checkedAt: verified ? new Date().toISOString() : null,
+    checkedAt: verified?.checkedAt || null,
+    ...(verified || {}),
     offerLink: verified?.offerLink || `https://www.themoviedb.org/movie/${movie.id}/watch?locale=FR`
   };
 }
@@ -249,8 +273,10 @@ async function recordSourceCheck(id, task) {
   try {
     await task();
     state.ok = true;
-  } catch {
+    state.error = null;
+  } catch (error) {
     state.ok = false;
+    state.error = sourceFailure(error);
   }
   state.latencyMs = Date.now() - started;
   if (id === "tmdb") {
@@ -308,12 +334,14 @@ async function handleSearch(request, response) {
   const { filters, qualitative } = analysis;
   const provider = await findMubiProvider(token, signal);
   const discovery = await tmdb("/discover/movie", token, buildDiscoverParams(filters, provider.provider_id, 1), signal);
-  const exploredPages = buildExplorationPages(discovery.total_pages, filters);
+  const attemptedPages = buildExplorationPages(discovery.total_pages, filters);
+  const additionalPages = attemptedPages.filter((page) => page !== 1);
   const pageSettled = await mapSettledWithConcurrency(
-    exploredPages.filter((page) => page !== 1),
+    additionalPages,
     4,
     (page) => tmdb("/discover/movie", token, buildDiscoverParams(filters, provider.provider_id, page), signal)
   );
+  const exploredPages = [1, ...additionalPages.filter((_, index) => pageSettled[index].status === "fulfilled")];
   const discoveryResults = [
     ...(discovery.results || []),
     ...pageSettled.filter(({ status }) => status === "fulfilled").flatMap(({ value }) => value.results || [])
@@ -322,9 +350,10 @@ async function handleSearch(request, response) {
   const unseenResults = uniqueResults.filter((movie) => !filters.hideSeen || !filters.seen.includes(movie.id));
   const preliminaryRanking = rankByQualitativePreferences(unseenResults, qualitative);
   const candidateLimit = { faithful: 24, sidestep: 28, adventurous: 32 }[filters.detour] || 24;
-  const candidates = filters.lenses.length
-    ? selectWithLenses(preliminaryRanking, filters, candidateLimit)
-    : pickResults(preliminaryRanking, filters, candidateLimit);
+  const candidateRanking = filters.lenses.length
+    ? selectWithLenses(preliminaryRanking, filters, preliminaryRanking.length)
+    : pickResults(preliminaryRanking, filters, preliminaryRanking.length);
+  const candidates = broadenCandidates(prioritizeIntent(candidateRanking, filters.effect), filters, candidateLimit);
   const settled = await mapSettledWithConcurrency(
     candidates,
     6,
@@ -337,23 +366,26 @@ async function handleSearch(request, response) {
   const verified = settled
     .filter(({ status, value }) => status === "fulfilled" && value)
     .map(({ value }) => value)
-    .filter((movie) => !movie.runtime || movie.runtime <= filters.maxRuntime);
+    .filter((movie) => movie.runtime > 0 && movie.runtime <= filters.maxRuntime)
+    .filter((movie) => Number(movie.releaseDate?.slice(0, 4)) >= filters.minYear && Number(movie.releaseDate?.slice(0, 4)) <= filters.maxYear)
+    .filter((movie) => movie.rating >= filters.minRating && movie.votes >= filters.minVotes)
+    .filter((movie) => !filters.genres.length || movie.genreIds.some((id) => filters.genres.includes(id)));
   const qualitativelyRanked = rankByQualitativePreferences(verified, qualitative);
-  const ranked = selectWithLenses(qualitativelyRanked, filters, 12);
-  const programme = buildProgramme(ranked, filters);
+  const ranked = selectWithLenses(qualitativelyRanked, filters, qualitativelyRanked.length);
+  const programme = buildExpandedProgramme(ranked, filters);
   const verifiedById = new Map(verified.map((movie) => [movie.id, movie]));
   const catalogueRanking = selectWithLenses(preliminaryRanking, filters, preliminaryRanking.length);
   const catalogue = catalogueRanking.map((movie) => compactDiscoveryMovie(movie, verifiedById));
   const externalKeys = Object.fromEntries(await Promise.all(
     ["guardian", "nyt", "omdb"].map(async (id) => [id, await connections.get(id)])
   ));
-  const external = await externalSources.enrich(programme, externalKeys);
+  const external = body.progressive ? { movies: programme, coverage: {} } : await externalSources.enrich(programme, externalKeys);
   const warnings = [];
   const pageFailures = pageSettled.filter(({ status }) => status === "rejected").length;
   if (pageFailures) warnings.push(`${pageFailures} page${pageFailures > 1 ? "s" : ""} du catalogue n’${pageFailures > 1 ? "ont" : "a"} pas pu être explorée${pageFailures > 1 ? "s" : ""}.`);
   if (failures.length) warnings.push(`${failures.length} disponibilité${failures.length > 1 ? "s n’ont" : " n’a"} pas pu être vérifiée${failures.length > 1 ? "s" : ""}.`);
   for (const [source, coverage] of Object.entries(external.coverage)) {
-    if (coverage.failed) warnings.push(`${source === "guardian" ? "The Guardian" : source === "nyt" ? "The New York Times" : "OMDb"} : ${coverage.failed} consultation${coverage.failed > 1 ? "s ont" : " a"} échoué.`);
+    if (coverage.failed) warnings.push(`${source === "guardian" ? "The Guardian" : source === "nyt" ? "The New York Times" : "OMDb"} : ${coverage.failed} consultation${coverage.failed > 1 ? "s" : ""} indisponible${coverage.failed > 1 ? "s" : ""} (${(coverage.errors || []).map(({ message }) => message).join(" ; ") || "erreur temporaire"}).`);
   }
   runtimeStatus.lastSuccessfulSearchAt = new Date().toISOString();
 
@@ -374,11 +406,64 @@ async function handleSearch(request, response) {
     exploredPages,
     exploredCandidates: uniqueResults.length,
     movies: external.movies,
+    pool: ranked,
+    enrichmentPending: Boolean(body.progressive),
     qualityChecks: evaluateProgramme(external.movies, filters),
     catalogue,
     sourceCoverage: external.coverage,
     attribution: "Données TMDB ; disponibilités fournies par JustWatch ; critiques Guardian et NYT ; réception agrégée via OMDb."
   });
+}
+
+async function handleMovie(request, response, enrich = false) {
+  const body = await readJson(request);
+  const requestedIds = enrich ? body.ids : [body.id];
+  if (!Array.isArray(requestedIds) || !requestedIds.length || requestedIds.length > 4 || requestedIds.some((id) => !Number.isSafeInteger(id) || id <= 0)) throw httpError("Un à quatre identifiants TMDB entiers positifs attendus.", 400);
+  const token = await requestToken(request);
+  if (!token) throw httpError("TMDB à connecter.", 428);
+  const provider = await findMubiProvider(token);
+  const settled = await mapSettledWithConcurrency([...new Set(requestedIds)], 4, (id) => verifyMubi({ id }, provider.provider_id, token, undefined, false));
+  const movies = settled.filter((r) => r.status === "fulfilled").map((r) => r.value);
+  if (!movies.length) throw httpError("Détails temporairement indisponibles.", 502);
+  if (!enrich) return sendJson(response, 200, { movie: movies[0] });
+  const keys = Object.fromEntries(await Promise.all(["guardian", "nyt", "omdb"].map(async (id) => [id, await connections.get(id)])));
+  return sendJson(response, 200, await externalSources.enrich(movies, keys));
+}
+
+async function handleRelaxations(request, response) {
+  const body = await readJson(request);
+  const token = await requestToken(request);
+  if (!token) throw httpError("TMDB à connecter.", 428);
+  const filters = analyzeWish(body.wish, normalizeFilters(body.filters)).filters;
+  const provider = await findMubiProvider(token);
+  const variants = [
+    { label: "Toutes les époques", filters: { ...filters, minYear: 1874, maxYear: new Date().getFullYear() } },
+    { label: "Sans seuil de notes ni de votes", filters: { ...filters, minRating: 0, minVotes: 0 } },
+    { label: "Tous les genres", filters: { ...filters, genres: [] } }
+  ].filter((v) => JSON.stringify(v.filters) !== JSON.stringify(filters));
+  const results = await mapSettledWithConcurrency(variants, 3, async (variant) => {
+    const data = await tmdb("/discover/movie", token, buildDiscoverParams(variant.filters, provider.provider_id));
+    return { ...variant, total: data.total_results || 0, scope: "Total source, avant exclusion des films vus et vérification détaillée ; durée conservée." };
+  });
+  sendJson(response, 200, { alternatives: results.filter((r) => r.status === "fulfilled").map((r) => r.value), failed: results.filter((r) => r.status === "rejected").length });
+}
+
+// Optional LLM: fixed administrator-configured local endpoint, never a URL supplied in a request.
+async function handleLanguage(request, response) {
+  const body = await readJson(request);
+  if (typeof body.text !== "string" || body.text.length > 2000) throw httpError("Texte limité à 2 000 caractères.", 400);
+  if (!process.env.SCOUT_LLM_URL || !process.env.SCOUT_LLM_MODEL) throw httpError("Aucun modèle local configuré. Le vocabulaire assisté reste disponible.", 428);
+  const url = new URL(process.env.SCOUT_LLM_URL);
+  if (url.protocol !== "http:" || !["localhost", "127.0.0.1", "[::1]"].includes(url.hostname)) throw httpError("Seul un serveur LLM local est autorisé.", 400);
+  const result = await fetch(url, { method: "POST", redirect: "error", signal: AbortSignal.timeout(30_000), headers: { "content-type": "application/json" }, body: JSON.stringify({ model: process.env.SCOUT_LLM_MODEL, temperature: 0, messages: [{ role: "system", content: 'Translate the French request into a JSON object containing only filters: minYear,maxYear,maxRuntime,genres (TMDB integer IDs),effect (open,captivate,contemplate,comfort,shake,wonder). Omit unknown fields. Never suggest films or availability. Return JSON only.' }, { role: "user", content: body.text }] }) });
+  if (!result.ok) throw httpError("Le modèle local n’a pas répondu correctement.", 502);
+  const data = await result.json();
+  let raw;
+  try { raw = JSON.parse(String(data.choices?.[0]?.message?.content || "").replace(/^```(?:json)?\s*|\s*```$/g, "")); } catch { throw httpError("Réponse du modèle non interprétable ; aucun critère appliqué.", 502); }
+  const values = raw.filters || raw;
+  const allowed = Object.fromEntries(Object.entries(values).filter(([key]) => ["minYear", "maxYear", "maxRuntime", "genres", "effect"].includes(key)));
+  const filters = normalizeFilters({ ...body.filters, ...allowed });
+  sendJson(response, 200, { filters, notice: "Proposition d’un modèle local, à vérifier avant application. Aucune disponibilité inférée." });
 }
 
 async function handleCatalogue(request, response) {
@@ -433,6 +518,11 @@ const server = http.createServer(async (request, response) => {
     if (request.method === "GET" && request.url === "/api/status") {
       const connectionStatus = await connections.status();
       return sendJson(response, 200, {
+        service: SERVICE_ID,
+        app: "mubi-film-scout",
+        version: APP_VERSION,
+        instanceId: instanceId(fileURLToPath(new URL(".", import.meta.url))),
+        llmConfigured: Boolean(process.env.SCOUT_LLM_URL && process.env.SCOUT_LLM_MODEL),
         connections: connectionStatus,
         diagnostics: diagnosticSnapshot(connectionStatus),
         genres: GENRES,
@@ -447,6 +537,14 @@ const server = http.createServer(async (request, response) => {
       return sendJson(response, 200, { connections: await connections.clear() });
     }
     if (request.method === "POST" && request.url === "/api/diagnostics/run") return await handleDiagnostic(request, response);
+    if (request.method === "POST" && request.url === "/api/movie") return await handleMovie(request, response);
+    if (request.method === "POST" && request.url === "/api/enrich") return await handleMovie(request, response, true);
+    if (request.method === "POST" && request.url === "/api/relaxations") return await handleRelaxations(request, response);
+    if (request.method === "POST" && request.url === "/api/language") return await handleLanguage(request, response);
+    if (request.method === "POST" && request.url === "/api/interpret") {
+      const body = await readJson(request);
+      return sendJson(response, 200, analyzeWish(String(body.wish || "").slice(0, 2000), normalizeFilters(body.filters)));
+    }
     if (request.method === "POST" && request.url === "/api/catalogue") return await handleCatalogue(request, response);
     if (request.method === "POST" && request.url === "/api/search") {
       try {
@@ -463,6 +561,10 @@ const server = http.createServer(async (request, response) => {
   }
 });
 
+server.on("error", (error) => {
+  console.error(error.code === "EADDRINUSE" ? `Le port ${PORT} est déjà occupé. Utilisez npm run launch pour rejoindre votre instance, ou arrêtez l’ancienne instance de ce projet.` : "Impossible de démarrer le serveur local.");
+  process.exitCode = 1;
+});
 server.listen(PORT, "127.0.0.1", () => {
   const address = server.address();
   const activePort = typeof address === "object" && address ? address.port : PORT;

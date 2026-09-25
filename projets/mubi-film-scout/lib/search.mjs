@@ -1,3 +1,5 @@
+import { recompose } from "../public/discovery.mjs";
+
 export const GENRES = Object.freeze([
   [28, "Action"],
   [12, "Aventure"],
@@ -83,7 +85,7 @@ const PROGRAM_ROLES_BY_DETOUR = Object.freeze({
 
 const LENS_IDS = new Set(LENSES.map(({ id }) => id));
 const EFFECTS = new Set(["open", "captivate", "contemplate", "comfort", "shake", "wonder"]);
-const TIME_BUDGETS = new Set(["short", "standard", "ample"]);
+const TIME_BUDGETS = new Set(["short", "standard", "ample", "unlimited"]);
 const DETOURS = new Set(["faithful", "sidestep", "adventurous"]);
 
 const GENRE_ALIASES = new Map([
@@ -175,7 +177,7 @@ export function normalizeFilters(input = {}, nowYear = new Date().getFullYear())
   const lenses = [...new Set((Array.isArray(input.lenses) ? input.lenses : [])
     .filter((lens) => LENS_IDS.has(lens)))].slice(0, 2);
   const requestedRuntime = Math.round(boundedNumber(input.maxRuntime, 180, 40, 600));
-  const timeLimit = { short: 90, standard: 120, ample: 180 }[timeBudget];
+  const timeLimit = { short: 90, standard: 120, ample: 180, unlimited: 600 }[timeBudget];
 
   return {
     country: "FR",
@@ -232,7 +234,8 @@ export function parseWish(text, filters, nowYear = new Date().getFullYear()) {
 
   const detectedGenres = [];
   for (const [alias, id] of GENRE_ALIASES) {
-    if (containsTerm(source, alias)) detectedGenres.push(id);
+    // An unsupported exclusion must never turn into an inclusion.
+    if (containsTerm(source, alias) && !new RegExp(`(?:sans|pas de|pas d['’]|ni)\\s*${alias}`, "i").test(source)) detectedGenres.push(id);
   }
   if (detectedGenres.length) next.genres = detectedGenres;
 
@@ -259,6 +262,14 @@ export function analyzeWish(text, filters, nowYear = new Date().getFullYear()) {
   return {
     filters: parsedFilters,
     qualitative,
+    textQualitative: textProfiles,
+    unrecognized: source.replace(/(?:entre\s+\d{4}\s+(?:et|à|a)\s+\d{4}|(?:après|apres|depuis|avant)\s+\d{4}|(?:moins de|max(?:imum)?|jusqu['’]?à)\s+\d+\s*(?:heures?|h)(?:\s*\d{1,2})?|(?:moins de|max(?:imum)?|jusqu['’]?à)\s+\d+\s*(?:minutes?|min)|(?:note|noté|notée|au moins)\D{0,8}\d(?:[.,]\d)?)/g, " ")
+      .split(/[,;.!?]/).map((part) => {
+        let remainder = part;
+        for (const alias of GENRE_ALIASES.keys()) remainder = remainder.replace(new RegExp(`\\b${alias}\\b`, "gi"), " ");
+        for (const profile of QUALITATIVE_PROFILES) remainder = remainder.replace(profile.pattern, " ");
+        return remainder.replace(/\b(?:je|veux|voudrais|un|une|des|le|la|les|de|du|film|films|avec|et|ou|pour|moi|très|tres|bien|noté|note|récent|recent|classique|court|surprends|surprise|hasard)\b/gi, " ").replace(/\s+/g, " ").trim();
+      }).filter(Boolean),
     notice: !normalizedText
       ? null
       : textUnderstood
@@ -292,6 +303,7 @@ export function buildDiscoverParams(filters, providerId, page = 1) {
     page: String(page)
   });
   if (filters.genres.length) params.set("with_genres", filters.genres.join("|"));
+  if (filters.timeBudget === "unlimited" && filters.maxRuntime === 600) params.delete("with_runtime.lte");
   return params;
 }
 
@@ -388,6 +400,14 @@ function distanceBetween(left, right) {
   const languageDistance = (left.originalLanguage || left.original_language) !== (right.originalLanguage || right.original_language) ? 1 : 0;
   const yearDistance = Math.min(1, Math.abs(movieYear(left) - movieYear(right)) / 35);
   return genreDistance * 0.5 + languageDistance * 0.25 + yearDistance * 0.25;
+}
+
+export function broadenCandidates(ranked, filters, limit) {
+  if (filters.detour === "faithful" || ranked.length <= limit) return ranked.slice(0, limit);
+  const reserve = filters.detour === "adventurous" ? 8 : 6;
+  const primary = ranked.slice(0, Math.max(1, limit - reserve));
+  const tail = ranked.slice(primary.length).sort((a, b) => distanceBetween(primary[0], b) - distanceBetween(primary[0], a));
+  return [...primary, ...tail.slice(0, reserve)];
 }
 
 export function selectWithLenses(movies, filters, limit = 12) {
@@ -523,4 +543,8 @@ export function describeFilters(filters) {
     ...(genreNames.length ? [genreNames.join(" ou ")] : []),
     filters.sort === "surprise" ? "ordre surprise" : null
   ].filter(Boolean);
+}
+
+export function buildExpandedProgramme(ranked, filters) {
+  return recompose(ranked, { filters, detour: filters.detour });
 }

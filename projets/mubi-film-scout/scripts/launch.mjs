@@ -2,6 +2,8 @@ import { mkdirSync, openSync, writeFileSync } from "node:fs";
 import { spawn } from "node:child_process";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { serverReady as probeServer } from "../lib/server-readiness.mjs";
+import { APP_VERSION, instanceId } from "../lib/identity.mjs";
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const port = Number(process.env.PORT || 4180);
@@ -9,12 +11,7 @@ const url = `http://127.0.0.1:${port}`;
 const runtimeDirectory = join(root, ".runtime");
 
 async function serverReady() {
-  try {
-    const response = await fetch(`${url}/api/status`, { signal: AbortSignal.timeout(800) });
-    return response.ok;
-  } catch {
-    return false;
-  }
+  return probeServer(url, fetch, { version: APP_VERSION, instanceId: instanceId(root) });
 }
 
 if (!await serverReady()) {

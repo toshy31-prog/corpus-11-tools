@@ -28,17 +28,66 @@ function json(response, payload, status = 200) {
   response.end(JSON.stringify(payload));
 }
 
+test("les nouvelles routes séparent recherche, détails, enrichissement, élargissements et modèle local", async (t) => {
+  let externalCalls = 0;
+  const fixture = await startFixtureServer((request, response) => {
+    const url = new URL(request.url, "http://fixture");
+    if (url.pathname === "/watch/providers/movie") return json(response, { results: [{ provider_id: 11, provider_name: "MUBI" }] });
+    if (url.pathname === "/discover/movie") return json(response, { total_pages: 1, total_results: url.searchParams.get("vote_count.gte") === "0" ? 25 : 4, results: [1, 2, 3, 4].map((id) => ({ id, title: `Film ${id}`, genre_ids: [18], vote_average: 7, vote_count: 100, release_date: "2000-01-01" })) });
+    if (/^\/movie\/[1-5]$/.test(url.pathname)) {
+      const id = Number(url.pathname.split("/").pop());
+      return json(response, { id, title: `Film ${id}`, runtime: 100, vote_average: 7, vote_count: 100, release_date: "2000-01-01", genres: [{ id: 18 }], credits: { crew: [{ job: "Director", name: "Cinéaste" }], cast: [{ name: "Acteur", character: "Rôle" }] }, external_ids: { imdb_id: `tt000000${id}` }, alternative_titles: { titles: [{ title: "International title", iso_3166_1: "US" }] }, "watch/providers": { results: { FR: { flatrate: id === 5 ? [] : [{ provider_id: 11 }] } } } });
+    }
+    if (url.pathname === "/omdb") { externalCalls++; return json(response, { Response: "False", Error: "Request limit reached!" }); }
+    if (url.pathname === "/llm") return json(response, { choices: [{ message: { content: JSON.stringify({ filters: { minYear: 2010, effect: "wonder", availability: "invented", arbitraryUrl: "https://evil.invalid" } }) } }] });
+    return json(response, {}, 404);
+  });
+  t.after(() => fixture.close());
+  const root = `http://127.0.0.1:${fixture.address().port}`;
+  const { port } = await startApp(t, root, { OMDB_API_KEY: "omdb-secret", OMDB_ROOT: `${root}/omdb`, SCOUT_LLM_URL: `${root}/llm`, SCOUT_LLM_MODEL: "fixture" });
+  const post = (path, body) => fetch(`http://127.0.0.1:${port}${path}`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+  const response = await post("/api/search", { progressive: true, filters: { maxRuntime: 120 } });
+  assert.equal(response.status, 200);
+  const search = await response.json(); assert.equal(search.movies.length, 4); assert.equal(search.enrichmentPending, true); assert.equal(externalCalls, 0);
+  assert.ok(search.movies.every((m) => m.verified && m.checkedAt)); assert.equal(search.pool.length, 4);
+  const enriched = await post("/api/enrich", { ids: [1] }).then((r) => r.json());
+  assert.equal(enriched.movies.length, 1); assert.equal(enriched.coverage.omdb.failed, 1); assert.equal(externalCalls, 1);
+  assert.equal(JSON.stringify(enriched).includes("omdb-secret"), false);
+  const movie = await post("/api/movie", { id: 5 }).then((r) => r.json());
+  assert.equal(movie.movie.verified, false); assert.equal(movie.movie.audioLanguages, null); assert.equal(movie.movie.director, "Cinéaste");
+  assert.equal(movie.movie.alternativeTitles[0], "International title");
+  assert.equal((await post("/api/enrich", { ids: [1, 2, 3, 4, 5] })).status, 400);
+  assert.equal((await post("/api/movie", { id: "https://evil.invalid" })).status, 400);
+  const alternatives = await post("/api/relaxations", { filters: { minYear: 1990, maxRuntime: 120 } }).then((r) => r.json());
+  assert.ok(alternatives.alternatives.some((a) => a.total === 25));
+  assert.ok(alternatives.alternatives.every((a) => a.filters.maxRuntime === 120));
+  const language = await post("/api/language", { text: "Un film poétique récent", filters: {} }).then((r) => r.json());
+  assert.equal(language.filters.minYear, 2010); assert.equal(language.filters.effect, "wonder"); assert.equal(language.filters.arbitraryUrl, undefined);
+  const interpretation = await post("/api/interpret", { wish: "science-fiction après 2010, un film qui sent la pluie", filters: {} }).then((r) => r.json());
+  assert.equal(interpretation.filters.minYear, 2011); assert.deepEqual(interpretation.filters.genres, [878]); assert.ok(interpretation.unrecognized.some((s) => s.includes("pluie")));
+  const status = await fetch(`http://127.0.0.1:${port}/api/status`).then((r) => r.json()); assert.equal(status.app, "mubi-film-scout"); assert.equal(status.llmConfigured, true);
+});
+
+test("le modèle local est optionnel et refuse un endpoint externe", async (t) => {
+  const fixture = await startFixtureServer((request, response) => json(response, {})); t.after(() => fixture.close());
+  const { port } = await startApp(t, `http://127.0.0.1:${fixture.address().port}`, { SCOUT_LLM_URL: "https://external.invalid/v1/chat/completions", SCOUT_LLM_MODEL: "fixture" });
+  const response = await fetch(`http://127.0.0.1:${port}/api/language`, { method: "POST", body: JSON.stringify({ text: "film" }) });
+  assert.equal(response.status, 400);
+});
+
 async function startApp(t, tmdbRoot, environment = {}) {
   const port = await freePort();
   const sourceConfigPath = join(tmpdir(), `mubi-film-scout-test-${port}.json`);
   const child = spawn(process.execPath, ["server.mjs"], {
     cwd: new URL(".", import.meta.url),
-    env: { ...process.env, PORT: String(port), TMDB_ROOT: tmdbRoot, TMDB_READ_TOKEN: "test-token", SOURCE_CONFIG_PATH: sourceConfigPath, ...environment },
+    env: { ...process.env, PORT: String(port), TMDB_ROOT: tmdbRoot, TMDB_READ_TOKEN: "test-token", SOURCE_CONFIG_PATH: sourceConfigPath, CACHE_PATH: `${sourceConfigPath}.cache`, ...environment },
     stdio: ["ignore", "pipe", "pipe"]
   });
   t.after(() => child.kill("SIGTERM"));
   t.after(() => unlink(sourceConfigPath).catch(() => {}));
   t.after(() => unlink(`${sourceConfigPath}.tmp`).catch(() => {}));
+  t.after(() => unlink(`${sourceConfigPath}.cache`).catch(() => {}));
+  t.after(() => unlink(`${sourceConfigPath}.cache.tmp`).catch(() => {}));
   await Promise.race([
     once(child.stdout, "data"),
     new Promise((_, reject) => setTimeout(() => reject(new Error("Le serveur de test n’a pas démarré.")), 3000))
@@ -66,6 +115,7 @@ test("centralise les accès localement sans jamais les renvoyer au navigateur", 
   assert.match(await readFile(sourceConfigPath, "utf8"), /nyt-secret/);
 
   const current = await fetch(`http://127.0.0.1:${port}/api/status`).then((response) => response.json());
+  assert.equal(current.service, "mubi-film-scout");
   assert.equal(current.connections.guardian.configured, true);
   assert.equal(JSON.stringify(current).includes("nyt-secret"), false);
 
@@ -86,6 +136,10 @@ test("sert l’interface avec des en-têtes de sécurité", async (t) => {
   assert.match(html, /data-result-view="shortlist"/);
   assert.match(html, /id="catalogue-fetch-more"/);
   assert.match(html, /id="export-data"/);
+
+  const presetModule = await fetch(`http://127.0.0.1:${port}/presets.mjs`);
+  assert.equal(presetModule.status, 200);
+  assert.match(presetModule.headers.get("content-type"), /^text\/javascript/);
 });
 
 test("expose un diagnostic réseau sans exposer le jeton", async (t) => {
@@ -246,7 +300,7 @@ test("renvoie des films MUBI enrichis et signale une vérification partielle", a
     headers: { "content-type": "application/json" },
     body: JSON.stringify({
       wish: "un film contemplatif",
-      filters: { effect: "captivate", timeBudget: "short", detour: "sidestep" }
+      filters: { effect: "contemplate", timeBudget: "short", detour: "sidestep" }
     })
   });
   assert.equal(response.status, 200);
@@ -261,7 +315,7 @@ test("renvoie des films MUBI enrichis et signale une vérification partielle", a
   assert.equal("perspectives" in payload.catalogue[0], false);
   assert.ok(payload.applied.some((label) => label.startsWith("≈")));
   assert.equal(payload.applied.some((label) => label.startsWith("↗")), false);
-  assert.equal(payload.filters.effect, "captivate");
+  assert.equal(payload.filters.effect, "contemplate");
   assert.equal(payload.filters.maxRuntime, 90);
   assert.ok(Array.isArray(payload.movies[0].why));
   assert.deepEqual(payload.warnings, ["1 disponibilité n’a pas pu être vérifiée."]);

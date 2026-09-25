@@ -10,8 +10,14 @@ test("exécute vingt envies de référence sans masquer les limites du parseur",
 
 test("audite le programme par invariants sans produire de score global", () => {
   const filters = { maxRuntime: 120, hideSeen: true, seen: [99] };
-  const programme = [1, 2, 3, 4].map((id) => ({ id, runtime: 90, offerLink: `https://example.test/${id}` }));
+  const programme = [1, 2, 3, 4].map((id) => ({ id, runtime: 90, verified: true, checkedAt: "2026-09-13T00:00:00Z", offerLink: `https://example.test/${id}` }));
   const checks = evaluateProgramme(programme, filters);
   assert.equal(checks.every(({ passed }) => passed), true);
   assert.equal("score" in checks, false);
+});
+
+test("un lien seul ne prouve pas une offre, ni une durée nulle le respect du budget", () => {
+  const checks = evaluateProgramme([{ id: 1, runtime: 0, offerLink: "https://example.test" }], { maxRuntime: 120 });
+  assert.equal(checks.find((c) => c.id === "availability").passed, false);
+  assert.equal(checks.find((c) => c.id === "runtime").passed, false);
 });

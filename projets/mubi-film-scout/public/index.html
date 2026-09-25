@@ -7,13 +7,14 @@
     <title>MUBI Film Scout</title>
     <script src="./redirect.js"></script>
     <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./studio.css">
   </head>
   <body>
     <header class="hero">
       <div class="brand"><span class="brand-dot"></span> MUBI FILM SCOUT</div>
       <div class="hero-copy">
-        <div><p class="eyebrow">Votre catalogue, enfin praticable</p><h1>Quel film mérite <em>votre soirée ?</em></h1></div>
-        <p class="intro">Trois décisions, quatre propositions réellement différentes parmi les films disponibles avec MUBI en France.</p>
+        <div><p class="eyebrow">Votre catalogue, enfin praticable</p><h1>Quel film mérite <em>votre soirée&nbsp;?</em></h1></div>
+        <p class="intro">Cadrez votre envie, comparez jusqu’à quatre pistes et explorez les films disponibles avec MUBI en France.</p>
       </div>
     </header>
 
@@ -51,13 +52,14 @@
                   <label><input type="radio" name="time-budget" value="short"><span>≤ 90 min</span></label>
                   <label><input type="radio" name="time-budget" value="standard" checked><span>≤ 2 h</span></label>
                   <label><input type="radio" name="time-budget" value="ample"><span>≤ 3 h</span></label>
+                  <label><input type="radio" name="time-budget" value="unlimited"><span>Sans limite<small>Catalogue entier</small></span></label>
                 </div>
               </fieldset>
 
               <fieldset class="composer-question">
                 <legend>Le programmateur peut…</legend>
                 <div class="choice-grid compact-choices">
-                  <label><input type="radio" name="detour" value="faithful"><span>Rester fidèle<small>4 réponses proches</small></span></label>
+                  <label><input type="radio" name="detour" value="faithful"><span>Rester fidèle<small>Des pistes proches de l’envie</small></span></label>
                   <label><input type="radio" name="detour" value="sidestep" checked><span>Faire un pas de côté<small>équilibre et contraste</small></span></label>
                   <label><input type="radio" name="detour" value="adventurous"><span>Me désarçonner<small>écarts maximums</small></span></label>
                 </div>
@@ -202,6 +204,7 @@
             <div><p class="step">03 — Votre choix</p><h2 id="shortlist-title">Films à garder</h2><p>Conservez jusqu’à huit films et cochez-en quatre au maximum pour les comparer.</p></div>
             <div class="shortlist-actions"><button id="compare-shortlist" class="secondary-button" type="button">Comparer</button><button id="clear-shortlist" class="text-button" type="button">Vider</button></div>
           </div>
+          <p><button id="export-shortlist-text" class="secondary-button" type="button" disabled>Télécharger la liste (.txt)</button></p>
           <div id="shortlist-grid" class="shortlist-grid"></div>
           <div id="comparison" class="comparison" hidden></div>
         </section>

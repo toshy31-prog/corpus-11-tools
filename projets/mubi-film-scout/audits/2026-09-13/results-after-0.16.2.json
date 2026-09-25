@@ -1,0 +1,495 @@
+[
+  {
+    "name": "Démarrage, 6 groupes de genres, LLM absent",
+    "status": "PASS"
+  },
+  {
+    "name": "Prérequis atelier vide",
+    "status": "PASS"
+  },
+  {
+    "name": "Maximum deux angles",
+    "status": "PASS"
+  },
+  {
+    "name": "Déblocage angles",
+    "status": "PASS"
+  },
+  {
+    "name": "Programme quatre films",
+    "status": "PASS",
+    "observed": [
+      "Alpha 1",
+      "Foxtrot 22",
+      "Delta 4",
+      "Hotel 32"
+    ]
+  },
+  {
+    "name": "Vue catalogue",
+    "status": "PASS"
+  },
+  {
+    "name": "Vue shortlist",
+    "status": "PASS"
+  },
+  {
+    "name": "Vue programme",
+    "status": "PASS"
+  },
+  {
+    "name": "Remplacer la première conserve les 3 autres positions",
+    "status": "PASS",
+    "observed": {
+      "before": [
+        "Alpha 1",
+        "Foxtrot 22",
+        "Delta 4",
+        "Hotel 32"
+      ],
+      "after": [
+        "Alpha 9",
+        "Foxtrot 22",
+        "Delta 4",
+        "Hotel 32"
+      ]
+    }
+  },
+  {
+    "name": "Verrou conservé",
+    "status": "PASS",
+    "observed": {
+      "before": [
+        "Alpha 9",
+        "Foxtrot 22",
+        "Delta 4",
+        "Hotel 32"
+      ],
+      "after": [
+        "Alpha 9",
+        "Foxtrot 30",
+        "Delta 12",
+        "Golf 63"
+      ]
+    }
+  },
+  {
+    "name": "Fiche et disponibilité",
+    "status": "PASS"
+  },
+  {
+    "name": "Explorer director",
+    "status": "PASS"
+  },
+  {
+    "name": "Explorer theme",
+    "status": "PASS"
+  },
+  {
+    "name": "Explorer form",
+    "status": "PASS"
+  },
+  {
+    "name": "Explorer era",
+    "status": "PASS"
+  },
+  {
+    "name": "Explorer reception",
+    "status": "PASS"
+  },
+  {
+    "name": "Avis explicite sauvegardé",
+    "status": "PASS"
+  },
+  {
+    "name": "Liste Ce soir sauvegardée",
+    "status": "PASS"
+  },
+  {
+    "name": "Fermeture fiche",
+    "status": "PASS"
+  },
+  {
+    "name": "Comparaison deux films",
+    "status": "PASS"
+  },
+  {
+    "name": "Bibliothèque zéro résultat expliqué",
+    "status": "PASS",
+    "observed": "Aucun film ne correspond aux filtres de votre bibliothèque.Effacer les filtres"
+  },
+  {
+    "name": "Filtre liste",
+    "status": "PASS"
+  },
+  {
+    "name": "Export format et pas de clés",
+    "status": "PASS"
+  },
+  {
+    "name": "Veto du profil respecté",
+    "status": "PASS"
+  },
+  {
+    "name": "Réinitialisation du profil conserve avis",
+    "status": "PASS"
+  },
+  {
+    "name": "Double séance",
+    "status": "PASS"
+  },
+  {
+    "name": "Écho documenté",
+    "status": "PASS"
+  },
+  {
+    "name": "Choix à deux",
+    "status": "PASS"
+  },
+  {
+    "name": "Durée zéro refusée pour duo",
+    "status": "PASS",
+    "observed": "Saisissez une durée entre 40 et 600 minutes."
+  },
+  {
+    "name": "Collection fournie ajoutée",
+    "status": "PASS"
+  },
+  {
+    "name": "Parcours 3 étapes",
+    "status": "PASS"
+  },
+  {
+    "name": "Tri rating",
+    "status": "PASS"
+  },
+  {
+    "name": "Tri recent",
+    "status": "PASS"
+  },
+  {
+    "name": "Tri oldest",
+    "status": "PASS"
+  },
+  {
+    "name": "Catalogue vide expliqué",
+    "status": "PASS"
+  },
+  {
+    "name": "Filtre vérifiés",
+    "status": "PASS"
+  },
+  {
+    "name": "Catalogue direct première page",
+    "status": "PASS"
+  },
+  {
+    "name": "Pagination deuxième page",
+    "status": "PASS"
+  },
+  {
+    "name": "Angle filtre sans données",
+    "status": "PASS"
+  },
+  {
+    "name": "Décodage appliqué",
+    "status": "PASS"
+  },
+  {
+    "name": "Durée courte synchronisée",
+    "status": "PASS",
+    "observed": "Critères de la prochaine recherche2011–2026 ×≤ 90 min ×Note ≥ 6.8 ×Votes ≥ 40 ×Science-fiction ×Tension / suspense ×"
+  },
+  {
+    "name": "Annulation préréglage",
+    "status": "PASS"
+  },
+  {
+    "name": "Surprise produit un programme",
+    "status": "PASS"
+  },
+  {
+    "name": "Vu stocké",
+    "status": "PASS"
+  },
+  {
+    "name": "Écarté stocké",
+    "status": "PASS"
+  },
+  {
+    "name": "Restaurer écartés",
+    "status": "PASS"
+  },
+  {
+    "name": "Rejet de session stocké",
+    "status": "PASS"
+  },
+  {
+    "name": "Effacement des préférences",
+    "status": "PASS"
+  },
+  {
+    "name": "Effacement ne ressuscite pas ancien programme",
+    "status": "PASS",
+    "observed": {
+      "controlsVisible": false,
+      "titles": []
+    }
+  },
+  {
+    "name": "Collection permet accès aux 30 films",
+    "status": "PASS",
+    "observed": {
+      "accessible": 30,
+      "expected": 30
+    }
+  },
+  {
+    "name": "Suppression collection de test",
+    "status": "PASS"
+  },
+  {
+    "name": "Import valide rétablit la bibliothèque",
+    "status": "PASS"
+  },
+  {
+    "name": "Bibliothèque persistante après rechargement",
+    "status": "PASS"
+  },
+  {
+    "name": "Atelier utilise les films vérifiés annoncés",
+    "status": "PASS",
+    "observed": {
+      "enabled": true,
+      "results": 1,
+      "hint": "1 films vérifiés disponibles pour cet atelier."
+    }
+  },
+  {
+    "name": "Réponse tardive ne restaure pas films effacés",
+    "status": "PASS",
+    "observed": []
+  },
+  {
+    "name": "Programme retire disponibilité invalidée",
+    "status": "PASS",
+    "observed": []
+  },
+  {
+    "name": "Import ne crée aucun balisage arbitraire",
+    "status": "PASS"
+  },
+  {
+    "name": "Import types invalides ne bloque pas démarrage",
+    "status": "PASS",
+    "observed": "\n          M\n          Votre programme apparaîtra ici.\n        "
+  },
+  {
+    "name": "Clé fictive enregistrée sans réaffichage",
+    "status": "PASS"
+  },
+  {
+    "name": "Effacer coffre conserve jeton environnement",
+    "status": "PASS"
+  },
+  {
+    "name": "Diagnostic fictif fonctionne",
+    "status": "PASS"
+  },
+  {
+    "name": "Pas de débordement 1440",
+    "status": "PASS",
+    "observed": {
+      "width": 1440,
+      "scroll": 1428
+    }
+  },
+  {
+    "name": "Pas de débordement 768",
+    "status": "PASS",
+    "observed": {
+      "width": 768,
+      "scroll": 756
+    }
+  },
+  {
+    "name": "Pas de débordement 500",
+    "status": "PASS",
+    "observed": {
+      "width": 500,
+      "scroll": 488
+    }
+  },
+  {
+    "name": "Échap ferme la fiche",
+    "status": "PASS"
+  },
+  {
+    "name": "/api/interpret 400",
+    "status": "PASS",
+    "observed": 400
+  },
+  {
+    "name": "/api/movie 400",
+    "status": "PASS",
+    "observed": 400
+  },
+  {
+    "name": "/api/enrich 400",
+    "status": "PASS",
+    "observed": 400
+  },
+  {
+    "name": "/api/language 428",
+    "status": "PASS",
+    "observed": 428
+  },
+  {
+    "name": "/api/interpret 413",
+    "status": "PASS",
+    "observed": 413
+  },
+  {
+    "name": "Refus Origin",
+    "status": "PASS",
+    "observed": 403
+  },
+  {
+    "name": "Refus Host",
+    "status": "PASS",
+    "observed": 403
+  },
+  {
+    "name": "Coffre inaccessible HTTP",
+    "status": "PASS",
+    "observed": 404
+  },
+  {
+    "name": "Page échouée non déclarée chargée",
+    "status": "PASS",
+    "observed": {
+      "pages": [
+        1,
+        3,
+        4
+      ],
+      "warnings": [
+        "1 page du catalogue n’a pas pu être explorée."
+      ]
+    }
+  },
+  {
+    "name": "Premier mot seul ne prouve pas une série",
+    "status": "PASS",
+    "observed": {
+      "a": "American Alpha",
+      "b": "American Beta",
+      "tooSimilar": false
+    }
+  },
+  {
+    "name": "Coffre concurrence 1",
+    "status": "PASS",
+    "observed": {
+      "results": [
+        {
+          "status": "fulfilled"
+        },
+        {
+          "status": "fulfilled"
+        }
+      ],
+      "state": {
+        "tmdb": {
+          "configured": false,
+          "origin": null
+        },
+        "guardian": {
+          "configured": true,
+          "origin": "local"
+        },
+        "nyt": {
+          "configured": true,
+          "origin": "local"
+        },
+        "omdb": {
+          "configured": false,
+          "origin": null
+        }
+      }
+    }
+  },
+  {
+    "name": "Coffre concurrence 2",
+    "status": "PASS",
+    "observed": {
+      "results": [
+        {
+          "status": "fulfilled"
+        },
+        {
+          "status": "fulfilled"
+        }
+      ],
+      "state": {
+        "tmdb": {
+          "configured": false,
+          "origin": null
+        },
+        "guardian": {
+          "configured": true,
+          "origin": "local"
+        },
+        "nyt": {
+          "configured": true,
+          "origin": "local"
+        },
+        "omdb": {
+          "configured": false,
+          "origin": null
+        }
+      }
+    }
+  },
+  {
+    "name": "Coffre concurrence 3",
+    "status": "PASS",
+    "observed": {
+      "results": [
+        {
+          "status": "fulfilled"
+        },
+        {
+          "status": "fulfilled"
+        }
+      ],
+      "state": {
+        "tmdb": {
+          "configured": false,
+          "origin": null
+        },
+        "guardian": {
+          "configured": true,
+          "origin": "local"
+        },
+        "nyt": {
+          "configured": true,
+          "origin": "local"
+        },
+        "omdb": {
+          "configured": false,
+          "origin": null
+        }
+      }
+    }
+  },
+  {
+    "name": "Second lot de collection distinct et accessible",
+    "status": "PASS",
+    "observed": "Vérifier 20 films (40/80 consultés)"
+  },
+  {
+    "name": "Affichage des 80 films sans plafond caché",
+    "status": "PASS"
+  }
+]

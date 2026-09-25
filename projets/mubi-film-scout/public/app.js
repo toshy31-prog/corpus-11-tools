@@ -1,5 +1,10 @@
+import { buildQuickPreset } from "./presets.mjs";
+import { installStudio } from "./studio.mjs";
+import { sanitizePreferences, normalizeCollection } from "./discovery.mjs";
+
 const storageKey = "mubi-film-scout.preferences.v1";
 const tokenKey = "mubi-film-scout.tmdb-token";
+const searchTimeoutMs = 45_000;
 const form = document.querySelector("#search-form");
 const statusNode = document.querySelector("#status");
 const moviesNode = document.querySelector("#movies");
@@ -65,6 +70,9 @@ let catalogueFetchedAt = null;
 let catalogueBusy = false;
 let lastSearchRequest = null;
 let currentProgramme = [];
+let importSequence = 0;
+let preferencesUnsaved = false;
+let studio;
 
 const sourceInputs = {
   tmdb: tokenInput,
@@ -83,28 +91,34 @@ const diagnosticSourceNodes = {
 function loadPreferences() {
   try {
     const stored = JSON.parse(localStorage.getItem(storageKey) || "{}");
-    return {
+    return sanitizePreferences({
       seen: [],
       shortlist: [],
       dismissed: [],
       compare: [],
       evaluations: [],
       ...stored
-    };
+    });
   } catch {
     return { seen: [], shortlist: [], dismissed: [], compare: [], evaluations: [] };
   }
 }
 
 function savePreferences() {
-  localStorage.setItem(storageKey, JSON.stringify(preferences));
+  try {
+    localStorage.setItem(storageKey, JSON.stringify(preferences));
+    preferencesUnsaved = false;
+  } catch {
+    preferencesUnsaved = true;
+  }
   updateMemoryCount();
+  return !preferencesUnsaved;
 }
 
 function updateMemoryCount() {
   const seen = preferences.seen.length;
   const kept = preferences.shortlist.length;
-  memoryCount.textContent = `${seen} vu${seen > 1 ? "s" : ""} · ${kept} à garder`;
+  memoryCount.textContent = `${seen} vu${seen > 1 ? "s" : ""} · ${kept} à garder${preferencesUnsaved ? " · Choix non sauvegardés : exportez-les avant de fermer." : ""}`;
   shortlistCountNode.textContent = String(kept);
 }
 
@@ -291,7 +305,32 @@ function currentFilters() {
     genres: [...document.querySelectorAll("#genres input:checked")].map((input) => Number(input.value)),
     lenses: [...document.querySelectorAll("#lenses input:checked")].map((input) => input.value),
     seen: preferences.seen
+    , ...studio?.filterOverrides()
   };
+}
+
+function applyQuickPreset(kind) {
+  studio?.beforePreset();
+  const preset = buildQuickPreset(kind);
+  document.querySelector("#wish").value = preset.wish;
+  document.querySelector("#min-year").value = preset.minYear;
+  document.querySelector("#max-year").value = preset.maxYear;
+
+  for (const [name, value] of [
+    ["effect", preset.effect],
+    ["detour", preset.detour]
+  ]) {
+    document.querySelector(`input[name="${name}"][value="${value}"]`).checked = true;
+  }
+
+  const genres = new Set(preset.genres);
+  for (const input of document.querySelectorAll("#genres input")) {
+    input.checked = genres.has(Number(input.value));
+  }
+  const lenses = new Set(preset.lenses);
+  for (const input of document.querySelectorAll("#lenses input")) {
+    input.checked = lenses.has(input.value);
+  }
 }
 
 function formState() {
@@ -300,6 +339,9 @@ function formState() {
     wish: document.querySelector("#wish").value,
     minYear: filters.minYear,
     maxYear: filters.maxYear,
+    minRating: filters.minRating,
+    minVotes: filters.minVotes,
+    maxRuntime: filters.maxRuntime,
     effect: filters.effect,
     timeBudget: filters.timeBudget,
     detour: filters.detour,
@@ -319,9 +361,7 @@ function restoreFormState() {
   if (!state) return;
   document.querySelector("#wish").value = state.wish || "";
   for (const id of ["min-year", "max-year"]) {
-    if (state[id.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())]) {
-      document.querySelector(`#${id}`).value = state[id.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())];
-    }
+    document.querySelector(`#${id}`).value = state[id.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())] ?? "";
   }
   for (const [name, value] of [["effect", state.effect], ["time-budget", state.timeBudget], ["detour", state.detour]]) {
     const input = document.querySelector(`input[name="${name}"][value="${CSS.escape(value || "")}"]`);
@@ -343,6 +383,14 @@ function updateLensAvailability() {
   }
 }
 
+function durationSummary(filters) {
+  const budget = { short: 90, standard: 120, ample: 180, unlimited: 600 }[filters.timeBudget] || 180;
+  const requested = Number(filters.maxRuntime);
+  const maximum = Math.min(budget, Number.isFinite(requested) ? Math.round(Math.min(600, Math.max(40, requested))) : 180);
+  if (filters.timeBudget === "unlimited" && maximum === 600) return "catalogue sans filtre de durée";
+  return `${maximum} minutes maximum`;
+}
+
 function updateUnderstanding() {
   const effect = document.querySelector('input[name="effect"]:checked')?.value || "open";
   const timeBudget = document.querySelector('input[name="time-budget"]:checked')?.value || "ample";
@@ -355,7 +403,7 @@ function updateUnderstanding() {
     wonder: "vous émerveiller",
     open: "ne viser aucun effet précis"
   };
-  const timeLabels = { short: "90 minutes maximum", standard: "2 heures maximum", ample: "3 heures maximum" };
+  const duration = durationSummary({ ...currentFilters(), timeBudget });
   const detourLabels = {
     faithful: "classer quatre réponses proches",
     sidestep: "équilibrer proximité et contraste",
@@ -368,13 +416,14 @@ function updateUnderstanding() {
   const hasFreeText = Boolean(document.querySelector("#wish").value.trim());
   understandingNode.innerHTML = `
     <strong>Effet réel sur la sélection</strong>
-    <p>${escapeHtml(effectLabels[effect])} · ${escapeHtml(timeLabels[timeBudget])} · ${escapeHtml(detourLabels[detour])} · ${escapeHtml(detourReach[detour])}.</p>
+    <p>${escapeHtml(effectLabels[effect])} · ${escapeHtml(duration)} · ${escapeHtml(detourLabels[detour])} · ${escapeHtml(detourReach[detour])}.</p>
     ${selectedLenses.length ? `<p>Angles actifs : ${selectedLenses.map(escapeHtml).join(" + ")}.</p>` : ""}
     ${hasFreeText ? "<p>La précision libre sera testée contre le vocabulaire annoncé, sans prétendre à une compréhension générale.</p>" : ""}`;
 }
 
 function movieSnapshot(movie) {
   return {
+    ...movie,
     id: Number(movie.id),
     title: movie.title || "Sans titre",
     originalTitle: movie.originalTitle || "",
@@ -384,7 +433,7 @@ function movieSnapshot(movie) {
     originalLanguage: movie.originalLanguage || "",
     poster: movie.poster || null,
     offerLink: movie.offerLink || "",
-    verified: Boolean(movie.verified || movie.runtime),
+    verified: movie.verified === true,
     checkedAt: movie.checkedAt || catalogueFetchedAt || null
   };
 }
@@ -414,10 +463,6 @@ function toggleShortlist(movie) {
     preferences.shortlist = preferences.shortlist.filter((item) => Number(item.id) !== id);
     preferences.compare = preferences.compare.filter((movieId) => Number(movieId) !== id);
   } else {
-    if (preferences.shortlist.length >= 8) {
-      window.alert("La sélection peut contenir huit films au maximum.");
-      return;
-    }
     preferences.shortlist = [...preferences.shortlist, movieSnapshot(movie)];
   }
   savePreferences();
@@ -472,9 +517,11 @@ function renderMovies(data) {
   interpretationNode.replaceChildren();
   const coverageLabels = Object.entries(data.sourceCoverage || {}).map(([source, coverage]) => {
     const label = { guardian: "Guardian", nyt: "NYT", omdb: "OMDb" }[source] || source;
-    return `${label} ${coverage.matched}/${coverage.queried}`;
+    if (coverage.failed === coverage.queried && coverage.failed) return `${label} : indisponible`;
+    if (!coverage.matched && !coverage.failed) return `${label} : aucune correspondance trouvée`;
+    return `${label} : ${coverage.matched}/${coverage.queried} films enrichis${coverage.failed ? " (résultat partiel)" : ""}`;
   });
-  const coverageMessage = coverageLabels.length ? `Rapprochements externes sûrs : ${coverageLabels.join(" · ")}.` : null;
+  const coverageMessage = coverageLabels.length ? `Regards extérieurs — ${coverageLabels.join(" · ")}.` : null;
   const failedChecks = (data.qualityChecks || []).filter(({ passed }) => !passed).map(({ label }) => label);
   const qualityMessage = failedChecks.length ? `Contrôles à revoir : ${failedChecks.join(" · ")}.` : "Contrôles du programme : contraintes, unicité et disponibilités conformes.";
   const messages = [data.interpretationNotice, qualityMessage, coverageMessage, ...(data.warnings || [])].filter(Boolean);
@@ -487,11 +534,17 @@ function renderMovies(data) {
   }
 
   if (!data.movies.length) {
-    setMessage("Aucun film vérifié avec ces critères. Essayez une période plus large ou une note plus basse.");
-    return;
+    statusNode.hidden = false;
+    statusNode.textContent = "Aucun film vérifié avec ces contraintes. Le catalogue et les élargissements restent accessibles.";
   }
+  renderProgramme();
+  studio?.onResults(data);
+}
 
-  for (const [index, movie] of data.movies.entries()) {
+function renderProgramme() {
+  moviesNode.replaceChildren();
+  programmeCount.textContent = String(currentProgramme.length);
+  for (const [index, movie] of currentProgramme.entries()) {
     const card = document.createElement("article");
     card.className = "movie-card";
     const year = movie.releaseDate?.slice(0, 4) || "—";
@@ -510,7 +563,6 @@ function renderMovies(data) {
     const runtime = movie.runtime ? `${movie.runtime} min` : "durée inconnue";
     const language = movie.originalLanguage ? movie.originalLanguage.toUpperCase() : "—";
     const role = movie.role || { label: `Proposition ${index + 1}`, description: "Une piste pour votre soirée." };
-    const perspectives = renderPerspectives(movie.perspectives || []);
     card.innerHTML = `
       <div class="poster-wrap">${poster}<span class="rank">${String(index + 1).padStart(2, "0")}</span></div>
       <div class="movie-copy">
@@ -518,12 +570,12 @@ function renderMovies(data) {
           <p>${escapeHtml(role.label)}</p>
           <span>${escapeHtml(role.description)}</span>
         </div>
-        <p class="movie-meta">${year} <span>•</span> ${movie.rating.toFixed(1)}/10 <span>•</span> ${runtime} <span>•</span> VO ${language}</p>
+        <p class="movie-meta">${year} <span>•</span> ${runtime} <span>•</span> Langue originale ${language}</p>
         <h3>${escapeHtml(movie.title)}</h3>
+        <p>${escapeHtml(movie.director || "Cinéaste non renseigné")}</p>
         ${movie.originalTitle !== movie.title ? `<p class="original-title">${escapeHtml(movie.originalTitle)}</p>` : ""}
         ${reasons}
         <p class="overview">${escapeHtml(movie.overview || "Aucun synopsis français disponible.")}</p>
-        ${perspectives}
         <div class="card-actions">
           <a href="${offerUrl}" target="_blank" rel="noreferrer">Voir où regarder ↗</a>
           <button type="button" data-action="keep" data-movie-id="${Number(movie.id)}" aria-pressed="${isKept(movie.id)}">${isKept(movie.id) ? "Gardé ✓" : "À garder"}</button>
@@ -532,6 +584,7 @@ function renderMovies(data) {
       </div>`;
     card.querySelector("[data-action='keep']").addEventListener("click", () => toggleShortlist(movie));
     card.querySelector("[data-action='seen']").addEventListener("click", (event) => markSeen(movie.id, event.currentTarget, card));
+    studio?.decorateCard(card, movie, "programme");
     moviesNode.append(card);
   }
 }
@@ -546,6 +599,7 @@ function filteredCatalogueMovies() {
   const dismissed = new Set(preferences.dismissed.map(Number));
   const seen = new Set(preferences.seen.map(Number));
   const filtered = catalogueMovies.filter((movie) => {
+    if (studio && !studio.catalogueAccepts(movie)) return false;
     if (dismissed.has(Number(movie.id))) return false;
     if (document.querySelector("#hide-seen").checked && seen.has(Number(movie.id))) return false;
     if (catalogueVerified.checked && !movie.verified) return false;
@@ -588,7 +642,7 @@ function renderCatalogue() {
         ${movie.verified ? '<span class="verified-badge">Vérifié</span>' : ""}
       </a>
       <div class="catalogue-copy">
-        <p>${year}${movie.originalLanguage ? ` · VO ${escapeHtml(movie.originalLanguage.toUpperCase())}` : ""}</p>
+        <p>${year}${movie.originalLanguage ? ` · Langue originale ${escapeHtml(movie.originalLanguage.toUpperCase())}` : ""}</p>
         <h3><a href="${offerUrl}" target="_blank" rel="noreferrer">${escapeHtml(movie.title)}</a></h3>
         <span>${movie.rating ? `${movie.rating.toFixed(1)}/10` : "Non noté"}</span>
         <div class="catalogue-actions">
@@ -600,6 +654,7 @@ function renderCatalogue() {
     card.querySelector("[data-action='keep']").addEventListener("click", () => toggleShortlist(movie));
     card.querySelector("[data-action='seen']").addEventListener("click", (event) => markSeen(movie.id, event.currentTarget, card));
     card.querySelector("[data-action='dismiss']").addEventListener("click", () => dismissMovie(movie.id));
+    studio?.decorateCard(card, movie, "catalogue");
     catalogueGrid.append(card);
   }
   catalogueProgress.textContent = filtered.length
@@ -614,6 +669,7 @@ function renderCatalogue() {
   catalogueFreshness.textContent = catalogueFetchedAt
     ? `Disponibilité signalée, dernière consultation ${formatDiagnosticDate(catalogueFetchedAt)} · ${catalogueLoadedPages.size}/${catalogueTotalPages} page(s) chargée(s).`
     : "";
+  studio?.onCatalogueRendered({ visible: visible.length, filtered: filtered.length, loaded: catalogueMovies.length, next: nextPage, busy: catalogueBusy });
 }
 
 function nextCataloguePage() {
@@ -624,6 +680,7 @@ function nextCataloguePage() {
 }
 
 async function loadNextCataloguePage() {
+  const sequence = requestSequence;
   const page = nextCataloguePage();
   if (!page || catalogueBusy || !lastSearchRequest) return;
   const token = tokenInput.value.trim() || sessionStorage.getItem(tokenKey) || "";
@@ -640,12 +697,15 @@ async function loadNextCataloguePage() {
         ...lastSearchRequest,
         filters: { ...lastSearchRequest.filters, seen: preferences.seen },
         page
-      })
+      }),
+      signal: AbortSignal.timeout(20_000)
     });
     const data = await response.json();
+    if (sequence !== requestSequence) return;
     if (!response.ok) throw new Error(data.message || "Impossible de charger cette page.");
     catalogueLoadedPages.add(data.page);
     catalogueTotalPages = data.totalPages;
+    studio?.setCatalogueTotal(data.totalResults);
     catalogueFetchedAt = data.fetchedAt;
     catalogueMovies = [...new Map([...catalogueMovies, ...(data.movies || [])].map((movie) => [Number(movie.id), movie])).values()];
     catalogueVisible += 24;
@@ -657,15 +717,16 @@ async function loadNextCataloguePage() {
   } catch (error) {
     window.alert(error.message);
   } finally {
-    catalogueBusy = false;
-    renderCatalogue();
+    if (sequence === requestSequence) { catalogueBusy = false; renderCatalogue(); }
   }
 }
 
 function renderShortlist() {
+  document.querySelector("#export-shortlist-text").disabled = preferences.shortlist.length === 0;
   shortlistGrid.replaceChildren();
   const compareIds = new Set(preferences.compare.map(Number));
   for (const movie of preferences.shortlist) {
+    if (studio && !studio.libraryAccepts(movie)) continue;
     const card = document.createElement("article");
     card.className = "shortlist-card";
     const posterUrl = safeExternalUrl(movie.poster, ["image.tmdb.org"]);
@@ -692,13 +753,18 @@ function renderShortlist() {
       comparisonNode.hidden = true;
     });
     card.querySelector("button").addEventListener("click", () => toggleShortlist(movie));
+    studio?.decorateCard(card, movie, "library");
     shortlistGrid.append(card);
   }
-  if (!preferences.shortlist.length) {
+  if (!shortlistGrid.children.length) {
     const empty = document.createElement("p");
     empty.className = "shortlist-empty";
-    empty.textContent = "Aucun film gardé. Utilisez « À garder » dans le programme ou le catalogue.";
+    empty.textContent = preferences.shortlist.length ? "Aucun film ne correspond aux filtres de votre bibliothèque." : "Aucun film gardé. Utilisez « À garder » dans le programme ou le catalogue.";
     shortlistGrid.append(empty);
+    if (preferences.shortlist.length) {
+      const clear = document.createElement("button"); clear.type = "button"; clear.textContent = "Effacer les filtres";
+      clear.addEventListener("click", () => studio?.clearLibraryFilters()); shortlistGrid.append(clear);
+    }
   }
   compareShortlistButton.disabled = preferences.compare.length < 2;
   comparisonNode.hidden = true;
@@ -729,7 +795,7 @@ function setResultView(view) {
   resultStep.textContent = showCatalogue ? "02 — L’exploration" : showShortlist ? "03 — Votre choix" : "02 — Le programme";
   resultTitle.textContent = showCatalogue
     ? `${catalogueMovies.length} titre${catalogueMovies.length > 1 ? "s" : ""} chargé${catalogueMovies.length > 1 ? "s" : ""}`
-    : showShortlist ? `${preferences.shortlist.length} film${preferences.shortlist.length > 1 ? "s" : ""} à garder` : "Quatre chemins possibles";
+    : showShortlist ? `${preferences.shortlist.length} film${preferences.shortlist.length > 1 ? "s" : ""} à garder` : "Votre sélection";
   for (const button of resultViews.querySelectorAll("button")) {
     button.setAttribute("aria-pressed", String(button.dataset.resultView === view));
   }
@@ -788,6 +854,8 @@ function setSearchBusy(busy) {
 async function search(event) {
   event?.preventDefault();
   const requestId = ++requestSequence;
+  studio?.onSearchStart();
+  catalogueBusy = false;
   activeRequest?.abort();
   activeRequest = null;
   const token = tokenInput.value.trim() || sessionStorage.getItem(tokenKey) || "";
@@ -799,11 +867,11 @@ async function search(event) {
   }
   if (tokenInput.value.trim()) sessionStorage.setItem(tokenKey, tokenInput.value.trim());
   saveFormState();
-  lastSearchRequest = { wish: document.querySelector("#wish").value, filters: currentFilters() };
+  lastSearchRequest = { wish: document.querySelector("#wish").value, filters: currentFilters(), progressive: true };
 
   const controller = new AbortController();
   activeRequest = controller;
-  const timeout = setTimeout(() => controller.abort(), 30_000);
+  const timeout = setTimeout(() => controller.abort(), searchTimeoutMs);
   setLoading();
   setSearchBusy(true);
   try {
@@ -823,7 +891,7 @@ async function search(event) {
     renderMovies(data);
   } catch (error) {
     if (requestId !== requestSequence) return;
-    setMessage(error.name === "AbortError" ? "La recherche a dépassé 30 secondes. Réessayez." : error.message, "error");
+    setMessage(error.name === "AbortError" ? "La recherche a dépassé 45 secondes. Réessayez." : error.message, "error");
   } finally {
     clearTimeout(timeout);
     if (requestId === requestSequence) {
@@ -852,6 +920,25 @@ function recordEvaluation(value) {
   }
 }
 
+function exportShortlistText() {
+  if (!preferences.shortlist.length) return;
+  const singleLine = (value) => String(value || "").replace(/\s+/g, " ").trim();
+  const lines = preferences.shortlist.map((movie, index) => {
+    const year = /^\d{4}/.exec(String(movie.releaseDate || ""))?.[0] || "année inconnue";
+    const runtime = Number(movie.runtime);
+    const duration = Number.isFinite(runtime) && runtime > 0 ? `${runtime} min` : "durée inconnue";
+    return `${index + 1}. ${singleLine(movie.title) || "Sans titre"} (${year}) — ${duration}`;
+  });
+  const text = ["MUBI Film Scout — Films à garder", "", ...lines, "",
+    "Liste conservée localement ; disponibilité à revérifier avant la séance.", ""].join("\n");
+  const url = URL.createObjectURL(new Blob([text], { type: "text/plain;charset=utf-8" }));
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `mubi-films-a-garder-${new Date().toISOString().slice(0, 10)}.txt`;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
 function exportLocalData() {
   const payload = {
     format: "mubi-film-scout-local-v1",
@@ -866,30 +953,123 @@ function exportLocalData() {
   URL.revokeObjectURL(url);
 }
 
+function validatedImport(payload) {
+  const object = (value) => value !== null && typeof value === "object" && !Array.isArray(value);
+  if (!object(payload) || payload.format !== "mubi-film-scout-local-v1" || !object(payload.preferences)) {
+    throw new Error("Format d’export non reconnu.");
+  }
+  const incoming = payload.preferences;
+  const array = (value, label) => {
+    if (value === undefined) return [];
+    if (!Array.isArray(value)) throw new Error(`Liste invalide : ${label}.`);
+    return value;
+  };
+  const id = (value) => {
+    if (!((typeof value === "number") || (typeof value === "string" && /^\d+$/.test(value)))
+        || !Number.isSafeInteger(Number(value)) || Number(value) <= 0) throw new Error("Identifiant de film invalide.");
+    return Number(value);
+  };
+  const ids = (value, label) => [...new Set(array(value, label).map(id))];
+  const shortlist = [];
+  for (const movie of array(incoming.shortlist, "films gardés")) {
+    if (!object(movie)) throw new Error("Film gardé invalide.");
+    const movieId = id(movie.id);
+    for (const key of ["title", "originalTitle", "releaseDate", "originalLanguage", "poster", "offerLink", "checkedAt"]) {
+      if (movie[key] != null && typeof movie[key] !== "string") throw new Error("Texte ou date d’un film invalide.");
+    }
+    for (const key of ["rating", "runtime"]) {
+      if (movie[key] != null && (typeof movie[key] !== "number" || !Number.isFinite(movie[key]) || movie[key] < 0)) throw new Error("Note ou durée de film invalide.");
+    }
+    if (movie.verified != null && typeof movie.verified !== "boolean") throw new Error("Statut de film invalide.");
+    if (!shortlist.some((item) => item.id === movieId)) shortlist.push({ ...movie, id: movieId });
+  }
+  const compare = ids(incoming.compare, "comparaison").filter((value) => shortlist.some((movie) => movie.id === value));
+  if (compare.length > 4) throw new Error("L’export contient plus de quatre films à comparer.");
+  const evaluations = array(incoming.evaluations, "évaluations").map((entry) => {
+    if (!object(entry) || (entry.filters != null && !object(entry.filters))) throw new Error("Évaluation invalide.");
+    for (const key of ["at", "value", "wish"]) {
+      if (entry[key] != null && typeof entry[key] !== "string") throw new Error("Évaluation invalide.");
+    }
+    return { ...entry, programmeIds: ids(entry.programmeIds, "films évalués") };
+  }).slice(-100);
+  const result = { seen: ids(incoming.seen, "films vus"), dismissed: ids(incoming.dismissed, "films écartés"), shortlist, compare, evaluations };
+  if (incoming.form !== undefined) {
+    const form = incoming.form;
+    if (!object(form)) throw new Error("Réglages de recherche invalides.");
+    for (const key of ["wish", "effect", "timeBudget", "detour"]) {
+      if (form[key] != null && typeof form[key] !== "string") throw new Error("Réglages de recherche invalides.");
+    }
+    const choices = {
+      effect: ["captivate", "contemplate", "comfort", "shake", "wonder", "open"],
+      timeBudget: ["standard", "short", "ample", "unlimited"],
+      detour: ["sidestep", "faithful", "adventurous"],
+    };
+    const selected = {};
+    for (const [key, values] of Object.entries(choices)) {
+      selected[key] = form[key] ?? values[0];
+      if (!values.includes(selected[key])) throw new Error(`Réglage de recherche inconnu : ${key}.`);
+    }
+    for (const key of ["minYear", "maxYear"]) {
+      const year = form[key];
+      if (year != null && year !== "" && !((typeof year === "number" && Number.isInteger(year) && year > 0)
+          || (typeof year === "string" && /^\d+$/.test(year)))) throw new Error("Année de recherche invalide.");
+    }
+    if (form.hideSeen != null && typeof form.hideSeen !== "boolean") throw new Error("Réglages de recherche invalides.");
+    const lenses = array(form.lenses, "angles de recherche");
+    if (lenses.some((value) => typeof value !== "string")) throw new Error("Angle de recherche invalide.");
+    result.form = { ...form, ...selected, genres: ids(form.genres, "genres"), lenses: [...new Set(lenses)] };
+  }
+  const collections = array(incoming.collections, "collections").map(normalizeCollection);
+  for (const key of ["history", "rejections"]) array(incoming[key], key);
+  if (incoming.profile != null && !object(incoming.profile)) throw new Error("Profil invalide.");
+  if (incoming.lists != null && !object(incoming.lists)) throw new Error("Listes personnelles invalides.");
+  if (incoming.profile) {
+    ids(incoming.profile.preferredGenres, "genres préférés");
+    ids(incoming.profile.excludedGenres, "genres exclus");
+  }
+  return sanitizePreferences({ ...incoming, ...result, collections });
+}
+
 async function importLocalData(file) {
   if (!file) return;
+  const sequence = ++importSequence;
+  const before = JSON.stringify(preferences);
+  let previous = null;
+  importFile.value = "";
   try {
+    if (file.size > 2 * 1024 * 1024) throw new Error("Fichier trop volumineux : limite de 2 Mo.");
     const payload = JSON.parse(await file.text());
-    if (payload.format !== "mubi-film-scout-local-v1" || !payload.preferences) throw new Error("Format d’export non reconnu.");
-    const incoming = payload.preferences;
-    preferences = {
-      ...loadPreferences(),
-      ...incoming,
-      seen: [...new Set((incoming.seen || []).map(Number).filter(Number.isInteger))],
-      dismissed: [...new Set((incoming.dismissed || []).map(Number).filter(Number.isInteger))],
-      shortlist: (incoming.shortlist || []).filter((movie) => Number.isInteger(Number(movie.id))).slice(0, 8),
-      compare: (incoming.compare || []).map(Number).filter(Number.isInteger).slice(0, 4),
-      evaluations: (incoming.evaluations || []).slice(-100)
-    };
-    savePreferences();
+    if (sequence !== importSequence) return;
+    const next = validatedImport(payload);
+    if (JSON.stringify(preferences) !== before) throw new Error("Vos choix ont changé pendant la lecture. Relancez l’import si vous souhaitez les remplacer.");
+    // Validate the render before the single atomic storage write. A failed
+    // render or write restores the in-memory choices; pending imports cannot win.
+    previous = preferences;
+    preferences = next;
     renderShortlist();
     renderCatalogue();
     renderProgrammeActionStates();
+    studio?.refreshPersonalData();
+    try { localStorage.setItem(storageKey, JSON.stringify(preferences)); }
+    catch { throw new Error("Import non enregistré : le stockage est indisponible ou plein. Vos choix actuels sont conservés."); }
+    previous = null;
+    preferencesUnsaved = false;
+    if (preferences.form) {
+      restoreFormState();
+      studio?.restoreImportedForm();
+      updateLensAvailability();
+      updateUnderstanding();
+    }
+    updateMemoryCount();
     window.alert("Choix locaux importés.");
   } catch (error) {
+    if (sequence !== importSequence) return;
+    if (previous) {
+      preferences = previous;
+      renderShortlist(); renderCatalogue(); renderProgrammeActionStates();
+      studio?.refreshPersonalData(); updateMemoryCount();
+    }
     window.alert(error.message || "Import impossible.");
-  } finally {
-    importFile.value = "";
   }
 }
 
@@ -923,13 +1103,15 @@ async function init() {
   updateLensAvailability();
   updateMemoryCount();
   renderShortlist();
+  studio?.onReady(data);
   updateUnderstanding();
 }
 
 form.addEventListener("submit", search);
-form.addEventListener("change", () => {
+form.addEventListener("change", (event) => {
   surpriseMode = false;
   updateLensAvailability();
+  studio?.onFormChange(event.target);
   updateUnderstanding();
   saveFormState();
 });
@@ -979,21 +1161,18 @@ selectionFeedback.addEventListener("click", (event) => {
   if (button) recordEvaluation(button.dataset.feedback);
 });
 document.querySelector("#export-data").addEventListener("click", exportLocalData);
+document.querySelector("#export-shortlist-text").addEventListener("click", exportShortlistText);
 document.querySelector("#import-data").addEventListener("click", () => importFile.click());
 importFile.addEventListener("change", () => importLocalData(importFile.files?.[0]));
 document.querySelector("#surprise").addEventListener("click", () => {
-  document.querySelector("#wish").value = "Surprends-moi avec un film bien noté de moins de 2h10";
-  document.querySelector('input[name="effect"][value="open"]').checked = true;
-  document.querySelector('input[name="detour"][value="adventurous"]').checked = true;
+  applyQuickPreset("surprise");
   surpriseMode = true;
+  updateLensAvailability();
   updateUnderstanding();
   search();
 });
 document.querySelector("#oblique").addEventListener("click", () => {
-  document.querySelector('input[name="detour"][value="adventurous"]').checked = true;
-  for (const input of document.querySelectorAll("#lenses input")) input.checked = false;
-  const oblique = document.querySelector('#lenses input[value="oblique"]');
-  if (oblique) oblique.checked = true;
+  applyQuickPreset("oblique");
   surpriseMode = false;
   updateLensAvailability();
   updateUnderstanding();
@@ -1002,15 +1181,68 @@ document.querySelector("#oblique").addEventListener("click", () => {
 document.querySelector("#forget").addEventListener("click", () => {
   if (!window.confirm("Effacer les films vus, les films gardés, les évaluations et l’accès temporaire de cet onglet ?")) return;
   requestSequence += 1;
+  importSequence += 1;
   activeRequest?.abort();
   activeRequest = null;
   setSearchBusy(false);
+  currentProgramme = []; catalogueMovies = []; lastSearchRequest = null;
+  catalogueLoadedPages = new Set(); catalogueTotalPages = 0; catalogueBusy = false; catalogueVisible = 24;
+  studio?.reset();
   preferences = { seen: [], shortlist: [], dismissed: [], compare: [], evaluations: [] };
-  sessionStorage.removeItem(tokenKey);
+  let tokenCleared = true;
+  try { sessionStorage.removeItem(tokenKey); }
+  catch { tokenCleared = false; }
   tokenInput.value = "";
-  savePreferences();
+  const saved = savePreferences();
   renderShortlist();
-  setMessage("Les choix locaux et le jeton temporaire de cet onglet ont été effacés.");
+  studio?.refreshPersonalData();
+  if (saved && tokenCleared) {
+    setMessage("Les choix locaux et le jeton temporaire de cet onglet ont été effacés.");
+  } else {
+    setMessage(`Effacement incomplet : ${[
+      !saved && "les anciens choix peuvent rester enregistrés sur cet appareil",
+      !tokenCleared && "le jeton temporaire peut rester enregistré dans cet onglet",
+    ].filter(Boolean).join(" ; ")}.`, "error");
+  }
 });
 
+studio = installStudio({
+  getPreferences: () => preferences,
+  save: savePreferences,
+  getProgramme: () => currentProgramme,
+  setProgramme: (movies) => { currentProgramme = movies; renderProgramme(); },
+  getCatalogue: () => catalogueMovies,
+  updateMovies: (movies) => {
+    const byId = new Map(movies.map((m) => [m.id, m]));
+    catalogueMovies = catalogueMovies.map((m) => ({ ...m, ...byId.get(m.id) }));
+    currentProgramme = currentProgramme.map((m) => ({ ...m, ...byId.get(m.id), role: m.role })).filter((m) => m.verified && m.availability?.available !== false);
+    preferences.shortlist = preferences.shortlist.map((m) => ({ ...m, ...byId.get(m.id) }));
+    renderProgramme(); renderCatalogue(); renderShortlist();
+  },
+  getFilters: currentFilters,
+  getRequest: () => lastSearchRequest,
+  getForm: formState,
+  restoreForm: (state) => { preferences.form = state; restoreFormState(); updateUnderstanding(); updateLensAvailability(); },
+  search, renderCatalogue, renderShortlist, setResultView,
+  renderPerspectives, escapeHtml, toggleShortlist,
+  headers: () => ({ "content-type": "application/json", ...(sessionStorage.getItem(tokenKey) ? { "x-tmdb-token": sessionStorage.getItem(tokenKey) } : {}) }),
+  async browse() {
+    requestSequence += 1;
+    studio?.onSearchStart();
+    activeRequest?.abort();
+    catalogueBusy = false;
+    setSearchBusy(false);
+    lastSearchRequest = { wish: "", filters: { minYear: 1874, maxYear: new Date().getFullYear(), minRating: 0, minVotes: 0, effect: "open", timeBudget: "unlimited", maxRuntime: 600, hideSeen: false } };
+    catalogueMovies = []; catalogueLoadedPages = new Set(); catalogueTotalPages = 1;
+    statusNode.hidden = true; resultHead.hidden = false; resultViews.hidden = false;
+    appliedNode.textContent = "Catalogue MUBI France · sans filtre de genre, époque ou note";
+    setResultView("catalogue");
+    await loadNextCataloguePage();
+  },
+  async more() {
+    const before = catalogueMovies.length;
+    catalogueVisible += 24; renderCatalogue();
+    if (catalogueVisible > before) await loadNextCataloguePage();
+  }
+});
 init().catch(() => setMessage("Impossible de joindre le serveur local.", "error"));

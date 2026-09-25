@@ -5,6 +5,18 @@ import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { createConnectionStore } from "./connections.mjs";
 
+test("deux instances concurrentes préservent toutes les clés du coffre", async (t) => {
+  const directory = await mkdtemp(join(tmpdir(), "mubi-concurrent-"));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const path = join(directory, "sources.json");
+  const first = createConnectionStore(path, {}), second = createConnectionStore(path, {});
+  await Promise.all([first.save({guardian: "fake-guardian"}), second.save({nyt: "fake-nyt"}), first.save({omdb: "fake-omdb"}), second.save({tmdb: "fake-tmdb"})]);
+  for (const key of ["guardian", "nyt", "omdb", "tmdb"]) assert.equal((await first.status())[key].configured, true);
+  assert.equal((await stat(path)).mode & 0o777, 0o600);
+  const contents = await readFile(path, "utf8");
+  assert.doesNotThrow(() => JSON.parse(contents));
+});
+
 test("enregistre les accès sans les exposer dans le statut", async (t) => {
   const directory = await mkdtemp(join(tmpdir(), "mubi-sources-"));
   t.after(() => rm(directory, { recursive: true, force: true }));

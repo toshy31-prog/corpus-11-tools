@@ -24,7 +24,7 @@ function titleTokens(value) {
 export function titleMatches(movie, candidateText) {
   const haystack = normalizeText(candidateText);
   if (!haystack) return false;
-  const variants = [...new Set([movie.originalTitle, movie.title].filter(Boolean))];
+  const variants = [...new Set([movie.originalTitle, movie.title, ...(movie.alternativeTitles || [])].filter(Boolean))];
   return variants.some((variant) => {
     const normalized = normalizeText(variant);
     if (normalized.length >= 4 && haystack.includes(normalized)) return true;
@@ -104,20 +104,52 @@ function safeHttpsUrl(value, hosts) {
   }
 }
 
+export function sourceFailure(error) {
+  const status = Number(error?.status);
+  const code = status === 401 || status === 403 ? "access"
+    : status === 429 ? "quota"
+    : error?.name === "TimeoutError" || error?.name === "AbortError" ? "timeout"
+    : status >= 500 ? "service" : status >= 400 ? "request" : "network";
+  const messages = {
+    access: "accès refusé ; vérifier la clé et les autorisations",
+    quota: "quota atteint ; réessayer plus tard",
+    timeout: "délai de réponse dépassé",
+    service: "service temporairement indisponible",
+    request: "requête refusée par le service",
+    network: "connexion réseau interrompue"
+  };
+  return { code, message: messages[code] };
+}
+
 function sourceError(source, status) {
   return Object.assign(new Error(`${SOURCE_LABELS[source]} n’a pas répondu correctement.`), { source, status });
 }
 
 async function fetchJson(url, source, fetchImpl) {
-  const response = await fetchImpl(url, {
-    headers: { accept: "application/json" },
-    signal: AbortSignal.timeout(8_000)
-  });
-  if (!response.ok) throw sourceError(source, response.status);
-  try {
-    return await response.json();
-  } catch {
-    throw sourceError(source, 502);
+  // One retry shares the original time budget; never retry refused keys or quotas.
+  const signal = AbortSignal.timeout(8_000);
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      const response = await fetchImpl(url, { headers: { accept: "application/json" }, signal });
+      if (!response.ok) {
+        const error = sourceError(source, response.status);
+        const retryAfter = response.headers?.get?.("retry-after");
+        if (retryAfter) {
+          const seconds = Number(retryAfter);
+          error.retryAfterMs = Number.isFinite(seconds) ? seconds * 1000 : Math.max(0, Date.parse(retryAfter) - Date.now());
+        }
+        throw error;
+      }
+      try {
+        return await response.json();
+      } catch {
+        throw sourceError(source, 502);
+      }
+    } catch (error) {
+      const { code } = sourceFailure(error);
+      if (attempt || signal.aborted || !["network", "service"].includes(code)) throw error;
+      await new Promise((resolve) => setTimeout(resolve, 250));
+    }
   }
 }
 
@@ -132,7 +164,7 @@ function releaseYear(movie) {
 export async function guardianReview(movie, key, options = {}) {
   const root = options.root || "https://content.guardianapis.com/search";
   const fetchImpl = options.fetchImpl || fetch;
-  const variants = [...new Set([movie.originalTitle, movie.title].filter(Boolean))];
+  const variants = [...new Set([movie.originalTitle, movie.title, ...(movie.alternativeTitles || [])].filter(Boolean))].slice(0, 5);
   const params = new URLSearchParams({
     "api-key": key,
     q: variants.map((title) => `"${title.replaceAll('"', "")}"`).join(" OR "),
@@ -169,7 +201,7 @@ export async function nytReview(movie, key, options = {}) {
   const fetchImpl = options.fetchImpl || fetch;
   const params = new URLSearchParams({
     "api-key": key,
-    q: queryTitle(movie),
+    q: [...new Set([movie.originalTitle, movie.title, ...(movie.alternativeTitles || [])].filter(Boolean))].slice(0, 4).map((t) => `"${t.replaceAll('"', '')}"`).join(" OR "),
     fq: 'section_name:("Movies" "Arts") AND type_of_material:("Review")',
     sort: "relevance",
     page: "0"
@@ -207,7 +239,7 @@ export async function omdbReception(movie, key, options = {}) {
   const data = await fetchJson(new URL(`?${params}`, root), "omdb", fetchImpl);
   if (data.Response === "False") {
     if (/not found/i.test(data.Error || "")) return null;
-    throw sourceError("omdb", 502);
+    throw sourceError("omdb", /limit|quota/i.test(data.Error || "") ? 429 : /key|activat/i.test(data.Error || "") ? 401 : 502);
   }
   if (!titleMatches(movie, data.Title || "") && !(movie.imdbId && data.imdbID === movie.imdbId)) return null;
   const ratings = (Array.isArray(data.Ratings) ? data.Ratings : [])
@@ -226,6 +258,7 @@ export async function omdbReception(movie, key, options = {}) {
     url: imdbId ? `https://www.imdb.com/title/${imdbId}/` : null,
     rating: null,
     ratings,
+    votes: Number(String(data.imdbVotes || "").replaceAll(",", "")) || 0,
     match: {
       certainty: movie.imdbId && data.imdbID === movie.imdbId ? "exact" : "probable",
       evidence: movie.imdbId && data.imdbID === movie.imdbId
@@ -245,15 +278,47 @@ export function createExternalSourceClient(options = {}) {
   const cache = new Map();
   let guardianTail = Promise.resolve();
   let lastGuardianStart = 0;
+  let nytTail = Promise.resolve();
+  const now = options.now || Date.now;
+  const sleep = options.sleep || ((ms) => new Promise((resolve) => setTimeout(resolve, ms)));
+  let nytStarts = [];
+  let nytCooldownUntil = 0;
 
-  function cached(source, movie, task) {
-    const key = `${source}:${movie.imdbId || movie.id}:${movie.releaseDate || ""}`;
-    if (cache.has(key)) return cache.get(key);
-    const promise = task().catch((error) => {
+  function queuedNyt(task) {
+    const current = nytTail.then(async () => {
+      nytStarts = nytStarts.filter((at) => now() - at < 60_000);
+      if (now() < nytCooldownUntil || nytStarts.length >= 5) throw sourceError("nyt", 429);
+      const wait = nytStarts.length ? Math.max(0, 1_050 - (now() - nytStarts.at(-1))) : 0;
+      if (wait) await sleep(wait);
+      nytStarts.push(now());
+      try {
+        return await task();
+      } catch (error) {
+        if (error.status === 429) nytCooldownUntil = now() + Math.max(60_000, error.retryAfterMs || 0);
+        throw error;
+      }
+    });
+    nytTail = current.catch(() => {});
+    return current;
+  }
+
+  function cached(source, movie, credential, task) {
+    const key = `${source}:${roots[source] || "default"}:${credential}:${movie.imdbId || movie.id}:${movie.releaseDate || ""}:${movie.director || ""}:${JSON.stringify(movie.alternativeTitles || [])}`;
+    if (cache.get(key)?.expiresAt > now()) return cache.get(key).promise;
+    cache.delete(key);
+    const promise = (async () => {
+      const stored = await options.persistentCache?.get(key);
+      if (stored) return stored.data;
+      const data = await task();
+      await options.persistentCache?.set(key, data, data ? 7 * 86400_000 : 86400_000).catch(() => {});
+      return data;
+    })().catch((error) => {
       cache.delete(key);
       throw error;
     });
-    cache.set(key, promise);
+    cache.set(key, { promise, expiresAt: now() + 86400_000 });
+    // Bound live entries; disk entries retain their own expiry.
+    if (cache.size > 500) cache.delete(cache.keys().next().value);
     return promise;
   }
 
@@ -269,9 +334,9 @@ export function createExternalSourceClient(options = {}) {
   }
 
   const lookups = {
-    guardian: (movie, key) => cached("guardian", movie, () => queuedGuardian(() => guardianReview(movie, key, { root: roots.guardian, fetchImpl }))),
-    nyt: (movie, key) => cached("nyt", movie, () => nytReview(movie, key, { root: roots.nyt, fetchImpl })),
-    omdb: (movie, key) => cached("omdb", movie, () => omdbReception(movie, key, { root: roots.omdb, fetchImpl }))
+    guardian: (movie, key) => cached("guardian", movie, key, () => queuedGuardian(() => guardianReview(movie, key, { root: roots.guardian, fetchImpl }))),
+    nyt: (movie, key) => cached("nyt", movie, key, () => queuedNyt(() => nytReview(movie, key, { root: roots.nyt, fetchImpl }))),
+    omdb: (movie, key) => cached("omdb", movie, key, () => omdbReception(movie, key, { root: roots.omdb, fetchImpl }))
   };
 
   async function enrich(movies, keys) {
@@ -283,10 +348,14 @@ export function createExternalSourceClient(options = {}) {
         const perspective = await lookups[source](movie, keys[source]);
         if (perspective) {
           movie.perspectives.push(perspective);
+          if (source === "omdb") movie.imdbVotes = perspective.votes || 0;
           coverage[source].matched += 1;
         }
-      } catch {
+      } catch (error) {
         coverage[source].failed += 1;
+        const failure = sourceFailure(error);
+        coverage[source].errors ||= [];
+        if (!coverage[source].errors.some(({ code }) => code === failure.code)) coverage[source].errors.push(failure);
       }
     })));
     for (const movie of enriched) movie.perspectives.sort((a, b) => sourceIds.indexOf(a.source) - sourceIds.indexOf(b.source));
@@ -302,15 +371,16 @@ export function createExternalSourceClient(options = {}) {
       });
     }
     if (source === "nyt") {
+      return queuedNyt(async () => {
       const params = new URLSearchParams({ "api-key": key, q: "film", page: "0" });
       const data = await fetchJson(new URL(`?${params}`, roots.nyt || "https://api.nytimes.com/svc/search/v2/articlesearch.json"), source, fetchImpl);
       if (data.status && data.status !== "OK") throw sourceError(source, 502);
-      return;
+      });
     }
     if (source === "omdb") {
       const params = new URLSearchParams({ apikey: key, i: "tt0111161", r: "json" });
       const data = await fetchJson(new URL(`?${params}`, roots.omdb || "https://www.omdbapi.com/"), source, fetchImpl);
-      if (data.Response === "False") throw sourceError(source, 502);
+      if (data.Response === "False") throw sourceError(source, /limit|quota/i.test(data.Error || "") ? 429 : /key|activat/i.test(data.Error || "") ? 401 : 502);
     }
   }
 

@@ -39,8 +39,8 @@ export function evaluateProgramme(programme, filters) {
   return [
     { id: "count", label: "quatre propositions lorsque le catalogue le permet", passed: programme.length === 4 },
     { id: "unique", label: "aucun doublon", passed: new Set(ids).size === ids.length },
-    { id: "runtime", label: "durées connues conformes", passed: programme.every((movie) => !movie.runtime || movie.runtime <= filters.maxRuntime) },
+    { id: "runtime", label: "durées connues conformes", passed: programme.every((movie) => movie.runtime > 0 && movie.runtime <= filters.maxRuntime) },
     { id: "seen", label: "aucun film vu lorsque le masquage est actif", passed: !filters.hideSeen || ids.every((id) => !seen.has(id)) },
-    { id: "availability", label: "disponibilités individuellement vérifiées", passed: programme.every((movie) => Boolean(movie.offerLink)) }
+    { id: "availability", label: "disponibilités individuellement vérifiées", passed: programme.every((movie) => movie.verified === true && Boolean(movie.checkedAt)) }
   ];
 }

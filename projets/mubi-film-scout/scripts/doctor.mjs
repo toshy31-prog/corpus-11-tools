@@ -1,3 +1,5 @@
+import { SERVICE_ID } from "../lib/server-readiness.mjs";
+
 const port = Number(process.env.PORT || 4180);
 const root = `http://127.0.0.1:${port}`;
 const live = process.argv.includes("--live");
@@ -8,9 +10,13 @@ function date(value) {
 
 let status;
 try {
-  const response = await fetch(`${root}/api/status`, { signal: AbortSignal.timeout(1500) });
+  const response = await fetch(`${root}/api/status`, { signal: AbortSignal.timeout(1500), redirect: "error" });
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
-  status = await response.json();
+  const payload = await response.json();
+  if (payload?.service !== SERVICE_ID || !payload.connections || typeof payload.connections !== "object") {
+    throw new Error("Le service présent sur ce port n’est pas identifié comme MUBI Film Scout avec un état compatible. Vérifiez le service ou le PORT.");
+  }
+  status = payload;
 } catch (error) {
   console.error(`✗ Serveur local indisponible (${error.message}). Lancez : npm run launch`);
   process.exitCode = 2;

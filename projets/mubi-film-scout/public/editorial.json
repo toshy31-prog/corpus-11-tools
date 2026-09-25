@@ -1,0 +1,11 @@
+{
+  "name": "Cinq formes pour regarder autrement — corpus de départ",
+  "source": "https://www.themoviedb.org/",
+  "films": [
+    { "id": 389, "title": "Douze hommes en colère", "order": 1, "angles": ["closed"], "note": "Lecture éditoriale : la délibération des douze jurés concentre le conflit dans un lieu. Le synopsis TMDB décrit le retrait du jury et la discussion. Source consultée le 13 septembre 2026.", "source": "https://www.themoviedb.org/movie/389" },
+    { "id": 77, "title": "Memento", "order": 2, "angles": ["fragmented"], "note": "Récit fragmenté : la fiche TMDB répertorie explicitement les mots-clés nonlinear timeline et reverse chronology. Ce constat de structure n’est pas une promesse de difficulté. Source consultée le 13 septembre 2026.", "source": "https://www.themoviedb.org/movie/77" },
+    { "id": 334, "title": "Magnolia", "order": 3, "angles": ["ensemble"], "note": "Lecture éditoriale : plusieurs trajectoires familiales et individuelles s’entrecroisent dans une journée. Le synopsis TMDB décrit cette pluralité. Source consultée le 13 septembre 2026.", "source": "https://www.themoviedb.org/movie/334" },
+    { "id": 680813, "title": "Flee", "order": 4, "angles": ["hybrid"], "note": "Documentaire animé : récit du passé d’Amin mis en animation pour protéger son identité, selon le synopsis anglais et le mot-clé animated documentary. Animation ne signifie pas témoignage fictif. Source TMDB consultée le 13 septembre 2026.", "source": "https://www.themoviedb.org/movie/680813" },
+    { "id": 1112548, "title": "Portraits Fantômes", "order": 5, "angles": ["city"], "note": "Lecture éditoriale ville-personnage : le synopsis anglais décrit le centre de Recife et la disparition de ses salles comme traces de transformations sociales. Source TMDB consultée le 13 septembre 2026.", "source": "https://www.themoviedb.org/movie/1112548" }
+  ]
+}

@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { guardianReview, nytReview, omdbReception, titleMatches } from "./external-sources.mjs";
+import { createExternalSourceClient, guardianReview, nytReview, omdbReception, titleMatches } from "./external-sources.mjs";
 
 const movie = {
   id: 1,
@@ -13,6 +13,95 @@ const movie = {
 function response(payload, status = 200) {
   return { ok: status >= 200 && status < 300, status, json: async () => payload };
 }
+
+test("récupère une coupure réseau avec une seule relance et le même délai total", async () => {
+  const signals = [];
+  const client = createExternalSourceClient({ fetchImpl: async (_, options) => {
+    signals.push(options.signal);
+    if (signals.length === 1) throw new TypeError("fetch failed");
+    return response({ Title: movie.originalTitle, imdbID: movie.imdbId, Ratings: [] });
+  } });
+  const result = await client.enrich([movie], { omdb: "secret" });
+  assert.equal(signals.length, 2);
+  assert.equal(signals[0], signals[1]);
+  assert.equal(result.coverage.omdb.matched, 1);
+  assert.equal(result.coverage.omdb.failed, 0);
+});
+
+test("ne relance ni une clé refusée ni un quota épuisé et conserve les films", async () => {
+  for (const [status, code] of [[401, "access"], [403, "access"], [429, "quota"]]) {
+    let calls = 0;
+    const client = createExternalSourceClient({ fetchImpl: async () => {
+      calls += 1;
+      return response({}, status);
+    } });
+    const result = await client.enrich([movie], { nyt: "secret" });
+    assert.equal(calls, 1);
+    assert.equal(result.movies[0].id, movie.id);
+    assert.equal(result.coverage.nyt.errors[0].code, code);
+    assert.equal(JSON.stringify(result).includes("secret"), false);
+  }
+});
+
+test("distingue une absence de critique d’un échec persistant sans divulguer l’erreur brute", async () => {
+  let failures = 0;
+  const client = createExternalSourceClient({ fetchImpl: async (url) => {
+    if (url.hostname === "api.nytimes.com") return response({ status: "OK", response: { docs: [] } });
+    failures += 1;
+    throw new TypeError("URL sensible ?apikey=secret");
+  } });
+  const result = await client.enrich([movie], { nyt: "secret", omdb: "secret" });
+  assert.equal(failures, 2);
+  assert.equal(result.coverage.nyt.failed, 0);
+  assert.equal(result.coverage.nyt.matched, 0);
+  assert.equal(result.coverage.omdb.failed, 1);
+  assert.equal(result.coverage.omdb.errors[0].code, "network");
+  assert.equal(JSON.stringify(result).includes("secret"), false);
+});
+
+test("reconnaît les erreurs OMDb renvoyées avec HTTP 200", async () => {
+  const client = createExternalSourceClient({ fetchImpl: async () => response({ Response: "False", Error: "Request limit reached!" }) });
+  const result = await client.enrich([movie], { omdb: "secret" });
+  assert.equal(result.coverage.omdb.errors[0].code, "quota");
+});
+
+test("partage le budget NYT entre diagnostic et recherches sans bloquer les films", async () => {
+  let time = 100_000;
+  const starts = [];
+  const client = createExternalSourceClient({ now: () => time, sleep: async (ms) => { time += ms; }, fetchImpl: async () => {
+    starts.push(time);
+    return response({ status: "OK", response: { docs: [] } });
+  } });
+  await client.check("nyt", "secret");
+  const movies = Array.from({ length: 6 }, (_, id) => ({ ...movie, id, imdbId: `tt000000${id}` }));
+  const result = await client.enrich(movies, { nyt: "secret" });
+  assert.equal(starts.length, 5);
+  assert.ok(starts.slice(1).every((at, i) => at - starts[i] >= 1050));
+  assert.equal(result.movies.length, 6);
+  assert.equal(result.coverage.nyt.failed, 2);
+  time += 60_000;
+  await client.enrich(movies.slice(4), { nyt: "secret" });
+  assert.equal(starts.length, 7);
+});
+
+test("une réponse NYT 429 suspend les appels suivants et respecte Retry-After", async () => {
+  let time = 100_000;
+  let calls = 0;
+  const client = createExternalSourceClient({ now: () => time, sleep: async (ms) => { time += ms; }, fetchImpl: async () => {
+    calls += 1;
+    return { ...response({}, 429), headers: { get: () => "120" } };
+  } });
+  const movies = [movie, { ...movie, imdbId: "tt0000002" }];
+  const result = await client.enrich(movies, { nyt: "secret" });
+  assert.equal(result.coverage.nyt.failed, 2);
+  assert.equal(calls, 1);
+  time += 61_000;
+  await client.enrich(movies, { nyt: "secret" });
+  assert.equal(calls, 1);
+  time += 60_000;
+  await client.enrich([movie], { nyt: "secret" });
+  assert.equal(calls, 2);
+});
 
 test("rapproche un titre original sans accepter un article générique", () => {
   assert.equal(titleMatches(movie, "Anatomy of a Fall review – riveting courtroom drama"), true);
