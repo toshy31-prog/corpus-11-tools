@@ -363,7 +363,7 @@ def main():
         vision = ['--mmproj', str(VISION), '--no-mmproj-offload'] if args.moe and VISION.exists() else []
         device = ['--device', 'Vulkan0', '--fit-target', '2048'] if args.intel else []
         if args.cuda:
-            device = ['--device', 'CUDA0', '--n-cpu-moe', '30']
+            device = ['--device', 'CUDA0', '--n-cpu-moe', '30', '--load-mode', 'none']
         gpu_layers = '99' if args.intel else ('20' if args.cuda else '0')
         server = subprocess.Popen([str(executable), '-m', str(model), '--alias', 'corpus',
             '--host', '127.0.0.1', '--port', str(PORT), '--offline', '--jinja',
