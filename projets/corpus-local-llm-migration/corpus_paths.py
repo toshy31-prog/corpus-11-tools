@@ -61,6 +61,7 @@ def resolve_contract(environ=None, *, home=None, repo_root=None):
         "config": config,
         "vault": vault,
         "local_runtime": runtime / "corpus-local",
+        "local_apps": runtime / "corpus-local/apps",
         "capabilities_runtime": runtime / "corpus-capabilities",
         "media_runtime": runtime / "corpus-media",
         "office_runtime": runtime / "corpus-office",
@@ -92,6 +93,7 @@ CONFIG_ROOT = _PATHS["config"]
 VAULT_ROOT = _PATHS["vault"]
 
 LOCAL_RUNTIME_ROOT = _PATHS["local_runtime"]
+LOCAL_APPS_ROOT = _PATHS["local_apps"]
 CAPABILITIES_RUNTIME_ROOT = _PATHS["capabilities_runtime"]
 MEDIA_RUNTIME_ROOT = _PATHS["media_runtime"]
 OFFICE_RUNTIME_ROOT = _PATHS["office_runtime"]

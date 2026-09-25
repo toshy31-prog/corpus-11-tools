@@ -112,6 +112,10 @@ Le vieux `corpus-local/build` reste temporairement présent comme filet jusqu'à
 
 `rebuild_runtime.py` reconstruit désormais les profils CPU et CUDA depuis `TOOLCHAIN_SOURCES_ROOT` vers `LOCAL_BUILD_CACHE_ROOT`. Une dérive de `CMAKE_HOME_DIRECTORY` invalide uniquement le cache de build concerné, qui est régénéré. Les runtimes validés peuvent être promus atomiquement sous `runtime/versions` avec `--promote`.
 
+## HERMES Phase 3B4 — checkout runtime supporté par l'amont
+
+Hermes interdit volontairement les builds wheel/sdist hors Nix et attend un fonctionnement depuis un source checkout editable. Corpus conserve donc deux copies aux rôles différents : `TOOLCHAIN_SOURCES_ROOT/hermes-agent-2026.9.21` est la source durable de reconstruction ; `LOCAL_APPS_ROOT/hermes-agent-2026.9.21` est le checkout de déploiement appartenant au RUNTIME. `hermes-env` est synchronisé offline en editable uniquement contre ce checkout runtime. Il ne dépend jamais directement de TOOLCHAINS ni de l'ancien `runtime/sources`.
+
 ## Correction sémantique
 
 L'ancien setup employait `CORPUS_STATE_ROOT` comme nom du runtime. Ce sens est
