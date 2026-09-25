@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=CORPUS — Monde vivant (graphique)
+Comment=Explorer un monde qui apprend de ses usages
+Exec=/home/olivier/Documents/ChatGPT/Corpus/projets/corpus-monde-vivant/JOUER-GRAPHIQUE.sh
+Path=/home/olivier/Documents/ChatGPT/Corpus/projets/corpus-monde-vivant
+Terminal=false
+Categories=Game;
+StartupNotify=true

@@ -1,0 +1,11 @@
+[package]
+name = "corpus-cli"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+corpus-core = { path = "../corpus-core" }
+
+[lints]
+workspace = true

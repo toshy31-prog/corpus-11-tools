@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=CORPUS — Monde vivant
+Comment=Un monde persistant transformé par ses usages
+Exec=/home/olivier/Documents/ChatGPT/Corpus/projets/corpus-monde-vivant/JOUER-CORPUS.sh
+Path=/home/olivier/Documents/ChatGPT/Corpus/projets/corpus-monde-vivant
+Terminal=true
+Categories=Game;
+StartupNotify=false

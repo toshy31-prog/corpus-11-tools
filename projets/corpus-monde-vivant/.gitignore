@@ -1,0 +1,11 @@
+# Rust
+/target/
+
+# Godot generated state
+**/.godot/
+
+# Built distributions
+/dist/
+
+# Historical binary archives: provenance kept outside Git
+/preserved/*.tar.gz

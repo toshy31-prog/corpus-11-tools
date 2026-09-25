@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=CORPUS — La vallée des passages (3D)
+Comment=Habiter et transformer un monde persistant
+Exec=/home/olivier/Documents/ChatGPT/Corpus/projets/corpus-monde-vivant/JOUER-3D.sh
+Path=/home/olivier/Documents/ChatGPT/Corpus/projets/corpus-monde-vivant
+Terminal=false
+Categories=Game;
+StartupNotify=true
