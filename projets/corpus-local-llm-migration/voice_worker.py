@@ -5,9 +5,9 @@ import sys
 from pathlib import Path
 from faster_whisper import WhisperModel
 import numpy as np
-from corpus_paths import LOCAL_RUNTIME_ROOT
+from corpus_paths import SPEECH_MODELS_ROOT
 
-base = LOCAL_RUNTIME_ROOT
+whisper_root = SPEECH_MODELS_ROOT / 'whisper-small'
 # Décode au plus 60 secondes. ffmpeg s'exécute dans le même espace sans réseau.
 raw = subprocess.run(['/usr/bin/ffmpeg', '-v', 'error', '-nostdin', '-i', sys.argv[1],
                       '-t', '60', '-f', 'f32le', '-ac', '1', '-ar', '16000', 'pipe:1'],
@@ -15,7 +15,7 @@ raw = subprocess.run(['/usr/bin/ffmpeg', '-v', 'error', '-nostdin', '-i', sys.ar
 samples = np.frombuffer(raw, dtype=np.float32)
 if not len(samples):
     raise ValueError('Audio vide')
-model = WhisperModel(str(base / 'voice-model-small'), device='cpu', compute_type='int8',
+model = WhisperModel(str(whisper_root), device='cpu', compute_type='int8',
                      cpu_threads=4, local_files_only=True)
 segments, info = model.transcribe(samples, beam_size=3, vad_filter=True,
                                   condition_on_previous_text=False)

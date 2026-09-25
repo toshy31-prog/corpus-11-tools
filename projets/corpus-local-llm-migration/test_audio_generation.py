@@ -47,8 +47,8 @@ class AudioGenerationTests(unittest.TestCase):
             self.assertIn(b'404',m.asset(path.replace('audio.wav','job.json')))
 
     def test_missing_runtime_is_not_ready(self):
-        with tempfile.TemporaryDirectory() as root, patch.object(m,'BASE',Path(root)):
-            (m.BASE/'models').mkdir();(m.BASE/'models/qwen-tts-design.gguf').touch()
+        with tempfile.TemporaryDirectory() as root, patch.object(m,'BASE',Path(root)), patch.object(m,'MODEL_BASE',Path(root)/'models'):
+            m.MODEL_BASE.mkdir();(m.MODEL_BASE/'qwen-tts-design.gguf').touch()
             self.assertFalse(m.ready('qwen-tts'))
 
 

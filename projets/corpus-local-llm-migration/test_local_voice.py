@@ -6,6 +6,14 @@ class VoiceTests(unittest.TestCase):
     def test_invalid_audio(self):
         for data in [{}, {'audio':''}, {'audio':'!bad'}]:
             with self.assertRaises(ValueError): local_voice.transcribe(data)
+    def test_transcribe_passes_canonical_path_contract(self):
+        fake = type('Result', (), {'stdout': b'{\"text\":\"\",\"language\":\"fr\"}'})()
+        with patch.object(local_voice.subprocess, 'run', return_value=fake) as proc:
+            local_voice.transcribe({'audio':'YWJj'})
+        env = proc.call_args.kwargs['env']
+        for key in ('CORPUS_HOST_HOME','CORPUS_RUNTIME_ROOT','CORPUS_MODELS_ROOT'):
+            self.assertIn(key, env)
+
     def test_method(self):
         self.assertIn(b'405',local_voice.response('DELETE',b''))
     def test_invalid_json(self):

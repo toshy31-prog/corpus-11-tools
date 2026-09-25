@@ -41,11 +41,12 @@ def validate(data):
                 voice_style=style.strip(), lyrics=lyrics.strip(), duration=duration)
 
 
-def command(job, base, directory):
+def command(job, base, directory, model_base=None):
     speech = job['model'] == 'qwen-tts'
+    model_base = model_base or (base / 'models')
     args = [str(base / 'audio-runtime/audiocpp_cli'), '--task', 'vdes' if speech else 'gen',
             '--family', 'qwen3_tts' if speech else 'ace_step', '--model',
-            str(base / 'models' / MODELS[job['model']]['files'][0]), '--backend', 'vulkan' if speech else 'cpu',
+            str(model_base / MODELS[job['model']]['files'][0]), '--backend', 'vulkan' if speech else 'cpu',
             '--device', '0', '--threads', '6', '--text', job['prompt'], '--seed', str(job['seed']),
             '--out', str(directory / 'audio.wav'), '--metrics', '--log']
     if speech:

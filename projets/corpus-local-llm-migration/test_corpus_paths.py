@@ -92,6 +92,18 @@ class CorpusPathContractTests(unittest.TestCase):
             self.assertEqual(paths["models"], root / "models")
             self.assertEqual(paths["toolchains"], root / "toolchains")
 
+    def test_model_subroots_follow_models_root(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            paths = corpus_paths.resolve_contract(
+                {"HOME": str(root / "home")}, repo_root=root / "repo"
+            )
+            base = root / "home/.local/share/corpus/models/hot"
+            self.assertEqual(paths["llm_models"], base / "llm")
+            self.assertEqual(paths["media_models"], base / "media")
+            self.assertEqual(paths["speech_models"], base / "speech")
+            self.assertEqual(paths["docling_models"], base / "docling")
+
     def test_setup_uses_runtime_root(self):
         setup = (corpus_paths.REPO_ROOT / "scripts/setup-corpus-ubuntu.sh").read_text()
         self.assertIn("corpus_runtime_root=", setup)

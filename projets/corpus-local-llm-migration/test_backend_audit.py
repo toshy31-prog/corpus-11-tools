@@ -125,6 +125,23 @@ class StateTests(unittest.TestCase):
             self.assertIn(['--ro-bind',str(readonly),str(readonly)],groups)
 
 
+class ModelPathReceiptTests(unittest.TestCase):
+    def test_receipt_path_accepts_canonical_models_outside_runtime(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            runtime = root / 'runtime/corpus-local'
+            models = root / 'models/hot'
+            runtime.mkdir(parents=True)
+            (models / 'llm/qwen3.6').mkdir(parents=True)
+            model = models / 'llm/qwen3.6/model.gguf'
+            executable = runtime / 'versions/llama/llama-server'
+            executable.parent.mkdir(parents=True)
+            model.touch(); executable.touch()
+            with patch.object(corpus_local, 'BASE', runtime), patch.object(corpus_local, 'MODELS_ROOT', models):
+                self.assertEqual(corpus_local.receipt_path(model), 'llm/qwen3.6/model.gguf')
+                self.assertEqual(corpus_local.receipt_path(executable), 'versions/llama/llama-server')
+
+
 class TransportTests(unittest.TestCase):
     def test_portal_available_while_backend_starts_with_retryable_session_error(self):
         with tempfile.TemporaryDirectory() as tmp, patch.object(local_bridge,'PORT',0):

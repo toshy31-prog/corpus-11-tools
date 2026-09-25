@@ -80,6 +80,10 @@ Les backups historiques et releases sont COLD sous `CORPUS_VAULT_ROOT`; les deux
 
 Les anciens poids WAN `wan-5b.gguf` et `wan-vae.safetensors` ont été retirés du lock média parce qu'ils ne sont plus référencés par les profils d'inférence actifs. Un reinstall ne doit donc plus les ressusciter.
 
+## MODELS Phase 2A1 — consommateurs canoniques
+
+Les consommateurs actifs résolvent désormais les poids HOT par `CORPUS_MODELS_ROOT` et ses sous-racines dérivées `llm`, `media`, `speech` et `docling`. Pendant cette sous-phase, ces chemins sont des shims symboliques vers les poids encore physiquement sous runtime. Bubblewrap expose les modèles HOT en lecture seule.
+
 ## Correction sémantique
 
 L'ancien setup employait `CORPUS_STATE_ROOT` comme nom du runtime. Ce sens est

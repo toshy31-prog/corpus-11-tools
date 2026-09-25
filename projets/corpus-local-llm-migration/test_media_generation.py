@@ -8,9 +8,10 @@ import media_generation as m
 class MediaGenerationTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
-        self.base = patch.object(m, 'BASE', Path(self.tmp.name)); self.base.start()
+        self.base = patch.object(m, 'BASE', Path(self.tmp.name) / 'runtime'); self.base.start()
+        self.models = patch.object(m, 'MODEL_BASE', Path(self.tmp.name) / 'models'); self.models.start()
     def tearDown(self):
-        self.base.stop(); self.tmp.cleanup()
+        self.models.stop(); self.base.stop(); self.tmp.cleanup()
     def test_reject_paths_and_unbounded_work(self):
         for identifier in ['../../secret', '/etc/passwd', '', None]:
             with self.assertRaises(ValueError): m.folder(identifier)
@@ -44,7 +45,7 @@ class MediaGenerationTests(unittest.TestCase):
         j=dict(m.validate({'prompt':'test','model':'wan-5b'}),id='d'*32,has_reference=False)
         cmd=m.command(j)
         self.assertEqual((j['width'],j['height'],j['steps'],j['fps']),(832,480,3,24))
-        self.assertIn(str(m.BASE/'models/fastwan-5b.gguf'),cmd)
+        self.assertIn(str(m.MODEL_BASE/'fastwan-5b.gguf'),cmd)
         self.assertIn('--tae',cmd)
         self.assertEqual(cmd[cmd.index('--scheduler')+1],'lcm')
     def test_reference_validation(self):
@@ -57,8 +58,8 @@ class MediaGenerationTests(unittest.TestCase):
             m.start()
         self.assertEqual(m.read(j['id'])['state'],'failed')
     def test_queue_is_bounded(self):
-        (m.BASE/'runtime').mkdir();(m.BASE/'runtime/sd-cli').touch();(m.BASE/'models').mkdir()
-        for file in m.MODELS['flux-klein']['files']:(m.BASE/'models'/file).touch()
+        (m.BASE/'runtime').mkdir(parents=True);(m.BASE/'runtime/sd-cli').touch();m.MODEL_BASE.mkdir(parents=True)
+        for file in m.MODELS['flux-klein']['files']:(m.MODEL_BASE/file).touch()
         with patch.object(m,'start'),patch.object(m.shutil,'disk_usage') as usage:
             usage.return_value.free=3*1024**3
             for _ in range(4):m.create({'prompt':'test'})

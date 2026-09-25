@@ -14,9 +14,10 @@ import threading
 import time
 import uuid
 import audio_generation
-from corpus_paths import MEDIA_RUNTIME_ROOT
+from corpus_paths import MEDIA_MODELS_ROOT, MEDIA_RUNTIME_ROOT
 
 BASE = MEDIA_RUNTIME_ROOT
+MODEL_BASE = MEDIA_MODELS_ROOT
 LOCK = threading.RLock()
 STARTED = False
 PROCESS = None
@@ -160,10 +161,10 @@ def create(data):
 
 
 def command(job):
-    models = BASE / 'models'
+    models = MODEL_BASE
     directory = folder(job['id'])
     if job['model'] in audio_generation.MODELS:
-        return audio_generation.command(job, BASE, directory)
+        return audio_generation.command(job, BASE, directory, MODEL_BASE)
     video = job['model'] == 'wan-5b'
     cmd = [str(BASE / 'runtime/sd-cli'), '--diffusion-model', str(models / ('fastwan-5b.gguf' if video else 'flux-klein.gguf')),
            '--tae' if video else '--vae', str(models / ('wan-tae.safetensors' if video else 'flux-vae.safetensors')),
@@ -187,6 +188,7 @@ def sandbox(args, directory):
     return ['bwrap', '--unshare-net', '--unshare-pid', '--die-with-parent', '--ro-bind', '/', '/',
             '--tmpfs', '/home', '--tmpfs', '/tmp', '--tmpfs', '/run', '--proc', '/proc',
             '--dev-bind', '/dev', '/dev', '--ro-bind', str(BASE), str(BASE),
+            '--ro-bind', str(MODEL_BASE), str(MODEL_BASE),
             '--bind', str(directory), str(directory), '--chdir', str(directory), *args]
 
 
@@ -216,7 +218,7 @@ def execute(job):
                     with LOCK:
                         if read(job['id'])['state'] == 'cancelled': return
                         job['phase'] = 'Génération de la musique'; save(job)
-                        PROCESS = subprocess.Popen(sandbox(audio_generation.command(audio_job, BASE, directory), directory),
+                        PROCESS = subprocess.Popen(sandbox(audio_generation.command(audio_job, BASE, directory, MODEL_BASE), directory),
                             stdout=log, stderr=log, start_new_session=True,
                             env={'PATH':'/usr/bin:/bin','HOME':'/tmp','LANG':'C.UTF-8'})
                     PROCESS.wait(timeout=3600)
@@ -297,7 +299,7 @@ def start():
 
 def ready(model):
     profile = MODELS[model]
-    return (BASE / profile.get('runtime', 'runtime/sd-cli')).is_file() and all((BASE / 'models' / f).is_file() for f in profile['files'])
+    return (BASE / profile.get('runtime', 'runtime/sd-cli')).is_file() and all((MODEL_BASE / f).is_file() for f in profile['files'])
 
 
 def operate(data=None):

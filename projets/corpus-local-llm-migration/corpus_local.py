@@ -15,15 +15,26 @@ import urllib.request
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 from runtime_limits import CONTEXT_TOKENS, OUTPUT_TOKENS
-from corpus_paths import LOCAL_RUNTIME_ROOT, RUNTIME_ROOT, STATE_ROOT, contract_environment
+from corpus_paths import LLM_MODELS_ROOT, LOCAL_RUNTIME_ROOT, MODELS_ROOT, RUNTIME_ROOT, STATE_ROOT, contract_environment
 BASE = LOCAL_RUNTIME_ROOT
 LOG_ROOT = STATE_ROOT / 'logs/corpus-local'
-VISION = BASE / 'downloads/mmproj-Qwen3.6-F16.gguf'
+QWEN36_ROOT = LLM_MODELS_ROOT / 'qwen3.6'
+VISION = QWEN36_ROOT / 'mmproj-Qwen3.6-F16.gguf'
 LLAMA = BASE / 'versions/llama-b10964/llama-b10964/llama-server'
 LLAMA_CUDA = BASE / 'build/llama-cuda/bin/llama-server'
 OPENCODE = BASE / 'versions/opencode-v1.18.32/opencode'
 MODEL = BASE / 'downloads/Qwen3.8-27B-UD-Q5_K_M.gguf'
 PORT = 18741
+
+
+def receipt_path(path):
+    # Receipts are logical identities, not an assertion that every artifact lives under runtime.
+    for root in (MODELS_ROOT, BASE):
+        try:
+            return str(path.relative_to(root))
+        except ValueError:
+            pass
+    return str(path)
 
 
 def primary_context():
@@ -133,6 +144,10 @@ def enter_sandbox(args, mode):
     runtime_target = RUNTIME_ROOT.resolve(strict=True)
     pos = cmd.index('--bind')
     cmd[pos:pos] = ['--bind', str(runtime_target), str(runtime_target)]
+    # /home is synthetic in the sandbox; expose canonical HOT models explicitly.
+    if MODELS_ROOT.exists():
+        pos = cmd.index('--chdir')
+        cmd[pos:pos] = ['--ro-bind', str(MODELS_ROOT), str(MODELS_ROOT)]
     # Registered roots are exposed explicitly; unrelated home data stay hidden.
     pos = cmd.index('--chdir')
     cmd[pos:pos] = project_mounts()
@@ -367,7 +382,7 @@ def main():
         LOG_ROOT.mkdir(parents=True, exist_ok=True)
         web(env)
         return
-    model = BASE / 'downloads/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf' if args.moe else MODEL
+    model = QWEN36_ROOT / 'Qwen3.6-35B-A3B-UD-Q4_K_M.gguf' if args.moe else MODEL
     if not model.exists():
         raise SystemExit('Téléchargement du modèle inachevé. Relancer install_local.py.')
     lock = (BASE / 'runtime.lock').open('w')
@@ -414,8 +429,8 @@ def main():
                     'max_tokens': 96, 'temperature': 0,
                     'chat_template_kwargs': {'enable_thinking': False}}, timeout=600)
                 receipt = {'elapsed_seconds': round(time.monotonic()-started, 2),
-                           'model_file': str(model.relative_to(BASE)),
-                           'runtime': str(executable.relative_to(BASE)),
+                           'model_file': receipt_path(model),
+                           'runtime': receipt_path(executable),
                            'network_routes': Path('/proc/net/route').read_text(),
                            'response': result}
                 name = 'smoke' + ('-moe' if args.moe else '') + ('-intel' if args.intel else '') + ('-rebuilt' if args.rebuilt else '') + '.json'

@@ -6,10 +6,11 @@ from pathlib import Path
 import subprocess
 import tempfile
 import threading
-from corpus_paths import LOCAL_RUNTIME_ROOT
+from corpus_paths import LOCAL_RUNTIME_ROOT, SPEECH_MODELS_ROOT, contract_environment
 
 HERE = Path(__file__).resolve().parent
 BASE = LOCAL_RUNTIME_ROOT
+WHISPER = SPEECH_MODELS_ROOT / 'whisper-small'
 LOCK = threading.Lock()
 MAX_AUDIO = 5 * 1024 * 1024
 
@@ -26,6 +27,8 @@ def transcribe(data):
             path = Path(tmp) / 'audio';path.write_bytes(audio)
             env = {'PATH':'/usr/bin:/bin','HOME':tmp,'HF_HUB_OFFLINE':'1','TRANSFORMERS_OFFLINE':'1',
                    'XDG_CACHE_HOME':tmp,'OMP_NUM_THREADS':'4'}
+            # HOME is intentionally synthetic inside this worker. Preserve the host Corpus path contract.
+            env.update(contract_environment())
             command = ['bwrap','--unshare-net','--unshare-pid','--die-with-parent',
                        '--ro-bind','/','/','--tmpfs','/tmp','--tmpfs','/run','--proc','/proc','--dev','/dev',
                        '--ro-bind',tmp,tmp,str(BASE/'voice-env/bin/python'),str(HERE/'voice_worker.py'),str(path)]
@@ -52,7 +55,7 @@ def response(method, body):
     code = '200 OK'
     try:
         if method == 'GET':
-            result = {'installed':(BASE/'voice-env/bin/python').exists() and (BASE/'voice-model-small/model.bin').exists(),
+            result = {'installed':(BASE/'voice-env/bin/python').exists() and (WHISPER/'model.bin').exists(),
                       'voices':['fr','en'],'model':'Whisper small · CPU int8','local_only':True,'max_seconds':60}
         elif method == 'POST':
             data=json.loads(body)

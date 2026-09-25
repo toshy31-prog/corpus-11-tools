@@ -49,6 +49,10 @@ def resolve_contract(environ=None, *, home=None, repo_root=None):
         "host_home": host_home,
         "runtime": runtime,
         "models": models,
+        "llm_models": models / "llm",
+        "media_models": models / "media",
+        "speech_models": models / "speech",
+        "docling_models": models / "docling",
         "toolchains": toolchains,
         "data": data,
         "state": state,
@@ -69,6 +73,10 @@ _PATHS = resolve_contract()
 HOST_HOME = _PATHS["host_home"]
 RUNTIME_ROOT = _PATHS["runtime"]
 MODELS_ROOT = _PATHS["models"]
+LLM_MODELS_ROOT = _PATHS["llm_models"]
+MEDIA_MODELS_ROOT = _PATHS["media_models"]
+SPEECH_MODELS_ROOT = _PATHS["speech_models"]
+DOCLING_MODELS_ROOT = _PATHS["docling_models"]
 TOOLCHAINS_ROOT = _PATHS["toolchains"]
 DATA_ROOT = _PATHS["data"]
 STATE_ROOT = _PATHS["state"]
