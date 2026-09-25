@@ -66,6 +66,14 @@ Le helper `autonomy_integrate.py` ne stocke plus batches, receipts, logs et lock
 
 Les batches legacy devenus inapplicables par dérive de target sont conservés sous `maintenance/autonomy/history/blocked-prepared`; ils ne polluent plus le store actif. Les anciennes traces runtime d'audit/expérience sont rangées sous `maintenance/runtime-history`.
 
+## Migration physique — Wave 1C
+
+Les journaux opérationnels `corpus-local` vivent sous `CORPUS_STATE_ROOT/logs/corpus-local`. Les réglages Environnements et Worktrees vivent sous `CORPUS_CONFIG_ROOT/corpus-local`, tandis que les worktrees physiques restent sous le runtime HOT.
+
+Les anciens registres capabilities, logs d'installation et diagnostics média sans consommateur opérationnel sont conservés comme provenance sous `CORPUS_STATE_ROOT/maintenance/runtime-history`.
+
+Les backups historiques et releases sont COLD sous `CORPUS_VAULT_ROOT`; les deux restore trees modifiés sont archivés vers le Vault mais leur arbre ext4 original est conservé temporairement sous `maintenance/recovery-review/restores-pending-cold-finalization` jusqu'à une validation de restauration depuis le support COLD.
+
 ## Correction sémantique
 
 L'ancien setup employait `CORPUS_STATE_ROOT` comme nom du runtime. Ce sens est

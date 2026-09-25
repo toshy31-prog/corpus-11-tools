@@ -1,10 +1,11 @@
 """Demandes du modèle -> approbation humaine -> navigateur séparé."""
 import json,os,socketserver,subprocess,threading,uuid,time,re
 from pathlib import Path
-from corpus_paths import CONFIG_ROOT, LOCAL_RUNTIME_ROOT
+from corpus_paths import CONFIG_ROOT, LOCAL_RUNTIME_ROOT, STATE_ROOT
 HERE=Path(__file__).resolve().parent
 BASE=LOCAL_RUNTIME_ROOT
 SETTINGS=CONFIG_ROOT/'corpus-local/browser-settings.json'
+LOG_ROOT=STATE_ROOT/'logs/corpus-local'
 LOCK=threading.RLock();WORKER_LOCK=threading.Lock();REQUESTS={};WORKER=None
 ACTIONS={'tab-new','tab-select','tab-close','forward','launch','navigate','snapshot','screenshot','click','fill','back','reload','clear','close','download','ssh','git','hook'}
 
@@ -73,7 +74,8 @@ def execute(data):
         return {'title':'SSH · '+host,'text':result.stdout[-18000:]}
     with WORKER_LOCK:
         if WORKER is None or WORKER.poll() is not None:
-            WORKER=subprocess.Popen([str(BASE/'build-env/bin/python'),str(HERE/'browser_worker.py')],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=(BASE/'logs/browser.log').open('a'),text=True)
+            LOG_ROOT.mkdir(parents=True,exist_ok=True)
+            WORKER=subprocess.Popen([str(BASE/'build-env/bin/python'),str(HERE/'browser_worker.py')],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=(LOG_ROOT/'browser.log').open('a'),text=True)
         WORKER.stdin.write(json.dumps(data)+'\n');WORKER.stdin.flush()
         import selectors
         with selectors.DefaultSelector() as selector:

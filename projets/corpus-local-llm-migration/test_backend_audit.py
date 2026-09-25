@@ -50,7 +50,7 @@ class ImportTests(unittest.TestCase):
 class StateTests(unittest.TestCase):
     def test_permanent_worktree_is_registered_as_named_project(self):
         with tempfile.TemporaryDirectory() as tmp:
-            root=Path(tmp)/'root';root.mkdir();base=root/'.dev-local/corpus-local'
+            root=Path(tmp)/'root';root.mkdir();base=root/'.dev-local/corpus-local';settings=root/'config'
             created=[]
             def git(*args,**kwargs):
                 if args[:2]==('worktree','add'):
@@ -58,7 +58,7 @@ class StateTests(unittest.TestCase):
                 if args[:2]==('worktree','list'):
                     return '\n\n'.join('worktree '+str(path)+'\nHEAD example\nbranch refs/heads/main' for path in [root,*created])+'\n'
                 raise AssertionError(args)
-            with patch.object(worktree_manager,'ROOT',root), patch.object(worktree_manager,'BASE',base), patch.object(environment_manager,'ROOT',root), patch.object(environment_manager,'BASE',base), patch.object(worktree_manager,'git',side_effect=git), patch('hooks_manager.created'), patch('git_settings.settings',return_value={'prefix':'test/'}):
+            with patch.object(worktree_manager,'ROOT',root), patch.object(worktree_manager,'BASE',base), patch.object(worktree_manager,'SETTINGS',settings/'worktrees.json'), patch.object(environment_manager,'ROOT',root), patch.object(environment_manager,'BASE',base), patch.object(environment_manager,'SETTINGS',settings/'environments.json'), patch.object(worktree_manager,'git',side_effect=git), patch('hooks_manager.created'), patch('git_settings.settings',return_value={'prefix':'test/'}):
                 result=worktree_manager.operate({'action':'create','permanent':True,'name':' Copie permanente '})
                 state=environment_manager.read();path=result['created']
                 self.assertIn(path,state['projects'])
@@ -69,7 +69,7 @@ class StateTests(unittest.TestCase):
                 with self.assertRaises(ValueError):environment_manager.project_path(str(private))
 
     def test_invalid_permanent_name_does_not_create_a_worktree(self):
-        with tempfile.TemporaryDirectory() as tmp, patch.object(worktree_manager,'BASE',Path(tmp)), patch.object(worktree_manager,'git') as git:
+        with tempfile.TemporaryDirectory() as tmp, patch.object(worktree_manager,'BASE',Path(tmp)), patch.object(worktree_manager,'SETTINGS',Path(tmp)/'settings.json'), patch.object(worktree_manager,'git') as git:
             for name in ('',None,'x'*81):
                 with self.assertRaises(ValueError):worktree_manager.operate({'action':'create','permanent':True,'name':name})
             git.assert_not_called()

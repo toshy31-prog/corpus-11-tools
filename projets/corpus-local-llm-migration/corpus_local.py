@@ -15,8 +15,9 @@ import urllib.request
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 from runtime_limits import CONTEXT_TOKENS, OUTPUT_TOKENS
-from corpus_paths import LOCAL_RUNTIME_ROOT, RUNTIME_ROOT, contract_environment
+from corpus_paths import LOCAL_RUNTIME_ROOT, RUNTIME_ROOT, STATE_ROOT, contract_environment
 BASE = LOCAL_RUNTIME_ROOT
+LOG_ROOT = STATE_ROOT / 'logs/corpus-local'
 VISION = BASE / 'downloads/mmproj-Qwen3.6-F16.gguf'
 LLAMA = BASE / 'versions/llama-b10964/llama-b10964/llama-server'
 LLAMA_CUDA = BASE / 'build/llama-cuda/bin/llama-server'
@@ -227,7 +228,8 @@ def web(env, engine=None):
     from local_bridge import create_server, BACKEND_PORT as web_port
     from backend_startup import BackendStartup
     from kv_warmup import KvWarmup
-    with (BASE / 'logs/opencode-web.log').open('a') as log:
+    LOG_ROOT.mkdir(parents=True, exist_ok=True)
+    with (LOG_ROOT / 'opencode-web.log').open('a') as log:
         child = subprocess.Popen([str(OPENCODE), 'serve', '--hostname', '127.0.0.1',
                                   '--port', str(web_port)], env=env, stdout=log, stderr=log)
         bridge = None
@@ -362,7 +364,7 @@ def main():
     if args.mode == 'config':
         raise SystemExit(subprocess.call([str(OPENCODE), 'models', 'corpus-local'], env=env))
     if args.mode == 'web-check':
-        (BASE / 'logs').mkdir(exist_ok=True)
+        LOG_ROOT.mkdir(parents=True, exist_ok=True)
         web(env)
         return
     model = BASE / 'downloads/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf' if args.moe else MODEL
@@ -373,8 +375,8 @@ def main():
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
     except BlockingIOError:
         raise SystemExit('Corpus local fonctionne déjà : fermer sa session avant de le relancer.')
-    logs = BASE / 'logs'
-    logs.mkdir(exist_ok=True)
+    logs = LOG_ROOT
+    logs.mkdir(parents=True, exist_ok=True)
     with (logs / 'llama-server.log').open('a') as log:
         executable = BASE / 'versions/llama-b10964-vulkan/llama-b10964/llama-server' if args.intel else LLAMA
         if args.rebuilt:

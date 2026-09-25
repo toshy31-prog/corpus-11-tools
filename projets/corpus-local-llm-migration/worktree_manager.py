@@ -4,10 +4,11 @@ import subprocess
 import threading
 import uuid
 from pathlib import Path
-from corpus_paths import LOCAL_RUNTIME_ROOT
+from corpus_paths import CONFIG_ROOT, LOCAL_RUNTIME_ROOT
 
 ROOT = Path(__file__).resolve().parents[2]
 BASE = LOCAL_RUNTIME_ROOT
+SETTINGS = CONFIG_ROOT / 'corpus-local/worktrees.json'
 LOCK = threading.RLock()
 
 def git(*args, repository=None):
@@ -16,12 +17,11 @@ def git(*args, repository=None):
     return p.stdout
 
 def state():
-    file = BASE / 'worktrees.json'
-    return json.loads(file.read_text()) if file.exists() else {'root':str(BASE / 'worktrees'),'auto':False,'limit':15,'managed':[]}
+    return json.loads(SETTINGS.read_text()) if SETTINGS.exists() else {'root':str(BASE / 'worktrees'),'auto':False,'limit':15,'managed':[]}
 
 def save(s):
-    BASE.mkdir(parents=True, exist_ok=True)
-    temp=BASE / 'worktrees.json.tmp';temp.write_text(json.dumps(s));temp.replace(BASE / 'worktrees.json')
+    SETTINGS.parent.mkdir(parents=True, exist_ok=True)
+    temp=SETTINGS.with_suffix('.tmp');temp.write_text(json.dumps(s));temp.replace(SETTINGS)
 
 def listing(s):
     result=[]

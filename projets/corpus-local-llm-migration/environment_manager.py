@@ -5,19 +5,19 @@ import tempfile
 import threading
 import uuid
 from pathlib import Path
-from corpus_paths import LOCAL_RUNTIME_ROOT
+from corpus_paths import CONFIG_ROOT, LOCAL_RUNTIME_ROOT
 
 ROOT = Path(__file__).resolve().parents[2]
 BASE = LOCAL_RUNTIME_ROOT
+SETTINGS = CONFIG_ROOT / 'corpus-local/environments.json'
 LOCK = threading.RLock()
 
 def read():
-    file=BASE/'environments.json'
-    return json.loads(file.read_text()) if file.exists() else {'projects':[str(ROOT)],'profiles':[]}
+    return json.loads(SETTINGS.read_text()) if SETTINGS.exists() else {'projects':[str(ROOT)],'profiles':[]}
 
 def save(value):
-    BASE.mkdir(parents=True,exist_ok=True)
-    p=BASE/'environments.json.tmp';p.write_text(json.dumps(value,ensure_ascii=False));p.replace(BASE/'environments.json')
+    SETTINGS.parent.mkdir(parents=True,exist_ok=True)
+    p=SETTINGS.with_suffix('.tmp');p.write_text(json.dumps(value,ensure_ascii=False));p.replace(SETTINGS)
 
 def project_path(value):
     if not isinstance(value,str) or not value.strip():raise ValueError('Indiquer le dossier du projet.')

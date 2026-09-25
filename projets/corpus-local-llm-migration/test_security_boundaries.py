@@ -57,7 +57,7 @@ class FileBoundaries(unittest.TestCase):
 
 class ActionBoundaries(unittest.TestCase):
     def test_readonly_project_cannot_create_worktree_without_profile(self):
-        with tempfile.TemporaryDirectory() as tmp,patch.object(worktree_manager,'BASE',Path(tmp)),patch.object(environment_manager,'read',return_value={'readonly':{str(worktree_manager.ROOT):True}}),patch.object(worktree_manager,'git') as git:
+        with tempfile.TemporaryDirectory() as tmp,patch.object(worktree_manager,'BASE',Path(tmp)),patch.object(worktree_manager,'SETTINGS',Path(tmp)/'settings.json'),patch.object(environment_manager,'read',return_value={'readonly':{str(worktree_manager.ROOT):True}}),patch.object(worktree_manager,'git') as git:
             with self.assertRaisesRegex(ValueError,'lecture seule'):
                 worktree_manager.operate({'action':'create','permanent':True,'name':'Copy'})
             git.assert_not_called()
