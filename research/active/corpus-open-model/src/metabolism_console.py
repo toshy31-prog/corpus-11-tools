@@ -67,8 +67,8 @@ class Handler(SimpleHTTPRequestHandler):
                 if state["process"] and state["process"].poll() is None: state["disposition"] = "stopped_keep_local_checkpoint" if payload.get("keep",True) else "stopped_not_promoted"; state["process"].send_signal(__import__("signal").SIGINT)
                 return self.json({"ok":True,"disposition":state["disposition"]})
             if self.path == "/api/chat":
-                response = cortex_ask(payload.get("question", ""), payload.get("model", ""))
-                if payload.get("remember", True): record_experience("dialogue", {"question": payload.get("question", ""), "model": payload.get("model", ""), "answer": response.get("answer", ""), "sources": response.get("sources", [])})
+                response = cortex_ask(payload.get("question", ""))
+                if payload.get("remember", True): record_experience("dialogue", {"question": payload.get("question", ""), "runtime": response.get("runtime", ""), "provider": response.get("provider", {}), "answer": response.get("answer", ""), "sources": response.get("sources", [])})
                 return self.json(response)
             if self.path == "/api/advance-kernel": return self.json(advance_kernel())
             if self.path == "/api/cognitive-cycle": return self.json(cognitive_cycle())

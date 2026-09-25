@@ -52,6 +52,12 @@ Le snapshot rend le reste du Corpus adressable tout en évitant d'absorber sans
 distinction les archives, résultats de recherche et fixtures comme des vérités
 d'entraînement.
 
+## Adaptateur linguistique actuel
+
+La console expérimentale utilise désormais le **fournisseur LLM local canonique de Corpus** via une API OpenAI-compatible sur loopback. Par défaut : `http://127.0.0.1:18741/v1`, modèle `corpus`.
+
+`CORPUS_LLM_BASE_URL` et `CORPUS_LLM_MODEL` permettent d'injecter un autre fournisseur local pour un test, mais l'adaptateur refuse les hôtes non-loopback : aucun endpoint distant et aucun repli silencieux ne sont acceptés. La console ne lance pas elle-même le moteur ; le fournisseur Corpus doit être démarré explicitement. Ce raccordement reste une interface linguistique remplaçable et ne transfère aucune autorité de décision au LLM.
+
 ## Premier test qui compte
 
 À instantané identique, le noyau doit :
