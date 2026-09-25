@@ -126,6 +126,13 @@ def enter_sandbox(args, mode):
            '--tmpfs', '/tmp', '--proc', '/proc', '--dev', '/dev',
            '--bind', str(ROOT), str(ROOT), '--chdir', str(ROOT),
            sys.executable, str(Path(__file__).resolve()), '--inside', *args]
+    # .dev-local is a per-machine compatibility mountpoint. Its heavy target
+    # lives outside Git; expose that target explicitly inside Bubblewrap.
+    runtime_link = ROOT / '.dev-local'
+    if runtime_link.is_symlink():
+        runtime_target = runtime_link.resolve(strict=True)
+        pos = cmd.index('--bind')
+        cmd[pos:pos] = ['--bind', str(runtime_target), str(runtime_target)]
     # Registered roots are exposed explicitly; unrelated home data stay hidden.
     pos = cmd.index('--chdir')
     cmd[pos:pos] = project_mounts()

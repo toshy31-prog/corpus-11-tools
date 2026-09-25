@@ -70,8 +70,10 @@ atelier et moteur candidats, sélection du modèle rouverte dans [DECISIONS.md](
 méthodes, accélération matérielle et sort des sources métier externes.
 
 L’installation et le démarrage de la migration sont maintenant explicitement
-autorisés. Les téléchargements et installations restent isolés dans
-`.dev-local/corpus-local`, avec versions et empreintes conservées. Les anciennes
+autorisés. Les téléchargements et installations restent physiquement isolés dans le runtime
+`~/.local/share/corpus/runtime` (ou `CORPUS_STATE_ROOT`). Le chemin `.dev-local`
+à la racine du dépôt est uniquement un lien de compatibilité ignoré par Git vers
+ce runtime externe ; versions et empreintes y restent conservées. Les anciennes
 applications et données restent disponibles pendant le transfert.
 
 ## Prochaine étape
