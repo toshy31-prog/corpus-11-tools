@@ -5,8 +5,9 @@ import sys
 from pathlib import Path
 from faster_whisper import WhisperModel
 import numpy as np
+from corpus_paths import LOCAL_RUNTIME_ROOT
 
-base = Path(__file__).resolve().parents[2] / '.dev-local/corpus-local'
+base = LOCAL_RUNTIME_ROOT
 # Décode au plus 60 secondes. ffmpeg s'exécute dans le même espace sans réseau.
 raw = subprocess.run(['/usr/bin/ffmpeg', '-v', 'error', '-nostdin', '-i', sys.argv[1],
                       '-t', '60', '-f', 'f32le', '-ac', '1', '-ar', '16000', 'pipe:1'],

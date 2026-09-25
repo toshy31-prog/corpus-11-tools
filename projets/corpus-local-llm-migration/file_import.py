@@ -2,7 +2,8 @@
 import base64, hashlib, io, json, re, subprocess, tempfile, threading, zipfile
 from pathlib import Path
 import xml.etree.ElementTree as ET
-BASE=Path(__file__).resolve().parents[2]/'.dev-local/corpus-attachments'
+from corpus_paths import RUNTIME_ROOT
+BASE=RUNTIME_ROOT/'corpus-attachments'
 MAX=60*1024*1024
 LOCK=threading.RLock()
 

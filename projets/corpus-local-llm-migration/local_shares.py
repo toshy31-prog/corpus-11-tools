@@ -4,7 +4,8 @@ import json
 import secrets
 import re
 from pathlib import Path
-BASE=Path(__file__).resolve().parents[2]/'.dev-local/corpus-local/shares'
+from corpus_paths import LOCAL_RUNTIME_ROOT
+BASE=LOCAL_RUNTIME_ROOT/'shares'
 
 def operate(data):
     if not isinstance(data,dict): raise ValueError('Objet attendu.')

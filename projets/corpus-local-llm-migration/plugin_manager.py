@@ -4,8 +4,9 @@ import hashlib
 import json
 import threading
 from pathlib import Path
+from corpus_paths import LOCAL_RUNTIME_ROOT
 
-BASE = Path(__file__).resolve().parents[2] / '.dev-local/corpus-local'
+BASE = LOCAL_RUNTIME_ROOT
 CACHE = Path('/home/olivier/.codex/plugins/cache')
 LOCK = threading.RLock()
 

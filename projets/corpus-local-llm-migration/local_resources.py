@@ -5,8 +5,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 import local_statistics
 from runtime_limits import CONTEXT_TOKENS, OUTPUT_TOKENS
+from corpus_paths import LOCAL_RUNTIME_ROOT
 
-BASE = Path(__file__).resolve().parents[2] / '.dev-local/corpus-local'
+BASE = LOCAL_RUNTIME_ROOT
 
 def memory(path=Path('/proc/meminfo')):
     values = {}

@@ -3,9 +3,10 @@
 import os
 from pathlib import Path
 import subprocess
+from corpus_paths import LOCAL_RUNTIME_ROOT
 
 ROOT = Path(__file__).resolve().parents[2]
-BASE = ROOT / '.dev-local/corpus-local'
+BASE = LOCAL_RUNTIME_ROOT
 SOURCE = BASE / 'sources/llama.cpp-b10964'
 BUILD = BASE / 'build/llama-cpu'
 CMAKE = BASE / 'build-env/bin/cmake'

@@ -3,7 +3,8 @@ import json
 import subprocess
 import threading
 from pathlib import Path
-BASE = Path(__file__).resolve().parents[2] / '.dev-local/corpus-local'
+from corpus_paths import LOCAL_RUNTIME_ROOT
+BASE = LOCAL_RUNTIME_ROOT
 LOCK = threading.RLock()
 def settings(data=None):
     with LOCK:

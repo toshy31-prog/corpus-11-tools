@@ -6,9 +6,10 @@ from pathlib import Path
 import subprocess
 import tempfile
 import threading
+from corpus_paths import LOCAL_RUNTIME_ROOT
 
 HERE = Path(__file__).resolve().parent
-BASE = HERE.parents[1] / '.dev-local/corpus-local'
+BASE = LOCAL_RUNTIME_ROOT
 LOCK = threading.Lock()
 MAX_AUDIO = 5 * 1024 * 1024
 

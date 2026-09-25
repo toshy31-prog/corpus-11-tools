@@ -8,19 +8,19 @@ shell_rc="${HOME}/.bashrc"
 local_bin="${HOME}/.local/bin"
 
 # Corpus runtime lives outside the Git checkout. `.dev-local` is only a
-# compatibility mountpoint so existing tooling keeps stable paths.
-corpus_state_root="${CORPUS_STATE_ROOT:-${XDG_DATA_HOME:-${HOME}/.local/share}/corpus/runtime}"
+# compatibility mountpoint; corpus_paths.py owns the canonical default.
+corpus_runtime_root="$(python3 "${workspace_dir}/projets/corpus-local-llm-migration/corpus_paths.py" runtime-root)"
 runtime_link="${workspace_dir}/.dev-local"
-mkdir -p "${corpus_state_root}"
+mkdir -p "${corpus_runtime_root}"
 if [[ -L "${runtime_link}" ]]; then
   current_target="$(readlink -f -- "${runtime_link}")"
-  expected_target="$(readlink -f -- "${corpus_state_root}")"
+  expected_target="$(readlink -f -- "${corpus_runtime_root}")"
   [[ "${current_target}" == "${expected_target}" ]] || { echo "Unexpected Corpus runtime link: ${current_target}" >&2; exit 1; }
 elif [[ -e "${runtime_link}" ]]; then
   echo "Existing ${runtime_link} is not a symlink; refusing to replace it." >&2
   exit 1
 else
-  ln -s "${corpus_state_root}" "${runtime_link}"
+  ln -s "${corpus_runtime_root}" "${runtime_link}"
 fi
 
 if [[ "${EUID}" -eq 0 ]]; then

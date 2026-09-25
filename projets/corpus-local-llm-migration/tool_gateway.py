@@ -1,8 +1,9 @@
 """Demandes du modèle -> approbation humaine -> navigateur séparé."""
 import json,os,socketserver,subprocess,threading,uuid,time,re
 from pathlib import Path
+from corpus_paths import LOCAL_RUNTIME_ROOT
 HERE=Path(__file__).resolve().parent
-BASE=HERE.parents[1]/'.dev-local/corpus-local'
+BASE=LOCAL_RUNTIME_ROOT
 LOCK=threading.RLock();WORKER_LOCK=threading.Lock();REQUESTS={};WORKER=None
 ACTIONS={'tab-new','tab-select','tab-close','forward','launch','navigate','snapshot','screenshot','click','fill','back','reload','clear','close','download','ssh','git','hook'}
 

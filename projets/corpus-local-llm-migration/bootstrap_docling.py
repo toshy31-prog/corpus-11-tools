@@ -5,11 +5,12 @@ import argparse
 import subprocess
 import sys
 from pathlib import Path
+from corpus_paths import CAPABILITIES_RUNTIME_ROOT
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 
-CAP = ROOT / ".dev-local/corpus-capabilities"
+CAP = CAPABILITIES_RUNTIME_ROOT
 VENV = CAP / "venvs/docling"
 PYTHON = VENV / "bin/python"
 ARTIFACTS = CAP / "docling-artifacts"

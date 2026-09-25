@@ -2,6 +2,7 @@
 from __future__ import annotations
 import json, os, sys
 from pathlib import Path
+from corpus_paths import CAPABILITIES_RUNTIME_ROOT
 ROOT=Path(os.environ.get("CORPUS_ROOT", Path.cwd())).resolve()
 
 def main():
@@ -18,7 +19,7 @@ def main():
     from docling.document_converter import PdfFormatOption
 
     options = PdfPipelineOptions()
-    options.artifacts_path = ROOT / '.dev-local/corpus-capabilities/docling-artifacts'
+    options.artifacts_path = CAPABILITIES_RUNTIME_ROOT / 'docling-artifacts'
 
     converter = DocumentConverter(
         format_options={

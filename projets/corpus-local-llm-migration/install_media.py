@@ -1,6 +1,7 @@
 import urllib.request,json,hashlib,concurrent.futures,time
 from pathlib import Path
-BASE=Path(__file__).resolve().parents[2]/'.dev-local/corpus-media/models';BASE.mkdir(parents=True,exist_ok=True)
+from corpus_paths import MEDIA_RUNTIME_ROOT
+BASE=MEDIA_RUNTIME_ROOT/'models';BASE.mkdir(parents=True,exist_ok=True)
 files=[(v['repository'],v['revision'],v['source_file'],v['file']) for v in json.loads(Path(__file__).with_name('MEDIA_MODELS_LOCK.json').read_text())]
 def download(item):
  repo,rev,name,local=item;dest=BASE/local

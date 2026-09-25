@@ -7,10 +7,11 @@ import subprocess
 import urllib.request
 import urllib.parse
 from pathlib import Path
+from corpus_paths import LOCAL_RUNTIME_ROOT, MEDIA_RUNTIME_ROOT, RUNTIME_ROOT, UPDATES_RUNTIME_ROOT
 
 PROJECT = Path(__file__).resolve().parent
 ROOT = PROJECT.parents[1]
-STATE = ROOT / '.dev-local/corpus-updates/state.json'
+STATE = UPDATES_RUNTIME_ROOT / 'state.json'
 LOCK = threading.RLock()
 STARTED = False
 BUSY = False
@@ -59,9 +60,9 @@ def inventory():
     rows = []
     for name in ('MEDIA_MODELS_LOCK.json', 'AUDIO_MODELS_LOCK.json'):
         for item in json.loads((PROJECT / name).read_text()):
-            path = ROOT / '.dev-local/corpus-media/models' / item['file']
+            path = MEDIA_RUNTIME_ROOT / 'models' / item['file']
             rows.append(model_row(item, path, 'audio' if name.startswith('AUDIO') else 'media'))
-    base = ROOT / '.dev-local/corpus-local'
+    base = LOCAL_RUNTIME_ROOT
     manifest = local_json(base / 'installation.json', {})
     artifacts = manifest.get('artifacts', {}) if isinstance(manifest, dict) else {}
     if not isinstance(artifacts, dict): artifacts = {}
@@ -108,7 +109,7 @@ def installed_packages():
     return rows
 
 def component_inventory():
-    base = ROOT / '.dev-local'
+    base = RUNTIME_ROOT
     rows = installed_packages()
     paths = [
         ('llama.cpp (CPU)', 'corpus-local/versions/llama-b10964/llama-b10964/llama-server'),

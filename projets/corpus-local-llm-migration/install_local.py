@@ -6,9 +6,10 @@ import shutil
 import subprocess
 import tarfile
 from pathlib import Path
+from corpus_paths import LOCAL_RUNTIME_ROOT
 
 ROOT = Path(__file__).resolve().parents[2]
-DEST = ROOT / '.dev-local/corpus-local'
+DEST = LOCAL_RUNTIME_ROOT
 ARTIFACTS = [
     ('llama-b10964.tar.gz', 'https://github.com/ggml-org/llama.cpp/releases/download/b10964/llama-b10964-bin-ubuntu-x64.tar.gz', '9abf88aea48a55d0f80edb1ee20220b186848cca0b4e919d71518cfd7ca67443', 'llama-b10964'),
     ('opencode-v1.18.32.tar.gz', 'https://github.com/anomalyco/opencode/releases/download/v1.18.32/opencode-linux-x64.tar.gz', '3046e0404fdc60fb80307e7a47824ba07477364178a4d09baa8548496dd6d43b', 'opencode-v1.18.32'),

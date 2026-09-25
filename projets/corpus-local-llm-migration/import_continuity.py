@@ -9,9 +9,10 @@ import sqlite3
 import tempfile
 import subprocess
 from datetime import datetime, timezone
+from corpus_paths import LOCAL_RUNTIME_ROOT
 
 ROOT = Path(__file__).resolve().parents[2]
-DEST = ROOT / '.dev-local/corpus-local/continuity/library'
+DEST = LOCAL_RUNTIME_ROOT / 'continuity/library'
 CODEX = Path('/home/olivier/.codex')
 
 

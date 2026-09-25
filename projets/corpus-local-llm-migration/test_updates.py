@@ -30,6 +30,10 @@ class LocalInventory(unittest.TestCase):
         for name in ('MEDIA_MODELS_LOCK.json', 'AUDIO_MODELS_LOCK.json'):
             (self.project / name).write_text('[]')
         for key, value in {'ROOT': self.root, 'PROJECT': self.project, 'STATE': self.root / 'state.json',
+                           'RUNTIME_ROOT': self.root / '.dev-local',
+                           'LOCAL_RUNTIME_ROOT': self.root / '.dev-local/corpus-local',
+                           'MEDIA_RUNTIME_ROOT': self.root / '.dev-local/corpus-media',
+                           'UPDATES_RUNTIME_ROOT': self.root / '.dev-local/corpus-updates',
                            'SYSTEM_STATUS': self.root / 'dpkg-status', 'NVIDIA_VERSION': self.root / 'nvidia-version',
                            'SYSTEM_BIN': self.root / 'bin'}.items():
             self.stack.enter_context(patch.object(u, key, value))

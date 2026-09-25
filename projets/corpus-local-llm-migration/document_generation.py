@@ -2,9 +2,10 @@
 import csv, io, json, re, subprocess, threading, time, uuid
 from pathlib import Path
 from xml.sax.saxutils import escape
-BASE=Path(__file__).resolve().parents[2]/'.dev-local/corpus-documents'
+from corpus_paths import OFFICE_RUNTIME_ROOT, RUNTIME_ROOT
+BASE=RUNTIME_ROOT/'corpus-documents'
 FORMATS=['txt','md','html','odt','docx','rtf','pdf','epub','pptx','odp','csv','tsv','ods','xlsx']
-OFFICE=BASE.parent/'corpus-office/root'
+OFFICE=OFFICE_RUNTIME_ROOT/'root'
 GATE=threading.Semaphore(1)
 LOCK=threading.RLock()
 def folder(i):

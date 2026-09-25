@@ -14,8 +14,9 @@ import threading
 import time
 import uuid
 import audio_generation
+from corpus_paths import MEDIA_RUNTIME_ROOT
 
-BASE = Path(__file__).resolve().parents[2] / '.dev-local/corpus-media'
+BASE = MEDIA_RUNTIME_ROOT
 LOCK = threading.RLock()
 STARTED = False
 PROCESS = None

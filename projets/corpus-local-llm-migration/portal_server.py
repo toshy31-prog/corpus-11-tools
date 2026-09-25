@@ -7,8 +7,10 @@ import re
 import sqlite3
 from urllib.parse import urlsplit, unquote, parse_qs
 
+from corpus_paths import LOCAL_RUNTIME_ROOT
+
 HERE = Path(__file__).resolve().parent
-DATA = HERE.parents[1] / '.dev-local/corpus-local/continuity/library'
+DATA = LOCAL_RUNTIME_ROOT / 'continuity/library'
 
 
 def engine_page(target):

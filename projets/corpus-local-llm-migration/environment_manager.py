@@ -5,9 +5,10 @@ import tempfile
 import threading
 import uuid
 from pathlib import Path
+from corpus_paths import LOCAL_RUNTIME_ROOT
 
 ROOT = Path(__file__).resolve().parents[2]
-BASE = ROOT / '.dev-local/corpus-local'
+BASE = LOCAL_RUNTIME_ROOT
 LOCK = threading.RLock()
 
 def read():

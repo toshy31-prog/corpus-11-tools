@@ -6,7 +6,8 @@ import sys
 import uuid
 from pathlib import Path
 from urllib.parse import urlsplit
-BASE = Path(__file__).resolve().parents[2] / '.dev-local/corpus-local'
+from corpus_paths import LOCAL_RUNTIME_ROOT
+BASE = LOCAL_RUNTIME_ROOT
 os.environ['PLAYWRIGHT_BROWSERS_PATH'] = str(BASE/'browsers')
 
 

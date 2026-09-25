@@ -4,7 +4,8 @@ import sqlite3
 from datetime import datetime,timedelta
 from zoneinfo import ZoneInfo
 from pathlib import Path
-DB=Path(__file__).resolve().parents[2]/'.dev-local/corpus-local/data/opencode/opencode.db'
+from corpus_paths import LOCAL_RUNTIME_ROOT
+DB=LOCAL_RUNTIME_ROOT/'data/opencode/opencode.db'
 TZ=ZoneInfo('Europe/Paris')
 
 def aggregate(days=7,db=DB,now=None):

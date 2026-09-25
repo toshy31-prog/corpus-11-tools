@@ -15,7 +15,8 @@ import urllib.request
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 from runtime_limits import CONTEXT_TOKENS, OUTPUT_TOKENS
-BASE = ROOT / '.dev-local/corpus-local'
+from corpus_paths import LOCAL_RUNTIME_ROOT, RUNTIME_ROOT, contract_environment
+BASE = LOCAL_RUNTIME_ROOT
 VISION = BASE / 'downloads/mmproj-Qwen3.6-F16.gguf'
 LLAMA = BASE / 'versions/llama-b10964/llama-b10964/llama-server'
 LLAMA_CUDA = BASE / 'build/llama-cuda/bin/llama-server'
@@ -39,6 +40,7 @@ def environment(intel=False, moe=False):
     # Liste positive : aucune clé, proxy ou configuration de fournisseur héritée.
     env = {'PATH': '/usr/local/bin:/usr/bin:/bin', 'LANG': 'C.UTF-8',
            'TERM': os.environ.get('TERM', 'xterm-256color')}
+    env.update(contract_environment())
     for key, folder in [('HOME', 'home'), ('XDG_CONFIG_HOME', 'config'),
                         ('XDG_DATA_HOME', 'data'), ('XDG_CACHE_HOME', 'cache'),
                         ('XDG_STATE_HOME', 'state')]:
@@ -126,13 +128,10 @@ def enter_sandbox(args, mode):
            '--tmpfs', '/tmp', '--proc', '/proc', '--dev', '/dev',
            '--bind', str(ROOT), str(ROOT), '--chdir', str(ROOT),
            sys.executable, str(Path(__file__).resolve()), '--inside', *args]
-    # .dev-local is a per-machine compatibility mountpoint. Its heavy target
-    # lives outside Git; expose that target explicitly inside Bubblewrap.
-    runtime_link = ROOT / '.dev-local'
-    if runtime_link.is_symlink():
-        runtime_target = runtime_link.resolve(strict=True)
-        pos = cmd.index('--bind')
-        cmd[pos:pos] = ['--bind', str(runtime_target), str(runtime_target)]
+    # Bind the canonical runtime explicitly. `.dev-local` is compatibility only.
+    runtime_target = RUNTIME_ROOT.resolve(strict=True)
+    pos = cmd.index('--bind')
+    cmd[pos:pos] = ['--bind', str(runtime_target), str(runtime_target)]
     # Registered roots are exposed explicitly; unrelated home data stay hidden.
     pos = cmd.index('--chdir')
     cmd[pos:pos] = project_mounts()

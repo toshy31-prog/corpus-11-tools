@@ -1,9 +1,10 @@
 """MCP stdio : le modèle demande des actions, seul le portail les approuve."""
 import json,socket,sys,subprocess
 from pathlib import Path
+from corpus_paths import CAPABILITIES_RUNTIME_ROOT, LOCAL_RUNTIME_ROOT
 ROOT=Path(__file__).resolve().parents[2]
-SOCKET=ROOT/'.dev-local/corpus-local/tools.sock'
-CAP=ROOT/'.dev-local/corpus-capabilities'
+SOCKET=LOCAL_RUNTIME_ROOT/'tools.sock'
+CAP=CAPABILITIES_RUNTIME_ROOT
 DOCLING_PYTHON=CAP/'venvs/docling/bin/python'
 DOCLING_HELPER=Path(__file__).resolve().parent/'docling_extract.py'
 TOOLS=[{'name':'browser_request','description':'Demander une action du navigateur Corpus. La session Chromium est partagée avec le panneau Navigateur à droite de Corpus : Utiliser snapshot pour observer la page et ses sélecteurs interactifs avant click/fill, ou screenshot pour la voir. Chaque demande doit être approuvée dans ce panneau ou Paramètres > Navigateur. Ne pas répéter une demande en attente.','inputSchema':{'type':'object','properties':{'action':{'type':'string','enum':['tab-new','tab-select','tab-close','forward','launch','navigate','snapshot','screenshot','click','fill','back','reload','clear','close','download']},'tab':{'type':'string','description':'Identifiant retourné dans tabs pour sélectionner ou fermer un onglet.'},'visible':{'type':'boolean','description':'Ouvrir une fenêtre Chromium dédiée (launch uniquement ; ne pas remplacer une session existante).'},'url':{'type':'string'},'selector':{'type':'string'},'text':{'type':'string'}},'required':['action'],'additionalProperties':False}}, {'name':'browser_result','description':'Consulter le résultat d’une demande après validation humaine.','inputSchema':{'type':'object','properties':{'id':{'type':'string'}},'required':['id'],'additionalProperties':False}}]
