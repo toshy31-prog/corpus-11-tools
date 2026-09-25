@@ -54,6 +54,7 @@ def resolve_contract(environ=None, *, home=None, repo_root=None):
         "speech_models": models / "speech",
         "docling_models": models / "docling",
         "toolchains": toolchains,
+        "toolchain_sources": toolchains / "sources",
         "data": data,
         "state": state,
         "cache": cache,
@@ -65,6 +66,9 @@ def resolve_contract(environ=None, *, home=None, repo_root=None):
         "office_runtime": runtime / "corpus-office",
         "updates_runtime": runtime / "corpus-updates",
         "build_cache": cache / "build",
+        "local_build_cache": cache / "build/corpus-local",
+        "download_cache": cache / "downloads",
+        "uv_cache": cache / "uv",
         "huggingface_cache": cache / "huggingface",
         "huggingface_hub_cache": cache / "huggingface/hub",
         "maintenance_state": state / "maintenance",
@@ -80,6 +84,7 @@ MEDIA_MODELS_ROOT = _PATHS["media_models"]
 SPEECH_MODELS_ROOT = _PATHS["speech_models"]
 DOCLING_MODELS_ROOT = _PATHS["docling_models"]
 TOOLCHAINS_ROOT = _PATHS["toolchains"]
+TOOLCHAIN_SOURCES_ROOT = _PATHS["toolchain_sources"]
 DATA_ROOT = _PATHS["data"]
 STATE_ROOT = _PATHS["state"]
 CACHE_ROOT = _PATHS["cache"]
@@ -92,6 +97,9 @@ MEDIA_RUNTIME_ROOT = _PATHS["media_runtime"]
 OFFICE_RUNTIME_ROOT = _PATHS["office_runtime"]
 UPDATES_RUNTIME_ROOT = _PATHS["updates_runtime"]
 BUILD_CACHE_ROOT = _PATHS["build_cache"]
+LOCAL_BUILD_CACHE_ROOT = _PATHS["local_build_cache"]
+DOWNLOAD_CACHE_ROOT = _PATHS["download_cache"]
+UV_CACHE_ROOT = _PATHS["uv_cache"]
 HUGGINGFACE_CACHE_ROOT = _PATHS["huggingface_cache"]
 HUGGINGFACE_HUB_CACHE_ROOT = _PATHS["huggingface_hub_cache"]
 MAINTENANCE_STATE_ROOT = _PATHS["maintenance_state"]

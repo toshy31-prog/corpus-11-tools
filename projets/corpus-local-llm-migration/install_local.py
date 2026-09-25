@@ -6,7 +6,7 @@ import shutil
 import subprocess
 import tarfile
 from pathlib import Path
-from corpus_paths import LLM_MODELS_ROOT, LOCAL_RUNTIME_ROOT
+from corpus_paths import DOWNLOAD_CACHE_ROOT, LLM_MODELS_ROOT, LOCAL_RUNTIME_ROOT
 
 ROOT = Path(__file__).resolve().parents[2]
 DEST = LOCAL_RUNTIME_ROOT
@@ -37,8 +37,8 @@ def digest(path):
 
 def main():
     DEST.mkdir(parents=True, exist_ok=True, mode=0o700)
-    downloads = DEST / 'downloads'
-    downloads.mkdir(exist_ok=True)
+    downloads = DOWNLOAD_CACHE_ROOT / 'corpus-local'
+    downloads.mkdir(parents=True, exist_ok=True)
     manifest_path = DEST / 'installation.json'
     manifest = json.loads(manifest_path.read_text()) if manifest_path.exists() else {'artifacts': {}, 'runtime_verified': False}
     for name, url, expected, directory in ARTIFACTS:

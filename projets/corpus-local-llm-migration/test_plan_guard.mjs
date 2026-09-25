@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import {test} from 'node:test';
 import {readFileSync} from 'node:fs';
 import {spawnSync} from 'node:child_process';
+import {join} from 'node:path';
+import {pathToFileURL} from 'node:url';
 import planGuard from './plan_guard.mjs';
 
 const rule=(permission,action,pattern='*')=>({permission,pattern,action});
@@ -118,7 +120,10 @@ test('cancellation recorded during validation prevents a late launch',async()=>{
  await assert.rejects(f.before(await planGuard({client:f.client})),/terminé ou interrompu/);
 });
 test('native contract supports guard before task expansion and permission hook before run loop',()=>{
- const base=new URL('../../.dev-local/corpus-local/sources/opencode-1.18.32/packages/opencode/src/',import.meta.url);
+ const contract=spawnSync('python3',[new URL('./corpus_paths.py',import.meta.url).pathname,'json'],{encoding:'utf8'});
+ assert.equal(contract.status,0,contract.stderr);
+ const sourceRoot=JSON.parse(contract.stdout).toolchain_sources;
+ const base=pathToFileURL(join(sourceRoot,'opencode-1.18.32/packages/opencode/src')+'/');
  const prompt=readFileSync(new URL('session/prompt.ts',base),'utf8');
  const task=readFileSync(new URL('tool/task.ts',base),'utf8');
  const tools=readFileSync(new URL('session/tools.ts',base),'utf8');

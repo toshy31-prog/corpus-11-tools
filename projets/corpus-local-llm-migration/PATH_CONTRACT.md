@@ -102,6 +102,12 @@ Les sorties de compilation llama vivent sous `CORPUS_CACHE_ROOT/build`. Elles ne
 
 Le vieux `corpus-local/build` reste temporairement présent comme filet jusqu'à la vague physique suivante, mais n'est plus une dépendance d'exécution une fois cette phase validée.
 
+## STORAGE Phase 3B1 — wiring TOOLCHAINS/CACHE
+
+`TOOLCHAIN_SOURCES_ROOT` vaut `CORPUS_TOOLCHAINS_ROOT/sources`. Les sources llama.cpp, Hermes et OpenCode y sont consommées comme entrées durables de reconstruction. Les archives reproductibles sont acquises sous `CORPUS_CACHE_ROOT/downloads/corpus-local`, le cache uv sous `CORPUS_CACHE_ROOT/uv`, et les builds llama sous `CORPUS_CACHE_ROOT/build/corpus-local`.
+
+`corpus-local/build-env` reste temporairement dans RUNTIME : l'audit a établi qu'il est mixte (Playwright + CMake + uv) et qu'il possède des shebangs absolus. Il sera scindé/reconstruit séparément, pas déplacé aveuglément. Le locator Qwen3.8 COLD reste également distinct des archives CACHE.
+
 ## Correction sémantique
 
 L'ancien setup employait `CORPUS_STATE_ROOT` comme nom du runtime. Ce sens est
