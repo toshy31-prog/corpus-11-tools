@@ -1,7 +1,7 @@
 """Demandes du modèle -> approbation humaine -> navigateur séparé."""
 import json,os,socketserver,subprocess,threading,uuid,time,re
 from pathlib import Path
-from corpus_paths import CONFIG_ROOT, LOCAL_RUNTIME_ROOT, STATE_ROOT
+from corpus_paths import CONFIG_ROOT, LOCAL_BROWSER_ENV_ROOT, LOCAL_RUNTIME_ROOT, STATE_ROOT
 HERE=Path(__file__).resolve().parent
 BASE=LOCAL_RUNTIME_ROOT
 SETTINGS=CONFIG_ROOT/'corpus-local/browser-settings.json'
@@ -12,7 +12,7 @@ ACTIONS={'tab-new','tab-select','tab-close','forward','launch','navigate','snaps
 def browser_info():
     binary=BASE/'browsers/chromium-local/chrome-linux64/chrome'
     return {'name':'Chromium','installed':binary.is_file() and os.access(binary,os.X_OK),
-            'driver':(BASE/'build-env/bin/python').is_file(),
+            'driver':(LOCAL_BROWSER_ENV_ROOT/'bin/python').is_file(),
             'display_available':bool(os.environ.get('DISPLAY') or os.environ.get('WAYLAND_DISPLAY')),
             'running':False,'visible':False,'profile':'Session temporaire dédiée à Corpus'}
 
@@ -75,7 +75,7 @@ def execute(data):
     with WORKER_LOCK:
         if WORKER is None or WORKER.poll() is not None:
             LOG_ROOT.mkdir(parents=True,exist_ok=True)
-            WORKER=subprocess.Popen([str(BASE/'build-env/bin/python'),str(HERE/'browser_worker.py')],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=(LOG_ROOT/'browser.log').open('a'),text=True)
+            WORKER=subprocess.Popen([str(LOCAL_BROWSER_ENV_ROOT/'bin/python'),str(HERE/'browser_worker.py')],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=(LOG_ROOT/'browser.log').open('a'),text=True)
         WORKER.stdin.write(json.dumps(data)+'\n');WORKER.stdin.flush()
         import selectors
         with selectors.DefaultSelector() as selector:

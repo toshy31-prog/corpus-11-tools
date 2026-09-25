@@ -55,6 +55,10 @@ def resolve_contract(environ=None, *, home=None, repo_root=None):
         "docling_models": models / "docling",
         "toolchains": toolchains,
         "toolchain_sources": toolchains / "sources",
+        "toolchain_envs": toolchains / "envs",
+        "toolchain_wheelhouse": toolchains / "wheelhouse",
+        "local_build_tools": toolchains / "envs/corpus-local-build-tools",
+        "local_build_wheelhouse": toolchains / "wheelhouse/corpus-local-build-tools",
         "data": data,
         "state": state,
         "cache": cache,
@@ -62,6 +66,7 @@ def resolve_contract(environ=None, *, home=None, repo_root=None):
         "vault": vault,
         "local_runtime": runtime / "corpus-local",
         "local_apps": runtime / "corpus-local/apps",
+        "local_browser_env": runtime / "corpus-local/browser-env",
         "capabilities_runtime": runtime / "corpus-capabilities",
         "media_runtime": runtime / "corpus-media",
         "office_runtime": runtime / "corpus-office",
@@ -86,6 +91,10 @@ SPEECH_MODELS_ROOT = _PATHS["speech_models"]
 DOCLING_MODELS_ROOT = _PATHS["docling_models"]
 TOOLCHAINS_ROOT = _PATHS["toolchains"]
 TOOLCHAIN_SOURCES_ROOT = _PATHS["toolchain_sources"]
+TOOLCHAIN_ENVS_ROOT = _PATHS["toolchain_envs"]
+TOOLCHAIN_WHEELHOUSE_ROOT = _PATHS["toolchain_wheelhouse"]
+LOCAL_BUILD_TOOLS_ROOT = _PATHS["local_build_tools"]
+LOCAL_BUILD_WHEELHOUSE_ROOT = _PATHS["local_build_wheelhouse"]
 DATA_ROOT = _PATHS["data"]
 STATE_ROOT = _PATHS["state"]
 CACHE_ROOT = _PATHS["cache"]
@@ -94,6 +103,7 @@ VAULT_ROOT = _PATHS["vault"]
 
 LOCAL_RUNTIME_ROOT = _PATHS["local_runtime"]
 LOCAL_APPS_ROOT = _PATHS["local_apps"]
+LOCAL_BROWSER_ENV_ROOT = _PATHS["local_browser_env"]
 CAPABILITIES_RUNTIME_ROOT = _PATHS["capabilities_runtime"]
 MEDIA_RUNTIME_ROOT = _PATHS["media_runtime"]
 OFFICE_RUNTIME_ROOT = _PATHS["office_runtime"]

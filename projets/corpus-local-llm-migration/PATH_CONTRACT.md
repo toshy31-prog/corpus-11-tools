@@ -106,7 +106,11 @@ Le vieux `corpus-local/build` reste temporairement présent comme filet jusqu'à
 
 `TOOLCHAIN_SOURCES_ROOT` vaut `CORPUS_TOOLCHAINS_ROOT/sources`. Les sources llama.cpp, Hermes et OpenCode y sont consommées comme entrées durables de reconstruction. Les archives reproductibles sont acquises sous `CORPUS_CACHE_ROOT/downloads/corpus-local`, le cache uv sous `CORPUS_CACHE_ROOT/uv`, et les builds llama sous `CORPUS_CACHE_ROOT/build/corpus-local`.
 
-`corpus-local/build-env` reste temporairement dans RUNTIME : l'audit a établi qu'il est mixte (Playwright + CMake + uv) et qu'il possède des shebangs absolus. Il sera scindé/reconstruit séparément, pas déplacé aveuglément. Le locator Qwen3.8 COLD reste également distinct des archives CACHE.
+Le locator Qwen3.8 COLD reste distinct des archives CACHE.
+
+## BUILD Phase 4A — séparation build-tools / browser runtime
+
+`corpus-local/build-env` a été scindé. Les outils reproductibles `cmake` et `uv` vivent sous `LOCAL_BUILD_TOOLS_ROOT`, reconstruits offline depuis `LOCAL_BUILD_WHEELHOUSE_ROOT`. Le navigateur utilise `LOCAL_BROWSER_ENV_ROOT`, adopté par rename du venv existant après preuve qu'il ne contenait aucune référence absolue à son ancien chemin. `cmake` et `uv` sont ensuite retirés du venv navigateur. `pip` y reste provisoirement comme bootstrap tant que les wheels exactes Playwright/greenlet/pyee/typing_extensions n'ont pas encore été archivées localement.
 
 ## BUILD Phase 3B2 — reconstruction durable CPU/CUDA
 

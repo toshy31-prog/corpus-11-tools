@@ -12,13 +12,14 @@ import time
 
 from corpus_paths import (
     LOCAL_BUILD_CACHE_ROOT,
+    LOCAL_BUILD_TOOLS_ROOT,
     LOCAL_RUNTIME_ROOT,
     TOOLCHAIN_SOURCES_ROOT,
 )
 
 BASE = LOCAL_RUNTIME_ROOT
 SOURCE = TOOLCHAIN_SOURCES_ROOT / "llama.cpp-b10964"
-CMAKE = BASE / "build-env/bin/cmake"
+CMAKE = LOCAL_BUILD_TOOLS_ROOT / "bin/cmake"
 VERSIONS = BASE / "versions"
 
 PROFILES = {

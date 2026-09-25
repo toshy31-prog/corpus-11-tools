@@ -31,8 +31,15 @@ class StorageTerritoryTests(unittest.TestCase):
         self.assertIn('str(runtime_source)',source)
         self.assertNotIn('--no-editable',source)
 
-    def test_build_env_intentionally_stays_runtime_for_now(self):
+    def test_build_tools_and_browser_runtime_are_split(self):
         gateway=(HERE/'tool_gateway.py').read_text()
-        self.assertIn("BASE/'build-env/bin/python'",gateway)
+        rebuild=(HERE/'rebuild_runtime.py').read_text()
+        hermes=(HERE/'restore_hermes.py').read_text()
+        self.assertIn('LOCAL_BROWSER_ENV_ROOT',gateway)
+        self.assertIn('LOCAL_BUILD_TOOLS_ROOT',rebuild)
+        self.assertIn('LOCAL_BUILD_TOOLS_ROOT',hermes)
+        self.assertNotIn("build-env/bin/python",gateway)
+        self.assertNotIn('build-env/bin/cmake',rebuild)
+        self.assertNotIn('build-env/bin/uv',hermes)
 
 if __name__=='__main__': unittest.main()

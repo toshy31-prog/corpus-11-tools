@@ -11,6 +11,7 @@ import subprocess
 from corpus_paths import (
     CACHE_ROOT,
     LOCAL_APPS_ROOT,
+    LOCAL_BUILD_TOOLS_ROOT,
     LOCAL_RUNTIME_ROOT,
     TOOLCHAIN_SOURCES_ROOT,
     UV_CACHE_ROOT,
@@ -131,7 +132,7 @@ try:
             "--bind", str(CACHE_ROOT), str(CACHE_ROOT),
             "--dev", "/dev",
             "--proc", "/proc",
-            str(base / "build-env/bin/uv"),
+            str(LOCAL_BUILD_TOOLS_ROOT / "bin/uv"),
             "sync",
             "--offline",
             "--python", "/usr/bin/python3",
