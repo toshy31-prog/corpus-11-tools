@@ -1,0 +1,51 @@
+[
+  {
+    "id": "qwen3.6-35b-a3b-ud-q4-k-m",
+    "tier": "hot",
+    "kind": "llm",
+    "repository": "unsloth/Qwen3.6-35B-A3B-GGUF",
+    "revision": "a483e9e6cbd595906af30beda3187c2663a1118c",
+    "source_file": "Qwen3.6-35B-A3B-UD-Q4_K_M.gguf",
+    "file": "Qwen3.6-35B-A3B-UD-Q4_K_M.gguf",
+    "relative": "llm/qwen3.6/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf",
+    "size": 22134528992,
+    "sha256": "ac0e2c1189e055faa36eff361580e79c5bd6f8e76bffb4ce547f167d53e31a61"
+  },
+  {
+    "id": "qwen3.6-mmproj-f16",
+    "tier": "hot",
+    "kind": "vision",
+    "repository": "unsloth/Qwen3.6-35B-A3B-GGUF",
+    "revision": "8ab61f3ab67ce00dabe2719bf2d250ec66bc9020",
+    "source_file": "mmproj-F16.gguf",
+    "file": "mmproj-Qwen3.6-F16.gguf",
+    "relative": "llm/qwen3.6/mmproj-Qwen3.6-F16.gguf",
+    "size": 899283680,
+    "sha256": "8971ee4f331ff0a4c609374f32984b3d4e6dc086c0aa35f1d637fad1829e887f"
+  },
+  {
+    "id": "faster-whisper-small",
+    "tier": "hot",
+    "kind": "asr",
+    "repository": "Systran/faster-whisper-small",
+    "revision": "536b0662742c02347bc0e980a01041f333bce120",
+    "source_file": "model.bin",
+    "file": "model.bin",
+    "relative": "speech/whisper-small/model.bin",
+    "size": 483546902,
+    "sha256": "3e305921506d8872816023e4c273e75d2419fb89b24da97b4fe7bce14170d671"
+  },
+  {
+    "id": "qwen3.8-27b-ud-q5-k-m",
+    "tier": "cold",
+    "kind": "comparator",
+    "repository": "unsloth/Qwen3.8-27B-GGUF",
+    "revision": "4ca720788d1e01f1bff70c033e0d0028fd02e502",
+    "source_file": "Qwen3.8-27B-UD-Q5_K_M.gguf",
+    "file": "Qwen3.8-27B-UD-Q5_K_M.gguf",
+    "relative": null,
+    "size": 19771509664,
+    "sha256": "2de73110cb254cbf09b54b717578dadff12ef1194e7271527e68202f39ba4bfd",
+    "note": "Comparator COLD in CorpusVault; never part of HOT reconstruction."
+  }
+]

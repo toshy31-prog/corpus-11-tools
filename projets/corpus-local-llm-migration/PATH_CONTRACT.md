@@ -74,6 +74,12 @@ Les anciens registres capabilities, logs d'installation et diagnostics média sa
 
 Les backups historiques et releases sont COLD sous `CORPUS_VAULT_ROOT`; les deux restore trees modifiés sont archivés vers le Vault mais leur arbre ext4 original est conservé temporairement sous `maintenance/recovery-review/restores-pending-cold-finalization` jusqu'à une validation de restauration depuis le support COLD.
 
+## MODELS — provenance scellée
+
+`CORE_MODELS_LOCK.json` sépare les poids core HOT des comparateurs COLD. Qwen3.6, son projecteur F16 et faster-whisper-small sont HOT ; Qwen3.8-27B reste COLD dans CorpusVault.
+
+Les anciens poids WAN `wan-5b.gguf` et `wan-vae.safetensors` ont été retirés du lock média parce qu'ils ne sont plus référencés par les profils d'inférence actifs. Un reinstall ne doit donc plus les ressusciter.
+
 ## Correction sémantique
 
 L'ancien setup employait `CORPUS_STATE_ROOT` comme nom du runtime. Ce sens est
