@@ -13,7 +13,8 @@ class RuntimePromotionTests(unittest.TestCase):
 
     def test_rebuild_target_is_canonical_build_cache_and_origin_rpath(self):
         source=(HERE/'rebuild_runtime.py').read_text()
-        self.assertIn("BUILD_CACHE_ROOT / 'corpus-local/llama-cpu'",source)
+        self.assertIn('LOCAL_BUILD_CACHE_ROOT',source)
+        self.assertIn('LOCAL_BUILD_CACHE_ROOT / "llama-cpu"',source)
         self.assertIn('CMAKE_BUILD_RPATH_USE_ORIGIN=ON',source)
         self.assertIn('CMAKE_INSTALL_RPATH=$ORIGIN',source)
 

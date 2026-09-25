@@ -108,6 +108,10 @@ Le vieux `corpus-local/build` reste temporairement présent comme filet jusqu'à
 
 `corpus-local/build-env` reste temporairement dans RUNTIME : l'audit a établi qu'il est mixte (Playwright + CMake + uv) et qu'il possède des shebangs absolus. Il sera scindé/reconstruit séparément, pas déplacé aveuglément. Le locator Qwen3.8 COLD reste également distinct des archives CACHE.
 
+## BUILD Phase 3B2 — reconstruction durable CPU/CUDA
+
+`rebuild_runtime.py` reconstruit désormais les profils CPU et CUDA depuis `TOOLCHAIN_SOURCES_ROOT` vers `LOCAL_BUILD_CACHE_ROOT`. Une dérive de `CMAKE_HOME_DIRECTORY` invalide uniquement le cache de build concerné, qui est régénéré. Les runtimes validés peuvent être promus atomiquement sous `runtime/versions` avec `--promote`.
+
 ## Correction sémantique
 
 L'ancien setup employait `CORPUS_STATE_ROOT` comme nom du runtime. Ce sens est
