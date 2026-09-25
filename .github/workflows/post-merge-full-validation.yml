@@ -99,6 +99,8 @@ jobs:
           PYTHONPATH=corpus-11-tools/labs/python pytest -q corpus-11-tools
       - name: Run every active research protocol gate
         run: python3 research/scripts/portfolio_cycle.py --check --run-safe-checks
+      - name: Run local maintenance tool tests
+        run: python3 -m unittest discover -s scripts -p 'test_*.py'
 
   node-tests:
     name: node-runtime
@@ -122,9 +124,8 @@ jobs:
           fi
           printf 'Running %d Node test modules\n' "${#tests[@]}"
           node --test "${tests[@]}"
-      - name: Build and test the CORPUS game prototype
-        working-directory: projets/corpus-ce-qui-reste-possible
-        run: npm test
+      - name: Build and test local applications
+        run: make test-projects
 
   cct:
     name: cct-integration

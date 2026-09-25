@@ -1,12 +1,18 @@
 # Corpus 11 Tools
 
+> **Jeux, applications, recherches ou ancien site ?** Voir la [carte des projets et leurs points d’entrée](CARTE_DES_PROJETS.md).
+
 Corpus 11 Tools est un ensemble d’outils pour aider Codex à analyser une question avec davantage de rigueur. Il peut notamment vérifier les sources d’une affirmation, repérer les coûts cachés, distinguer une capacité réelle d’un simple résultat de test et identifier ce qui pourrait invalider une conclusion.
 
-## État actuel observé
+## Relevé historique — 9 septembre 2026
+
+Les indications ci-dessous décrivent l’environnement observé lors de ce relevé.
+Elles ne constituent pas une vérification de la release publiée ni du plugin
+installé dans l’environnement du lecteur aujourd’hui.
 
 - release publiée : **v1.6.2** ;
 - tag annoté `v1.6.2` : objet `f9310e5822cfe099a8c652fcbac8852afc6240aa`, pointant vers le commit `9e3b1ac6635e0a7ce0e83aa72f36ddbd2ee4be67` ;
-- plugin installé et accessible dans cette tâche : `corpus-11-tools@corpus-11-local`, version **1.6.2+codex.20260906013502** ;
+- plugin alors installé et accessible dans la tâche d’observation : `corpus-11-tools@corpus-11-local`, version **1.6.2+codex.20260906013502** ;
 - tête publiée de `main` réobservée le 9 septembre 2026 : `7be55390c1efd48a74815b92f7de140e2af8bcb5` ;
 - les huit commits entre `v1.6.2` et cette tête publiée modifient uniquement `research/` : ils ne constituent ni une nouvelle release du plugin, ni une nouvelle installation ;
 - 58 skills ;
@@ -15,7 +21,7 @@ Corpus 11 Tools est un ensemble d’outils pour aider Codex à analyser une ques
 - 88 relations ;
 - 77 évaluations.
 
-## Release locale préparée v1.6.2 — portabilité des tests Bubblewrap
+## Historique de v1.6.2 — portabilité des tests Bubblewrap
 
 La candidate corrige seulement la portabilité de deux tests Bubblewrap : le
 refus de namespaces est simulé indépendamment de l'installation hôte, et le
@@ -30,7 +36,7 @@ aucune règle ou fixture FOE/provenance. Ni projection locale ni Bubblewrap ne
 prouve une indépendance externe : `independence_unknown` demeure obligatoire.
 Bubblewrap reste optionnel, réseau désactivé et sans fallback vers la projection.
 
-La release v1.6.2 est publiée et installée dans l'environnement observé. Les
+Au relevé du 9 septembre 2026, la release v1.6.2 était publiée et installée dans l'environnement observé. Les
 documents de préparation conservés dans le plugin décrivent les portes qui
 précédaient cette publication ; ils ne doivent pas être lus comme l'état
 effectif actuel du dépôt ou de l'installation. Les recherches publiées après
@@ -214,7 +220,9 @@ validation sont verrouillées par empreintes dans
 
 Depuis la racine, une seule commande crée l'environnement virtuel local `.venv`,
 installe ces dépendances verrouillées, puis exécute les contrôles structurels, les
-tests Python et Node, les protocoles de recherche et l'intégration CCT :
+tests Python et Node, les validations bloquantes des applications locales
+(Corpus local, MUBI Film Scout et YouTube Scout), les protocoles de recherche
+et l'intégration CCT :
 
 ```bash
 make verify
@@ -225,6 +233,20 @@ Pour préparer seulement l'environnement :
 ```bash
 make bootstrap
 ```
+
+Pour vérifier les applications locales sans installer de dépendances Python :
+
+    make test-projects
+
+Cette porte exécute sous Bubblewrap sans accès Internet les tests Python de
+Corpus local, les suites hors ligne de MUBI Film Scout et YouTube Scout, puis
+les tests HTTP MUBI sur des fixtures temporaires. Python, Node.js et Bubblewrap
+doivent déjà être installés. Elle ne lance ni modèle local ni diagnostic de
+services réels.
+
+La suite Node complète de Corpus local reste disponible séparément avec
+`make test-corpus-local-node-full` ; elle n'appartient pas à cette porte
+bloquante. Les sous-cibles sont décrites par `make help`.
 
 `make verify` ne lance pas les évaluations comportementales Codex payantes.
 

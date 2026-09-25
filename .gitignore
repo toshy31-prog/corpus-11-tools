@@ -13,5 +13,10 @@ __pycache__/
 .validation-state/
 **/.validation-state/
 
+# Local development state and autonomy traces, retained only in this checkout.
+/.dev-local/
+
 # Independent local repository; its complete history is preserved as a bundle.
 /ne-me-dis-pas-comment-sauver-le-monde-sauve-le/site/
+
+/.toolchains/

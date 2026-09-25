@@ -57,7 +57,7 @@ cat >> "${tmp_rc}" <<'EOF'
 alias fd='fdfind'
 alias bat='batcat'
 EOF
-printf 'alias corpus=%q\n' "cd ${workspace_dir}" >> "${tmp_rc}"
+printf 'alias corpus=%q\n' "$(printf 'cd -- %q' "${workspace_dir}")" >> "${tmp_rc}"
 cat >> "${tmp_rc}" <<'EOF'
 
 case ":${PATH}:" in
