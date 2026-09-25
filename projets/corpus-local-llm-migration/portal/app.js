@@ -817,11 +817,11 @@ function temporalContext(messages=[],queuedAt){const now=new Date();return 'Rep�
 function temporalMessageContext(createdAt){
  const d=new Date(createdAt);
  if(!Number.isFinite(d.getTime()))return '';
- return 'Repère temporel de ce message : '+d.toISOString()+
+ return 'Date du message : '+d.toISOString()+
    ' ; heure locale '+d.toLocaleString('fr-FR')+
    ' ; fuseau '+Intl.DateTimeFormat().resolvedOptions().timeZone+
-   '. Ce repère décrit le moment où ce message a été rédigé/mis en file. '+
-   'Distingue les faits historiques du présent ; une date récente ne prouve pas qu’une information est encore actuelle. Ne devine pas les dates manquantes.';
+   '. Hors question temporelle, n\'en parle pas. '+
+   'Cette date ne prouve pas qu\'une information est encore actuelle ; ne devine pas les dates manquantes.';
 }
 function nativeRender(s){
  if(s.id==='landing'){const notice=$('landing-notice');if(notice)notice.textContent=s.notice||(s.pendingAttachments?'Lecture des pièces jointes…':'');return;}
