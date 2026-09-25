@@ -96,6 +96,12 @@ Docling est physiquement autonome sous `CORPUS_MODELS_ROOT/docling`. Le cache Hu
 
 `local_tools_mcp.py` transmet le contrat Corpus au worker Docling et utilise également le cache canonique, jamais `CORPUS_RUNTIME_ROOT/corpus-capabilities/huggingface`.
 
+## BUILD Phase 3A — promotion runtime relocatable
+
+Les sorties de compilation llama vivent sous `CORPUS_CACHE_ROOT/build`. Elles ne sont jamais consommées directement comme runtime. Les profils CPU local et CUDA local validés sont promus sous `CORPUS_RUNTIME_ROOT/corpus-local/versions/llama-b10964-*-local`, avec RUNPATH relatif `$ORIGIN`.
+
+Le vieux `corpus-local/build` reste temporairement présent comme filet jusqu'à la vague physique suivante, mais n'est plus une dépendance d'exécution une fois cette phase validée.
+
 ## Correction sémantique
 
 L'ancien setup employait `CORPUS_STATE_ROOT` comme nom du runtime. Ce sens est

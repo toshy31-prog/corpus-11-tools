@@ -125,7 +125,8 @@ def component_inventory():
     paths = [
         ('llama.cpp (CPU)', 'corpus-local/versions/llama-b10964/llama-b10964/llama-server'),
         ('llama.cpp (Vulkan)', 'corpus-local/versions/llama-b10964-vulkan/llama-b10964/llama-server'),
-        ('llama.cpp (compilation locale)', 'corpus-local/build/llama-cpu/bin/llama-server'),
+        ('llama.cpp (CPU local relocatable)', 'corpus-local/versions/llama-b10964-cpu-local/bin/llama-server'),
+        ('llama.cpp (CUDA local relocatable)', 'corpus-local/versions/llama-b10964-cuda-local/bin/llama-server'),
         ('OpenCode', 'corpus-local/versions/opencode-v1.18.32/opencode'),
         ('stable-diffusion.cpp', 'corpus-media/runtime/sd-cli'),
         ('audio.cpp', 'corpus-media/audio-runtime/audiocpp_cli'),

@@ -21,7 +21,8 @@ LOG_ROOT = STATE_ROOT / 'logs/corpus-local'
 QWEN36_ROOT = LLM_MODELS_ROOT / 'qwen3.6'
 VISION = QWEN36_ROOT / 'mmproj-Qwen3.6-F16.gguf'
 LLAMA = BASE / 'versions/llama-b10964/llama-b10964/llama-server'
-LLAMA_CUDA = BASE / 'build/llama-cuda/bin/llama-server'
+LLAMA_CPU_LOCAL = BASE / 'versions/llama-b10964-cpu-local/bin/llama-server'
+LLAMA_CUDA = BASE / 'versions/llama-b10964-cuda-local/bin/llama-server'
 OPENCODE = BASE / 'versions/opencode-v1.18.32/opencode'
 MODEL = BASE / 'downloads/Qwen3.8-27B-UD-Q5_K_M.gguf'
 PORT = 18741
@@ -395,7 +396,7 @@ def main():
     with (logs / 'llama-server.log').open('a') as log:
         executable = BASE / 'versions/llama-b10964-vulkan/llama-b10964/llama-server' if args.intel else LLAMA
         if args.rebuilt:
-            executable = BASE / 'build/llama-cpu/bin/llama-server'
+            executable = LLAMA_CPU_LOCAL
         if args.cuda:
             executable = LLAMA_CUDA
         vision = ['--mmproj', str(VISION), '--no-mmproj-offload'] if args.moe and VISION.exists() else []
