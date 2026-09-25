@@ -24,6 +24,17 @@ MODEL = BASE / 'downloads/Qwen3.8-27B-UD-Q5_K_M.gguf'
 PORT = 18741
 
 
+def primary_context():
+    text = (HERE / 'CONTEXTE_LOCAL.md').read_text()
+    start = '\n## Sous-tâches déléguées\n'
+    end = '\n## Génération locale d’images et de vidéos\n'
+    before, start_separator, remainder = text.partition(start)
+    _, end_separator, after = remainder.partition(end)
+    if not start_separator or not end_separator:
+        raise RuntimeError('Structure de CONTEXTE_LOCAL.md inattendue.')
+    return before.rstrip() + '\n' + end + after
+
+
 def environment(intel=False, moe=False):
     # Liste positive : aucune clé, proxy ou configuration de fournisseur héritée.
     env = {'PATH': '/usr/local/bin:/usr/bin:/bin', 'LANG': 'C.UTF-8',
@@ -60,7 +71,7 @@ def environment(intel=False, moe=False):
             'description': 'Conversation, création, recherche et projets Corpus',
             # Fail closed: only the loaded guard enables this one task target.
             'permission': {'task': 'deny'},
-            'prompt': (HERE / 'CONTEXTE_LOCAL.md').read_text(), 'steps': 12},
+            'prompt': primary_context(), 'steps': 12},
             'corpus-worker': {'mode': 'subagent', 'steps': 6, 'disable': True,
                 'description': 'Sous-tâche Corpus bornée et indépendante : exploration, vérification, rédaction ou modification autorisée. À déléguer spontanément quand cela aide une demande complexe, pas pour une question simple. Même modèle local, permissions du parent, aucune sous-délégation.',
                 'permission': {'task': 'deny'},
