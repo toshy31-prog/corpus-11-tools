@@ -1,0 +1,19 @@
+.data/
+node_modules/
+*.log
+
+# Références open source locales
+research/music-resolution/vendor/
+
+# Sorties locales de validation
+validation-*/
+
+# Secrets / config locale
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+.secret/
+config.local.*

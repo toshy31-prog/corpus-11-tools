@@ -1,0 +1,545 @@
+TAP version 13
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/catalogue-progression.test.mjs
+ok 1 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/catalogue-progression.test.mjs
+  ---
+  duration_ms: 365.486734
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/catalogue.test.mjs
+ok 2 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/catalogue.test.mjs
+  ---
+  duration_ms: 268.006624
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/consolidation.test.mjs
+not ok 3 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/consolidation.test.mjs
+  ---
+  duration_ms: 444.187907
+  location: '/home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/consolidation.test.mjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/context-routing-regression.test.mjs
+ok 4 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/context-routing-regression.test.mjs
+  ---
+  duration_ms: 224.832733
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/digging.test.mjs
+ok 5 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/digging.test.mjs
+  ---
+  duration_ms: 274.435205
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/discogs-track-candidates.test.mjs
+ok 6 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/discogs-track-candidates.test.mjs
+  ---
+  duration_ms: 150.297532
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/discovery-model.test.mjs
+ok 7 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/discovery-model.test.mjs
+  ---
+  duration_ms: 161.85019
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/discovery-quality.test.mjs
+ok 8 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/discovery-quality.test.mjs
+  ---
+  duration_ms: 290.221871
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/ephemeral-exploration.test.mjs
+ok 9 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/ephemeral-exploration.test.mjs
+  ---
+  duration_ms: 316.742629
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/exploration.test.mjs
+ok 10 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/exploration.test.mjs
+  ---
+  duration_ms: 287.482908
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/frontend-guidance.test.mjs
+ok 11 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/frontend-guidance.test.mjs
+  ---
+  duration_ms: 201.423193
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/google-oauth.test.mjs
+ok 12 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/google-oauth.test.mjs
+  ---
+  duration_ms: 255.586785
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/graph.test.mjs
+ok 13 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/graph.test.mjs
+  ---
+  duration_ms: 170.542438
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/identity.test.mjs
+ok 14 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/identity.test.mjs
+  ---
+  duration_ms: 216.38401
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/integrated-r9r10c-regression.test.mjs
+ok 15 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/integrated-r9r10c-regression.test.mjs
+  ---
+  duration_ms: 217.570712
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/local-secret.test.mjs
+ok 16 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/local-secret.test.mjs
+  ---
+  duration_ms: 194.579239
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/multi-participant-quality.test.mjs
+ok 17 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/multi-participant-quality.test.mjs
+  ---
+  duration_ms: 286.699438
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/path-regressions.test.mjs
+ok 18 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/path-regressions.test.mjs
+  ---
+  duration_ms: 324.987521
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/persistent-store.test.mjs
+ok 19 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/persistent-store.test.mjs
+  ---
+  duration_ms: 219.996495
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/r11-discovery-frontier.test.mjs
+ok 20 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/r11-discovery-frontier.test.mjs
+  ---
+  duration_ms: 185.1504
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/r11-exploration-integration.test.mjs
+ok 21 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/r11-exploration-integration.test.mjs
+  ---
+  duration_ms: 182.923127
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/r11_1-frontier-execution.test.mjs
+ok 22 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/r11_1-frontier-execution.test.mjs
+  ---
+  duration_ms: 202.87333
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/recording-resolution-decision.test.mjs
+ok 23 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/recording-resolution-decision.test.mjs
+  ---
+  duration_ms: 198.336673
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/recording-resolution-runtime.test.mjs
+ok 24 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/recording-resolution-runtime.test.mjs
+  ---
+  duration_ms: 257.553482
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/release-adversarial.test.mjs
+ok 25 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/release-adversarial.test.mjs
+  ---
+  duration_ms: 305.050327
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/resolution-evidence.test.mjs
+ok 26 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/resolution-evidence.test.mjs
+  ---
+  duration_ms: 180.906558
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/restore-continuity.test.mjs
+ok 27 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/restore-continuity.test.mjs
+  ---
+  duration_ms: 181.771769
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/scout.test.mjs
+ok 28 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/scout.test.mjs
+  ---
+  duration_ms: 322.201848
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/session-races.test.mjs
+ok 29 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/session-races.test.mjs
+  ---
+  duration_ms: 305.072503
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/source-runtime.test.mjs
+ok 30 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/source-runtime.test.mjs
+  ---
+  duration_ms: 283.923348
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/startup-origin.test.mjs
+ok 31 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/startup-origin.test.mjs
+  ---
+  duration_ms: 250.594213
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/track-candidate-adapters.test.mjs
+ok 32 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/track-candidate-adapters.test.mjs
+  ---
+  duration_ms: 182.059878
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/track-candidate-score.test.mjs
+ok 33 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/track-candidate-score.test.mjs
+  ---
+  duration_ms: 180.3102
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/track-evidence.test.mjs
+ok 34 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/track-evidence.test.mjs
+  ---
+  duration_ms: 266.534486
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/track-expression.test.mjs
+ok 35 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/track-expression.test.mjs
+  ---
+  duration_ms: 189.239292
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/track-resolution.test.mjs
+ok 36 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/track-resolution.test.mjs
+  ---
+  duration_ms: 251.634182
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/track-search-projection.test.mjs
+ok 37 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/track-search-projection.test.mjs
+  ---
+  duration_ms: 254.529937
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/ui-contract.test.mjs
+ok 38 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/ui-contract.test.mjs
+  ---
+  duration_ms: 187.46371
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/v27r-regression.test.mjs
+ok 39 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/v27r-regression.test.mjs
+  ---
+  duration_ms: 203.49371
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/v27r3-regression.test.mjs
+ok 40 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/v27r3-regression.test.mjs
+  ---
+  duration_ms: 225.839758
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/v27r4-regression.test.mjs
+ok 41 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/v27r4-regression.test.mjs
+  ---
+  duration_ms: 176.62341
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/v27r5-regression.test.mjs
+ok 42 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/v27r5-regression.test.mjs
+  ---
+  duration_ms: 165.284863
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/v27r6-regression.test.mjs
+ok 43 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/v27r6-regression.test.mjs
+  ---
+  duration_ms: 174.067691
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/v27r7-regression.test.mjs
+ok 44 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/v27r7-regression.test.mjs
+  ---
+  duration_ms: 197.81572
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/v27r8-regression.test.mjs
+ok 45 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/v27r8-regression.test.mjs
+  ---
+  duration_ms: 174.408182
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/video-credits.test.mjs
+ok 46 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/video-credits.test.mjs
+  ---
+  duration_ms: 161.147458
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/bandcamp-tools.test.mjs
+ok 47 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/bandcamp-tools.test.mjs
+  ---
+  duration_ms: 330.564267
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/connection-panel.test.mjs
+ok 48 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/connection-panel.test.mjs
+  ---
+  duration_ms: 231.218619
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/curator-catalogue.test.mjs
+ok 49 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/curator-catalogue.test.mjs
+  ---
+  duration_ms: 239.868007
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/departure-integrity.test.mjs
+ok 50 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/departure-integrity.test.mjs
+  ---
+  duration_ms: 309.433636
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/departure-profile.test.mjs
+ok 51 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/departure-profile.test.mjs
+  ---
+  duration_ms: 305.043623
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/departure-workflow.test.mjs
+ok 52 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/departure-workflow.test.mjs
+  ---
+  duration_ms: 190.619666
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/direction-mixer.test.mjs
+ok 53 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/direction-mixer.test.mjs
+  ---
+  duration_ms: 175.998488
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/ephemeral-client.test.mjs
+ok 54 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/ephemeral-client.test.mjs
+  ---
+  duration_ms: 236.304162
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/evolution-policy.test.mjs
+ok 55 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/evolution-policy.test.mjs
+  ---
+  duration_ms: 200.701279
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/journey-state.test.mjs
+ok 56 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/journey-state.test.mjs
+  ---
+  duration_ms: 200.466863
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/library-state.test.mjs
+ok 57 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/library-state.test.mjs
+  ---
+  duration_ms: 250.864416
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/music-sorting.test.mjs
+ok 58 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/music-sorting.test.mjs
+  ---
+  duration_ms: 221.98142
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/personal-memory.test.mjs
+ok 59 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/personal-memory.test.mjs
+  ---
+  duration_ms: 187.557066
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-dial.test.mjs
+ok 60 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-dial.test.mjs
+  ---
+  duration_ms: 170.008699
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-mix-binding.test.mjs
+ok 61 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-mix-binding.test.mjs
+  ---
+  duration_ms: 237.747061
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-mix-session.test.mjs
+ok 62 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-mix-session.test.mjs
+  ---
+  duration_ms: 571.049388
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-mix-v22-contract.test.mjs
+ok 63 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-mix-v22-contract.test.mjs
+  ---
+  duration_ms: 218.298597
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-mix-v23-contract.test.mjs
+ok 64 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-mix-v23-contract.test.mjs
+  ---
+  duration_ms: 180.455288
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-mixer-v21-contract.test.mjs
+ok 65 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-mixer-v21-contract.test.mjs
+  ---
+  duration_ms: 238.079541
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-parameters.test.mjs
+ok 66 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-parameters.test.mjs
+  ---
+  duration_ms: 225.344674
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-source-character-v24-contract.test.mjs
+ok 67 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-source-character-v24-contract.test.mjs
+  ---
+  duration_ms: 256.955048
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-v25-contract.test.mjs
+ok 68 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-v25-contract.test.mjs
+  ---
+  duration_ms: 265.531207
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-v26-workflow.test.mjs
+ok 69 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-v26-workflow.test.mjs
+  ---
+  duration_ms: 225.437405
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-v27-contract.test.mjs
+ok 70 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-v27-contract.test.mjs
+  ---
+  duration_ms: 212.044385
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-v27-departure-profile-binding.test.mjs
+ok 71 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-v27-departure-profile-binding.test.mjs
+  ---
+  duration_ms: 199.757103
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/seed-picker-model.test.mjs
+ok 72 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/seed-picker-model.test.mjs
+  ---
+  duration_ms: 218.611342
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/source-character-patch.test.mjs
+ok 73 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/source-character-patch.test.mjs
+  ---
+  duration_ms: 148.207486
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/workspace.test.mjs
+ok 74 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/workspace.test.mjs
+  ---
+  duration_ms: 188.228957
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/server.test.mjs
+not ok 75 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/server.test.mjs
+  ---
+  duration_ms: 275.030009
+  location: '/home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/server.test.mjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/ephemeral-server.test.mjs
+not ok 76 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/ephemeral-server.test.mjs
+  ---
+  duration_ms: 192.552814
+  location: '/home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/ephemeral-server.test.mjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evidence-algebra-first-substitution-v7.test.mjs
+ok 77 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evidence-algebra-first-substitution-v7.test.mjs
+  ---
+  duration_ms: 263.654514
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evidence-algebra-relation-kernel-v8.test.mjs
+ok 78 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evidence-algebra-relation-kernel-v8.test.mjs
+  ---
+  duration_ms: 263.245779
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evidence-algebra-relation-kernel-v8_1.test.mjs
+ok 79 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evidence-algebra-relation-kernel-v8_1.test.mjs
+  ---
+  duration_ms: 180.494956
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evidence-algebra-shadow.test.mjs
+ok 80 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evidence-algebra-shadow.test.mjs
+  ---
+  duration_ms: 222.588462
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evidence-algebra-v10-track-resolution.test.mjs
+ok 81 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evidence-algebra-v10-track-resolution.test.mjs
+  ---
+  duration_ms: 268.430898
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evidence-algebra-v11-support-kernel.test.mjs
+ok 82 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evidence-algebra-v11-support-kernel.test.mjs
+  ---
+  duration_ms: 178.085988
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evidence-algebra-v12-resolution-evidence.test.mjs
+ok 83 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evidence-algebra-v12-resolution-evidence.test.mjs
+  ---
+  duration_ms: 209.61725
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evidence-algebra-v13-live-evidence-gate.test.mjs
+ok 84 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evidence-algebra-v13-live-evidence-gate.test.mjs
+  ---
+  duration_ms: 182.996841
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evidence-algebra-v14-live-decision-policy.test.mjs
+ok 85 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evidence-algebra-v14-live-decision-policy.test.mjs
+  ---
+  duration_ms: 206.07515
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evidence-algebra-v15-decision-kernel.test.mjs
+ok 86 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evidence-algebra-v15-decision-kernel.test.mjs
+  ---
+  duration_ms: 220.141601
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evidence-algebra-v9-live-dedup.test.mjs
+ok 87 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evidence-algebra-v9-live-dedup.test.mjs
+  ---
+  duration_ms: 170.540916
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evidence-algebra-variants-v6.test.mjs
+ok 88 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evidence-algebra-variants-v6.test.mjs
+  ---
+  duration_ms: 246.383237
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evidence-algebra.test.mjs
+ok 89 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evidence-algebra.test.mjs
+  ---
+  duration_ms: 239.51021
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evolution-server.test.mjs
+not ok 90 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evolution-server.test.mjs
+  ---
+  duration_ms: 291.049748
+  location: '/home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evolution-server.test.mjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/explorer-neutral-v2.test.mjs
+ok 91 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/explorer-neutral-v2.test.mjs
+  ---
+  duration_ms: 174.83754
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/explorer-state-boundary-static.test.mjs
+ok 92 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/explorer-state-boundary-static.test.mjs
+  ---
+  duration_ms: 156.369659
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/explorer-state-policy.test.mjs
+ok 93 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/explorer-state-policy.test.mjs
+  ---
+  duration_ms: 170.626597
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/google-oauth-http.test.mjs
+not ok 94 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/google-oauth-http.test.mjs
+  ---
+  duration_ms: 161.125226
+  location: '/home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/google-oauth-http.test.mjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/library-artist-boundary.test.mjs
+ok 95 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/library-artist-boundary.test.mjs
+  ---
+  duration_ms: 194.683481
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/multi-participant-http.test.mjs
+not ok 96 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/multi-participant-http.test.mjs
+  ---
+  duration_ms: 177.415424
+  location: '/home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/multi-participant-http.test.mjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/multisource-decision.test.mjs
+ok 97 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/multisource-decision.test.mjs
+  ---
+  duration_ms: 164.027498
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/multisource-local-youtube-pass.test.mjs
+ok 98 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/multisource-local-youtube-pass.test.mjs
+  ---
+  duration_ms: 147.22888
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/multisource-orchestrator.test.mjs
+ok 99 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/multisource-orchestrator.test.mjs
+  ---
+  duration_ms: 177.860523
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/multisource-remote-youtube.test.mjs
+ok 100 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/multisource-remote-youtube.test.mjs
+  ---
+  duration_ms: 142.022565
+  ...
+# Subtest: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/neutral-seed-catalog.test.mjs
+ok 101 - /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/neutral-seed-catalog.test.mjs
+  ---
+  duration_ms: 173.206222
+  ...
+1..101
+# tests 101
+# suites 0
+# pass 95
+# fail 6
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1605.274314

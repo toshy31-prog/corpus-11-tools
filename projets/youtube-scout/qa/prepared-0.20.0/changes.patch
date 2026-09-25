@@ -1,0 +1,1027 @@
+*** Begin Patch
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/app.js
+@@
+ import { rankDerivedCandidates } from "/digging.js";
+ import { NOTEBOOK_STATUSES, createBackup, createImportCheckpoint, finalizeLibraryImport, normalizeNotebookItem, reusableImportCheckpoint, safeExternalUrl, scanImportPages, validateBackup } from "/library-state.mjs";
+ import { directionNames, selectDiscoveries, deduplicatePaths, matchesRecording, dateDescription } from "/discovery-model.mjs";
+-import { recordingArtistHints, searchCreditChoices } from "/artist-names.mjs";
++import { recordingArtistHints, searchCreditChoices, splitArtistNames } from "/artist-names.mjs";
++import { videoContent, titleCreditSuggestion } from "/video-content.mjs";
++import { routeExplanation } from "/discovery-presentation.mjs";
+ import { bindCatalogueTools } from "/bandcamp-tools.mjs";
+ import { exploreCurator } from "/curator-catalogue.mjs";
+ import { journeyGuidance, branchGuidance, collaborationContext } from "/journey-state.mjs";
+ import { catalogueCandidates } from "/catalogue-graph.mjs";
+ import { mountWorkspace } from "/workspace.mjs";
+-import { artistSearchHint, catalogueArtistChoices, catalogueArtistReference, declaredDepartureArtist, departureArtistUpdate, hasExplicitDepartureArtist, MANUAL_DEPARTURE_EVIDENCE, departureWorkflow, typedDepartureModel, localDepartureMembers } from "/departure-workflow.mjs";
++import { artistSearchHint, artistChoiceRank, catalogueArtistChoices, catalogueArtistReference, declaredDepartureArtist, departureArtistUpdate, departureArtistsUpdate, hasExplicitDepartureArtist, MANUAL_DEPARTURE_EVIDENCE, departureWorkflow, typedDepartureModel, localDepartureMembers } from "/departure-workflow.mjs";
+ import { API_KEY_STORAGE, createConnectionPanel } from "/connection-panel.mjs";
+ import { createScoutPatch, setScoutParameter } from "/scout-parameters.mjs";
+ import { buildScoutMixView, consumeMixPage, runScoutMixLoad } from "/scout-mix-session.mjs";
+@@
+   const seed = activeDig.seed, video = seedVideo(seed);
+   if (!video) return;
+   activeDig.reviewRequired = true;
++  const titleSuggestion = titleCreditSuggestion(video);
++  const knownArtist = resolvedArtist(video);
+   if (activeDig.reviewDraft?.seedId !== seed.id) activeDig.reviewDraft = {
+-    seedId: seed.id, title: video.title || seed.label,
+-    artist: declaredDepartureArtist(explorationGraph, seed.id) || resolvedArtist(video)?.name || "",
++    seedId: seed.id, title: titleSuggestion?.title || video.title || seed.label,
++    artist: declaredDepartureArtist(explorationGraph, seed.id) || (knownArtist?.confidence >= .95 ? knownArtist.name : titleSuggestion?.name || ""),
+     revision: departureRevision(explorationGraph.entities?.[seed.id])
+   };
+   renderActiveSeed();
+@@
+   await refreshExplorationGraph(seed.id);
+   if (activeDig.seed?.id !== expectedSeedId) return;
+ 
++  const remainingArtists = confirmedSeedArtistEdges(seed.id);
+   activeDig = {
+     ...activeDig,
+     catalogueGroups: {},
+     front: null,
+     synthMix: null,
+-    collaborationArtist: "",
++    collaborationArtist: remainingArtists.length ? declaredDepartureArtist(explorationGraph, seed.id) : "",
+     dossier: {
+       ...(activeDig.dossier || {}),
+       state: "partial",
+       artistName: "",
+-      suppressWeakIdentityCandidates: true,
+-      message: "Ancienne confirmation révoquée. Scout recalcule ce départ sans cette identité."
++      suppressWeakIdentityCandidates: !remainingArtists.length,
++      message: "Confirmation révoquée pour cet artiste. Les autres participants confirmés restent explorables."
+     }
+   };
+   explorationSession = null;
+@@
+   const input = form.querySelector("input"), results = form.querySelector(".identity-search-results"), status = form.querySelector('[role="status"]');
+   const searchStatus = form.querySelector(".identity-search-status"), searchButton = form.querySelector("[data-search-departure-artist]");
+   input.value = departure.initialArtistName;
++  input.maxLength = 300;
++  form.querySelector(".identity-catalogue-step > p").textContent = "Sélectionnez une fiche par participant à explorer, puis lancez la recherche commune. Les noms sans fiche restent conservés ; aucune identité n’est choisie automatiquement.";
+   if (artistDeparture) {
+     form.querySelector("label").textContent = "Artiste recherché";
+     form.querySelector("p").textContent = "Précisez le nom, puis choisissez la fiche de cet artiste. Le choix conserve son identifiant exact, sans fusionner les homonymes.";
+@@
+     form.querySelector(".identity-catalogue-step > p").textContent = "Choisissez la bonne fiche pour explorer les sorties et les crédits de cet artiste.";
+   }
+   if (declaredDepartureArtist(explorationGraph, expectedSeedId) && !artistDeparture) {
+-    status.textContent = `Titre et artistes enregistrés. Il reste à choisir une fiche catalogue, pas à saisir le nom une seconde fois.`;
++    status.textContent = `Titre et artistes enregistrés. Sélectionnez les participants à explorer ci-dessous.`;
+     form.querySelector("label").hidden = true;
+     form.querySelector("p").hidden = true;
+     form.querySelector(".identity-search-row").hidden = true;
+@@
+   }
+   let revision = 0;
+   let saving = false;
++  const participantSelections = new Map();
++  let lastRegistry = null;
+   const current = () => activeDig.seed?.id === expectedSeedId && form.isConnected;
+   const save = async candidate => {
+     if (!current() || saving) return;
+@@
+       return;
+     }
+     if (!candidate && !input.reportValidity()) return;
+-    const name = String(candidate?.name || input.value).normalize("NFC").trim(), generation = compositionGeneration;
++    const chosen = candidate ? [...new Map((Array.isArray(candidate) ? candidate : [candidate]).map(item => [item.id, item])).values()] : [];
++    const name = String(input.value).normalize("NFC").trim(), generation = compositionGeneration;
+     saving = true; revision++;
+-    input.disabled = true;
+-    for (const b of form.querySelectorAll("button")) b.disabled = true;
++    const disabledControls = [...controls.querySelectorAll("button,input,select")].map(control => [control, control.disabled]);
++    for (const [control] of disabledControls) control.disabled = true;
+     status.textContent = "Enregistrement sur cet appareil…";
+     try {
+-      const delta = departureArtistUpdate(explorationGraph, activeDig.seed, name, candidate);
++      const delta = chosen.length ? departureArtistsUpdate(explorationGraph, activeDig.seed, name, chosen) : departureArtistUpdate(explorationGraph, activeDig.seed, name);
+       const response = await fetch("/api/graph/ingest", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(delta) });
+       if (!response.ok) throw new Error("Le nom n’a pas été enregistré. Réessayez.");
+       if (!current() || generation !== compositionGeneration) return;
+       await refreshExplorationGraph(expectedSeedId);
+       if (!current() || generation !== compositionGeneration) return;
+-      if (declaredDepartureArtist(explorationGraph, expectedSeedId) !== name || (candidate && !hasExplicitDepartureArtist(explorationGraph, expectedSeedId))) throw new Error("L’enregistrement n’a pas été retrouvé. Réessayez sans changer de morceau.");
++      const persistedArtists = new Set(departureArtistIds(explorationGraph, expectedSeedId));
++      if (declaredDepartureArtist(explorationGraph, expectedSeedId) !== name || chosen.some(item => !persistedArtists.has(item.id))) throw new Error("Tous les choix n’ont pas été retrouvés. Réessayez sans changer de morceau.");
+       const video = seedVideo(activeDig.seed);
+       if (video?.id) { artistCorrections[video.id] = name; saveLocalObject(CORRECTIONS_KEY, artistCorrections); }
+-      setActiveDig({ dossier: { state: candidate ? "ready" : "partial", artistName: name, ...(candidate ? { artistId: candidate.id } : { suppressWeakIdentityCandidates: true }), sourceStates: candidate ? { [candidate.source]: "matched" } : {}, message: candidate ? "Artiste choisi par vous pour ce départ. L’enregistrement exact n’est pas confirmé." : "Nom renseigné par vous pour ce morceau, sans rapprochement automatique avec les catalogues." }, collaborationArtist: candidate ? name : "" });
++      setActiveDig({ dossier: { state: candidate ? "ready" : "partial", artistName: name, ...(candidate ? { artistIds: chosen.map(item => item.id) } : { suppressWeakIdentityCandidates: true }), sourceStates: Object.fromEntries(chosen.map(item => [item.source, "matched"])), message: candidate ? `${chosen.length} fiche(s) choisie(s) pour explorer ce départ. Les autres noms sont conservés. L’enregistrement exact n’est pas confirmé.` : "Nom renseigné par vous pour ce morceau, sans rapprochement automatique avec les catalogues." }, collaborationArtist: candidate ? name : "" });
+       if (candidate) await openExploration({ seed: activeDig.seed, preserveLineage: true });
+       else {
+         input.value = name;
+@@
+         status.textContent = `Nom enregistré : ${name}. Choisissez une fiche ci-dessous si vous souhaitez explorer ses connexions.`;
+       }
+     } catch (error) { if (current()) status.textContent = error.message; }
+-    finally { saving = false; input.disabled = false; for (const b of form.querySelectorAll("button")) b.disabled = false; }
++    finally { saving = false; for (const [control, disabled] of disabledControls) control.disabled = disabled; }
+   };
+   const show = (remote = null) => {
++    lastRegistry = remote;
+     results.replaceChildren();
+     const candidates = remote?.candidates || catalogueArtistChoices(explorationGraph, input.value);
+     searchStatus.textContent = candidates.length ? `${candidates.length} artiste(s) à vérifier — aucun n’est sélectionné automatiquement.` : remote ? "Aucune fiche correspondante trouvée dans les sources consultées. Vous pouvez réessayer ou indiquer une fiche ci-dessous." : artistDeparture ? "Aucune fiche locale correspondante. Recherchez dans les catalogues ou indiquez une fiche ci-dessous." : "Aucune fiche locale. Renseignez le nom si nécessaire, puis recherchez une fiche.";
+-    for (const candidate of candidates) {
++    const groups = artistDeparture ? [{ query: input.value, candidates }] : remote?.groups || (remote ? [{ query: input.value, candidates }] : splitArtistNames(input.value).map(query => ({ query, candidates: catalogueArtistChoices(explorationGraph, query) })));
++    const selected = participantSelections;
++    const explore = document.createElement("button"); explore.type = "button"; explore.dataset.exploreParticipants = "true"; explore.disabled = true;
++    const updateSelection = () => { explore.disabled = !selected.size; explore.textContent = `Explorer les artistes sélectionnés (${new Set([...selected.values()].map(item => item.id)).size})`; };
++    explore.onclick = () => save([...selected.values()]);
++    updateSelection();
++    if (!artistDeparture) results.append(explore);
++    for (let [groupIndex, group] of groups.entries()) {
++      const section = document.createElement("fieldset"), legend = document.createElement("legend"); legend.textContent = group.query; section.append(legend);
++      if (!artistDeparture && groups.length > 1 && group.query === input.value.trim()) {
++        const collective = document.createElement("details"), summary = document.createElement("summary"); summary.textContent = "Nom collectif complet (si ces noms désignent un groupe)"; collective.append(summary, section); results.append(collective);
++      } else results.append(section);
++      if (selected.has(group.query) && !group.candidates.some(candidate => candidate.id === selected.get(group.query).id)) {
++        // Retrying an unavailable provider must not discard a deliberate choice.
++        group = { ...group, candidates: [selected.get(group.query), ...group.candidates] };
++      }
++      if (!group.candidates.length) section.append(Object.assign(document.createElement("p"), { textContent: group.state === "unavailable" ? "Recherche indisponible — réessayez. Ce nom reste conservé." : "Aucune fiche trouvée pour ce nom. Vous pouvez explorer les autres participants." }));
++      const alternatives = document.createElement("details"), summary = document.createElement("summary"); summary.textContent = "Autres correspondances et homonymes à vérifier"; alternatives.append(summary);
++      for (const candidate of group.candidates) {
+       const row = document.createElement("div"); row.className = "identity-choice";
+       const name = document.createElement("strong"); name.textContent = candidate.name;
+       row.append(name);
+       if (candidate.context) row.append(Object.assign(document.createElement("small"), { textContent: candidate.context }));
+-      for (const catalogue of candidate.catalogues) {
++      for (const catalogue of candidate.catalogues || [candidate]) {
+         const link = document.createElement("a"); link.href = catalogue.sourceUrl; link.target = "_blank"; link.rel = "noreferrer"; link.textContent = `Vérifier sur ${catalogue.source === "discogs" ? "Discogs" : "MusicBrainz"} ↗`; row.append(link);
+       }
+-      if (candidate.catalogues.length > 1) { const note = document.createElement("small"); note.textContent = "Ces fiches sont reliées par des identifiants documentés."; row.append(note); }
++      if (candidate.catalogues?.length > 1) { const note = document.createElement("small"); note.textContent = "Ces fiches sont reliées par des identifiants documentés."; row.append(note); }
++      if (!artistDeparture) {
++        const label = document.createElement("label"), choice = document.createElement("input"); choice.type = "radio"; choice.name = `participant-${groupIndex}`; choice.value = candidate.id;
++        choice.checked = selected.get(group.query)?.id === candidate.id;
++        choice.onchange = () => { selected.set(group.query, candidate); updateSelection(); };
++        label.append(choice, document.createTextNode(` Explorer ${candidate.name}`)); row.append(label);
++      } else {
+       const button = document.createElement("button"); button.type = "button"; button.dataset.confirmDepartureArtist = candidate.id; button.textContent = `Utiliser ${candidate.name} et explorer`;
+       button.onclick = () => save(candidate);
+-      row.append(button); results.append(row);
++      row.append(button);
++      }
++      (artistChoiceRank(candidate.entity || candidate, group.query) >= 2 ? section : alternatives).append(row);
++      }
++      if (alternatives.children.length > 1) section.append(alternatives);
++      if (!artistDeparture && group.candidates.length) {
++        const label = document.createElement("label"), skip = document.createElement("input"); skip.type = "radio"; skip.name = `participant-${groupIndex}`; skip.checked = !selected.has(group.query);
++        skip.onchange = () => { selected.delete(group.query); updateSelection(); };
++        label.append(skip, document.createTextNode(" Ne pas explorer ce participant pour le moment")); section.append(label);
++      }
+     }
+     if (candidates.length) {
+       const none = document.createElement("button"); none.type = "button"; none.textContent = "Aucun de ces artistes";
+-      none.onclick = () => { revision++; results.replaceChildren(); searchStatus.textContent = "Aucune fiche retenue. Votre nom reste conservé ; vous pouvez préciser la recherche ou coller la bonne fiche ci-dessous."; };
++      none.onclick = () => { revision++; selected.clear(); results.replaceChildren(); searchStatus.textContent = "Aucune fiche retenue. Vos noms restent conservés ; vous pouvez préciser la recherche ou coller la bonne fiche ci-dessous."; };
+       results.append(none);
+     }
+     const unavailable = Object.entries(remote?.sourceStates || {}).filter(([, state]) => state !== "ok").map(([source, state]) => `${source} : ${state === "not_configured" ? "à connecter dans Bibliothèque & sources" : "indisponible, réessayez"}`);
+     if (unavailable.length) searchStatus.textContent += ` Sources non consultées : ${unavailable.join(" ; ")}.`;
+   };
+-  input.oninput = () => { revision++; searchButton.disabled = false; status.textContent = artistDeparture ? "Recherche modifiée ; aucune fiche sélectionnée." : "Modification non enregistrée."; show(); };
++  input.oninput = () => { revision++; participantSelections.clear(); refreshReferenceParticipants(); searchButton.disabled = false; status.textContent = artistDeparture ? "Recherche modifiée ; aucune fiche sélectionnée." : "Modification non enregistrée."; show(); };
+   form.onsubmit = event => { event.preventDefault(); return artistDeparture ? searchButton.onclick() : save(null); };
+   searchButton.onclick = async () => {
+     const attempt = ++revision, generation = compositionGeneration, query = input.value.trim();
+@@
+   };
+   const direct = document.createElement("details"); direct.className = "identity-direct-link";
+   direct.innerHTML = '<summary>J’ai un lien vers la bonne fiche artiste</summary><label>Fiche Discogs ou MusicBrainz<input type="url" placeholder="https://www.discogs.com/artist/…" aria-label="Lien de la fiche artiste"></label><button type="button">Vérifier cette fiche</button><p role="status"></p>';
++  const referenceParticipant = document.createElement("select"); referenceParticipant.setAttribute("aria-label", "Participant concerné par la fiche");
++  const refreshReferenceParticipants = () => {
++    const previous = referenceParticipant.value;
++    referenceParticipant.replaceChildren(...splitArtistNames(input.value).map(name => new Option(name, name)));
++    if ([...referenceParticipant.options].some(option => option.value === previous)) referenceParticipant.value = previous;
++  };
++  refreshReferenceParticipants();
++  if (!artistDeparture) direct.querySelector("button").before(referenceParticipant);
+   direct.querySelector("button").onclick = async event => {
++    if (saving) return;
+     const value = direct.querySelector("input").value, message = direct.querySelector('[role="status"]');
+     if (!catalogueArtistReference(value)) { message.textContent = "Une URL de fiche artiste Discogs ou MusicBrainz est requise."; return; }
+-    const attempt = ++revision; event.currentTarget.disabled = true; message.textContent = "Vérification de la fiche…";
++    const attempt = ++revision, query = referenceParticipant.value || input.value;
++    event.currentTarget.disabled = true; message.textContent = "Vérification de la fiche…";
+     try {
+       const response = await fetch(`/api/music/artist-choices?${new URLSearchParams({ reference: value })}`, { signal: AbortSignal.timeout(16000) });
+       if (!response.ok) throw new Error("Cette fiche n’a pas pu être lue.");
+       const data = await response.json();
+-      if (current() && attempt === revision) { show(data); message.textContent = "Vérifiez le nom affiché avant de confirmer."; }
++      if (current() && attempt === revision) {
++        const groups = [...(lastRegistry?.groups || splitArtistNames(input.value).map(name => ({ query: name, candidates: catalogueArtistChoices(explorationGraph, name) })))];
++        if (!groups.some(group => group.query === query)) groups.push({ query, candidates: [] });
++        show(artistDeparture ? data : { candidates: [...(lastRegistry?.candidates || []), ...(data.candidates || [])], sourceStates: data.sourceStates, groups: groups.map(group => group.query === query ? { ...group, candidates: [...new Map([...group.candidates, ...(data.candidates || [])].map(candidate => [candidate.id, candidate])).values()] } : group) });
++        message.textContent = "Fiche ajoutée aux propositions du participant. Vérifiez-la puis sélectionnez-la ; les autres choix restent conservés.";
++      }
+     } catch (error) { if (current()) message.textContent = error.message; }
+     finally { direct.querySelector("button").disabled = false; }
+   };
+@@
+ }
+ 
+ async function searchDepartureArtistChoices(query) {
++  const generation = compositionGeneration, seedId = activeDig.seed?.id;
+   return searchCreditChoices(query, async name => {
+     const response = await fetch(`/api/music/artist-choices?${new URLSearchParams({ name })}`, { signal: AbortSignal.timeout(16000) });
+     if (!response.ok) throw new Error("La recherche catalogue est indisponible. Réessayez.");
+     return response.json();
+-  });
++  }, { isCurrent: () => generation === compositionGeneration && seedId === activeDig.seed?.id });
+ }
+ 
+ function renderSeedOptions(preferredId = "") {
+@@
+     });
+     renderActiveSeed();
+ 
+-    const probes = await Promise.allSettled(
+-      (hints.length ? hints : [""])
+-        .slice(0, 4)
+-        .map((hint) => recordingDetails(video, hint))
+-    );
++    const probes = [], recordingQueries = hints.length ? hints : [""];
++    for (let offset = 0; offset < recordingQueries.length; offset += 3) {
++      if (generation !== compositionGeneration || activeDig.seed?.id !== seed.id) return sourceCoverage({}, false);
++      probes.push(...await Promise.allSettled(recordingQueries.slice(offset, offset + 3).map(hint => recordingDetails(video, hint))));
++    }
+ 
+     if (
+       generation !== compositionGeneration ||
+@@
+     seedContext: (() => {
+       const video = seedVideo(activeDig.seed), artist = video ? resolvedArtist(video) : null;
+       const name = declaredDepartureArtist(explorationGraph, seedId) || activeDig.dossier?.artistName || artist?.name;
+-      const label = hasExplicitDepartureArtist(explorationGraph, seedId) ? "Fiche choisie par vous" : declaredDepartureArtist(explorationGraph, seedId) || artist?.basis === "correction personnelle" ? "Artiste renseigné" : guidance.identityConfirmed ? "Artiste relié au morceau" : "Artiste à vérifier";
+-      return [name ? `${label} : ${name}` : ["track", "video"].includes(activeDig.seed?.type) ? "Artiste à identifier" : "", video?.channelTitle ? `Chaîne : ${video.channelTitle}` : ""].filter(Boolean).join(" · ");
++      const chosenNames = [...new Set(confirmedSeedArtistEdges(seedId).map(({artist}) => artist.name || artist.label).filter(Boolean))];
++      const label = declaredDepartureArtist(explorationGraph, seedId) || artist?.basis === "correction personnelle" ? "Crédits renseignés" : guidance.identityConfirmed ? "Artiste relié au morceau" : "Artiste à vérifier";
++      return [name ? `${label} : ${name}` : ["track", "video"].includes(activeDig.seed?.type) ? "Artiste à identifier" : "", chosenNames.length ? `Participants explorés : ${chosenNames.join(", ")}` : "", video?.channelTitle ? `Chaîne : ${video.channelTitle}` : ""].filter(Boolean).join(" · ");
+     })(),
+     previousDeparture: previous ? { id: previous.id, label: previous.label || previous.title || previous.id } : null,
+     journeyTrail: journeySeeds.slice(-4).map(seed => ({ id: seed.id, label: seed.label || seed.title || seed.id })),
+@@
+   ].filter(([context]) => context).map(([context, title, action]) => `<p>${title} : ${escapeHtml(context.label)}. Ce contexte s’ajoute au lien ci-dessus ; il ne le remplace pas.</p><details><summary>${action}</summary>${renderPath({ steps: context.sourcePath })}${renderPath({ steps: context.targetPath })}</details>`).join("");
+   card.innerHTML = `${imageId ? `<a class="derived-thumb" href="${escapeHtml(url)}" target="_blank" rel="noreferrer"><img src="${safeThumbnail("", imageId)}" alt="${escapeHtml(item.title)}" loading="lazy"></a>` : ""}<div class="derived-copy"><p class="video-meta">${escapeHtml(dateDescription(item))}</p><h3>${escapeHtml(item.title || item.label)}</h3><p class="channel">${escapeHtml(item.artist || "Artiste non renseigné")}</p><p class="catalogue-reason">${escapeHtml(item.explanation || "Lien documenté dans le catalogue")}</p><details class="catalogue-proof"><summary>Pourquoi cette piste ?</summary><p>${escapeHtml(evidence || "Relations du catalogue documentées")}</p>${renderPath({ steps: (item.path || []).filter(step => step.from && step.to) })}${contextProof}${item.sourceUrl ? `<a href="${escapeHtml(item.sourceUrl)}" target="_blank" rel="noreferrer">Voir la source ↗</a>` : ""}</details><div class="card-actions"><a href="${escapeHtml(url)}" target="_blank" rel="noreferrer">${item.listen?.kind === "video" ? "Écouter" : "Chercher l’écoute"} ↗</a><button type="button" data-keep>${notebookHas(item.id) ? "Gardée ✓" : "Garder"}</button><button type="button" data-continue>Continuer →</button></div>${item.listen?.kind !== "video" && item.artist ? `<details class="catalogue-listening"><summary>Vérifier une vidéo YouTube</summary><button type="button" data-listen>${item.listen?.status === "unconfirmed" ? "Vidéo non confirmée — réessayer" : "Trouver la vidéo exacte"}</button></details>` : ""}</div>`;
+   card.querySelector("[data-keep]").onclick = event => toggleNotebook(item, "catalogue", event.currentTarget);
++  const content = videoContent(item), suggestion = !item.artist && titleCreditSuggestion(item);
++  if (content.kind !== "music") {
++    card.querySelector(".video-meta").append(Object.assign(document.createElement("small"), { textContent: ` · ${content.label}` }));
++    const listen = card.querySelector(".card-actions a");
++    if (item.listen?.kind === "video") listen.textContent = "Voir / écouter la vidéo ↗";
++  }
++  if (suggestion) card.querySelector(".channel").textContent = `Nom suggéré par le titre : ${suggestion.name} · à vérifier en continuant`;
++  card.querySelector(".catalogue-reason").textContent = routeExplanation(item, direction, activeDig.seed?.label || "");
+   if (item.relationship?.message) card.querySelector(".catalogue-reason").append(Object.assign(document.createElement("small"), { className: "relationship-note", textContent: ` ${item.relationship.message}` }));
+   const listeningTools = card.querySelector(".catalogue-listening");
+   if (listeningTools) card.querySelector(".catalogue-proof").append(listeningTools);
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/artist-names.mjs
+@@
+ 
+ export function recordingArtistHints(value = "") {
+   const names = splitArtistNames(value);
+-  return [...new Set([String(value).trim(), ...names])].filter(Boolean).slice(0, 4);
++  return [...new Set([String(value).trim(), ...names])].filter(Boolean);
+ }
+ 
+-export async function searchCreditChoices(value, search) {
++export async function searchCreditChoices(value, search, { isCurrent = () => true } = {}) {
++  if (String(value).length > 300) throw new Error("La liste d’artistes est limitée à 300 caractères.");
+   // Also retain the full query: separators can belong to a band's name.
+-  const names = [...new Set([String(value).trim(), ...splitArtistNames(value)])].filter(Boolean).slice(0, 5);
+-  const replies = await Promise.allSettled(names.map(name => search(name)));
+-  const candidates = new Map(), sourceStates = {};
+-  for (const reply of replies) {
++  const names = [...new Set([String(value).trim(), ...splitArtistNames(value)])].filter(Boolean);
++  const replies = [];
++  // Bounded concurrency, not silently truncated credits. Preserve each query's
++  // status and candidates: a failed lookup must not look like a missing artist.
++  for (let i = 0; i < names.length; i += 3) {
++    if (!isCurrent()) return { candidates: [], groups: [], sourceStates: {}, cancelled: true };
++    replies.push(...await Promise.allSettled(names.slice(i, i + 3).map(name => search(name))));
++  }
++  const candidates = new Map(), sourceStates = {}, groups = [];
++  for (const [index, reply] of replies.entries()) {
++    const partial = Object.values(reply.value?.sourceStates || {}).some(state => state !== "ok");
++    groups.push({ query: names[index], candidates: reply.value?.candidates || [], sourceStates: reply.value?.sourceStates || {}, state: reply.status === "rejected" || partial ? "unavailable" : "complete" });
+     if (reply.status !== "fulfilled") continue;
+     for (const candidate of reply.value?.candidates || []) candidates.set(candidate.id, candidate);
+     for (const [source, state] of Object.entries(reply.value?.sourceStates || {})) {
+@@
+     }
+   }
+   if (replies.some(reply => reply.status === "rejected")) sourceStates.search = "unavailable";
+-  return { candidates: [...candidates.values()], sourceStates };
++  return { candidates: [...candidates.values()], groups, sourceStates };
+ }
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/departure-workflow.mjs
+@@
+ export function declaredDepartureArtist(graph = {}, seedId) {
+   const declaration = graph.entities?.[seedId]?.departureArtist;
+   return declaration?.source === "user" && typeof declaration.name === "string"
+-    ? declaration.name.trim().slice(0, 120) : "";
++    ? declaration.name.trim().slice(0, 300) : "";
++}
++
++// Explicit batch choice for a recording, never a merge of artist identities.
++// Preserve the complete personal credit even if only a subset is resolved.
++export function departureArtistsUpdate(graph, seed, name, candidates = []) {
++  name = String(name || "").normalize("NFC").trim();
++  if (!name || name.length > 300) throw new Error("Renseignez les artistes (300 caractères maximum).");
++  const entity = graph.entities?.[seed?.id];
++  if (!entity) throw new Error("Ce morceau n’est plus disponible. Rouvrez le départ.");
++  const choices = [...new Map(candidates.map(candidate => [candidate.id, candidate])).values()];
++  if (!choices.length || choices.some(candidate => candidate.entity?.id !== candidate.id || candidate.entity?.type !== "artist")) throw new Error("Choisissez au moins une fiche artiste valide.");
++  const selected = new Set(choices.flatMap(candidate => candidate.equivalentIds || [candidate.id]));
++  const edges = values(graph.edges).filter(edge => edge.from === seed.id && edge.kind === "probable_artist" && edge.status === "confirmed_user" && !selected.has(edge.to))
++    .map(edge => ({ ...edge, status: "rejected_user", evidence: [...(edge.evidence || []), "user_rejection"] }));
++  for (const candidate of choices) edges.push({ from: seed.id, to: candidate.id, kind: "probable_artist", status: "confirmed_user", departureRevision: entity.departureCorrection?.revision || "", evidence: ["user_confirmation", MANUAL_DEPARTURE_EVIDENCE] });
++  return { entities: [{ ...entity, departureArtist: { name, source: "user" } }, ...choices.map(candidate => candidate.entity)], edges };
+ }
+ 
+ export function departureArtistUpdate(graph, seed, name, candidate = null) {
+   name = String(name || "").normalize("NFC").trim();
+-  if (!name || name.length > 120) throw new Error("Saisissez un nom d’artiste de 1 à 120 caractères.");
++  if (!name || name.length > 300) throw new Error("Saisissez les noms d’artistes (1 à 300 caractères).");
+   const entity = graph.entities?.[seed?.id];
+   if (!entity) throw new Error("Ce morceau n’est plus disponible. Rouvrez le départ.");
+   const equivalent = new Set(candidate?.equivalentIds || (candidate ? [candidate.id] : []));
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/departure-workflow.test.mjs
+@@
+   assert.equal(declaredDepartureArtist({ entities: { [seed.id]: delta.entities[0] } }, "video:B"), "");
+   assert.equal(hasExplicitDepartureArtist({ edges: delta.edges }, seed.id), false);
+   assert.throws(() => departureArtistUpdate(graph, seed, "  "), /nom/);
+-  assert.throws(() => departureArtistUpdate(graph, seed, "a".repeat(121)), /nom/);
++  assert.throws(() => departureArtistUpdate(graph, seed, "a".repeat(301)), /nom/);
+   assert.equal(departureArtistUpdate(graph, seed, "X").entities[0].departureArtist.name, "X");
+ });
+ 
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/discovery-presentation.mjs
+@@
+   const anchor = item.anchor?.label;
+   const route = uniqueSteps.length ? uniqueSteps.join(" → ") : [seed, anchor, item.title].filter(Boolean).join(" → ");
+   const sources = [...new Set(list(item.evidence).map(e => typeof e === "string" ? e : e?.source).filter(Boolean))];
+-  return `${route || item.explanation || "Voir le lien documenté de cette piste."}${sources.length ? ` · Sources : ${sources.join(", ")}` : ""}${direction === "era" ? " · La période précise un lien existant ; ce n’est pas une preuve indépendante." : ""}`;
++  const viaParticipant = list(item.path).some(step => step.relation === "probable_artist");
++  const scope = viaParticipant ? " · Via la fiche d’un participant : ce lien ne confirme pas un crédit sur le morceau de départ." : "";
++  return `${route || item.explanation || "Voir le lien documenté de cette piste."}${scope}${sources.length ? ` · Sources : ${sources.join(", ")}` : ""}${direction === "era" ? " · La période précise un lien existant ; ce n’est pas une preuve indépendante." : ""}`;
+ }
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-mix-binding.test.mjs
+@@
+     exploreWorkspaceDirection: async () => { counters.network++; }
+   };
+   const ctx = vm.createContext(scope);
++  vm.runInContext(source.slice(source.indexOf("function confirmedSeedArtistEdges("), source.indexOf("async function rejectSeedArtistEdge(")), ctx);
+   assert.ok(helpers, "Les fonctions de binding doivent être réellement installées dans app.js");
+   vm.runInContext(helpers[0], ctx);
+   return { ctx, counters };
+@@
+   assert.equal(calls, 1);
+ });
+ 
++test("l’en-tête distingue les crédits complets des participants effectivement choisis", () => {
++  const { ctx } = context(), seedId = ctx.activeDig.seed.id;
++  ctx.explorationGraph = { entities: {
++    [seedId]: { id: seedId, type: "video", departureArtist: { name: "Deen, Eff Gee, Blaz Pit", source: "user" } },
++    a: { id: "a", type: "artist", name: "Deen" }, b: { id: "b", type: "artist", name: "Blaz Pit" }
++  }, edges: { a: { from: seedId, to: "a", kind: "probable_artist", status: "confirmed_user" }, b: { from: seedId, to: "b", kind: "probable_artist", status: "confirmed_user" } } };
++  const text = ctx.getScoutMixerView().seedContext;
++  assert.match(text, /Crédits renseignés : Deen, Eff Gee, Blaz Pit/);
++  assert.match(text, /Participants explorés : Deen, Blaz Pit/);
++});
++
+ test("la sortie utilise le vrai selectDiscoveries puis respecte les poids", () => {
+   const { ctx } = context();
+   ctx.setScoutMixerParameter("direction.label.weight", .2);
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-mix-session.mjs
+@@
+ import { presentationGroups } from "./discovery-presentation.mjs";
+ import { mixDirectionGroups } from "./direction-mixer.mjs";
+ import { compareMusic, isOtherArtist } from "./music-sorting.mjs";
++import { videoContent } from "./video-content.mjs";
+ 
+ const INACTIVE = new Set(["paused", "explored", "dismissed"]);
+ const list = value => Array.isArray(value) ? value : [];
+@@
+   const selected = (view.routes || []).filter(route => route.enabled && (!view.directionFilter || route.id === view.directionFilter));
+   if (view.busy) return "Recherche en cours. Les résultats arriveront ici ; vous pouvez interrompre l’attente.";
+   if (!selected.length) return "Activez une direction dans les réglages pour commencer.";
++  if (selected.some(route => route.contentHidden) && !selected.some(route => route.eligible)) return "Les publications chargées sont masquées par les filtres de contenu ou d’artistes. Incluez les entretiens / annonces pour les revoir, ou cherchez d’autres pistes.";
+   if (selected.some(route => route.state === "error" || route.state === "unavailable")) return "La recherche n’a pas abouti : une source est indisponible. Réessayez les sources ; aucun résultat ne signifie pas ici aucun lien.";
+   if (selected.some(route => route.state === "confirmation")) return "L’identité du départ doit être précisée avant de consulter ces catalogues.";
+   if (selected.some(route => route.distantHidden)) return "Des liens éditoriaux larges sont disponibles. Activez « Inclure les liens éloignés » pour les consulter, ou recherchez d’autres directions.";
+@@
+       (guidance?.state === "needs_confirmation" && list(guidance.directions).includes(id));
+     const raw = list(group?.items).filter(validItem);
+     const nearby = raw.filter(item => controls.includeDistant || !item.relationship?.distant || directLinkedIds.has(item.id) || item.anchor?.id === seedId);
+-    const eligibleRaw = artistFilterApplied ? nearby.filter(item => isOtherArtist(item, { name: seedArtist, artistIds: seedArtistIds })) : nearby;
++    const contentVisible = nearby.filter(item => {
++      const { kind } = videoContent(item);
++      return (kind !== "editorial" || controls.includeEditorial) && (kind !== "promotional" || controls.includePromotional);
++    });
++    const eligibleRaw = artistFilterApplied ? contentVisible.filter(item => isOtherArtist(item, { name: seedArtist, artistIds: seedArtistIds })) : contentVisible;
+     const enabled = Boolean(seedId && weight > 0 && !paused && !confirmation && !blocked);
+     const unavailable = group?.coverage?.state === "source_unavailable";
+     const operationalState = !seedId ? "idle" : !weight ? "muted" : paused ? "paused" :
+@@
+       group?.coverage?.hasMore ? "continue" : "open";
+     return {
+       id, label, weight, state, enabled, plan,
+-      loaded: raw.length, eligible: selected.length, presented: 0, distantHidden: raw.length - nearby.length, artistHidden: nearby.length - eligibleRaw.length,
++      loaded: raw.length, eligible: selected.length, presented: 0, distantHidden: raw.length - nearby.length, contentHidden: nearby.length - contentVisible.length, artistHidden: contentVisible.length - eligibleRaw.length,
+       distinctCurators: id === "curator"
+         ? new Set(raw.map(item => String(item.channelId || item.anchor?.id || item.channelTitle || "")).filter(Boolean)).size
+         : 0,
+@@
+     ? 1 + Math.floor((1 - effectiveSpread) * Math.max(0, max - 1)) : Infinity;
+   const curatorCounts = new Map();
+   const albumCounts = new Map(), artistCounts = new Map();
++  const familyCounts = new Set();
++  const strictDiversity = effectiveSpread > 0 && controls.sort === "explore" && !directionFilter;
+   // Individual credits, not the whole 'X & Y' display string. These keys
+   // diversify presentation only; they never merge catalogue identities.
+   const artistKeys = item => [...new Set([...(item.artistIds || []).map(id => `id:${id}`),
+@@
+   // Equal weights alternate routes; a larger weight receives more slots.
+   while (items.length < max) {
+     let winner = null;
+-    for (const respectDiversity of [true, false]) {
++    for (const respectDiversity of (strictDiversity ? [true] : [true, false])) {
+       for (const queue of queues) {
+         const item = queue.items.find(candidate => !picked.has(candidate.id) &&
+           (!respectDiversity || ((queue.id !== "curator" || (curatorCounts.get(curatorKey(candidate)) || 0) < curatorCap) &&
+             (!effectiveSpread || !candidate.releaseId || !albumCounts.has(candidate.releaseId)) &&
+             (!effectiveSpread || artistKeys(candidate).every(key => (artistCounts.get(key) || 0) < 2)) &&
+-            (!effectiveSpread || !intermediaryKey(candidate) || (intermediaryCounts.get(intermediaryKey(candidate)) || 0) < 2))));
++            (!effectiveSpread || !intermediaryKey(candidate) || (intermediaryCounts.get(intermediaryKey(candidate)) || 0) < 2) &&
++            (!effectiveSpread || !videoContent(candidate).family || !familyCounts.has(videoContent(candidate).family)))));
+         if (!item) continue;
+         const finish = (queue.served + 1) / queue.weight;
+         if (!winner || (controls.sort === "explore" ? finish < winner.finish : compare(item, winner.item) < 0)) winner = { queue, finish, item };
+@@
+     const item = winner.item;
+     if (queue.id === "curator") curatorCounts.set(curatorKey(item), (curatorCounts.get(curatorKey(item)) || 0) + 1);
+     if (item.releaseId) albumCounts.set(item.releaseId, (albumCounts.get(item.releaseId) || 0) + 1);
++    if (videoContent(item).family) familyCounts.add(videoContent(item).family);
+     for (const key of artistKeys(item)) artistCounts.set(key, (artistCounts.get(key) || 0) + 1);
+     if (intermediaryKey(item)) intermediaryCounts.set(intermediaryKey(item), (intermediaryCounts.get(intermediaryKey(item)) || 0) + 1);
+     queue.served++;
+@@
+     items,
+     routes,
+     candidates: mixed.length,
++    diversityLimited: strictDiversity && items.length < max && mixed.length > items.length,
+     hasNextPage: items.length > 0 && mixed.length > items.length,
+     directionFilter,
+     canRewind: excluded.size > (seedId ? 1 : 0),
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-mix-session.test.mjs
+@@
+   assert.equal(result.hasNextPage, true);
+ });
+ 
+-test("la dernière page mixte utilise les vidéos restantes sans fabriquer de vide", () => {
++test("une page mixte réduite garde les vidéos accessibles sans remplir silencieusement", () => {
+   const groups = { label: { items: [row("label")] }, curator: { items: Array.from({ length: 8 }, (_, i) => row(`C${i}`)) } };
+   const result = view({ groups });
+-  assert.equal(result.items.length, 6);
++  assert.equal(result.items.length, 2);
++  assert.equal(result.diversityLimited, true);
+   const last = view({ groups, history: consumeMixPage({}, result) });
+-  assert.equal(last.items.length, 3);
+-  assert.equal(last.hasNextPage, false);
++  assert.ok(last.items.length > 0);
++  const focused = view({ groups, history: consumeMixPage({}, result), directionFilter: "curator" });
++  assert.equal(focused.items.length, 6);
++  assert.equal(focused.hasNextPage, true);
+ });
+ 
+ test("augmenter LABEL inverse réellement la répartition de la sortie", () => {
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-mixer-panel.mjs
+@@
+   viewTools.append(sortLabel,reshuffle);
+   const otherArtists=viewToggle("scout-other-artists","Autres artistes uniquement","scope.otherArtists");
+   const distant=viewToggle("scout-distant-relations","Inclure les liens éloignés","scope.distant");
++  const editorial=viewToggle("scout-editorial","Inclure les entretiens / documentaires probables","scope.editorial");
++  const promotional=viewToggle("scout-promotional","Inclure les annonces / extraits promotionnels probables","scope.promotional");
+   const viewHelp=make("p","mix-view-help"); viewHelp.id="scout-view-help";
+   sort.setAttribute("aria-describedby",viewHelp.id); otherArtists.setAttribute("aria-describedby",viewHelp.id); distant.setAttribute("aria-describedby",viewHelp.id);
+   resultsToolbar.after(viewTools,viewHelp);
+@@
+     localTransport.hidden=!view.items.length && !view.canRewind; rewind.hidden=!view.canRewind;
+     filter.value=directionFilter;
+     sort.value=view.patch.sort; otherArtists.checked=view.patch.otherArtistsOnly; distant.checked=view.patch.includeDistant;
++    editorial.checked=view.patch.includeEditorial; promotional.checked=view.patch.includePromotional;
+     otherArtists.disabled=false;
+     reshuffle.hidden=view.patch.sort!=="random";
+     const omissions=selected.reduce((sum,r)=>sum+r.artistHidden,0), far=selected.reduce((sum,r)=>sum+r.distantHidden,0);
+     viewHelp.textContent=[
+       "Tri sur les pistes chargées restant à parcourir ; aucun appel aux catalogues.",
+-      view.patch.shape?.spread > 0 ? "La diversité privilégie plusieurs artistes, albums et partenaires dans chaque page, quand les pistes chargées le permettent. Réglez Diversité à zéro pour un ordre strict." : "",
++      view.patch.shape?.spread > 0 ? "En sélection équilibrée, une page peut être plus courte : au plus deux pistes par artiste ou partenaire, une par album et session repérée. Diversité à zéro ou une direction ciblée permet de tout parcourir." : "",
++      view.diversityLimited ? "Choix chargé peu varié : page volontairement réduite. Chargez d’autres directions ou poursuivez les catalogues pour élargir le choix." : "",
++      selected.some(r=>r.contentHidden) ? `${selected.reduce((sum,r)=>sum+(r.contentHidden||0),0)} observations de contenus éditoriaux ou promotionnels masquées selon les marqueurs du titre. Ces indications restent à vérifier ; les filtres ci-dessus permettent de les revoir.` : "",
+       view.patch.sort.startsWith("release-") ? "Date de sortie musicale connue, jamais l’upload YouTube. Dates inconnues en fin de liste." : view.patch.sort==="relation" ? "Pertinence du lien : crédits et projets, compilations, labels, contexte, chaînes, puis grands catalogues. À niveau égal : chemin le plus court. La diversité évite de remplir la page d’un seul album. Ce n’est pas une similarité sonore." : view.patch.sort==="random" ? "Ordre aléatoire stable : Remélanger change l’ordre, sans effacer les pages déjà parcourues." : "",
+       !view.canFilterArtists ? (view.patch.otherArtistsOnly ? "Filtre autres artistes en attente : ce départ n’a pas d’artiste de référence. Aucune piste n’est masquée par ce filtre ; vous pouvez le décocher." : "Autres artistes : applicable depuis un morceau ou un artiste identifié, pas depuis un label ou une playlist entière.") : view.patch.otherArtistsOnly ? `Artiste du départ, co-crédits et artistes inconnus masqués (${omissions} observations de routes).` : "",
+       far ? `${far} observations de liens éloignés masquées : label avec au moins 500 sorties, sans autre crédit reliant la piste au départ.` : ""
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-parameters.mjs
+@@
+   Object.freeze({ id: "shape.depth", label: "DEPTH", group: "shape", control: "stepped", values: DEPTH_STEPS, defaultValue: 6, semantic: "graph_depth", evidenceAuthority: false, execution: "next_dig" }),
+   Object.freeze({ id: "shape.spread", label: "SPREAD", group: "shape", control: "continuous", min: 0, max: 1, step: 0.05, defaultValue: 1, semantic: "artist_dispersion", evidenceAuthority: false, execution: "local" })
+ ];
+-export const SCOUT_PARAMETER_REGISTRY = Object.freeze([...ROUTE_PARAMETERS, ...SHAPE_PARAMETERS, ...["scope.distant", "scope.otherArtists", "view.sort"].map(id => Object.freeze({ id, group: "scope", control: id === "view.sort" ? "select" : "boolean", defaultValue: id === "view.sort" ? "explore" : false, semantic: "display_scope", evidenceAuthority: false, execution: "local" }))]);
++export const SCOUT_PARAMETER_REGISTRY = Object.freeze([...ROUTE_PARAMETERS, ...SHAPE_PARAMETERS, ...["scope.distant", "scope.otherArtists", "scope.editorial", "scope.promotional", "view.sort"].map(id => Object.freeze({ id, group: "scope", control: id === "view.sort" ? "select" : "boolean", defaultValue: id === "view.sort" ? "explore" : false, semantic: "display_scope", evidenceAuthority: false, execution: "local" }))]);
+ 
+ export function createScoutPatch(input = {}) {
+   const previous = input && typeof input === "object" ? input : {};
+@@
+   const shape = previous.shape && typeof previous.shape === "object" ? previous.shape : {};
+   const directionWeights = {};
+   for (const { id } of SCOUT_DIRECTIONS) directionWeights[id] = clamp(finite(incoming[id], 1), 0, 1);
+-  return { schemaVersion: 2, directionWeights, includeDistant: previous.includeDistant === true, otherArtistsOnly: previous.otherArtistsOnly === true, sort: MUSIC_SORTS.some(([id]) => id === previous.sort) ? previous.sort : "explore", shuffleKey: String(previous.shuffleKey || "scout").slice(0, 100), shape: { depth: depthValue(shape.depth ?? previous.depth, 6), spread: clamp(finite(shape.spread ?? previous.spread, 1), 0, 1) } };
++  return { schemaVersion: 2, directionWeights, includeEditorial: previous.includeEditorial === true, includePromotional: previous.includePromotional === true, includeDistant: previous.includeDistant === true, otherArtistsOnly: previous.otherArtistsOnly === true, sort: MUSIC_SORTS.some(([id]) => id === previous.sort) ? previous.sort : "explore", shuffleKey: String(previous.shuffleKey || "scout").slice(0, 100), shape: { depth: depthValue(shape.depth ?? previous.depth, 6), spread: clamp(finite(shape.spread ?? previous.spread, 1), 0, 1) } };
+ }
+ export function scoutParameterDefinition(parameterId) { return SCOUT_PARAMETER_REGISTRY.find(({ id }) => id === parameterId) || null; }
+ export function scoutParameterValue(patch, parameterId) {
+@@
+   if (parameterId === "shape.spread") return p.shape.spread;
+   if (parameterId === "scope.distant") return p.includeDistant;
+   if (parameterId === "scope.otherArtists") return p.otherArtistsOnly;
++  if (parameterId === "scope.editorial") return p.includeEditorial;
++  if (parameterId === "scope.promotional") return p.includePromotional;
+   if (parameterId === "view.sort") return p.sort;
+ }
+ export function setScoutParameter(patch, parameterId, value) {
+   const d=scoutParameterDefinition(parameterId); if (!d) throw new Error(`Paramètre Scout inconnu: ${parameterId}`); const p=createScoutPatch(patch);
+   if (parameterId === "scope.distant") return { ...p, includeDistant: value === true };
+   if (parameterId === "scope.otherArtists") return { ...p, otherArtistsOnly: value === true };
++  if (parameterId === "scope.editorial") return { ...p, includeEditorial: value === true };
++  if (parameterId === "scope.promotional") return { ...p, includePromotional: value === true };
+   if (parameterId === "view.sort") return createScoutPatch({ ...p, sort: value });
+   if (d.group === "route-mixer") {
+     if (!DIRECTION_IDS.has(d.direction)) throw new Error(`Direction Scout inconnue: ${d.direction}`);
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-parameters.test.mjs
+@@
+     ]
+   );
+ 
+-  assert.equal(SCOUT_PARAMETER_REGISTRY.length, 13);
++  assert.equal(SCOUT_PARAMETER_REGISTRY.length, 15);
+   assert.ok(SCOUT_PARAMETER_REGISTRY.every(p => p.evidenceAuthority === false));
+ });
+ 
+*** Add File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/video-content.mjs
++// Reversible presentation hints from explicit title markers, not musical
++// similarity, catalogue identities or proof that a video is a full recording.
++const key = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase().trim();
++export function videoContent(item = {}) {
++  const isVideo = item.type === "video" || item.source === "youtube" || item.id?.startsWith("video:youtube:");
++  if (!isVideo) return { kind: "music", label: "Morceau catalogue", family: "" };
++  const title = String(item.title || item.label || ""), normalized = key(title);
++  const editorial = /(?:^|[|:–—-]\s*)(?:documentaire|entretien|interview|making[ -]of)\b/u.test(normalized);
++  const promotional = /\b(?:teaser|bande[ -]annonce)\b|\b(?:ce soir|demain|lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)\s+(?:a\s+)?\d{1,2}h\b|c['’]est dispo|#shorts?\b/u.test(normalized);
++  const session = normalized.match(/\bgrunt\s*#?\s*(\d+)\b/u);
++  const family = session && (item.channelId || item.channelTitle) ? `${item.channelId || key(item.channelTitle)}:grunt:${session[1]}` : "";
++  const kind = editorial ? "editorial" : promotional ? "promotional" : "unknown";
++  return { kind, label: ({ editorial: "Entretien / documentaire probable", promotional: "Annonce / extrait promotionnel probable", unknown: "Publication vidéo · contenu à vérifier" })[kind], family };
++}
++
++export function titleCreditSuggestion(video = {}) {
++  const title = String(video.title || "").trim();
++  const collective = title.match(/^(.+?)\s*\(([^()]+(?:,|\s&\s)[^()]+)\)\s*(?:\||$)/u);
++  if (collective && !/\b(?:live|remaster(?:ed)?|version|edit|mix|mono|stereo|19\d{2}|20\d{2})\b/i.test(collective[2])) return { title: collective[1].trim(), name: collective[2].trim(), basis: "participants indiqués dans le titre, à vérifier" };
++  const parts = title.split(/\s*\|\s*/u);
++  const channel = key(video.channelTitle).replace(/\s+-\s+topic$/, "");
++  if (parts.length >= 2 && channel && key(parts.at(-1)).replace(/\s*#\d+.*$/, "") === channel && !/[#!?:]/u.test(parts[0]) && !videoContent({ ...video, type: "video" }).kind.match(/editorial|promotional/)) {
++    return { name: parts[0].trim(), basis: "nom indiqué avant la chaîne dans le titre, à vérifier" };
++  }
++  return null;
++}
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/catalogue.mjs
+@@
+ function planTasks(graph, seedId, direction) {
+   const index = graphIndex(graph);
+   const { starts, anchors } = directionAnchors(index, seedId, direction);
++  const multipleArtists = [...starts.keys()].filter(id => index.entities[id].type === "artist").length > 1;
+   const tasks = [];
+-  const add = (node, type, purpose = "") => { for (const source of ["discogs", "musicbrainz"]) if (validId(source, node.externalIds?.[source])) tasks.push({ source, type, id: node.externalIds[source], page: 1, purpose, ...(purpose.startsWith("destination") ? { branch: node.id } : {}) }); };
++  const add = (node, type, purpose = "") => { for (const source of ["discogs", "musicbrainz"]) if (validId(source, node.externalIds?.[source])) tasks.push({ source, type, id: node.externalIds[source], page: 1, purpose, ...(purpose.startsWith("destination") || (multipleArtists && node.type === "artist") ? { branch: node.id } : {}) }); };
+   if (["curator", "scene", "era"].includes(direction)) return tasks;
+   for (const id of anchors.keys()) {
+     const node = index.entities[id];
+@@
+     if (node.type === "recording" && direction !== "alias") add(node, "recording");
+     if (node.type === "artist") {
+       add(node, "artist");
+-      if (!actionableAnchor && direction !== "alias") add(node, "artist_releases");
++      const ownAnchor = multipleArtists ? [...anchors.values()].some(path => path.some(step => step.from?.id === id || step.to?.id === id)) : actionableAnchor;
++      if (!ownAnchor && direction !== "alias") add(node, "artist_releases");
+     }
+   }
+   if (direction !== "alias") for (const node of [...startEditions.values()].slice(0, 8)) add(node, node.type);
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/ephemeral-exploration.mjs
+@@
+         const edgeMap = new Map(saved.edges.map(item => [edgeKey(item), item]));
+         const changed = deliberate.entities.some(item => JSON.stringify(item) !== JSON.stringify(entityMap.get(item.id))) ||
+           deliberate.edges.some(item => JSON.stringify(item) !== JSON.stringify(edgeMap.get(edgeKey(item))));
+-        if (changed) await this.personal[name](deliberate);
++        if (changed) await this.personal.commitPersonalGraph(deliberate);
+         if (session.closed) throw Object.assign(new Error("Fouille fermée."), { httpStatus: 410 });
+         return store[name](delta);
+       };
+*** Add File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/multi-participant-quality.test.mjs
++import test from "node:test";
++import assert from "node:assert/strict";
++import { searchCreditChoices } from "../public/artist-names.mjs";
++import { departureArtistsUpdate, declaredDepartureArtist } from "../public/departure-workflow.mjs";
++import { departureRoutingGraph } from "../public/departure-integrity.mjs";
++import { departureArtistIds, isOtherArtist } from "../public/music-sorting.mjs";
++import { buildScoutMixView, consumeMixPage } from "../public/scout-mix-session.mjs";
++import { createScoutPatch, setScoutParameter } from "../public/scout-parameters.mjs";
++import { titleCreditSuggestion, videoContent } from "../public/video-content.mjs";
++import { routeExplanation } from "../public/discovery-presentation.mjs";
++import { graphIndex, directionAnchors } from "./catalogue-graph.mjs";
++import { exploreCatalogueBranch } from "./catalogue.mjs";
++import { PersistentStore } from "./persistent-store.mjs";
++import { EphemeralExplorations } from "./ephemeral-exploration.mjs";
++
++const credit = "Deen Burbigo, Eff Gee, Ratu$, Esso Luxueux, Stutt, robdbloc, Blaz Pit";
++const seed = { id: "video:youtube:fixture1234", type: "video", title: "Saboteur", departureCorrection: { revision: "r1" } };
++const choice = (id, name) => ({ id: `artist:discogs:${id}`, name, source: "discogs", entity: { id: `artist:discogs:${id}`, type: "artist", name, externalIds: { discogs: String(id) } } });
++const merge = (graph, delta) => ({ entities: { ...graph.entities, ...Object.fromEntries(delta.entities.map(n => [n.id, n])) }, edges: { ...graph.edges, ...Object.fromEntries(delta.edges.map(e => [`${e.from}:${e.kind}:${e.to}`, e])) } });
++const select = (items, { exclude }) => items.filter(item => !exclude.includes(item.id));
++const row = (id, extra = {}) => ({ id, type: "track", title: `Song ${id}`, artist: "Cookin’ Soul", releaseId: "album", ...extra });
++const mix = (items, options = {}) => buildScoutMixView({ seedId: seed.id, groups: { remix: { items } }, select, ...options });
++
++test("les sept participants sont recherchés, concurrence bornée et noms conservés par groupe", async () => {
++  let active = 0, peak = 0; const queries = [];
++  const result = await searchCreditChoices(credit, async name => {
++    active++; peak = Math.max(peak, active); queries.push(name);
++    await new Promise(resolve => setTimeout(resolve, 1)); active--;
++    if (name === "Ratu$") throw new Error("source indisponible");
++    return { candidates: [choice(queries.indexOf(name) + 1, name)], sourceStates: { discogs: "ok" } };
++  });
++  assert.equal(queries.length, 8); assert.equal(peak, 3);
++  for (const name of credit.split(", ")) assert.ok(queries.includes(name));
++  assert.equal(result.groups.find(g => g.query === "Ratu$").state, "unavailable");
++  assert.equal(result.groups.find(g => g.query === "Blaz Pit").candidates[0].name, "Blaz Pit");
++  assert.equal(result.confirmed, undefined);
++});
++
++test("changer de départ arrête les lots suivants de recherche", async () => {
++  let current = true, count = 0;
++  const result = await searchCreditChoices(credit, async () => { count++; current = false; return {}; }, { isCurrent: () => current });
++  assert.equal(count, 3); assert.equal(result.cancelled, true);
++});
++
++test("validation multi-artistes atomique : préserver les crédits, les révisions et les identités séparées", () => {
++  const graph = { entities: { [seed.id]: seed }, edges: {} }, before = structuredClone(graph);
++  const choices = [choice(1, "Deen Burbigo"), choice(2, "Eff Gee"), choice(3, "Blaz Pit")];
++  const updated = merge(graph, departureArtistsUpdate(graph, seed, credit, choices));
++  assert.equal(declaredDepartureArtist(updated, seed.id), credit);
++  assert.deepEqual(departureArtistIds(updated, seed.id).sort(), choices.map(c => c.id).sort());
++  assert.ok(Object.values(updated.edges).every(e => e.departureRevision === "r1"));
++  assert.deepEqual(graph, before);
++  assert.ok(!Object.values(updated.edges).some(e => e.kind === "same_identity"));
++  assert.equal(isOtherArtist({ artist: "Eff Gee", artistIds: [choices[1].id] }, { name: credit, artistIds: departureArtistIds(updated, seed.id) }), false);
++  const { starts } = directionAnchors(graphIndex(updated), seed.id, "featuring");
++  assert.ok(choices.every(c => starts.has(c.id)), "chaque participant doit ouvrir une origine de routage");
++  const revised = merge(updated, departureArtistsUpdate(updated, seed, credit, [choices[2]]));
++  assert.deepEqual(departureArtistIds(revised, seed.id), [choices[2].id]);
++  assert.equal(declaredDepartureArtist(revised, seed.id), credit);
++  const corrected = structuredClone(updated); corrected.entities[seed.id].departureCorrection.revision = "r2";
++  assert.equal(departureArtistIds(departureRoutingGraph(corrected), seed.id).length, 0);
++});
++
++test("les crédits longs restent entiers et les validations vides sont refusées", () => {
++  const graph = { entities: { [seed.id]: seed }, edges: {} }, name = "Artiste ".repeat(30).trim();
++  const updated = merge(graph, departureArtistsUpdate(graph, seed, name, [choice(1, "Artiste")]));
++  assert.equal(declaredDepartureArtist(updated, seed.id), name);
++  assert.throws(() => departureArtistsUpdate(graph, seed, credit, []), /au moins/);
++  assert.throws(() => departureArtistsUpdate(graph, seed, "x".repeat(301), [choice(1, "A")]), /300/);
++});
++
++test("échec durable du lot : aucun choix partiel ; reprise et isolation des départs", async () => {
++  const personal = new PersistentStore(null); personal.loaded = true;
++  const digs = new EphemeralExplorations({ personal });
++  const token = await digs.start(seed.id);
++  const run = action => digs.context.run(digs.get(token), action);
++  await run(() => digs.store.ingestGraph({ entities: [{ id: seed.id, type: "video", title: seed.title }], edges: [] }));
++  const before = run(() => digs.store.snapshot());
++  const delta = departureArtistsUpdate(before, seed, credit, [choice(1, "Deen"), choice(2, "Eff")]);
++  personal.persist = async () => { throw new Error("disk full"); };
++  await assert.rejects(run(() => digs.store.ingestGraph(delta)), /disk full/);
++  assert.deepEqual(run(() => digs.store.snapshot()), before);
++  assert.equal(Object.keys(personal.state.edges).length, 0);
++  personal.persist = async () => {};
++  await run(() => digs.store.ingestGraph(delta));
++  const reopened = await digs.start(seed.id);
++  const restored = digs.context.run(digs.get(reopened), () => digs.store.snapshot());
++  assert.equal(declaredDepartureArtist(restored, seed.id), credit);
++  assert.deepEqual(departureArtistIds(restored, seed.id).sort(), ["artist:discogs:1", "artist:discogs:2"]);
++  const other = await digs.start("video:youtube:otherseed");
++  assert.deepEqual(digs.context.run(digs.get(other), () => digs.store.snapshot()).entities, {});
++});
++
++test("un partenaire connu du premier artiste ne bloque pas le catalogue du second", async () => {
++  let graph = { entities: { [seed.id]: seed }, edges: {} };
++  graph = merge(graph, departureArtistsUpdate(graph, seed, credit, [choice(1, "Deen"), choice(2, "Eff")]));
++  graph = merge(graph, { entities: [choice(3, "Partenaire").entity], edges: [{ from: "artist:discogs:1", to: "artist:discogs:3", kind: "featured_with", status: "observed", source: "fixture" }] });
++  const calls = [];
++  const result = await exploreCatalogueBranch({ graph, seedId: seed.id, direction: "featuring", configured: { discogs: true }, requestBudget: 20, minimumEligible: 6,
++    request: async (_, path) => { calls.push(path); return path.endsWith("/releases") ? { releases: [], pagination: { pages: 1 } } : { id: Number(path.split("/").at(-1)), name: "Fixture" }; } });
++  assert.ok(calls.includes("/artists/2/releases"));
++  assert.ok(result.coverage.fetchedRequests <= 20);
++});
++
++test("décisions concurrentes : une écriture refusée ne fuit ni dans les lectures ni dans le lot suivant", async () => {
++  const personal = new PersistentStore(null); personal.loaded = true;
++  let releaseWrite, signalStarted;
++  const started = new Promise(resolve => { signalStarted = resolve; });
++  const gate = new Promise((_, reject) => { releaseWrite = reject; });
++  let count = 0;
++  personal.persist = async () => { if (++count === 1) { signalStarted(); await gate; } };
++  const first = personal.commitPersonalGraph({ entities: [choice(1, "Refusé").entity] });
++  const rejected = assert.rejects(first, /disk full/);
++  await started;
++  const second = personal.commitPersonalGraph({ entities: [choice(2, "Conservé").entity] });
++  assert.deepEqual(personal.snapshot().entities, {});
++  releaseWrite(new Error("disk full"));
++  await rejected; await second;
++  assert.deepEqual(Object.keys(personal.snapshot().entities), ["artist:discogs:2"]);
++});
++
++test("le mode équilibré ne remplit plus six places avec le même album et reste parcourable", () => {
++  const rows = Array.from({ length: 8 }, (_, i) => row(`track${i}`));
++  const result = mix(rows);
++  assert.equal(result.items.length, 1); assert.equal(result.diversityLimited, true); assert.equal(result.candidates, 8);
++  const next = mix(rows, { history: consumeMixPage({}, result) });
++  assert.equal(next.items.length, 1); assert.notEqual(next.items[0].id, result.items[0].id);
++  assert.equal(mix(rows, { patch: { shape: { spread: 0 } } }).items.length, 6);
++  assert.equal(mix(rows, { directionFilter: "remix" }).items.length, 6);
++  const varied = mix(rows.map((item, i) => ({ ...item, artist: `Artist ${i}`, releaseId: `Album ${i}` })));
++  assert.equal(varied.items.length, 6); assert.equal(varied.diversityLimited, false);
++});
++
++test("marqueurs éditoriaux et promotionnels : filtrage réversible, aucune suppression", () => {
++  const rows = [row("video:youtube:doc", { type: "video", title: 'Danyl : Documentaire « entre deux lignes » | Grünt' }),
++    row("video:youtube:promo", { type: "video", title: "Grünt #74 feat. @leratluciano Ce soir 18h #rap" }),
++    row("video:youtube:music", { type: "video", title: "Le Rat Luciano | Grünt #74" })];
++  const before = structuredClone(rows);
++  assert.equal(videoContent(rows[0]).kind, "editorial"); assert.equal(videoContent(rows[1]).kind, "promotional");
++  assert.equal(mix(rows).candidates, 1);
++  let patch = setScoutParameter(createScoutPatch(), "scope.editorial", true);
++  patch = setScoutParameter(patch, "scope.promotional", true);
++  assert.equal(mix(rows, { patch }).candidates, 3); assert.deepEqual(rows, before);
++  assert.equal(videoContent(row("track", { title: "Interview" })).kind, "music");
++  assert.equal(videoContent({ type: "video", title: "Tomorrow is mine" }).kind, "unknown");
++});
++
++test("les publications d'une session ne monopolisent pas la page sans être fusionnées", () => {
++  const rows = [74, 74, 74, 75, 76].map((session, i) => row(`video:youtube:${i}`, { type: "video", title: `Artist ${i} | Grünt #${session}`, artist: `Artist ${i}`, releaseId: "", channelId: "channel" }));
++  const result = mix(rows);
++  assert.equal(result.items.length, 3); assert.equal(result.candidates, 5);
++  assert.equal(mix(rows, { directionFilter: "remix" }).items.length, 5);
++});
++
++test("noms suggérés dans le titre : ni identité ni attribution à la chaîne", () => {
++  const suggestion = titleCreditSuggestion({ title: `Saboteur (${credit}) | Grünt #53`, channelTitle: "Grünt" });
++  assert.equal(suggestion.title, "Saboteur"); assert.equal(suggestion.name, credit); assert.equal(suggestion.id, undefined);
++  assert.equal(titleCreditSuggestion({ title: "BEN plg | Grünt #76", channelTitle: "Grünt" }).name, "BEN plg");
++  assert.equal(titleCreditSuggestion({ title: "Titre sans crédits", channelTitle: "Grünt" }), null);
++  assert.equal(titleCreditSuggestion({ title: "Fave | Entretien - Documentaire | Grünt", channelTitle: "Grünt" }), null);
++  assert.equal(titleCreditSuggestion({ title: "A song (Live, 2020) | Channel", channelTitle: "Channel" })?.title, undefined);
++});
++
++test("explication : conserver le chemin et signaler le détour par la discographie", () => {
++  const text = routeExplanation({ path: [{ from: { label: "Saboteur" }, to: { label: "Deen Burbigo" }, relation: "probable_artist" }, { from: { label: "Deen Burbigo" }, to: { label: "Autre morceau" }, relation: "credited_on" }], evidence: [{ source: "discogs" }] });
++  assert.match(text, /Saboteur → Deen Burbigo → Autre morceau/);
++  assert.match(text, /ne confirme pas un crédit sur le morceau de départ/);
++});
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/persistent-store.mjs
+@@
+     this.state = clone(EMPTY);
+     this.loaded = false;
+     this.writeTail = Promise.resolve();
++    this.decisionTail = Promise.resolve();
+   }
+ 
+   async load() {
+@@
+     return this;
+   }
+ 
+-  async persist() {
++  async persist(state = null) {
+     await this.load();
+-    const snapshot = JSON.stringify(this.state, null, 2);
++    const snapshot = JSON.stringify(state || this.state, null, 2);
+     this.writeTail = this.writeTail.catch(() => {}).then(async () => {
+       await mkdir(dirname(this.pathname), { recursive: true });
+       const temporary = `${this.pathname}.tmp`;
+@@
+     return existed;
+   }
+ 
++  // Used only by the isolated personal-decision store (no provider cache).
++  // Prepare the complete batch outside live state; publish after durable success.
++  // Serialisation prevents a failed batch from contaminating a later decision.
++  async commitPersonalGraph(delta) {
++    const input = clone(delta);
++    const operation = this.decisionTail.catch(() => {}).then(async () => {
++      const staged = new PersistentStore(null, { now: this.now });
++      staged.loaded = true;
++      staged.state = clone(this.state);
++      staged.persist = async () => {};
++      await staged.ingestGraph(input);
++      await this.persist(staged.state);
++      this.state = staged.state;
++      return this.stats();
++    });
++    this.decisionTail = operation;
++    return operation;
++  }
++
+   async saveDepartureCorrection(delta) {
+     const entity = delta.entities[0], previous = this.state.entities[entity.id];
+     try { return await this.ingestGraph(delta); }
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/server.mjs
+@@
+ const IDENTITY_ENGINE = fileURLToPath(new URL("./lib/identity.mjs", import.meta.url));
+ const DIGGING_ENGINE = fileURLToPath(new URL("./lib/digging.mjs", import.meta.url));
+ const EXPLORATION_ENGINE = fileURLToPath(new URL("./lib/exploration.mjs", import.meta.url));
+-const APP_VERSION = "0.19.0";
++const APP_VERSION = "0.20.0";
+ const PORT = Number(process.env.PORT || 4181);
+ const googleOAuth = await new GoogleOAuthSession({ config: googleOAuthConfiguration(process.env, PORT) }).load();
+ const MUSICBRAINZ_ROOT = process.env.MUSICBRAINZ_ROOT || "https://musicbrainz.org/ws/2";
+@@
+       const name = (url.searchParams.get("name") || "").trim();
+       const reference = catalogueArtistReference(url.searchParams.get("reference") || "");
+       if (url.searchParams.has("reference") && !reference) return sendJson(response, 400, { message: "Utilisez une fiche artiste HTTPS Discogs ou MusicBrainz." });
+-      if (!reference && (!name || name.length > 120)) return sendJson(response, 400, { message: "Nom d’artiste invalide." });
++      if (!reference && (!name || name.length > 300)) return sendJson(response, 400, { message: "Nom d’artiste invalide." });
+       const sources = reference ? [reference.source] : ["musicbrainz", "discogs"];
+       const entities = [], sourceStates = {};
+       await Promise.all(sources.map(async source => {
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/server.test.mjs
+@@
+   assert.equal(status.roles.length, 4);
+   assert.equal(status.oauthScope, "https://www.googleapis.com/auth/youtube.readonly");
+   assert.equal(status.discogsConfigured, false);
+-  assert.equal(status.version, "0.19.0");
++  assert.equal(status.version, "0.20.0");
+   assert.equal(status.discogsCredentialSource, "none");
+   assert.equal(status.capabilities.listenbrainz, true);
+   assert.equal(status.capabilities.bandcamp, "supplied_metadata_import");
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/package.json
+@@
+ {
+   "name": "youtube-scout",
+-  "version": "0.19.0",
++  "version": "0.20.0",
+   "private": true,
+   "type": "module",
+   "scripts": {
+*** Add File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/multi-participant-http.test.mjs
++import test from "node:test";
++import assert from "node:assert/strict";
++import http from "node:http";
++import { once } from "node:events";
++import { spawn } from "node:child_process";
++import { mkdtemp, readFile, writeFile } from "node:fs/promises";
++import { tmpdir } from "node:os";
++import { join } from "node:path";
++import { departureArtistsUpdate, declaredDepartureArtist } from "../public/departure-workflow.mjs";
++import { departureArtistIds } from "../public/music-sorting.mjs";
++
++test("HTTP : choix de trois artistes persistés ensemble, crédits complets et archive préservés après redémarrage", async t => {
++  const directory = await mkdtemp(join(tmpdir(), "scout-multi-http-")), path = join(directory, "archive.json");
++  const archive = JSON.stringify({ entities: {}, edges: {}, sync: {}, cache: {} });
++  await writeFile(path, archive);
++  let child, base;
++  async function launch() {
++    const probe = http.createServer(); probe.listen(0, "127.0.0.1"); await once(probe, "listening");
++    const port = probe.address().port; await new Promise(resolve => probe.close(resolve));
++    child = spawn(process.execPath, ["server.mjs"], { cwd: new URL("../", import.meta.url), env: {
++      ...process.env, PORT: String(port), SCOUT_DATA_FILE: path,
++      DISCOGS_TOKEN: "", DISCOGS_TOKEN_FILE: join(directory, "no-discogs"),
++      SCOUT_GOOGLE_CLIENT_ID: "", SCOUT_GOOGLE_CLIENT_SECRET: "", SCOUT_GOOGLE_TOKEN_FILE: join(directory, "no-google")
++    }, stdio: ["ignore", "pipe", "pipe"] });
++    await once(child.stdout, "data"); base = `http://localhost:${port}`;
++  }
++  async function stop() { const exited = once(child, "exit"); child.kill("SIGTERM"); await exited; }
++  t.after(async () => { if (child?.exitCode === null) await stop(); });
++  const seed = { id: "video:youtube:fixture1234", type: "video", title: "Saboteur" };
++  const credit = "Deen Burbigo, Eff Gee, Ratu$, Esso Luxueux, Stutt, robdbloc, Blaz Pit";
++  const choices = ["Deen Burbigo", "Eff Gee", "Blaz Pit"].map((name, i) => ({ id: `artist:discogs:${i + 1}`, entity: { id: `artist:discogs:${i + 1}`, type: "artist", name } }));
++  const start = async seedId => (await fetch(`${base}/api/exploration/context`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ seedId }) }).then(r => r.json())).token;
++  const call = (token, route, body) => fetch(`${base}${route}`, { method: body ? "POST" : "GET", headers: { "x-scout-exploration": token, ...(body ? { "content-type": "application/json" } : {}) }, ...(body ? { body: JSON.stringify(body) } : {}) });
++  await launch();
++  let token = await start(seed.id);
++  assert.equal((await call(token, "/api/graph/ingest", { entities: [seed] })).status, 200);
++  let graph = await call(token, "/api/graph").then(r => r.json());
++  assert.equal((await call(token, "/api/graph/ingest", departureArtistsUpdate(graph, seed, credit, choices))).status, 200);
++  await stop(); await launch(); token = await start(seed.id);
++  graph = await call(token, "/api/graph").then(r => r.json());
++  assert.equal(declaredDepartureArtist(graph, seed.id), credit);
++  assert.deepEqual(departureArtistIds(graph, seed.id).sort(), choices.map(c => c.id));
++  const other = await start("video:youtube:otherseed");
++  assert.deepEqual((await call(other, "/api/graph").then(r => r.json())).entities, {});
++  assert.equal(await readFile(path, "utf8"), archive);
++});
+*** Add File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/scripts/multi-participant-ui-fixture.mjs
++import { createServer } from "node:http";
++import { readFile } from "node:fs/promises";
++const root = new URL("../public/", import.meta.url);
++async function fixtureScript() {
++const app = await readFile(new URL("app.js", root), "utf8");
++const actualRender = app.slice(app.indexOf("function renderArtistCorrection("), app.indexOf("async function searchDepartureArtistChoices("));
++return `
++import { typedDepartureModel, declaredDepartureArtist, departureArtistUpdate, departureArtistsUpdate, hasExplicitDepartureArtist, catalogueArtistChoices, catalogueArtistReference, artistChoiceRank } from '/departure-workflow.mjs';
++import { splitArtistNames } from '/artist-names.mjs';
++import { departureArtistIds } from '/music-sorting.mjs';
++import { mountScoutMixerPanel } from '/scout-mixer-panel.mjs';
++import { buildScoutMixView, consumeMixPage } from '/scout-mix-session.mjs';
++import { createScoutPatch, setScoutParameter } from '/scout-parameters.mjs';
++const credits = 'Deen Burbigo, Eff Gee, Ratu$, Esso Luxueux, Stutt, robdbloc, Blaz Pit';
++const seed = { id: 'video:youtube:fixture1234', type: 'track', title: 'Saboteur', label: 'Saboteur', departureArtist: { name: credits, source: 'user' } };
++const choice = (name,i) => catalogueArtistChoices({ entities: [{ id: 'artist:discogs:'+i, type:'artist', name, externalIds:{discogs:String(i)} }] },name)[0];
++const groups = splitArtistNames(credits).map((query,i)=>({query, state:'complete', candidates:[choice(query,i+1)]}));
++groups[2].candidates.push(choice('Ratu Mukherjee',88));
++groups[5].candidates=[];
++const registry = {groups,candidates:groups.flatMap(group=>group.candidates),sourceStates:{}};
++let explorationGraph={entities:{[seed.id]:{...seed,type:'video'}},edges:{}}, activeDig={seed,identityChoices:{seedId:seed.id,registry}}, compositionGeneration=0;
++const artistCorrections={}, CORRECTIONS_KEY='fixture';
++const seedVideo=()=>({id:'fixture1234'}), resolvedArtist=()=>null, beginDepartureReview=()=>{}, saveLocalObject=()=>{}, renderActiveSeed=()=>{}, persistExplorationSession=async()=>{};
++const setActiveDig=delta=>Object.assign(activeDig,delta), refreshExplorationGraph=async()=>{};
++const output=document.querySelector('#outcome');
++const openExploration=async()=>{output.textContent='DECLARATION: '+declaredDepartureArtist(explorationGraph,seed.id)+'\\nCHOIX: '+departureArtistIds(explorationGraph,seed.id).join(', ');};
++const searchDepartureArtistChoices=async()=>registry;
++const fetch=async(url,options)=>{
++  if(url.startsWith('/api/music/artist-choices'))return {ok:true,json:async()=>({candidates:[choice('robdbloc',6)],sourceStates:{discogs:'ok'}})};
++  if(document.querySelector('#fail-save').checked)return {ok:false};
++  const delta=JSON.parse(options.body);
++  for(const n of delta.entities)explorationGraph.entities[n.id]=n;
++  for(const e of delta.edges)explorationGraph.edges[e.from+':'+e.kind+':'+e.to]=e;
++  return {ok:true};
++};
++${actualRender}
++renderArtistCorrection(document.querySelector('#fixture'),seed.id);
++const mixerHost=document.createElement('section'); document.querySelector('main').append(mixerHost);
++const songs=Array.from({length:8},(_,i)=>({id:'track:'+i,type:'track',title:'Album répétitif — piste '+i,artist:'Cookin Soul',releaseId:'one-album'}));
++const videos=[{id:'video:youtube:doc',type:'video',title:'Danyl : Documentaire | Grünt'}, {id:'video:youtube:promo',type:'video',title:'Grünt #74 Ce soir 18h'}, {id:'video:youtube:session',type:'video',title:'Le Rat Luciano | Grünt #74'}];
++let patch=createScoutPatch(), history={};
++const read=(options={})=>({...buildScoutMixView({seedId:seed.id,groups:{remix:{items:songs},curator:{items:videos}},patch,history,select:(items,{exclude})=>items.filter(item=>!exclude.includes(item.id)),...options}),seedLabel:'Mélange synthétique',workflow:'browse'});
++mountScoutMixerPanel({parent:mixerHost,read,onParameter:(id,value)=>{patch=setScoutParameter(patch,id,value)},onNext:directionFilter=>{history=consumeMixPage(history,read({directionFilter}))},onRewind:()=>{history={}},renderCard:item=>Object.assign(document.createElement('article'),{textContent:item.title})});
++`;
++}
++const server = createServer(async (req,res)=>{
++  try {
++    const path=new URL(req.url,'http://localhost').pathname;
++    if(path==='/') {res.setHeader('content-type','text/html; charset=utf-8');return res.end('<!doctype html><html lang="fr"><meta charset="utf-8"><link rel="stylesheet" href="/styles.css"><title>Scout — test isolé des participants</title><body><main style="max-width:900px;margin:auto;padding:24px"><h1>Test isolé : participants</h1><p>Données fictives, aucune connexion ni bibliothèque personnelle.</p><label><input id="fail-save" type="checkbox">Simuler une panne de sauvegarde</label><pre id="outcome">Aucun choix enregistré</pre><section id="fixture"></section></main><script type="module" src="/fixture.mjs"></script></body></html>');}
++    if(path==='/fixture.mjs'){res.setHeader('content-type','text/javascript');return res.end(await fixtureScript());}
++    if(!/^\/[a-z0-9-]+\.(mjs|css)$/.test(path)){res.writeHead(404);return res.end();}
++    res.setHeader('content-type',path.endsWith('.css')?'text/css':'text/javascript');res.end(await readFile(new URL(path.slice(1),root)));
++  } catch {res.writeHead(404);res.end();}
++});
++server.listen(0,'127.0.0.1',()=>console.log('Fixture: http://localhost:'+server.address().port));
+*** Add File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/docs/QUALITY_0.20.0_2026-09-22.md
++# Scout 0.20.0 — participants et qualité des propositions
++
++## Périmètre
++
++Correctifs issus des captures « Saboteur / Grünt #53 », Jolagreen23 et Cookin’ Soul. Architecture Scout conservée : identification, graphe de relations, catalogues puis mélange local. Ni analyse sonore ni nouvelle source externe. Aucune connexion Google déclenchée.
++
++## Changements
++
++1. **Plusieurs participants d’un morceau** : recherche de chaque nom, par lots de trois, sans la limite silencieuse à quatre noms. La requête collective reste proposée séparément, car certains séparateurs appartiennent à des noms de groupes. Une fiche par participant, plusieurs participants simultanément ; aucune identité précochée. Les autres noms et le titre restent conservés. Les fiches non équivalentes ne sont pas fusionnées par leur nom.
++2. **Choix lisibles** : résultats regroupés par nom ; correspondances exactes et alias avant les autres homonymes. Une indisponibilité reste distincte d’une absence de fiche. Un lien catalogue peut compléter un participant sans perdre les autres choix. L’en-tête distingue les crédits renseignés des participants réellement explorés.
++3. **Routage multi-artistes** : toutes les relations confirmées restent des départs du graphe. Un partenaire déjà connu du premier artiste n’empêche plus la lecture du catalogue du second. Les budgets existants restent bornés ; la disponibilité de toutes les branches en une seule recherche n’est pas garantie.
++4. **Mélange équilibré** : lorsque la diversité est active et que toutes les directions sont affichées en sélection équilibrée, pas de remplissage forcé avec le même album ou partenaire. Une page peut être plus courte, avec explication et pagination. Une direction ciblée ou une diversité nulle permet de parcourir les autres pistes. Les variantes d’une même session Grünt numérotée sont espacées dans la page, sans fusion d’identités.
++5. **Nature des vidéos** : marqueurs explicites d’entretien/documentaire et d’annonce promotionnelle masqués par défaut, avec deux filtres réversibles. Les vidéos non classables restent visibles. Les indications sont « probables », jamais une classification certaine. Le bouton vidéo n’affirme plus qu’il s’agit nécessairement d’un morceau.
++6. **Noms et chemins** : les noms lisibles dans certains formats de titre sont proposés pour vérification, pas transformés en identités catalogue. Une chaîne de diffusion n’est pas automatiquement l’interprète. Les cartes donnent le chemin de relations et précisent lorsqu’il passe par la discographie d’un participant plutôt que par un crédit du morceau initial.
++7. **Sauvegarde** : les lots de décisions personnelles sont préparés à part, sérialisés et publiés en mémoire après écriture durable. Une panne ne peut plus laisser un lot refusé être enregistré lors de la décision suivante. Le stockage temporaire des résultats et du cache catalogue conserve son fonctionnement antérieur.
++
++## Vérifications
++
++- Suite complète : `node --test --test-reporter=tap server.test.mjs lib/*.test.mjs public/*.test.mjs tests/*.test.mjs` — 717 tests passants sur le code final, après adaptation du test de version et du banc de test au nouvel en-tête.
++- `npm run check` — réussi ; modules nouveaux contrôlés séparément.
++- Tests ajoutés : sept participants dont le dernier, concurrence bornée, changement de départ, crédits longs, choix de plusieurs identités, annulation d’un sous-ensemble, révisions, échec disque, décisions concurrentes, racines multiples, diversité et accès aux pistes restantes, filtres réversibles, indices de titre, chemins explicites.
++- HTTP isolé : trois identités et tous les crédits relus après redémarrage ; autre départ isolé et archive historique inchangée.
++- Navigateur intégré, données fictives : choix indépendants, recherche répétée, panne de sauvegarde, ajout d’une fiche par lien, conservation des crédits complets, filtres de contenu, page équilibrée courte et pagination ciblée 6 puis 2 pistes. Le banc exécute le formulaire réel extrait du code ainsi que le panneau de mélange réel ; il ne remplace pas une validation musicale en conditions réelles.
++
++## Limites et recette utilisateur
++
++Les catalogues peuvent manquer d’artistes ou de crédits. La diversité ne crée pas de nouveaux artistes si les sources chargées n’en contiennent qu’un. Les indices textuels de contenu peuvent se tromper ; les filtres permettent de revoir les éléments masqués. La famille de session repérée couvre le format numéroté Grünt observé dans les captures, pas toutes les chaînes.
++
++Après activation et rechargement : ouvrir le même morceau, vérifier les noms proposés, sélectionner plusieurs participants puis explorer. Vérifier les chemins, écouter les propositions et signaler les rapprochements musicalement insatisfaisants. Cette appréciation finale revient à l’utilisateur ; les tests techniques ne prouvent pas la pertinence sonore.
++
++## Activation
++
++Préparée séparément de l’application active. L’activation nécessite sauvegarde, contrôle des empreintes des fichiers de départ, autorisation de redémarrage et vérification de la version servie. Aucun résultat de test ne vaut preuve d’activation.
+*** End Patch

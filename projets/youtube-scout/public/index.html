@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explorez artistes, labels et collaborations depuis vos playlists YouTube. Gardez vos découvertes et reprenez votre parcours.">
+    <title>YouTube Scout</title>
+    <script src="./bootstrap.js"></script>
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./workspace.css">
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero-bar"><div class="brand"><span class="brand-mark">▶</span> YOUTUBE SCOUT</div><nav aria-label="Navigation principale"><a href="#exploration">Explorer</a><a href="#notebook">Mon carnet</a><a href="#source-panel">Playlists et sauvegarde</a></nav></div>
+      <p class="eyebrow">Votre curation, remise en mouvement</p>
+      <h1>Suivez un morceau.<br><em>Trouvez la suite.</em></h1>
+      <p class="intro">Un artiste, son label, un remixeur : choisissez un départ dans vos playlists et suivez ses connexions.</p>
+      <div id="runtime-status" class="runtime-status" aria-live="polite"><span>Serveur en vérification…</span></div>
+    </header>
+
+    <main>
+      <section id="source-panel" class="panel" aria-labelledby="source-title">
+        <div class="panel-heading">
+          <div>
+            <p class="step">Votre bibliothèque</p>
+            <h2 id="source-title">Playlists et sauvegarde</h2>
+          </div>
+          <div class="source-heading-actions"><p id="connection-state" class="state-pill">Non connecté</p><button id="toggle-sources" class="text-button" type="button">Masquer la configuration</button></div>
+        </div>
+
+        <div id="source-body">
+        <section class="connection-section" aria-label="Accès YouTube">
+        <div id="connection-overview" class="connection-overview" hidden>
+          <p id="connection-summary" role="status"></p>
+          <div><button id="connection-recheck" class="text-button" type="button">Vérifier les accès</button><button id="connection-reconnect" class="outline-button" type="button" hidden>Reconnecter YouTube</button><button id="refresh-owned-playlists" class="outline-button" type="button" hidden>Actualiser mes playlists</button></div>
+        </div>
+        <details id="youtube-settings" open>
+        <summary>Connexion YouTube et clé API <small id="connection-check-state">À configurer</small></summary>
+        <div class="auth-grid">
+          <div class="auth-card">
+            <h3>Mes playlists, y compris privées</h3>
+            <p>Renseignez l’identifiant OAuth de votre application Google, puis autorisez un accès YouTube en lecture seule.</p>
+            <label for="client-id">Identifiant client OAuth</label>
+            <input id="client-id" type="text" autocomplete="off" placeholder="…apps.googleusercontent.com">
+            <div class="local-save-row"><button id="save-client-id" class="outline-button" type="button">Enregistrer l’ID</button><small id="client-id-state" aria-live="polite">Non enregistré</small></div>
+            <p class="origin-note">Origine JavaScript à déclarer dans Google Cloud : <code id="google-javascript-origin">adresse de cette page</code></p>
+            <div class="inline-actions">
+              <button id="connect" class="primary-button" type="button">Connecter YouTube <span>→</span></button>
+              <button id="disconnect" class="text-button" type="button" hidden>Oublier la connexion</button>
+            </div>
+            <small class="connection-help">ID mémorisé dans ce navigateur. L’accès temporaire peut être repris dans cet onglet jusqu’à son expiration ; aucun mot de passe Google n’est conservé.</small>
+          </div>
+
+          <div class="auth-card secondary-card">
+            <h3>Accès public par clé API</h3>
+            <p>Inutile si YouTube est connecté. Cette clé permet la lecture des playlists publiques ou non répertoriées, pas de vos playlists privées.</p>
+            <label for="api-key">Clé API <span class="optional">facultative si connecté</span></label>
+            <input id="api-key" type="password" autocomplete="off" placeholder="AIza…">
+            <button id="verify-api-key" class="outline-button" type="button">Vérifier et mémoriser la clé</button>
+            <small id="api-key-state" class="connection-help" role="status">Aucune clé mémorisée.</small>
+            <p class="connection-help">Stockage local non chiffré, hors des sauvegardes exportées. Videz le champ pour oublier la clé. À éviter dans un profil partagé.</p>
+          </div>
+        </div>
+        </details>
+        </section>
+        <details id="playlist-links" class="playlist-links">
+            <summary>Ajouter des playlists par lien</summary>
+            <label for="playlist-urls">URL ou identifiants de playlists</label>
+            <textarea id="playlist-urls" rows="3" placeholder="https://www.youtube.com/playlist?list=…"></textarea>
+            <button id="inspect-urls" class="outline-button" type="button">Ajouter ces playlists</button>
+        </details>
+
+        <details id="discogs-settings" class="credential-settings">
+          <summary>Catalogue Discogs <span id="discogs-state">non configuré</span></summary>
+          <div class="credential-body">
+            <div>
+              <h3>Enrichir les artistes, labels et éditions</h3>
+              <p>Collez votre jeton personnel Discogs. Le serveur le vérifie, puis le conserve uniquement sur cette machine dans un fichier privé. Le navigateur ne peut pas le relire.</p>
+            </div>
+            <div>
+              <label for="discogs-token">Jeton personnel Discogs</label>
+              <input id="discogs-token" type="password" autocomplete="new-password" spellcheck="false" placeholder="Jeton non affiché après enregistrement">
+              <div class="local-save-row">
+                <button id="save-discogs-token" class="outline-button" type="button">Vérifier et enregistrer</button>
+                <button id="remove-discogs-token" class="text-button danger" type="button" hidden>Supprimer le jeton local</button>
+              </div>
+              <small id="discogs-token-message" class="credential-message" aria-live="polite"></small>
+            </div>
+          </div>
+        </details>
+
+        <div id="source-message" class="message" aria-live="polite" hidden></div>
+
+        <div id="playlist-picker" class="playlist-picker" hidden>
+          <div class="picker-heading">
+            <div>
+              <p class="step">Playlists accessibles</p>
+              <h3>Que doit parcourir le Scout ?</h3>
+            </div>
+            <div class="picker-actions">
+              <button id="select-all" class="text-button" type="button">Tout sélectionner</button>
+              <button id="select-none" class="text-button" type="button">Tout désélectionner</button>
+            </div>
+          </div>
+          <div id="playlists" class="playlist-grid"></div>
+          <div class="import-row"><button id="import-playlists" class="primary-button" type="button"><span class="import-label">Importer la sélection</span> <span>↓</span></button><button id="import-resume" class="outline-button" type="button" hidden>Reprendre l’import interrompu</button><p id="selection-summary" class="selection-summary"></p></div>
+        </div>
+
+        <details id="backup-settings" class="credential-settings backup-settings">
+          <summary>Sauvegarder ou restaurer mes données</summary>
+          <div class="backup-body">
+            <p>Conservez votre bibliothèque, vos corrections, votre carnet et vos réglages dans un fichier local. Les résultats et parcours éphémères ne sont pas sauvegardés.</p>
+            <div class="backup-actions">
+              <button id="export-backup" class="outline-button" type="button">Télécharger une sauvegarde</button>
+              <div class="backup-file"><label for="restore-backup">Restaurer depuis un fichier</label><input id="restore-backup" type="file" accept="application/json,.json"></div>
+            </div>
+            <p id="backup-status" class="credential-message" aria-live="polite"></p>
+          </div>
+        </details>
+
+        <details id="catalogue-tools" class="credential-settings catalogue-tools">
+          <summary>Ajouter une sortie Bandcamp ou comparer les plateformes</summary>
+          <div class="catalogue-tools-grid">
+            <section aria-labelledby="bandcamp-import-title">
+              <h3 id="bandcamp-import-title">Une sortie trouvée sur Bandcamp</h3>
+              <p>Recopiez les informations d’une sortie Bandcamp. Elles seront conservées comme données fournies par vous, avec leur lien source. Aucun scraping ni identification automatique n’est prétendu.</p>
+              <form id="bandcamp-entry-form">
+                <label for="bandcamp-url">Lien de la sortie Bandcamp</label><input id="bandcamp-url" type="url" placeholder="https://artiste.bandcamp.com/album/sortie" required>
+                <div class="bandcamp-form-pair"><div><label for="bandcamp-artist">Artiste</label><input id="bandcamp-artist" type="text" maxlength="500" required></div><div><label for="bandcamp-title">Titre de la sortie</label><input id="bandcamp-title" type="text" maxlength="500" required></div></div>
+                <label for="bandcamp-label">Label · facultatif</label><input id="bandcamp-label" type="text" maxlength="500">
+                <label for="bandcamp-tracks">Morceaux · un titre par ligne, facultatif</label><textarea id="bandcamp-tracks" rows="3" maxlength="25000"></textarea>
+                <button type="submit" class="primary-button">Ajouter cette sortie</button>
+              </form>
+              <details><summary>Importer plutôt un fichier JSON</summary>
+              <label for="bandcamp-import">Fichier de métadonnées · JSON</label>
+              <input id="bandcamp-import" type="file" accept="application/json,.json" aria-describedby="bandcamp-format-help">
+              <details class="import-format"><summary>Quel format de fichier ?</summary><p id="bandcamp-format-help">L’URL Bandcamp, l’artiste et le titre sont requis. Les morceaux, la date de sortie et le label sont facultatifs.</p><pre><code>{
+  "sourceUrl": "https://artiste.bandcamp.com/album/nom",
+  "artist": "Nom de l’artiste",
+  "title": "Nom de la sortie",
+  "tracks": [{ "title": "Morceau", "artist": "Artiste" }],
+  "releaseDate": "2026-09-13",
+  "label": "Nom du label"
+}</code></pre></details>
+              </details>
+              <p id="bandcamp-import-status" class="credential-message" role="status" aria-live="polite"></p>
+            </section>
+            <section aria-labelledby="platform-compare-title">
+              <h3 id="platform-compare-title">Où trouve-t-on cet enregistrement ?</h3>
+              <p>L’ISRC identifie un enregistrement précis. La comparaison interroge les catalogues configurés pour le pays choisi.</p>
+              <form id="platform-compare-form">
+                <div class="platform-compare-fields"><div><label for="platform-isrc">ISRC</label><input id="platform-isrc" type="text" placeholder="FRABC2600001" maxlength="20" autocomplete="off" spellcheck="false" required></div><div><label for="platform-territory">Pays · code à 2 lettres</label><input id="platform-territory" type="text" value="FR" minlength="2" maxlength="2" pattern="[A-Za-z]{2}" autocomplete="off" spellcheck="false" required></div></div>
+                <button id="platform-compare-submit" class="outline-button" type="submit">Comparer les catalogues</button>
+              </form>
+              <div id="platform-compare-results" class="platform-compare-results" role="status" aria-live="polite"></div>
+            </section>
+          </div>
+        </details>
+
+        <div class="privacy-note">
+          YouTube ne rend accessibles ni l’historique, ni la playlist « À regarder plus tard » par cette API. L’accès au compte est en lecture seule. Bibliothèque et choix personnels conservés localement ; fouilles éphémères.
+        </div>
+        </div>
+      </section>
+
+      <section id="exploration" class="panel exploration-panel" aria-labelledby="exploration-title">
+        <div class="panel-heading">
+          <div>
+            <p class="step">Votre parcours</p>
+            <h2 id="exploration-title">Où part-on ensuite ?</h2>
+            <p class="exploration-intro">Partez d’un morceau, écoutez une découverte et suivez ses connexions.</p>
+          </div>
+          <p id="exploration-state" class="state-pill">Aucune fouille ouverte</p>
+        </div>
+
+        <details id="departure-picker" open>
+        <summary>Trouver un point de départ</summary>
+        <label for="seed-search">Rechercher un point de départ</label>
+        <input id="seed-search" type="search" placeholder="Un titre, un nom…" autocomplete="off" aria-describedby="seed-search-scope">
+        <p id="seed-search-scope">Bibliothèque et références connues uniquement · titre, artiste, label, playlist ou chaîne.</p>
+        <div class="seed-builder">
+          <div>
+            <label for="seed-type">Afficher</label>
+            <select id="seed-type">
+              <option value="all">Tous les types</option>
+              <option value="track">Morceau ou vidéo</option>
+              <option value="artist">Artiste</option>
+              <option value="label">Label</option>
+              <option value="playlist">Playlist</option>
+            </select>
+          </div>
+          <div class="seed-choice">
+            <label for="seed-select">Choisir dans les résultats</label>
+            <select id="seed-select"><option value="">Le graphe est encore vide</option></select>
+          </div>
+          <div>
+            <label for="exploration-depth">Distance du parcours</label>
+            <select id="exploration-depth"><option value="3">Courte · 3 relations</option><option value="6" selected>Moyenne · 6 relations</option><option value="9">Large · 9 relations</option></select>
+          </div>
+        </div>
+
+        <div id="seed-metrics" class="seed-metrics" aria-live="polite"></div>
+
+        <fieldset class="direction-picker">
+          <legend>Quelles connexions suivre ?</legend>
+          <div id="exploration-directions" class="direction-grid"></div>
+        </fieldset>
+
+        <div class="exploration-actions">
+          <button id="start-exploration" class="primary-button" type="button">Explorer ce départ <span>→</span></button>
+          <details class="exploration-secondary-actions"><summary>Autres actions</summary><div><button id="refresh-exploration" class="outline-button" type="button">Actualiser les pistes connues</button><button id="clear-exploration" class="text-button danger" type="button">Fermer ce parcours</button></div></details>
+        </div>
+        </details>
+        <div id="exploration-resume" class="resume-strip" hidden></div>
+        <section id="active-seed" class="active-seed" hidden>
+          <div class="active-seed-heading"><div><p>Votre point de départ</p><h3></h3><div id="active-seed-actions"></div></div><span></span></div>
+          <div id="active-seed-dossier" class="active-seed-dossier"></div>
+        </section>
+        <div id="seed-action" aria-live="polite" hidden></div>
+        <div id="exploration-lineage" class="lineage" hidden></div>
+        <div id="exploration-branches" class="branch-grid" aria-live="polite"></div>
+      </section>
+
+      <details id="suggestion-picker" class="panel suggestion-picker">
+      <summary>Me suggérer des départs dans mes playlists</summary>
+      <section class="programme-panel seed-suggestions" aria-labelledby="programme-title">
+        <div class="panel-heading">
+          <div>
+            <p class="step">Besoin d’une idée ?</p>
+            <h2 id="programme-title">Quatre départs à essayer</h2>
+          </div>
+          <div class="library-state"><p id="library-count" class="state-pill">0 vidéo chargée</p><small id="library-sync">Aucune synchronisation</small></div>
+        </div>
+
+        <form id="programme-form">
+          <section class="source-character-bank" aria-labelledby="source-character-title">
+            <div class="source-character-heading">
+              <div>
+                <p class="source-bank-title">UNIQUEMENT DANS VOTRE BIBLIOTHÈQUE</p>
+                <h3 id="source-character-title">Quel type de suggestion ?</h3>
+              </div>
+              <p>Ces préférences servent seulement à choisir un départ. Elles ne changent pas votre recherche en cours.</p>
+            </div>
+
+            <div class="source-patch-bank">
+              <p class="source-bank-title">Choisir une préférence</p>
+              <div class="mission-picker" aria-label="Presets de caractère source">
+                <button type="button" class="mission-option" data-mission="fresh" aria-pressed="false"><strong>Récentes</strong><span>Dans mes playlists</span></button>
+                <button type="button" class="mission-option" data-mission="network" aria-pressed="false"><strong>Connectées</strong><span>Crédits et croisements</span></button>
+                <button type="button" class="mission-option active" data-mission="archive" aria-pressed="true"><strong>Archives</strong><span>Ajouts anciens et peu vus</span></button>
+                <button type="button" class="mission-option" data-mission="surprise" aria-pressed="false"><strong>Surprise</strong><span>Sortir de mes habitudes</span></button>
+              </div>
+            </div>
+
+            <div class="source-character-grid">
+              <fieldset class="source-character-lens-bank">
+                <legend class="source-bank-title">Favoriser ces critères</legend>
+                <div id="source-character-lenses" class="lens-grid source-character-lenses"></div>
+              </fieldset>
+
+              <div class="source-motion-bank">
+                <p class="source-bank-title">Variété des propositions</p>
+                <label for="source-temperature">Part de hasard</label>
+                <div class="source-temperature-control">
+                  <input id="source-temperature" type="range" min="0" max="100" step="1" value="15">
+                  <output id="source-temperature-value" for="source-temperature">15</output>
+                </div>
+                <small>0 = classement stable · 100 = forte variation entre les relances.</small>
+              </div>
+            </div>
+
+            <p id="mission-summary" class="mission-summary source-character-summary" aria-live="polite">Archives profondes : ajouts anciens et peu vus, avec une faible variation entre les relances.</p>
+          </section>
+
+          <details>
+            <summary>Durée et vidéos déjà vues</summary>
+            <div class="filters">
+              <label>Durée maximale <input id="max-duration" type="number" min="1" max="1440" value="240"><span>min</span></label>
+              <label class="toggle"><input id="hide-seen" type="checkbox" checked> Masquer les vidéos déjà vues ici</label>
+            </div>
+          </details>
+
+          <div class="submit-row">
+            <button id="compose" class="primary-button" type="submit" disabled><span class="button-label">Proposer quatre amorces</span><span>→</span></button>
+            <button id="clear-library" class="text-button danger" type="button">Effacer la bibliothèque locale</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="results" class="results" aria-live="polite">
+        <div id="empty" class="empty-state">
+          <span class="empty-mark">▶</span>
+          <p>Importez des playlists pour composer votre première session.</p>
+        </div>
+        <div id="result-head" class="result-head" hidden>
+          <div>
+            <p class="step">03 — Les amorces</p>
+            <h2>Quatre chemins dans vos archives</h2>
+            <p class="discovery-intro">Chaque carte est un point de départ. Explorez son dossier pour distinguer identité, morceau, éditions, crédits et pistes dérivées.</p>
+          </div>
+          <div class="result-tools">
+            <div id="applied" class="chips"></div>
+            <button id="reroll-programme" class="outline-button" type="button">Relancer les quatre ↻</button>
+          </div>
+        </div>
+        <div id="videos" class="video-grid"></div>
+        <details id="reserve-panel" class="reserve-panel" hidden>
+          <summary id="reserve-summary">Ouvrir le vivier classé</summary>
+          <div id="reserve-list" class="reserve-list"></div>
+        </details>
+      </section>
+
+      </details>
+      <section id="discoveries" class="results discovery-results" aria-labelledby="discoveries-title" hidden>
+        <div class="result-head">
+          <div>
+            <p class="step">À découvrir</p>
+            <h2 id="discoveries-title">Suivre les connexions</h2>
+            <p class="discovery-intro">Les morceaux trouvés sont regroupés selon le chemin qui y mène.</p>
+          </div>
+          <div class="discovery-controls"><label for="discovery-focus">Orientation</label><select id="discovery-focus"><option value="breadth">Découvrir d’autres artistes</option><option value="depth">Approfondir ces catalogues</option></select><button id="reroll-discoveries" class="outline-button" type="button">D’autres découvertes ↻</button></div>
+        </div>
+        <p id="catalogue-status" class="catalogue-status" role="status" aria-live="polite" hidden></p>
+        <div id="derived-videos" class="discovery-groups"></div>
+      </section>
+
+      <section id="collaborations" class="results collaboration-results" aria-labelledby="collaborations-title" hidden>
+        <div class="result-head">
+          <div>
+            <p class="step">Les partenaires</p>
+            <h2 id="collaborations-title">Réseau de collaborations</h2>
+            <p class="discovery-intro">Les featurings et remixes explicitement crédités dans vos vidéos. Le nombre indique des co-crédits observés, pas une proximité esthétique.</p>
+          </div>
+          <div id="collaboration-summary" class="chips"></div>
+        </div>
+        <div id="collaboration-edges" class="collaboration-grid"></div>
+      </section>
+
+      <section id="notebook" class="results notebook-results" aria-labelledby="notebook-title" hidden>
+        <div class="result-head">
+          <div>
+            <p class="step">À reprendre</p>
+            <h2 id="notebook-title">Carnet de fouille</h2>
+            <p class="discovery-intro">À écouter, à creuser ou à garder : retrouvez vos découvertes et le chemin qui vous y a mené.</p>
+          </div>
+          <div class="notebook-tools"><span id="notebook-count" class="state-pill"></span><button id="export-notebook" class="outline-button" type="button">Exporter le carnet ↓</button></div>
+        </div>
+        <div id="notebook-items" class="notebook-grid"></div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Application locale indépendante. Catalogues : YouTube, Discogs, MusicBrainz. Contexte : Wikidata. Imports fournis par vous : Bandcamp. Comparaison Spotify et Apple Music lorsque configurés.</p>
+      <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noreferrer">Configurer l’accès Google ↗</a>
+    </footer>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

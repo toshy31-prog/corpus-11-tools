@@ -1,0 +1,97 @@
+{
+  "status": "prepared_not_activated",
+  "staging": "/tmp/scout-quality-Oh7DUf",
+  "tests": 703,
+  "files": [
+    {
+      "file": "README.md",
+      "before": "3521a9edade88e90d9fcc50936356f56d0c982a2fe8696d300ca4a5eabf7ec55",
+      "after": "9f4c0806db969fb3524d265e6798d5c0167e5a9094b2a558d861a1adf59e1f60"
+    },
+    {
+      "file": "package.json",
+      "before": "879180fb69cd48087380ac19961f0bc0c15e391e540067ddf7b4244620f5bd4b",
+      "after": "0293779423411d6bc20a1806dd52871cf9936a896b26f816b506faf0b3287dd4"
+    },
+    {
+      "file": "server.mjs",
+      "before": "c9ee57c335e75674ad20fbe250d18e1d4f54747488738eb6624e1adab54ef530",
+      "after": "2bc97c2b32c657fe0b2ae6d43d09b149396b2b7ab8d90ab5aa241d4b0812076a"
+    },
+    {
+      "file": "server.test.mjs",
+      "before": "e8657477fa91a3709e254599b728e0d69a4ff75f34ad5e4f50340fe1a43b703d",
+      "after": "c4cd758f03f1ece30aaeb5a18d2c4c894e124e8da75c94df89c143eea82829e1"
+    },
+    {
+      "file": "lib/artist-names.mjs",
+      "before": null,
+      "after": "2c3c1c2494df4d777dd4a2744117ff9b7db0c7ab27a6d8f26a1b62f1a9db4153"
+    },
+    {
+      "file": "lib/catalogue.mjs",
+      "before": "31972a818974e3dd464562ac926e8797457d4052cb621ed9649e4fb7b132ca7b",
+      "after": "f448ab91c7100fca3c54f8c525aca609f8b178195898a14f718513e78a486d4e"
+    },
+    {
+      "file": "lib/catalogue-graph.mjs",
+      "before": "f80d5dff25b5347fd847250ca9345f3a656439978aa546a98d86526fb488d7cc",
+      "after": "0ab779fd0015d530904055ad005ae71098cc7eb66508e4e5ccfa1e78fb21b0ec"
+    },
+    {
+      "file": "lib/scout.mjs",
+      "before": "4b61d3f34e4786c5ba1b5fc86c9c9b6123e5a73088033173f06cb791a28e5a29",
+      "after": "b059c3742551c4373e39db07643f0557472d41271365aeaf852127a39435cea2"
+    },
+    {
+      "file": "lib/session-races.test.mjs",
+      "before": "71dbc8e57d9a7bd7e5bd68fb688d3f360b296ed012e0ac4f3e2589f55df4ba3f",
+      "after": "5e46c36eb4e4c97da4b9b0d3562523c9bc8d55f47b6d8508528e85a5b7e8852f"
+    },
+    {
+      "file": "lib/discovery-quality.test.mjs",
+      "before": null,
+      "after": "3f1e7c46e681b2bfeae7002fdc4530fc420308c098fb16f82deec60dc37db79d"
+    },
+    {
+      "file": "public/artist-names.mjs",
+      "before": null,
+      "after": "11f325e4996b6d7428357c5cd79e5d9a30246891af1de924897d950567b94a85"
+    },
+    {
+      "file": "public/discovery-presentation.mjs",
+      "before": null,
+      "after": "5434e80413dcf141620292b330c28915e54923eaab23804839aa7f4f738e2ce9"
+    },
+    {
+      "file": "public/music-sorting.mjs",
+      "before": "f0843cc8a73c69d1c1c216b3fe094302fe55ae3a9551afb736d8363f5cc38c42",
+      "after": "2dea9732fcf9699c626699c4b7e8f3af3affd1f1ff5ed076059488c816ccc019"
+    },
+    {
+      "file": "public/app.js",
+      "before": "4ccc06f426973cfd6895b43e20f5189c5b14aa79b157505fa6f79536be70b976",
+      "after": "ebdbe07f633ca7662a142c1b5b0532ffa22b8afb071069eb02574769f82f2fb1"
+    },
+    {
+      "file": "public/scout-mix-session.mjs",
+      "before": "ee3028f930cdf9cf7c72b6c1ff109c76bdaac2fe19aee3da5e8ba3cf56c56a63",
+      "after": "a72383114842b928f1b48d8d0ab33bd9aea3405bfe75f45b326f838d284bed6a"
+    },
+    {
+      "file": "public/scout-mixer-panel.mjs",
+      "before": "d4bb0735119273d36d7c1e6602723d4d9bc5122cd688876b2e42c83e4b0c476e",
+      "after": "05ebe889231fad629984da09242ab56b761d1ef51d5c503fc650633141b7ef95"
+    },
+    {
+      "file": "scripts/discovery-quality-performance.mjs",
+      "before": null,
+      "after": "8841f006a5c16af12875ffd5971bb5183eafa51e1016e6e9fa25da78b819e547"
+    },
+    {
+      "file": "docs/QUALITY_0.19.0_2026-09-22.md",
+      "before": null,
+      "after": "3ac4b528ae5798744488ddb3c2c70ae3d3f071b52dc5b508d551650e10ef224e"
+    }
+  ]
+}

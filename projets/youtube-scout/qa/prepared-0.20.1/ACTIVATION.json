@@ -1,0 +1,28 @@
+{
+  "version": "0.20.1",
+  "status": "active_verified",
+  "pid": 492913,
+  "oldPid": 421757,
+  "activatedAt": "2026-09-22T21:14:16.308Z",
+  "backup": "/home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/.data/backups/pre-0.20.1-aoy9x9",
+  "dataUnchanged": true,
+  "verifiedAssets": [
+    "public/app.js",
+    "public/music-sorting.mjs",
+    "public/scout-mix-session.mjs",
+    "public/scout-mixer-panel.mjs",
+    "public/scout-parameters.mjs"
+  ],
+  "data": [
+    {
+      "name": "scout-store.json",
+      "sha256": "5e9e0d7b3bfb6b373348e24c913d964765261e095756e895c19dec0a4d8b7a49"
+    },
+    {
+      "name": "scout-store.json.personal.json",
+      "sha256": "629182d0fb0011c137aa1cdfa794b7de9f3278917438e3b8b9333fcd1e106210"
+    }
+  ],
+  "browserReloaded": false,
+  "googleAuthenticationInitiated": false
+}

@@ -1,0 +1,52 @@
+{
+  "offline": true,
+  "graphHash": "5e9e0d7b3bfb6b373348e24c913d964765261e095756e895c19dec0a4d8b7a49",
+  "samples": 9,
+  "results": [
+    {
+      "version": "0.14.0",
+      "newSnapshotAndDirectionsMs": 74.98,
+      "repeatedDirectionsMs": 72.33,
+      "counts": {
+        "label": 0,
+        "remix": 0,
+        "featuring": 0,
+        "compilation": 0,
+        "alias": 0,
+        "curator": 6,
+        "scene": 0,
+        "era": 203
+      }
+    },
+    {
+      "version": "0.18.0",
+      "newSnapshotAndDirectionsMs": 116.44,
+      "repeatedDirectionsMs": 0.29,
+      "counts": {
+        "label": 0,
+        "remix": 0,
+        "featuring": 0,
+        "compilation": 0,
+        "alias": 0,
+        "curator": 6,
+        "scene": 0,
+        "era": 0
+      }
+    },
+    {
+      "version": "0.19.0",
+      "newSnapshotAndDirectionsMs": 108.69,
+      "repeatedDirectionsMs": 0.3,
+      "counts": {
+        "label": 0,
+        "remix": 0,
+        "featuring": 0,
+        "compilation": 0,
+        "alias": 0,
+        "curator": 6,
+        "scene": 0,
+        "era": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+/* Shared Scout rotary control — visual/interaction surface only. */
+.scout-dial-control { position: relative; }
+.scout-dial {
+  width: 58px;
+  height: 58px;
+  display: block;
+  touch-action: none;
+  cursor: ns-resize;
+}
+.scout-dial[aria-disabled="true"] { opacity: .45; cursor: not-allowed; }
+.scout-dial-face { fill: #33413a; stroke: #9aaa9b; stroke-width: 1; }
+.scout-dial-track { fill: none; stroke: #5e6c62; stroke-width: 3; }
+.scout-dial-indicator { stroke: #f2d595; stroke-width: 4; stroke-linecap: round; }
+
+.scout-dial-control > input.scout-dial-range {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.scout-dial-control:has(> input.scout-dial-range:focus-visible) {
+  outline: 2px solid #f2d595;
+  outline-offset: 2px;
+}

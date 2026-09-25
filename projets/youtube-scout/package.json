@@ -1,0 +1,23 @@
+{
+  "name": "youtube-scout",
+  "version": "0.20.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test server.test.mjs lib/*.test.mjs public/*.test.mjs tests/*.test.mjs",
+    "test:adversarial": "node --test lib/release-adversarial.test.mjs lib/session-races.test.mjs public/library-state.test.mjs server.test.mjs",
+    "audit:browser": "node scripts/consolidation-browser-audit.mjs",
+    "audit:workflow": "node scripts/workflow-browser-audit.mjs",
+    "audit:evolution": "node scripts/evolution-browser-audit.mjs",
+    "test:evolution": "node --test public/evolution-policy.test.mjs public/departure-workflow.test.mjs lib/catalogue-progression.test.mjs lib/google-oauth.test.mjs public/connection-panel.test.mjs tests/evolution-server.test.mjs tests/google-oauth-http.test.mjs",
+    "check:evolution": "node --check public/suggestion-memory.mjs && node --check public/selected-catalogue-seed.mjs && node --check lib/google-oauth.mjs && node --check scripts/evolution-browser-audit.mjs",
+    "check:workflow": "node --check public/departure-workflow.mjs && node --check public/video-credits.mjs && node --check public/music-sorting.mjs && node --check public/seed-picker-model.mjs && node --check public/app.js && node --check public/workspace.mjs && node --check public/scout-mixer-panel.mjs && node --check scripts/workflow-browser-audit.mjs",
+    "audit:browser:legacy": "node scripts/browser-audit.mjs",
+    "check:consolidation": "node --check lib/recording-discogs.mjs && node --check lib/consolidation.test.mjs && node --check public/discovery-frontier.mjs && node --check lib/discovery-frontier.mjs && node --check scripts/consolidation-browser-audit.mjs",
+    "audit:connections": "node scripts/connection-audit.mjs",
+    "check:connections": "node --check public/connection-panel.mjs && node --check scripts/connection-audit.mjs",
+    "check": "node --check server.mjs && node --check public/bootstrap.js && node --check public/app.js && node --check lib/scout.mjs && node --check lib/identity.mjs && node --check lib/digging.mjs && node --check lib/exploration.mjs && node --check lib/persistent-store.mjs && node --check lib/source-runtime.mjs && node --check lib/graph.mjs && node --check lib/local-secret.mjs && node --check lib/catalogue.mjs && node --check lib/catalogue-graph.mjs && node --check public/journey-state.mjs && node --check public/discovery-model.mjs && node --check public/library-state.mjs && node --check public/bandcamp-tools.mjs && node --check public/workspace.mjs && node --check scripts/browser-audit.mjs && node --check lib/track-expression.mjs && node --check lib/track-evidence.mjs && node --check lib/track-resolution.mjs && node --check lib/track-search-projection.mjs && node --check scripts/title-pattern-audit.mjs && node --check scripts/track-evidence-audit.mjs && node --check scripts/track-search-projection-audit.mjs && node --check scripts/review-metadata-audit.mjs && node --check lib/track-candidate-score.mjs && node --check lib/track-candidate-adapters.mjs && node --check lib/discogs-track-candidates.mjs && node --check lib/resolution-evidence.mjs && node --check scripts/resolution-evidence-corpus-audit.mjs && node --check lib/recording-resolution-runtime.mjs && node --check lib/recording-resolution-decision.mjs && node --check lib/evidence-algebra-adapters.mjs && node --check lib/evidence-algebra-shadow-bridge.mjs && node --check lib/evidence-algebra.mjs && node --check lib/multisource-decision.mjs && node --check lib/multisource-resolution-orchestrator.mjs && node --check lib/multisource-source-registry.mjs && node --check lib/remote-youtube-evidence.mjs && node --check lib/youtube-resolution-evidence.mjs && node --check public/connection-panel.mjs && node --check public/curator-catalogue.mjs && node --check public/scout-parameters.mjs && node --check public/direction-mixer.mjs && node --check public/scout-mix-session.mjs && node --check public/scout-mixer-panel.mjs && node --check public/scout-dial.mjs && node --check public/source-character-patch.mjs",
+    "test:mix": "node --test public/scout-parameters.test.mjs public/direction-mixer.test.mjs public/scout-mix-session.test.mjs public/scout-mix-binding.test.mjs"
+  }
+}

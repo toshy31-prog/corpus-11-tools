@@ -1,0 +1,92 @@
+{
+  "version": "0.20.0",
+  "activatedAt": "2026-09-22T18:06:52.851Z",
+  "pid": 421757,
+  "root": "/home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout",
+  "backup": "/home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/.data/backups/pre-0.20.0-7qLDFa",
+  "health": {
+    "status": "ok",
+    "version": "0.20.0",
+    "explorationMemory": "ephemeral_per_departure",
+    "sources": {
+      "musicbrainz": {
+        "status": "idle",
+        "successes": 0,
+        "failures": 0,
+        "lastError": "",
+        "lastRequestAt": null,
+        "lastSuccessAt": null
+      },
+      "wikidata": {
+        "status": "idle",
+        "successes": 0,
+        "failures": 0,
+        "lastError": "",
+        "lastRequestAt": null,
+        "lastSuccessAt": null
+      },
+      "discogs": {
+        "status": "idle",
+        "successes": 0,
+        "failures": 0,
+        "lastError": "",
+        "lastRequestAt": null,
+        "lastSuccessAt": null
+      },
+      "listenbrainz": {
+        "status": "idle",
+        "successes": 0,
+        "failures": 0,
+        "lastError": "",
+        "lastRequestAt": null,
+        "lastSuccessAt": null
+      },
+      "applemusic": {
+        "status": "not_configured",
+        "successes": 0,
+        "failures": 0,
+        "lastError": "",
+        "lastRequestAt": null,
+        "lastSuccessAt": null
+      },
+      "spotify": {
+        "status": "not_configured",
+        "successes": 0,
+        "failures": 0,
+        "lastError": "",
+        "lastRequestAt": null,
+        "lastSuccessAt": null
+      },
+      "soundcloud": {
+        "status": "not_configured",
+        "successes": 0,
+        "failures": 0,
+        "lastError": "",
+        "lastRequestAt": null,
+        "lastSuccessAt": null
+      }
+    },
+    "graph": {
+      "entities": 0,
+      "claims": 0,
+      "edges": 0,
+      "observations": 0,
+      "events": 0,
+      "cacheEntries": 0,
+      "syncScopes": 0
+    }
+  },
+  "verifiedAssets": [
+    "public/app.js",
+    "public/artist-names.mjs",
+    "public/departure-workflow.mjs",
+    "public/discovery-presentation.mjs",
+    "public/scout-mix-session.mjs",
+    "public/scout-mixer-panel.mjs",
+    "public/scout-parameters.mjs",
+    "public/video-content.mjs"
+  ],
+  "dataUnchanged": true,
+  "testedCount": 717,
+  "googleAuthenticationInitiated": false
+}

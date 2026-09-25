@@ -1,0 +1,3630 @@
+TAP version 13
+# Subtest: three cached preparatory pages leave the remote budget for useful tracks
+ok 1 - three cached preparatory pages leave the remote budget for useful tracks
+  ---
+  duration_ms: 32.513631
+  ...
+# Subtest: a cache miss at zero budget is resumable and never a provider failure
+ok 2 - a cache miss at zero budget is resumable and never a provider failure
+  ---
+  duration_ms: 2.817781
+  ...
+# Subtest: an alias search reads artist relations, not the seed discography, including old cursors
+ok 3 - an alias search reads artist relations, not the seed discography, including old cursors
+  ---
+  duration_ms: 1.031877
+  ...
+# Subtest: a documented artist without a scene is not an unidentified departure
+ok 4 - a documented artist without a scene is not an unidentified departure
+  ---
+  duration_ms: 0.53252
+  ...
+# Subtest: cached pagination is bounded and resumes without starting the same pages again
+ok 5 - cached pagination is bounded and resumes without starting the same pages again
+  ---
+  duration_ms: 14.550615
+  ...
+# Subtest: filtered cached first album does not stop bounded discovery of another artist
+ok 6 - filtered cached first album does not stop bounded discovery of another artist
+  ---
+  duration_ms: 20.197479
+  ...
+# Subtest: legacy caller keeps zero-network local-cache behavior
+ok 7 - legacy caller keeps zero-network local-cache behavior
+  ---
+  duration_ms: 2.476132
+  ...
+# Subtest: budget exhaustion is explicit and resumes the pending page without re-fetching completed tasks
+ok 8 - budget exhaustion is explicit and resumes the pending page without re-fetching completed tasks
+  ---
+  duration_ms: 18.528765
+  ...
+# Subtest: failed source remains partial and retryable, not an empty exhausted catalogue
+ok 9 - failed source remains partial and retryable, not an empty exhausted catalogue
+  ---
+  duration_ms: 10.174784
+  ...
+# Subtest: zero budget permits no supplier call and keeps a continuation
+ok 10 - zero budget permits no supplier call and keeps a continuation
+  ---
+  duration_ms: 6.165751
+  ...
+# Subtest: a missing supplier configuration is not reported as exhausted documented evidence
+ok 11 - a missing supplier configuration is not reported as exhausted documented evidence
+  ---
+  duration_ms: 24.16529
+  ...
+# Subtest: eligibility shares scope rules, including known IDs, exclusions, distant exceptions and inapplicable artist scope
+ok 12 - eligibility shares scope rules, including known IDs, exclusions, distant exceptions and inapplicable artist scope
+  ---
+  duration_ms: 4.976117
+  ...
+# Subtest: owned videos do not satisfy a discovery target, without excluding similarly named recordings
+ok 13 - owned videos do not satisfy a discovery target, without excluding similarly named recordings
+  ---
+  duration_ms: 1.448876
+  ...
+# Subtest: already displayed other-artist candidates do not satisfy the next collection objective
+ok 14 - already displayed other-artist candidates do not satisfy the next collection objective
+  ---
+  duration_ms: 16.004463
+  ...
+# Subtest: a bounded label collection samples different artists and releases before a second edition of the same album
+ok 15 - a bounded label collection samples different artists and releases before a second edition of the same album
+  ---
+  duration_ms: 21.141717
+  ...
+# Subtest: a reverse remix path does not describe the original artist as the remixer
+ok 16 - a reverse remix path does not describe the original artist as the remixer
+  ---
+  duration_ms: 4.777995
+  ...
+# Subtest: producer credits remain distinct from remixer credits in the explanation
+ok 17 - producer credits remain distinct from remixer credits in the explanation
+  ---
+  duration_ms: 0.910011
+  ...
+# Subtest: label follows an exact label to another artist and never substitutes the source artist
+ok 18 - label follows an exact label to another artist and never substitutes the source artist
+  ---
+  duration_ms: 14.964094
+  ...
+# Subtest: broad-label metadata is explicit and size-based, not an artist blacklist
+ok 19 - broad-label metadata is explicit and size-based, not an artist blacklist
+  ---
+  duration_ms: 3.039732
+  ...
+# Subtest: collection diversity orders artists and editions without deleting or merging them
+ok 20 - collection diversity orders artists and editions without deleting or merging them
+  ---
+  duration_ms: 0.844437
+  ...
+# Subtest: remix follows the track's credited remixer into that artist's catalogue
+ok 21 - remix follows the track's credited remixer into that artist's catalogue
+  ---
+  duration_ms: 2.443932
+  ...
+# Subtest: a shared release without a featuring credit does not invent a partner
+ok 22 - a shared release without a featuring credit does not invent a partner
+  ---
+  duration_ms: 1.109457
+  ...
+# Subtest: local graph results perform no network requests and keep provider pages resumable
+ok 23 - local graph results perform no network requests and keep provider pages resumable
+  ---
+  duration_ms: 8.478064
+  ...
+# Subtest: remote label expansion discovers exact label IDs then other catalogue artists across resumable requests
+ok 24 - remote label expansion discovers exact label IDs then other catalogue artists across resumable requests
+  ---
+  duration_ms: 9.527766
+  ...
+# Subtest: provider failures remain retryable and never report exhaustion
+ok 25 - provider failures remain retryable and never report exhaustion
+  ---
+  duration_ms: 1.77471
+  ...
+# Subtest: recording dates distinguish first release, reissue, announcement and unknown dates
+ok 26 - recording dates distinguish first release, reissue, announcement and unknown dates
+  ---
+  duration_ms: 0.458063
+  ...
+# Subtest: MusicBrainz exact track credit and label IDs are retained; homonyms stay separate
+ok 27 - MusicBrainz exact track credit and label IDs are retained; homonyms stay separate
+  ---
+  duration_ms: 2.073787
+  ...
+# Subtest: Bandcamp supplied imports are labelled and cannot merge artists by a label subdomain
+ok 28 - Bandcamp supplied imports are labelled and cannot merge artists by a label subdomain
+  ---
+  duration_ms: 3.614277
+  ...
+# Subtest: cursor is scoped to its seed and direction
+ok 29 - cursor is scoped to its seed and direction
+  ---
+  duration_ms: 1.940249
+  ...
+# Subtest: a single-source probable artist asks for explicit confirmation without querying its catalogue
+ok 30 - a single-source probable artist asks for explicit confirmation without querying its catalogue
+  ---
+  duration_ms: 1.209069
+  ...
+# Subtest: an unidentified seed requests enrichment rather than falsely reporting a finished catalogue
+ok 31 - an unidentified seed requests enrichment rather than falsely reporting a finished catalogue
+  ---
+  duration_ms: 0.871749
+  ...
+# Subtest: a confirmed artist path does not ask to confirm a second single-source alternative
+ok 32 - a confirmed artist path does not ask to confirm a second single-source alternative
+  ---
+  duration_ms: 2.994972
+  ...
+# Subtest: structured artist URLs connect MusicBrainz and Discogs IDs in both directions without name matching
+ok 33 - structured artist URLs connect MusicBrainz and Discogs IDs in both directions without name matching
+  ---
+  duration_ms: 2.181197
+  ...
+# Subtest: a failed catalogue source keeps its cursor page but another available source continues in the same request
+ok 34 - a failed catalogue source keeps its cursor page but another available source continues in the same request
+  ---
+  duration_ms: 1.298103
+  ...
+# Subtest: a label route produces a different artist track within five calls before collecting the seed's remaining albums
+ok 35 - a label route produces a different artist track within five calls before collecting the seed's remaining albums
+  ---
+  duration_ms: 2.48473
+  ...
+# Subtest: les zéros de date fournisseur dégradent la précision au lieu d'inventer un jour ou un mois
+ok 36 - les zéros de date fournisseur dégradent la précision au lieu d'inventer un jour ou un mois
+  ---
+  duration_ms: 0.175143
+  ...
+# Subtest: un profil MusicBrainz de label matérialise un cross-ID Discogs structuré sans comparaison de nom
+ok 37 - un profil MusicBrainz de label matérialise un cross-ID Discogs structuré sans comparaison de nom
+  ---
+  duration_ms: 1.025244
+  ...
+# Subtest: un cross-ID structuré ne peut jamais changer de type d'entité
+ok 38 - un cross-ID structuré ne peut jamais changer de type d'entité
+  ---
+  duration_ms: 0.520048
+  ...
+# Subtest: un faux domaine Discogs ne produit jamais de cross-ID label
+ok 39 - un faux domaine Discogs ne produit jamais de cross-ID label
+  ---
+  duration_ms: 0.360951
+  ...
+# Subtest: Noodles Recordings traverse son URL structurée MB vers Discogs sans utiliser le nom comme preuve
+ok 40 - Noodles Recordings traverse son URL structurée MB vers Discogs sans utiliser le nom comme preuve
+  ---
+  duration_ms: 0.551228
+  ...
+# Subtest: un cross-ID artiste structuré découvert en fouille ouvre automatiquement l'autre fournisseur
+ok 41 - un cross-ID artiste structuré découvert en fouille ouvre automatiquement l'autre fournisseur
+  ---
+  duration_ms: 0.629546
+  ...
+# Subtest: un cross-ID label structuré découvert pendant la fouille rend l'identité Discogs praticable
+ok 42 - un cross-ID label structuré découvert pendant la fouille rend l'identité Discogs praticable
+  ---
+  duration_ms: 0.54781
+  ...
+# Subtest: une release détaillée rend automatiquement ses nouvelles identités structurées exploitables
+ok 43 - une release détaillée rend automatiquement ses nouvelles identités structurées exploitables
+  ---
+  duration_ms: 0.245718
+  ...
+# Subtest: un même nom sans pont structuré ne crée jamais une nouvelle identité praticable
+ok 44 - un même nom sans pont structuré ne crée jamais une nouvelle identité praticable
+  ---
+  duration_ms: 0.296998
+  ...
+# Subtest: un cross-ID label découvert replanifie le même parcours et ouvre automatiquement le catalogue Discogs
+ok 45 - un cross-ID label découvert replanifie le même parcours et ouvre automatiquement le catalogue Discogs
+  ---
+  duration_ms: 1.037938
+  ...
+# Subtest: historical live smoke is inert without explicit network opt-in
+ok 46 - historical live smoke is inert without explicit network opt-in
+  ---
+  duration_ms: 441.198313
+  ...
+# Subtest: actual DIG loop covers all eight enabled routes before repagination
+ok 47 - actual DIG loop covers all eight enabled routes before repagination
+  ---
+  duration_ms: 11.448659
+  ...
+# Subtest: a refreshed frontier retains per-DIG caps and never mutates call counts
+ok 48 - a refreshed frontier retains per-DIG caps and never mutates call counts
+  ---
+  duration_ms: 1.463702
+  ...
+# Subtest: a label-only frontier cannot starve enabled directions absent from that frontier
+ok 49 - a label-only frontier cannot starve enabled directions absent from that frontier
+  ---
+  duration_ms: 6.140937
+  ...
+# Subtest: duration survives the actual plan to decision boundary
+ok 50 - duration survives the actual plan to decision boundary
+  ---
+  duration_ms: 27.795405
+  ...
+# Subtest: hydration is bounded, deduplicated and reports failures without losing working releases
+ok 51 - hydration is bounded, deduplicated and reports failures without losing working releases
+  ---
+  duration_ms: 1.569177
+  ...
+# Subtest: a Discogs-only track is linked to its credits without inventing a MusicBrainz ID
+ok 52 - a Discogs-only track is linked to its credits without inventing a MusicBrainz ID
+  ---
+  duration_ms: 10.270871
+  ...
+# Subtest: contradictory duration and missing remix version remain unconfirmed
+ok 53 - contradictory duration and missing remix version remain unconfirmed
+  ---
+  duration_ms: 3.463967
+  ...
+# Subtest: hydrated Discogs corroborates without making the same-titled MB recording ambiguous
+ok 54 - hydrated Discogs corroborates without making the same-titled MB recording ambiguous
+  ---
+  duration_ms: 2.207301
+  ...
+# Subtest: a Discogs track cannot bypass competing MusicBrainz recordings
+ok 55 - a Discogs track cannot bypass competing MusicBrainz recordings
+  ---
+  duration_ms: 1.871521
+  ...
+# Subtest: ambiguous Discogs editions and known artist conflicts remain unresolved
+ok 56 - ambiguous Discogs editions and known artist conflicts remain unresolved
+  ---
+  duration_ms: 2.550622
+  ...
+# Subtest: the resolver UI distinguishes hydrated tracks from release search hints
+ok 57 - the resolver UI distinguishes hydrated tracks from release search hints
+  ---
+  duration_ms: 4.160123
+  ...
+# Subtest: same decade cannot leak unrelated remembered artists into Ant People's mix
+ok 58 - same decade cannot leak unrelated remembered artists into Ant People's mix
+  ---
+  duration_ms: 31.677489
+  ...
+# Subtest: era keeps tracklists and exposes both the structural path and separate date evidence
+ok 59 - era keeps tracklists and exposes both the structural path and separate date evidence
+  ---
+  duration_ms: 5.225363
+  ...
+# Subtest: weak artist identity and date-only graphs cannot become period recommendations
+ok 60 - weak artist identity and date-only graphs cannot become period recommendations
+  ---
+  duration_ms: 0.836092
+  ...
+# Subtest: resuming an old era branch revalidates the target, not the saved decade shortcut
+ok 61 - resuming an old era branch revalidates the target, not the saved decade shortcut
+  ---
+  duration_ms: 6.024322
+  ...
+# Subtest: classe les pistes dérivées par lien, nouveauté et diversité
+ok 62 - classe les pistes dérivées par lien, nouveauté et diversité
+  ---
+  duration_ms: 1.916364
+  ...
+# Subtest: un reroll exclut les pistes actuellement affichées
+ok 63 - un reroll exclut les pistes actuellement affichées
+  ---
+  duration_ms: 1.232739
+  ...
+# Subtest: détecte un différentiel sans inventer une exclusivité
+ok 64 - détecte un différentiel sans inventer une exclusivité
+  ---
+  duration_ms: 0.731916
+  ...
+# Subtest: rend visibles les plateformes non configurées
+ok 65 - rend visibles les plateformes non configurées
+  ---
+  duration_ms: 0.27432
+  ...
+# Subtest: une release Discogs produit ses vraies pistes et non son titre de release
+ok 66 - une release Discogs produit ses vraies pistes et non son titre de release
+  ---
+  duration_ms: 4.281403
+  ...
+# Subtest: un artiste propre à la piste remplace l'artiste global de release
+ok 67 - un artiste propre à la piste remplace l'artiste global de release
+  ---
+  duration_ms: 0.32979
+  ...
+# Subtest: les headings Discogs ne deviennent pas des morceaux
+ok 68 - les headings Discogs ne deviennent pas des morceaux
+  ---
+  duration_ms: 0.295356
+  ...
+# Subtest: déduplique les uploads sans fusionner les remixes et change les candidats à la relance
+ok 69 - déduplique les uploads sans fusionner les remixes et change les candidats à la relance
+  ---
+  duration_ms: 3.604585
+  ...
+# Subtest: l’écoute exige l’artiste, le titre et la version
+ok 70 - l’écoute exige l’artiste, le titre et la version
+  ---
+  duration_ms: 0.618452
+  ...
+# Subtest: fusionne les explications répétées et distingue annonce et upload
+ok 71 - fusionne les explications répétées et distingue annonce et upload
+  ---
+  duration_ms: 0.933948
+  ...
+# Subtest: les alphabets non latins restent distincts et les noms courts ne correspondent pas à des fragments
+ok 72 - les alphabets non latins restent distincts et les noms courts ne correspondent pas à des fragments
+  ---
+  duration_ms: 1.018074
+  ...
+# Subtest: varier les artistes et approfondir le catalogue changent réellement la sélection
+ok 73 - varier les artistes et approfondir le catalogue changent réellement la sélection
+  ---
+  duration_ms: 1.809556
+  ...
+# Subtest: spread continu interpole entre approfondissement et dispersion
+ok 74 - spread continu interpole entre approfondissement et dispersion
+  ---
+  duration_ms: 0.393318
+  ...
+# Subtest: collecte : trois partenaires sont échantillonnés avant un second album du premier
+ok 75 - collecte : trois partenaires sont échantillonnés avant un second album du premier
+  ---
+  duration_ms: 69.200427
+  ...
+# Subtest: collecte : reprise de budget sans refaire les premières requêtes
+ok 76 - collecte : reprise de budget sans refaire les premières requêtes
+  ---
+  duration_ms: 34.204572
+  ...
+# Subtest: collecte : le budget par défaut rend des pistes avant de préparer tous les partenaires
+ok 77 - collecte : le budget par défaut rend des pistes avant de préparer tous les partenaires
+  ---
+  duration_ms: 5.935658
+  ...
+# Subtest: crédits : séparer les personnes, garder AC/DC et ne pas créer une auto-collaboration
+ok 78 - crédits : séparer les personnes, garder AC/DC et ne pas créer une auto-collaboration
+  ---
+  duration_ms: 5.151805
+  ...
+# Subtest: recherche : chaque crédit séparément, aucune sélection automatique, panne partielle visible
+ok 79 - recherche : chaque crédit séparément, aucune sélection automatique, panne partielle visible
+  ---
+  duration_ms: 1.033112
+  ...
+# Subtest: présentation : variantes probables, identifiants contradictoires et remixes restent distingués
+ok 80 - présentation : variantes probables, identifiants contradictoires et remixes restent distingués
+  ---
+  duration_ms: 3.338133
+  ...
+# Subtest: pagination : un morceau multisource n’occupe qu’une place et ne revient pas par son autre fiche
+ok 81 - pagination : un morceau multisource n’occupe qu’une place et ne revient pas par son autre fiche
+  ---
+  duration_ms: 7.591269
+  ...
+# Subtest: présentation : les variantes d’une seule direction restent accessibles
+ok 82 - présentation : les variantes d’une seule direction restent accessibles
+  ---
+  duration_ms: 1.097515
+  ...
+# Subtest: diversité : varier aussi les intermédiaires, sans bannir les pistes restantes
+ok 83 - diversité : varier aussi les intermédiaires, sans bannir les pistes restantes
+  ---
+  duration_ms: 2.095947
+  ...
+# Subtest: explications : montrer les étapes et ne compter la période comme preuve indépendante
+ok 84 - explications : montrer les étapes et ne compter la période comme preuve indépendante
+  ---
+  duration_ms: 0.620278
+  ...
+# Subtest: période : pas de deuxième file de priorité pour les mêmes pistes
+ok 85 - période : pas de deuxième file de priorité pour les mêmes pistes
+  ---
+  duration_ms: 1.436327
+  ...
+# Subtest: fresh departures exclude old catalogue neighbours and preserve only deliberate choices
+ok 86 - fresh departures exclude old catalogue neighbours and preserve only deliberate choices
+  ---
+  duration_ms: 14.816219
+  ...
+# Subtest: closing isolates late async work, maps and cursors; expiry is enforced
+ok 87 - closing isolates late async work, maps and cursors; expiry is enforced
+  ---
+  duration_ms: 2.957586
+  ...
+# Subtest: concurrent enrichment merges without losing another direction
+ok 88 - concurrent enrichment merges without losing another direction
+  ---
+  duration_ms: 5.424085
+  ...
+# Subtest: automatic ingestion does not clone unrelated accumulated state
+ok 89 - automatic ingestion does not clone unrelated accumulated state
+  ---
+  duration_ms: 1.029779
+  ...
+# Subtest: failed durable correction is not exposed or retained in personal memory
+ok 90 - failed durable correction is not exposed or retained in personal memory
+  ---
+  duration_ms: 3.011854
+  ...
+# Subtest: construit des graines morceau, artiste, label et playlist
+ok 91 - construit des graines morceau, artiste, label et playlist
+  ---
+  duration_ms: 20.233854
+  ...
+# Subtest: traverse une chaîne-curatrice, reroll puis marque l’épuisement
+ok 92 - traverse une chaîne-curatrice, reroll puis marque l’épuisement
+  ---
+  duration_ms: 11.585887
+  ...
+# Subtest: continue depuis une branche en conservant la lignée
+ok 93 - continue depuis une branche en conservant la lignée
+  ---
+  duration_ms: 2.363888
+  ...
+# Subtest: injecte les co-crédits locaux dans le graphe sans fusionner les homonymes
+ok 94 - injecte les co-crédits locaux dans le graphe sans fusionner les homonymes
+  ---
+  duration_ms: 1.795845
+  ...
+# Subtest: neutralise les anciennes fusions de nom et leurs catalogues Discogs
+ok 95 - neutralise les anciennes fusions de nom et leurs catalogues Discogs
+  ---
+  duration_ms: 0.715609
+  ...
+# Subtest: distingue une branche non explorée, indisponible et réellement épuisée
+ok 96 - distingue une branche non explorée, indisponible et réellement épuisée
+  ---
+  duration_ms: 1.522132
+  ...
+# Subtest: mesure seulement les relations et cibles praticables dans la portée choisie
+ok 97 - mesure seulement les relations et cibles praticables dans la portée choisie
+  ---
+  duration_ms: 3.183188
+  ...
+# Subtest: la date d’upload seule ne permet pas une proximité d’époque musicale
+ok 98 - la date d’upload seule ne permet pas une proximité d’époque musicale
+  ---
+  duration_ms: 0.66944
+  ...
+# Subtest: un recalcul ne ressuscite pas une piste consommée ni une branche laissée de côté
+ok 99 - un recalcul ne ressuscite pas une piste consommée ni une branche laissée de côté
+  ---
+  duration_ms: 5.12467
+  ...
+# Subtest: Discogs et MusicBrainz regroupent une sortie si Discogs préfixe exactement le titre par le crédit artiste
+ok 100 - Discogs et MusicBrainz regroupent une sortie si Discogs préfixe exactement le titre par le crédit artiste
+  ---
+  duration_ms: 3.783741
+  ...
+# Subtest: un préfixe éditorial ne suffit jamais sans même numéro de catalogue
+ok 101 - un préfixe éditorial ne suffit jamais sans même numéro de catalogue
+  ---
+  duration_ms: 0.619505
+  ...
+# Subtest: même catalogue et même année ne compensent jamais un vrai titre différent
+ok 102 - même catalogue et même année ne compensent jamais un vrai titre différent
+  ---
+  duration_ms: 0.561928
+  ...
+# Subtest: Discogs et MusicBrainz regroupent un label sans catalogue si titre, année et identité artiste structurée concordent
+ok 103 - Discogs et MusicBrainz regroupent un label sans catalogue si titre, année et identité artiste structurée concordent
+  ---
+  duration_ms: 1.348877
+  ...
+# Subtest: même titre et même année sans identité artiste corroborée ne fusionnent pas les labels
+ok 104 - même titre et même année sans identité artiste corroborée ne fusionnent pas les labels
+  ---
+  duration_ms: 2.073457
+  ...
+# Subtest: même artiste structuré et même année mais titres différents ne fusionnent pas les labels
+ok 105 - même artiste structuré et même année mais titres différents ne fusionnent pas les labels
+  ---
+  duration_ms: 0.971757
+  ...
+# Subtest: une same_identity faible ne fusionne jamais deux identités de seed
+ok 106 - une same_identity faible ne fusionne jamais deux identités de seed
+  ---
+  duration_ms: 0.343004
+  ...
+# Subtest: une same_identity confirmée fusionne bien les représentations d'une même identité
+ok 107 - une same_identity confirmée fusionne bien les représentations d'une même identité
+  ---
+  duration_ms: 0.421975
+  ...
+# Subtest: une same_identity faible ne suffit pas à rendre une hypothèse artiste éligible au picker
+ok 108 - une same_identity faible ne suffit pas à rendre une hypothèse artiste éligible au picker
+  ---
+  duration_ms: 4.415862
+  ...
+# Subtest: le picker ne propose que les playlists présentes dans la bibliothèque active
+ok 109 - le picker ne propose que les playlists présentes dans la bibliothèque active
+  ---
+  duration_ms: 0.511926
+  ...
+# Subtest: une playlist historique absente de la bibliothèque reste hors picker sans être supprimée du graphe
+ok 110 - une playlist historique absente de la bibliothèque reste hors picker sans être supprimée du graphe
+  ---
+  duration_ms: 0.247464
+  ...
+# Subtest: la projection active exclut les artistes historiques sans lien avec la collection chargée
+ok 111 - la projection active exclut les artistes historiques sans lien avec la collection chargée
+  ---
+  duration_ms: 1.103549
+  ...
+# Subtest: la projection active conserve une identité corroborée d'un artiste de la collection
+ok 112 - la projection active conserve une identité corroborée d'un artiste de la collection
+  ---
+  duration_ms: 0.324181
+  ...
+# Subtest: rendre une confirmation restaurée ne l’exécute pas automatiquement
+ok 113 - rendre une confirmation restaurée ne l’exécute pas automatiquement
+  ---
+  duration_ms: 10.786682
+  ...
+# Subtest: seul le clic de confirmation rend la relation confirmed_user puis reprend le départ
+ok 114 - seul le clic de confirmation rend la relation confirmed_user puis reprend le départ
+  ---
+  duration_ms: 3.973302
+  ...
+# Subtest: explorer la fiche proposée ne confirme pas implicitement l’artiste du morceau
+ok 115 - explorer la fiche proposée ne confirme pas implicitement l’artiste du morceau
+  ---
+  duration_ms: 2.267999
+  ...
+# Subtest: une graine périmée ou un candidat non présenté ne déclenchent aucune écriture
+ok 116 - une graine périmée ou un candidat non présenté ne déclenchent aucune écriture
+  ---
+  duration_ms: 5.363853
+  ...
+# Subtest: un ancien bouton affiché ne confirme pas un candidat pour la nouvelle graine
+ok 117 - un ancien bouton affiché ne confirme pas un candidat pour la nouvelle graine
+  ---
+  duration_ms: 3.339872
+  ...
+# Subtest: un échec d’enregistrement ne supprime pas le choix ni ne poursuit le parcours
+ok 118 - un échec d’enregistrement ne supprime pas le choix ni ne poursuit le parcours
+  ---
+  duration_ms: 8.756952
+  ...
+# Subtest: changer de départ pendant le POST de confirmation empêche la réouverture de l’ancienne graine
+ok 119 - changer de départ pendant le POST de confirmation empêche la réouverture de l’ancienne graine
+  ---
+  duration_ms: 2.567052
+  ...
+# Subtest: changer de départ pendant la relecture du graphe protège aussi les nouveaux groupes
+ok 120 - changer de départ pendant la relecture du graphe protège aussi les nouveaux groupes
+  ---
+  duration_ms: 2.50574
+  ...
+# Subtest: OAuth is disabled without both configured secrets and does not read the grant file
+ok 121 - OAuth is disabled without both configured secrets and does not read the grant file
+  ---
+  duration_ms: 10.318999
+  ...
+# Subtest: credential endpoints require exact host, same-origin JSON and non-simple request header
+ok 122 - credential endpoints require exact host, same-origin JSON and non-simple request header
+  ---
+  duration_ms: 1.656187
+  ...
+# Subtest: authorization binds state to HttpOnly cookie and PKCE; only refresh grant is persisted
+ok 123 - authorization binds state to HttpOnly cookie and PKCE; only refresh grant is persisted
+  ---
+  duration_ms: 15.156716
+  ...
+# Subtest: expired state, denied consent and absent refresh grant preserve prior account
+ok 124 - expired state, denied consent and absent refresh grant preserve prior account
+  ---
+  duration_ms: 4.110548
+  ...
+# Subtest: simultaneous refreshes are singleflight; cached access is reused until near expiry
+ok 125 - simultaneous refreshes are singleflight; cached access is reused until near expiry
+  ---
+  duration_ms: 1.294105
+  ...
+# Subtest: network failures retain refresh grant; invalid_grant requires reconnect and clears it
+ok 126 - network failures retain refresh grant; invalid_grant requires reconnect and clears it
+  ---
+  duration_ms: 0.975848
+  ...
+# Subtest: wrong scopes and malformed access responses are never delivered
+ok 127 - wrong scopes and malformed access responses are never delivered
+  ---
+  duration_ms: 1.695848
+  ...
+# Subtest: disconnect wins against late authorization, late refresh and rotation writes
+ok 128 - disconnect wins against late authorization, late refresh and rotation writes
+  ---
+  duration_ms: 3.014147
+  ...
+# Subtest: switching accounts rejects late refresh from the earlier account
+ok 129 - switching accounts rejects late refresh from the earlier account
+  ---
+  duration_ms: 1.48417
+  ...
+# Subtest: refresh started during a new account code exchange cannot race its commit
+ok 130 - refresh started during a new account code exchange cannot race its commit
+  ---
+  duration_ms: 1.831085
+  ...
+# Subtest: a failed account switch releases the refresh gate and preserves the earlier authorization
+ok 131 - a failed account switch releases the refresh gate and preserves the earlier authorization
+  ---
+  duration_ms: 2.362437
+  ...
+# Subtest: grant file uses private modes, excludes access/client secrets and rejects unsafe files
+ok 132 - grant file uses private modes, excludes access/client secrets and rejects unsafe files
+  ---
+  duration_ms: 69.934769
+  ...
+# Subtest: compile une résolution en graphe traçable
+ok 133 - compile une résolution en graphe traçable
+  ---
+  duration_ms: 6.97029
+  ...
+# Subtest: relie artistes, labels, sorties, crédits et Bandcamp sans score global
+ok 134 - relie artistes, labels, sorties, crédits et Bandcamp sans score global
+  ---
+  duration_ms: 2.805149
+  ...
+# Subtest: déduplique les voisins et applique un retour qualitatif
+ok 135 - déduplique les voisins et applique un retour qualitatif
+  ---
+  duration_ms: 2.946958
+  ...
+# Subtest: graphFromResolution matérialise les artistes Discogs structurés d'un candidat normalisé
+ok 136 - graphFromResolution matérialise les artistes Discogs structurés d'un candidat normalisé
+  ---
+  duration_ms: 0.799616
+  ...
+# Subtest: graphFromResolution conserve l'identité artiste structurée d'une édition Discogs Love Love
+ok 137 - graphFromResolution conserve l'identité artiste structurée d'une édition Discogs Love Love
+  ---
+  duration_ms: 0.647158
+  ...
+# Subtest: graphFromResolution matérialise le label Discogs structuré d'une édition Love Love
+ok 138 - graphFromResolution matérialise le label Discogs structuré d'une édition Love Love
+  ---
+  duration_ms: 0.599387
+  ...
+# Subtest: une chaîne artiste permet de proposer la lecture d’un titre seul sans le confirmer
+ok 139 - une chaîne artiste permet de proposer la lecture d’un titre seul sans le confirmer
+  ---
+  duration_ms: 4.719441
+  ...
+# Subtest: construit une identité canonique sans score global
+ok 140 - construit une identité canonique sans score global
+  ---
+  duration_ms: 3.104865
+  ...
+# Subtest: conserve les contradictions au lieu de fusionner les homonymes
+ok 141 - conserve les contradictions au lieu de fusionner les homonymes
+  ---
+  duration_ms: 0.668671
+  ...
+# Subtest: normalise la clé locale sans perdre le nom affiché
+ok 142 - normalise la clé locale sans perdre le nom affiché
+  ---
+  duration_ms: 0.299519
+  ...
+# Subtest: résout un alias seulement lorsqu’une source le déclare
+ok 143 - résout un alias seulement lorsqu’une source le déclare
+  ---
+  duration_ms: 0.712249
+  ...
+# Subtest: ne fusionne Discogs sur le seul nom et accepte une confirmation explicite
+ok 144 - ne fusionne Discogs sur le seul nom et accepte une confirmation explicite
+  ---
+  duration_ms: 0.377694
+  ...
+# Subtest: décompose un titre sans inventer les segments éditoriaux
+ok 145 - décompose un titre sans inventer les segments éditoriaux
+  ---
+  duration_ms: 0.456816
+  ...
+# Subtest: essaie plusieurs lectures traçables des titres éditorialisés
+ok 146 - essaie plusieurs lectures traçables des titres éditorialisés
+  ---
+  duration_ms: 0.824981
+  ...
+# Subtest: ne résout un morceau que sur artiste et titre exacts
+ok 147 - ne résout un morceau que sur artiste et titre exacts
+  ---
+  duration_ms: 0.547207
+  ...
+# Subtest: refuse une durée manifestement incompatible
+ok 148 - refuse une durée manifestement incompatible
+  ---
+  duration_ms: 0.43181
+  ...
+# Subtest: conserve la corroboration Discogs et borne la preuve Bandcamp
+ok 149 - conserve la corroboration Discogs et borne la preuve Bandcamp
+  ---
+  duration_ms: 0.627759
+  ...
+# Subtest: R10C: une seule route disponible reste parcourable même à Spread 1
+ok 150 - R10C: une seule route disponible reste parcourable même à Spread 1
+  ---
+  duration_ms: 12.996237
+  ...
+# Subtest: R10C: Spread 0 autorise l'approfondissement du même curator
+ok 151 - R10C: Spread 0 autorise l'approfondissement du même curator
+  ---
+  duration_ms: 1.800922
+  ...
+# Subtest: R9: Time Travel disputé est filtré mais Nexxor reste confirmable
+ok 152 - R9: Time Travel disputé est filtré mais Nexxor reste confirmable
+  ---
+  duration_ms: 2.546977
+  ...
+# Subtest: écrit, relit et supprime un secret local avec des permissions restrictives
+ok 153 - écrit, relit et supprime un secret local avec des permissions restrictives
+  ---
+  duration_ms: 45.01117
+  ...
+# Subtest: refuse les valeurs qui ne ressemblent pas à un jeton
+ok 154 - refuse les valeurs qui ne ressemblent pas à un jeton
+  ---
+  duration_ms: 0.831366
+  ...
+# Subtest: les sept participants sont recherchés, concurrence bornée et noms conservés par groupe
+ok 155 - les sept participants sont recherchés, concurrence bornée et noms conservés par groupe
+  ---
+  duration_ms: 22.193521
+  ...
+# Subtest: changer de départ arrête les lots suivants de recherche
+ok 156 - changer de départ arrête les lots suivants de recherche
+  ---
+  duration_ms: 4.048803
+  ...
+# Subtest: validation multi-artistes atomique : préserver les crédits, les révisions et les identités séparées
+ok 157 - validation multi-artistes atomique : préserver les crédits, les révisions et les identités séparées
+  ---
+  duration_ms: 25.069871
+  ...
+# Subtest: les crédits longs restent entiers et les validations vides sont refusées
+ok 158 - les crédits longs restent entiers et les validations vides sont refusées
+  ---
+  duration_ms: 1.13227
+  ...
+# Subtest: échec durable du lot : aucun choix partiel ; reprise et isolation des départs
+ok 159 - échec durable du lot : aucun choix partiel ; reprise et isolation des départs
+  ---
+  duration_ms: 20.295949
+  ...
+# Subtest: un partenaire connu du premier artiste ne bloque pas le catalogue du second
+ok 160 - un partenaire connu du premier artiste ne bloque pas le catalogue du second
+  ---
+  duration_ms: 18.006457
+  ...
+# Subtest: décisions concurrentes : une écriture refusée ne fuit ni dans les lectures ni dans le lot suivant
+ok 161 - décisions concurrentes : une écriture refusée ne fuit ni dans les lectures ni dans le lot suivant
+  ---
+  duration_ms: 6.920613
+  ...
+# Subtest: le mode équilibré ne remplit plus six places avec le même album et reste parcourable
+ok 162 - le mode équilibré ne remplit plus six places avec le même album et reste parcourable
+  ---
+  duration_ms: 30.230967
+  ...
+# Subtest: marqueurs éditoriaux et promotionnels : filtrage réversible, aucune suppression
+ok 163 - marqueurs éditoriaux et promotionnels : filtrage réversible, aucune suppression
+  ---
+  duration_ms: 4.579678
+  ...
+# Subtest: les publications d'une session ne monopolisent pas la page sans être fusionnées
+ok 164 - les publications d'une session ne monopolisent pas la page sans être fusionnées
+  ---
+  duration_ms: 3.052721
+  ...
+# Subtest: noms suggérés dans le titre : ni identité ni attribution à la chaîne
+ok 165 - noms suggérés dans le titre : ni identité ni attribution à la chaîne
+  ---
+  duration_ms: 2.069092
+  ...
+# Subtest: explication : conserver le chemin et signaler le détour par la discographie
+ok 166 - explication : conserver le chemin et signaler le détour par la discographie
+  ---
+  duration_ms: 0.862459
+  ...
+# Subtest: Kosh → deux playlists → KAS:ST ne constitue jamais une branche label
+ok 167 - Kosh → deux playlists → KAS:ST ne constitue jamais une branche label
+  ---
+  duration_ms: 14.145873
+  ...
+# Subtest: le front et le catalogue partagent les mêmes preuves sur un vrai label
+ok 168 - le front et le catalogue partagent les mêmes preuves sur un vrai label
+  ---
+  duration_ms: 4.059438
+  ...
+# Subtest: aucune période ni scène documentée ne signifie pas source explorée
+ok 169 - aucune période ni scène documentée ne signifie pas source explorée
+  ---
+  duration_ms: 2.818166
+  ...
+# Subtest: des identifiants Wikidata cohérents pour Koshi Inaba ne confirment pas Kosh
+ok 170 - des identifiants Wikidata cohérents pour Koshi Inaba ne confirment pas Kosh
+  ---
+  duration_ms: 2.933424
+  ...
+# Subtest: les homonymes Discogs restent des choix séparés sans catalogue attribué
+ok 171 - les homonymes Discogs restent des choix séparés sans catalogue attribué
+  ---
+  duration_ms: 4.64778
+  ...
+# Subtest: un code catalogue est séparé du titre et une durée inconnue ne rejette pas le morceau
+ok 172 - un code catalogue est séparé du titre et une durée inconnue ne rejette pas le morceau
+  ---
+  duration_ms: 2.349843
+  ...
+# Subtest: pendant l’identification on ne redemande pas d’identifier le même départ
+ok 173 - pendant l’identification on ne redemande pas d’identifier le même départ
+  ---
+  duration_ms: 0.658011
+  ...
+# Subtest: le crédit exact du morceau ouvre l’artiste sans confirmer un homonyme recherché
+ok 174 - le crédit exact du morceau ouvre l’artiste sans confirmer un homonyme recherché
+  ---
+  duration_ms: 1.517612
+  ...
+# Subtest: la période du morceau ne devient pas celle d’une autre sortie de l’artiste
+ok 175 - la période du morceau ne devient pas celle d’une autre sortie de l’artiste
+  ---
+  duration_ms: 1.839961
+  ...
+# Subtest: les métadonnées nécessaires à la reprise de la vidéo restent dans le graphe
+ok 176 - les métadonnées nécessaires à la reprise de la vidéo restent dans le graphe
+  ---
+  duration_ms: 0.591987
+  ...
+# Subtest: graph snapshots do not clone provider caches and remain isolated
+ok 177 - graph snapshots do not clone provider caches and remain isolated
+  ---
+  duration_ms: 3.216386
+  ...
+# Subtest: une erreur d’écriture n’empoisonne pas les sauvegardes suivantes
+ok 178 - une erreur d’écriture n’empoisonne pas les sauvegardes suivantes
+  ---
+  duration_ms: 16.481138
+  ...
+# Subtest: les clés réservées et lots malformés sont refusés sans mutation partielle
+ok 179 - les clés réservées et lots malformés sont refusés sans mutation partielle
+  ---
+  duration_ms: 4.863308
+  ...
+# Subtest: persiste atomiquement graphe, événements et synchronisation
+ok 180 - persiste atomiquement graphe, événements et synchronisation
+  ---
+  duration_ms: 39.879292
+  ...
+# Subtest: refuse les événements qui simuleraient une sémantique inconnue
+ok 181 - refuse les événements qui simuleraient une sémantique inconnue
+  ---
+  duration_ms: 3.904027
+  ...
+# Subtest: un enrichissement automatique ne rétrograde pas une confirmation utilisateur
+ok 182 - un enrichissement automatique ne rétrograde pas une confirmation utilisateur
+  ---
+  duration_ms: 9.721219
+  ...
+# Subtest: R11: Depth mesure des relations observées, pas un nombre de requêtes
+ok 183 - R11: Depth mesure des relations observées, pas un nombre de requêtes
+  ---
+  duration_ms: 2.268624
+  ...
+# Subtest: R11: 100 observations du même premier curator restent une seule première branche
+ok 184 - R11: 100 observations du même premier curator restent une seule première branche
+  ---
+  duration_ms: 1.044657
+  ...
+# Subtest: R11: Spread réalloue le budget sans changer la preuve
+ok 185 - R11: Spread réalloue le budget sans changer la preuve
+  ---
+  duration_ms: 12.839262
+  ...
+# Subtest: R11: la convergence de présentation conserve tous les chemins
+ok 186 - R11: la convergence de présentation conserve tous les chemins
+  ---
+  duration_ms: 1.800111
+  ...
+# Subtest: R11: une branche indisponible ne reçoit aucun budget
+ok 187 - R11: une branche indisponible ne reçoit aucun budget
+  ---
+  duration_ms: 0.332121
+  ...
+# Subtest: R11: le budget ne peut pas paginer indéfiniment une seule direction
+ok 188 - R11: le budget ne peut pas paginer indéfiniment une seule direction
+  ---
+  duration_ms: 0.202747
+  ...
+# Subtest: R11: une session expose une frontière lisible sans modifier le graphe
+ok 189 - R11: une session expose une frontière lisible sans modifier le graphe
+  ---
+  duration_ms: 6.144659
+  ...
+# Subtest: R11.1: Spread dispersif ouvre chaque route avant de repaginer la route productive
+ok 190 - R11.1: Spread dispersif ouvre chaque route avant de repaginer la route productive
+  ---
+  duration_ms: 18.318043
+  ...
+# Subtest: R11.1: une fois les routes ouvertes, une route peut être reprise sans dépasser le cap
+ok 191 - R11.1: une fois les routes ouvertes, une route peut être reprise sans dépasser le cap
+  ---
+  duration_ms: 4.783433
+  ...
+# Subtest: R11.1: DIG relit la frontière après chaque chargement
+ok 192 - R11.1: DIG relit la frontière après chaque chargement
+  ---
+  duration_ms: 6.047792
+  ...
+# Subtest: R11.1: une identité déjà connue reprend les catalogues au lieu de se réidentifier
+ok 193 - R11.1: une identité déjà connue reprend les catalogues au lieu de se réidentifier
+  ---
+  duration_ms: 1.709028
+  ...
+# Subtest: R11.1: l'UI sépare profondeur cible et profondeur observée
+ok 194 - R11.1: l'UI sépare profondeur cible et profondeur observée
+  ---
+  duration_ms: 3.654138
+  ...
+# Subtest: R11.1B: la boucle de frontière conserve le binding historique des actions de carte
+ok 195 - R11.1B: la boucle de frontière conserve le binding historique des actions de carte
+  ---
+  duration_ms: 1.832334
+  ...
+# Subtest: la décision runtime moderne accepte un recording MB exact
+ok 196 - la décision runtime moderne accepte un recording MB exact
+  ---
+  duration_ms: 13.108961
+  ...
+# Subtest: un candidat artiste incompatible n'est jamais accepté
+ok 197 - un candidat artiste incompatible n'est jamais accepté
+  ---
+  duration_ms: 1.309219
+  ...
+# Subtest: une compétition connue empêche une auto-acceptation mono-source
+ok 198 - une compétition connue empêche une auto-acceptation mono-source
+  ---
+  duration_ms: 2.126652
+  ...
+# Subtest: l'autorité runtime conserve resolved si le MBID accepté correspond exactement
+ok 199 - l'autorité runtime conserve resolved si le MBID accepté correspond exactement
+  ---
+  duration_ms: 0.870208
+  ...
+# Subtest: l'autorité runtime retire resolved si l'algèbre refuse le candidat
+ok 200 - l'autorité runtime retire resolved si l'algèbre refuse le candidat
+  ---
+  duration_ms: 0.8115
+  ...
+# Subtest: une ambiguïté moderne interdit à l'ancien moteur de réélever en resolved
+ok 201 - une ambiguïté moderne interdit à l'ancien moteur de réélever en resolved
+  ---
+  duration_ms: 0.833304
+  ...
+# Subtest: le contrat historique Discogs reste intact quand resolved est retiré
+ok 202 - le contrat historique Discogs reste intact quand resolved est retiré
+  ---
+  duration_ms: 0.248823
+  ...
+# Subtest: une release Discogs de recherche non hydratée ne rend pas ambigu un recording MB exact
+ok 203 - une release Discogs de recherche non hydratée ne rend pas ambigu un recording MB exact
+  ---
+  duration_ms: 1.10285
+  ...
+# Subtest: une release Discogs de recherche seule ne peut pas auto-résoudre un recording
+ok 204 - une release Discogs de recherche seule ne peut pas auto-résoudre un recording
+  ---
+  duration_ms: 0.503785
+  ...
+# Subtest: la jonction runtime produit une requête sans transformer l'artiste appelant en identité
+ok 205 - la jonction runtime produit une requête sans transformer l'artiste appelant en identité
+  ---
+  duration_ms: 14.260538
+  ...
+# Subtest: le fallback artiste runtime reste explicitement une projection de recherche
+ok 206 - le fallback artiste runtime reste explicitement une projection de recherche
+  ---
+  duration_ms: 3.125346
+  ...
+# Subtest: une seconde hypothèse reste distincte de la première
+ok 207 - une seconde hypothèse reste distincte de la première
+  ---
+  duration_ms: 2.841169
+  ...
+# Subtest: distinct exact IDs and their references survive persistence without lossy merging
+ok 208 - distinct exact IDs and their references survive persistence without lossy merging
+  ---
+  duration_ms: 49.648503
+  ...
+# Subtest: malformed evidence cannot partially insert a graph batch
+ok 209 - malformed evidence cannot partially insert a graph batch
+  ---
+  duration_ms: 11.096562
+  ...
+# Subtest: single-edge updates preserve explicit rejection just like batch enrichment
+ok 210 - single-edge updates preserve explicit rejection just like batch enrichment
+  ---
+  duration_ms: 7.56266
+  ...
+# Subtest: changing a legacy edge key does not bypass a rejection of the same relation
+ok 211 - changing a legacy edge key does not bypass a rejection of the same relation
+  ---
+  duration_ms: 25.28529
+  ...
+# Subtest: a reused logical cache key cannot reuse another resource or provider origin
+ok 212 - a reused logical cache key cannot reuse another resource or provider origin
+  ---
+  duration_ms: 105.1236
+  ...
+# Subtest: disabled provider does not execute a previously queued request or resurrect its status
+ok 213 - disabled provider does not execute a previously queued request or resurrect its status
+  ---
+  duration_ms: 2.331301
+  ...
+# Subtest: a shared country alone is not a route through accumulated unrelated artists
+ok 214 - a shared country alone is not a route through accumulated unrelated artists
+  ---
+  duration_ms: 9.62627
+  ...
+# Subtest: explicit documented scenes remain usable without a shared label
+ok 215 - explicit documented scenes remain usable without a shared label
+  ---
+  duration_ms: 1.676041
+  ...
+# Subtest: homonymous YouTube channels cannot join separate departures, including legacy graphs
+ok 216 - homonymous YouTube channels cannot join separate departures, including legacy graphs
+  ---
+  duration_ms: 5.906466
+  ...
+# Subtest: expired data is never used to disguise an authentication refusal
+ok 217 - expired data is never used to disguise an authentication refusal
+  ---
+  duration_ms: 23.391388
+  ...
+# Subtest: an excessive Retry-After cannot occupy the source queue for hours
+ok 218 - an excessive Retry-After cannot occupy the source queue for hours
+  ---
+  duration_ms: 1.633561
+  ...
+# Subtest: deux sources indépendantes soutiennent une identité
+ok 219 - deux sources indépendantes soutiennent une identité
+  ---
+  duration_ms: 7.013038
+  ...
+# Subtest: absence de résultat pour le rival n'est pas une preuve négative
+ok 220 - absence de résultat pour le rival n'est pas une preuve négative
+  ---
+  duration_ms: 0.504072
+  ...
+# Subtest: une contradiction connue mono-source reste ambiguë
+ok 221 - une contradiction connue mono-source reste ambiguë
+  ---
+  duration_ms: 0.464313
+  ...
+# Subtest: deux mauvais candidats sont rejetés
+ok 222 - deux mauvais candidats sont rejetés
+  ---
+  duration_ms: 0.220949
+  ...
+# Subtest: une identité très forte et corroborée est acceptée
+ok 223 - une identité très forte et corroborée est acceptée
+  ---
+  duration_ms: 0.434894
+  ...
+# Subtest: restore preserves discoveries until local commit: snapshot
+ok 224 - restore preserves discoveries until local commit: snapshot
+  ---
+  duration_ms: 10.286061
+  ...
+# Subtest: restore preserves discoveries until local commit: database
+ok 225 - restore preserves discoveries until local commit: database
+  ---
+  duration_ms: 3.666583
+  ...
+# Subtest: restore preserves discoveries until local commit: quota
+ok 226 - restore preserves discoveries until local commit: quota
+  ---
+  duration_ms: 6.843044
+  ...
+# Subtest: restore preserves discoveries until local commit: success
+ok 227 - restore preserves discoveries until local commit: success
+  ---
+  duration_ms: 4.040001
+  ...
+# Subtest: convertit les durées ISO YouTube
+ok 228 - convertit les durées ISO YouTube
+  ---
+  duration_ms: 2.125016
+  ...
+# Subtest: extrait un identifiant depuis une URL ou une valeur brute
+ok 229 - extrait un identifiant depuis une URL ou une valeur brute
+  ---
+  duration_ms: 0.847169
+  ...
+# Subtest: détecte prudemment un artiste dans une vidéo musicale
+ok 230 - détecte prudemment un artiste dans une vidéo musicale
+  ---
+  duration_ms: 3.376724
+  ...
+# Subtest: extrait les artistes crédités sans répéter l’artiste principal
+ok 231 - extrait les artistes crédités sans répéter l’artiste principal
+  ---
+  duration_ms: 2.146807
+  ...
+# Subtest: construit un indice de collaborations traçable par vidéo
+ok 232 - construit un indice de collaborations traçable par vidéo
+  ---
+  duration_ms: 2.870344
+  ...
+# Subtest: les uploads répétés ne gonflent pas les collaborations et les partenaires de second degré sont traçables
+ok 233 - les uploads répétés ne gonflent pas les collaborations et les partenaires de second degré sont traçables
+  ---
+  duration_ms: 20.756615
+  ...
+# Subtest: normalise les playlists, lentilles et vidéos vues
+ok 234 - normalise les playlists, lentilles et vidéos vues
+  ---
+  duration_ms: 0.521989
+  ...
+# Subtest: pénalise les vidéos déjà beaucoup proposées
+ok 235 - pénalise les vidéos déjà beaucoup proposées
+  ---
+  duration_ms: 3.987923
+  ...
+# Subtest: le mode connexions privilégie les crédits explicites
+ok 236 - le mode connexions privilégie les crédits explicites
+  ---
+  duration_ms: 0.808387
+  ...
+# Subtest: les quatre modes produisent des classements réellement distincts
+ok 237 - les quatre modes produisent des classements réellement distincts
+  ---
+  duration_ms: 5.38661
+  ...
+# Subtest: classe selon l’envie et respecte les contraintes
+ok 238 - classe selon l’envie et respecte les contraintes
+  ---
+  duration_ms: 0.479457
+  ...
+# Subtest: compose quatre positions sans doublon
+ok 239 - compose quatre positions sans doublon
+  ---
+  duration_ms: 4.427082
+  ...
+# Subtest: compose un programme partiel
+ok 240 - compose un programme partiel
+  ---
+  duration_ms: 0.421522
+  ...
+# Subtest: a graph response received out of order cannot erase newer knowledge
+ok 241 - a graph response received out of order cannot erase newer knowledge
+  ---
+  duration_ms: 6.503899
+  ...
+# Subtest: browser identity requests do not share another punctuated artist's memory
+ok 242 - browser identity requests do not share another punctuated artist's memory
+  ---
+  duration_ms: 3.326811
+  ...
+# Subtest: hostile catalogue URLs cannot become HTML or executable links
+ok 243 - hostile catalogue URLs cannot become HTML or executable links
+  ---
+  duration_ms: 2.238006
+  ...
+# Subtest: late structured discovery is not registered against a newer departure
+ok 244 - late structured discovery is not registered against a newer departure
+  ---
+  duration_ms: 2.010768
+  ...
+# Subtest: les gestes gardent le front en RAM et ne sauvegardent que les réglages
+ok 245 - les gestes gardent le front en RAM et ne sauvegardent que les réglages
+  ---
+  duration_ms: 2.766866
+  ...
+# Subtest: fermer une fouille ne la ressuscite pas si une sauvegarde précédente était encore en file
+ok 246 - fermer une fouille ne la ressuscite pas si une sauvegarde précédente était encore en file
+  ---
+  duration_ms: 1.780388
+  ...
+# Subtest: le départ explicite Kosh est résolu même sans ancienne catégorie YouTube
+ok 247 - le départ explicite Kosh est résolu même sans ancienne catégorie YouTube
+  ---
+  duration_ms: 7.494221
+  ...
+# Subtest: changer de départ pendant la lecture des labels empêche l’ancien enrichissement de réinstaller sa graine
+ok 248 - changer de départ pendant la lecture des labels empêche l’ancien enrichissement de réinstaller sa graine
+  ---
+  duration_ms: 3.686888
+  ...
+# Subtest: changer de départ pendant l’enregistrement de résolution préserve aussi la nouvelle graine
+ok 249 - changer de départ pendant l’enregistrement de résolution préserve aussi la nouvelle graine
+  ---
+  duration_ms: 3.435167
+  ...
+# Subtest: Identifier relance le résolveur malgré un ancien statut source complète sans identité
+ok 250 - Identifier relance le résolveur malgré un ancien statut source complète sans identité
+  ---
+  duration_ms: 6.261354
+  ...
+# Subtest: failed opening returns to a usable empty workspace without deleting the collection
+ok 251 - failed opening returns to a usable empty workspace without deleting the collection
+  ---
+  duration_ms: 3.820648
+  ...
+# Subtest: local departures remain listed even when the exploration API is unavailable
+ok 252 - local departures remain listed even when the exploration API is unavailable
+  ---
+  duration_ms: 1.536482
+  ...
+# Subtest: l’ouverture abandonnée pendant la seconde lecture du graphe ne remplace ni ne sauvegarde le nouveau départ
+ok 253 - l’ouverture abandonnée pendant la seconde lecture du graphe ne remplace ni ne sauvegarde le nouveau départ
+  ---
+  duration_ms: 3.443969
+  ...
+# Subtest: recording-first: Time Travel reste une hypothèse et Nexxor vient du recording résolu
+ok 254 - recording-first: Time Travel reste une hypothèse et Nexxor vient du recording résolu
+  ---
+  duration_ms: 3.701762
+  ...
+# Subtest: cache-only probes preserve URL scoping, expiry and source configuration
+ok 255 - cache-only probes preserve URL scoping, expiry and source configuration
+  ---
+  duration_ms: 98.769516
+  ...
+# Subtest: une erreur d’authentification n’est pas répétée comme une panne temporaire
+ok 256 - une erreur d’authentification n’est pas répétée comme une panne temporaire
+  ---
+  duration_ms: 3.196012
+  ...
+# Subtest: la provenance d’une URL reste une chaîne sérialisable dans le cache
+ok 257 - la provenance d’une URL reste une chaîne sérialisable dans le cache
+  ---
+  duration_ms: 3.048913
+  ...
+# Subtest: deux lectures identiques en attente réutilisent le cache rempli par la première
+ok 258 - deux lectures identiques en attente réutilisent le cache rempli par la première
+  ---
+  duration_ms: 1.766635
+  ...
+# Subtest: respecte Retry-After puis réussit sans perdre la provenance
+ok 259 - respecte Retry-After puis réussit sans perdre la provenance
+  ---
+  duration_ms: 1.934707
+  ...
+# Subtest: rend une copie périmée explicitement lorsque la source tombe
+ok 260 - rend une copie périmée explicitement lorsque la source tombe
+  ---
+  duration_ms: 1.299626
+  ...
+# Subtest: sérialise deux requêtes d’une même source
+ok 261 - sérialise deux requêtes d’une même source
+  ---
+  duration_ms: 23.402333
+  ...
+# Subtest: Google setup displays the current origin: http://localhost:4181/
+ok 262 - Google setup displays the current origin: http://localhost:4181/
+  ---
+  duration_ms: 3.318719
+  ...
+# Subtest: Google setup displays the current origin: http://localhost:4287/\#source-panel
+ok 263 - Google setup displays the current origin: http://localhost:4287/\#source-panel
+  ---
+  duration_ms: 1.029007
+  ...
+# Subtest: Google setup displays the current origin: https://scout.example.test:8443/
+ok 264 - Google setup displays the current origin: https://scout.example.test:8443/
+  ---
+  duration_ms: 1.058537
+  ...
+# Subtest: Opening the HTML file still redirects to the standard local service
+ok 265 - Opening the HTML file still redirects to the standard local service
+  ---
+  duration_ms: 1.016397
+  ...
+# Subtest: MusicBrainz devient un candidat normalisé sans perdre ses IDs
+ok 266 - MusicBrainz devient un candidat normalisé sans perdre ses IDs
+  ---
+  duration_ms: 3.643127
+  ...
+# Subtest: MusicBrainz ignore les résultats incomplets plutôt que d'inventer
+ok 267 - MusicBrainz ignore les résultats incomplets plutôt que d'inventer
+  ---
+  duration_ms: 0.554999
+  ...
+# Subtest: Discogs adapte un résultat de recherche Artist - Track
+ok 268 - Discogs adapte un résultat de recherche Artist - Track
+  ---
+  duration_ms: 0.685863
+  ...
+# Subtest: Discogs conserve artistes structurés, version et durée
+ok 269 - Discogs conserve artistes structurés, version et durée
+  ---
+  duration_ms: 0.573046
+  ...
+# Subtest: les sources restent séparées lors de la collecte
+ok 270 - les sources restent séparées lors de la collecte
+  ---
+  duration_ms: 0.452363
+  ...
+# Subtest: Discogs ignore un résultat sans artiste exploitable
+ok 271 - Discogs ignore un résultat sans artiste exploitable
+  ---
+  duration_ms: 0.201857
+  ...
+# Subtest: les adaptateurs alimentent directement le scorer sans résoudre eux-mêmes
+ok 272 - les adaptateurs alimentent directement le scorer sans résoudre eux-mêmes
+  ---
+  duration_ms: 3.439221
+  ...
+# Subtest: une graphie Unicode proche reste très similaire
+ok 273 - une graphie Unicode proche reste très similaire
+  ---
+  duration_ms: 9.241677
+  ...
+# Subtest: un candidat exact obtient un score très fort
+ok 274 - un candidat exact obtient un score très fort
+  ---
+  duration_ms: 0.894667
+  ...
+# Subtest: un bon titre avec mauvais artiste est pénalisé
+ok 275 - un bon titre avec mauvais artiste est pénalisé
+  ---
+  duration_ms: 1.365675
+  ...
+# Subtest: un code catalogue exact renforce le candidat
+ok 276 - un code catalogue exact renforce le candidat
+  ---
+  duration_ms: 0.479113
+  ...
+# Subtest: la durée peut départager deux candidats autrement similaires
+ok 277 - la durée peut départager deux candidats autrement similaires
+  ---
+  duration_ms: 3.937607
+  ...
+# Subtest: deux excellents candidats trop proches restent ambigus
+ok 278 - deux excellents candidats trop proches restent ambigus
+  ---
+  duration_ms: 0.642634
+  ...
+# Subtest: un excellent candidat nettement devant peut être auto-accepté
+ok 279 - un excellent candidat nettement devant peut être auto-accepté
+  ---
+  duration_ms: 3.9454
+  ...
+# Subtest: aucun candidat retourne rejected
+ok 280 - aucun candidat retourne rejected
+  ---
+  duration_ms: 0.256162
+  ...
+# Subtest: une ambiguïté artiste déjà connue interdit l'auto-accept sur la seule ressemblance textuelle
+ok 281 - une ambiguïté artiste déjà connue interdit l'auto-accept sur la seule ressemblance textuelle
+  ---
+  duration_ms: 3.191707
+  ...
+# Subtest: un catalogue exact peut départager une ambiguïté artiste connue
+ok 282 - un catalogue exact peut départager une ambiguïté artiste connue
+  ---
+  duration_ms: 0.509421
+  ...
+# Subtest: une version attendue absente chez le fournisseur reste inconnue et non contradictoire
+ok 283 - une version attendue absente chez le fournisseur reste inconnue et non contradictoire
+  ---
+  duration_ms: 0.238897
+  ...
+# Subtest: des artistes supplémentaires sont visibles dans les pénalités
+ok 284 - des artistes supplémentaires sont visibles dans les pénalités
+  ---
+  duration_ms: 0.390836
+  ...
+# Subtest: deux candidats faibles ne deviennent pas ambigus uniquement parce que leurs scores sont proches
+ok 285 - deux candidats faibles ne deviennent pas ambigus uniquement parce que leurs scores sont proches
+  ---
+  duration_ms: 0.289979
+  ...
+# Subtest: un Topic sans artiste dans le titre récupère l'artiste via les métadonnées
+ok 286 - un Topic sans artiste dans le titre récupère l'artiste via les métadonnées
+  ---
+  duration_ms: 26.009674
+  ...
+# Subtest: un remixer explicite de description est conservé comme rôle
+ok 287 - un remixer explicite de description est conservé comme rôle
+  ---
+  duration_ms: 2.403534
+  ...
+# Subtest: la syntaxe du titre et les métadonnées se corroborent sans fusion d'identité
+ok 288 - la syntaxe du titre et les métadonnées se corroborent sans fusion d'identité
+  ---
+  duration_ms: 3.020122
+  ...
+# Subtest: collectTrackEvidence conserve les sources de provenance
+ok 289 - collectTrackEvidence conserve les sources de provenance
+  ---
+  duration_ms: 0.871345
+  ...
+# Subtest: Artist - Title
+ok 290 - Artist - Title
+  ---
+  duration_ms: 10.449646
+  ...
+# Subtest: feat dans le bloc artiste
+ok 291 - feat dans le bloc artiste
+  ---
+  duration_ms: 3.481671
+  ...
+# Subtest: collaboration X
+ok 292 - collaboration X
+  ---
+  duration_ms: 0.709089
+  ...
+# Subtest: collaboration & et featuring
+ok 293 - collaboration & et featuring
+  ---
+  duration_ms: 0.842336
+  ...
+# Subtest: remixer explicite
+ok 294 - remixer explicite
+  ---
+  duration_ms: 0.851259
+  ...
+# Subtest: plusieurs remixeurs
+ok 295 - plusieurs remixeurs
+  ---
+  duration_ms: 0.787742
+  ...
+# Subtest: un & dans un titre ne devient pas deux artistes
+ok 296 - un & dans un titre ne devient pas deux artistes
+  ---
+  duration_ms: 0.356774
+  ...
+# Subtest: ne déduit pas l'artiste d'un titre Topic sans frontière
+ok 297 - ne déduit pas l'artiste d'un titre Topic sans frontière
+  ---
+  duration_ms: 0.440918
+  ...
+# Subtest: titre avec featuring sans artiste explicite
+ok 298 - titre avec featuring sans artiste explicite
+  ---
+  duration_ms: 0.359768
+  ...
+# Subtest: version sans artiste explicite
+ok 299 - version sans artiste explicite
+  ---
+  duration_ms: 0.563896
+  ...
+# Subtest: supporte tiret long
+ok 300 - supporte tiret long
+  ---
+  duration_ms: 4.433003
+  ...
+# Subtest: retourne plusieurs hypothèses lorsqu'il y a plusieurs frontières
+ok 301 - retourne plusieurs hypothèses lorsqu'il y a plusieurs frontières
+  ---
+  duration_ms: 0.914179
+  ...
+# Subtest: parseTrackTitle ne transforme jamais un tiret du titre en frontière artiste
+ok 302 - parseTrackTitle ne transforme jamais un tiret du titre en frontière artiste
+  ---
+  duration_ms: 0.676315
+  ...
+# Subtest: parseTrackTitle extrait néanmoins une version et son remixeur
+ok 303 - parseTrackTitle extrait néanmoins une version et son remixeur
+  ---
+  duration_ms: 0.504379
+  ...
+# Subtest: une chaîne Release - Topic ne devient jamais un artiste
+ok 304 - une chaîne Release - Topic ne devient jamais un artiste
+  ---
+  duration_ms: 17.845689
+  ...
+# Subtest: la métadonnée Topic peut contester la frontière du titre
+ok 305 - la métadonnée Topic peut contester la frontière du titre
+  ---
+  duration_ms: 3.831804
+  ...
+# Subtest: un featuring reste secondaire
+ok 306 - un featuring reste secondaire
+  ---
+  duration_ms: 12.807156
+  ...
+# Subtest: une graphie différente ne résout pas une identité canonique
+ok 307 - une graphie différente ne résout pas une identité canonique
+  ---
+  duration_ms: 1.476171
+  ...
+# Subtest: plusieurs artistes documentés restent visibles
+ok 308 - plusieurs artistes documentés restent visibles
+  ---
+  duration_ms: 1.424614
+  ...
+# Subtest: un titre Topic contenant un tiret reste un titre et ne fabrique pas un artiste
+ok 309 - un titre Topic contenant un tiret reste un titre et ne fabrique pas un artiste
+  ---
+  duration_ms: 2.079756
+  ...
+# Subtest: une collaboration documentée n'est pas signalée comme conflit
+ok 310 - une collaboration documentée n'est pas signalée comme conflit
+  ---
+  duration_ms: 6.058445
+  ...
+# Subtest: PØLI et POLI sont une variante orthographique, pas une identité résolue
+ok 311 - PØLI et POLI sont une variante orthographique, pas une identité résolue
+  ---
+  duration_ms: 6.26653
+  ...
+# Subtest: The Detroit Experiment et Detroit Experiment restent une variante de crédit
+ok 312 - The Detroit Experiment et Detroit Experiment restent une variante de crédit
+  ---
+  duration_ms: 1.471994
+  ...
+# Subtest: joint A+B avec chaîne Topic A reste une collaboration et non un conflit
+ok 313 - joint A+B avec chaîne Topic A reste une collaboration et non un conflit
+  ---
+  duration_ms: 4.877794
+  ...
+# Subtest: un featuring explicite ne reste pas simultanément primary
+ok 314 - un featuring explicite ne reste pas simultanément primary
+  ---
+  duration_ms: 1.763941
+  ...
+# Subtest: un remixer explicite ne reste pas simultanément primary
+ok 315 - un remixer explicite ne reste pas simultanément primary
+  ---
+  duration_ms: 2.794859
+  ...
+# Subtest: plusieurs Main Artist explicites sont un multi-main documenté, pas un conflit
+ok 316 - plusieurs Main Artist explicites sont un multi-main documenté, pas un conflit
+  ---
+  duration_ms: 1.653606
+  ...
+# Subtest: le nom de chaîne Topic devient un indice secondaire quand le header crédite déjà l'artiste
+ok 317 - le nom de chaîne Topic devient un indice secondaire quand le header crédite déjà l'artiste
+  ---
+  duration_ms: 1.222221
+  ...
+# Subtest: un Topic DA Uzi n'est pas contredit par le simple nom de chaîne DA
+ok 318 - un Topic DA Uzi n'est pas contredit par le simple nom de chaîne DA
+  ---
+  duration_ms: 1.083962
+  ...
+# Subtest: produit une requête exacte sans modifier la source
+ok 319 - produit une requête exacte sans modifier la source
+  ---
+  duration_ms: 26.726674
+  ...
+# Subtest: génère une variante sans diacritiques sans déclarer un alias
+ok 320 - génère une variante sans diacritiques sans déclarer un alias
+  ---
+  duration_ms: 4.446594
+  ...
+# Subtest: normalise temporairement la ponctuation
+ok 321 - normalise temporairement la ponctuation
+  ---
+  duration_ms: 1.834057
+  ...
+# Subtest: la version peut être ajoutée temporairement au titre de recherche
+ok 322 - la version peut être ajoutée temporairement au titre de recherche
+  ---
+  duration_ms: 15.916262
+  ...
+# Subtest: les candidats concurrents restent des recherches faibles et non des identités
+ok 323 - les candidats concurrents restent des recherches faibles et non des identités
+  ---
+  duration_ms: 4.177439
+  ...
+# Subtest: une absence de catalogue reste vide et ne devient jamais la chaîne null
+ok 324 - une absence de catalogue reste vide et ne devient jamais la chaîne null
+  ---
+  duration_ms: 2.1839
+  ...
+# Subtest: un conteneur Release - Topic ne pollue pas les requêtes artiste
+ok 325 - un conteneur Release - Topic ne pollue pas les requêtes artiste
+  ---
+  duration_ms: 1.295709
+  ...
+# Subtest: une position vinyle devient une variante de recherche sans modifier l'interprétation
+ok 326 - une position vinyle devient une variante de recherche sans modifier l'interprétation
+  ---
+  duration_ms: 3.091246
+  ...
+# Subtest: UI contract: every HTML id is unique and labels/navigation retain their targets
+ok 327 - UI contract: every HTML id is unique and labels/navigation retain their targets
+  ---
+  duration_ms: 4.389753
+  ...
+# Subtest: UI contract: imports and backups use JSON file controls with observable status
+ok 328 - UI contract: imports and backups use JSON file controls with observable status
+  ---
+  duration_ms: 1.165612
+  ...
+# Subtest: UI contract: one departure picker and explicit breadth/depth choices remain available
+ok 329 - UI contract: one departure picker and explicit breadth/depth choices remain available
+  ---
+  duration_ms: 0.552944
+  ...
+# Subtest: UI contract: public modules referenced by the application and HTML exist
+ok 330 - UI contract: public modules referenced by the application and HTML exist
+  ---
+  duration_ms: 1.99414
+  ...
+# Subtest: UI contract: backup, resume and direction controls retain their action wiring
+ok 331 - UI contract: backup, resume and direction controls retain their action wiring
+  ---
+  duration_ms: 1.736714
+  ...
+# Subtest: UI contract: compact details and phone layouts have explicit stylesheet support
+ok 332 - UI contract: compact details and phone layouts have explicit stylesheet support
+  ---
+  duration_ms: 0.660723
+  ...
+# Subtest: V2.7R2: un label d'une édition exacte du morceau actif entre dans le picker
+ok 333 - V2.7R2: un label d'une édition exacte du morceau actif entre dans le picker
+  ---
+  duration_ms: 26.507214
+  ...
+# Subtest: V2.7R2: candidate_edition ne traverse la frontière qu'une fois corroborée
+ok 334 - V2.7R2: candidate_edition ne traverse la frontière qu'une fois corroborée
+  ---
+  duration_ms: 1.218741
+  ...
+# Subtest: V2.7R2: un label d'une vidéo historique absente ne revient pas dans le picker
+ok 335 - V2.7R2: un label d'une vidéo historique absente ne revient pas dans le picker
+  ---
+  duration_ms: 0.566584
+  ...
+# Subtest: V2.7R2: un artiste voisin ne donne pas toute sa discographie au picker
+ok 336 - V2.7R2: un artiste voisin ne donne pas toute sa discographie au picker
+  ---
+  duration_ms: 0.969435
+  ...
+# Subtest: V2.7R1: une résolution recording-first peut masquer les vieux candidats textuels faibles
+ok 337 - V2.7R1: une résolution recording-first peut masquer les vieux candidats textuels faibles
+  ---
+  duration_ms: 4.408261
+  ...
+# Subtest: V2.7R contract: recording-first, provenance bornée et cartes lisibles sont présents
+ok 338 - V2.7R contract: recording-first, provenance bornée et cartes lisibles sont présents
+  ---
+  duration_ms: 8.077949
+  ...
+# Subtest: V2.7R3: les labels placeholders ne deviennent pas des ancres de routage
+ok 339 - V2.7R3: les labels placeholders ne deviennent pas des ancres de routage
+  ---
+  duration_ms: 3.720536
+  ...
+# Subtest: V2.7R3: un vrai label reste routable
+ok 340 - V2.7R3: un vrai label reste routable
+  ---
+  duration_ms: 0.769392
+  ...
+# Subtest: V2.7R3: rejected_user n'est plus une identité ni un candidat à reconfirmer
+ok 341 - V2.7R3: rejected_user n'est plus une identité ni un candidat à reconfirmer
+  ---
+  duration_ms: 2.76733
+  ...
+# Subtest: V2.7R3: l'atlas peut couper le fallback textuel quand R1 est indécis
+ok 342 - V2.7R3: l'atlas peut couper le fallback textuel quand R1 est indécis
+  ---
+  duration_ms: 1.548551
+  ...
+# Subtest: V2.7R3 contract: révocation explicite, protection et action UI
+ok 343 - V2.7R3 contract: révocation explicite, protection et action UI
+  ---
+  duration_ms: 3.091091
+  ...
+# Subtest: V2.7R4 recording-first gate
+ok 344 - V2.7R4 recording-first gate
+  ---
+  duration_ms: 1.874523
+  ...
+# Subtest: V2.7R6 recording artist authority excludes a disputed historical confirmation
+ok 345 - V2.7R6 recording artist authority excludes a disputed historical confirmation
+  ---
+  duration_ms: 0.702102
+  ...
+# Subtest: V2.7R5: recording not_found peut déclencher un bootstrap artiste borné
+ok 346 - V2.7R5: recording not_found peut déclencher un bootstrap artiste borné
+  ---
+  duration_ms: 1.988733
+  ...
+# Subtest: V2.7R5: le fallback ne promeut pas un segment sans corroboration
+ok 347 - V2.7R5: le fallback ne promeut pas un segment sans corroboration
+  ---
+  duration_ms: 0.259191
+  ...
+# Subtest: V2.7R6: confirmed_user ne bloque plus le bootstrap artiste
+ok 348 - V2.7R6: confirmed_user ne bloque plus le bootstrap artiste
+  ---
+  duration_ms: 2.234775
+  ...
+# Subtest: V2.7R6: l'ancienne confirmation reste une hint mais pas un fallback de routage
+ok 349 - V2.7R6: l'ancienne confirmation reste une hint mais pas un fallback de routage
+  ---
+  duration_ms: 0.217862
+  ...
+# Subtest: V2.7R7 Nexxor caller projection
+ok 350 - V2.7R7 Nexxor caller projection
+  ---
+  duration_ms: 23.173984
+  ...
+# Subtest: V2.7R7 caller projection is query only
+ok 351 - V2.7R7 caller projection is query only
+  ---
+  duration_ms: 2.163792
+  ...
+# Subtest: R8 corroboration
+ok 352 - R8 corroboration
+  ---
+  duration_ms: 1.763564
+  ...
+# Subtest: R8 disputed session
+ok 353 - R8 disputed session
+  ---
+  duration_ms: 0.208794
+  ...
+# Subtest: description credit for 47 PHIL FODEN wins over title parsing
+ok 354 - description credit for 47 PHIL FODEN wins over title parsing
+  ---
+  duration_ms: 4.836823
+  ...
+# Subtest: description credit for GREEN DAY wins over title parsing
+ok 355 - description credit for GREEN DAY wins over title parsing
+  ---
+  duration_ms: 0.382085
+  ...
+# Subtest: description credit for John Gotti (Freestyle) wins over title parsing
+ok 356 - description credit for John Gotti (Freestyle) wins over title parsing
+  ---
+  duration_ms: 0.188941
+  ...
+# Subtest: description credit for EVERYWHERE I GO / BABY I GOT U wins over title parsing
+ok 357 - description credit for EVERYWHERE I GO / BABY I GOT U wins over title parsing
+  ---
+  duration_ms: 0.206768
+  ...
+# Subtest: Topic is evidence for a query even without category, never an external ID
+ok 358 - Topic is evidence for a query even without category, never an external ID
+  ---
+  duration_ms: 0.538444
+  ...
+# Subtest: multiple credited artists are retained, duplicates do not multiply credits
+ok 359 - multiple credited artists are retained, duplicates do not multiply credits
+  ---
+  duration_ms: 0.230748
+  ...
+# Subtest: generic channels and unrelated description lines do not invent artists
+ok 360 - generic channels and unrelated description lines do not invent artists
+  ---
+  duration_ms: 0.72992
+  ...
+# Subtest: TH searches exact names or documented aliases, never the and substring candidates
+ok 361 - TH searches exact names or documented aliases, never the and substring candidates
+  ---
+  duration_ms: 3.717529
+  ...
+# Subtest: direct artist links are narrowly allowlisted
+ok 362 - direct artist links are narrowly allowlisted
+  ---
+  duration_ms: 0.784277
+  ...
+# Subtest: quatre classes sans déduire une identité du titre ou de la chaîne Topic
+ok 363 - quatre classes sans déduire une identité du titre ou de la chaîne Topic
+  ---
+  duration_ms: 10.995873
+  ...
+# Subtest: reproduction des 37 vidéos masquées, récupération sans requête et pagination réversible
+ok 364 - reproduction des 37 vidéos masquées, récupération sans requête et pagination réversible
+  ---
+  duration_ms: 38.592269
+  ...
+# Subtest: options indépendantes, mêmes règles de collecte et d’affichage
+ok 365 - options indépendantes, mêmes règles de collecte et d’affichage
+  ---
+  duration_ms: 8.931294
+  ...
+# Subtest: compteurs limités à la direction, sans doubles comptes ni pistes déjà vues
+ok 366 - compteurs limités à la direction, sans doubles comptes ni pistes déjà vues
+  ---
+  duration_ms: 2.039816
+  ...
+# Subtest: les options artistes ne contournent ni contenu promotionnel ni lien éloigné
+ok 367 - les options artistes ne contournent ni contenu promotionnel ni lien éloigné
+  ---
+  duration_ms: 1.479558
+  ...
+# Subtest: ancien réglage strict préservé, aller-retour des nouvelles options
+ok 368 - ancien réglage strict préservé, aller-retour des nouvelles options
+  ---
+  duration_ms: 2.878247
+  ...
+# Subtest: Bandcamp import keeps supplied provenance and explicit track artists
+ok 369 - Bandcamp import keeps supplied provenance and explicit track artists
+  ---
+  duration_ms: 8.044788
+  ...
+# Subtest: Bandcamp import rejects forged hosts, credentials, malformed tracks and impossible dates
+ok 370 - Bandcamp import rejects forged hosts, credentials, malformed tracks and impossible dates
+  ---
+  duration_ms: 1.306428
+  ...
+# Subtest: Platform query accepts common ISRC separators but requires an exact code and territory
+ok 371 - Platform query accepts common ISRC separators but requires an exact code and territory
+  ---
+  duration_ms: 2.491665
+  ...
+# Subtest: OAuth session is bounded by expiry, client and valid structure
+ok 372 - OAuth session is bounded by expiry, client and valid structure
+  ---
+  duration_ms: 3.8634
+  ...
+# Subtest: saved ID alone never claims a connection or collapses configuration
+ok 373 - saved ID alone never claims a connection or collapses configuration
+  ---
+  duration_ms: 2.29259
+  ...
+# Subtest: valid key is stored separately and collapses only after verification
+ok 374 - valid key is stored separately and collapses only after verification
+  ---
+  duration_ms: 2.759569
+  ...
+# Subtest: unexpired OAuth is reverified before being exposed to the app
+ok 375 - unexpired OAuth is reverified before being exposed to the app
+  ---
+  duration_ms: 3.379605
+  ...
+# Subtest: expired OAuth is removed without a provider call
+ok 376 - expired OAuth is removed without a provider call
+  ---
+  duration_ms: 0.711386
+  ...
+# Subtest: revoked OAuth cannot be resumed
+ok 377 - revoked OAuth cannot be resumed
+  ---
+  duration_ms: 1.073968
+  ...
+# Subtest: a rejected key keeps the settings open and never echoes secrets
+ok 378 - a rejected key keeps the settings open and never echoes secrets
+  ---
+  duration_ms: 1.097461
+  ...
+# Subtest: HTML success and network failures are not accepted as API verification
+ok 379 - HTML success and network failures are not accepted as API verification
+  ---
+  duration_ms: 1.344051
+  ...
+# Subtest: late verification after editing the key cannot validate the replacement
+ok 380 - late verification after editing the key cannot validate the replacement
+  ---
+  duration_ms: 1.135599
+  ...
+# Subtest: forget during restoration wins over a late verification
+ok 381 - forget during restoration wins over a late verification
+  ---
+  duration_ms: 1.57546
+  ...
+# Subtest: an unrelated late 401 cannot remove the current grant
+ok 382 - an unrelated late 401 cannot remove the current grant
+  ---
+  duration_ms: 1.05259
+  ...
+# Subtest: later successful reads do not close settings manually reopened by user
+ok 383 - later successful reads do not close settings manually reopened by user
+  ---
+  duration_ms: 0.902517
+  ...
+# Subtest: server restoration resumes without GIS and never persists renewable access in browser storage
+ok 384 - server restoration resumes without GIS and never persists renewable access in browser storage
+  ---
+  duration_ms: 3.669462
+  ...
+# Subtest: renewable token timer renews before expiration and concurrent requests share the result
+ok 385 - renewable token timer renews before expiration and concurrent requests share the result
+  ---
+  duration_ms: 1.121174
+  ...
+# Subtest: transient renewal failure keeps authorization and schedules bounded retry; revocation stops it
+ok 386 - transient renewal failure keeps authorization and schedules bounded retry; revocation stops it
+  ---
+  duration_ms: 3.453769
+  ...
+# Subtest: forget wins against a late renewable-token response and asks server to delete grant
+ok 387 - forget wins against a late renewable-token response and asks server to delete grant
+  ---
+  duration_ms: 1.341639
+  ...
+# Subtest: browser expiry emits globally usable status without silently opening Google
+ok 388 - browser expiry emits globally usable status without silently opening Google
+  ---
+  duration_ms: 0.731253
+  ...
+# Subtest: configured connection starts only through connect and navigates solely to official Google
+ok 389 - configured connection starts only through connect and navigates solely to official Google
+  ---
+  duration_ms: 1.304511
+  ...
+# Subtest: a second API rejection stops renewal and leaves an explicit reconnect state
+ok 390 - a second API rejection stops renewal and leaves an explicit reconnect state
+  ---
+  duration_ms: 0.760133
+  ...
+# Subtest: forget during connection start prevents late navigation to Google
+ok 391 - forget during connection start prevents late navigation to Google
+  ---
+  duration_ms: 0.724896
+  ...
+# Subtest: rejected access is never reused after transient 503; the grant and automatic retry survive
+ok 392 - rejected access is never reused after transient 503; the grant and automatic retry survive
+  ---
+  duration_ms: 0.729056
+  ...
+# Subtest: late 401 reuses a valid concurrent replacement without another refresh
+ok 393 - late 401 reuses a valid concurrent replacement without another refresh
+  ---
+  duration_ms: 0.756605
+  ...
+# Subtest: a rejected browser-only grant is cleared without renewal or popup
+ok 394 - a rejected browser-only grant is cleared without renewal or popup
+  ---
+  duration_ms: 0.622115
+  ...
+# Subtest: suspending renewal after a second 401 still permits forgetting the stored server grant
+ok 395 - suspending renewal after a second 401 still permits forgetting the stored server grant
+  ---
+  duration_ms: 0.624698
+  ...
+# Subtest: unconfirmed server forget keeps its retry action visible even after renewal was stopped
+ok 396 - unconfirmed server forget keeps its retry action visible even after renewal was stopped
+  ---
+  duration_ms: 0.789099
+  ...
+# Subtest: forget before initial server status still deletes its grant and a late status cannot restore it
+ok 397 - forget before initial server status still deletes its grant and a late status cannot restore it
+  ---
+  duration_ms: 0.574667
+  ...
+# Subtest: failed forget of an unknown server grant remains visible and retryable after late status
+ok 398 - failed forget of an unknown server grant remains visible and retryable after late status
+  ---
+  duration_ms: 0.706191
+  ...
+# Subtest: curator reads exact uploads, excludes source and verifies each publication's channel
+ok 399 - curator reads exact uploads, excludes source and verifies each publication's channel
+  ---
+  duration_ms: 5.670324
+  ...
+# Subtest: curator resumes a page cursor scoped to the source and exact channel
+ok 400 - curator resumes a page cursor scoped to the source and exact channel
+  ---
+  duration_ms: 2.231025
+  ...
+# Subtest: curator preserves description credits and musical dates for continuation without inventing identities
+ok 401 - curator preserves description credits and musical dates for continuation without inventing identities
+  ---
+  duration_ms: 2.525715
+  ...
+# Subtest: missing channel ID is recovered only from exact source video metadata with four calls maximum
+ok 402 - missing channel ID is recovered only from exact source video metadata with four calls maximum
+  ---
+  duration_ms: 0.720372
+  ...
+# Subtest: provider failure preserves the current page for retry and never declares exhaustion
+ok 403 - provider failure preserves the current page for retry and never declares exhaustion
+  ---
+  duration_ms: 0.425517
+  ...
+# Subtest: inaccessible source cannot invent an uploader or launch a channel-name search
+ok 404 - inaccessible source cannot invent an uploader or launch a channel-name search
+  ---
+  duration_ms: 0.312746
+  ...
+# Subtest: repeated pagination token is retryable rather than an endless successful loop
+ok 405 - repeated pagination token is retryable rather than an endless successful loop
+  ---
+  duration_ms: 1.244553
+  ...
+# Subtest: immutable read snapshots reuse the integrity projection and index, never mutable graphs
+ok 406 - immutable read snapshots reuse the integrity projection and index, never mutable graphs
+  ---
+  duration_ms: 8.604707
+  ...
+# Subtest: a cross-catalogue homonym cannot become this video's performer
+ok 407 - a cross-catalogue homonym cannot become this video's performer
+  ---
+  duration_ms: 1.148573
+  ...
+# Subtest: legacy promoted edges are quarantined without destroying source data
+ok 408 - legacy promoted edges are quarantined without destroying source data
+  ---
+  duration_ms: 2.482556
+  ...
+# Subtest: exact recording credit retains a supported artist bridge, never a name join
+ok 409 - exact recording credit retains a supported artist bridge, never a name join
+  ---
+  duration_ms: 0.56307
+  ...
+# Subtest: correction invalidates old recording and artist edges but preserves originals
+ok 410 - correction invalidates old recording and artist edges but preserves originals
+  ---
+  duration_ms: 0.717856
+  ...
+# Subtest: a new resolution belongs to its correction revision
+ok 411 - a new resolution belongs to its correction revision
+  ---
+  duration_ms: 0.390471
+  ...
+# Subtest: a failed correction write does not leak into the next save
+ok 412 - a failed correction write does not leak into the next save
+  ---
+  duration_ms: 1.941643
+  ...
+# Subtest: explicit selection remains scoped and local name hubs cannot relay automatic authority
+ok 413 - explicit selection remains scoped and local name hubs cannot relay automatic authority
+  ---
+  duration_ms: 0.478285
+  ...
+# Subtest: V2.7: la matrice couvre exactement 4 familles × 8 directions
+ok 414 - V2.7: la matrice couvre exactement 4 familles × 8 directions
+  ---
+  duration_ms: 3.320986
+  ...
+# Subtest: V2.7: une vidéo, un recording et une release restent dans la famille morceau
+ok 415 - V2.7: une vidéo, un recording et une release restent dans la famille morceau
+  ---
+  duration_ms: 0.293906
+  ...
+# Subtest: V2.7: le morceau garde CURATOR direct et les autres voies médiées
+ok 416 - V2.7: le morceau garde CURATOR direct et les autres voies médiées
+  ---
+  duration_ms: 0.753989
+  ...
+# Subtest: V2.7: ERA n'utilise jamais la date d'upload comme preuve musicale
+ok 417 - V2.7: ERA n'utilise jamais la date d'upload comme preuve musicale
+  ---
+  duration_ms: 0.936802
+  ...
+# Subtest: V2.7: l'artiste distingue les voies déjà câblées des gaps d'orchestration et de source
+ok 418 - V2.7: l'artiste distingue les voies déjà câblées des gaps d'orchestration et de source
+  ---
+  duration_ms: 0.407457
+  ...
+# Subtest: V2.7: un label ne recycle jamais ALIAS pour signifier imprint ou sous-label
+ok 419 - V2.7: un label ne recycle jamais ALIAS pour signifier imprint ou sous-label
+  ---
+  duration_ms: 0.247063
+  ...
+# Subtest: V2.7: une playlist est un corpus agrégé, pas un morceau géant
+ok 420 - V2.7: une playlist est un corpus agrégé, pas un morceau géant
+  ---
+  duration_ms: 0.31134
+  ...
+# Subtest: V2.7: chaque voie reste routing-only et le bootstrap ne consomme pas DEPTH
+ok 421 - V2.7: chaque voie reste routing-only et le bootstrap ne consomme pas DEPTH
+  ---
+  duration_ms: 0.633132
+  ...
+# Subtest: V2.7: la couverture initiale ne confond jamais faisabilité et exhaustivité
+ok 422 - V2.7: la couverture initiale ne confond jamais faisabilité et exhaustivité
+  ---
+  duration_ms: 0.705771
+  ...
+# Subtest: V2.7: ERA playlist exige un bootstrap des membres au lieu de déclarer l'époque complète
+ok 423 - V2.7: ERA playlist exige un bootstrap des membres au lieu de déclarer l'époque complète
+  ---
+  duration_ms: 0.278009
+  ...
+# Subtest: V2.7: le contexte détecte une identité fournisseur exacte et les membres d'une playlist
+ok 424 - V2.7: le contexte détecte une identité fournisseur exacte et les membres d'une playlist
+  ---
+  duration_ms: 0.438506
+  ...
+# Subtest: manual names persist on one video without creating catalogue identity or name joins
+ok 425 - manual names persist on one video without creating catalogue identity or name joins
+  ---
+  duration_ms: 6.791523
+  ...
+# Subtest: explicit artist replacement revokes old choices only for that departure
+ok 426 - explicit artist replacement revokes old choices only for that departure
+  ---
+  duration_ms: 0.40515
+  ...
+# Subtest: linked MusicBrainz and Discogs cards group together, unlinked homonyms do not
+ok 427 - linked MusicBrainz and Discogs cards group together, unlinked homonyms do not
+  ---
+  duration_ms: 2.853098
+  ...
+# Subtest: quoted track titles supply a search hint, not an identity
+ok 428 - quoted track titles supply a search hint, not an identity
+  ---
+  duration_ms: 0.586792
+  ...
+# Subtest: local artist choices deduplicate exact catalogue IDs but preserve homonyms
+ok 429 - local artist choices deduplicate exact catalogue IDs but preserve homonyms
+  ---
+  duration_ms: 2.604034
+  ...
+# Subtest: catalogue name claims remain explicit choices, even when unresolved
+ok 430 - catalogue name claims remain explicit choices, even when unresolved
+  ---
+  duration_ms: 0.333028
+  ...
+# Subtest: old memories cannot bypass recording identification; a new scoped choice can
+ok 431 - old memories cannot bypass recording identification; a new scoped choice can
+  ---
+  duration_ms: 0.258456
+  ...
+# Subtest: blocked, pending and useful results have distinct workflow states
+ok 432 - blocked, pending and useful results have distinct workflow states
+  ---
+  duration_ms: 0.395563
+  ...
+# Subtest: the first unidentified departure cannot expose tuning beside its correction form
+ok 433 - the first unidentified departure cannot expose tuning beside its correction form
+  ---
+  duration_ms: 0.195276
+  ...
+# Subtest: typed departure never asks a playlist, label or channel for a song artist
+ok 434 - typed departure never asks a playlist, label or channel for a song artist
+  ---
+  duration_ms: 0.793059
+  ...
+# Subtest: artist departure prefills its own name, including short names and hyphens
+ok 435 - artist departure prefills its own name, including short names and hyphens
+  ---
+  duration_ms: 0.453693
+  ...
+# Subtest: playlist members use exact membership, not identical playlist names
+ok 436 - playlist members use exact membership, not identical playlist names
+  ---
+  duration_ms: 0.694956
+  ...
+# Subtest: label membership follows documented edition credits, retaining exact track IDs
+ok 437 - label membership follows documented edition credits, retaining exact track IDs
+  ---
+  duration_ms: 0.479864
+  ...
+# Subtest: un poids nul désactive une route sans toucher aux autres
+ok 438 - un poids nul désactive une route sans toucher aux autres
+  ---
+  duration_ms: 6.159821
+  ...
+# Subtest: tourner un potard change réellement le classement de routage
+ok 439 - tourner un potard change réellement le classement de routage
+  ---
+  duration_ms: 1.082051
+  ...
+# Subtest: un candidat trouvé par plusieurs routes garde toutes ses routes
+ok 440 - un candidat trouvé par plusieurs routes garde toutes ses routes
+  ---
+  duration_ms: 0.697665
+  ...
+# Subtest: le score de routage n'est pas un score de vérité
+ok 441 - le score de routage n'est pas un score de vérité
+  ---
+  duration_ms: 0.484977
+  ...
+# Subtest: exclude et limit restent déterministes
+ok 442 - exclude et limit restent déterministes
+  ---
+  duration_ms: 0.79318
+  ...
+# Subtest: an old server gives an actionable error and a failed opening can be retried
+ok 443 - an old server gives an actionable error and a failed opening can be retried
+  ---
+  duration_ms: 63.610383
+  ...
+# Subtest: successful HTTP responses without a token cannot masquerade as a working server
+ok 444 - successful HTTP responses without a token cannot masquerade as a working server
+  ---
+  duration_ms: 0.675228
+  ...
+# Subtest: client does not persist tokens, separates departures and rejects late responses
+ok 445 - client does not persist tokens, separates departures and rejects late responses
+  ---
+  duration_ms: 6.865512
+  ...
+# Subtest: late body decoding is rejected even after headers arrived
+ok 446 - late body decoding is rejected even after headers arrived
+  ---
+  duration_ms: 1.621014
+  ...
+# Subtest: le hasard est stable à clé fixe, réversible, non destructif et réellement remélangeable
+ok 447 - le hasard est stable à clé fixe, réversible, non destructif et réellement remélangeable
+  ---
+  duration_ms: 19.872564
+  ...
+# Subtest: le hasard trie le vivier entier puis pagine, sans répétition ni perte
+ok 448 - le hasard trie le vivier entier puis pagine, sans répétition ni perte
+  ---
+  duration_ms: 42.221146
+  ...
+# Subtest: cocher puis décocher autres artistes restaure exactement le vivier et son historique
+ok 449 - cocher puis décocher autres artistes restaure exactement le vivier et son historique
+  ---
+  duration_ms: 7.091275
+  ...
+# Subtest: un filtre hérité sans artiste de référence reste désactivable et ne masque rien
+ok 450 - un filtre hérité sans artiste de référence reste désactivable et ne masque rien
+  ---
+  duration_ms: 1.44124
+  ...
+# Subtest: la pertinence diversifie albums et artistes mais conserve toutes les pistes accessibles
+ok 451 - la pertinence diversifie albums et artistes mais conserve toutes les pistes accessibles
+  ---
+  duration_ms: 8.379695
+  ...
+# Subtest: les suggestions privilégient des vidéos ET des artistes non récemment explorés
+ok 452 - les suggestions privilégient des vidéos ET des artistes non récemment explorés
+  ---
+  duration_ms: 2.460919
+  ...
+# Subtest: un vivier étroit réintroduit les répétitions explicitement, sans perdre les preuves
+ok 453 - un vivier étroit réintroduit les répétitions explicitement, sans perdre les preuves
+  ---
+  duration_ms: 0.870447
+  ...
+# Subtest: la mémoire d’exploration étend l’historique ancien et survit à l’export sans secrets
+ok 454 - la mémoire d’exploration étend l’historique ancien et survit à l’export sans secrets
+  ---
+  duration_ms: 4.116106
+  ...
+# Subtest: choisir une fiche artiste distante conserve son ID sans relation ni fusion par nom
+ok 455 - choisir une fiche artiste distante conserve son ID sans relation ni fusion par nom
+  ---
+  duration_ms: 1.107276
+  ...
+# Subtest: une fiche label garde données antérieures et identifiant structuré valide
+ok 456 - une fiche label garde données antérieures et identifiant structuré valide
+  ---
+  duration_ms: 0.568661
+  ...
+# Subtest: les motifs d’arrêt ne confondent pas budget, panne et absence universelle
+ok 457 - les motifs d’arrêt ne confondent pas budget, panne et absence universelle
+  ---
+  duration_ms: 0.645591
+  ...
+# Subtest: un 401 renouvelle l’accès une seule fois et reprend exactement la lecture interrompue
+ok 458 - un 401 renouvelle l’accès une seule fois et reprend exactement la lecture interrompue
+  ---
+  duration_ms: 13.08521
+  ...
+# Subtest: deux refus successifs arrêtent la reprise et invalident sans boucle automatique
+ok 459 - deux refus successifs arrêtent la reprise et invalident sans boucle automatique
+  ---
+  duration_ms: 5.375215
+  ...
+# Subtest: un accès temporaire non renouvelable n’est pas rejoué indéfiniment
+ok 460 - un accès temporaire non renouvelable n’est pas rejoué indéfiniment
+  ---
+  duration_ms: 3.341171
+  ...
+# Subtest: la confirmation commune est dédupliquée et prioritaire sans bloquer la chaîne-curatrice
+ok 461 - la confirmation commune est dédupliquée et prioritaire sans bloquer la chaîne-curatrice
+  ---
+  duration_ms: 5.502211
+  ...
+# Subtest: un ancien parcours récupère une confirmation directe à ID réel, pas un nom local ni une identité indirecte
+ok 462 - un ancien parcours récupère une confirmation directe à ID réel, pas un nom local ni une identité indirecte
+  ---
+  duration_ms: 2.924382
+  ...
+# Subtest: la confirmation explicite rend caducs les candidats sauvegardés sans prétendre que leur catalogue est épuisé
+ok 463 - la confirmation explicite rend caducs les candidats sauvegardés sans prétendre que leur catalogue est épuisé
+  ---
+  duration_ms: 0.877654
+  ...
+# Subtest: une relation confirmée d’un autre départ ne supprime pas la confirmation du départ actuel
+ok 464 - une relation confirmée d’un autre départ ne supprime pas la confirmation du départ actuel
+  ---
+  duration_ms: 0.341261
+  ...
+# Subtest: une graine artiste de catalogue est directement exploitable, une simple homonymie locale ne l’est pas
+ok 465 - une graine artiste de catalogue est directement exploitable, une simple homonymie locale ne l’est pas
+  ---
+  duration_ms: 0.742229
+  ...
+# Subtest: les états personnels de branche passent avant les relances et prérequis
+ok 466 - les états personnels de branche passent avant les relances et prérequis
+  ---
+  duration_ms: 0.243369
+  ...
+# Subtest: une branche encore inconnue est prête dès que son catalogue contient des pistes
+ok 467 - une branche encore inconnue est prête dès que son catalogue contient des pistes
+  ---
+  duration_ms: 0.338672
+  ...
+# Subtest: une source en panne ou une couverture partielle ne deviennent jamais une branche épuisée
+ok 468 - une source en panne ou une couverture partielle ne deviennent jamais une branche épuisée
+  ---
+  duration_ms: 0.252527
+  ...
+# Subtest: des catalogues entièrement consultés et vides n’invitent pas à les enrichir indéfiniment
+ok 469 - des catalogues entièrement consultés et vides n’invitent pas à les enrichir indéfiniment
+  ---
+  duration_ms: 0.52523
+  ...
+# Subtest: les identifiants factices et les directions indépendantes ne déclenchent pas une confirmation
+ok 470 - les identifiants factices et les directions indépendantes ne déclenchent pas une confirmation
+  ---
+  duration_ms: 0.526541
+  ...
+# Subtest: un atlas de 698 liens n’affiche que le lien du contexte, jamais les 697 autres
+ok 471 - un atlas de 698 liens n’affiche que le lien du contexte, jamais les 697 autres
+  ---
+  duration_ms: 3.058294
+  ...
+# Subtest: un nom absent ou une graine de label ne devient pas un artiste ; la normalisation garde les lettres Unicode
+ok 472 - un nom absent ou une graine de label ne devient pas un artiste ; la normalisation garde les lettres Unicode
+  ---
+  duration_ms: 0.362129
+  ...
+# Subtest: playlist and label guidance ignores stale song identity state and artist candidates
+ok 473 - playlist and label guidance ignores stale song identity state and artist candidates
+  ---
+  duration_ms: 1.589403
+  ...
+# Subtest: catalogue ID selected by the user remains recognized before a graph refresh
+ok 474 - catalogue ID selected by the user remains recognized before a graph refresh
+  ---
+  duration_ms: 0.414776
+  ...
+# Subtest: importe 5 000 vidéos uniques sur 100 pages et garde le plafond honnête
+ok 475 - importe 5 000 vidéos uniques sur 100 pages et garde le plafond honnête
+  ---
+  duration_ms: 59.938268
+  ...
+# Subtest: une pagination cyclique s’arrête sans perdre les pages déjà sauvées
+ok 476 - une pagination cyclique s’arrête sans perdre les pages déjà sauvées
+  ---
+  duration_ms: 2.130503
+  ...
+# Subtest: reprend seulement les pages manquantes après l’échec d’une playlist, y compris les succès concurrents
+ok 477 - reprend seulement les pages manquantes après l’échec d’une playlist, y compris les succès concurrents
+  ---
+  duration_ms: 3.715842
+  ...
+# Subtest: le plafond conserve les éléments non consommés de la page et interdit toute suppression d’anciennes vidéos
+ok 478 - le plafond conserve les éléments non consommés de la page et interdit toute suppression d’anciennes vidéos
+  ---
+  duration_ms: 1.68451
+  ...
+# Subtest: un scan complet distingue sorties de sélection, indisponibilité et absence constatée
+ok 479 - un scan complet distingue sorties de sélection, indisponibilité et absence constatée
+  ---
+  duration_ms: 0.752035
+  ...
+# Subtest: sauvegarde/restauration conserve bibliothèque, parcours, catalogue, corrections et notes sans secrets
+ok 480 - sauvegarde/restauration conserve bibliothèque, parcours, catalogue, corrections et notes sans secrets
+  ---
+  duration_ms: 19.669519
+  ...
+# Subtest: rejette les sauvegardes malformées avant écriture et neutralise les URL exécutables
+ok 481 - rejette les sauvegardes malformées avant écriture et neutralise les URL exécutables
+  ---
+  duration_ms: 2.515122
+  ...
+# Subtest: a backup cannot combine the departure from one session with another front
+ok 482 - a backup cannot combine the departure from one session with another front
+  ---
+  duration_ms: 4.989635
+  ...
+# Subtest: natural title sort handles numbers and accents without changing input
+ok 483 - natural title sort handles numbers and accents without changing input
+  ---
+  duration_ms: 3.309752
+  ...
+# Subtest: musical dates never fall back to uploads or known reissues
+ok 484 - musical dates never fall back to uploads or known reissues
+  ---
+  duration_ms: 0.603988
+  ...
+# Subtest: structured music descriptions supply release dates, never invalid dates or arbitrary numbers
+ok 485 - structured music descriptions supply release dates, never invalid dates or arbitrary numbers
+  ---
+  duration_ms: 4.403533
+  ...
+# Subtest: notebook retains musical dates, without inventing dates for old saves
+ok 486 - notebook retains musical dates, without inventing dates for old saves
+  ---
+  duration_ms: 2.212363
+  ...
+# Subtest: other artists excludes the departure, collaborations, shared IDs and unknowns
+ok 487 - other artists excludes the departure, collaborations, shared IDs and unknowns
+  ---
+  duration_ms: 2.33494
+  ...
+# Subtest: artist filter expands only trusted exact identity, never collaborators
+ok 488 - artist filter expands only trusted exact identity, never collaborators
+  ---
+  duration_ms: 1.09187
+  ...
+# Subtest: sorting and filtering operate before pagination and preserve original groups
+ok 489 - sorting and filtering operate before pagination and preserve original groups
+  ---
+  duration_ms: 9.177553
+  ...
+# Subtest: broad label is opt-in but remains available with a documented credit or explicit label departure
+ok 490 - broad label is opt-in but remains available with a documented credit or explicit label departure
+  ---
+  duration_ms: 2.660303
+  ...
+# Subtest: link relevance is categorical, not a sonic percentage
+ok 491 - link relevance is categorical, not a sonic percentage
+  ---
+  duration_ms: 0.470908
+  ...
+# Subtest: display settings survive patch normalization, preserve routes and reject unknown sorts
+ok 492 - display settings survive patch normalization, preserve routes and reject unknown sorts
+  ---
+  duration_ms: 0.751349
+  ...
+# Subtest: disabled direction filter clears and source failure never says start again as if unsearched
+ok 493 - disabled direction filter clears and source failure never says start again as if unsearched
+  ---
+  duration_ms: 2.087875
+  ...
+# Subtest: old backups cannot restore automatic identities, history, graph or session
+ok 494 - old backups cannot restore automatic identities, history, graph or session
+  ---
+  duration_ms: 7.5298
+  ...
+# Subtest: personal projection drops inferred metadata and does not follow catalogue links
+ok 495 - personal projection drops inferred metadata and does not follow catalogue links
+  ---
+  duration_ms: 0.426448
+  ...
+# Subtest: backup retains deliberate navigation settings but not exploration state
+ok 496 - backup retains deliberate navigation settings but not exploration state
+  ---
+  duration_ms: 0.364607
+  ...
+# Subtest: le dial partagé borne et quantifie sans dérive
+ok 497 - le dial partagé borne et quantifie sans dérive
+  ---
+  duration_ms: 2.855851
+  ...
+# Subtest: le registre des potards correspond aux huit directions de workspace, pas à une liste fictive
+ok 498 - le registre des potards correspond aux huit directions de workspace, pas à une liste fictive
+  ---
+  duration_ms: 3.001102
+  ...
+# Subtest: une lecture du mix ne recalcule le diagnostic du depart qu'une fois
+ok 499 - une lecture du mix ne recalcule le diagnostic du depart qu'une fois
+  ---
+  duration_ms: 24.946434
+  ...
+# Subtest: l’en-tête distingue les crédits complets des participants effectivement choisis
+ok 500 - l’en-tête distingue les crédits complets des participants effectivement choisis
+  ---
+  duration_ms: 6.181181
+  ...
+# Subtest: la sortie utilise le vrai selectDiscoveries puis respecte les poids
+ok 501 - la sortie utilise le vrai selectDiscoveries puis respecte les poids
+  ---
+  duration_ms: 7.705991
+  ...
+# Subtest: le binding d'un potard ne déclenche ni réseau, ni sauvegarde, ni consommation
+ok 502 - le binding d'un potard ne déclenche ni réseau, ni sauvegarde, ni consommation
+  ---
+  duration_ms: 4.122016
+  ...
+# Subtest: pas de départ actif : aucun réglage n'active une fouille
+ok 503 - pas de départ actif : aucun réglage n'active une fouille
+  ---
+  duration_ms: 2.964129
+  ...
+# Subtest: les options artistes restent locales et ne consomment aucune page
+ok 504 - les options artistes restent locales et ne consomment aucune page
+  ---
+  duration_ms: 8.848211
+  ...
+# Subtest: activer toutes les directions conserve profondeur et diversité déjà choisies
+ok 505 - activer toutes les directions conserve profondeur et diversité déjà choisies
+  ---
+  duration_ms: 2.390168
+  ...
+# Subtest: le même contrôle réactive une direction mise en pause dans une ancienne session
+ok 506 - le même contrôle réactive une direction mise en pause dans une ancienne session
+  ---
+  duration_ms: 2.290841
+  ...
+# Subtest: les boutons du mix réutilisent le renderer de cartes et les gardes existants
+ok 507 - les boutons du mix réutilisent le renderer de cartes et les gardes existants
+  ---
+  duration_ms: 0.518642
+  ...
+# Subtest: les co-crédits partagés ne monopolisent pas un tri chronologique diversifié
+ok 508 - les co-crédits partagés ne monopolisent pas un tri chronologique diversifié
+  ---
+  duration_ms: 16.847716
+  ...
+# Subtest: le mix appelle le sélecteur existant par route et lui transmet orientation et exclusions
+ok 509 - le mix appelle le sélecteur existant par route et lui transmet orientation et exclusions
+  ---
+  duration_ms: 4.693306
+  ...
+# Subtest: Spread 1 empêche un curator unique de monopoliser un mix à poids égaux
+ok 510 - Spread 1 empêche un curator unique de monopoliser un mix à poids égaux
+  ---
+  duration_ms: 3.55715
+  ...
+# Subtest: Spread 1 borne le curator même quand son poids est supérieur
+ok 511 - Spread 1 borne le curator même quand son poids est supérieur
+  ---
+  duration_ms: 1.930563
+  ...
+# Subtest: 200 vidéos d'une même chaîne restent toutes accessibles par pages filtrées
+ok 512 - 200 vidéos d'une même chaîne restent toutes accessibles par pages filtrées
+  ---
+  duration_ms: 290.098766
+  ...
+# Subtest: la diversité limite la page mixte, jamais son compteur de pistes restantes
+ok 513 - la diversité limite la page mixte, jamais son compteur de pistes restantes
+  ---
+  duration_ms: 2.438239
+  ...
+# Subtest: une chaîne seule remplit la page et n'est pas bloquée par l'anti-monopole
+ok 514 - une chaîne seule remplit la page et n'est pas bloquée par l'anti-monopole
+  ---
+  duration_ms: 1.189328
+  ...
+# Subtest: une page mixte réduite garde les vidéos accessibles sans remplir silencieusement
+ok 515 - une page mixte réduite garde les vidéos accessibles sans remplir silencieusement
+  ---
+  duration_ms: 16.24689
+  ...
+# Subtest: augmenter LABEL inverse réellement la répartition de la sortie
+ok 516 - augmenter LABEL inverse réellement la répartition de la sortie
+  ---
+  duration_ms: 1.554363
+  ...
+# Subtest: tous les poids à zéro restent silencieux sans fallback implicite
+ok 517 - tous les poids à zéro restent silencieux sans fallback implicite
+  ---
+  duration_ms: 1.787675
+  ...
+# Subtest: une route coupée n'est jamais déclarée épuisée
+ok 518 - une route coupée n'est jamais déclarée épuisée
+  ---
+  duration_ms: 1.177478
+  ...
+# Subtest: pause et confirmation bloquent aussi les anciens résultats en cache
+ok 519 - pause et confirmation bloquent aussi les anciens résultats en cache
+  ---
+  duration_ms: 0.775522
+  ...
+# Subtest: une bibliothèque/graphe ancien sans départ actif ne produit aucune sortie
+ok 520 - une bibliothèque/graphe ancien sans départ actif ne produit aucune sortie
+  ---
+  duration_ms: 2.416104
+  ...
+# Subtest: un même ID conserve chaque observation et ne devient pas confirmé par addition
+ok 521 - un même ID conserve chaque observation et ne devient pas confirmé par addition
+  ---
+  duration_ms: 1.108546
+  ...
+# Subtest: un même titre à IDs distincts n'est pas une fusion d'identités
+ok 522 - un même titre à IDs distincts n'est pas une fusion d'identités
+  ---
+  duration_ms: 0.541798
+  ...
+# Subtest: même un sélecteur mutateur ne modifie pas les groupes ni les preuves d'entrée
+ok 523 - même un sélecteur mutateur ne modifie pas les groupes ni les preuves d'entrée
+  ---
+  duration_ms: 1.667418
+  ...
+# Subtest: le sélecteur ne peut pas réinjecter un candidat absent du groupe fourni
+ok 524 - le sélecteur ne peut pas réinjecter un candidat absent du groupe fourni
+  ---
+  duration_ms: 0.757971
+  ...
+# Subtest: AUTRES PISTES consomme uniquement les six cartes du mix, jamais le reste des catalogues
+ok 525 - AUTRES PISTES consomme uniquement les six cartes du mix, jamais le reste des catalogues
+  ---
+  duration_ms: 2.45362
+  ...
+# Subtest: tourner un réglage ne consomme aucune piste et ne modifie pas selectedIds
+ok 526 - tourner un réglage ne consomme aucune piste et ne modifie pas selectedIds
+  ---
+  duration_ms: 2.669962
+  ...
+# Subtest: une ancienne histoire de mix ne masque pas les pistes d'un autre départ
+ok 527 - une ancienne histoire de mix ne masque pas les pistes d'un autre départ
+  ---
+  duration_ms: 0.253511
+  ...
+# Subtest: les pistes vues via une autre direction ne réapparaissent pas dans le mix
+ok 528 - les pistes vues via une autre direction ne réapparaissent pas dans le mix
+  ---
+  duration_ms: 1.493089
+  ...
+# Subtest: une route sans données n'est pas silencieusement présentée comme parcourue
+ok 529 - une route sans données n'est pas silencieusement présentée comme parcourue
+  ---
+  duration_ms: 0.329739
+  ...
+# Subtest: changer de départ pendant DIG empêche le chargement de la direction suivante
+ok 530 - changer de départ pendant DIG empêche le chargement de la direction suivante
+  ---
+  duration_ms: 0.40799
+  ...
+# Subtest: une route coupée avant son chargement n'entraîne pas de requête
+ok 531 - une route coupée avant son chargement n'entraîne pas de requête
+  ---
+  duration_ms: 0.278297
+  ...
+# Subtest: une erreur de chargement remonte au lieu de produire un succès fictif
+ok 532 - une erreur de chargement remonte au lieu de produire un succès fictif
+  ---
+  duration_ms: 0.97863
+  ...
+# Subtest: avec huit routes et six places, les dernières routes ne sont pas affamées à chaque page
+ok 533 - avec huit routes et six places, les dernières routes ne sont pas affamées à chaque page
+  ---
+  duration_ms: 6.987944
+  ...
+# Subtest: le patch expose la shape au mix sans créer de second moteur
+ok 534 - le patch expose la shape au mix sans créer de second moteur
+  ---
+  duration_ms: 1.409975
+  ...
+# Subtest: le filtre réutilise la liste et son historique sans changer les directions activées
+ok 535 - le filtre réutilise la liste et son historique sans changer les directions activées
+  ---
+  duration_ms: 2.87332
+  ...
+# Subtest: filtrer une direction coupée ne l'active pas implicitement
+ok 536 - filtrer une direction coupée ne l'active pas implicitement
+  ---
+  duration_ms: 0.759334
+  ...
+# Subtest: une panne de source reste visible et réessayable avec des résultats conservés
+ok 537 - une panne de source reste visible et réessayable avec des résultats conservés
+  ---
+  duration_ms: 0.710809
+  ...
+# Subtest: V2.2 distingue ouvrir, approfondir et réessayer sans changer l'action DIG
+ok 538 - V2.2 distingue ouvrir, approfondir et réessayer sans changer l'action DIG
+  ---
+  duration_ms: 10.229069
+  ...
+# Subtest: V2.2 route meter expose bien loaded, eligible et presented séparément
+ok 539 - V2.2 route meter expose bien loaded, eligible et presented séparément
+  ---
+  duration_ms: 1.863118
+  ...
+# Subtest: sépare la pagination locale et la prochaine recherche avec une distance explicite
+ok 540 - sépare la pagination locale et la prochaine recherche avec une distance explicite
+  ---
+  duration_ms: 0.416408
+  ...
+# Subtest: V2.2 signale les sorties visuellement identiques sans fusion d'identité
+ok 541 - V2.2 signale les sorties visuellement identiques sans fusion d'identité
+  ---
+  duration_ms: 0.375644
+  ...
+# Subtest: l’action de catalogue est explicite et distincte de la pagination locale
+ok 542 - l’action de catalogue est explicite et distincte de la pagination locale
+  ---
+  duration_ms: 1.824671
+  ...
+# Subtest: V2.3 sépare visuellement état de route et meter IN OUT
+ok 543 - V2.3 sépare visuellement état de route et meter IN OUT
+  ---
+  duration_ms: 0.275076
+  ...
+# Subtest: V2.3 reste une couche de présentation
+ok 544 - V2.3 reste une couche de présentation
+  ---
+  duration_ms: 0.284368
+  ...
+# Subtest: V2.1 place le rack avant les inspecteurs sans dupliquer les briques historiques
+ok 545 - V2.1 place le rack avant les inspecteurs sans dupliquer les briques historiques
+  ---
+  duration_ms: 3.044281
+  ...
+# Subtest: V2.1 garde les gestes locaux séparés du DIG réseau
+ok 546 - V2.1 garde les gestes locaux séparés du DIG réseau
+  ---
+  duration_ms: 0.442683
+  ...
+# Subtest: V2.1 rend la sortie compacte tout en réutilisant le renderer existant
+ok 547 - V2.1 rend la sortie compacte tout en réutilisant le renderer existant
+  ---
+  duration_ms: 0.328694
+  ...
+# Subtest: le range reste présent pour le clavier même quand le slider visuel disparaît
+ok 548 - le range reste présent pour le clavier même quand le slider visuel disparaît
+  ---
+  duration_ms: 0.282535
+  ...
+# Subtest: le moniteur source lit l'état de guidance déjà rendu
+ok 549 - le moniteur source lit l'état de guidance déjà rendu
+  ---
+  duration_ms: 0.431633
+  ...
+# Subtest: registre exactement les huit directions existantes du Scout
+ok 550 - registre exactement les huit directions existantes du Scout
+  ---
+  duration_ms: 2.778754
+  ...
+# Subtest: le patch neutre conserve toutes les directions à pleine puissance
+ok 551 - le patch neutre conserve toutes les directions à pleine puissance
+  ---
+  duration_ms: 0.491535
+  ...
+# Subtest: les poids sont bornés sans inventer d'autres paramètres
+ok 552 - les poids sont bornés sans inventer d'autres paramètres
+  ---
+  duration_ms: 0.229544
+  ...
+# Subtest: un paramètre peut être réglé indépendamment
+ok 553 - un paramètre peut être réglé indépendamment
+  ---
+  duration_ms: 0.602398
+  ...
+# Subtest: un faux paramètre est refusé
+ok 554 - un faux paramètre est refusé
+  ---
+  duration_ms: 0.697545
+  ...
+# Subtest: shape.depth et shape.spread sont des paramètres réels et bornés
+ok 555 - shape.depth et shape.spread sont des paramètres réels et bornés
+  ---
+  duration_ms: 0.252794
+  ...
+# Subtest: un patch V1 migre sans perdre les gains de routes
+ok 556 - un patch V1 migre sans perdre les gains de routes
+  ---
+  duration_ms: 0.226298
+  ...
+# Subtest: V2.4 expose les lentilles canoniques de scout.js au lieu de dupliquer une liste métier
+ok 557 - V2.4 expose les lentilles canoniques de scout.js au lieu de dupliquer une liste métier
+  ---
+  duration_ms: 1.97174
+  ...
+# Subtest: V2.4 branche temperature et lenses sur currentFilters existant
+ok 558 - V2.4 branche temperature et lenses sur currentFilters existant
+  ---
+  duration_ms: 0.36668
+  ...
+# Subtest: V2.4 conserve les quatre missions comme presets et permet un état custom local
+ok 559 - V2.4 conserve les quatre missions comme presets et permet un état custom local
+  ---
+  duration_ms: 0.525013
+  ...
+# Subtest: V2.4 dit explicitement que SOURCE CHARACTER ne pilote pas le mix courant
+ok 560 - V2.4 dit explicitement que SOURCE CHARACTER ne pilote pas le mix courant
+  ---
+  duration_ms: 0.244512
+  ...
+# Subtest: V2.4 ne remplace ni rankVideos ni composeProgramme
+ok 561 - V2.4 ne remplace ni rankVideos ni composeProgramme
+  ---
+  duration_ms: 0.497842
+  ...
+# Subtest: V2.5 persiste SOURCE CHARACTER hors de la session DIG avec schéma versionné
+ok 562 - V2.5 persiste SOURCE CHARACTER hors de la session DIG avec schéma versionné
+  ---
+  duration_ms: 3.747754
+  ...
+# Subtest: V2.5 sauvegarde et restaure le patch source sans le confondre avec activeDig
+ok 563 - V2.5 sauvegarde et restaure le patch source sans le confondre avec activeDig
+  ---
+  duration_ms: 0.649816
+  ...
+# Subtest: V2.5 partage le même comportement rotatif entre DIG et TEMPERATURE
+ok 564 - V2.5 partage le même comportement rotatif entre DIG et TEMPERATURE
+  ---
+  duration_ms: 0.487241
+  ...
+# Subtest: V2.5 compacte SOURCE sans transformer les lentilles en faux gains continus
+ok 565 - V2.5 compacte SOURCE sans transformer les lentilles en faux gains continus
+  ---
+  duration_ms: 1.054538
+  ...
+# Subtest: V2.6 rend le départ précédent visible dans le rack via l'action existante
+ok 566 - V2.6 rend le départ précédent visible dans le rack via l'action existante
+  ---
+  duration_ms: 1.985166
+  ...
+# Subtest: le retour conserve le choix précédent mais pas son ancien graphe
+ok 567 - le retour conserve le choix précédent mais pas son ancien graphe
+  ---
+  duration_ms: 0.628658
+  ...
+# Subtest: la sélection directe précède les suggestions facultatives et repliées
+ok 568 - la sélection directe précède les suggestions facultatives et repliées
+  ---
+  duration_ms: 0.268297
+  ...
+# Subtest: V2.6 limite la liste au repos et l'élargit seulement avec une intention explicite
+ok 569 - V2.6 limite la liste au repos et l'élargit seulement avec une intention explicite
+  ---
+  duration_ms: 0.19253
+  ...
+# Subtest: V2.6 reste une couche workflow sans nouveau moteur de découverte
+ok 570 - V2.6 reste une couche workflow sans nouveau moteur de découverte
+  ---
+  duration_ms: 0.235618
+  ...
+# Subtest: V2.7 contract: app possède une seule source canonique de profils de départ
+ok 571 - V2.7 contract: app possède une seule source canonique de profils de départ
+  ---
+  duration_ms: 2.76973
+  ...
+# Subtest: V2.7 contract: le mixer reçoit des plans mais ne gagne aucune autorité de preuve
+ok 572 - V2.7 contract: le mixer reçoit des plans mais ne gagne aucune autorité de preuve
+  ---
+  duration_ms: 0.371927
+  ...
+# Subtest: V2.7 contract: le rack expose le mode de départ et des états honnêtes
+ok 573 - V2.7 contract: le rack expose le mode de départ et des états honnêtes
+  ---
+  duration_ms: 0.193405
+  ...
+# Subtest: V2.7 binding: une voie N/A ne charge ni ne contribue au mix
+ok 574 - V2.7 binding: une voie N/A ne charge ni ne contribue au mix
+  ---
+  duration_ms: 7.171585
+  ...
+# Subtest: V2.7 binding: un source_gap est visible comme non câblé sans requête implicite
+ok 575 - V2.7 binding: un source_gap est visible comme non câblé sans requête implicite
+  ---
+  duration_ms: 0.920917
+  ...
+# Subtest: V2.7 binding: un gap d'orchestration reste explicitement DIG-able
+ok 576 - V2.7 binding: un gap d'orchestration reste explicitement DIG-able
+  ---
+  duration_ms: 1.071476
+  ...
+# Subtest: picker searches all types by default and explicit filters narrow them
+ok 577 - picker searches all types by default and explicit filters narrow them
+  ---
+  duration_ms: 5.482352
+  ...
+# Subtest: picker searches accents, declared artist, channel and playlist without parsing an artist from a title
+ok 578 - picker searches accents, declared artist, channel and playlist without parsing an artist from a title
+  ---
+  duration_ms: 1.434135
+  ...
+# Subtest: homonyms keep distinct IDs and neither relation count nor old metrics drive ranking
+ok 579 - homonyms keep distinct IDs and neither relation count nor old metrics drive ranking
+  ---
+  duration_ms: 2.069888
+  ...
+# Subtest: empty catalogs and unknown queries return no invented options
+ok 580 - empty catalogs and unknown queries return no invented options
+  ---
+  duration_ms: 0.314703
+  ...
+# Subtest: documented credits make tracks searchable but rejected and guessed artists do not
+ok 581 - documented credits make tracks searchable but rejected and guessed artists do not
+  ---
+  duration_ms: 0.547696
+  ...
+# Subtest: le patch source V1 a un défaut ARCHIVE versionné
+ok 582 - le patch source V1 a un défaut ARCHIVE versionné
+  ---
+  duration_ms: 8.911694
+  ...
+# Subtest: un patch custom survit à la normalisation sans faux preset
+ok 583 - un patch custom survit à la normalisation sans faux preset
+  ---
+  duration_ms: 0.475643
+  ...
+# Subtest: migration legacy mission, filtrage et bornage restent déterministes
+ok 584 - migration legacy mission, filtrage et bornage restent déterministes
+  ---
+  duration_ms: 0.688861
+  ...
+# Subtest: les trois espaces conservent les anciens liens directs
+ok 585 - les trois espaces conservent les anciens liens directs
+  ---
+  duration_ms: 1.848882
+  ...
+# Subtest: les états visibles distinguent inconnu, recherche, panne, parcours terminé et pause
+ok 586 - les états visibles distinguent inconnu, recherche, panne, parcours terminé et pause
+  ---
+  duration_ms: 0.590948
+  ...
+# Subtest: strict artist choices remain read-only and direct references cannot select arbitrary hosts
+ok 587 - strict artist choices remain read-only and direct references cannot select arbitrary hosts
+  ---
+  duration_ms: 448.048926
+  ...
+# Subtest: cross-site GET cannot inspect state or trigger catalogue and thumbnail work
+ok 588 - cross-site GET cannot inspect state or trigger catalogue and thumbnail work
+  ---
+  duration_ms: 176.335026
+  ...
+# Subtest: invalid graph evidence and cross-departure sessions are rejected atomically over HTTP
+ok 589 - invalid graph evidence and cross-departure sessions are rejected atomically over HTTP
+  ---
+  duration_ms: 150.843534
+  ...
+# Subtest: punctuation and non-Latin artist searches have separate identity caches
+ok 590 - punctuation and non-Latin artist searches have separate identity caches
+  ---
+  duration_ms: 600.636234
+  ...
+# Subtest: refuse écritures intersites, JSON invalide et clés réservées sans modifier le graphe
+ok 591 - refuse écritures intersites, JSON invalide et clés réservées sans modifier le graphe
+  ---
+  duration_ms: 117.465897
+  ...
+# Subtest: Kosh ne suit pas les identifiants de Koshi Inaba et conserve les choix Discogs
+ok 592 - Kosh ne suit pas les identifiants de Koshi Inaba et conserve les choix Discogs
+  ---
+  duration_ms: 1390.632751
+  ...
+# Subtest: correction du départ : persistance, concurrence et rejet des enrichissements périmés
+ok 593 - correction du départ : persistance, concurrence et rejet des enrichissements périmés
+  ---
+  duration_ms: 114.540775
+  ...
+# Subtest: sert l’interface et le contrat du moteur
+ok 594 - sert l’interface et le contrat du moteur
+  ---
+  duration_ms: 117.895568
+  ...
+# Subtest: relaie les miniatures YouTube et utilise un repli local
+ok 595 - relaie les miniatures YouTube et utilise un repli local
+  ---
+  duration_ms: 147.194837
+  ...
+# Subtest: catalogue branch returns exact local label discoveries and validates its cursor
+ok 596 - catalogue branch returns exact local label discoveries and validates its cursor
+  ---
+  duration_ms: 118.454309
+  ...
+# Subtest: Bandcamp import persists supplied facts without requesting a remote page
+ok 597 - Bandcamp import persists supplied facts without requesting a remote page
+  ---
+  duration_ms: 117.015803
+  ...
+# Subtest: conserve, restitue et ferme le front de fouille
+ok 598 - conserve, restitue et ferme le front de fouille
+  ---
+  duration_ms: 114.4265
+  ...
+# Subtest: vérifie et persiste le jeton Discogs sans jamais le renvoyer
+ok 599 - vérifie et persiste le jeton Discogs sans jamais le renvoyer
+  ---
+  duration_ms: 299.323504
+  ...
+# Subtest: persiste les gestes et sert des voisins ListenBrainz traçables
+ok 600 - persiste les gestes et sert des voisins ListenBrainz traçables
+  ---
+  duration_ms: 148.79375
+  ...
+# Subtest: résout un recording exact et conserve les candidats Discogs séparés
+ok 601 - résout un recording exact et conserve les candidats Discogs séparés
+  ---
+  duration_ms: 1249.478085
+  ...
+# Subtest: HTTP hydrates Discogs tracks, preserves their graph credits and isolates duration decisions
+ok 602 - HTTP hydrates Discogs tracks, preserves their graph credits and isolates duration decisions
+  ---
+  duration_ms: 1252.805727
+  ...
+# Subtest: compare les catalogues par territoire sans déclarer une exclusivité
+ok 603 - compare les catalogues par territoire sans déclarer une exclusivité
+  ---
+  duration_ms: 144.748681
+  ...
+# Subtest: persiste et résume le graphe artiste, label, sortie et featuring
+ok 604 - persiste et résume le graphe artiste, label, sortie et featuring
+  ---
+  duration_ms: 108.120553
+  ...
+# Subtest: retourne les sorties récentes et leurs labels depuis MusicBrainz
+ok 605 - retourne les sorties récentes et leurs labels depuis MusicBrainz
+  ---
+  duration_ms: 149.86743
+  ...
+# Subtest: complète un artiste avec Wikidata, Wikipédia et Bandcamp
+ok 606 - complète un artiste avec Wikidata, Wikipédia et Bandcamp
+  ---
+  duration_ms: 406.707881
+  ...
+# Subtest: résout une identité sourcée avec Discogs sans fusionner les scores
+ok 607 - résout une identité sourcée avec Discogs sans fusionner les scores
+  ---
+  duration_ms: 2490.839689
+  ...
+# Subtest: ne sert jamais les fichiers situés hors du répertoire public
+ok 608 - ne sert jamais les fichiers situés hors du répertoire public
+  ---
+  duration_ms: 106.36938
+  ...
+# Subtest: HTTP: old archive untouched, per-tab/per-departure isolation, corrections survive restart
+ok 609 - HTTP: old archive untouched, per-tab/per-departure isolation, corrections survive restart
+  ---
+  duration_ms: 638.34788
+  ...
+# Subtest: algèbre centrale : Detroit Experiment ↔ The Detroit Experiment reste une variante de crédit
+ok 610 - algèbre centrale : Detroit Experiment ↔ The Detroit Experiment reste une variante de crédit
+  ---
+  duration_ms: 3.667333
+  ...
+# Subtest: algèbre centrale : Dj Dee Nasty ↔ Dee Nasty reste une variante de crédit
+ok 611 - algèbre centrale : Dj Dee Nasty ↔ Dee Nasty reste une variante de crédit
+  ---
+  duration_ms: 0.212521
+  ...
+# Subtest: algèbre centrale : Lucci ↔ Lucci (Click Clack Gang) reste une variante de crédit
+ok 612 - algèbre centrale : Lucci ↔ Lucci (Click Clack Gang) reste une variante de crédit
+  ---
+  duration_ms: 0.382935
+  ...
+# Subtest: algèbre centrale : Earwax (IT) ↔ Earwax reste une variante de crédit
+ok 613 - algèbre centrale : Earwax (IT) ↔ Earwax reste une variante de crédit
+  ---
+  duration_ms: 0.147345
+  ...
+# Subtest: algèbre centrale : Aemris ↔ Æmris reste orthographique
+ok 614 - algèbre centrale : Aemris ↔ Æmris reste orthographique
+  ---
+  duration_ms: 0.417443
+  ...
+# Subtest: algèbre centrale : PØLI ↔ POLI reste orthographique
+ok 615 - algèbre centrale : PØLI ↔ POLI reste orthographique
+  ---
+  duration_ms: 0.144586
+  ...
+# Subtest: DA et DA Uzi restent concurrents
+ok 616 - DA et DA Uzi restent concurrents
+  ---
+  duration_ms: 1.073571
+  ...
+# Subtest: Ken et Kei Hayakawa restent concurrents
+ok 617 - Ken et Kei Hayakawa restent concurrents
+  ---
+  duration_ms: 0.186484
+  ...
+# Subtest: PØLI / POLI n'est pas une rivalité
+ok 618 - PØLI / POLI n'est pas une rivalité
+  ---
+  duration_ms: 4.125747
+  ...
+# Subtest: Aemris / Æmris n'est pas une rivalité
+ok 619 - Aemris / Æmris n'est pas une rivalité
+  ---
+  duration_ms: 0.212018
+  ...
+# Subtest: Detroit Experiment / The Detroit Experiment n'est pas une rivalité
+ok 620 - Detroit Experiment / The Detroit Experiment n'est pas une rivalité
+  ---
+  duration_ms: 0.330829
+  ...
+# Subtest: Dj Dee Nasty / Dee Nasty n'est pas une rivalité
+ok 621 - Dj Dee Nasty / Dee Nasty n'est pas une rivalité
+  ---
+  duration_ms: 0.172391
+  ...
+# Subtest: Lucci / Lucci (Click Clack Gang) n'est pas une rivalité
+ok 622 - Lucci / Lucci (Click Clack Gang) n'est pas une rivalité
+  ---
+  duration_ms: 0.174636
+  ...
+# Subtest: Earwax (IT) / Earwax n'est pas une rivalité
+ok 623 - Earwax (IT) / Earwax n'est pas une rivalité
+  ---
+  duration_ms: 0.132407
+  ...
+# Subtest: DA / DA Uzi reste concurrent
+ok 624 - DA / DA Uzi reste concurrent
+  ---
+  duration_ms: 0.399247
+  ...
+# Subtest: Ken Hayakawa / Kei Hayakawa reste concurrent
+ok 625 - Ken Hayakawa / Kei Hayakawa reste concurrent
+  ---
+  duration_ms: 0.167421
+  ...
+# Subtest: Mirwais / David Gravell reste concurrent
+ok 626 - Mirwais / David Gravell reste concurrent
+  ---
+  duration_ms: 0.309351
+  ...
+# Subtest: Kaiser (Italy) / Kaiser (K S R) reste concurrent
+ok 627 - Kaiser (Italy) / Kaiser (K S R) reste concurrent
+  ---
+  duration_ms: 0.155168
+  ...
+# Subtest: Kaiser (Italy) et Kaiser (K S R) restent concurrents
+ok 628 - Kaiser (Italy) et Kaiser (K S R) restent concurrents
+  ---
+  duration_ms: 2.7487
+  ...
+# Subtest: Earwax (IT) et Earwax restent une variante de crédit
+ok 629 - Earwax (IT) et Earwax restent une variante de crédit
+  ---
+  duration_ms: 0.947432
+  ...
+# Subtest: Lucci et Lucci (Click Clack Gang) restent une variante de crédit
+ok 630 - Lucci et Lucci (Click Clack Gang) restent une variante de crédit
+  ---
+  duration_ms: 0.248803
+  ...
+# Subtest: PØLI et POLI restent une variante orthographique
+ok 631 - PØLI et POLI restent une variante orthographique
+  ---
+  duration_ms: 0.524228
+  ...
+# Subtest: DA et DA Uzi restent concurrents
+ok 632 - DA et DA Uzi restent concurrents
+  ---
+  duration_ms: 0.257588
+  ...
+# Subtest: une graphie ponctuée proche reste une variante
+ok 633 - une graphie ponctuée proche reste une variante
+  ---
+  duration_ms: 2.072499
+  ...
+# Subtest: un featuring reste un crédit dans le bridge
+ok 634 - un featuring reste un crédit dans le bridge
+  ---
+  duration_ms: 1.290948
+  ...
+# Subtest: track-resolution n'embarque plus ses helpers de variante locaux
+ok 635 - track-resolution n'embarque plus ses helpers de variante locaux
+  ---
+  duration_ms: 5.08494
+  ...
+# Subtest: relations orthographiques de référence
+ok 636 - relations orthographiques de référence
+  ---
+  duration_ms: 2.42647
+  ...
+# Subtest: variantes de crédit de référence
+ok 637 - variantes de crédit de référence
+  ---
+  duration_ms: 0.591922
+  ...
+# Subtest: concurrents de référence
+ok 638 - concurrents de référence
+  ---
+  duration_ms: 0.381585
+  ...
+# Subtest: deux observations d'une même famille ne font qu'une source indépendante
+ok 639 - deux observations d'une même famille ne font qu'une source indépendante
+  ---
+  duration_ms: 6.510514
+  ...
+# Subtest: deux familles indépendantes corroborent réellement
+ok 640 - deux familles indépendantes corroborent réellement
+  ---
+  duration_ms: 0.327375
+  ...
+# Subtest: le bridge packet conserve le comportement multisource existant
+ok 641 - le bridge packet conserve le comportement multisource existant
+  ---
+  duration_ms: 1.805565
+  ...
+# Subtest: multisource-decision ne contient plus son propre agrégateur
+ok 642 - multisource-decision ne contient plus son propre agrégateur
+  ---
+  duration_ms: 2.426048
+  ...
+# Subtest: plusieurs candidats d'une même famille restent une seule source indépendante
+ok 643 - plusieurs candidats d'une même famille restent une seule source indépendante
+  ---
+  duration_ms: 3.472821
+  ...
+# Subtest: deux familles de fournisseurs valent deux sources indépendantes
+ok 644 - deux familles de fournisseurs valent deux sources indépendantes
+  ---
+  duration_ms: 0.271804
+  ...
+# Subtest: buildResolutionEvidence conserve sa sémantique publique
+ok 645 - buildResolutionEvidence conserve sa sémantique publique
+  ---
+  duration_ms: 2.180446
+  ...
+# Subtest: resolution-evidence ne contient plus sourceSet
+ok 646 - resolution-evidence ne contient plus sourceSet
+  ---
+  duration_ms: 1.490286
+  ...
+# Subtest: candidateSupportsIdentity reconnaît un artiste exact normalisé
+ok 647 - candidateSupportsIdentity reconnaît un artiste exact normalisé
+  ---
+  duration_ms: 3.096908
+  ...
+# Subtest: le support externe compte les familles indépendantes
+ok 648 - le support externe compte les familles indépendantes
+  ---
+  duration_ms: 2.293194
+  ...
+# Subtest: absence de candidat rival ne crée aucune preuve négative
+ok 649 - absence de candidat rival ne crée aucune preuve négative
+  ---
+  duration_ms: 0.361347
+  ...
+# Subtest: le live engine n'embarque plus candidateSupportsArtist
+ok 650 - le live engine n'embarque plus candidateSupportsArtist
+  ---
+  duration_ms: 1.086241
+  ...
+# Subtest: une contradiction connue avec une seule famille rétrograde auto_accept en ambiguous
+ok 651 - une contradiction connue avec une seule famille rétrograde auto_accept en ambiguous
+  ---
+  duration_ms: 2.980972
+  ...
+# Subtest: deux familles indépendantes conservent auto_accept malgré un concurrent connu
+ok 652 - deux familles indépendantes conservent auto_accept malgré un concurrent connu
+  ---
+  duration_ms: 0.246685
+  ...
+# Subtest: sans concurrent connu la décision n'est pas durcie
+ok 653 - sans concurrent connu la décision n'est pas durcie
+  ---
+  duration_ms: 0.191613
+  ...
+# Subtest: l'absence de support rival ne devient jamais une preuve négative
+ok 654 - l'absence de support rival ne devient jamais une preuve négative
+  ---
+  duration_ms: 0.356014
+  ...
+# Subtest: le live gate délègue la politique à l'algèbre
+ok 655 - le live gate délègue la politique à l'algèbre
+  ---
+  duration_ms: 1.416926
+  ...
+# Subtest: deux sources indépendantes acceptent l'identité préférée
+ok 656 - deux sources indépendantes acceptent l'identité préférée
+  ---
+  duration_ms: 2.759446
+  ...
+# Subtest: une identité préférée mono-source avec concurrent reste ambiguë
+ok 657 - une identité préférée mono-source avec concurrent reste ambiguë
+  ---
+  duration_ms: 0.226995
+  ...
+# Subtest: la décision ranked conserve la règle de corroboration connue
+ok 658 - la décision ranked conserve la règle de corroboration connue
+  ---
+  duration_ms: 0.259296
+  ...
+# Subtest: les wrappers publics délèguent sans changer leurs signatures
+ok 659 - les wrappers publics délèguent sans changer leurs signatures
+  ---
+  duration_ms: 1.224223
+  ...
+# Subtest: les anciens arbres de décision locaux ont disparu
+ok 660 - les anciens arbres de décision locaux ont disparu
+  ---
+  duration_ms: 1.423155
+  ...
+# Subtest: le live engine ne maintient plus nonCompetingVariants
+ok 661 - le live engine ne maintient plus nonCompetingVariants
+  ---
+  duration_ms: 4.979819
+  ...
+# Subtest: variantes validées restent non concurrentes
+ok 662 - variantes validées restent non concurrentes
+  ---
+  duration_ms: 4.482779
+  ...
+# Subtest: concurrents validés restent concurrents
+ok 663 - concurrents validés restent concurrents
+  ---
+  duration_ms: 0.605266
+  ...
+# Subtest: Detroit Experiment ↔ The Detroit Experiment
+ok 664 - Detroit Experiment ↔ The Detroit Experiment
+  ---
+  duration_ms: 3.796299
+  ...
+# Subtest: Dj Dee Nasty ↔ Dee Nasty
+ok 665 - Dj Dee Nasty ↔ Dee Nasty
+  ---
+  duration_ms: 0.390449
+  ...
+# Subtest: Aemris ↔ Æmris
+ok 666 - Aemris ↔ Æmris
+  ---
+  duration_ms: 0.45084
+  ...
+# Subtest: PØLI ↔ POLI
+ok 667 - PØLI ↔ POLI
+  ---
+  duration_ms: 0.194336
+  ...
+# Subtest: Lucci ↔ Lucci (Click Clack Gang)
+ok 668 - Lucci ↔ Lucci (Click Clack Gang)
+  ---
+  duration_ms: 0.329555
+  ...
+# Subtest: Earwax (IT) ↔ Earwax
+ok 669 - Earwax (IT) ↔ Earwax
+  ---
+  duration_ms: 0.151742
+  ...
+# Subtest: des noms seulement vaguement proches restent concurrents
+ok 670 - des noms seulement vaguement proches restent concurrents
+  ---
+  duration_ms: 0.229896
+  ...
+# Subtest: PØLI et POLI sont une variante orthographique, pas une fusion brute
+ok 671 - PØLI et POLI sont une variante orthographique, pas une fusion brute
+  ---
+  duration_ms: 4.049315
+  ...
+# Subtest: un featuring n'est pas une identité primaire
+ok 672 - un featuring n'est pas une identité primaire
+  ---
+  duration_ms: 0.935082
+  ...
+# Subtest: deux occurrences d'une même source ne comptent qu'une fois
+ok 673 - deux occurrences d'une même source ne comptent qu'une fois
+  ---
+  duration_ms: 1.755246
+  ...
+# Subtest: youtube + musicbrainz corroborent une identité
+ok 674 - youtube + musicbrainz corroborent une identité
+  ---
+  duration_ms: 0.595139
+  ...
+# Subtest: HTTP discogs: a profile cached by another direction does not spend the next remote budget
+ok 675 - HTTP discogs: a profile cached by another direction does not spend the next remote budget
+  ---
+  duration_ms: 1343.595712
+  ...
+# Subtest: HTTP musicbrainz: a profile cached by another direction does not spend the next remote budget
+ok 676 - HTTP musicbrainz: a profile cached by another direction does not spend the next remote budget
+  ---
+  duration_ms: 157.983252
+  ...
+# Subtest: viewScope validates atomically and rejects cross-site catalogue access without supplier calls
+ok 677 - viewScope validates atomically and rejects cross-site catalogue access without supplier calls
+  ---
+  duration_ms: 136.012125
+  ...
+# Subtest: legacy scope remains optional; library exclusion changes the objective without deleting local candidates
+ok 678 - legacy scope remains optional; library exclusion changes the objective without deleting local candidates
+  ---
+  duration_ms: 120.640466
+  ...
+# Subtest: HTTP branch scope reaches other-artist tracks after a cached hidden album within the default request budget
+ok 679 - HTTP branch scope reaches other-artist tracks after a cached hidden album within the default request budget
+  ---
+  duration_ms: 3431.519829
+  ...
+# Subtest: recovery distincte
+ok 680 - recovery distincte
+  ---
+  duration_ms: 4.813274
+  ...
+# Subtest: restore ne réactive plus restored
+ok 681 - restore ne réactive plus restored
+  ---
+  duration_ms: 0.234283
+  ...
+# Subtest: backup ne rafraîchit plus activeDig
+ok 682 - backup ne rafraîchit plus activeDig
+  ---
+  duration_ms: 3.51036
+  ...
+# Subtest: restoreBackup ne réactive plus dig
+ok 683 - restoreBackup ne réactive plus dig
+  ---
+  duration_ms: 0.440054
+  ...
+# Subtest: active et recovery ont des slots distincts
+ok 684 - active et recovery ont des slots distincts
+  ---
+  duration_ms: 2.060563
+  ...
+# Subtest: aucun vieux activeDig n'est fraîchement timestampé pendant restore backup
+ok 685 - aucun vieux activeDig n'est fraîchement timestampé pendant restore backup
+  ---
+  duration_ms: 0.263013
+  ...
+# Subtest: boot reste neutre même si une recovery valide existe
+ok 686 - boot reste neutre même si une recovery valide existe
+  ---
+  duration_ms: 1.743567
+  ...
+# Subtest: recovery backup ne reçoit pas un nouveau timestamp
+ok 687 - recovery backup ne reçoit pas un nouveau timestamp
+  ---
+  duration_ms: 0.180619
+  ...
+# Subtest: reprise explicite active le front
+ok 688 - reprise explicite active le front
+  ---
+  duration_ms: 0.191137
+  ...
+# Subtest: la recovery la plus récente est choisie sans être activée
+ok 689 - la recovery la plus récente est choisie sans être activée
+  ---
+  duration_ms: 0.388974
+  ...
+# Subtest: recovery invalide refusée
+ok 690 - recovery invalide refusée
+  ---
+  duration_ms: 0.323524
+  ...
+# Subtest: active vide a une forme stable
+ok 691 - active vide a une forme stable
+  ---
+  duration_ms: 1.225559
+  ...
+# Subtest: renewable OAuth HTTP is off by default and protected even when disabled
+ok 692 - renewable OAuth HTTP is off by default and protected even when disabled
+  ---
+  duration_ms: 305.188202
+  ...
+# Subtest: OAuth HTTP requires origin/header, returns no secrets, uses a bound callback and local forget
+ok 693 - OAuth HTTP requires origin/header, returns no secrets, uses a bound callback and local forget
+  ---
+  duration_ms: 162.242353
+  ...
+# Subtest: une simple chaîne classée Musique reste une hypothèse faible
+ok 694 - une simple chaîne classée Musique reste une hypothèse faible
+  ---
+  duration_ms: 4.93324
+  ...
+# Subtest: une chaîne Topic reste une identité exploitable pour l'exploration
+ok 695 - une chaîne Topic reste une identité exploitable pour l'exploration
+  ---
+  duration_ms: 0.983222
+  ...
+# Subtest: une simple syntaxe Artist - Title reste une hypothèse non corroborée
+ok 696 - une simple syntaxe Artist - Title reste une hypothèse non corroborée
+  ---
+  duration_ms: 0.872423
+  ...
+# Subtest: les titres éditorialisés ne deviennent pas des artistes exploitables du picker
+ok 697 - les titres éditorialisés ne deviennent pas des artistes exploitables du picker
+  ---
+  duration_ms: 0.856861
+  ...
+# Subtest: HTTP : choix de trois artistes persistés ensemble, crédits complets et archive préservés après redémarrage
+ok 698 - HTTP : choix de trois artistes persistés ensemble, crédits complets et archive préservés après redémarrage
+  ---
+  duration_ms: 404.756928
+  ...
+# Subtest: deux sources indépendantes permettent une acceptation
+ok 699 - deux sources indépendantes permettent une acceptation
+  ---
+  duration_ms: 3.575003
+  ...
+# Subtest: une identité préférée mono-source avec concurrent connu reste ambiguë
+ok 700 - une identité préférée mono-source avec concurrent connu reste ambiguë
+  ---
+  duration_ms: 0.295861
+  ...
+# Subtest: les champs explicites Topic produisent une preuve forte
+ok 701 - les champs explicites Topic produisent une preuve forte
+  ---
+  duration_ms: 2.829787
+  ...
+# Subtest: l'orchestrateur s'arrête quand deux sources corroborent
+ok 702 - l'orchestrateur s'arrête quand deux sources corroborent
+  ---
+  duration_ms: 5.902597
+  ...
+# Subtest: une absence d'identifiant est refusée sans réseau
+ok 703 - une absence d'identifiant est refusée sans réseau
+  ---
+  duration_ms: 1.625007
+  ...
+# Subtest: relationCount n'est plus une autorité de classement
+ok 704 - relationCount n'est plus une autorité de classement
+  ---
+  duration_ms: 9.134479
+  ...
+# Subtest: même nom sans preuve d'équivalence reste deux choix
+ok 705 - même nom sans preuve d'équivalence reste deux choix
+  ---
+  duration_ms: 0.680243
+  ...
+# Subtest: external id partagé regroupe une identité technique
+ok 706 - external id partagé regroupe une identité technique
+  ---
+  duration_ms: 0.333448
+  ...
+# Subtest: same_identity confirmée regroupe
+ok 707 - same_identity confirmée regroupe
+  ---
+  duration_ms: 0.320217
+  ...
+# Subtest: recherche exact > préfixe > occurrence
+ok 708 - recherche exact > préfixe > occurrence
+  ---
+  duration_ms: 1.220117
+  ...
+# Subtest: Kosh n'est pas promu par sa densité seule
+ok 709 - Kosh n'est pas promu par sa densité seule
+  ---
+  duration_ms: 0.284028
+  ...
+# Subtest: un candidat artiste Discogs issu seulement d'une recherche de nom ne devient pas une seed
+ok 710 - un candidat artiste Discogs issu seulement d'une recherche de nom ne devient pas une seed
+  ---
+  duration_ms: 0.272157
+  ...
+# Subtest: une hypothèse artiste locale issue seulement du titre ne devient pas une seed
+ok 711 - une hypothèse artiste locale issue seulement du titre ne devient pas une seed
+  ---
+  duration_ms: 0.495648
+  ...
+# Subtest: une identité artiste structurée réellement reliée reste une seed
+ok 712 - une identité artiste structurée réellement reliée reste une seed
+  ---
+  duration_ms: 0.33692
+  ...
+# Subtest: [no label] n'est jamais proposé comme seed label
+ok 713 - [no label] n'est jamais proposé comme seed label
+  ---
+  duration_ms: 0.581977
+  ...
+# Subtest: deux labels de même nom sans preuve d'identité restent distincts
+ok 714 - deux labels de même nom sans preuve d'identité restent distincts
+  ---
+  duration_ms: 0.851209
+  ...
+# Subtest: un placeholder de label Discogs et son ID réel se regroupent s'ils partagent la même release
+ok 715 - un placeholder de label Discogs et son ID réel se regroupent s'ils partagent la même release
+  ---
+  duration_ms: 0.508578
+  ...
+# Subtest: deux labels Discogs de même nom sans release commune restent distincts
+ok 716 - deux labels Discogs de même nom sans release commune restent distincts
+  ---
+  duration_ms: 0.355723
+  ...
+# Subtest: une release Discogs portant plusieurs labels ne fusionne pas leurs identités
+ok 717 - une release Discogs portant plusieurs labels ne fusionne pas leurs identités
+  ---
+  duration_ms: 1.266485
+  ...
+# Subtest: un placeholder de label MusicBrainz rejoint son MBID sur une même sortie corroborée
+ok 718 - un placeholder de label MusicBrainz rejoint son MBID sur une même sortie corroborée
+  ---
+  duration_ms: 1.039565
+  ...
+# Subtest: même nom MusicBrainz sans contexte de sortie corroboré reste distinct
+ok 719 - même nom MusicBrainz sans contexte de sortie corroboré reste distinct
+  ---
+  duration_ms: 0.403074
+  ...
+# Subtest: même titre et date mais artistes MusicBrainz différents ne fusionnent pas les labels
+ok 720 - même titre et date mais artistes MusicBrainz différents ne fusionnent pas les labels
+  ---
+  duration_ms: 0.504032
+  ...
+# Subtest: Discogs et MusicBrainz regroupent un label si une même sortie partage son numéro de catalogue
+ok 721 - Discogs et MusicBrainz regroupent un label si une même sortie partage son numéro de catalogue
+  ---
+  duration_ms: 0.696403
+  ...
+# Subtest: même label et même sortie sans numéro de catalogue commun restent distincts entre fournisseurs
+ok 722 - même label et même sortie sans numéro de catalogue commun restent distincts entre fournisseurs
+  ---
+  duration_ms: 0.512656
+  ...
+# Subtest: un numéro de catalogue identique ne fusionne pas deux labels de noms différents
+ok 723 - un numéro de catalogue identique ne fusionne pas deux labels de noms différents
+  ---
+  duration_ms: 0.432282
+  ...
+# Subtest: même catalogue et même label mais titres différents ne fusionnent pas
+ok 724 - même catalogue et même label mais titres différents ne fusionnent pas
+  ---
+  duration_ms: 0.409294
+  ...
+1..724
+# tests 724
+# suites 0
+# pass 724
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 14628.972138

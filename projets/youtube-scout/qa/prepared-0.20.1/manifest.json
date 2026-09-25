@@ -1,0 +1,86 @@
+{
+  "version": "0.20.1",
+  "status": "prepared_not_active",
+  "preparedAt": "2026-09-22T21:09:37.661Z",
+  "stage": "/tmp/scout-filter-lvU9Mt",
+  "root": "/home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout",
+  "tests": 724,
+  "files": [
+    {
+      "path": "public/app.js",
+      "before": "89aaad5da1aa5d10eb634c1e9714984a3c224ac69517768e6a72bdc782646716",
+      "after": "276692a0d2c95a65b6184a7ae87cec772e4dff37d9d77e85bea86f86356cff1b"
+    },
+    {
+      "path": "public/music-sorting.mjs",
+      "before": "2dea9732fcf9699c626699c4b7e8f3af3affd1f1ff5ed076059488c816ccc019",
+      "after": "77e0ae15134e9fa83e9c45e4e47f3b3d98d41bffd7c80aababcfea1f08c54a26"
+    },
+    {
+      "path": "public/scout-mix-session.mjs",
+      "before": "768fcba806afad3414aa561b78c569983b058c138a38f030e0d3e5309f664c58",
+      "after": "d3aaaaa13be51db75a8866936777e6fed88f3366b25e19ddf2bbc5a8871dbb89"
+    },
+    {
+      "path": "public/scout-mixer-panel.mjs",
+      "before": "a22e76e1ea20c3f8c1783eb468686508353372894c7581635d417f3fd3461e6f",
+      "after": "e669a3eb1cfb7385bae9a7a698e115f024329ddc4fc285990121b37dd152f3a9"
+    },
+    {
+      "path": "public/scout-parameters.mjs",
+      "before": "3a0458baf1eb9ed2bef9ad3ecc4d891f6413e960b9b612414ff6ccaac9bc429c",
+      "after": "cbe9dd3d68dc2aeed73a169a4481aba56cd477ce6ca6e395cd19c83258c6e6ab"
+    },
+    {
+      "path": "public/scout-parameters.test.mjs",
+      "before": "1d2fec4a402b6b9018dc58585fbdb08fcbb7a12ab9e4782c6ec5e8dd2e35e243",
+      "after": "aa43a931a971b6417fcf0133ff2a38e3615600ad57d7f1645fd460a3d9fbfa80"
+    },
+    {
+      "path": "public/scout-mix-binding.test.mjs",
+      "before": "2a30f875d365567b96fe3e810f829550e8e7bd69340d3d43983e455936c89d21",
+      "after": "043fe15f8ebdcdb522537bba26a85854468d46dd1a7d7d817640865106843599"
+    },
+    {
+      "path": "public/artist-filter.test.mjs",
+      "before": null,
+      "after": "333b9e0168f3a63879fe1ca4918dc748570fd90f125cf108dde20fad91084585"
+    },
+    {
+      "path": "lib/catalogue.mjs",
+      "before": "7dae784aa418efc53a581b5a9280b6917d506778a5b635b316c0e1de57819b88",
+      "after": "39b5edbe42ffb2f9693264f9f19663a768e6787e9d870802c03dff5d9c3bce93"
+    },
+    {
+      "path": "server.mjs",
+      "before": "db0444a1aacf923a192c9ebf0f77a52eb53ef7e9bd8fa6a6d9da1d0d651045ac",
+      "after": "67bed4694f98b339497946142bf13ad6ea2298a9d0695075d09c24f5f1f2b4f2"
+    },
+    {
+      "path": "server.test.mjs",
+      "before": "311783245ab0f0f0e5cb09b9c9d1624b9d96beb31a210e46995a41e0d9b3c3fa",
+      "after": "1f9112a1e429e7c7d904b87b99143aaa40cd50a866d76d39538cb561ed652f5e"
+    },
+    {
+      "path": "tests/evolution-server.test.mjs",
+      "before": "32b3a9cefabaf1f4b032760b297a6b1635f9dd759b8eb3762b1d8ce2ebc69c1a",
+      "after": "edd594dc1cb5f504d73ed7ac18b6fb9bf52d92960aea9dc7417d97a11591ebbc"
+    },
+    {
+      "path": "package.json",
+      "before": "a5efd5f2608c0a232b1edfd0cbca7eca1fbffa08c51b4151bb6702504f204b02",
+      "after": "0ca6d6a1a20ec10a70ebb74c7dfc6711b75c043ee5d6d674b0966ecaa55c8b38"
+    },
+    {
+      "path": "scripts/artist-filter-ui-fixture.mjs",
+      "before": null,
+      "after": "d7ed683fecfdafe8c08ae0a70f2d80da46642e6ee2c8176d91825fa4cab159df"
+    },
+    {
+      "path": "docs/QUALITY_0.20.1_2026-09-22.md",
+      "before": null,
+      "after": "b1a53c7b14191bd370743c6cf01c91cee88fd2ef1232d9a1eed864f37aee3086"
+    }
+  ],
+  "patchSha256": "9a5d4f7abe4449448f72e2e596ffc5b39f50556b136cf4c77b32482e028ccb2e"
+}

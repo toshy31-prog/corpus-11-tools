@@ -1,0 +1,237 @@
+*** Begin Patch
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/app.js
+@@
+ import { NOTEBOOK_STATUSES, createBackup, createImportCheckpoint, finalizeLibraryImport, normalizeNotebookItem, reusableImportCheckpoint, safeExternalUrl, scanImportPages, validateBackup } from "/library-state.mjs";
+ import { directionNames, selectDiscoveries, deduplicatePaths, matchesRecording, dateDescription } from "/discovery-model.mjs";
+ import { recordingArtistHints, searchCreditChoices, splitArtistNames } from "/artist-names.mjs";
++import { participantDraft, mountParticipantPicker, renderParticipantResults } from "/participant-explorer.mjs";
+ import { videoContent, titleCreditSuggestion } from "/video-content.mjs";
+ import { routeExplanation } from "/discovery-presentation.mjs";
+ import { bindCatalogueTools } from "/bandcamp-tools.mjs";
+@@
+ function renderActiveSeed() {
+   const seed = activeDig.seed;
+   renderSeedGuidance();
++  renderCommonParticipantResults();
+   if (typeof renderScoutMixerPanel === "function") renderScoutMixerPanel();
+   nodes.activeSeed.hidden = !seed;
+   if (!seed) return;
+@@
+ function renderArtistCorrection(host, expectedSeedId) {
+   const departure = typedDepartureModel({ seed: activeDig.seed || {}, graph: explorationGraph, suggestion: resolvedArtist(seedVideo(activeDig.seed) || {}) });
+   const artistDeparture = departure.identityForm === "artist";
++  if (!artistDeparture && departure.initialArtistName) return renderRecordingParticipants(host, expectedSeedId, departure.initialArtistName);
+   const form = document.createElement("form");
+   form.className = "departure-identity-form";
+   form.dataset.seedId = expectedSeedId;
+@@
+   }, { isCurrent: () => generation === compositionGeneration && seedId === activeDig.seed?.id });
+ }
+ 
++function renderCommonParticipantResults() {
++  const anchor = document.querySelector('#seed-action');
++  if (!anchor) return;
++  let host = document.querySelector('#participant-common-results');
++  if (!host) { host = document.createElement('div'); host.id = 'participant-common-results'; anchor.after(host); }
++  host.replaceChildren();
++  const draft = activeDig.participantDraft;
++  if (!activeDig.seed || draft?.seedId !== activeDig.seed.id) return;
++  renderParticipantResults(host, draft, Object.values(activeDig.catalogueGroups || {}).flatMap(group => group.items || []));
++  if (draft.launched && !activeDig.reviewRequired) {
++    const edit = document.createElement('button'); edit.type = 'button'; edit.textContent = 'Modifier les participants et leurs recherches'; edit.disabled = draft.busy;
++    edit.onclick = () => { edit.disabled = true; renderRecordingParticipants(host, activeDig.seed.id, declaredDepartureArtist(explorationGraph, activeDig.seed.id) || draft.rows.map(row => row.name).join(', ')); };
++    host.append(edit);
++  }
++}
++
++function renderRecordingParticipants(host, expectedSeedId, credit) {
++  const draft = participantDraft(expectedSeedId, splitArtistNames(credit), activeDig.participantDraft);
++  activeDig.participantDraft = draft;
++  for (const row of draft.rows) if (!row.initialized) {
++    row.initialized = true;
++    const registry = activeDig.identityChoices?.seedId === expectedSeedId ? activeDig.identityChoices.registry : null;
++    row.candidates = registry?.groups?.find(group => group.query === row.name)?.candidates || catalogueArtistChoices(explorationGraph, row.name);
++  }
++  const isCurrent = () => activeDig.seed?.id === expectedSeedId && activeDig.participantDraft === draft && !activeDig.reviewRequired;
++  const shell = document.createElement('div'); host.append(shell);
++  const refresh = () => {
++    if (!isCurrent()) return;
++    if (!shell.isConnected) { renderActiveSeed(); return; }
++    shell.replaceChildren();
++    const edit = document.createElement('button'); edit.type = 'button'; edit.textContent = 'Corriger le titre ou les crédits'; edit.disabled = draft.busy; edit.onclick = beginDepartureReview; shell.append(edit);
++    mountParticipantPicker(shell, { draft, isCurrent, refresh,
++      search: query => searchDepartureArtistChoices(query),
++      reference: async url => {
++        if (!catalogueArtistReference(url)) throw new Error('Indiquez une fiche artiste MusicBrainz ou Discogs valide.');
++        const response = await fetch(`/api/music/artist-choices?${new URLSearchParams({ reference: url })}`, { signal: AbortSignal.timeout(16000) });
++        if (!response.ok) throw new Error('Fiche indisponible ; le participant reste sélectionnable sans fiche.');
++        return response.json();
++      },
++      explore: async rows => {
++        const generation = compositionGeneration, seed = activeDig.seed;
++        for (const row of draft.rows) row.revision++;
++        const selected = rows.map(row => ({ name: row.name, query: row.query.trim() || row.name, candidate: row.candidate, videos: [], videoStatus: 'en attente' }));
++        const candidates = selected.map(row => row.candidate).filter(Boolean);
++        const delta = candidates.length ? departureArtistsUpdate(explorationGraph, seed, credit, candidates) : departureArtistUpdate(explorationGraph, seed, credit);
++        if (!candidates.length) delta.edges = confirmedSeedArtistEdges(expectedSeedId).map(({ edge }) => ({ ...edge, status: 'rejected_user', evidence: [...(edge.evidence || []), 'user_rejection'] }));
++        const response = await fetch('/api/graph/ingest', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(delta) });
++        if (!response.ok) throw new Error('Sélection non enregistrée. Les recherches n’ont pas été lancées.');
++        if (!isCurrent() || generation !== compositionGeneration) return;
++        await refreshExplorationGraph(expectedSeedId);
++        if (!isCurrent() || generation !== compositionGeneration) return;
++        activeDig.catalogueGroups = {};
++        draft.launched = selected;
++        draft.message = 'Participants sélectionnés ; lecture des liens catalogue et recherche YouTube par nom.';
++        if (candidates.length) {
++          try { await openExploration({ seed, preserveLineage: true }); }
++          catch (error) { draft.message = `Lecture des catalogues interrompue : ${error.message}`; return; }
++        }
++        if (!isCurrent()) return;
++        const searchGeneration = compositionGeneration;
++        const stillCurrent = () => isCurrent() && searchGeneration === compositionGeneration;
++        const available = (accessToken && Date.now() < tokenExpiresAt - 15000) || nodes.apiKey.value.trim();
++        let next = 0;
++        const worker = async () => {
++          while (next < selected.length && stillCurrent()) {
++            const row = selected[next++];
++            if (!available) { row.videoStatus = 'accès YouTube non configuré ; lien de recherche disponible'; continue; }
++            row.videoStatus = 'recherche YouTube en cours'; renderCommonParticipantResults();
++            try {
++              const data = await youtube('search', { part: 'snippet', type: 'video', q: row.query, maxResults: 6 });
++              if (!stillCurrent()) return;
++              row.videos = (data.items || []).filter(item => /^[\w-]{11}$/.test(item.id?.videoId || '')).map(item => ({ id: `video:youtube:${item.id.videoId}`, type: 'video', title: item.snippet?.title || 'Vidéo', artist: '', source: 'youtube', listen: { kind: 'video', videoId: item.id.videoId, url: `https://www.youtube.com/watch?v=${item.id.videoId}` } }));
++              row.videoStatus = row.videos.length ? `${row.videos.length} pistes par nom à vérifier` : 'aucune vidéo trouvée pour cette requête';
++            } catch (error) { if (stillCurrent()) row.videoStatus = `recherche indisponible : ${error.message}`; }
++            if (stillCurrent()) renderCommonParticipantResults();
++          }
++        };
++        await Promise.all([worker(), worker()]);
++        if (!stillCurrent()) return;
++        draft.message = 'Recherche commune terminée. Les résultats et les limites sont détaillés pour chaque participant.';
++        renderCommonParticipantResults();
++      }
++    });
++  };
++  refresh();
++}
++
+ function renderSeedOptions(preferredId = "") {
+   const query = document.querySelector("#seed-search").value;
+   const choices = seedPickerChoices(seedCatalog, { graph: explorationGraph, library, playlists, query, type: nodes.seedType.value });
+@@
+     seedContext: (() => {
+       const video = seedVideo(activeDig.seed), artist = video ? resolvedArtist(video) : null;
+       const name = declaredDepartureArtist(explorationGraph, seedId) || activeDig.dossier?.artistName || artist?.name;
+-      const chosenNames = [...new Set(confirmedSeedArtistEdges(seedId).map(({artist}) => artist.name || artist.label).filter(Boolean))];
++      const chosenNames = activeDig.participantDraft?.seedId === seedId && activeDig.participantDraft.launched
++        ? activeDig.participantDraft.launched.map(row => `${row.name}${row.candidate ? '' : ' (sans fiche)'}`)
++        : [...new Set(confirmedSeedArtistEdges(seedId).map(({artist}) => artist.name || artist.label).filter(Boolean))];
+       const label = declaredDepartureArtist(explorationGraph, seedId) || artist?.basis === "correction personnelle" ? "Crédits renseignés" : guidance.identityConfirmed ? "Artiste relié au morceau" : "Artiste à vérifier";
+       return [name ? `${label} : ${name}` : ["track", "video"].includes(activeDig.seed?.type) ? "Artiste à identifier" : "", chosenNames.length ? `Participants explorés : ${chosenNames.join(", ")}` : "", video?.channelTitle ? `Chaîne : ${video.channelTitle}` : ""].filter(Boolean).join(" · ");
+     })(),
+*** Add File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/participant-explorer.mjs
++// Selection expresses user intent, never a catalogue identity assertion.
++const element = (tag, text) => Object.assign(document.createElement(tag), text === undefined ? {} : { textContent: text });
++const button = (text, action) => { const node = element('button', text); node.type = 'button'; node.onclick = action; return node; };
++const link = (text, url) => Object.assign(element('a', text), { href: url, target: '_blank', rel: 'noreferrer' });
++
++export function participantDraft(seedId, names, previous) {
++  const signature = JSON.stringify(names);
++  if (previous?.seedId === seedId && previous.signature === signature) return previous;
++  return { seedId, signature, busy: false, message: '', rows: names.map(name => ({ name, query: name, selected: false, candidate: null, candidates: [], revision: 0, status: 'Non identifié', videos: [] })) };
++}
++
++export function mountParticipantPicker(host, { draft, search, reference, explore, isCurrent, refresh }) {
++  const panel = element('section'); panel.className = 'departure-identity-controls';
++  panel.dataset.seedId = draft.seedId;
++  panel.append(element('h4', 'Participants à explorer'), element('p', 'Sélectionnez les participants, avec ou sans fiche. Une fiche ne sera retenue que par votre choix explicite. Le nom de recherche ne modifie pas les crédits du morceau.'));
++  const message = element('p', draft.message); message.role = 'status';
++  const launch = button('Explorer les participants sélectionnés', async () => {
++    if (draft.busy) return;
++    const selected = draft.rows.filter(row => row.selected);
++    if (!selected.length) return;
++    draft.busy = true; draft.message = 'Préparation de la recherche commune…'; refresh();
++    try { await explore(selected); }
++    catch (error) { draft.message = error.message; }
++    finally { draft.busy = false; if (isCurrent()) refresh(); }
++  });
++  const update = () => { launch.disabled = draft.busy || !draft.rows.some(row => row.selected); launch.textContent = `Explorer les participants sélectionnés (${draft.rows.filter(row => row.selected).length})`; };
++  panel.append(button('Tous les participants', () => { for (const row of draft.rows) row.selected = true; refresh(); }), button('Désélectionner tous les participants', () => { for (const row of draft.rows) row.selected = false; refresh(); }));
++  for (const row of draft.rows) {
++    const field = element('fieldset'); field.append(element('legend', row.name));
++    const selected = element('input'); selected.type = 'checkbox'; selected.checked = row.selected;
++    selected.onchange = () => { row.selected = selected.checked; update(); };
++    const selection = element('label'); selection.append(selected, document.createTextNode(` Explorer ${row.name}, même sans fiche`)); field.append(selection);
++    const query = element('input'); query.type = 'search'; query.value = row.query; query.maxLength = 120; query.setAttribute('aria-label', `Nom de recherche pour ${row.name}`);
++    query.oninput = () => { row.query = query.value; row.revision++; row.searching = false; row.status = 'Recherche modifiée ; les crédits et la fiche choisie sont conservés.'; };
++    const lookup = async (url = '') => {
++      const name = row.query.trim(); if (!url && name.length < 2) { row.status = 'Saisissez au moins deux caractères.'; refresh(); return; }
++      const revision = ++row.revision; row.searching = true; row.status = 'Recherche de fiches…'; refresh();
++      try {
++        const data = await (url ? reference(url) : search(name));
++        if (!isCurrent() || row.revision !== revision) return;
++        row.candidates = [...new Map([...(row.candidate ? [row.candidate] : []), ...(data.candidates || [])].map(item => [item.id, item])).values()];
++        row.status = row.candidates.length ? 'Propositions à vérifier — choisissez une fiche, ou continuez sans fiche.' : 'Aucune fiche trouvée. Ce participant reste sélectionnable pour YouTube.';
++        const failures = Object.entries(data.sourceStates || {}).filter(([, state]) => state !== 'ok');
++        if (failures.length) row.status += ' Sources non consultées : ' + failures.map(([source, state]) => `${source} (${state})`).join(', ');
++      } catch (error) { if (row.revision === revision) row.status = error.message; }
++      finally { if (row.revision === revision) row.searching = false; if (isCurrent()) refresh(); }
++    };
++    field.append(query, button('Chercher une fiche pour ce participant', () => lookup()));
++    if (/\s+667$/u.test(row.name)) field.append(button('Essayer sans « 667 »', () => { row.query = row.name.replace(/\s+667$/u, ''); return lookup(); }));
++    const status = element('p', row.status); status.role = 'status'; field.append(status);
++    const choice = element('select'); choice.setAttribute('aria-label', `Identification de ${row.name}`);
++    choice.append(new Option('Sans fiche — recherche à vérifier', ''));
++    for (const candidate of row.candidates) choice.append(new Option(`${candidate.name}${candidate.context ? ' — ' + candidate.context : ''} (${candidate.source || 'catalogue'})`, candidate.id));
++    choice.value = row.candidate?.id || '';
++    choice.onchange = () => { row.candidate = row.candidates.find(item => item.id === choice.value) || null; row.status = row.candidate ? 'Fiche choisie par vous ; enregistrement exact non confirmé.' : 'Sans fiche — identité non confirmée.'; refresh(); };
++    field.append(choice);
++    if (row.candidate?.sourceUrl && /^https:\/\/(?:www\.)?(?:musicbrainz\.org|discogs\.com)\//.test(row.candidate.sourceUrl)) field.append(link('Vérifier la fiche choisie ↗', row.candidate.sourceUrl));
++    const direct = element('details'); direct.append(element('summary', 'Indiquer une fiche pour ce participant'));
++    const url = element('input'); url.type = 'url'; url.placeholder = 'URL MusicBrainz ou Discogs'; url.setAttribute('aria-label', `Fiche de ${row.name}`);
++    direct.append(url, button('Lire cette fiche', () => lookup(url.value.trim()))); field.append(direct);
++    panel.append(field);
++  }
++  panel.append(message, launch); update();
++  if (draft.busy) for (const control of panel.querySelectorAll('button,input,select')) control.disabled = true;
++  host.append(panel);
++}
++
++// Round robin by participant, deduplication by exact result ID only.
++export function participantResults(rows, catalogueItems = []) {
++  const pools = rows.map(row => {
++    const id = row.candidate?.id;
++    const catalogues = id ? catalogueItems.filter(item => item.artistIds?.includes(id) || item.anchor?.id === id || item.path?.some(step => step.from === id || step.to === id)) : [];
++    return [...catalogues.map(item => ({ item, via: row.name, uncertain: false })), ...row.videos.map(item => ({ item, via: row.name, uncertain: true }))];
++  });
++  const merged = new Map();
++  for (let index = 0; pools.some(pool => index < pool.length); index++) for (const pool of pools) {
++    const result = pool[index]; if (!result) continue;
++    const prior = merged.get(result.item.id);
++    if (prior) { if (!prior.via.includes(result.via)) prior.via.push(result.via); prior.uncertain &&= result.uncertain; }
++    else merged.set(result.item.id, { item: result.item, via: [result.via], uncertain: result.uncertain });
++  }
++  return [...merged.values()];
++}
++
++export function renderParticipantResults(host, draft, catalogueItems = []) {
++  if (!draft?.launched) return;
++  const panel = element('section'); panel.className = 'seed-action-card';
++  panel.append(element('h3', 'Recherche commune par participant'), element('p', 'Résultats répartis entre les participants. Les résultats YouTube par nom sont des pistes à vérifier, pas des crédits confirmés.'));
++  for (const row of draft.launched) {
++    panel.append(element('p', `${row.name} — ${row.candidate ? 'fiche choisie' : 'identité non confirmée'} · ${row.videoStatus || 'recherche en attente'}`));
++    panel.append(link(`Chercher ${row.name} sur YouTube ↗`, `https://www.youtube.com/results?search_query=${encodeURIComponent(row.query)}`));
++  }
++  const results = participantResults(draft.launched, catalogueItems);
++  const list = element('div'); list.className = 'derived-grid';
++  for (const result of results) {
++    const card = element('article'); card.className = 'derived-card';
++    card.append(element('h4', result.item.title || result.item.label || 'Piste'), element('p', `Via ${result.via.join(', ')}${result.uncertain ? ' — recherche par nom, à vérifier' : ' — lien catalogue'}`));
++    const url = result.item.listen?.url;
++    card.append(link('Voir / chercher l’écoute ↗', /^https:\/\/(?:www\.)?youtube\.com\//.test(url || '') ? url : `https://www.youtube.com/results?search_query=${encodeURIComponent(result.item.listen?.query || `${result.item.artist || ''} ${result.item.title || ''}`)}`));
++    list.append(card);
++  }
++  panel.append(element('p', `${results.length} résultat(s) chargé(s) · les crédits du départ ne sont pas modifiés par ces résultats.`), list);
++  host.append(panel);
++}
+*** End Patch

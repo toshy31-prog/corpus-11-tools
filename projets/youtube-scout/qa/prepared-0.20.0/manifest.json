@@ -1,0 +1,121 @@
+{
+  "version": "0.20.0",
+  "status": "prepared_not_active",
+  "preparedAt": "2026-09-22T13:51:12.795Z",
+  "stage": "/tmp/scout-multi-qJWEu9",
+  "root": "/home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout",
+  "tests": 717,
+  "files": [
+    {
+      "path": "public/app.js",
+      "before": "ebdbe07f633ca7662a142c1b5b0532ffa22b8afb071069eb02574769f82f2fb1",
+      "after": "89aaad5da1aa5d10eb634c1e9714984a3c224ac69517768e6a72bdc782646716"
+    },
+    {
+      "path": "public/artist-names.mjs",
+      "before": "11f325e4996b6d7428357c5cd79e5d9a30246891af1de924897d950567b94a85",
+      "after": "aa78af1a4862e4032b02be6ba6f9fadff5bcb25960152320af60446004094ed9"
+    },
+    {
+      "path": "public/departure-workflow.mjs",
+      "before": "ab4514df846a0443d48cef22f8876a72b1fcdef1abd03669f052932c932cf28e",
+      "after": "0b0ab3cb4b7d91a6de523f774010a191a5d682ca89573fcefadd1d409c6ceb1e"
+    },
+    {
+      "path": "public/departure-workflow.test.mjs",
+      "before": "a3f7e8f25eb46cff2a5600d3eaf3523d82a1c5294946eddc5d69e596b92456cb",
+      "after": "7fc8214dd88d9dab7e0b5af23dac9fe5a69d6f15aed3feab99bc5a5b3dcc9712"
+    },
+    {
+      "path": "public/discovery-presentation.mjs",
+      "before": "5434e80413dcf141620292b330c28915e54923eaab23804839aa7f4f738e2ce9",
+      "after": "3b7d88492ecf4d782a8b150bfa43cf78c5a543b7abf33a4e5c46ac4a31931054"
+    },
+    {
+      "path": "public/scout-mix-binding.test.mjs",
+      "before": "8afebd21ddd15da12b374ca8d2246d09ffed6a78c8c60dcda91ba66bf0716b61",
+      "after": "2a30f875d365567b96fe3e810f829550e8e7bd69340d3d43983e455936c89d21"
+    },
+    {
+      "path": "public/scout-mix-session.mjs",
+      "before": "a72383114842b928f1b48d8d0ab33bd9aea3405bfe75f45b326f838d284bed6a",
+      "after": "768fcba806afad3414aa561b78c569983b058c138a38f030e0d3e5309f664c58"
+    },
+    {
+      "path": "public/scout-mix-session.test.mjs",
+      "before": "767eda42aaf81de119b53b83af3caeae23447656e6c1ac00692583b3eb67c2a2",
+      "after": "8690976546dab6e28409562afeeb3bf0fbb5a58903b5b5cee5910526240442f3"
+    },
+    {
+      "path": "public/scout-mixer-panel.mjs",
+      "before": "05ebe889231fad629984da09242ab56b761d1ef51d5c503fc650633141b7ef95",
+      "after": "a22e76e1ea20c3f8c1783eb468686508353372894c7581635d417f3fd3461e6f"
+    },
+    {
+      "path": "public/scout-parameters.mjs",
+      "before": "b461bbedbadce3bf697c1ed8663d3411e54d46354815936311aa928febcc84cb",
+      "after": "3a0458baf1eb9ed2bef9ad3ecc4d891f6413e960b9b612414ff6ccaac9bc429c"
+    },
+    {
+      "path": "public/scout-parameters.test.mjs",
+      "before": "40d46e9f42009c50cc920202817c3721a50fa9b174cd50ff66919c9c7c520014",
+      "after": "1d2fec4a402b6b9018dc58585fbdb08fcbb7a12ab9e4782c6ec5e8dd2e35e243"
+    },
+    {
+      "path": "public/video-content.mjs",
+      "before": null,
+      "after": "e53a2ae0c78bf8b5986229e197dd6ac2a57c45d5b3cedd5a59ab8cadd52c53ef"
+    },
+    {
+      "path": "lib/catalogue.mjs",
+      "before": "f448ab91c7100fca3c54f8c525aca609f8b178195898a14f718513e78a486d4e",
+      "after": "7dae784aa418efc53a581b5a9280b6917d506778a5b635b316c0e1de57819b88"
+    },
+    {
+      "path": "lib/ephemeral-exploration.mjs",
+      "before": "45169d8f42b560e9a61e73de8541071f540c7b331a68adfd58f999fc3cb895ee",
+      "after": "558dd9f0e27c3d47eb680060c58f5da511534214a460f02143f91fd06001c515"
+    },
+    {
+      "path": "lib/multi-participant-quality.test.mjs",
+      "before": null,
+      "after": "2d11fa853388a9b4f4b5d952026d207ae80d6ea3d7f40c48ffca1f2dda42e736"
+    },
+    {
+      "path": "lib/persistent-store.mjs",
+      "before": "d24a4c2659020da1280244e916ea4b377249db7f6bad65366aea3a957a21ad0c",
+      "after": "e4c27dd528f6cc3d2c1f1f6f2d7b886562aa7b9f81ad0ef13280766f6a53e2d6"
+    },
+    {
+      "path": "server.mjs",
+      "before": "2bc97c2b32c657fe0b2ae6d43d09b149396b2b7ab8d90ab5aa241d4b0812076a",
+      "after": "db0444a1aacf923a192c9ebf0f77a52eb53ef7e9bd8fa6a6d9da1d0d651045ac"
+    },
+    {
+      "path": "server.test.mjs",
+      "before": "c4cd758f03f1ece30aaeb5a18d2c4c894e124e8da75c94df89c143eea82829e1",
+      "after": "311783245ab0f0f0e5cb09b9c9d1624b9d96beb31a210e46995a41e0d9b3c3fa"
+    },
+    {
+      "path": "package.json",
+      "before": "0293779423411d6bc20a1806dd52871cf9936a896b26f816b506faf0b3287dd4",
+      "after": "a5efd5f2608c0a232b1edfd0cbca7eca1fbffa08c51b4151bb6702504f204b02"
+    },
+    {
+      "path": "tests/multi-participant-http.test.mjs",
+      "before": null,
+      "after": "29230d5af3121c131892783b3b6e84b69748766a1bd1789591831b4290024536"
+    },
+    {
+      "path": "scripts/multi-participant-ui-fixture.mjs",
+      "before": null,
+      "after": "da84f735ef16906535bb9eea588f7823db3c7751c2780470d9550f31763573ed"
+    },
+    {
+      "path": "docs/QUALITY_0.20.0_2026-09-22.md",
+      "before": null,
+      "after": "ba653f54aa323d5fc1466af2b548999de331484d95f4fa657158b4eb7c247171"
+    }
+  ],
+  "patchSha256": "ae603732d7df0aa29333192cbd7a5af4438fbcf3177354895885c1e6b667ecff"
+}

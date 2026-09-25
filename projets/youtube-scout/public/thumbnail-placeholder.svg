@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title description">
+  <title id="title">Miniature indisponible</title>
+  <desc id="description">La vidéo reste accessible malgré l’absence de miniature.</desc>
+  <rect width="1280" height="720" fill="#191918"/>
+  <path d="M548 270v180l170-90z" fill="#ff4f3d"/>
+  <text x="640" y="535" text-anchor="middle" fill="#9d9a92" font-family="sans-serif" font-size="32">MINIATURE INDISPONIBLE</text>
+</svg>

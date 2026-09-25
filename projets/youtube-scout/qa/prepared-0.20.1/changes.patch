@@ -1,0 +1,471 @@
+*** Begin Patch
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/app.js
+@@
+       const controls = createScoutPatch(activeDig.synthPatch);
+       const sourceArtist = declaredDepartureArtist(explorationGraph, seed.id) || activeDig.dossier?.artistName || (sourceVideo ? resolvedArtist(sourceVideo)?.name : "") || (seed.type === "artist" ? seed.label : "") || "";
+       const scope = { otherArtistsOnly: controls.otherArtistsOnly, includeDistant: controls.includeDistant, excludeLibraryVideos: true,
++        includeUnknownArtists: controls.includeUnknownArtists, includeCollaborations: controls.includeCollaborations,
+         seedArtist: sourceArtist.slice(0, 500), seedArtistIds: departureArtistIds(explorationGraph, seed.id).slice(0, 20),
+         excludeIds: [seed.id, ...[...new Set([...(activeDig.synthMix?.seenIds || []), ...(group.seenIds || [])])].filter(id => id !== seed.id).slice(-59)],
+         directLinkedIds: Object.entries(groups).filter(([id]) => ["remix", "featuring", "alias", "compilation"].includes(id) && controls.directionWeights[id] > 0).flatMap(([, row]) => (row.items || []).filter(item => !item.relationship?.distant).map(item => item.id)).slice(0, 20) };
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/music-sorting.mjs
+@@
+   return [...artists];
+ }
+ 
+-export function isOtherArtist(item, { artistIds = [], name = "" } = {}) {
++export function artistRelation(item, { artistIds = [], name = "" } = {}) {
+   const sourceIds = new Set(artistIds.filter(Boolean)), ids = item.artistIds || [];
+   // Known identical IDs always win over a spelling difference. Names here
+   // only exclude a result from a view; they never merge graph identities.
+-  if (ids.some(id => sourceIds.has(id))) return false;
++  if (ids.some(id => sourceIds.has(id))) return ids.some(id => id && !sourceIds.has(id)) ? "collaboration" : "same";
+   const sourceNames = splitArtistNames(name).map(key).filter(Boolean);
+   const targetNames = splitArtistNames(item.artist).map(key).filter(n => n && !["artiste non renseigne", "unknown", "various artists", "artistes divers"].includes(n));
+-  if (sourceNames.some(n => targetNames.includes(n))) return false;
+-  if (sourceIds.size && ids.length) return true;
+-  return sourceNames.length > 0 && targetNames.length > 0;
++  if (sourceNames.some(n => targetNames.includes(n))) return targetNames.some(n => !sourceNames.includes(n)) ? "collaboration" : "same";
++  if (sourceIds.size && ids.filter(Boolean).length) return "other";
++  return sourceNames.length > 0 && targetNames.length > 0 ? "other" : "unknown";
++}
++
++export function isOtherArtist(item, reference = {}) {
++  return artistRelation(item, reference) === "other";
++}
++
++// View/collection policy only: never assign artists or merge graph identities.
++export function artistRelationAllowed(relation, { includeUnknownArtists = false, includeCollaborations = false } = {}) {
++  return relation === "other" || (relation === "unknown" && includeUnknownArtists === true) || (relation === "collaboration" && includeCollaborations === true);
+ }
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-mix-session.mjs
+@@
+ import { splitArtistNames } from "./artist-names.mjs";
+ import { presentationGroups } from "./discovery-presentation.mjs";
+ import { mixDirectionGroups } from "./direction-mixer.mjs";
+-import { compareMusic, isOtherArtist } from "./music-sorting.mjs";
++import { compareMusic, artistRelation, artistRelationAllowed } from "./music-sorting.mjs";
+ import { videoContent } from "./video-content.mjs";
+ 
+ const INACTIVE = new Set(["paused", "explored", "dismissed"]);
+@@
+   if (selected.some(route => route.state === "error" || route.state === "unavailable")) return "La recherche n’a pas abouti : une source est indisponible. Réessayez les sources ; aucun résultat ne signifie pas ici aucun lien.";
+   if (selected.some(route => route.state === "confirmation")) return "L’identité du départ doit être précisée avant de consulter ces catalogues.";
+   if (selected.some(route => route.distantHidden)) return "Des liens éditoriaux larges sont disponibles. Activez « Inclure les liens éloignés » pour les consulter, ou recherchez d’autres directions.";
+-  if (selected.some(route => route.artistHidden)) return "Aucun autre artiste identifié dans ces pistes chargées. Désactivez le filtre ou recherchez davantage ; les artistes inconnus sont aussi écartés.";
++  if (selected.some(route => route.artistHidden)) return "Des pistes chargées sont masquées par le filtre d’artistes. Incluez les artistes inconnus à vérifier ou les collaborations avec d’autres participants, ou désactivez « Autres artistes uniquement ». Aucune nouvelle recherche n’est nécessaire pour les revoir.";
+   if (selected.some(route => route.loaded)) return "Vous avez parcouru les pistes admissibles chargées. Recommencez les pages de ce départ ou recherchez d’autres pistes.";
+   if (selected.some(route => route.state === "partial")) return "La recherche est incomplète. Reprenez les sources ; les détails des directions précisent ce qui manque.";
+   if (selected.some(route => route.canLoad)) return "Lancez la recherche pour consulter les directions activées.";
+@@
+   }
+ 
+   const prepared = {};
++  const hiddenCards = new Set(), visibleCards = new Set(), hiddenUnknownCards = new Set();
++  const reference = { name: seedArtist, artistIds: seedArtistIds };
+   const originals = new Map();
+   const directLinkedIds = new Set(Object.entries(groups).filter(([id]) => ["remix", "featuring", "alias", "compilation"].includes(id) && controls.directionWeights[id] > 0).flatMap(([, group]) => list(group.items).filter(item => !item.relationship?.distant).map(item => item.id)));
+   const routes = SCOUT_DIRECTIONS.map(({ id, label }) => {
+@@
+       const { kind } = videoContent(item);
+       return (kind !== "editorial" || controls.includeEditorial) && (kind !== "promotional" || controls.includePromotional);
+     });
+-    const eligibleRaw = artistFilterApplied ? contentVisible.filter(item => isOtherArtist(item, { name: seedArtist, artistIds: seedArtistIds })) : contentVisible;
++    const classifications = new Map(contentVisible.map(item => [item, artistRelation(item, reference)]));
++    const eligibleRaw = artistFilterApplied ? contentVisible.filter(item => {
++      const relation = classifications.get(item);
++      return artistRelationAllowed(relation, controls);
++    }) : contentVisible;
+     const enabled = Boolean(seedId && weight > 0 && !paused && !confirmation && !blocked);
++    if (enabled && (!directionFilter || directionFilter === id)) {
++      const eligibleSet = new Set(eligibleRaw);
++      for (const item of raw) {
++        if (excluded.has(item.id)) continue;
++        const cardId = allPresentation.byId.get(item.id)?.id || item.id;
++        (eligibleSet.has(item) ? visibleCards : hiddenCards).add(cardId);
++        if (!eligibleSet.has(item) && classifications.get(item) === "unknown") hiddenUnknownCards.add(cardId);
++      }
++    }
+     const unavailable = group?.coverage?.state === "source_unavailable";
+     const operationalState = !seedId ? "idle" : !weight ? "muted" : paused ? "paused" :
+       confirmation ? "confirmation" : group?.loading ? "loading" : group?.error ? "error" :
+@@
+     return {
+       id, label, weight, state, enabled, plan,
+       loaded: raw.length, eligible: selected.length, presented: 0, distantHidden: raw.length - nearby.length, contentHidden: nearby.length - contentVisible.length, artistHidden: contentVisible.length - eligibleRaw.length,
++      artistUnknownHidden: artistFilterApplied && !controls.includeUnknownArtists ? contentVisible.filter(item => classifications.get(item) === "unknown").length : 0,
++      artistCollaborationHidden: artistFilterApplied && !controls.includeCollaborations ? contentVisible.filter(item => classifications.get(item) === "collaboration").length : 0,
+       distinctCurators: id === "curator"
+         ? new Set(raw.map(item => String(item.channelId || item.anchor?.id || item.channelTitle || "")).filter(Boolean)).size
+         : 0,
+@@
+     })).filter(observation => observation.item);
+     items.push({
+       ...item,
++      artistRelation: canFilterArtists ? artistRelation(item, reference) : "unknown",
+       routing: {
+         ...merged.routing,
+         selectedVia: queue.id,
+@@
+     items,
+     routes,
+     candidates: mixed.length,
++    hiddenCandidates: [...hiddenCards].filter(id => !visibleCards.has(id)).length,
++    hiddenUnknownCandidates: [...hiddenUnknownCards].filter(id => !visibleCards.has(id)).length,
+     diversityLimited: strictDiversity && items.length < max && mixed.length > items.length,
+     hasNextPage: items.length > 0 && mixed.length > items.length,
+     directionFilter,
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-mixer-panel.mjs
+@@
+   function viewToggle(id,text,parameter){ const label=make("label","mix-view-toggle"), input=make("input"); input.type="checkbox"; input.id=id; input.onchange=()=>{onParameter(parameter,input.checked); localMessage=""; update();}; label.append(input,doc.createTextNode(text)); viewTools.append(label); return input; }
+   viewTools.append(sortLabel,reshuffle);
+   const otherArtists=viewToggle("scout-other-artists","Autres artistes uniquement","scope.otherArtists");
++  const unknownArtists=viewToggle("scout-unknown-artists","Inclure les artistes inconnus — à vérifier","scope.unknownArtists");
++  const collaborations=viewToggle("scout-artist-collaborations","Inclure les collaborations avec d’autres participants","scope.collaborations");
+   const distant=viewToggle("scout-distant-relations","Inclure les liens éloignés","scope.distant");
+   const editorial=viewToggle("scout-editorial","Inclure les entretiens / documentaires probables","scope.editorial");
+   const promotional=viewToggle("scout-promotional","Inclure les annonces / extraits promotionnels probables","scope.promotional");
+   const viewHelp=make("p","mix-view-help"); viewHelp.id="scout-view-help";
+   sort.setAttribute("aria-describedby",viewHelp.id); otherArtists.setAttribute("aria-describedby",viewHelp.id); distant.setAttribute("aria-describedby",viewHelp.id);
++  unknownArtists.setAttribute("aria-describedby",viewHelp.id); collaborations.setAttribute("aria-describedby",viewHelp.id);
+   resultsToolbar.after(viewTools,viewHelp);
+   const dig=actionButton("dig","Rechercher des pistes",onDig,expandTransport), stop=actionButton("stop","Arrêter la recherche",onStop,expandTransport);
+   expandTransport.append(digPlan,armedDepth);
+@@
+       k.toggle.textContent=route.enabled?"Activée":"Activer";
+       k.stateLabel.textContent=route.loading ? STATE_TEXT.loading : stateLabel;
+       k.meter.textContent=route.loaded ? `${route.loaded} chargées · ${!route.enabled ? "exclues du mélange" : directionFilter && directionFilter!==route.id ? "masquées par le filtre" : `${route.eligible} encore à parcourir`}` : "";
++      if (route.loaded && route.enabled && (!directionFilter || directionFilter===route.id) && route.artistHidden) k.meter.textContent+=` · ${route.artistHidden} chargée${route.artistHidden>1?"s":""} masquée${route.artistHidden>1?"s":""} par le filtre d’artistes`;
+       k.meter.hidden=!route.loaded;
+       k.info.textContent=route.message || (blocked ? route.plan?.reason || stateLabel : route.hasMore ? "D’autres pages restent à consulter." : route.loaded ? "Les preuves sont accessibles dans chaque piste." : "Aucun résultat chargé. Cela ne signifie pas qu’aucun lien existe.");
+       const selectionText=selectionSummary(route.selection);
+@@
+     localTransport.hidden=!view.items.length && !view.canRewind; rewind.hidden=!view.canRewind;
+     filter.value=directionFilter;
+     sort.value=view.patch.sort; otherArtists.checked=view.patch.otherArtistsOnly; distant.checked=view.patch.includeDistant;
++    unknownArtists.checked=view.patch.includeUnknownArtists; collaborations.checked=view.patch.includeCollaborations;
++    unknownArtists.parentElement.hidden=collaborations.parentElement.hidden=!view.artistFilterApplied;
+     editorial.checked=view.patch.includeEditorial; promotional.checked=view.patch.includePromotional;
+     otherArtists.disabled=false;
+     reshuffle.hidden=view.patch.sort!=="random";
+@@
+       view.diversityLimited ? "Choix chargé peu varié : page volontairement réduite. Chargez d’autres directions ou poursuivez les catalogues pour élargir le choix." : "",
+       selected.some(r=>r.contentHidden) ? `${selected.reduce((sum,r)=>sum+(r.contentHidden||0),0)} observations de contenus éditoriaux ou promotionnels masquées selon les marqueurs du titre. Ces indications restent à vérifier ; les filtres ci-dessus permettent de les revoir.` : "",
+       view.patch.sort.startsWith("release-") ? "Date de sortie musicale connue, jamais l’upload YouTube. Dates inconnues en fin de liste." : view.patch.sort==="relation" ? "Pertinence du lien : crédits et projets, compilations, labels, contexte, chaînes, puis grands catalogues. À niveau égal : chemin le plus court. La diversité évite de remplir la page d’un seul album. Ce n’est pas une similarité sonore." : view.patch.sort==="random" ? "Ordre aléatoire stable : Remélanger change l’ordre, sans effacer les pages déjà parcourues." : "",
+-      !view.canFilterArtists ? (view.patch.otherArtistsOnly ? "Filtre autres artistes en attente : ce départ n’a pas d’artiste de référence. Aucune piste n’est masquée par ce filtre ; vous pouvez le décocher." : "Autres artistes : applicable depuis un morceau ou un artiste identifié, pas depuis un label ou une playlist entière.") : view.patch.otherArtistsOnly ? `Artiste du départ, co-crédits et artistes inconnus masqués (${omissions} observations de routes).` : "",
++      !view.canFilterArtists ? (view.patch.otherArtistsOnly ? "Filtre autres artistes en attente : ce départ n’a pas d’artiste de référence. Aucune piste n’est masquée par ce filtre ; vous pouvez le décocher." : "Autres artistes : applicable depuis un morceau ou un artiste identifié, pas depuis un label ou une playlist entière.") : view.patch.otherArtistsOnly ? `Filtre d’artistes : ${omissions} observations de routes masquées. ${view.patch.includeUnknownArtists ? "Artistes inconnus inclus à vérifier, sans identité confirmée." : "Artistes inconnus masqués ; cochez leur option pour les revoir."} ${view.patch.includeCollaborations ? "Collaborations incluant un participant extérieur au départ incluses." : "Collaborations avec un artiste du départ masquées ; cochez leur option pour les revoir."} Un participant extérieur n’est pas nécessairement une découverte nouvelle pour vous.` : "",
+       far ? `${far} observations de liens éloignés masquées : label avec au moins 500 sorties, sans autre crédit reliant la piste au départ.` : ""
+     ].filter(Boolean).join(" ");
+     for(const option of [...filter.options].slice(1)){
+       const route=view.routes.find(r=>r.id===option.value);
+       option.textContent=`${ROUTE_NAMES[route.id]} · ${route.enabled ? `${route.eligible} à parcourir` : "désactivée"}`;
++      if (route.enabled && route.artistHidden) option.textContent+=` · ${route.artistHidden} chargée${route.artistHidden>1?"s":""} masquée${route.artistHidden>1?"s":""} (artistes)`;
+       option.disabled=!route.enabled;
+     }
+     const waiting=selected.filter(r=>["pending","mediated","aggregate"].includes(r.state));
+@@
+         : waiting.length ? `${waiting.length} direction(s) activée(s) pas encore consultée(s). Lancez la recherche pour les charger.` : "");
+     status.hidden=identityBlocked || identifying || !status.textContent;
+     resultCount.textContent=`${view.items.length} piste${view.items.length>1?"s":""} affichée${view.items.length>1?"s":""} · ${Math.max(0,view.candidates-view.items.length)} autre${view.candidates-view.items.length>1?"s":""} à parcourir`;
++    if (view.hiddenCandidates) resultCount.textContent+=` · ${view.hiddenCandidates} piste${view.hiddenCandidates>1?"s":""} masquée${view.hiddenCandidates>1?"s":""} par les filtres${view.hiddenUnknownCandidates ? ` (dont ${view.hiddenUnknownCandidates} aux artistes inconnus)` : ""}`;
+     clearFilter.hidden=!directionFilter;
+     filterScope.hidden=!directionFilter;
+     const hiddenRoutes=selected.filter(r=>r.id!==directionFilter && r.eligible);
+@@
+     const nextCards=[];
+     const collisions=outputCollisions(view.items);
+     for(const item of view.items){ const route=item.routing.selectedVia, obs=item.routing.observations, original=obs.find(o=>o.direction===route)?.item; if(!original)continue; const card=renderCard(original,route); card.classList.add("mix-output-card"); const names=obs.map(o=>SCOUT_DIRECTIONS.find(v=>v.id===o.direction)?.label||o.direction); card.prepend(make("p","mix-origin",`Via ${obs.map(o=>ROUTE_NAMES[o.direction] || o.direction).join(" + ")}`));
++      if(view.artistFilterApplied && item.artistRelation==="unknown") card.prepend(make("p","mix-artist-status","Artistes inconnus — à vérifier. Cette piste n’est pas confirmée comme venant d’un autre artiste."));
++      if(view.artistFilterApplied && item.artistRelation==="collaboration") card.prepend(make("p","mix-artist-status","Collaboration : artiste du départ et autre participant."));
+       const collision=collisions.get(collisionKey(item)); if(collision){ const ids=[...new Set(collision.map(value=>value.id))], videoIds=[...new Set(collision.map(value=>value.listen?.videoId).filter(Boolean))], sameVideo=videoIds.length===1&&collision.every(value=>value.listen?.videoId); const badge=make("span","mix-output-collision",sameVideo?"MÊME VIDÉO · CANDIDATS DISTINCTS":"CANDIDATS DISTINCTS"); badge.title=ids.join("\n"); card.querySelector(".derived-copy")?.prepend(badge); }
+       if(obs.length>1){ const det=make("details","mix-proof"); det.append(make("summary","","Chemins et sources")); for(const o of obs){ det.append(make("p","",`${ROUTE_NAMES[o.direction] || o.direction} : ${routeExplanation(o.item, o.direction, view.seedLabel)}`)); } card.append(det); }
+       if(item.presentation?.variants?.length>1){
+@@
+     nextCards.forEach((node,i)=>{if(grid.children[i]!==node)grid.insertBefore(node,grid.children[i]||null);});
+     if(!view.items.length){
+       grid.append(make("p","mix-empty",emptyMixMessage(view)));
+-      if(loadable){ const retry=make("button","mix-empty-action",issues.length?"Reprendre la recherche":"Rechercher des pistes"); retry.type="button"; retry.disabled=view.busy; retry.onclick=()=>invoke(onDig); grid.append(retry); }
++      if(view.hiddenUnknownCandidates){ const show=make("button","mix-empty-action","Afficher les artistes inconnus — à vérifier"); show.type="button"; show.onclick=()=>{onParameter("scope.unknownArtists",true);update();}; grid.append(show); }
++      if(loadable && !view.hiddenCandidates){ const retry=make("button","mix-empty-action",issues.length?"Reprendre la recherche":"Rechercher des pistes"); retry.type="button"; retry.disabled=view.busy; retry.onclick=()=>invoke(onDig); grid.append(retry); }
+       if(!selected.length){ const choose=make("button","mix-empty-action","Choisir les directions"); choose.type="button"; choose.onclick=()=>{settings.open=true; settingsSummary.focus();}; grid.append(choose); }
+     }
+   }
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-parameters.mjs
+@@
+   Object.freeze({ id: "shape.depth", label: "DEPTH", group: "shape", control: "stepped", values: DEPTH_STEPS, defaultValue: 6, semantic: "graph_depth", evidenceAuthority: false, execution: "next_dig" }),
+   Object.freeze({ id: "shape.spread", label: "SPREAD", group: "shape", control: "continuous", min: 0, max: 1, step: 0.05, defaultValue: 1, semantic: "artist_dispersion", evidenceAuthority: false, execution: "local" })
+ ];
+-export const SCOUT_PARAMETER_REGISTRY = Object.freeze([...ROUTE_PARAMETERS, ...SHAPE_PARAMETERS, ...["scope.distant", "scope.otherArtists", "scope.editorial", "scope.promotional", "view.sort"].map(id => Object.freeze({ id, group: "scope", control: id === "view.sort" ? "select" : "boolean", defaultValue: id === "view.sort" ? "explore" : false, semantic: "display_scope", evidenceAuthority: false, execution: "local" }))]);
++export const SCOUT_PARAMETER_REGISTRY = Object.freeze([...ROUTE_PARAMETERS, ...SHAPE_PARAMETERS, ...["scope.distant", "scope.otherArtists", "scope.unknownArtists", "scope.collaborations", "scope.editorial", "scope.promotional", "view.sort"].map(id => Object.freeze({ id, group: "scope", control: id === "view.sort" ? "select" : "boolean", defaultValue: id === "view.sort" ? "explore" : false, semantic: "display_scope", evidenceAuthority: false, execution: "local" }))]);
+ 
+ export function createScoutPatch(input = {}) {
+   const previous = input && typeof input === "object" ? input : {};
+@@
+   const shape = previous.shape && typeof previous.shape === "object" ? previous.shape : {};
+   const directionWeights = {};
+   for (const { id } of SCOUT_DIRECTIONS) directionWeights[id] = clamp(finite(incoming[id], 1), 0, 1);
+-  return { schemaVersion: 2, directionWeights, includeEditorial: previous.includeEditorial === true, includePromotional: previous.includePromotional === true, includeDistant: previous.includeDistant === true, otherArtistsOnly: previous.otherArtistsOnly === true, sort: MUSIC_SORTS.some(([id]) => id === previous.sort) ? previous.sort : "explore", shuffleKey: String(previous.shuffleKey || "scout").slice(0, 100), shape: { depth: depthValue(shape.depth ?? previous.depth, 6), spread: clamp(finite(shape.spread ?? previous.spread, 1), 0, 1) } };
++  return { schemaVersion: 2, directionWeights, includeUnknownArtists: previous.includeUnknownArtists === true, includeCollaborations: previous.includeCollaborations === true, includeEditorial: previous.includeEditorial === true, includePromotional: previous.includePromotional === true, includeDistant: previous.includeDistant === true, otherArtistsOnly: previous.otherArtistsOnly === true, sort: MUSIC_SORTS.some(([id]) => id === previous.sort) ? previous.sort : "explore", shuffleKey: String(previous.shuffleKey || "scout").slice(0, 100), shape: { depth: depthValue(shape.depth ?? previous.depth, 6), spread: clamp(finite(shape.spread ?? previous.spread, 1), 0, 1) } };
+ }
+ export function scoutParameterDefinition(parameterId) { return SCOUT_PARAMETER_REGISTRY.find(({ id }) => id === parameterId) || null; }
+ export function scoutParameterValue(patch, parameterId) {
+@@
+   if (parameterId === "shape.spread") return p.shape.spread;
+   if (parameterId === "scope.distant") return p.includeDistant;
+   if (parameterId === "scope.otherArtists") return p.otherArtistsOnly;
++  if (parameterId === "scope.unknownArtists") return p.includeUnknownArtists;
++  if (parameterId === "scope.collaborations") return p.includeCollaborations;
+   if (parameterId === "scope.editorial") return p.includeEditorial;
+   if (parameterId === "scope.promotional") return p.includePromotional;
+   if (parameterId === "view.sort") return p.sort;
+@@
+   const d=scoutParameterDefinition(parameterId); if (!d) throw new Error(`Paramètre Scout inconnu: ${parameterId}`); const p=createScoutPatch(patch);
+   if (parameterId === "scope.distant") return { ...p, includeDistant: value === true };
+   if (parameterId === "scope.otherArtists") return { ...p, otherArtistsOnly: value === true };
++  if (parameterId === "scope.unknownArtists") return { ...p, includeUnknownArtists: value === true };
++  if (parameterId === "scope.collaborations") return { ...p, includeCollaborations: value === true };
+   if (parameterId === "scope.editorial") return { ...p, includeEditorial: value === true };
+   if (parameterId === "scope.promotional") return { ...p, includePromotional: value === true };
+   if (parameterId === "view.sort") return createScoutPatch({ ...p, sort: value });
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-parameters.test.mjs
+@@
+     ]
+   );
+ 
+-  assert.equal(SCOUT_PARAMETER_REGISTRY.length, 15);
++  assert.equal(SCOUT_PARAMETER_REGISTRY.length, 17);
+   assert.ok(SCOUT_PARAMETER_REGISTRY.every(p => p.evidenceAuthority === false));
+ });
+ 
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/scout-mix-binding.test.mjs
+@@
+   assert.equal(ctx.getScoutMixerView().items.length, 0);
+ });
+ 
++test("les options artistes restent locales et ne consomment aucune page", () => {
++  const { ctx, counters } = context();
++  const before = JSON.stringify(ctx.activeDig.catalogueGroups);
++  for (const parameter of ["scope.otherArtists", "scope.unknownArtists", "scope.collaborations"]) {
++    ctx.setScoutMixerParameter(parameter, true);
++    ctx.getScoutMixerView();
++  }
++  assert.equal(ctx.activeDig.synthPatch.includeUnknownArtists, true);
++  assert.equal(ctx.activeDig.synthPatch.includeCollaborations, true);
++  assert.deepEqual(counters, { network: 0, persist: 0 });
++  assert.equal(JSON.stringify(ctx.activeDig.catalogueGroups), before);
++  assert.equal(ctx.activeDig.synthMix, undefined);
++});
++
+ test("activer toutes les directions conserve profondeur et diversité déjà choisies", () => {
+   const { ctx, counters } = context();
+   ctx.setScoutMixerParameter("shape.depth", 9);
+*** Add File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/public/artist-filter.test.mjs
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import { artistRelation } from './music-sorting.mjs';
++import { buildScoutMixView, consumeMixPage, emptyMixMessage } from './scout-mix-session.mjs';
++import { createScoutPatch, setScoutParameter, scoutParameterValue } from './scout-parameters.mjs';
++import { createCatalogueEligibility } from '../lib/catalogue.mjs';
++
++const reference = { name: 'Zuukou Mayzie, Osirus Jack', artistIds: ['a', 'b'] };
++const select = (items, { exclude }) => items.filter(item => !exclude.includes(item.id));
++const unknowns = Array.from({ length: 37 }, (_, i) => ({ id: `video:${i}`, artist: '', title: `Zuukou Mayzie feat Guest — ${i}`, channelTitle: 'Zuukou Mayzie Le Bg 667' }));
++const build = (overrides = {}) => buildScoutMixView({ seedId: 'seed', seedArtist: reference.name, seedArtistIds: reference.artistIds, groups: { curator: { items: unknowns } }, directionFilter: 'curator', select, patch: { otherArtistsOnly: true }, ...overrides });
++
++test('quatre classes sans déduire une identité du titre ou de la chaîne Topic', () => {
++  for (const channelTitle of ['Artist - Topic', 'Chaîne amateur']) assert.equal(artistRelation({ artist: '', title: 'Zuukou Mayzie feat Guest', channelTitle }, reference), 'unknown');
++  assert.equal(artistRelation({ artist: 'Artiste non renseigné' }, reference), 'unknown');
++  assert.equal(artistRelation({ artist: 'Alias différent', artistIds: ['a'] }, reference), 'same');
++  assert.equal(artistRelation({ artist: 'Zuukou Mayzie & Osirus Jack' }, reference), 'same');
++  assert.equal(artistRelation({ artist: 'Zuukou Mayzie & Jolagreen23' }, reference), 'collaboration');
++  assert.equal(artistRelation({ artistIds: ['a', 'c'] }, reference), 'collaboration');
++  assert.equal(artistRelation({ artist: 'Jolagreen23' }, reference), 'other');
++});
++
++test('reproduction des 37 vidéos masquées, récupération sans requête et pagination réversible', () => {
++  const before = JSON.stringify(unknowns), strict = build();
++  assert.equal(strict.items.length, 0);
++  assert.equal(strict.hiddenCandidates, 37);
++  assert.equal(strict.hiddenUnknownCandidates, 37);
++  assert.match(emptyMixMessage(strict), /Aucune nouvelle recherche/);
++  const patch = { otherArtistsOnly: true, includeUnknownArtists: true };
++  const opened = build({ patch });
++  assert.equal(opened.candidates, 37);
++  assert.equal(opened.items.length, 6);
++  assert.ok(opened.items.every(item => item.artistRelation === 'unknown' && item.artist === ''));
++  let history = consumeMixPage({}, opened);
++  assert.equal(build({ history }).hiddenUnknownCandidates, 31);
++  const visited = opened.items.map(item => item.id);
++  for (let i = 0; i < 6; i++) { const page = build({ patch, history }); visited.push(...page.items.map(item => item.id)); history = consumeMixPage(history, page); }
++  assert.equal(new Set(visited).size, 37);
++  assert.equal(build({ patch, history }).candidates, 0);
++  assert.equal(JSON.stringify(unknowns), before);
++});
++
++test('options indépendantes, mêmes règles de collecte et d’affichage', () => {
++  const items = [{ id: 'same', artist: 'Zuukou Mayzie' }, { id: 'guest', artist: 'Zuukou Mayzie & Guest' }, { id: 'other', artist: 'Guest' }, { id: 'unknown', artist: '' }];
++  for (const includeUnknownArtists of [false, true]) for (const includeCollaborations of [false, true]) {
++    const patch = { otherArtistsOnly: true, includeUnknownArtists, includeCollaborations };
++    const result = build({ patch, groups: { curator: { items } } });
++    const eligible = createCatalogueEligibility({ ...patch, seedId: 'seed', seedArtist: reference.name, seedArtistIds: reference.artistIds });
++    assert.deepEqual(result.items.map(x => x.id).sort(), items.filter(eligible).map(x => x.id).sort());
++    assert.equal(result.items.some(x => x.id === 'same'), false);
++    assert.equal(result.items.some(x => x.id === 'guest'), includeCollaborations);
++    assert.equal(result.items.some(x => x.id === 'unknown'), includeUnknownArtists);
++  }
++});
++
++test('compteurs limités à la direction, sans doubles comptes ni pistes déjà vues', () => {
++  const item = unknowns[0], groups = { curator: { items: [item] }, label: { items: [item, { ...unknowns[1], artist: 'Known' }] } };
++  assert.equal(build({ groups, directionFilter: '' }).hiddenCandidates, 1);
++  assert.equal(build({ groups }).hiddenCandidates, 1);
++  assert.equal(build({ groups, history: { seedId: 'seed', seenIds: [item.id] } }).hiddenCandidates, 0);
++  const mixed = { curator: { items: [item] }, label: { items: [{ ...item, artist: 'Known' }] } };
++  assert.equal(build({ groups: mixed, directionFilter: '' }).hiddenCandidates, 0, 'une piste visible par une autre route ne compte pas comme masquée');
++});
++
++test('les options artistes ne contournent ni contenu promotionnel ni lien éloigné', () => {
++  const items = [{ id: 'promo', type: 'video', title: 'Grünt #74 ce soir 18h', artist: '' }, { id: 'far', artist: '', relationship: { distant: true } }];
++  const result = build({ groups: { curator: { items } }, patch: { otherArtistsOnly: true, includeUnknownArtists: true, includeCollaborations: true } });
++  assert.equal(result.items.length, 0);
++  assert.equal(result.hiddenCandidates, 2);
++});
++
++test('ancien réglage strict préservé, aller-retour des nouvelles options', () => {
++  let patch = createScoutPatch({ otherArtistsOnly: true });
++  assert.equal(patch.includeUnknownArtists, false); assert.equal(patch.includeCollaborations, false);
++  for (const id of ['scope.unknownArtists', 'scope.collaborations']) { patch = setScoutParameter(patch, id, true); assert.equal(scoutParameterValue(patch, id), true); }
++  assert.deepEqual(createScoutPatch(JSON.parse(JSON.stringify(patch))), patch);
++  assert.equal(build({ seedArtist: '', seedArtistIds: [], patch }).candidates, 37);
++});
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/lib/catalogue.mjs
+@@
+ import { createHash } from "node:crypto";
+-import { departureArtistIds, isOtherArtist } from "../public/music-sorting.mjs";
++import { departureArtistIds, artistRelation, artistRelationAllowed } from "../public/music-sorting.mjs";
+ import { departureRoutingGraph } from "./departure-integrity.mjs";
+ 
+ import { CATALOGUE_DIRECTIONS, LABELS, MAIN, RELEASE, clean, label, nodeId, sourceUrl, validId, graphIndex, directionAnchors, releaseDates, catalogueCandidates } from "./catalogue-graph.mjs";
+@@
+ /** The display policy is also a collection objective, never an evidence filter.
+  * Keep this predicate aligned with the browser's artist / distant-link rules.
+  * Names only exclude a visible result; they never identify or merge entities. */
+-export function createCatalogueEligibility({ graph = {}, seedId = "", seedArtistIds = [], seedArtist = "", otherArtistsOnly = false, includeDistant = true, excludeIds = [], directLinkedIds = [], excludeLibraryVideos = false } = {}) {
++export function createCatalogueEligibility({ graph = {}, seedId = "", seedArtistIds = [], seedArtist = "", otherArtistsOnly = false, includeUnknownArtists = false, includeCollaborations = false, includeDistant = true, excludeIds = [], directLinkedIds = [], excludeLibraryVideos = false } = {}) {
+   const excluded = new Set(excludeIds), direct = new Set(directLinkedIds);
+   const forGraph = (currentGraph = graph) => {
+     const artistIds = [...new Set([...seedArtistIds, ...departureArtistIds(currentGraph, seedId)])];
+@@
+       // A collection or label has no single reference artist. Treat an unavailable
+       // artist scope as inapplicable, not a reason to hide every collected track.
+       if (!artistIds.length && !String(seedArtist).trim()) return true;
+-      return isOtherArtist(candidate, { artistIds, name: seedArtist });
++      return artistRelationAllowed(artistRelation(candidate, { artistIds, name: seedArtist }), { includeUnknownArtists, includeCollaborations });
+     };
+   };
+   // Bind a single graph snapshot per candidate batch rather than rebuilding the
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/server.mjs
+@@
+ const IDENTITY_ENGINE = fileURLToPath(new URL("./lib/identity.mjs", import.meta.url));
+ const DIGGING_ENGINE = fileURLToPath(new URL("./lib/digging.mjs", import.meta.url));
+ const EXPLORATION_ENGINE = fileURLToPath(new URL("./lib/exploration.mjs", import.meta.url));
+-const APP_VERSION = "0.20.0";
++const APP_VERSION = "0.20.1";
+ const PORT = Number(process.env.PORT || 4181);
+ const googleOAuth = await new GoogleOAuthSession({ config: googleOAuthConfiguration(process.env, PORT) }).load();
+ const MUSICBRAINZ_ROOT = process.env.MUSICBRAINZ_ROOT || "https://musicbrainz.org/ws/2";
+@@
+           viewScope = JSON.parse(encoded);
+           if (!viewScope || typeof viewScope !== "object" || Array.isArray(viewScope)) throw new Error();
+           for (const key of ["otherArtistsOnly", "includeDistant"]) if (typeof viewScope[key] !== "boolean") throw new Error();
+-          if (Object.hasOwn(viewScope, "excludeLibraryVideos") && typeof viewScope.excludeLibraryVideos !== "boolean") throw new Error();
++          for (const key of ["excludeLibraryVideos", "includeUnknownArtists", "includeCollaborations"]) if (Object.hasOwn(viewScope, key) && typeof viewScope[key] !== "boolean") throw new Error();
+           if (typeof viewScope.seedArtist !== "string" || viewScope.seedArtist.length > 500) throw new Error();
+           for (const key of ["seedArtistIds", "excludeIds", "directLinkedIds"]) {
+             if (!Array.isArray(viewScope[key]) || viewScope[key].length > 100 || viewScope[key].some(id => typeof id !== "string" || id.length > 240)) throw new Error();
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/server.test.mjs
+@@
+   assert.equal(status.roles.length, 4);
+   assert.equal(status.oauthScope, "https://www.googleapis.com/auth/youtube.readonly");
+   assert.equal(status.discogsConfigured, false);
+-  assert.equal(status.version, "0.20.0");
++  assert.equal(status.version, "0.20.1");
+   assert.equal(status.discogsCredentialSource, "none");
+   assert.equal(status.capabilities.listenbrainz, true);
+   assert.equal(status.capabilities.bandcamp, "supplied_metadata_import");
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/tests/evolution-server.test.mjs
+@@
+   await ingest(base, { entities: [seed], edges: [] });
+   const before = await fetch(`${base}/api/graph`).then(response => response.json());
+   const invalid = ["{", "null", "[]", {}, scope({ otherArtistsOnly: "true" }), scope({ includeDistant: 1 }), scope({ excludeLibraryVideos: "true" }),
++    scope({ includeUnknownArtists: "true" }), scope({ includeCollaborations: 1 }),
+     scope({ seedArtist: "x".repeat(501) }), scope({ seedArtistIds: "id" }), scope({ excludeIds: Array(101).fill("id") }),
+     scope({ directLinkedIds: ["x".repeat(241)] }), scope({ excludeIds: [null] }), scope({ extra: "x".repeat(8001) })];
+   for (const value of invalid) {
+@@
+   assert.equal(legacy.coverage.fetchedRequests, 0);
+   const legacyScope = await fetch(branchUrl(base, seedId, "curator", scope())).then(response => response.json());
+   assert.equal(legacyScope.coverage.selection.eligible, 2, "the new optional flag defaults to false");
++  const strictArtists = scope({ otherArtistsOnly: true, seedArtist: "Known artist" });
++  const strict = await fetch(branchUrl(base, seedId, "curator", strictArtists)).then(response => response.json());
++  assert.equal(strict.coverage.selection.eligible, 0);
++  const unknownAllowed = await fetch(branchUrl(base, seedId, "curator", { ...strictArtists, includeUnknownArtists: true, includeCollaborations: false })).then(response => response.json());
++  assert.equal(unknownAllowed.coverage.selection.eligible, 2);
++  assert.equal(unknownAllowed.coverage.fetchedRequests, 0);
++  assert.deepEqual(new Set(unknownAllowed.candidates.map(item => item.id)), new Set(legacy.candidates.map(item => item.id)));
+   const filteredResponse = await fetch(branchUrl(base, seedId, "curator", scope({ excludeLibraryVideos: true })));
+   assert.equal(filteredResponse.status, 200);
+   const filtered = await filteredResponse.json();
+*** Update File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/package.json
+@@
+ {
+   "name": "youtube-scout",
+-  "version": "0.20.0",
++  "version": "0.20.1",
+   "private": true,
+   "type": "module",
+   "scripts": {
+*** Add File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/scripts/artist-filter-ui-fixture.mjs
++import { createServer } from 'node:http';
++import { readFile } from 'node:fs/promises';
++const script = `
++import { mountScoutMixerPanel } from '/scout-mixer-panel.mjs';
++import { buildScoutMixView, consumeMixPage } from '/scout-mix-session.mjs';
++import { createScoutPatch, setScoutParameter } from '/scout-parameters.mjs';
++const groups={curator:{items:Array.from({length:37},(_,i)=>({id:'video:'+i,title:'Vidéo non-Topic '+i,artist:''})),coverage:{complete:true}},featuring:{items:[{id:'guest',title:'Collaboration test',artist:'Zuukou Mayzie & Guest'},{id:'same',title:'Solo test',artist:'Zuukou Mayzie'}],coverage:{complete:true}}};
++let patch=createScoutPatch({otherArtistsOnly:true}),history={};
++const read=(options={})=>({...buildScoutMixView({seedId:'seed',seedArtist:'Zuukou Mayzie',groups,patch,history,select:(items,{exclude})=>items.filter(x=>!exclude.includes(x.id)),...options}),seedLabel:'Test isolé du filtre',workflow:'browse'});
++mountScoutMixerPanel({parent:document.querySelector('main'),read,onParameter:(id,value)=>{patch=setScoutParameter(patch,id,value)},onNext:directionFilter=>{history=consumeMixPage(history,read({directionFilter}))},onRewind:()=>{history={}},onDig:()=>{throw Error('Aucun réseau autorisé dans ce test')},renderCard:item=>Object.assign(document.createElement('article'),{textContent:item.title})});
++`;
++const server=createServer(async(req,res)=>{try{const p=new URL(req.url,'http://localhost').pathname;if(p==='/'){res.setHeader('content-type','text/html; charset=utf-8');return res.end('<!doctype html><html lang="fr"><title>Test Scout — filtres artistes</title><link rel="stylesheet" href="/styles.css"><main style="max-width:1000px;margin:auto;padding:20px"></main><script type="module" src="/fixture.mjs"></script></html>');}if(p==='/fixture.mjs'){res.setHeader('content-type','text/javascript');return res.end(script);}if(!/^\/[a-z0-9-]+\.(mjs|css)$/.test(p)){res.writeHead(404);return res.end();}res.setHeader('content-type',p.endsWith('.css')?'text/css':'text/javascript');res.end(await readFile(new URL('../public'+p,import.meta.url)));}catch{res.writeHead(404);res.end();}});
++server.listen(0,'127.0.0.1',()=>console.log('http://localhost:'+server.address().port));
+*** Add File: /home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout/docs/QUALITY_0.20.1_2026-09-22.md
++# Scout 0.20.1 — portée du filtre artistes
++
++## Observation et correction
++
++Les captures montrent que les vidéos de la chaîne non-Topic restent chargées après le choix d'une fiche catalogue. Le filtre « Autres artistes uniquement » les masque lorsqu'aucun artiste n'est renseigné. Cela ne démontre pas une exclusion générale des chaînes non-Topic.
++
++Le filtre conserve son comportement strict par défaut. Deux options locales indépendantes permettent d'inclure les artistes inconnus, avec mention « à vérifier », et les collaborations comprenant un participant extérieur au départ. La classification commune au navigateur et au serveur distingue même artiste, autre artiste, collaboration et inconnu. Elle n'attribue aucun artiste depuis le titre ou le nom de chaîne et ne fusionne aucune identité.
++
++Les compteurs globaux distinguent les cartes masquées restant à parcourir des observations de routes chargées. Le panneau signale les inconnus masqués et propose leur réaffichage sans relancer les catalogues. Les filtres éditoriaux, promotionnels et de liens éloignés restent applicables.
++
++## Validation
++
++- Suite complète : 724 tests réussis sous Node 18.19.1.
++- `npm run check` : réussi.
++- Régression synthétique des 37 vidéos inconnues : zéro admissible en strict, 37 récupérables par l'option, pagination complète sans perte, sans mutation des candidats.
++- Matrice des deux options : même politique de collecte et d'affichage ; même artiste solo toujours exclu en strict.
++- Comptage : doublons de routes, filtre de direction, pistes déjà vues, variante visible par une autre route.
++- Binding réel des paramètres de l'application : aucun appel réseau, aucune sauvegarde ni consommation de page.
++- HTTP isolé : validation des booléens, ancien format compatible, option inconnus transmise jusqu'à l'objectif de collecte, candidats préservés.
++- Navigateur réel sur fixture isolée : réaffichage par bouton, cases indépendantes, badge d'incertitude, collaboration, filtre YouTube, pagination et conservation des six premières pistes vues.
++
++Un premier lancement de la suite a détecté un dossier `patch` oublié dans la copie isolée ; il a été copié depuis la racine existante. Une assertion nouvelle utilisait un niveau `controls` absent du modèle ; l'assertion a été corrigée. Ces essais ne sont pas comptés comme réussis.
++
++## Limites et activation
++
++Les données navigateur sont fictives : aucune évaluation musicale réelle, aucune connexion Google et aucune recherche externe n'ont été effectuées. L'identification manquante d'Osirus Jack et l'extraction de crédits depuis les titres restent des problèmes distincts, non corrigés par cette version.
++
++La préparation et les tests ne valent pas activation. L'application active ne doit être remplacée qu'après accord, sauvegarde des données et vérification des empreintes initiales. Les fichiers front sont servis directement : arrêter le seul serveur Scout avant application pour éviter une version partielle.
+*** End Patch

@@ -1,0 +1,19 @@
+{
+  "status": "written_not_verified_not_active",
+  "stage": "/tmp/scout-participants-Xqgb42",
+  "root": "/home/olivier/Documents/ChatGPT/Corpus/projets/youtube-scout",
+  "files": [
+    {
+      "path": "public/app.js",
+      "before": "276692a0d2c95a65b6184a7ae87cec772e4dff37d9d77e85bea86f86356cff1b",
+      "after": "870291749ea6ac96fe4d07191f6ecc8ed93227494bc11961284364b983188b91"
+    },
+    {
+      "path": "public/participant-explorer.mjs",
+      "before": null,
+      "after": "2f4352cf9d18a83519d12ba66ee33df489e6545a2e74ecd92842045f60059045"
+    }
+  ],
+  "verification": "Not run, explicitly deferred by user",
+  "preparedAt": "2026-09-22T21:26:45.753Z"
+}
