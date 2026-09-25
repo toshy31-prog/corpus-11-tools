@@ -17,6 +17,14 @@ import stat
 import subprocess
 import tempfile
 import uuid
+import sys
+
+_CORPUS_PATHS_DIR = Path(__file__).resolve().parents[1] / 'projets/corpus-local-llm-migration'
+if str(_CORPUS_PATHS_DIR) not in sys.path:
+    sys.path.insert(0, str(_CORPUS_PATHS_DIR))
+from corpus_paths import MAINTENANCE_STATE_ROOT
+
+DELIVERY_STATE_ROOT = MAINTENANCE_STATE_ROOT / 'autonomy/delivery'
 
 
 class Blocked(ValueError):
@@ -89,13 +97,31 @@ def save(path, value):
     atomic(path, (json.dumps(value, indent=2, ensure_ascii=False) + '\n').encode())
 
 
+def storage_key(root):
+    root = Path(root).resolve()
+    digest = hashlib.sha256(str(root).encode()).hexdigest()[:16]
+    safe = root.name or 'root'
+    safe = ''.join(c if c.isalnum() or c in '-_.' else '_' for c in safe)[:40]
+    return safe + '-' + digest
+
 def storage(root):
-    directory = root
-    for part in ('.dev-local', 'autonomy', 'delivery'):
-        directory = directory / part
-        if directory.is_symlink():
+    root = Path(root).resolve()
+    base = DELIVERY_STATE_ROOT
+    directory = base / storage_key(root)
+    for candidate in (base, directory):
+        if candidate.is_symlink():
             raise Blocked('Symlink in receipt storage')
-        directory.mkdir(exist_ok=True)
+        candidate.mkdir(parents=True, exist_ok=True)
+    marker = directory / 'root.json'
+    expected = {'root': str(root)}
+    if marker.exists():
+        try:
+            if json.loads(marker.read_text()) != expected:
+                raise Blocked('Receipt storage root identity mismatch')
+        except (OSError, ValueError, TypeError) as exc:
+            raise Blocked('Invalid receipt storage identity') from exc
+    else:
+        save(marker, expected)
     return directory
 
 

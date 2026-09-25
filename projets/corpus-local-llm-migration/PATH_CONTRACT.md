@@ -58,6 +58,14 @@ Le scheduler persistant vit sous `CORPUS_STATE_ROOT/scheduler` et l'état de dé
 
 Les environnements/worktrees, logs, données OpenCode, modèles, caches, toolchains et receipts d'autonomie ne sont pas déplacés par cette vague.
 
+## Migration physique — Wave 1B
+
+Les preuves de maintenance vivent désormais sous `CORPUS_STATE_ROOT/maintenance`; l'ancien sibling `~/.local/state/corpus-maintenance` est retiré.
+
+Le helper `autonomy_integrate.py` ne stocke plus batches, receipts, logs et locks dans les worktrees sous `.dev-local`. Son store actif est centralisé sous `CORPUS_STATE_ROOT/maintenance/autonomy/delivery/<root-key>`, où `<root-key>` encode l'identité du source ou du target sans dépendre du checkout.
+
+Les batches legacy devenus inapplicables par dérive de target sont conservés sous `maintenance/autonomy/history/blocked-prepared`; ils ne polluent plus le store actif. Les anciennes traces runtime d'audit/expérience sont rangées sous `maintenance/runtime-history`.
+
 ## Correction sémantique
 
 L'ancien setup employait `CORPUS_STATE_ROOT` comme nom du runtime. Ce sens est

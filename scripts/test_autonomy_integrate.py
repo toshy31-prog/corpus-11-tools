@@ -16,6 +16,9 @@ class DeliveryTests(unittest.TestCase):
         self.directory = tempfile.TemporaryDirectory()
         self.addCleanup(self.directory.cleanup)
         self.root = Path(self.directory.name)
+        self.delivery_state = self.root / 'delivery-state'
+        self.state_patch = patch.object(delivery, 'DELIVERY_STATE_ROOT', self.delivery_state)
+        self.state_patch.start(); self.addCleanup(self.state_patch.stop)
         self.source, self.target = self.root / 'source', self.root / 'target'
         for root in (self.source, self.target):
             root.mkdir()
@@ -131,7 +134,7 @@ class DeliveryTests(unittest.TestCase):
         for name in ['../outside', '/tmp/outside', 'a//b', 'a/./b', '.git/config',
                      '.codex/config.toml', 'AGENTS.md', '.env', '.maintenance/autonomy.md',
                      'scripts/autonomy_integrate.py', 'projets/corpus-ce-qui-reste-possible/a',
-                     'research/completed/corpus-ui-workspace/a', 'backups/a']:
+                     'research/completed/corpus-ui-workspace/a', 'backups/a', '.dev-local/private']:
             with self.subTest(name=name), self.assertRaises(delivery.Blocked):
                 self.prepare(files=[name])
         for root in (self.source, self.target):
@@ -192,9 +195,10 @@ class DeliveryTests(unittest.TestCase):
         with delivery.locked(self.target), self.assertRaisesRegex(delivery.Blocked, 'active'):
             with delivery.locked(self.target):
                 pass
-        (self.source / '.dev-local').symlink_to(self.target / '.dev-local', target_is_directory=True)
-        with self.assertRaises(delivery.Blocked):
-            self.prepare()
+        real = self.root / 'real-delivery-state'; real.mkdir()
+        linked = self.root / 'linked-delivery-state'; linked.symlink_to(real, target_is_directory=True)
+        with patch.object(delivery, 'DELIVERY_STATE_ROOT', linked), self.assertRaisesRegex(delivery.Blocked, 'Symlink'):
+            delivery.storage(self.source)
 
 
 if __name__ == '__main__':
