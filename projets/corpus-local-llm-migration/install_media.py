@@ -1,7 +1,8 @@
 import urllib.request,json,hashlib,concurrent.futures,time
 from pathlib import Path
-from corpus_paths import MEDIA_RUNTIME_ROOT
-BASE=MEDIA_RUNTIME_ROOT/'models';BASE.mkdir(parents=True,exist_ok=True)
+from corpus_paths import MEDIA_MODELS_ROOT, MEDIA_RUNTIME_ROOT
+BASE=MEDIA_MODELS_ROOT;BASE.mkdir(parents=True,exist_ok=True)
+RUNTIME_BASE=MEDIA_RUNTIME_ROOT
 files=[(v['repository'],v['revision'],v['source_file'],v['file']) for v in json.loads(Path(__file__).with_name('MEDIA_MODELS_LOCK.json').read_text())]
 def download(item):
  repo,rev,name,local=item;dest=BASE/local
@@ -20,12 +21,12 @@ def download(item):
  print('VERIFIED',local,flush=True)
  return entry
 with concurrent.futures.ThreadPoolExecutor(max_workers=2) as ex: results=list(ex.map(download,files))
-(BASE.parent/'models-manifest.json').write_text(json.dumps(results,indent=2))
+(RUNTIME_BASE/'models-manifest.json').write_text(json.dumps(results,indent=2))
 
 # Official pinned runtime, verified before extraction. No model pickle executed.
 import zipfile, os
-runtime=BASE.parent/'runtime'
-archive=BASE.parent/'runtime.zip'
+runtime=RUNTIME_BASE/'runtime'
+archive=RUNTIME_BASE/'runtime.zip'
 expected='28675635a82dd24970acd9600dc5f82a6eab1a54b66e962bb39dd51e3d2b7e47'
 if not archive.exists():
  urllib.request.urlretrieve('https://github.com/leejet/stable-diffusion.cpp/releases/download/master-899-28b454b/sd-master-28b454b-bin-Linux-Ubuntu-24.04-x86_64-vulkan.zip',archive)
@@ -39,4 +40,4 @@ for file in runtime.rglob('*'):
 print('Runtime ready:',runtime)
 
 import shutil
-shutil.copytree(Path(__file__).with_name('media_licenses'),BASE.parent/'licenses',dirs_exist_ok=True)
+shutil.copytree(Path(__file__).with_name('media_licenses'),RUNTIME_BASE/'licenses',dirs_exist_ok=True)

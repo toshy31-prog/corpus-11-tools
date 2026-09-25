@@ -6,7 +6,7 @@ import shutil
 import subprocess
 import tarfile
 from pathlib import Path
-from corpus_paths import LOCAL_RUNTIME_ROOT
+from corpus_paths import LLM_MODELS_ROOT, LOCAL_RUNTIME_ROOT
 
 ROOT = Path(__file__).resolve().parents[2]
 DEST = LOCAL_RUNTIME_ROOT
@@ -15,8 +15,15 @@ ARTIFACTS = [
     ('opencode-v1.18.32.tar.gz', 'https://github.com/anomalyco/opencode/releases/download/v1.18.32/opencode-linux-x64.tar.gz', '3046e0404fdc60fb80307e7a47824ba07477364178a4d09baa8548496dd6d43b', 'opencode-v1.18.32'),
     ('llama-source-b10964.tar.gz', 'https://github.com/ggml-org/llama.cpp/archive/refs/tags/b10964.tar.gz', None, None),
     ('opencode-source-v1.18.32.tar.gz', 'https://github.com/anomalyco/opencode/archive/refs/tags/v1.18.32.tar.gz', None, None),
-    ('Qwen3.8-27B-UD-Q5_K_M.gguf', 'https://huggingface.co/unsloth/Qwen3.8-27B-GGUF/resolve/4ca720788d1e01f1bff70c033e0d0028fd02e502/Qwen3.8-27B-UD-Q5_K_M.gguf', '2de73110cb254cbf09b54b717578dadff12ef1194e7271527e68202f39ba4bfd', None),
-    ('Qwen3.6-35B-A3B-UD-Q4_K_M.gguf', 'https://huggingface.co/unsloth/Qwen3.6-35B-A3B-GGUF/resolve/a483e9e6cbd595906af30beda3187c2663a1118c/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf', 'ac0e2c1189e055faa36eff361580e79c5bd6f8e76bffb4ce547f167d53e31a61', None),
+]
+
+HOT_MODELS = [
+    ('Qwen3.6-35B-A3B-UD-Q4_K_M.gguf',
+     'https://huggingface.co/unsloth/Qwen3.6-35B-A3B-GGUF/resolve/a483e9e6cbd595906af30beda3187c2663a1118c/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf',
+     'ac0e2c1189e055faa36eff361580e79c5bd6f8e76bffb4ce547f167d53e31a61', 22134528992),
+    ('mmproj-Qwen3.6-F16.gguf',
+     'https://huggingface.co/unsloth/Qwen3.6-35B-A3B-GGUF/resolve/8ab61f3ab67ce00dabe2719bf2d250ec66bc9020/mmproj-F16.gguf',
+     '8971ee4f331ff0a4c609374f32984b3d4e6dc086c0aa35f1d637fad1829e887f', 899283680),
 ]
 
 
@@ -61,6 +68,35 @@ def main():
         tmp.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n')
         tmp.replace(manifest_path)
         print('Vérifié : ' + name, flush=True)
+
+    hot_root = LLM_MODELS_ROOT / 'qwen3.6'
+    hot_root.mkdir(parents=True, exist_ok=True)
+    for name, url, expected, expected_bytes in HOT_MODELS:
+        target = hot_root / name
+        print('Acquisition HOT : ' + name, flush=True)
+        if not target.exists():
+            if shutil.disk_usage(hot_root).free < 25 * 1024**3:
+                raise RuntimeError('Marge disque insuffisante pour le modèle et le fonctionnement.')
+            partial = target.with_name(target.name + '.part')
+            subprocess.run(['curl', '--fail', '--location', '--silent', '--show-error', '--retry', '3',
+                            '--connect-timeout', '30', '--continue-at', '-', '--output', str(partial), url], check=True)
+            if partial.stat().st_size != expected_bytes or digest(partial) != expected:
+                raise RuntimeError('SHA-256 ou taille différente de la source publiée : ' + name)
+            partial.rename(target)
+        if target.stat().st_size != expected_bytes or digest(target) != expected:
+            raise RuntimeError('Poids HOT local incorrect : ' + name)
+        manifest['artifacts'][name] = {
+            'url': url,
+            'sha256': expected,
+            'published_sha256_verified': True,
+            'bytes': target.stat().st_size,
+            'installed_directory': None,
+            'canonical_path': str(target),
+        }
+        tmp = manifest_path.with_suffix('.tmp')
+        tmp.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n')
+        tmp.replace(manifest_path)
+        print('Vérifié HOT : ' + name, flush=True)
 
 
 if __name__ == '__main__':

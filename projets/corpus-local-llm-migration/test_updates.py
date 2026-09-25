@@ -32,7 +32,8 @@ class LocalInventory(unittest.TestCase):
         for key, value in {'ROOT': self.root, 'PROJECT': self.project, 'STATE': self.root / 'state.json',
                            'RUNTIME_ROOT': self.root / '.dev-local',
                            'LOCAL_RUNTIME_ROOT': self.root / '.dev-local/corpus-local',
-                           'MEDIA_RUNTIME_ROOT': self.root / '.dev-local/corpus-media',
+                           'MEDIA_MODELS_ROOT': self.root / '.models/hot/media',
+                           'MODELS_ROOT': self.root / '.models/hot',
                            'STATE_ROOT': self.root / '.state-root',
                            'SYSTEM_STATUS': self.root / 'dpkg-status', 'NVIDIA_VERSION': self.root / 'nvidia-version',
                            'SYSTEM_BIN': self.root / 'bin'}.items():
@@ -89,12 +90,23 @@ class LocalInventory(unittest.TestCase):
         lock = [{'file': 'image.gguf', 'repository': 'test/image', 'source_file': 'image.gguf', 'sha256': 'a'},
                 {'file': 'missing.gguf', 'repository': 'test/other', 'source_file': 'missing.gguf', 'sha256': 'b'}]
         (self.project / 'MEDIA_MODELS_LOCK.json').write_text(json.dumps(lock))
-        self.write('.dev-local/corpus-media/models/image.gguf')
+        self.write('.models/hot/media/image.gguf')
         rows = self.get()['models']
         self.assertEqual(len(rows), 2)
         self.assertTrue(rows[0]['installed'])
         self.assertFalse(rows[1]['installed'])
         self.assertEqual(rows[1]['status'], 'Absent localement')
+
+    def test_core_lock_inventory_uses_models_root_and_excludes_cold(self):
+        hot = {'id':'hot','tier':'hot','kind':'llm','file':'hot.gguf','relative':'llm/hot.gguf','repository':'test/hot','source_file':'hot.gguf','sha256':'a'*64,'size':7}
+        cold = {'id':'cold','tier':'cold','kind':'comparator','file':'cold.gguf','relative':None,'repository':'test/cold','source_file':'cold.gguf','sha256':'b'*64,'size':9}
+        (self.project/'CORE_MODELS_LOCK.json').write_text(json.dumps([hot,cold]))
+        self.write('.models/hot/llm/hot.gguf','1234567')
+        rows = self.get()['models']
+        core = [row for row in rows if row.get('id') in ('hot','cold')]
+        self.assertEqual([row['id'] for row in core], ['hot'])
+        self.assertEqual(core[0]['path'], str(self.root/'.models/hot/llm/hot.gguf'))
+        self.assertTrue(core[0]['installed'])
 
     def test_components_exist_before_check_and_report_actual_local_presence(self):
         self.write('.dev-local/corpus-media/runtime/sd-cli')

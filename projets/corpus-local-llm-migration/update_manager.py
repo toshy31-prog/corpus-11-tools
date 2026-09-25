@@ -7,7 +7,7 @@ import subprocess
 import urllib.request
 import urllib.parse
 from pathlib import Path
-from corpus_paths import LOCAL_RUNTIME_ROOT, MEDIA_RUNTIME_ROOT, RUNTIME_ROOT, STATE_ROOT
+from corpus_paths import LOCAL_RUNTIME_ROOT, MEDIA_MODELS_ROOT, MODELS_ROOT, RUNTIME_ROOT, STATE_ROOT
 
 PROJECT = Path(__file__).resolve().parent
 ROOT = PROJECT.parents[1]
@@ -60,34 +60,45 @@ def inventory():
     rows = []
     for name in ('MEDIA_MODELS_LOCK.json', 'AUDIO_MODELS_LOCK.json'):
         for item in json.loads((PROJECT / name).read_text()):
-            path = MEDIA_RUNTIME_ROOT / 'models' / item['file']
+            path = MEDIA_MODELS_ROOT / item['file']
             rows.append(model_row(item, path, 'audio' if name.startswith('AUDIO') else 'media'))
-    base = LOCAL_RUNTIME_ROOT
-    manifest = local_json(base / 'installation.json', {})
-    artifacts = manifest.get('artifacts', {}) if isinstance(manifest, dict) else {}
-    if not isinstance(artifacts, dict): artifacts = {}
-    for path in sorted((base / 'downloads').glob('*.gguf')):
-        receipt = artifacts.get(path.name, {})
-        if not isinstance(receipt, dict): receipt = {}
-        source = huggingface_source(receipt.get('url'))
-        row = {'file': path.name, **source}
-        if receipt.get('sha256'): row['sha256'] = receipt['sha256']
-        if receipt.get('bytes'): row['size'] = receipt['bytes']
-        rows.append(model_row(row, path, 'vision' if path.name.startswith('mmproj') else 'llm'))
-    for directory in sorted(base.glob('voice-model*')):
-        path = directory / 'model.bin'
-        if not path.is_file(): continue
-        # Hugging Face's local download receipt contains a revision and ETag, not its repository.
-        # Do not guess provenance from the directory's name or claim an update comparison.
-        row = {'file': f'{directory.name}/model.bin'}
-        metadata_path = directory / '.cache/huggingface/download/model.bin.metadata'
-        try:
-            if metadata_path.stat().st_size < 4096:
-                lines = metadata_path.read_text().splitlines()
-                if lines and re.fullmatch(r'[0-9a-f]{40}', lines[0]): row['revision'] = lines[0]
-                if len(lines) > 1 and re.fullmatch(r'[0-9a-f]{64}', lines[1]): row['sha256'] = lines[1]
-        except OSError: pass
-        rows.append(model_row(row, path, 'asr'))
+    core_lock = PROJECT / 'CORE_MODELS_LOCK.json'
+    if core_lock.is_file():
+        entries = local_json(core_lock, [])
+        for item in entries if isinstance(entries, list) else []:
+            if not isinstance(item, dict) or item.get('tier') != 'hot':
+                continue
+            relative = item.get('relative')
+            if not isinstance(relative, str):
+                continue
+            path = MODELS_ROOT / relative
+            rows.append(model_row(dict(item), path, item.get('kind', 'model')))
+    else:
+        # Compatibility only for isolated pre-contract fixtures.
+        base = LOCAL_RUNTIME_ROOT
+        manifest = local_json(base / 'installation.json', {})
+        artifacts = manifest.get('artifacts', {}) if isinstance(manifest, dict) else {}
+        if not isinstance(artifacts, dict): artifacts = {}
+        for path in sorted((base / 'downloads').glob('*.gguf')):
+            receipt = artifacts.get(path.name, {})
+            if not isinstance(receipt, dict): receipt = {}
+            source = huggingface_source(receipt.get('url'))
+            row = {'file': path.name, **source}
+            if receipt.get('sha256'): row['sha256'] = receipt['sha256']
+            if receipt.get('bytes'): row['size'] = receipt['bytes']
+            rows.append(model_row(row, path, 'vision' if path.name.startswith('mmproj') else 'llm'))
+        for directory in sorted(base.glob('voice-model*')):
+            path = directory / 'model.bin'
+            if not path.is_file(): continue
+            row = {'file': f'{directory.name}/model.bin'}
+            metadata_path = directory / '.cache/huggingface/download/model.bin.metadata'
+            try:
+                if metadata_path.stat().st_size < 4096:
+                    lines = metadata_path.read_text().splitlines()
+                    if lines and re.fullmatch(r'[0-9a-f]{40}', lines[0]): row['revision'] = lines[0]
+                    if len(lines) > 1 and re.fullmatch(r'[0-9a-f]{64}', lines[1]): row['sha256'] = lines[1]
+            except OSError: pass
+            rows.append(model_row(row, path, 'asr'))
     return rows
 
 def installed_packages():

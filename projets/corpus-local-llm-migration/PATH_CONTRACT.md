@@ -84,6 +84,12 @@ Les anciens poids WAN `wan-5b.gguf` et `wan-vae.safetensors` ont été retirés 
 
 Les consommateurs actifs résolvent désormais les poids HOT par `CORPUS_MODELS_ROOT` et ses sous-racines dérivées `llm`, `media`, `speech` et `docling`. Pendant cette sous-phase, ces chemins sont des shims symboliques vers les poids encore physiquement sous runtime. Bubblewrap expose les modèles HOT en lecture seule.
 
+## MODELS Phase 2A2 — producteurs canoniques
+
+Les producteurs et l'inventaire convergent maintenant avec les consommateurs : `install_local.py` acquiert Qwen3.6 et son mmproj sous `LLM_MODELS_ROOT`; `install_media.py` et `install_audio.py` écrivent les poids sous `MEDIA_MODELS_ROOT`; `update_manager.py` lit les poids core HOT depuis `CORE_MODELS_LOCK.json` et `MODELS_ROOT`. Les archives/runtime restent dans `CORPUS_RUNTIME_ROOT`.
+
+Qwen3.8 est uniquement COLD : il n'est plus une cible de reconstruction HOT. Le prochain changement peut donc être purement physique, sans nouveau reroot des consommateurs ou producteurs.
+
 ## Correction sémantique
 
 L'ancien setup employait `CORPUS_STATE_ROOT` comme nom du runtime. Ce sens est

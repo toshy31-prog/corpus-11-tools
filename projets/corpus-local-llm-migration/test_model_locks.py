@@ -16,6 +16,19 @@ class ModelLockTests(unittest.TestCase):
         self.assertNotIn('wan-5b.gguf', locked)
         self.assertNotIn('wan-vae.safetensors', locked)
 
+    def test_producers_target_canonical_model_roots(self):
+        install_local = (HERE/'install_local.py').read_text()
+        install_media = (HERE/'install_media.py').read_text()
+        install_audio = (HERE/'install_audio.py').read_text()
+        updater = (HERE/'update_manager.py').read_text()
+        self.assertIn('LLM_MODELS_ROOT', install_local)
+        self.assertIn('mmproj-Qwen3.6-F16.gguf', install_local)
+        self.assertNotIn('Qwen3.8-27B-UD-Q5_K_M.gguf', install_local)
+        self.assertIn('MEDIA_MODELS_ROOT', install_media)
+        self.assertIn('MEDIA_MODELS_ROOT', install_audio)
+        self.assertIn("PROJECT / 'CORE_MODELS_LOCK.json'", updater)
+        self.assertIn('MEDIA_MODELS_ROOT', updater)
+
     def test_core_lock_has_hot_and_cold_semantics(self):
         rows = self.load('CORE_MODELS_LOCK.json')
         by_id = {row['id']: row for row in rows}

@@ -7,9 +7,10 @@ import shutil
 import tarfile
 import time
 import urllib.request
-from corpus_paths import MEDIA_RUNTIME_ROOT
+from corpus_paths import MEDIA_MODELS_ROOT, MEDIA_RUNTIME_ROOT
 
 BASE = MEDIA_RUNTIME_ROOT
+MODEL_BASE = MEDIA_MODELS_ROOT
 RUNTIME_URL = 'https://github.com/0xShug0/audio.cpp/releases/download/v0.8.1/audio-v0.8.1-bin-ubuntu-x64-vulkan-portable.tar.gz'
 RUNTIME_SHA256 = '63f778ef4c863ece0bca85b97c78e9629bd561724b1aa5330a9d47806608bbfa'
 
@@ -23,7 +24,7 @@ def digest(path):
 
 
 def download(entry):
-    dest = BASE / 'models' / entry['file']
+    dest = MODEL_BASE / entry['file']
     dest.parent.mkdir(parents=True, exist_ok=True)
     part = dest.with_suffix('.partial')
     if dest.exists():
