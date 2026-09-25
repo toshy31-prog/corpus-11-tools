@@ -1,7 +1,11 @@
 """MCP stdio : le modèle demande des actions, seul le portail les approuve."""
-import json,socket,sys
+import json,socket,sys,subprocess
 from pathlib import Path
-SOCKET=Path(__file__).resolve().parents[2]/'.dev-local/corpus-local/tools.sock'
+ROOT=Path(__file__).resolve().parents[2]
+SOCKET=ROOT/'.dev-local/corpus-local/tools.sock'
+CAP=ROOT/'.dev-local/corpus-capabilities'
+DOCLING_PYTHON=CAP/'venvs/docling/bin/python'
+DOCLING_HELPER=Path(__file__).resolve().parent/'docling_extract.py'
 TOOLS=[{'name':'browser_request','description':'Demander une action du navigateur Corpus. La session Chromium est partagée avec le panneau Navigateur à droite de Corpus : Utiliser snapshot pour observer la page et ses sélecteurs interactifs avant click/fill, ou screenshot pour la voir. Chaque demande doit être approuvée dans ce panneau ou Paramètres > Navigateur. Ne pas répéter une demande en attente.','inputSchema':{'type':'object','properties':{'action':{'type':'string','enum':['tab-new','tab-select','tab-close','forward','launch','navigate','snapshot','screenshot','click','fill','back','reload','clear','close','download']},'tab':{'type':'string','description':'Identifiant retourné dans tabs pour sélectionner ou fermer un onglet.'},'visible':{'type':'boolean','description':'Ouvrir une fenêtre Chromium dédiée (launch uniquement ; ne pas remplacer une session existante).'},'url':{'type':'string'},'selector':{'type':'string'},'text':{'type':'string'}},'required':['action'],'additionalProperties':False}}, {'name':'browser_result','description':'Consulter le résultat d’une demande après validation humaine.','inputSchema':{'type':'object','properties':{'id':{'type':'string'}},'required':['id'],'additionalProperties':False}}]
 def call(data):
     with socket.socket(socket.AF_UNIX) as peer:
@@ -19,6 +23,7 @@ TOOLS.extend([
  {'name':'media_result','description':'Consulter une génération locale. En attente/en cours : laisser le rendu continuer en arrière-plan ; ne pas boucler sur cet outil. L’interface affiche son avancement et permet de joindre le résultat au modèle de vision.','inputSchema':{'type':'object','properties':{'id':{'type':'string'}},'required':['id'],'additionalProperties':False}},
  {'name':'media_models','description':'Lister les moteurs image/vidéo/voix/musique locaux disponibles et les rendus récents.','inputSchema':{'type':'object','properties':{},'additionalProperties':False}}
 ])
+TOOLS.append({'name':'document_extract','description':'Extraire localement le contenu structuré d’un PDF, DOCX, PPTX, XLSX ou autre document avec Docling. À utiliser pour ANALYSER/LIRE un document existant ; ne pas utiliser document_create pour lire un fichier. Le chemin doit rester dans Corpus.','inputSchema':{'type':'object','properties':{'path':{'type':'string'},'max_chars':{'type':'integer','minimum':1000,'maximum':250000,'default':120000}},'required':['path'],'additionalProperties':False}})
 for name,action in [('document_create','create'),('document_result','status'),('document_formats','list')]:
     props={'format':{'type':'string','enum':['txt','md','html','odt','docx','rtf','pdf','epub','pptx','odp','csv','tsv','ods','xlsx']},'content':{'type':'string','maxLength':15000,'description':'Texte Markdown pour documents ; titres de niveau 1 pour diapositives.'},'rows':{'type':'array','items':{'type':'array','items':{'type':['string','number']}}}} if action=='create' else {'id':{'type':'string'}} if action=='status' else {}
     TOOLS.append({'name':name,'description':'Créer ou consulter un fichier local avec LibreOffice/Pandoc libres. Création asynchrone : donner le lien uniquement après state=completed. Tableurs : rows, nombres natifs et textes, une feuille ; pas de formules ni macros. Documents : content Markdown. Ne pas boucler en attente.','inputSchema':{'type':'object','properties':props,'required':['format'] if action=='create' else ['id'] if action=='status' else [],'additionalProperties':False}})
@@ -35,6 +40,21 @@ for line in sys.stdin:
             if name in ('plugins_list','plugin_resources','plugin_read'):value=call(dict(args,operation={'plugins_list':'plugin-list','plugin_resources':'plugin-resources','plugin_read':'plugin-read'}[name]))
             elif name in ('media_generate','media_result','media_models'):
                 value=call({'operation':'media','arguments':dict(args,action={'media_generate':'create','media_result':'status','media_models':'list'}[name])})
+            elif name=='document_extract':
+                path=args['path']; limit=int(args.get('max_chars',120000))
+                env={
+                    'PATH':'/usr/local/bin:/usr/bin:/bin',
+                    'LANG':'C.UTF-8',
+                    'CORPUS_ROOT':str(ROOT),
+                    'CUDA_VISIBLE_DEVICES':'',
+                    'HF_HOME':str(CAP/'huggingface'),
+                    'HF_HUB_CACHE':str(CAP/'huggingface/hub'),
+                    'HF_HUB_OFFLINE':'1',
+                    'TRANSFORMERS_OFFLINE':'1',
+                }
+                proc=subprocess.run([str(DOCLING_PYTHON),str(DOCLING_HELPER),path,str(limit)],capture_output=True,text=True,timeout=300,env=env)
+                if proc.returncode: value={'error':proc.stderr.strip() or proc.stdout.strip() or f'Docling exit {proc.returncode}'}
+                else: value=json.loads(proc.stdout)
             elif name in ('document_create','document_result','document_formats'):
                 value=call({'operation':'document','arguments':dict(args,action={'document_create':'create','document_result':'status','document_formats':'list'}[name])})
             elif name=='browser_request':value=call({'operation':'request','arguments':args})

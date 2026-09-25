@@ -53,7 +53,7 @@ def environment(intel=False, moe=False):
         'autoupdate': False, 'lsp': False, 'formatter': False,
         'default_agent': 'corpus', 'subagent_depth': 1,
         'plugin': [(HERE / 'plan_guard.mjs').as_uri()],
-        'mcp': {'corpus-browser': {'type':'local','command':[sys.executable,str(HERE/'local_tools_mcp.py')]}},
+        'mcp': {'corpus-browser': {'type':'local','command':[sys.executable,str(HERE/'local_tools_mcp.py')],'timeout':300000}},
         'agent': {'corpus-plan': {'mode':'primary','model':model_ref,'variant':'direct','permission':{'*':'deny'},'tools':{'*':False},'prompt':'Tu es Corpus en mode Plan. Réponds uniquement par un plan. Aucun outil ne doit être utilisé.'}, 'title': {'disable': True}, 'corpus': {'mode': 'primary',
             'model': model_ref,
             'variant': 'direct',

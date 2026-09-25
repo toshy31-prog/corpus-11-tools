@@ -1,0 +1,7 @@
+docling==2.130.0
+docling-core==2.98.0
+docling-parse==7.21.0
+docling-ibm-models==4.0.3
+rapidocr==3.9.2
+scipy==1.18.1
+rtree==1.4.1
