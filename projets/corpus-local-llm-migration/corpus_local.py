@@ -209,11 +209,13 @@ def wait_child(child, engine=None):
 def web(env, engine=None):
     from local_bridge import create_server, BACKEND_PORT as web_port
     from backend_startup import BackendStartup
+    from kv_warmup import KvWarmup
     with (BASE / 'logs/opencode-web.log').open('a') as log:
         child = subprocess.Popen([str(OPENCODE), 'serve', '--hostname', '127.0.0.1',
                                   '--port', str(web_port)], env=env, stdout=log, stderr=log)
         bridge = None
         startup = BackendStartup(web_port, ROOT)
+        warmup = KvWarmup(web_port, ROOT)
         try:
             deadline = time.monotonic() + 60
             while time.monotonic() < deadline:
@@ -231,10 +233,12 @@ def web(env, engine=None):
             bridge = create_server(BASE / 'web.sock', inside=True, readiness=startup.is_ready)
             threading.Thread(target=bridge.serve_forever, daemon=True).start()
             startup.start()
+            warmup.start()
             result = wait_child(child, engine)
             if result:
                 raise RuntimeError(f'Interface locale arrêtée avec le code {result}.')
         finally:
+            warmup.close()
             startup.close()
             if bridge is not None:
                 bridge.shutdown()
