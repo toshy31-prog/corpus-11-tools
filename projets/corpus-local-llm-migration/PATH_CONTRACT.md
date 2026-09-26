@@ -151,3 +151,18 @@ et mettre à jour le manifeste avec des preuves.
 Git conserve le contrat portable mais jamais les chemins propres à une machine. `~/.config/corpus/machine.json` peut fournir des valeurs `CORPUS_*` locales, notamment `CORPUS_VAULT_ROOT`. Une variable d'environnement explicite garde la priorité sur ce fichier.
 
 Les tests qui appellent `resolve_contract()` avec un environnement explicite n'héritent pas de la configuration du host. Le control plane distingue ainsi un Vault non configuré, configuré mais indisponible, ou effectivement disponible sur un montage externe distinct.
+
+## DATA Phase 5A1 — vérité primaire attachments/documents
+
+Les pièces jointes importées et les documents générés vivent physiquement sous
+`CORPUS_DATA_ROOT`, car ils sont des données utilisateur persistantes et non des
+runtimes reconstructibles.
+
+Deux aliases de compatibilité restent sous `CORPUS_RUNTIME_ROOT` :
+`corpus-attachments` et `corpus-documents`. Ils pointent vers les racines DATA
+et maintiennent les anciens chemins déjà présents dans les conversations et le
+front-end. Le control plane vérifie explicitement ces aliases ; ils ne sont pas
+des sources de vérité.
+
+Le sandbox Corpus expose `CORPUS_DATA_ROOT` explicitement afin que les chemins
+de pièces jointes restent lisibles/modifiables lorsque l'utilisateur l'autorise.

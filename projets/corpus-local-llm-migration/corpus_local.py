@@ -15,7 +15,7 @@ import urllib.request
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 from runtime_limits import CONTEXT_TOKENS, OUTPUT_TOKENS
-from corpus_paths import LLM_MODELS_ROOT, LOCAL_RUNTIME_ROOT, MODELS_ROOT, RUNTIME_ROOT, STATE_ROOT, contract_environment
+from corpus_paths import DATA_ROOT, LLM_MODELS_ROOT, LOCAL_RUNTIME_ROOT, MODELS_ROOT, RUNTIME_ROOT, STATE_ROOT, contract_environment
 BASE = LOCAL_RUNTIME_ROOT
 LOG_ROOT = STATE_ROOT / 'logs/corpus-local'
 QWEN36_ROOT = LLM_MODELS_ROOT / 'qwen3.6'
@@ -149,6 +149,10 @@ def enter_sandbox(args, mode):
     if MODELS_ROOT.exists():
         pos = cmd.index('--chdir')
         cmd[pos:pos] = ['--ro-bind', str(MODELS_ROOT), str(MODELS_ROOT)]
+    # Persistent Corpus DATA is primary truth outside RUNTIME; expose it explicitly.
+    if DATA_ROOT.exists():
+        pos = cmd.index('--chdir')
+        cmd[pos:pos] = ['--bind', str(DATA_ROOT), str(DATA_ROOT)]
     # Registered roots are exposed explicitly; unrelated home data stay hidden.
     pos = cmd.index('--chdir')
     cmd[pos:pos] = project_mounts()

@@ -209,6 +209,13 @@ def doctor(policy=None, paths=None):
             ok = p.returncode == 0 and expected in output
             add("PASS" if ok else "FAIL", f"organ.{organ['id']}.exe.{rel}", f"{rel}: {output.splitlines()[0] if output else 'échec'}")
 
+    # Compatibility aliases are interfaces, never the physical source of truth.
+    for item in policy.get('compatibility_links', []):
+        link = resolve_spec(item['link'], paths)
+        target = resolve_spec(item['target'], paths)
+        ok = bool(link and target and link.is_symlink() and link.resolve(strict=False) == target.resolve(strict=False))
+        add('PASS' if ok else 'FAIL', f"compat.{item['id']}", f"{link} -> {link.resolve(strict=False) if link and link.is_symlink() else None}; attendu {target}")
+
     # Known obsolete paths must stay absent.
     for item in policy["forbidden_paths"]:
         path = resolve_spec(item, paths)

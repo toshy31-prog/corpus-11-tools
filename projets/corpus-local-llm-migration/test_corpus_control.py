@@ -37,6 +37,15 @@ class CorpusControlTests(unittest.TestCase):
         self.assertNotIn("shutil.rmtree",source)
         self.assertNotIn(".unlink(",source)
 
+    def test_primary_data_aliases_are_explicit(self):
+        policy=corpus_control.load_policy()
+        ids={x['id'] for x in policy.get('compatibility_links',[])}
+        self.assertIn('attachments-runtime-alias',ids)
+        self.assertIn('documents-runtime-alias',ids)
+        debts={x['id'] for x in policy['debts']}
+        self.assertNotIn('attachments-in-runtime',debts)
+        self.assertNotIn('documents-in-runtime',debts)
+
     def test_data_and_config_are_primary_truth(self):
         policy=corpus_control.load_policy()
         self.assertEqual(policy["territories"]["data"]["truth"],"primary")

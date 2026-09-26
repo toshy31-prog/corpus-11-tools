@@ -175,6 +175,20 @@
       "territory": "runtime",
       "required": true,
       "kind": "dir"
+    },
+    {
+      "id": "attachments-data",
+      "path_key": "attachments_data",
+      "territory": "data",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "documents-data",
+      "path_key": "documents_data",
+      "territory": "data",
+      "required": true,
+      "kind": "dir"
     }
   ],
   "probes": [
@@ -284,24 +298,6 @@
       "severity": "medium",
       "expected": "separate-lifecycle",
       "reason": "STATE synthétique imbriqué dans RUNTIME."
-    },
-    {
-      "id": "attachments-in-runtime",
-      "path_key": "runtime",
-      "relative": "corpus-attachments",
-      "class": "data-placement",
-      "severity": "medium",
-      "expected": "data",
-      "reason": "Pièces jointes persistantes ressemblant à DATA."
-    },
-    {
-      "id": "documents-in-runtime",
-      "path_key": "runtime",
-      "relative": "corpus-documents",
-      "class": "data-placement",
-      "severity": "medium",
-      "expected": "data",
-      "reason": "Documents générés persistants ressemblant à DATA."
     },
     {
       "id": "voice-model-in-runtime",
@@ -415,6 +411,30 @@
       "expected": "state-or-delete",
       "reason": "Ancien log de couverture.",
       "gc_candidate": true
+    }
+  ],
+  "compatibility_links": [
+    {
+      "id": "attachments-runtime-alias",
+      "link": {
+        "path_key": "runtime",
+        "relative": "corpus-attachments"
+      },
+      "target": {
+        "path_key": "attachments_data"
+      },
+      "reason": "Anciennes références de conversations/front-end restent valides pendant la transition."
+    },
+    {
+      "id": "documents-runtime-alias",
+      "link": {
+        "path_key": "runtime",
+        "relative": "corpus-documents"
+      },
+      "target": {
+        "path_key": "documents_data"
+      },
+      "reason": "Compatibilité des anciens chemins .dev-local/corpus-documents."
     }
   ]
 }

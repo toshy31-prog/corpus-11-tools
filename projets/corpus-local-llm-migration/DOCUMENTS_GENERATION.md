@@ -4,7 +4,7 @@ Moteurs : Pandoc 3.1.3 (GPL) et LibreOffice 24.2.7.2 (MPL/LGPL). Sources : https
 
 Formats produits réellement : TXT, Markdown, HTML, ODT, DOCX, RTF, PDF, EPUB, PPTX, ODP, CSV, TSV, ODS et XLSX. Calc utilise ODS ; « calc » n’est pas une extension. Les composants Calc/Impress/Draw manquants ont été extraits des paquets officiels Ubuntu dans `.dev-local/corpus-office`, sans modification système. Empreintes des paquets : OFFICE_PACKAGES_LOCK.json.
 
-Accès : + → Créer un document ou tableau. Contenu Markdown pour documents et présentations, lignes JSON de nombres/textes pour tableaux. Travaux persistants, conversion asynchrone, téléchargement et lien au brouillon. Outils MCP document_create, document_result, document_formats raccordés au modèle local. Les fichiers restent dans `.dev-local/corpus-documents/<id>`.
+Accès : + → Créer un document ou tableau. Contenu Markdown pour documents et présentations, lignes JSON de nombres/textes pour tableaux. Travaux persistants, conversion asynchrone, téléchargement et lien au brouillon. Outils MCP document_create, document_result, document_formats raccordés au modèle local. Les fichiers vivent physiquement sous `CORPUS_DATA_ROOT/corpus-documents/<id>`; `.dev-local/corpus-documents` reste un alias de compatibilité.
 
 Isolation Bubblewrap sans réseau, sans accès au domicile ; seuls le travail, les programmes et les ressources système sont accessibles. Pas de macros fournies ni exécutées. Les cellules ODS/XLSX sont typées texte/nombre ; les préfixes de formules CSV/TSV sont neutralisés. Un travail interrompu par redémarrage est marqué en échec et doit être relancé explicitement.
 

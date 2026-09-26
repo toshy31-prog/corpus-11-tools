@@ -2,8 +2,8 @@
 import csv, io, json, re, subprocess, threading, time, uuid
 from pathlib import Path
 from xml.sax.saxutils import escape
-from corpus_paths import OFFICE_RUNTIME_ROOT, RUNTIME_ROOT
-BASE=RUNTIME_ROOT/'corpus-documents'
+from corpus_paths import DOCUMENTS_DATA_ROOT, OFFICE_RUNTIME_ROOT
+BASE=DOCUMENTS_DATA_ROOT
 FORMATS=['txt','md','html','odt','docx','rtf','pdf','epub','pptx','odp','csv','tsv','ods','xlsx']
 OFFICE=OFFICE_RUNTIME_ROOT/'root'
 GATE=threading.Semaphore(1)

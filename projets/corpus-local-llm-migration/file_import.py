@@ -2,8 +2,9 @@
 import base64, hashlib, io, json, re, subprocess, tempfile, threading, zipfile
 from pathlib import Path
 import xml.etree.ElementTree as ET
-from corpus_paths import RUNTIME_ROOT
-BASE=RUNTIME_ROOT/'corpus-attachments'
+from corpus_paths import ATTACHMENTS_DATA_ROOT, RUNTIME_ROOT
+BASE=ATTACHMENTS_DATA_ROOT
+COMPAT_BASE=RUNTIME_ROOT/'corpus-attachments'
 MAX=60*1024*1024
 LOCK=threading.RLock()
 
@@ -60,7 +61,8 @@ def ingest(data):
                 (work/'metadata.json').write_text(json.dumps({'original':original.name,'notice':notice}))
                 d.mkdir(parents=True,exist_ok=True)
                 for source in work.iterdir():source.replace(d/source.name)
-    return {'name':name,'path':str(original),'textPath':str(d/'content.txt'),'preview':text[:12000],'characters':len(text),'notice':notice,'truncated':len(text)>12000}
+    public=COMPAT_BASE/digest
+    return {'name':name,'path':str(public/original.name),'textPath':str(public/'content.txt'),'preview':text[:12000],'characters':len(text),'notice':notice,'truncated':len(text)>12000}
 
 def response(method,body):
     try:

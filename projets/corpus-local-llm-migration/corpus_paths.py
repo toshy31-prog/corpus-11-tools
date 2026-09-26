@@ -110,6 +110,8 @@ def resolve_contract(environ=None, *, home=None, repo_root=None, machine_config=
         "local_build_tools": toolchains / "envs/corpus-local-build-tools",
         "local_build_wheelhouse": toolchains / "wheelhouse/corpus-local-build-tools",
         "data": data,
+        "attachments_data": data / "corpus-attachments",
+        "documents_data": data / "corpus-documents",
         "state": state,
         "cache": cache,
         "config": config,
@@ -146,6 +148,8 @@ TOOLCHAIN_WHEELHOUSE_ROOT = _PATHS["toolchain_wheelhouse"]
 LOCAL_BUILD_TOOLS_ROOT = _PATHS["local_build_tools"]
 LOCAL_BUILD_WHEELHOUSE_ROOT = _PATHS["local_build_wheelhouse"]
 DATA_ROOT = _PATHS["data"]
+ATTACHMENTS_DATA_ROOT = _PATHS["attachments_data"]
+DOCUMENTS_DATA_ROOT = _PATHS["documents_data"]
 STATE_ROOT = _PATHS["state"]
 CACHE_ROOT = _PATHS["cache"]
 CONFIG_ROOT = _PATHS["config"]
