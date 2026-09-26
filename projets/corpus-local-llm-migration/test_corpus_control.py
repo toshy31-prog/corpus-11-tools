@@ -80,6 +80,30 @@ class CorpusControlTests(unittest.TestCase):
         self.assertEqual(policy["territories"]["config"]["truth"],"primary")
         self.assertEqual(policy["territories"]["cache"]["truth"],"none")
 
+    def test_coverage_roots_are_explicit_contract_paths(self):
+        policy=corpus_control.load_policy()
+        paths=corpus_control.current_paths()
+        self.assertTrue(policy.get('coverage_roots'))
+        for root in policy['coverage_roots']:
+            self.assertIn(root['path_key'],paths)
+
+    def test_coverage_distinguishes_declared_contract_and_unknown(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp)/'runtime';root.mkdir()
+            for name in ('declared','contract','unknown'):(root/name).mkdir()
+            paths={'runtime':root,'contract_child':root/'contract'}
+            policy={
+                'coverage_roots':[{'id':'runtime','path_key':'runtime'}],
+                'organs':[{'id':'declared','path_key':'runtime','relative':'declared'}],
+                'debts':[], 'forbidden_paths':[], 'intentional_exceptions':[],
+                'compatibility_links':[],
+            }
+            rows={row['name']:row for row in corpus_control.coverage(policy,paths)}
+            self.assertEqual(rows['declared']['status'],'DECLARED_EXACT')
+            self.assertEqual(rows['contract']['status'],'CONTRACT_ONLY')
+            self.assertEqual(rows['unknown']['status'],'UNCLASSIFIED')
+            self.assertEqual({row['name'] for row in corpus_control.coverage_gaps(policy,paths)}, {'contract','unknown'})
+
 
 if __name__=="__main__":
     unittest.main()

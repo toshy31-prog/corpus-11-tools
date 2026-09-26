@@ -213,3 +213,23 @@ Les archives épinglées `runtime.zip` (stable-diffusion.cpp) et
 Elles vivent sous `MEDIA_DOWNLOAD_CACHE_ROOT =
 CORPUS_CACHE_ROOT/downloads/corpus-media`; les runtimes extraits restent sous
 RUNTIME. Les anciens emplacements d'archives sous RUNTIME sont interdits.
+
+
+## COVERAGE Phase 6E — rendre les angles morts observables
+
+Le contrat de chemins et le lifecycle ne répondent pas à la même question. Un chemin peut
+être connu de `corpus_paths.py` sans que son cycle de vie soit encore classifié. À
+l'inverse, un objet peut exister physiquement sans être nommé par aucun des deux.
+
+`./scripts/corpus coverage` inspecte les enfants directs des racines déclarées par
+`coverage_roots` et distingue :
+
+- `DECLARED_EXACT` : objet nommé directement par la constitution ;
+- `DECLARED_CONTAINER` : conteneur d'au moins un objet constitutionnel ;
+- `CONTRACT_ONLY` / `CONTRACT_CONTAINER` : chemin connu techniquement, mais pas encore
+  doté d'un cycle de vie constitutionnel ;
+- `UNCLASSIFIED` : angle mort réel, inconnu à la fois du lifecycle et du path contract.
+
+Cette phase rend ces écarts observables sans les convertir automatiquement en erreurs du
+`doctor`. L'étape suivante consiste à classer ou migrer les écarts, puis seulement à
+promouvoir l'absence d'angles morts en invariant bloquant.

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Corpus control plane: constitution, map, doctor, drift and safe GC preview."""
+"""Corpus control plane: constitution, map, doctor, drift, coverage and safe GC preview."""
 from __future__ import annotations
 
 import argparse
@@ -272,6 +272,114 @@ def drift(policy=None, paths=None):
     return rows
 
 
+def _lexical(path):
+    """Absolute path without resolving symlinks: coverage classifies the namespace itself."""
+    return Path(os.path.abspath(str(path)))
+
+
+def _path_under(path, parent):
+    try:
+        _lexical(path).relative_to(_lexical(parent))
+        return True
+    except ValueError:
+        return False
+
+
+def _lifecycle_locations(policy, paths):
+    rows = []
+    for section in ("organs", "debts", "forbidden_paths", "intentional_exceptions"):
+        for item in policy.get(section, []):
+            path = resolve_spec(item, paths)
+            if path is not None:
+                rows.append({"path": _lexical(path), "section": section, "id": item.get("id")})
+    for item in policy.get("compatibility_links", []):
+        for side in ("link", "target"):
+            spec = item.get(side)
+            if not isinstance(spec, dict):
+                continue
+            path = resolve_spec(spec, paths)
+            if path is not None:
+                rows.append({"path": _lexical(path), "section": "compatibility_links", "id": item.get("id") + ":" + side})
+    return rows
+
+
+def _contract_locations(paths):
+    rows = []
+    for key, value in paths.items():
+        if key == "machine_environment" or value is None:
+            continue
+        if not isinstance(value, (str, os.PathLike, Path)):
+            continue
+        try:
+            path = Path(value)
+        except TypeError:
+            continue
+        if not path.is_absolute():
+            continue
+        rows.append({"path": _lexical(path), "key": key})
+    return rows
+
+
+def coverage(policy=None, paths=None):
+    """Classify direct children of declared coverage roots without changing them.
+
+    DECLARED_* means a lifecycle object names the child or something below it.
+    CONTRACT_* means only the path contract knows it. UNCLASSIFIED means neither
+    the lifecycle nor path contract gives the child a structural identity.
+    """
+    policy = policy or load_policy()
+    paths = paths or current_paths()
+    lifecycle = _lifecycle_locations(policy, paths)
+    contract = _contract_locations(paths)
+    rows = []
+
+    for root in policy.get("coverage_roots", []):
+        base = paths.get(root["path_key"])
+        if base is None:
+            continue
+        base = Path(base)
+        if not base.is_dir():
+            continue
+        for child in sorted(base.iterdir(), key=lambda p: p.name):
+            lexical = _lexical(child)
+            exact_lifecycle = [x for x in lifecycle if x["path"] == lexical]
+            nested_lifecycle = [x for x in lifecycle if x["path"] != lexical and _path_under(x["path"], lexical)]
+            exact_contract = [x for x in contract if x["path"] == lexical]
+            nested_contract = [x for x in contract if x["path"] != lexical and _path_under(x["path"], lexical)]
+
+            if exact_lifecycle:
+                status = "DECLARED_EXACT"
+                evidence = [f"{x['section']}:{x['id']}" for x in exact_lifecycle]
+            elif nested_lifecycle:
+                status = "DECLARED_CONTAINER"
+                evidence = [f"{x['section']}:{x['id']}" for x in nested_lifecycle]
+            elif exact_contract:
+                status = "CONTRACT_ONLY"
+                evidence = [f"contract:{x['key']}" for x in exact_contract]
+            elif nested_contract:
+                status = "CONTRACT_CONTAINER"
+                evidence = [f"contract:{x['key']}" for x in nested_contract]
+            else:
+                status = "UNCLASSIFIED"
+                evidence = []
+
+            rows.append({
+                "root": root.get("id", root["path_key"]),
+                "root_path": str(base),
+                "name": child.name,
+                "path": str(child),
+                "kind": "symlink" if child.is_symlink() else "dir" if child.is_dir() else "file",
+                "status": status,
+                "bytes": bytes_used(child),
+                "evidence": evidence,
+            })
+    return rows
+
+
+def coverage_gaps(policy=None, paths=None):
+    return [row for row in coverage(policy, paths) if row["status"] in {"CONTRACT_ONLY", "CONTRACT_CONTAINER", "UNCLASSIFIED"}]
+
+
 def gc_preview(policy=None, paths=None):
     return [row for row in drift(policy, paths) if row.get("gc_candidate")]
 
@@ -348,6 +456,26 @@ def cmd_drift(args):
     return 0
 
 
+def cmd_coverage(args):
+    rows = coverage_gaps() if args.gaps_only else coverage()
+    for row in rows:
+        row["size"] = human(row["bytes"])
+    if args.json:
+        print(json.dumps(rows, ensure_ascii=False, indent=2))
+    else:
+        print_table(rows, [
+            ("root", "ROOT"),
+            ("status", "STATUT"),
+            ("size", "TAILLE"),
+            ("kind", "TYPE"),
+            ("name", "OBJET"),
+            ("path", "CHEMIN"),
+        ])
+        gaps = sum(row["status"] in {"CONTRACT_ONLY", "CONTRACT_CONTAINER", "UNCLASSIFIED"} for row in rows)
+        print(f"\nCOVERAGE_GAPS={gaps}")
+    return 0
+
+
 def cmd_gc(args):
     if not args.dry_run:
         raise SystemExit("Seul `gc --dry-run` existe dans la constitution v1.")
@@ -386,6 +514,11 @@ def main(argv=None):
     p = sub.add_parser("drift")
     p.add_argument("--json", action="store_true")
     p.set_defaults(func=cmd_drift)
+
+    p = sub.add_parser("coverage")
+    p.add_argument("--json", action="store_true")
+    p.add_argument("--gaps-only", action="store_true")
+    p.set_defaults(func=cmd_coverage)
 
     p = sub.add_parser("gc")
     p.add_argument("--dry-run", action="store_true")

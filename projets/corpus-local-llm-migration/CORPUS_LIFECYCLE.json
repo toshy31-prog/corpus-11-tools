@@ -467,5 +467,43 @@
       },
       "reason": "Préserve les anciens chemins .dev-local/corpus-media/jobs while DATA is canonical."
     }
+  ],
+  "coverage_roots": [
+    {
+      "id": "runtime",
+      "path_key": "runtime"
+    },
+    {
+      "id": "local-runtime",
+      "path_key": "local_runtime"
+    },
+    {
+      "id": "media-runtime",
+      "path_key": "media_runtime"
+    },
+    {
+      "id": "models",
+      "path_key": "models"
+    },
+    {
+      "id": "data",
+      "path_key": "data"
+    },
+    {
+      "id": "state",
+      "path_key": "state"
+    },
+    {
+      "id": "cache",
+      "path_key": "cache"
+    },
+    {
+      "id": "toolchains",
+      "path_key": "toolchains"
+    },
+    {
+      "id": "config",
+      "path_key": "config"
+    }
   ]
 }
