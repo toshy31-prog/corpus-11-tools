@@ -95,7 +95,7 @@ class StateTests(unittest.TestCase):
             self.assertEqual(len(documents.jobs()), 8)
 
     def test_media_corruption_is_isolated(self):
-        with tempfile.TemporaryDirectory() as tmp, patch.object(media, 'BASE', Path(tmp)):
+        with tempfile.TemporaryDirectory() as tmp, patch.object(media, 'BASE', Path(tmp)), patch.object(media, 'JOBS', Path(tmp)/'jobs'):
             for key, raw in [('a','null'), ('b','{}'), ('c','{')]:
                 directory=Path(tmp)/'jobs'/(key*32); directory.mkdir(parents=True); (directory/'job.json').write_text(raw)
             self.assertEqual(media.jobs(), [])

@@ -36,7 +36,7 @@ class AudioGenerationTests(unittest.TestCase):
         self.assertEqual(m.MODELS['ace-step']['kind'],'music')
 
     def test_audio_asset_requires_completed_exact_output(self):
-        with tempfile.TemporaryDirectory() as root, patch.object(m,'BASE',Path(root)):
+        with tempfile.TemporaryDirectory() as root, patch.object(m,'BASE',Path(root)), patch.object(m,'JOBS',Path(root)/'jobs'):
             j = dict(m.validate({'model':'qwen-tts','prompt':'Bonjour'}), id='a'*32, created=1,state='running')
             m.folder(j['id']).mkdir(parents=True);m.save(j)
             path='/corpus/generated/'+j['id']+'/audio.wav'
