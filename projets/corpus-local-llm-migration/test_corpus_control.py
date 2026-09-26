@@ -105,5 +105,36 @@ class CorpusControlTests(unittest.TestCase):
             self.assertEqual({row['name'] for row in corpus_control.coverage_gaps(policy,paths)}, {'contract','unknown'})
 
 
+
+    def test_coverage_owners_are_declared_locations(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp)/'runtime';root.mkdir()
+            (root/'owned').mkdir()
+            policy={
+                'coverage_roots':[{'id':'runtime','path_key':'runtime'}],
+                'organs':[], 'debts':[], 'forbidden_paths':[],
+                'intentional_exceptions':[], 'compatibility_links':[],
+                'coverage_owners':[{'id':'owned-runtime','path_key':'runtime','relative':'owned','owner':'runtime'}],
+            }
+            rows=corpus_control.coverage(policy,{'runtime':root})
+            self.assertEqual(rows[0]['status'],'DECLARED_EXACT')
+            self.assertIn('coverage_owners:owned-runtime',rows[0]['evidence'])
+
+    def test_finish_campaign_removes_known_runtime_debts(self):
+        policy=corpus_control.load_policy()
+        self.assertEqual(policy['debts'],[])
+        forbidden={x['id'] for x in policy['forbidden_paths']}
+        self.assertIn('retired-legacy-voice-model',forbidden)
+        self.assertIn('retired-slot-cache',forbidden)
+        links={x['id'] for x in policy.get('compatibility_links',[])}
+        for ident in (
+            'memory-runtime-alias','shares-runtime-alias',
+            'browser-downloads-runtime-alias','continuity-runtime-alias',
+            'hermes-home-runtime-alias','checkpoints-runtime-alias',
+            'tmp-runtime-alias','runtime-root-cache-alias',
+            'autonomy-runtime-alias',
+        ):
+            self.assertIn(ident,links)
+
 if __name__=="__main__":
     unittest.main()

@@ -233,3 +233,26 @@ l'inverse, un objet peut exister physiquement sans être nommé par aucun des de
 Cette phase rend ces écarts observables sans les convertir automatiquement en erreurs du
 `doctor`. L'étape suivante consiste à classer ou migrer les écarts, puis seulement à
 promouvoir l'absence d'angles morts en invariant bloquant.
+
+## FINISH campaign — ownership et convergence du control plane
+
+La consolidation finale sépare la **vérité physique** des interfaces de
+compatibilité. Les anciens chemins runtime peuvent rester sous forme de liens
+symboliques explicitement vérifiés par `doctor`, mais les octets persistants
+sont placés dans leur territoire de cycle de vie :
+
+- `memory`, `shares` et `browser-downloads` : DATA ;
+- `continuity`, `hermes-home`, `checkpoints` et l'historique autonomie legacy :
+  STATE ;
+- les anciens `tmp` et cache de racine runtime : CACHE ;
+- l'ancien `voice-model`, `slot-cache` de test et les vieux logs de couverture :
+  retirés du HOT runtime et conservés dans le Vault comme artefacts retraités.
+
+`coverage_owners` décrit les enfants normaux d'un organe (runtimes versionnés,
+environnements actifs, sockets, locks, manifests et moteurs média) sans les
+promouvoir artificiellement en sources de vérité. Cette propriété complète
+`organs`, `compatibility_links`, `forbidden_paths` et `debts`.
+
+Critère de convergence local : `doctor` sans FAIL, `DRIFT=0`,
+`COVERAGE_GAPS=0` et `gc --dry-run` vide. Un objet nouveau non attribué redevient
+ainsi immédiatement visible.

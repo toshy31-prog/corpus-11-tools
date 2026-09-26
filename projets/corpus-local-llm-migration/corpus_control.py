@@ -287,7 +287,7 @@ def _path_under(path, parent):
 
 def _lifecycle_locations(policy, paths):
     rows = []
-    for section in ("organs", "debts", "forbidden_paths", "intentional_exceptions"):
+    for section in ("organs", "debts", "forbidden_paths", "intentional_exceptions", "coverage_owners"):
         for item in policy.get(section, []):
             path = resolve_spec(item, paths)
             if path is not None:
@@ -323,7 +323,7 @@ def _contract_locations(paths):
 def coverage(policy=None, paths=None):
     """Classify direct children of declared coverage roots without changing them.
 
-    DECLARED_* means a lifecycle object names the child or something below it.
+    DECLARED_* means a lifecycle object or explicit owner names the child or something below it.
     CONTRACT_* means only the path contract knows it. UNCLASSIFIED means neither
     the lifecycle nor path contract gives the child a structural identity.
     """

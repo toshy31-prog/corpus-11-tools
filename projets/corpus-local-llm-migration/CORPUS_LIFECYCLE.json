@@ -234,6 +234,174 @@
       "territory": "data",
       "required": true,
       "kind": "dir"
+    },
+    {
+      "id": "models-llm-root",
+      "path_key": "models",
+      "relative": "llm",
+      "territory": "models",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "models-media-root",
+      "path_key": "models",
+      "relative": "media",
+      "territory": "models",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "models-speech-root",
+      "path_key": "models",
+      "relative": "speech",
+      "territory": "models",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "models-docling-root",
+      "path_key": "models",
+      "relative": "docling",
+      "territory": "models",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "state-maintenance-root",
+      "path_key": "state",
+      "relative": "maintenance",
+      "territory": "state",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "state-logs-root",
+      "path_key": "state",
+      "relative": "logs",
+      "territory": "state",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "state-scheduler-root",
+      "path_key": "state",
+      "relative": "scheduler",
+      "territory": "state",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "cache-downloads-root",
+      "path_key": "cache",
+      "relative": "downloads",
+      "territory": "cache",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "cache-huggingface-root",
+      "path_key": "cache",
+      "relative": "huggingface",
+      "territory": "cache",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "config-machine",
+      "path_key": "config",
+      "relative": "machine.json",
+      "territory": "config",
+      "required": true,
+      "kind": "file"
+    },
+    {
+      "id": "config-corpus-local",
+      "path_key": "config",
+      "relative": "corpus-local",
+      "territory": "config",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "toolchains-legacy",
+      "path_key": "toolchains",
+      "relative": "legacy",
+      "territory": "toolchains",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "data-local-memory",
+      "path_key": "data",
+      "relative": "corpus-local/memory",
+      "territory": "data",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "data-local-shares",
+      "path_key": "data",
+      "relative": "corpus-local/shares",
+      "territory": "data",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "data-browser-downloads",
+      "path_key": "data",
+      "relative": "corpus-local/browser-downloads",
+      "territory": "data",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "state-continuity",
+      "path_key": "state",
+      "relative": "continuity",
+      "territory": "state",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "state-hermes-profile",
+      "path_key": "state",
+      "relative": "profiles/hermes-home",
+      "territory": "state",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "state-local-checkpoints",
+      "path_key": "state",
+      "relative": "corpus-local/checkpoints",
+      "territory": "state",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "state-autonomy-legacy",
+      "path_key": "state",
+      "relative": "maintenance/autonomy/legacy-runtime",
+      "territory": "state",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "cache-local-tmp",
+      "path_key": "cache",
+      "relative": "tmp/corpus-local",
+      "territory": "cache",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "cache-runtime-root",
+      "path_key": "cache",
+      "relative": "runtime-root",
+      "territory": "cache",
+      "required": true,
+      "kind": "dir"
     }
   ],
   "probes": [
@@ -324,6 +492,48 @@
       "path_key": "media_runtime",
       "relative": "audio-runtime.tar.gz",
       "reason": "Archive reconstructible déplacée sous CACHE/downloads/corpus-media."
+    },
+    {
+      "id": "retired-legacy-voice-model",
+      "path_key": "local_runtime",
+      "relative": "voice-model",
+      "reason": "Ancien modèle ASR non actif retiré du runtime vers le Vault."
+    },
+    {
+      "id": "retired-slot-cache",
+      "path_key": "local_runtime",
+      "relative": "slot-cache",
+      "reason": "Artefact persistence-test orphelin retiré du runtime vers le Vault."
+    },
+    {
+      "id": "retired-coverage-cct-20260913",
+      "path_key": "runtime",
+      "relative": "coverage-cct-20260913.log",
+      "reason": "Ancien log de couverture retiré vers le Vault."
+    },
+    {
+      "id": "retired-coverage-checks-20260913",
+      "path_key": "runtime",
+      "relative": "coverage-checks-20260913.log",
+      "reason": "Ancien log de couverture retiré vers le Vault."
+    },
+    {
+      "id": "retired-coverage-node-20260913",
+      "path_key": "runtime",
+      "relative": "coverage-node-20260913.log",
+      "reason": "Ancien log de couverture retiré vers le Vault."
+    },
+    {
+      "id": "retired-coverage-python-20260913",
+      "path_key": "runtime",
+      "relative": "coverage-python-20260913.log",
+      "reason": "Ancien log de couverture retiré vers le Vault."
+    },
+    {
+      "id": "retired-coverage-python-scripts-20260913",
+      "path_key": "runtime",
+      "relative": "coverage-python-scripts-20260913.log",
+      "reason": "Ancien log de couverture retiré vers le Vault."
     }
   ],
   "intentional_exceptions": [
@@ -334,94 +544,7 @@
       "reason": "Locator COLD on-demand vers le Vault; ne doit pas être assimilé à une archive CACHE."
     }
   ],
-  "debts": [
-    {
-      "id": "voice-model-in-runtime",
-      "path_key": "local_runtime",
-      "relative": "voice-model",
-      "class": "model-placement",
-      "severity": "review",
-      "expected": "speech-models-or-runtime-exception",
-      "reason": "Payload 141 MiB à classifier avec ses consommateurs."
-    },
-    {
-      "id": "slot-cache-in-runtime",
-      "path_key": "local_runtime",
-      "relative": "slot-cache",
-      "class": "cache-placement",
-      "severity": "review",
-      "expected": "cache-or-state",
-      "reason": "Cache 106 MiB à classifier par source de vérité et reconstructibilité."
-    },
-    {
-      "id": "continuity-in-runtime",
-      "path_key": "local_runtime",
-      "relative": "continuity",
-      "class": "state-placement",
-      "severity": "review",
-      "expected": "state-or-data",
-      "reason": "État de continuité à classifier avant déplacement."
-    },
-    {
-      "id": "runtime-autonomy",
-      "path_key": "runtime",
-      "relative": "autonomy",
-      "class": "state-placement",
-      "severity": "review",
-      "expected": "state",
-      "reason": "Ancien état autonomie sous RUNTIME."
-    },
-    {
-      "id": "coverage-cct-log",
-      "path_key": "runtime",
-      "relative": "coverage-cct-20260913.log",
-      "class": "gc-candidate",
-      "severity": "low",
-      "expected": "state-or-delete",
-      "reason": "Ancien log de couverture.",
-      "gc_candidate": true
-    },
-    {
-      "id": "coverage-checks-log",
-      "path_key": "runtime",
-      "relative": "coverage-checks-20260913.log",
-      "class": "gc-candidate",
-      "severity": "low",
-      "expected": "state-or-delete",
-      "reason": "Ancien log de couverture.",
-      "gc_candidate": true
-    },
-    {
-      "id": "coverage-node-log",
-      "path_key": "runtime",
-      "relative": "coverage-node-20260913.log",
-      "class": "gc-candidate",
-      "severity": "low",
-      "expected": "state-or-delete",
-      "reason": "Ancien log de couverture.",
-      "gc_candidate": true
-    },
-    {
-      "id": "coverage-python-log",
-      "path_key": "runtime",
-      "relative": "coverage-python-20260913.log",
-      "class": "gc-candidate",
-      "severity": "low",
-      "expected": "state-or-delete",
-      "reason": "Ancien log de couverture.",
-      "gc_candidate": true
-    },
-    {
-      "id": "coverage-python-scripts-log",
-      "path_key": "runtime",
-      "relative": "coverage-python-scripts-20260913.log",
-      "class": "gc-candidate",
-      "severity": "low",
-      "expected": "state-or-delete",
-      "reason": "Ancien log de couverture.",
-      "gc_candidate": true
-    }
-  ],
+  "debts": [],
   "compatibility_links": [
     {
       "id": "attachments-runtime-alias",
@@ -466,6 +589,114 @@
         "path_key": "media_jobs_data"
       },
       "reason": "Préserve les anciens chemins .dev-local/corpus-media/jobs while DATA is canonical."
+    },
+    {
+      "id": "memory-runtime-alias",
+      "link": {
+        "path_key": "local_runtime",
+        "relative": "memory"
+      },
+      "target": {
+        "path_key": "data",
+        "relative": "corpus-local/memory"
+      },
+      "reason": "Mémoire persistante physiquement sous DATA; ancien chemin conservé comme interface."
+    },
+    {
+      "id": "shares-runtime-alias",
+      "link": {
+        "path_key": "local_runtime",
+        "relative": "shares"
+      },
+      "target": {
+        "path_key": "data",
+        "relative": "corpus-local/shares"
+      },
+      "reason": "Instantanés locaux utilisateur physiquement sous DATA."
+    },
+    {
+      "id": "browser-downloads-runtime-alias",
+      "link": {
+        "path_key": "local_runtime",
+        "relative": "browser-downloads"
+      },
+      "target": {
+        "path_key": "data",
+        "relative": "corpus-local/browser-downloads"
+      },
+      "reason": "Téléchargements utilisateur physiquement sous DATA."
+    },
+    {
+      "id": "continuity-runtime-alias",
+      "link": {
+        "path_key": "local_runtime",
+        "relative": "continuity"
+      },
+      "target": {
+        "path_key": "state",
+        "relative": "continuity"
+      },
+      "reason": "Bibliothèque de continuité dérivée et inventaires associés hors RUNTIME."
+    },
+    {
+      "id": "hermes-home-runtime-alias",
+      "link": {
+        "path_key": "local_runtime",
+        "relative": "hermes-home"
+      },
+      "target": {
+        "path_key": "state",
+        "relative": "profiles/hermes-home"
+      },
+      "reason": "Profil Hermes mutable hors payload d'exécution."
+    },
+    {
+      "id": "checkpoints-runtime-alias",
+      "link": {
+        "path_key": "local_runtime",
+        "relative": "checkpoints"
+      },
+      "target": {
+        "path_key": "state",
+        "relative": "corpus-local/checkpoints"
+      },
+      "reason": "Checkpoints opérationnels sous STATE."
+    },
+    {
+      "id": "tmp-runtime-alias",
+      "link": {
+        "path_key": "local_runtime",
+        "relative": "tmp"
+      },
+      "target": {
+        "path_key": "cache",
+        "relative": "tmp/corpus-local"
+      },
+      "reason": "Temporaire reconstructible sous CACHE."
+    },
+    {
+      "id": "runtime-root-cache-alias",
+      "link": {
+        "path_key": "runtime",
+        "relative": "cache"
+      },
+      "target": {
+        "path_key": "cache",
+        "relative": "runtime-root"
+      },
+      "reason": "Ancien cache runtime physiquement sous CACHE."
+    },
+    {
+      "id": "autonomy-runtime-alias",
+      "link": {
+        "path_key": "runtime",
+        "relative": "autonomy"
+      },
+      "target": {
+        "path_key": "state",
+        "relative": "maintenance/autonomy/legacy-runtime"
+      },
+      "reason": "Historique autonomie legacy conservé sous STATE."
     }
   ],
   "coverage_roots": [
@@ -504,6 +735,256 @@
     {
       "id": "config",
       "path_key": "config"
+    }
+  ],
+  "coverage_owners": [
+    {
+      "id": "local-runtime-versions",
+      "path_key": "local_runtime",
+      "relative": "versions",
+      "owner": "local-runtime",
+      "territory": "runtime",
+      "role": "Runtimes versionnés actifs."
+    },
+    {
+      "id": "local-runtime-voice-env",
+      "path_key": "local_runtime",
+      "relative": "voice-env",
+      "owner": "local-runtime",
+      "territory": "runtime",
+      "role": "Environnement Python actif de transcription."
+    },
+    {
+      "id": "local-runtime-browsers",
+      "path_key": "local_runtime",
+      "relative": "browsers",
+      "owner": "local-runtime",
+      "territory": "runtime",
+      "role": "Payload navigateur Chromium local."
+    },
+    {
+      "id": "local-runtime-hermes-env",
+      "path_key": "local_runtime",
+      "relative": "hermes-env",
+      "owner": "local-runtime",
+      "territory": "runtime",
+      "role": "Environnement d'exécution Hermes."
+    },
+    {
+      "id": "local-runtime-licenses",
+      "path_key": "local_runtime",
+      "relative": "licenses",
+      "owner": "local-runtime",
+      "territory": "runtime",
+      "role": "Licences runtime locales."
+    },
+    {
+      "id": "local-runtime-hermes-dependencies-json",
+      "path_key": "local_runtime",
+      "relative": "hermes-dependencies.json",
+      "owner": "local-runtime",
+      "territory": "runtime",
+      "role": "Manifeste runtime Hermes."
+    },
+    {
+      "id": "local-runtime-conversations-moe-json",
+      "path_key": "local_runtime",
+      "relative": "conversations-moe.json",
+      "owner": "local-runtime",
+      "territory": "runtime",
+      "role": "Index runtime local historique conservé explicitement."
+    },
+    {
+      "id": "local-runtime-downloads",
+      "path_key": "local_runtime",
+      "relative": "downloads",
+      "owner": "local-runtime",
+      "territory": "runtime",
+      "role": "Namespace de locators/compatibilité runtime."
+    },
+    {
+      "id": "local-runtime-build-toolchain-json",
+      "path_key": "local_runtime",
+      "relative": "build-toolchain.json",
+      "owner": "local-runtime",
+      "territory": "runtime",
+      "role": "Receipt runtime de toolchain."
+    },
+    {
+      "id": "local-runtime-hermes-acquisition-json",
+      "path_key": "local_runtime",
+      "relative": "hermes-acquisition.json",
+      "owner": "local-runtime",
+      "territory": "runtime",
+      "role": "Receipt d'acquisition Hermes."
+    },
+    {
+      "id": "local-runtime-installation-json",
+      "path_key": "local_runtime",
+      "relative": "installation.json",
+      "owner": "local-runtime",
+      "territory": "runtime",
+      "role": "Receipt d'installation runtime."
+    },
+    {
+      "id": "local-runtime-python-acquisition-json",
+      "path_key": "local_runtime",
+      "relative": "python-acquisition.json",
+      "owner": "local-runtime",
+      "territory": "runtime",
+      "role": "Receipt d'acquisition Python."
+    },
+    {
+      "id": "local-runtime-smoke-intel-json",
+      "path_key": "local_runtime",
+      "relative": "smoke-intel.json",
+      "owner": "local-runtime",
+      "territory": "runtime",
+      "role": "Preuve de smoke runtime."
+    },
+    {
+      "id": "local-runtime-smoke-moe-rebuilt-json",
+      "path_key": "local_runtime",
+      "relative": "smoke-moe-rebuilt.json",
+      "owner": "local-runtime",
+      "territory": "runtime",
+      "role": "Preuve de smoke runtime."
+    },
+    {
+      "id": "local-runtime-smoke-moe-json",
+      "path_key": "local_runtime",
+      "relative": "smoke-moe.json",
+      "owner": "local-runtime",
+      "territory": "runtime",
+      "role": "Preuve de smoke runtime."
+    },
+    {
+      "id": "local-runtime-smoke-json",
+      "path_key": "local_runtime",
+      "relative": "smoke.json",
+      "owner": "local-runtime",
+      "territory": "runtime",
+      "role": "Preuve de smoke runtime."
+    },
+    {
+      "id": "local-runtime-voice-requirements-lock",
+      "path_key": "local_runtime",
+      "relative": "voice-requirements.lock",
+      "owner": "local-runtime",
+      "territory": "runtime",
+      "role": "Lock runtime voix."
+    },
+    {
+      "id": "local-runtime-vulkan-installation-json",
+      "path_key": "local_runtime",
+      "relative": "vulkan-installation.json",
+      "owner": "local-runtime",
+      "territory": "runtime",
+      "role": "Receipt Vulkan runtime."
+    },
+    {
+      "id": "local-runtime-web-check-html",
+      "path_key": "local_runtime",
+      "relative": "web-check.html",
+      "owner": "local-runtime",
+      "territory": "runtime",
+      "role": "Artefact de diagnostic runtime borné."
+    },
+    {
+      "id": "local-runtime-interface-lock",
+      "path_key": "local_runtime",
+      "relative": "interface.lock",
+      "owner": "local-runtime",
+      "territory": "runtime",
+      "role": "Verrou runtime."
+    },
+    {
+      "id": "local-runtime-runtime-lock",
+      "path_key": "local_runtime",
+      "relative": "runtime.lock",
+      "owner": "local-runtime",
+      "territory": "runtime",
+      "role": "Verrou runtime."
+    },
+    {
+      "id": "local-runtime-tools-sock",
+      "path_key": "local_runtime",
+      "relative": "tools.sock",
+      "owner": "local-runtime",
+      "territory": "runtime",
+      "role": "Socket runtime."
+    },
+    {
+      "id": "local-runtime-web-sock",
+      "path_key": "local_runtime",
+      "relative": "web.sock",
+      "owner": "local-runtime",
+      "territory": "runtime",
+      "role": "Socket runtime."
+    },
+    {
+      "id": "media-runtime-audio-runtime",
+      "path_key": "media_runtime",
+      "relative": "audio-runtime",
+      "owner": "media-runtime",
+      "territory": "runtime",
+      "role": "Moteur audio.cpp actif."
+    },
+    {
+      "id": "media-runtime-runtime",
+      "path_key": "media_runtime",
+      "relative": "runtime",
+      "owner": "media-runtime",
+      "territory": "runtime",
+      "role": "Moteur stable-diffusion.cpp actif."
+    },
+    {
+      "id": "media-runtime-licenses",
+      "path_key": "media_runtime",
+      "relative": "licenses",
+      "owner": "media-runtime",
+      "territory": "runtime",
+      "role": "Licences des moteurs média."
+    },
+    {
+      "id": "media-runtime-audio-manifest-json",
+      "path_key": "media_runtime",
+      "relative": "audio-manifest.json",
+      "owner": "media-runtime",
+      "territory": "runtime",
+      "role": "Manifeste audio actif."
+    },
+    {
+      "id": "media-runtime-models",
+      "path_key": "media_runtime",
+      "relative": "models",
+      "owner": "media-runtime",
+      "territory": "runtime",
+      "role": "Namespace runtime média de compatibilité/manifeste."
+    },
+    {
+      "id": "media-runtime-models-manifest-json",
+      "path_key": "media_runtime",
+      "relative": "models-manifest.json",
+      "owner": "media-runtime",
+      "territory": "runtime",
+      "role": "Manifeste modèles média."
+    },
+    {
+      "id": "media-runtime-tae-manifest-json",
+      "path_key": "media_runtime",
+      "relative": "tae-manifest.json",
+      "owner": "media-runtime",
+      "territory": "runtime",
+      "role": "Manifeste décodeur vidéo."
+    },
+    {
+      "id": "media-runtime-worker-lock",
+      "path_key": "media_runtime",
+      "relative": "worker.lock",
+      "owner": "media-runtime",
+      "territory": "runtime",
+      "role": "Verrou du worker média."
     }
   ]
 }
