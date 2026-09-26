@@ -136,6 +136,12 @@ def resolve_contract(environ=None, *, home=None, repo_root=None, machine_config=
         "uv_cache": cache / "uv",
         "huggingface_cache": cache / "huggingface",
         "huggingface_hub_cache": cache / "huggingface/hub",
+        "retrieval_data": data / "retrieval",
+        "retrieval_models": models / "retrieval",
+        "routing_runtime": runtime / "corpus-routing",
+        "tools_runtime": runtime / "corpus-tools",
+        "research_cache": cache / "research",
+        "observability_state": state / "observability",
         "maintenance_state": state / "maintenance",
         "compat_dev_local": repository / ".dev-local",
     }

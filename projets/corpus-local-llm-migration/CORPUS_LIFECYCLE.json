@@ -402,6 +402,110 @@
       "territory": "cache",
       "required": true,
       "kind": "dir"
+    },
+    {
+      "id": "routing-runtime",
+      "path_key": "runtime",
+      "relative": "corpus-routing",
+      "territory": "runtime",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "tools-runtime",
+      "path_key": "runtime",
+      "relative": "corpus-tools",
+      "territory": "runtime",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "retrieval-models",
+      "path_key": "models",
+      "relative": "retrieval",
+      "territory": "models",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "retrieval-data",
+      "path_key": "data",
+      "relative": "retrieval",
+      "territory": "data",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "toolchain-extensions",
+      "path_key": "toolchains",
+      "relative": "extensions",
+      "territory": "toolchains",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "promptfoo-state",
+      "path_key": "state",
+      "relative": "promptfoo",
+      "territory": "state",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "phoenix-state",
+      "path_key": "state",
+      "relative": "phoenix",
+      "territory": "state",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "observability-state",
+      "path_key": "state",
+      "relative": "observability",
+      "territory": "state",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "searxng-config",
+      "path_key": "config",
+      "relative": "searxng",
+      "territory": "config",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "routing-config",
+      "path_key": "config",
+      "relative": "routing",
+      "territory": "config",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "searxng-cache",
+      "path_key": "cache",
+      "relative": "searxng",
+      "territory": "cache",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "crawl4ai-cache",
+      "path_key": "cache",
+      "relative": "crawl4ai",
+      "territory": "cache",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "research-cache",
+      "path_key": "cache",
+      "relative": "research",
+      "territory": "cache",
+      "required": true,
+      "kind": "dir"
     }
   ],
   "probes": [

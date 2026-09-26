@@ -7,7 +7,7 @@ BASE=LOCAL_RUNTIME_ROOT
 SETTINGS=CONFIG_ROOT/'corpus-local/browser-settings.json'
 LOG_ROOT=STATE_ROOT/'logs/corpus-local'
 LOCK=threading.RLock();WORKER_LOCK=threading.Lock();REQUESTS={};WORKER=None
-ACTIONS={'tab-new','tab-select','tab-close','forward','launch','navigate','snapshot','screenshot','click','fill','back','reload','clear','close','download','ssh','git','hook'}
+ACTIONS={'tab-new','tab-select','tab-close','forward','launch','navigate','snapshot','screenshot','click','fill','back','reload','clear','close','download','ssh','git','hook','research'}
 
 def browser_info():
     binary=BASE/'browsers/chromium-local/chrome-linux64/chrome'
@@ -36,6 +36,12 @@ def submit(data):
 
 def execute(data):
     global WORKER
+    if data['action']=='research':
+        query=data.get('query','');limit=int(data.get('limit',5))
+        if not isinstance(query,str) or not 1<=len(query)<=2000 or not 1<=limit<=8: raise ValueError('Recherche invalide.')
+        proc=subprocess.run([str(LOCAL_RUNTIME_ROOT/'corpus-tools/crawl4ai-env/bin/python'),str(HERE/'research_worker.py')],input=json.dumps({'query':query,'limit':limit}),capture_output=True,text=True,timeout=300)
+        if proc.returncode: raise ValueError(proc.stderr[-12000:] or proc.stdout[-12000:] or 'Recherche échouée.')
+        return {'title':'Recherche · '+query[:100],'text':proc.stdout[:180000]}
     if data['action']=='hook':
         import environment_manager,worktree_manager
         path=data.get('worktree')

@@ -256,3 +256,7 @@ promouvoir artificiellement en sources de vérité. Cette propriété complète
 Critère de convergence local : `doctor` sans FAIL, `DRIFT=0`,
 `COVERAGE_GAPS=0` et `gc --dry-run` vide. Un objet nouveau non attribué redevient
 ainsi immédiatement visible.
+
+## Capability expansion 2026-09-26
+
+RUNTIME/corpus-routing contient llama-swap. RUNTIME/corpus-tools contient Serena/Crawl4AI. MODELS/retrieval contient embedding/reranker. DATA/retrieval contient l’index hybride. Toute recherche réseau du modèle reste soumise au tool_gateway et à l’approbation humaine.

@@ -15,7 +15,7 @@ import urllib.request
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 from runtime_limits import CONTEXT_TOKENS, OUTPUT_TOKENS
-from corpus_paths import CACHE_ROOT, CONFIG_ROOT, DATA_ROOT, LLM_MODELS_ROOT, LOCAL_RUNTIME_ROOT, MODELS_ROOT, OPENCODE_CACHE_HOME, OPENCODE_CONFIG_HOME, OPENCODE_DATA_HOME, OPENCODE_PROFILE_HOME, OPENCODE_STATE_HOME, RUNTIME_ROOT, STATE_ROOT, contract_environment
+from corpus_paths import CACHE_ROOT, CONFIG_ROOT, DATA_ROOT, LLM_MODELS_ROOT, LOCAL_RUNTIME_ROOT, MODELS_ROOT, OPENCODE_CACHE_HOME, OPENCODE_CONFIG_HOME, OPENCODE_DATA_HOME, OPENCODE_PROFILE_HOME, OPENCODE_STATE_HOME, RUNTIME_ROOT, STATE_ROOT, TOOLCHAINS_ROOT, contract_environment
 BASE = LOCAL_RUNTIME_ROOT
 LOG_ROOT = STATE_ROOT / 'logs/corpus-local'
 QWEN36_ROOT = LLM_MODELS_ROOT / 'qwen3.6'
@@ -83,7 +83,7 @@ def environment(intel=False, moe=False):
         'autoupdate': False, 'lsp': False, 'formatter': False,
         'default_agent': 'corpus', 'subagent_depth': 1,
         'plugin': [(HERE / 'plan_guard.mjs').as_uri()],
-        'mcp': {'corpus-browser': {'type':'local','command':[sys.executable,str(HERE/'local_tools_mcp.py')],'timeout':300000}},
+        'mcp': {'corpus-tools': {'type':'local','command':[sys.executable,str(HERE/'local_tools_mcp.py')],'timeout':300000}, 'corpus-retrieval': {'type':'local','command':[sys.executable,str(HERE/'retrieval_mcp.py')],'timeout':300000}, 'serena': {'type':'local','command':[sys.executable,str(HERE/'serena_wrapper.py')],'timeout':300000}},
         'agent': {'corpus-plan': {'mode':'primary','model':model_ref,'variant':'direct','permission':{'*':'deny'},'tools':{'*':False},'prompt':'Tu es Corpus en mode Plan. Réponds uniquement par un plan. Aucun outil ne doit être utilisé.'}, 'title': {'disable': True}, 'corpus': {'mode': 'primary',
             'model': model_ref,
             'variant': 'direct',
@@ -153,6 +153,10 @@ def enter_sandbox(args, mode):
     if MODELS_ROOT.exists():
         pos = cmd.index('--chdir')
         cmd[pos:pos] = ['--ro-bind', str(MODELS_ROOT), str(MODELS_ROOT)]
+    # TOOLCHAINS read-only: sqlite-vec / Serena provenance.
+    if TOOLCHAINS_ROOT.exists():
+        pos = cmd.index('--chdir')
+        cmd[pos:pos] = ['--ro-bind', str(TOOLCHAINS_ROOT), str(TOOLCHAINS_ROOT)]
     # Persistent Corpus DATA is primary truth outside RUNTIME; expose it explicitly.
     if DATA_ROOT.exists():
         pos = cmd.index('--chdir')
@@ -338,6 +342,23 @@ def hermes_environment(env):
             'OPENAI_API_KEY': 'local'}
 
 
+def start_model_router(env, executable, model, gpu_layers, device, vision):
+    router = RUNTIME_ROOT / "corpus-routing/llama-swap/v258"
+    swap = next((p for p in router.rglob("llama-swap") if p.is_file()), None)
+    if swap is None: raise RuntimeError("llama-swap v258 absent")
+    embedding = MODELS_ROOT / "retrieval/qwen3-embedding-0.6b/Qwen3-Embedding-0.6B-Q4_K_M.gguf"
+    reranker = MODELS_ROOT / "retrieval/qwen3-reranker-0.6b/qwen3-reranker-0.6b-q8_0.gguf"
+    if not embedding.is_file() or not reranker.is_file(): raise RuntimeError("Modèles retrieval absents")
+    routing = CONFIG_ROOT / "routing"; routing.mkdir(parents=True, exist_ok=True); config = routing / "llama-swap.yaml"
+    def quote(x): return "'" + str(x).replace("'", "''") + "'"
+    def line(xs): return " ".join(quote(x) for x in xs)
+    main=[str(executable),"-m",str(model),"--alias","corpus","--host","127.0.0.1","--port","${PORT}","--offline","--jinja","-c",str(CONTEXT_TOKENS),"-np","1","-t","8","-tb","8","-ngl",gpu_layers,"-b","256","-ub","64","--reasoning-budget","512",*device,*vision]
+    emb=[str(executable),"-m",str(embedding),"--alias","corpus-embed","--host","127.0.0.1","--port","${PORT}","--offline","--embedding","-c","4096","-b","4096","-ub","4096","-np","1","-t","6","-ngl","0","--no-webui"]
+    rank=[str(executable),"-m",str(reranker),"--alias","corpus-rerank","--host","127.0.0.1","--port","${PORT}","--offline","--embedding","--rerank","--pooling","rank","-c","4096","-b","4096","-ub","4096","-np","1","-t","6","-ngl","0","--no-webui"]
+    config.write_text("healthCheckTimeout: 300\nlogLevel: info\nmodels:\n  corpus:\n    cmd: " + quote(line(main)) + "\n    ttl: 300\n  corpus-embed:\n    cmd: " + quote(line(emb)) + "\n    ttl: 120\n  corpus-rerank:\n    cmd: " + quote(line(rank)) + "\n    ttl: 120\n")
+    return subprocess.Popen([str(swap),"-config",str(config),"-listen",f"127.0.0.1:{PORT}"],env=env)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--inside', action='store_true', help=argparse.SUPPRESS)
@@ -417,11 +438,7 @@ def main():
         if args.cuda:
             device = ['--device', 'CUDA0', '--n-cpu-moe', '30', '--load-mode', 'none']
         gpu_layers = '99' if args.intel else ('20' if args.cuda else '0')
-        server = subprocess.Popen([str(executable), '-m', str(model), '--alias', 'corpus',
-            '--host', '127.0.0.1', '--port', str(PORT), '--offline', '--jinja',
-            '-c', str(CONTEXT_TOKENS), '-np', '1', '-t', '8', '-tb', '8', '-ngl', gpu_layers,
-            '-b', '256', '-ub', '64', '--reasoning-budget', '512', *device, *vision],
-            env=env, stdout=log, stderr=log)
+        server = start_model_router(env, executable, model, gpu_layers, device, vision)
         try:
             print('Chargement du modèle local…', flush=True)
             deadline = time.monotonic() + 240

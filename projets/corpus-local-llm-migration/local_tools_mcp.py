@@ -18,6 +18,7 @@ def call(data):
     with socket.socket(socket.AF_UNIX) as peer:
         peer.settimeout(10);peer.connect(str(SOCKET));peer.sendall(json.dumps(data).encode()+b'\n')
         with peer.makefile('rb') as stream:return json.loads(stream.readline(8000000))
+TOOLS.extend([{'name':'research_request','description':'Demander une recherche Web structurée via SearXNG + Crawl4AI. Validation humaine requise.','inputSchema':{'type':'object','properties':{'query':{'type':'string','maxLength':2000},'limit':{'type':'integer','minimum':1,'maximum':8}},'required':['query'],'additionalProperties':False}},{'name':'research_result','description':'Consulter le résultat d’une recherche approuvée.','inputSchema':{'type':'object','properties':{'id':{'type':'string'}},'required':['id'],'additionalProperties':False}}])
 TOOLS.append({'name':'ssh_request','description':'Demander une commande SSH distante ; validation humaine requise avant toute connexion. Clés SSH existantes uniquement, clé hôte déjà connue requise.', 'inputSchema':{'type':'object','properties':{'host':{'type':'string'},'user':{'type':'string'},'port':{'type':'integer'},'command':{'type':'string'}},'required':['host','user','command'],'additionalProperties':False}})
 TOOLS.append({'name':'git_request','description':'Demander status/diff/push/création PR brouillon/fusion. Validation humaine avant exécution. Ne jamais prétendre qu’une demande en attente est exécutée.','inputSchema':{'type':'object','properties':{'task':{'type':'string','enum':['status','diff','push','pr-create','pr-merge']},'project':{'type':'string'},'title':{'type':'string'},'body':{'type':'string'},'number':{'type':'integer'},'squash':{'type':'boolean'}},'required':['task'],'additionalProperties':False}})
 for name,description,properties,required in [
@@ -65,6 +66,8 @@ for line in sys.stdin:
                 else: value=json.loads(proc.stdout)
             elif name in ('document_create','document_result','document_formats'):
                 value=call({'operation':'document','arguments':dict(args,action={'document_create':'create','document_result':'status','document_formats':'list'}[name])})
+            elif name=='research_request':value=call({'operation':'request','arguments':dict(args,action='research')})
+            elif name=='research_result':value=call({'operation':'status','id':args['id']})
             elif name=='browser_request':value=call({'operation':'request','arguments':args})
             elif name=='git_request':value=call({'operation':'request','arguments':dict(args,action='git')})
             elif name=='ssh_request':value=call({'operation':'request','arguments':dict(args,action='ssh')})
