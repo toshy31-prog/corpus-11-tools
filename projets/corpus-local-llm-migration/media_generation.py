@@ -14,9 +14,10 @@ import threading
 import time
 import uuid
 import audio_generation
-from corpus_paths import MEDIA_MODELS_ROOT, MEDIA_RUNTIME_ROOT
+from corpus_paths import MEDIA_JOBS_DATA_ROOT, MEDIA_MODELS_ROOT, MEDIA_RUNTIME_ROOT
 
 BASE = MEDIA_RUNTIME_ROOT
+JOBS = MEDIA_JOBS_DATA_ROOT
 MODEL_BASE = MEDIA_MODELS_ROOT
 LOCK = threading.RLock()
 STARTED = False
@@ -35,7 +36,7 @@ MODELS.update(audio_generation.MODELS)
 def folder(identifier):
     if not isinstance(identifier, str) or not re.fullmatch(r'[a-f0-9]{32}', identifier):
         raise ValueError('Identifiant de génération invalide.')
-    return BASE / 'jobs' / identifier
+    return JOBS / identifier
 
 
 def read(identifier):
@@ -54,7 +55,7 @@ def save(job):
 
 def jobs():
     result = []
-    for path in (BASE / 'jobs').glob('*/job.json'):
+    for path in JOBS.glob('*/job.json'):
         try:
             job = json.loads(path.read_text())
             if (not isinstance(job, dict) or job.get('id') != path.parent.name
@@ -136,7 +137,7 @@ def create(data):
         raise ValueError('Le moteur musical ACE-Step doit être installé pour sonoriser la vidéo.')
     if not ready(config['model']):
         raise ValueError('Le modèle est encore indisponible ou en cours d’installation.')
-    if shutil.disk_usage(BASE).free < 2 * 1024**3:
+    if shutil.disk_usage(JOBS.parent).free < 2 * 1024**3:
         raise ValueError('Au moins 2 Go libres sont nécessaires.')
     start()
     with LOCK:
@@ -283,7 +284,8 @@ def start():
     with LOCK:
         if STARTED:
             return
-        (BASE / 'jobs').mkdir(parents=True, exist_ok=True)
+        BASE.mkdir(parents=True, exist_ok=True)
+        JOBS.mkdir(parents=True, exist_ok=True)
         WORKER_LOCK = (BASE / 'worker.lock').open('a')
         try:
             fcntl.flock(WORKER_LOCK, fcntl.LOCK_EX | fcntl.LOCK_NB)

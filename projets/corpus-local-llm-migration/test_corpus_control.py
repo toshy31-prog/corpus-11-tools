@@ -61,6 +61,19 @@ class CorpusControlTests(unittest.TestCase):
         organs={x['id']:x for x in policy['organs']}
         self.assertEqual(organs['opencode-profile-home']['allowed_top_level'],['.nv'])
 
+    def test_media_lifecycle_split_is_explicit(self):
+        policy=corpus_control.load_policy()
+        debts={x['id'] for x in policy['debts']}
+        for ident in ('media-audio-archive','media-runtime-archive','media-jobs'):
+            self.assertNotIn(ident,debts)
+        organs={x['id'] for x in policy['organs']}
+        self.assertIn('media-jobs-data',organs)
+        links={x['id'] for x in policy.get('compatibility_links',[])}
+        self.assertIn('media-jobs-runtime-alias',links)
+        forbidden={x['id'] for x in policy['forbidden_paths']}
+        self.assertIn('legacy-media-runtime-archive',forbidden)
+        self.assertIn('legacy-media-audio-archive',forbidden)
+
     def test_data_and_config_are_primary_truth(self):
         policy=corpus_control.load_policy()
         self.assertEqual(policy["territories"]["data"]["truth"],"primary")

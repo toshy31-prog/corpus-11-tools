@@ -9,9 +9,10 @@ class MediaGenerationTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.base = patch.object(m, 'BASE', Path(self.tmp.name) / 'runtime'); self.base.start()
+        self.jobs = patch.object(m, 'JOBS', Path(self.tmp.name) / 'jobs'); self.jobs.start()
         self.models = patch.object(m, 'MODEL_BASE', Path(self.tmp.name) / 'models'); self.models.start()
     def tearDown(self):
-        self.models.stop(); self.base.stop(); self.tmp.cleanup()
+        self.models.stop(); self.jobs.stop(); self.base.stop(); self.tmp.cleanup()
     def test_reject_paths_and_unbounded_work(self):
         for identifier in ['../../secret', '/etc/passwd', '', None]:
             with self.assertRaises(ValueError): m.folder(identifier)

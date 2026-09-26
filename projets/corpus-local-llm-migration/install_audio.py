@@ -7,7 +7,7 @@ import shutil
 import tarfile
 import time
 import urllib.request
-from corpus_paths import MEDIA_MODELS_ROOT, MEDIA_RUNTIME_ROOT
+from corpus_paths import MEDIA_DOWNLOAD_CACHE_ROOT, MEDIA_MODELS_ROOT, MEDIA_RUNTIME_ROOT
 
 BASE = MEDIA_RUNTIME_ROOT
 MODEL_BASE = MEDIA_MODELS_ROOT
@@ -60,7 +60,8 @@ def main():
     entries = json.loads(Path(__file__).with_name('AUDIO_MODELS_LOCK.json').read_text())
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
         list(pool.map(download, entries))
-    archive = BASE / 'audio-runtime.tar.gz'
+    archive = MEDIA_DOWNLOAD_CACHE_ROOT / 'audio-runtime.tar.gz'
+    archive.parent.mkdir(parents=True, exist_ok=True)
     if not archive.exists():
         urllib.request.urlretrieve(RUNTIME_URL, archive)
     if digest(archive) != RUNTIME_SHA256:

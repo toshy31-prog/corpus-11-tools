@@ -38,7 +38,7 @@ Qwen dispose des outils MCP `media_models`, `media_generate`, `media_result`. M�
 
 `python3 projets/corpus-local-llm-migration/install_media.py` réinstalle les versions épinglées et vérifie les SHA-256 avant activation. Cette commande télécharge environ 18 Go et doit être lancée explicitement ; elle n’est pas exécutée par le chat. FFmpeg, Bubblewrap, pilote Vulkan NVIDIA et Python sont des dépendances système existantes. Aucun changement de pilote n’a été effectué.
 
-Les journaux sont `.dev-local/corpus-media/jobs/<id>/render.log`. Les sorties sont PNG/MP4. Une erreur reste visible ; un rendu raté n’est pas présenté comme terminé. Les fichiers ne sont pas ajoutés à Git.
+Les journaux et sorties vivent physiquement sous `CORPUS_DATA_ROOT/corpus-media/jobs/<id>`; `.dev-local/corpus-media/jobs` reste un alias de compatibilité. Les sorties sont PNG/MP4. Une erreur reste visible ; un rendu raté n’est pas présenté comme terminé. Les fichiers ne sont pas ajoutés à Git.
 
 Source du moteur : [stable-diffusion.cpp](https://github.com/leejet/stable-diffusion.cpp), exemples [FLUX.2](https://github.com/leejet/stable-diffusion.cpp/blob/master/docs/flux2.md) et [Wan](https://github.com/leejet/stable-diffusion.cpp/blob/master/docs/wan.md).
 

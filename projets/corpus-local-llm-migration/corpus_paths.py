@@ -112,6 +112,7 @@ def resolve_contract(environ=None, *, home=None, repo_root=None, machine_config=
         "data": data,
         "attachments_data": data / "corpus-attachments",
         "documents_data": data / "corpus-documents",
+        "media_jobs_data": data / "corpus-media/jobs",
         "opencode_data_home": data / "opencode-xdg",
         "state": state,
         "opencode_state_home": state / "opencode-xdg",
@@ -131,6 +132,7 @@ def resolve_contract(environ=None, *, home=None, repo_root=None, machine_config=
         "build_cache": cache / "build",
         "local_build_cache": cache / "build/corpus-local",
         "download_cache": cache / "downloads",
+        "media_download_cache": cache / "downloads/corpus-media",
         "uv_cache": cache / "uv",
         "huggingface_cache": cache / "huggingface",
         "huggingface_hub_cache": cache / "huggingface/hub",
@@ -155,6 +157,7 @@ LOCAL_BUILD_WHEELHOUSE_ROOT = _PATHS["local_build_wheelhouse"]
 DATA_ROOT = _PATHS["data"]
 ATTACHMENTS_DATA_ROOT = _PATHS["attachments_data"]
 DOCUMENTS_DATA_ROOT = _PATHS["documents_data"]
+MEDIA_JOBS_DATA_ROOT = _PATHS["media_jobs_data"]
 OPENCODE_DATA_HOME = _PATHS["opencode_data_home"]
 STATE_ROOT = _PATHS["state"]
 OPENCODE_STATE_HOME = _PATHS["opencode_state_home"]
@@ -175,6 +178,7 @@ UPDATES_RUNTIME_ROOT = _PATHS["updates_runtime"]
 BUILD_CACHE_ROOT = _PATHS["build_cache"]
 LOCAL_BUILD_CACHE_ROOT = _PATHS["local_build_cache"]
 DOWNLOAD_CACHE_ROOT = _PATHS["download_cache"]
+MEDIA_DOWNLOAD_CACHE_ROOT = _PATHS["media_download_cache"]
 UV_CACHE_ROOT = _PATHS["uv_cache"]
 HUGGINGFACE_CACHE_ROOT = _PATHS["huggingface_cache"]
 HUGGINGFACE_HUB_CACHE_ROOT = _PATHS["huggingface_hub_cache"]

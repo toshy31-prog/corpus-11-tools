@@ -40,7 +40,7 @@ La durée 120 s est une borne de travail, pas une preuve de qualité validée su
 
 `python3 projets/corpus-local-llm-migration/install_audio.py`
 
-Téléchargement explicite d’environ 9 Go de poids, reprise des fichiers partiels, validation taille/SHA-256 avant activation, extraction sûre du moteur. Installation dans `.dev-local/corpus-media`, sans changement de pilote ni dépendance Python lourde. Aucun téléchargement déclenché par Qwen pendant la génération. Exécution Bubblewrap sans réseau, modèles en lecture seule, seul dossier du travail inscriptible. Sorties dans `jobs/<id>/audio.wav`, journal dans `render.log`.
+Téléchargement explicite d’environ 9 Go de poids, reprise des fichiers partiels, validation taille/SHA-256 avant activation, extraction sûre du moteur. Runtime installé dans `.dev-local/corpus-media`, sans changement de pilote ni dépendance Python lourde. L'archive de reconstruction vit sous `CORPUS_CACHE_ROOT/downloads/corpus-media`. Aucun téléchargement déclenché par Qwen pendant la génération. Exécution Bubblewrap sans réseau, modèles en lecture seule, seul dossier du travail inscriptible. Sorties sous `CORPUS_DATA_ROOT/corpus-media/jobs/<id>/audio.wav`, journal dans `render.log`.
 
 ## Validation
 

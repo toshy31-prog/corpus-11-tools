@@ -197,3 +197,19 @@ Les anciens répertoires `corpus-local/{home,config,state,cache}` sont interdits
 et ne servent pas d'aliases : le preflight n'a trouvé aucune référence absolue
 persistante vers eux. Le sandbox expose explicitement CONFIG, STATE et CACHE,
 comme il exposait déjà DATA.
+
+## MEDIA Phase 6B — jobs DATA, archives CACHE
+
+Les sorties persistantes image/vidéo/audio et leurs `job.json` vivent sous
+`MEDIA_JOBS_DATA_ROOT = CORPUS_DATA_ROOT/corpus-media/jobs`. Elles sont des
+créations utilisateur et donc de la vérité primaire.
+
+`CORPUS_RUNTIME_ROOT/corpus-media/jobs` reste temporairement un alias de
+compatibilité vers cette racine DATA. Le moteur média consomme directement
+`MEDIA_JOBS_DATA_ROOT`.
+
+Les archives épinglées `runtime.zip` (stable-diffusion.cpp) et
+`audio-runtime.tar.gz` (audio.cpp) sont des téléchargements de reconstruction.
+Elles vivent sous `MEDIA_DOWNLOAD_CACHE_ROOT =
+CORPUS_CACHE_ROOT/downloads/corpus-media`; les runtimes extraits restent sous
+RUNTIME. Les anciens emplacements d'archives sous RUNTIME sont interdits.

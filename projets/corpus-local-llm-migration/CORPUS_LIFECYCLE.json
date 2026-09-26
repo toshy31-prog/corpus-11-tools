@@ -227,6 +227,13 @@
       "allowed_top_level": [
         ".nv"
       ]
+    },
+    {
+      "id": "media-jobs-data",
+      "path_key": "media_jobs_data",
+      "territory": "data",
+      "required": true,
+      "kind": "dir"
     }
   ],
   "probes": [
@@ -305,6 +312,18 @@
       "path_key": "local_runtime",
       "relative": "state",
       "reason": "XDG_STATE_HOME OpenCode appartient désormais à STATE."
+    },
+    {
+      "id": "legacy-media-runtime-archive",
+      "path_key": "media_runtime",
+      "relative": "runtime.zip",
+      "reason": "Archive reconstructible déplacée sous CACHE/downloads/corpus-media."
+    },
+    {
+      "id": "legacy-media-audio-archive",
+      "path_key": "media_runtime",
+      "relative": "audio-runtime.tar.gz",
+      "reason": "Archive reconstructible déplacée sous CACHE/downloads/corpus-media."
     }
   ],
   "intentional_exceptions": [
@@ -342,33 +361,6 @@
       "severity": "review",
       "expected": "state-or-data",
       "reason": "État de continuité à classifier avant déplacement."
-    },
-    {
-      "id": "media-audio-archive",
-      "path_key": "media_runtime",
-      "relative": "audio-runtime.tar.gz",
-      "class": "archive-placement",
-      "severity": "review",
-      "expected": "cache-or-vault",
-      "reason": "Archive de runtime sous RUNTIME."
-    },
-    {
-      "id": "media-runtime-archive",
-      "path_key": "media_runtime",
-      "relative": "runtime.zip",
-      "class": "archive-placement",
-      "severity": "review",
-      "expected": "cache-or-vault",
-      "reason": "Archive de runtime sous RUNTIME."
-    },
-    {
-      "id": "media-jobs",
-      "path_key": "media_runtime",
-      "relative": "jobs",
-      "class": "state-or-data-placement",
-      "severity": "review",
-      "expected": "state-or-data",
-      "reason": "Jobs média à classifier par persistance."
     },
     {
       "id": "runtime-autonomy",
@@ -463,6 +455,17 @@
         "path_key": "opencode_data_home"
       },
       "reason": "Préserve les anciennes références absolues de l'ancien XDG_DATA_HOME OpenCode."
+    },
+    {
+      "id": "media-jobs-runtime-alias",
+      "link": {
+        "path_key": "media_runtime",
+        "relative": "jobs"
+      },
+      "target": {
+        "path_key": "media_jobs_data"
+      },
+      "reason": "Préserve les anciens chemins .dev-local/corpus-media/jobs while DATA is canonical."
     }
   ]
 }

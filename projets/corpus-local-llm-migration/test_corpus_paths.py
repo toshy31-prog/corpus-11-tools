@@ -155,6 +155,13 @@ class CorpusPathContractTests(unittest.TestCase):
             self.assertEqual(paths['attachments_data'],data/'corpus-attachments')
             self.assertEqual(paths['documents_data'],data/'corpus-documents')
 
+    def test_media_jobs_and_downloads_follow_lifecycle_roots(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp)
+            paths=corpus_paths.resolve_contract({'HOME':str(root/'home')},repo_root=root/'repo')
+            self.assertEqual(paths['media_jobs_data'],root/'home/.local/share/corpus/data/corpus-media/jobs')
+            self.assertEqual(paths['media_download_cache'],root/'home/.cache/corpus/downloads/corpus-media')
+
     def test_opencode_data_home_is_primary_data(self):
         with tempfile.TemporaryDirectory() as temp:
             root=Path(temp)
