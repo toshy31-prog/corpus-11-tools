@@ -53,6 +53,14 @@ class CorpusControlTests(unittest.TestCase):
         links={x['id'] for x in policy.get('compatibility_links',[])}
         self.assertIn('opencode-data-runtime-alias',links)
 
+    def test_opencode_profile_boundary_is_no_longer_drift(self):
+        policy=corpus_control.load_policy()
+        debts={x['id'] for x in policy['debts']}
+        for ident in ('opencode-synthetic-home','opencode-synthetic-config','opencode-synthetic-cache','opencode-synthetic-state'):
+            self.assertNotIn(ident,debts)
+        organs={x['id']:x for x in policy['organs']}
+        self.assertEqual(organs['opencode-profile-home']['allowed_top_level'],['.nv'])
+
     def test_data_and_config_are_primary_truth(self):
         policy=corpus_control.load_policy()
         self.assertEqual(policy["territories"]["data"]["truth"],"primary")

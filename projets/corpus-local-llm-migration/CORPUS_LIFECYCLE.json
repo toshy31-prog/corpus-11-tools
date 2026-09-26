@@ -196,6 +196,37 @@
       "territory": "data",
       "required": true,
       "kind": "dir"
+    },
+    {
+      "id": "opencode-config-home",
+      "path_key": "opencode_config_home",
+      "territory": "config",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "opencode-state-home",
+      "path_key": "opencode_state_home",
+      "territory": "state",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "opencode-cache-home",
+      "path_key": "opencode_cache_home",
+      "territory": "cache",
+      "required": true,
+      "kind": "dir"
+    },
+    {
+      "id": "opencode-profile-home",
+      "path_key": "opencode_profile_home",
+      "territory": "cache",
+      "required": true,
+      "kind": "dir",
+      "allowed_top_level": [
+        ".nv"
+      ]
     }
   ],
   "probes": [
@@ -250,6 +281,30 @@
       "path_key": "local_runtime",
       "relative": "hermes-restore-check",
       "reason": "Artefact temporaire de validation"
+    },
+    {
+      "id": "legacy-opencode-home",
+      "path_key": "local_runtime",
+      "relative": "home",
+      "reason": "HOME OpenCode appartient désormais au profil CACHE."
+    },
+    {
+      "id": "legacy-opencode-config",
+      "path_key": "local_runtime",
+      "relative": "config",
+      "reason": "XDG_CONFIG_HOME OpenCode appartient désormais à CONFIG."
+    },
+    {
+      "id": "legacy-opencode-cache",
+      "path_key": "local_runtime",
+      "relative": "cache",
+      "reason": "XDG_CACHE_HOME OpenCode appartient désormais à CACHE."
+    },
+    {
+      "id": "legacy-opencode-state",
+      "path_key": "local_runtime",
+      "relative": "state",
+      "reason": "XDG_STATE_HOME OpenCode appartient désormais à STATE."
     }
   ],
   "intentional_exceptions": [
@@ -261,42 +316,6 @@
     }
   ],
   "debts": [
-    {
-      "id": "opencode-synthetic-home",
-      "path_key": "local_runtime",
-      "relative": "home",
-      "class": "xdg-sandbox",
-      "severity": "medium",
-      "expected": "separate-lifecycle",
-      "reason": "HOME synthétique OpenCode actuellement imbriqué dans RUNTIME."
-    },
-    {
-      "id": "opencode-synthetic-config",
-      "path_key": "local_runtime",
-      "relative": "config",
-      "class": "xdg-sandbox",
-      "severity": "medium",
-      "expected": "separate-lifecycle",
-      "reason": "CONFIG synthétique imbriqué dans RUNTIME."
-    },
-    {
-      "id": "opencode-synthetic-cache",
-      "path_key": "local_runtime",
-      "relative": "cache",
-      "class": "xdg-sandbox",
-      "severity": "medium",
-      "expected": "separate-lifecycle",
-      "reason": "CACHE synthétique imbriqué dans RUNTIME."
-    },
-    {
-      "id": "opencode-synthetic-state",
-      "path_key": "local_runtime",
-      "relative": "state",
-      "class": "xdg-sandbox",
-      "severity": "medium",
-      "expected": "separate-lifecycle",
-      "reason": "STATE synthétique imbriqué dans RUNTIME."
-    },
     {
       "id": "voice-model-in-runtime",
       "path_key": "local_runtime",

@@ -202,6 +202,12 @@ def doctor(policy=None, paths=None):
                     actual = packages.get(package.replace("-", "_"))
                     add("FAIL" if actual else "PASS", f"organ.{organ['id']}.forbidden.{package}", f"{package}: {'présent '+actual if actual else 'absent'}")
 
+        allowed = organ.get('allowed_top_level')
+        if allowed is not None and path.is_dir():
+            actual = sorted(item.name for item in path.iterdir())
+            unexpected = sorted(set(actual) - set(allowed))
+            add('FAIL' if unexpected else 'PASS', f"organ.{organ['id']}.top-level", f"actual={actual}; allowed={sorted(allowed)}; unexpected={unexpected}")
+
         for rel, expected in organ.get("executables", {}).items():
             exe = path / rel
             p = subprocess.run([str(exe), "--version"], capture_output=True, text=True, check=False, timeout=60)

@@ -114,8 +114,12 @@ def resolve_contract(environ=None, *, home=None, repo_root=None, machine_config=
         "documents_data": data / "corpus-documents",
         "opencode_data_home": data / "opencode-xdg",
         "state": state,
+        "opencode_state_home": state / "opencode-xdg",
         "cache": cache,
+        "opencode_cache_home": cache / "opencode-xdg",
+        "opencode_profile_home": cache / "profiles/opencode-home",
         "config": config,
+        "opencode_config_home": config / "opencode-xdg",
         "vault": vault,
         "local_runtime": runtime / "corpus-local",
         "local_apps": runtime / "corpus-local/apps",
@@ -153,8 +157,12 @@ ATTACHMENTS_DATA_ROOT = _PATHS["attachments_data"]
 DOCUMENTS_DATA_ROOT = _PATHS["documents_data"]
 OPENCODE_DATA_HOME = _PATHS["opencode_data_home"]
 STATE_ROOT = _PATHS["state"]
+OPENCODE_STATE_HOME = _PATHS["opencode_state_home"]
 CACHE_ROOT = _PATHS["cache"]
+OPENCODE_CACHE_HOME = _PATHS["opencode_cache_home"]
+OPENCODE_PROFILE_HOME = _PATHS["opencode_profile_home"]
 CONFIG_ROOT = _PATHS["config"]
+OPENCODE_CONFIG_HOME = _PATHS["opencode_config_home"]
 VAULT_ROOT = _PATHS["vault"]
 
 LOCAL_RUNTIME_ROOT = _PATHS["local_runtime"]

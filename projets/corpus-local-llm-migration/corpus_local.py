@@ -15,7 +15,7 @@ import urllib.request
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 from runtime_limits import CONTEXT_TOKENS, OUTPUT_TOKENS
-from corpus_paths import DATA_ROOT, LLM_MODELS_ROOT, LOCAL_RUNTIME_ROOT, MODELS_ROOT, OPENCODE_DATA_HOME, RUNTIME_ROOT, STATE_ROOT, contract_environment
+from corpus_paths import CACHE_ROOT, CONFIG_ROOT, DATA_ROOT, LLM_MODELS_ROOT, LOCAL_RUNTIME_ROOT, MODELS_ROOT, OPENCODE_CACHE_HOME, OPENCODE_CONFIG_HOME, OPENCODE_DATA_HOME, OPENCODE_PROFILE_HOME, OPENCODE_STATE_HOME, RUNTIME_ROOT, STATE_ROOT, contract_environment
 BASE = LOCAL_RUNTIME_ROOT
 LOG_ROOT = STATE_ROOT / 'logs/corpus-local'
 QWEN36_ROOT = LLM_MODELS_ROOT / 'qwen3.6'
@@ -55,11 +55,11 @@ def environment(intel=False, moe=False):
            'TERM': os.environ.get('TERM', 'xterm-256color')}
     env.update(contract_environment())
     profile_paths = [
-        ('HOME', BASE / 'home'),
-        ('XDG_CONFIG_HOME', BASE / 'config'),
+        ('HOME', OPENCODE_PROFILE_HOME),
+        ('XDG_CONFIG_HOME', OPENCODE_CONFIG_HOME),
         ('XDG_DATA_HOME', OPENCODE_DATA_HOME),
-        ('XDG_CACHE_HOME', BASE / 'cache'),
-        ('XDG_STATE_HOME', BASE / 'state'),
+        ('XDG_CACHE_HOME', OPENCODE_CACHE_HOME),
+        ('XDG_STATE_HOME', OPENCODE_STATE_HOME),
     ]
     for key, path in profile_paths:
         path.mkdir(parents=True, exist_ok=True)
@@ -157,6 +157,11 @@ def enter_sandbox(args, mode):
     if DATA_ROOT.exists():
         pos = cmd.index('--chdir')
         cmd[pos:pos] = ['--bind', str(DATA_ROOT), str(DATA_ROOT)]
+    # Canonical CONFIG/STATE/CACHE are outside synthetic /home too.
+    for root in (CONFIG_ROOT, STATE_ROOT, CACHE_ROOT):
+        if root.exists():
+            pos = cmd.index('--chdir')
+            cmd[pos:pos] = ['--bind', str(root), str(root)]
     # Registered roots are exposed explicitly; unrelated home data stay hidden.
     pos = cmd.index('--chdir')
     cmd[pos:pos] = project_mounts()

@@ -180,3 +180,20 @@ les éventuelles références absolues historiques restent résolubles.
 Cette phase ne reclassifie volontairement ni `HOME`, ni `XDG_CONFIG_HOME`, ni
 `XDG_STATE_HOME`, ni `XDG_CACHE_HOME` : leurs cycles de vie restent séparés et
 seront traités par des preuves propres.
+
+## PROFILE Phase 5B — frontière HOME / XDG OpenCode
+
+Le preflight Phase 5B a établi que l'ancien `HOME` synthétique ne contenait que
+`.nv/ComputeCache`. Il n'est donc pas une source de vérité : le profil HOME est
+placé sous CACHE (`OPENCODE_PROFILE_HOME`) et le control plane n'y autorise que
+le namespace `.nv`. Toute future écriture top-level différente devient un FAIL
+observable plutôt qu'une nouvelle dette silencieuse.
+
+Les autres domaines suivent directement leur cycle de vie :
+`OPENCODE_CONFIG_HOME` sous CONFIG, `OPENCODE_STATE_HOME` sous STATE et
+`OPENCODE_CACHE_HOME` sous CACHE. `OPENCODE_DATA_HOME` reste sous DATA.
+
+Les anciens répertoires `corpus-local/{home,config,state,cache}` sont interdits
+et ne servent pas d'aliases : le preflight n'a trouvé aucune référence absolue
+persistante vers eux. Le sandbox expose explicitement CONFIG, STATE et CACHE,
+comme il exposait déjà DATA.

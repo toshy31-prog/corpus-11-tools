@@ -161,6 +161,15 @@ class CorpusPathContractTests(unittest.TestCase):
             paths=corpus_paths.resolve_contract({'HOME':str(root/'home')},repo_root=root/'repo')
             self.assertEqual(paths['opencode_data_home'],root/'home/.local/share/corpus/data/opencode-xdg')
 
+    def test_opencode_profile_subroots_follow_lifecycle_roots(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp)
+            paths=corpus_paths.resolve_contract({'HOME':str(root/'home')},repo_root=root/'repo')
+            self.assertEqual(paths['opencode_config_home'],root/'home/.config/corpus/opencode-xdg')
+            self.assertEqual(paths['opencode_state_home'],root/'home/.local/state/corpus/opencode-xdg')
+            self.assertEqual(paths['opencode_cache_home'],root/'home/.cache/corpus/opencode-xdg')
+            self.assertEqual(paths['opencode_profile_home'],root/'home/.cache/corpus/profiles/opencode-home')
+
     def test_local_apps_are_runtime_not_toolchains(self):
         with tempfile.TemporaryDirectory() as temp:
             root=Path(temp)
