@@ -189,6 +189,13 @@
       "territory": "data",
       "required": true,
       "kind": "dir"
+    },
+    {
+      "id": "opencode-primary-data",
+      "path_key": "opencode_data_home",
+      "territory": "data",
+      "required": true,
+      "kind": "dir"
     }
   ],
   "probes": [
@@ -271,15 +278,6 @@
       "severity": "medium",
       "expected": "separate-lifecycle",
       "reason": "CONFIG synthétique imbriqué dans RUNTIME."
-    },
-    {
-      "id": "opencode-synthetic-data",
-      "path_key": "local_runtime",
-      "relative": "data",
-      "class": "xdg-sandbox",
-      "severity": "medium",
-      "expected": "separate-lifecycle",
-      "reason": "DATA synthétique imbriqué dans RUNTIME."
     },
     {
       "id": "opencode-synthetic-cache",
@@ -435,6 +433,17 @@
         "path_key": "documents_data"
       },
       "reason": "Compatibilité des anciens chemins .dev-local/corpus-documents."
+    },
+    {
+      "id": "opencode-data-runtime-alias",
+      "link": {
+        "path_key": "local_runtime",
+        "relative": "data"
+      },
+      "target": {
+        "path_key": "opencode_data_home"
+      },
+      "reason": "Préserve les anciennes références absolues de l'ancien XDG_DATA_HOME OpenCode."
     }
   ]
 }

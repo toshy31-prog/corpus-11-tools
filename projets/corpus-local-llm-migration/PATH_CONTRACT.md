@@ -166,3 +166,17 @@ des sources de vérité.
 
 Le sandbox Corpus expose `CORPUS_DATA_ROOT` explicitement afin que les chemins
 de pièces jointes restent lisibles/modifiables lorsque l'utilisateur l'autorise.
+
+## DATA Phase 5A2 — mémoire OpenCode primaire
+
+Le `XDG_DATA_HOME` d'OpenCode contient les bases de sessions, messages, parts,
+événements et projets. Il appartient donc à `CORPUS_DATA_ROOT` et non au
+runtime reconstructible.
+
+`OPENCODE_DATA_HOME` vaut `CORPUS_DATA_ROOT/opencode-xdg`. L'ancien
+`corpus-local/data` reste un alias de compatibilité vers cette racine afin que
+les éventuelles références absolues historiques restent résolubles.
+
+Cette phase ne reclassifie volontairement ni `HOME`, ni `XDG_CONFIG_HOME`, ni
+`XDG_STATE_HOME`, ni `XDG_CACHE_HOME` : leurs cycles de vie restent séparés et
+seront traités par des preuves propres.

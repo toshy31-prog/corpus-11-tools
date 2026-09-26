@@ -46,6 +46,13 @@ class CorpusControlTests(unittest.TestCase):
         self.assertNotIn('attachments-in-runtime',debts)
         self.assertNotIn('documents-in-runtime',debts)
 
+    def test_opencode_data_is_no_longer_drift(self):
+        policy=corpus_control.load_policy()
+        debts={x['id'] for x in policy['debts']}
+        self.assertNotIn('opencode-synthetic-data',debts)
+        links={x['id'] for x in policy.get('compatibility_links',[])}
+        self.assertIn('opencode-data-runtime-alias',links)
+
     def test_data_and_config_are_primary_truth(self):
         policy=corpus_control.load_policy()
         self.assertEqual(policy["territories"]["data"]["truth"],"primary")

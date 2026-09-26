@@ -155,6 +155,12 @@ class CorpusPathContractTests(unittest.TestCase):
             self.assertEqual(paths['attachments_data'],data/'corpus-attachments')
             self.assertEqual(paths['documents_data'],data/'corpus-documents')
 
+    def test_opencode_data_home_is_primary_data(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp)
+            paths=corpus_paths.resolve_contract({'HOME':str(root/'home')},repo_root=root/'repo')
+            self.assertEqual(paths['opencode_data_home'],root/'home/.local/share/corpus/data/opencode-xdg')
+
     def test_local_apps_are_runtime_not_toolchains(self):
         with tempfile.TemporaryDirectory() as temp:
             root=Path(temp)

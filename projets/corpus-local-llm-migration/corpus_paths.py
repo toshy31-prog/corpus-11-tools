@@ -112,6 +112,7 @@ def resolve_contract(environ=None, *, home=None, repo_root=None, machine_config=
         "data": data,
         "attachments_data": data / "corpus-attachments",
         "documents_data": data / "corpus-documents",
+        "opencode_data_home": data / "opencode-xdg",
         "state": state,
         "cache": cache,
         "config": config,
@@ -150,6 +151,7 @@ LOCAL_BUILD_WHEELHOUSE_ROOT = _PATHS["local_build_wheelhouse"]
 DATA_ROOT = _PATHS["data"]
 ATTACHMENTS_DATA_ROOT = _PATHS["attachments_data"]
 DOCUMENTS_DATA_ROOT = _PATHS["documents_data"]
+OPENCODE_DATA_HOME = _PATHS["opencode_data_home"]
 STATE_ROOT = _PATHS["state"]
 CACHE_ROOT = _PATHS["cache"]
 CONFIG_ROOT = _PATHS["config"]

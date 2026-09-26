@@ -15,7 +15,7 @@ import urllib.request
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 from runtime_limits import CONTEXT_TOKENS, OUTPUT_TOKENS
-from corpus_paths import DATA_ROOT, LLM_MODELS_ROOT, LOCAL_RUNTIME_ROOT, MODELS_ROOT, RUNTIME_ROOT, STATE_ROOT, contract_environment
+from corpus_paths import DATA_ROOT, LLM_MODELS_ROOT, LOCAL_RUNTIME_ROOT, MODELS_ROOT, OPENCODE_DATA_HOME, RUNTIME_ROOT, STATE_ROOT, contract_environment
 BASE = LOCAL_RUNTIME_ROOT
 LOG_ROOT = STATE_ROOT / 'logs/corpus-local'
 QWEN36_ROOT = LLM_MODELS_ROOT / 'qwen3.6'
@@ -54,10 +54,14 @@ def environment(intel=False, moe=False):
     env = {'PATH': '/usr/local/bin:/usr/bin:/bin', 'LANG': 'C.UTF-8',
            'TERM': os.environ.get('TERM', 'xterm-256color')}
     env.update(contract_environment())
-    for key, folder in [('HOME', 'home'), ('XDG_CONFIG_HOME', 'config'),
-                        ('XDG_DATA_HOME', 'data'), ('XDG_CACHE_HOME', 'cache'),
-                        ('XDG_STATE_HOME', 'state')]:
-        path = BASE / folder
+    profile_paths = [
+        ('HOME', BASE / 'home'),
+        ('XDG_CONFIG_HOME', BASE / 'config'),
+        ('XDG_DATA_HOME', OPENCODE_DATA_HOME),
+        ('XDG_CACHE_HOME', BASE / 'cache'),
+        ('XDG_STATE_HOME', BASE / 'state'),
+    ]
+    for key, path in profile_paths:
         path.mkdir(parents=True, exist_ok=True)
         env[key] = str(path)
     for flag in ['DISABLE_MODELS_FETCH', 'DISABLE_AUTOUPDATE',
