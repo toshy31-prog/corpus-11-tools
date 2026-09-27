@@ -223,7 +223,7 @@ test("sert l’interface et le contrat du moteur", async (t) => {
   assert.equal(status.roles.length, 4);
   assert.equal(status.oauthScope, "https://www.googleapis.com/auth/youtube.readonly");
   assert.equal(status.discogsConfigured, false);
-  assert.equal(status.version, "0.20.1");
+  assert.equal(status.version, "0.21.0");
   assert.equal(status.discogsCredentialSource, "none");
   assert.equal(status.capabilities.listenbrainz, true);
   assert.equal(status.capabilities.bandcamp, "supplied_metadata_import");

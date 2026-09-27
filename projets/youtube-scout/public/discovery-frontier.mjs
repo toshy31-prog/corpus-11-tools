@@ -17,9 +17,12 @@ function anchorId(candidate = {}) {
   return text(step?.to?.id || step?.from?.id || "");
 }
 function pathKey(candidate = {}) {
-  return list(candidate.steps).map(step =>
-    `${text(step?.from?.id)}>${text(step?.relation)}>${text(step?.to?.id)}`
-  ).join("|");
+  const steps = list(candidate.steps);
+  // Entity IDs may contain the old > and | delimiters. Tuple encoding keeps
+  // structurally different paths distinct without changing graph identities.
+  return steps.length ? JSON.stringify(steps.map(step => [
+    text(step?.from?.id), text(step?.relation), text(step?.to?.id)
+  ])) : "";
 }
 function routeState(branch = {}) {
   if (["paused", "dismissed"].includes(branch.status)) return "blocked";
@@ -158,6 +161,7 @@ export function scheduleDiscoveryFrontiers(frontier = {}, {
  */
 export function convergeDiscoveryCandidates(candidates = []) {
   const map = new Map();
+  const seenPaths = new Map();
   for (const candidate of list(candidates)) {
     const id = targetId(candidate);
     if (!id) continue;
@@ -167,11 +171,18 @@ export function convergeDiscoveryCandidates(candidates = []) {
       path: list(candidate.steps),
       signature: text(candidate.signature || pathKey(candidate))
     };
+    // Replayed pages are not additional explanations. Include the complete
+    // path: upstream signatures may identify a target rather than a path.
+    const provenanceKey = JSON.stringify([provenance.direction, provenance.signature, provenance.path]);
     if (!previous) {
       map.set(id, { ...candidate, provenance: [provenance] });
+      seenPaths.set(id, new Set([provenanceKey]));
       continue;
     }
-    previous.provenance.push(provenance);
+    if (!seenPaths.get(id).has(provenanceKey)) {
+      previous.provenance.push(provenance);
+      seenPaths.get(id).add(provenanceKey);
+    }
     previous.directions = [...new Set([
       ...list(previous.directions),
       text(previous.direction),

@@ -62,7 +62,7 @@ import {
   setExplorationBranchStatus
 } from "/exploration.js";
 
-const CLIENT_VERSION = "0.19.0";
+const CLIENT_VERSION = "0.21.0";
 const API_ROOT = "https://www.googleapis.com/youtube/v3";
 const DB_NAME = "youtube-scout";
 const DB_STORE = "library";

@@ -52,7 +52,28 @@ function step(index, from, to, edge) {
   return { from: { id: from, type: index.entities[from].type, label: label(index.entities[from]) }, to: { id: to, type: index.entities[to].type, label: label(index.entities[to]) }, relation: edge.kind, relationLabel: labels[edge.kind]?.[Number(reversed)] || "", edgeFrom: edge.from, edgeTo: edge.to, reversed, role: edge.role || "", status: edge.status, source: edge.source || edge.evidence?.[0]?.source || edge.evidence?.[0] || "graph", sourceUrl: edge.sourceUrl || "", evidence: edge.evidence || [] };
 }
 
-function walk(index, seedId, allowed, depth = 4) {
+function walk(index, seedId, allowed, depth = 4, requiredMotif = null) {
+  if (requiredMotif) {
+    // Visiting a node without the route's required relation must not suppress
+    // a later documented path containing it. At most two states per node;
+    // breadth-first order still selects a shortest motif-bearing path.
+    const found = new Map(), visited = [new Set([seedId]), new Set()];
+    const queue = [{ id: seedId, path: [], matched: false }];
+    for (let offset = 0; offset < queue.length; offset++) {
+      const current = queue[offset];
+      if (current.path.length >= depth) continue;
+      for (const { to, edge } of index.adjacency.get(current.id) || []) {
+        if (!allowed(edge, index.entities[current.id], index.entities[to])) continue;
+        const matched = current.matched || requiredMotif(edge);
+        if (visited[Number(matched)].has(to)) continue;
+        visited[Number(matched)].add(to);
+        const path = [...current.path, step(index, current.id, to, edge)];
+        if (matched) found.set(to, path);
+        queue.push({ id: to, path, matched });
+      }
+    }
+    return found;
+  }
   const found = new Map([[seedId, []]]);
   const queue = [seedId];
   for (let offset = 0; offset < queue.length; offset++) {
@@ -107,7 +128,9 @@ export function directionAnchors(index, seedId, direction) {
       if (direction === "alias") return ["alias_of", "member_of", "has_member"].includes(edge.kind);
       if (direction === "remix") return MAIN.has(edge.kind) || edge.kind === "remixed_by" || edge.kind === "produced_by";
       return MAIN.has(edge.kind) || edge.kind === "featured_with";
-    }, direction === "label" ? 3 : direction === "era" ? 3 : 2);
+    }, direction === "label" ? 3 : direction === "era" ? 3 : 2,
+    direction === "remix" ? edge => ["remixed_by", "produced_by"].includes(edge.kind)
+      : direction === "featuring" ? edge => edge.kind === "featured_with" : null);
     for (const [targetId, localPath] of paths) {
       const node = index.entities[targetId];
       const targetType = { label: "label", curator: "channel", era: "era" }[direction];
@@ -238,13 +261,23 @@ function candidatesFromIndex(index, seedId, direction) {
     }, 2);
     for (const [id, suffix] of downstream) {
       const node = index.entities[id];
-      if (!suffix.length || starts.has(id) || prefix.some((entry) => entry.from.id === id) || candidates.has(id)) continue;
+      if (!suffix.length || starts.has(id) || prefix.some((entry) => entry.from.id === id)) continue;
       if (!["recording", "track", "video", "release", "release_group", "master"].includes(node.type)) continue;
       // When the exact tracklist exists, show the tracks rather than the same
       // release a second time. Versions remain distinct catalogue entities.
       if (RELEASE.has(node.type) && (index.adjacency.get(id) || []).some(({ edge }) => edge.kind === "appears_on")) continue;
       const candidate = candidateFor(index, id, direction, anchor, [...prefix, ...suffix]);
       if (direction === "label" && candidate.artistIds.length && candidate.artistIds.every((artistId) => sourceArtists.has(artistId))) continue;
+      const previous = candidates.get(id);
+      if (previous) {
+        // Prefer the shorter documented explanation only within the same
+        // presentation scope. A broad label or participant-only route must
+        // not replace a different scope merely because it uses fewer hops.
+        const participantRoute = item => item.path.some(entry => entry.relation === "probable_artist");
+        if (previous.relationship.kind !== candidate.relationship.kind ||
+            participantRoute(previous) !== participantRoute(candidate) ||
+            previous.path.length <= candidate.path.length) continue;
+      }
       candidates.set(id, candidate);
     }
   }

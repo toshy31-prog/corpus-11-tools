@@ -18,6 +18,7 @@ export class EphemeralExplorations {
     this.empty = new VolatileStore();
     this.store = new Proxy({}, { get: (_, name) => {
       const session = this.context.getStore();
+      if (name === "signal") return session?.controller.signal;
       if (session?.closed) throw Object.assign(new Error("Cette fouille est fermée. Choisissez un nouveau départ."), { httpStatus: 410 });
       if (name === "assertActive") return () => {
         if (session?.closed) throw Object.assign(new Error("Fouille fermée."), { httpStatus: 410 });
@@ -52,7 +53,7 @@ export class EphemeralExplorations {
     const store = new VolatileStore();
     if (seedId) await store.ingestGraph(personalGraph(this.personal.snapshot(), seedId));
     const token = randomUUID();
-    this.sessions.set(token, { store, caches: new Map(), touched: this.now(), seedId, closed: false });
+    this.sessions.set(token, { store, caches: new Map(), touched: this.now(), seedId, closed: false, controller: new AbortController() });
     return token;
   }
   get(token) {
@@ -65,7 +66,11 @@ export class EphemeralExplorations {
   }
   close(token) {
     const session = this.sessions.get(token);
-    if (session) { session.closed = true; session.caches.clear(); this.sessions.delete(token); }
+    if (session) {
+      session.closed = true;
+      session.controller.abort(Object.assign(new Error("Fouille fermée ou expirée."), { httpStatus: 410 }));
+      session.caches.clear(); this.sessions.delete(token);
+    }
   }
   cache(name) {
     return new Proxy(new Map(), { get: (empty, key) => {

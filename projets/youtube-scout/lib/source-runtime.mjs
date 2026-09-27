@@ -1,14 +1,26 @@
-function retryAfterMilliseconds(response) {
+function retryAfterMilliseconds(response, now = Date.now()) {
   const raw = response.headers.get("retry-after");
   if (!raw) return 0;
   const seconds = Number(raw);
   if (Number.isFinite(seconds)) return Math.max(0, seconds * 1000);
   const date = Date.parse(raw);
-  return Number.isFinite(date) ? Math.max(0, date - Date.now()) : 0;
+  return Number.isFinite(date) ? Math.max(0, date - now) : 0;
 }
 
-function wait(milliseconds) {
-  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+function abortable(promise, signal) {
+  if (!signal) return promise;
+  return new Promise((resolve, reject) => {
+    const aborted = () => { signal.removeEventListener("abort", aborted); reject(signal.reason); };
+    signal.addEventListener("abort", aborted, { once: true });
+    if (signal.aborted) aborted();
+    Promise.resolve(promise).then(resolve, reject).finally(() => signal.removeEventListener("abort", aborted));
+  });
+}
+
+function wait(milliseconds, signal) {
+  let timer;
+  const pending = new Promise(resolve => { timer = setTimeout(resolve, milliseconds); });
+  return abortable(pending, signal).finally(() => clearTimeout(timer));
 }
 
 export class SourceRuntime {
@@ -28,8 +40,10 @@ export class SourceRuntime {
       timeoutMs: Number(options.timeoutMs || 12_000),
       configured: options.configured !== false,
       revision: 0,
+      configurationController: new AbortController(),
       tail: Promise.resolve(),
       lastRequestAt: 0,
+      cooldownUntil: 0,
       state: { status: options.configured === false ? "not_configured" : "idle", successes: 0, failures: 0, lastError: "", lastRequestAt: null, lastSuccessAt: null }
     });
   }
@@ -52,18 +66,38 @@ export class SourceRuntime {
     if (!source) throw new Error(`Source inconnue: ${name}`);
     source.configured = configured;
     source.revision += 1;
+    source.configurationController.abort(new Error(`${name} : configuration changée, requête interrompue.`));
+    source.configurationController = new AbortController();
     source.state = {
       ...source.state,
-      status: configured ? (source.state.status === "not_configured" ? "idle" : source.state.status) : "not_configured",
+      status: configured ? (["not_configured", "running"].includes(source.state.status) ? "idle" : source.state.status) : "not_configured",
       lastError: configured ? source.state.lastError : ""
     };
   }
 
-  async request(sourceName, url, { cacheKey = url, ttlMs = 24 * 60 * 60 * 1000, staleMs = 30 * 24 * 60 * 60 * 1000, headers = {}, parse = (response) => response.json() } = {}) {
+  async request(sourceName, url, options = {}) {
+    const signals = [...new Set([this.store?.signal, options.signal, this.sources.get(sourceName)?.configurationController.signal].filter(Boolean))];
+    if (signals.length < 2) return this.requestWithSignal(sourceName, url, { ...options, signal: signals[0] });
+    const combined = new AbortController();
+    const listeners = signals.map(signal => {
+      const listener = () => combined.abort(signal.reason);
+      signal.addEventListener("abort", listener, { once: true });
+      if (signal.aborted) listener();
+      return [signal, listener];
+    });
+    try {
+      return await this.requestWithSignal(sourceName, url, { ...options, signal: combined.signal });
+    } finally {
+      for (const [signal, listener] of listeners) signal.removeEventListener("abort", listener);
+    }
+  }
+
+  async requestWithSignal(sourceName, url, { cacheKey = url, ttlMs = 24 * 60 * 60 * 1000, staleMs = 30 * 24 * 60 * 60 * 1000, headers = {}, parse = (response) => response.json(), signal } = {}) {
     const source = this.sources.get(sourceName);
     if (!source) throw new Error(`Source inconnue: ${sourceName}`);
     const revision = source.revision;
     const assertActive = () => {
+      signal?.throwIfAborted();
       this.store?.assertActive?.();
       if (!source.configured || source.revision !== revision) throw new Error(`${sourceName} : configuration changée, requête interrompue.`);
     };
@@ -88,22 +122,46 @@ export class SourceRuntime {
       let lastError;
       for (let attempt = 0; attempt <= source.retries; attempt += 1) {
         const remaining = Math.max(0, source.minIntervalMs - (this.now() - source.lastRequestAt));
-        if (remaining) await this.sleep(remaining);
+        if (remaining) await abortable(this.sleep(remaining, signal), signal);
         assertActive();
-        source.lastRequestAt = this.now();
         try {
+        // A long provider pause applies to the whole source, not just the
+        // request which received it. Fail fast so other sources remain usable.
+        const cooldownMs = source.cooldownUntil - this.now();
+        if (cooldownMs > 0) {
+          const error = new Error(`${sourceName} : pause fournisseur en cours.`);
+          error.status = 429;
+          error.retryAfterMs = cooldownMs;
+          error.sourceCooldown = true;
+          throw error;
+        }
+        source.lastRequestAt = this.now();
         source.state = { ...source.state, status: "running", lastRequestAt: new Date(this.now()).toISOString() };
-        const response = await this.fetchImpl(url, {
+        const transport = new AbortController();
+        const cancelled = () => transport.abort(signal.reason);
+        signal?.addEventListener("abort", cancelled, { once: true });
+        const timer = setTimeout(() => transport.abort(new DOMException("Source timeout", "TimeoutError")), source.timeoutMs);
+        let response;
+        let data;
+        try {
+        response = await abortable(this.fetchImpl(url, {
           headers: { accept: "application/json", "user-agent": this.userAgent, ...headers },
-          signal: AbortSignal.timeout(source.timeoutMs)
-        });
+          signal: transport.signal
+        }), transport.signal);
         if (!response.ok) {
           const error = new Error(`${sourceName} a répondu ${response.status}.`);
           error.status = response.status;
-          error.retryAfterMs = retryAfterMilliseconds(response);
+          error.retryAfterMs = retryAfterMilliseconds(response, this.now());
+          if ([429, 503].includes(response.status) && error.retryAfterMs > 60_000) {
+            source.cooldownUntil = Math.max(source.cooldownUntil, this.now() + error.retryAfterMs);
+          }
           throw error;
         }
-        const data = await parse(response);
+        data = await abortable(parse(response), transport.signal);
+        } finally {
+          clearTimeout(timer);
+          signal?.removeEventListener("abort", cancelled);
+        }
         assertActive();
         source.state = { ...source.state, status: "ok", successes: source.state.successes + 1, lastError: "", lastSuccessAt: new Date(this.now()).toISOString() };
         // URL instances are not structured-cloneable on newer Node versions.
@@ -112,13 +170,17 @@ export class SourceRuntime {
         assertActive();
           return { data, provenance: { source: sourceName, cache: "network", observedAt: new Date(this.now()).toISOString(), url: String(url) } };
         } catch (error) {
+          if (signal?.aborted && source.revision === revision && source.state.status === "running") {
+            source.state = { ...source.state, status: "idle" };
+          }
           assertActive();
           lastError = error;
           const retryable = error.name === "TimeoutError" || error.status === 429 || Number(error.status || 0) >= 500;
           // Do not shorten an upstream rate-limit instruction and retry early;
           // fail this attempt instead of locking the source queue for hours.
-          if (attempt < source.retries && retryable && Number(error.retryAfterMs || 0) <= 60_000) {
-            await this.sleep(Math.max(Number(error.retryAfterMs || 0), 500 * (2 ** attempt)));
+          if (attempt < source.retries && retryable && !error.sourceCooldown && Number(error.retryAfterMs || 0) <= 60_000) {
+            source.state = { ...source.state, status: "idle" };
+            await abortable(this.sleep(Math.max(Number(error.retryAfterMs || 0), 500 * (2 ** attempt)), signal), signal);
             continue;
           }
           break;
@@ -135,6 +197,6 @@ export class SourceRuntime {
     };
     const queued = source.tail.then(execute);
     source.tail = queued.catch(() => {});
-    return queued;
+    return abortable(queued, signal);
   }
 }

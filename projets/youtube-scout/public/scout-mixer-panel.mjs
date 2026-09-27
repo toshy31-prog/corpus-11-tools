@@ -7,7 +7,7 @@ import { routeExplanation } from "./discovery-presentation.mjs";
 const STATE_TEXT = { idle:"Choisir un départ", muted:"Désactivée", paused:"En pause", confirmation:"Identité à confirmer", loading:"Recherche en cours…", error:"Échec · réessayer", unavailable:"Source indisponible", empty:"Aucun lien trouvé dans les sources consultées", pending:"Pas encore consultée", partial:"Consultée · recherche incomplète", mediated:"Recherche via les crédits", aggregate:"Relations locales", unsupported:"Source manquante pour ce départ", "n/a":"Non applicable à ce départ", ready:"Pistes chargées" };
 const ROUTE_HELP = {
   label:"Labels documentés → autres sorties et artistes.",
-  remix:"Remixes et remixeurs explicitement crédités.",
+  remix:"Remixeurs et producteurs explicitement crédités, avec leurs rôles distincts.",
   featuring:"Collaborations et co-crédits documentés.",
   compilation:"Compilations où le départ apparaît → autres artistes.",
   alias:"Alias et projets reliés par une source.",
@@ -15,7 +15,33 @@ const ROUTE_HELP = {
   scene:"Voisinage construit par des relations documentées.",
   era:"Même période parmi des pistes déjà reliées par un label, un crédit, un projet ou une chaîne. Jamais une décennie seule."
 };
-const ROUTE_NAMES = { label: "Labels", remix: "Remixeurs", featuring: "Collaborations", compilation: "Compilations", alias: "Alias et projets", curator: "Chaînes YouTube", scene: "Scènes", era: "Période", participants: "Recherches par nom — à vérifier" };
+const ROUTE_NAMES = { label: "Labels", remix: "Remixeurs et producteurs", featuring: "Collaborations", compilation: "Compilations", alias: "Alias et projets", curator: "Chaînes YouTube", scene: "Scènes", era: "Période", participants: "Recherches par nom — à vérifier" };
+// Selection is user intent; enabled also depends on identity and source readiness.
+export function routeIsSelected(route) {
+  return Number(route?.weight) > 0 && route?.state !== "paused";
+}
+export function nextRouteWeight(route) {
+  return routeIsSelected(route) ? 0 : 1;
+}
+// Explicit navigation only: never select an identity or launch a request here.
+export function revealIdentityChoice(doc, seedId) {
+  if (!seedId) return false;
+  const panels = [...doc.querySelectorAll('.departure-identity-controls')]
+    .filter(panel => panel.dataset.seedId === seedId && !panel.closest('[hidden]'));
+  for (const panel of panels) {
+    const choices = [...panel.querySelectorAll('select:not(:disabled)')];
+    const target = choices.find(choice => choice.options.length > 1)
+      || panel.querySelector('input[type="search"]:not(:disabled)') || choices[0];
+    if (!target) continue;
+    for (let ancestor = target.parentElement; ancestor; ancestor = ancestor.parentElement) {
+      if (ancestor.tagName === 'DETAILS') ancestor.open = true;
+    }
+    target.scrollIntoView({ block: 'center', behavior: 'auto' });
+    target.focus({ preventScroll: true });
+    return true;
+  }
+  return false;
+}
 export function selectionSummary(selection) {
   if (!selection?.applied) return "";
   const reasons = {
@@ -81,7 +107,7 @@ export function mountScoutMixerPanel({ parent, read, onParameter, onNext, onDig,
     const c=dial(`direction.${id}.weight`,ROUTE_NAMES[id] || label,controls,state.id);
     const toggle=make("button","mix-route-toggle"); toggle.type="button"; toggle.dataset.routeToggle=id;
     toggle.setAttribute("aria-label",`Activer ou désactiver : ${ROUTE_NAMES[id] || label}`);
-    toggle.onclick=()=>{ const route=read().routes.find(r=>r.id===id); onParameter(`direction.${id}.weight`,route.enabled ? 0 : 1); localMessage=""; update(); };
+    toggle.onclick=()=>{ const route=read().routes.find(r=>r.id===id); onParameter(`direction.${id}.weight`,nextRouteWeight(route)); localMessage=""; update(); };
     const details=make("details","mix-route-details"), info=make("p");
     const dose=make("div","mix-route-dose");
     dose.append(c.input,c.svg,c.box.querySelector("output"));
@@ -123,6 +149,9 @@ export function mountScoutMixerPanel({ parent, read, onParameter, onNext, onDig,
   unknownArtists.setAttribute("aria-describedby",viewHelp.id); collaborations.setAttribute("aria-describedby",viewHelp.id);
   resultsToolbar.after(viewTools,viewHelp);
   const dig=actionButton("dig","Rechercher des pistes",onDig,expandTransport), stop=actionButton("stop","Arrêter la recherche",onStop,expandTransport);
+  const resolveIdentity=actionButton("resolve-identity","Choisir ou rechercher une fiche artiste",()=>{
+    if (!revealIdentityChoice(doc, read().seedId)) localMessage="Les contrôles d’identification ne sont pas disponibles pour ce départ. Attendez la fin de la recherche ou utilisez « Corriger le titre ou les artistes ».";
+  },expandTransport);
   expandTransport.append(digPlan,armedDepth);
   const reset=actionButton("reset","Activer toutes les directions",onReset,resetTransport);
   actions.append(expandTransport); routeBank.append(resetTransport);
@@ -182,7 +211,7 @@ export function mountScoutMixerPanel({ parent, read, onParameter, onNext, onDig,
       const blocked=["n/a","unsupported"].includes(route.state);
       k.box.dataset.state=route.state; k.box.dataset.enabled=String(route.enabled);
       k.input.disabled=!active || blocked; k.svg.setAttribute("aria-disabled",String(!active || blocked)); k.set(route.weight);
-      k.toggle.disabled=!active || blocked; k.toggle.setAttribute("aria-pressed",String(route.enabled));
+      k.toggle.disabled=!active || blocked; k.toggle.setAttribute("aria-pressed",String(routeIsSelected(route)));
       k.toggle.textContent=route.state==='confirmation' && route.weight>0?"En attente":route.enabled?"Activée":"Activer";
       k.stateLabel.textContent=route.loading ? STATE_TEXT.loading : stateLabel;
       k.meter.textContent=route.loaded ? `${route.loaded} chargées · ${!route.enabled ? "exclues du mélange" : directionFilter && directionFilter!==route.id ? "masquées par le filtre" : `${route.eligible} encore à parcourir`}` : "";
@@ -207,16 +236,19 @@ export function mountScoutMixerPanel({ parent, read, onParameter, onNext, onDig,
     const digParts=[]; if(opens)digParts.push(`${opens} à ouvrir`); if(continues)digParts.push(`${continues} à poursuivre`); if(retries)digParts.push(`${retries} à réessayer`); const loadable=loadableRoutes.length;
     const selected=view.routes.filter(r=>r.enabled), selectedNames=selected.map(r=>ROUTE_NAMES[r.id]).join(", ");
     const catalogueSelected=selected.filter(r=>r.id!=='participants');
+    const requested=view.routes.filter(r=>r.id!=='participants' && routeIsSelected(r) && !["n/a","unsupported"].includes(r.state));
     const identityWaiting=view.routes.filter(r=>r.weight>0 && r.state==='confirmation').length;
-    settingsTitle.textContent=`Directions et réglages · ${catalogueSelected.length} activée${catalogueSelected.length>1?"s":""}`;
-    settingsScope.textContent=catalogueSelected.map(r=>ROUTE_NAMES[r.id]).join(', ') || "Aucune direction : ouvrez pour en choisir une";
+    resolveIdentity.hidden=!identityWaiting;
+    resolveIdentity.disabled=!active || view.busy;
+    settingsTitle.textContent=`Directions et réglages · ${requested.length} sélectionnée${requested.length>1?"s":""} · ${catalogueSelected.length} disponible${catalogueSelected.length>1?"s":""}`;
+    settingsScope.textContent=requested.map(r=>ROUTE_NAMES[r.id]).join(', ') || "Aucune direction : ouvrez pour en choisir une";
     dig.textContent=view.busy?"Recherche en cours…":!loadable && identityWaiting?"Fiche artiste nécessaire":!selected.length?"Choisissez une direction":!loadable?"Sources consultées":`Chercher dans ${loadable} direction${loadable>1?"s":""}`;
     dig.title=`Consulter les sources : ${selectedNames || "aucune direction activée"}`;
     digPlan.textContent=`${catalogueSelected.length} activée${catalogueSelected.length>1?"s":""} · ${loadable} à consulter${digParts.length ? ` (${digParts.join(" · ")})` : ""}. Les autres données restent chargées.${participantRoute ? ' Les recherches par nom sont incluses dans la même liste, selon les filtres.' : ''}`;
     dig.disabled=!active||!loadable||view.busy;
     if(identityWaiting) digPlan.textContent+=` ${identityWaiting} direction(s) en attente d’une fiche artiste, non consultée(s).`;
     next.disabled=!active||!view.hasNextPage;
-    stop.hidden=!view.busy; reset.disabled=!active||selected.length===view.routes.filter(r=>!["n/a","unsupported"].includes(r.state)).length;
+    stop.hidden=!view.busy; reset.disabled=!active||view.routes.filter(r=>r.id!=='participants' && !["n/a","unsupported"].includes(r.state)).every(routeIsSelected);
     localTransport.hidden=!view.items.length && !view.canRewind; rewind.hidden=!view.canRewind;
     filter.value=directionFilter;
     sort.value=view.patch.sort; otherArtists.checked=view.patch.otherArtistsOnly; distant.checked=view.patch.includeDistant;

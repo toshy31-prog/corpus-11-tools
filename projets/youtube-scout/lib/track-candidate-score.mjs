@@ -610,6 +610,28 @@ export function decideTrackCandidate(
     gap >=
       thresholds.autoAcceptGap
   ) {
+    // A high score for one participant does not establish the whole credit.
+    // Catalogue and duration cannot cancel an explicitly incompatible version.
+    // Missing version metadata remains unknown, not contradictory.
+    if (best.components.version !== null && best.components.version < 0.95) {
+      return {
+        decision: "suggested",
+        reason: "explicit_version_requires_verification",
+        ...ranking
+      };
+    }
+    // Catalogue omissions remain useful suggestions, not automatic identities.
+    const missingArtists = normalizeArtists(
+      expected.artists || expected.preferredArtists
+    ).filter((name) => !candidateMatchesArtist(best.candidate, name));
+    if (missingArtists.length) {
+      return {
+        decision: "suggested",
+        reason: "expected_artist_credits_missing",
+        missingArtists,
+        ...ranking
+      };
+    }
     return {
       decision: "auto_accept",
       reason:

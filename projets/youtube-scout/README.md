@@ -2,7 +2,9 @@
 
 Application locale de digging et d’exploration musicale fondée sur un graphe de preuves traçables.
 
-Version : **0.19.0**, activée sur le service local le 22 septembre 2026 après autorisation. Collecte répartie entre partenaires, variantes multisources regroupées à l’affichage sans fusion des fiches, crédits multiples et explications améliorés. [Changements, mesures et limites](docs/QUALITY_0.19.0_2026-09-22.md).
+Version du code : **0.21.0**. Identification prudente, chemins documentaires fidèles et plus courts à portée équivalente, annulation des sources déconnectées, persistance renforcée et récupération des filtres. Comparateurs et instrumentation restent hors du moteur de production. L’activation du service est documentée séparément dans le [bilan de livraison](docs/RELEASE_0.21.0_2026-09-27.md), sans être déduite du seul numéro de version.
+
+Historique 0.19.0 : collecte répartie entre partenaires, variantes multisources regroupées à l’affichage sans fusion des fiches, crédits multiples et explications améliorés. [Changements, mesures et limites](docs/QUALITY_0.19.0_2026-09-22.md).
 
 Le correctif d’ouverture de 0.18 est conservé : le sélecteur reste accessible depuis la bibliothèque locale même si l’API échoue ; une ouverture refusée revient à un accueil utilisable et peut être réessayée.
 

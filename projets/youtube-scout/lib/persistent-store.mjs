@@ -1,4 +1,4 @@
-import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
+import { mkdir, open, readFile, rename } from "node:fs/promises";
 import { dirname } from "node:path";
 
 const EMPTY = Object.freeze({
@@ -23,6 +23,33 @@ function safeId(value = "") {
   const id = String(value);
   if (!id || id.length > 4096 || /[\u0000-\u001f]/.test(id) || ["prototype", ...Object.getOwnPropertyNames(Object.prototype)].includes(id)) throw Object.assign(new Error("Identifiant local invalide."), { httpStatus: 400 });
   return id;
+}
+
+// The injectable operations support failure tests without touching live data.
+// After rename, an error means publication happened but durability is uncertain.
+export async function writeStoreSnapshot(pathname, snapshot, fs = { mkdir, open, rename }) {
+  const directory = dirname(pathname);
+  await fs.mkdir(directory, { recursive: true });
+  const temporary = `${pathname}.tmp`;
+  const file = await fs.open(temporary, "w", 0o600);
+  try {
+    // open(mode) does not narrow permissions on a leftover temporary file.
+    await file.chmod(0o600);
+    await file.writeFile(snapshot);
+    await file.sync();
+  } finally {
+    await file.close();
+  }
+  await fs.rename(temporary, pathname);
+  try {
+    const parent = await fs.open(directory, "r");
+    try { await parent.sync(); }
+    finally { await parent.close(); }
+  } catch (cause) {
+    throw Object.assign(new Error("Fichier publié ; synchronisation du répertoire non confirmée.", { cause }), {
+      code: "STORE_DURABILITY_UNCERTAIN", storePublished: true
+    });
+  }
 }
 
 export class PersistentStore {
@@ -53,10 +80,7 @@ export class PersistentStore {
     await this.load();
     const snapshot = JSON.stringify(state || this.state, null, 2);
     this.writeTail = this.writeTail.catch(() => {}).then(async () => {
-      await mkdir(dirname(this.pathname), { recursive: true });
-      const temporary = `${this.pathname}.tmp`;
-      await writeFile(temporary, snapshot, { mode: 0o600 });
-      await rename(temporary, this.pathname);
+      await writeStoreSnapshot(this.pathname, snapshot);
     });
     return this.writeTail;
   }
@@ -145,7 +169,11 @@ export class PersistentStore {
       staged.state = clone(this.state);
       staged.persist = async () => {};
       await staged.ingestGraph(input);
-      await this.persist(staged.state);
+      try { await this.persist(staged.state); }
+      catch (error) {
+        if (error.storePublished) this.state = staged.state;
+        throw error;
+      }
       this.state = staged.state;
       return this.stats();
     });
@@ -159,7 +187,7 @@ export class PersistentStore {
     catch (error) {
       // A failed disk write must not become a successful correction on the next
       // unrelated save. Never roll back a newer edit from another local client.
-      if (this.state.entities[entity.id]?.departureCorrection?.revision === entity.departureCorrection.revision) {
+      if (!error.storePublished && this.state.entities[entity.id]?.departureCorrection?.revision === entity.departureCorrection.revision) {
         if (previous) this.state.entities[entity.id] = previous;
         else delete this.state.entities[entity.id];
       }

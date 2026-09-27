@@ -1,11 +1,11 @@
 {
   "name": "youtube-scout",
-  "version": "0.20.1",
+  "version": "0.21.0",
   "private": true,
   "type": "module",
   "scripts": {
     "start": "node server.mjs",
-    "test": "node --test server.test.mjs lib/*.test.mjs public/*.test.mjs tests/*.test.mjs",
+    "test": "node --test server.test.mjs lib/*.test.mjs public/*.test.mjs tests/*.test.mjs scripts/*.test.mjs",
     "test:adversarial": "node --test lib/release-adversarial.test.mjs lib/session-races.test.mjs public/library-state.test.mjs server.test.mjs",
     "audit:browser": "node scripts/consolidation-browser-audit.mjs",
     "audit:workflow": "node scripts/workflow-browser-audit.mjs",

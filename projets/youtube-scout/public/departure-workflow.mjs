@@ -98,6 +98,10 @@ export function artistChoiceRank(entity, query) {
   if (!q || !name) return 0;
   if (q === name) return 3;
   if ((entity.aliases || []).some(alias => nameKey(typeof alias === "string" ? alias : alias.name) === q)) return 2;
+  // A catalogue may omit a leading English article. Keep this a low-ranked
+  // proposal only, never an identity assertion; short names remain protected.
+  const withoutArticle = value => value.startsWith("the ") && value.split(" ").length >= 3 ? value.slice(4) : value;
+  if (withoutArticle(q) === withoutArticle(name)) return 1;
   // Short names are not substrings: TH is neither The Black Tone nor Dj.Booth.
   if (q.replace(/\s/g, "").length <= 3) return 0;
   const words = name.split(" ");
