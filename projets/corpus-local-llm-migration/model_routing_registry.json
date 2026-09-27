@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "profiles": [
+    {
+      "id": "qwen3.6-direct-local",
+      "model_id": "qwen3.6-35b-a3b-ud-q4-k-m",
+      "tier": "hot",
+      "availability": "configured_local",
+      "variant": "direct",
+      "input_modalities": ["text", "image"],
+      "tool_call": true,
+      "context_tokens": 16384,
+      "evidence": ["launcher_configuration", "local_text_inference_observed", "bounded_tool_chain_observed"],
+      "limits": ["latency_unmeasured_for_new_task", "tool_success_not_guaranteed", "vision_e2e_not_established"]
+    },
+    {
+      "id": "qwen3.6-reflexion-local",
+      "model_id": "qwen3.6-35b-a3b-ud-q4-k-m",
+      "tier": "hot",
+      "availability": "configured_local",
+      "variant": "reflexion",
+      "input_modalities": ["text", "image"],
+      "tool_call": true,
+      "context_tokens": 16384,
+      "evidence": ["launcher_configuration"],
+      "limits": ["reasoning_latency_unmeasured", "tool_success_not_guaranteed", "vision_e2e_not_established"]
+    },
+    {
+      "id": "qwen3.8-cold-comparator",
+      "model_id": "qwen3.8-27b-ud-q5-k-m",
+      "tier": "cold",
+      "availability": "cold_comparator_not_active",
+      "variant": "direct",
+      "input_modalities": ["text"],
+      "tool_call": true,
+      "context_tokens": 16384,
+      "evidence": ["locked_artifact_only"],
+      "limits": ["requires_explicit_restore", "performance_unmeasured", "not_an_active_runtime_profile"]
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {"id":"tampered-proposal","kind":"tamper_proposal","expected":"rejected"},
+    {"id":"cross-proposal-receipt","kind":"cross_proposal_receipt","expected":"rejected"},
+    {"id":"rollback-absent","kind":"missing_rollback","expected":"rejected"},
+    {"id":"unknown-postcondition","kind":"missing_postcondition","expected":"not_verified"},
+    {"id":"cancelled-action","kind":"cancelled_action","expected":"not_verified"},
+    {"id":"malformed-action-receipt","kind":"malformed_action_receipt","expected":"rejected"}
+  ]
+}

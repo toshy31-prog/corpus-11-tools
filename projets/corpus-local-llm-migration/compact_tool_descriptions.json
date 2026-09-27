@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "source": "Observed OpenCode 1.18.32 provider definitions; exact hash guard",
+  "tools": {
+    "bash": {
+      "source_sha256": "1f835ce857c63c521b20709e0eba7828b877878fbfdbad02f4cd99be47313d25",
+      "description": "Run a terminal command (Linux/bash); command required, timeout in ms (default 120000). Use workdir, not cd &&; quote paths containing spaces. Before creating files/directories, verify the parent exists and is intended. Use /tmp/opencode for approved temporary work. Prefer Glob/Grep/Read/Edit/Write for file operations; use shell only when explicitly requested or necessary. Match counts may use rg, not grep. Communicate directly, not with echo/printf. Capture output; >2000 lines or 51200 bytes is saved/truncated automatically: use Read offset/limit or Grep on that file, not head/tail. Independent commands can be parallel calls; dependent commands use &&; use ; only if later commands may run despite failure. No newline-separated commands (quoted strings may contain newlines).\nGit: commit, amend, push or PR only on explicit request. Before commit inspect status, diff and log --oneline -10; stage intended files only, never secrets; concise repository-style message. No git config changes, skipped hooks, interactive -i, force push or empty commits unless explicitly requested. After failed commit/hooks, fix and create a new commit; do not amend the failed commit. Before PR inspect status, diff, remote tracking, recent commits and base-branch diff; review every included commit. Use gh for GitHub and return the PR URL."
+    },
+    "edit": {
+      "source_sha256": "4426ccf60241fe41d01bbafc1e7450ea6538003f9fca863ab0210492a74647f8",
+      "description": "Replace exact text in an existing file. Read the file first in this conversation; otherwise editing fails. Preserve indentation; omit Read's line-number prefixes from oldString/newString. oldString must match uniquely: if absent, reread; if multiple matches, add surrounding context or set replaceAll to change every occurrence. Prefer editing existing files; create files only when required. No emojis unless requested."
+    },
+    "read": {
+      "source_sha256": "98ee843341c2dab2227add0019e48d4b2f0f00f9b042b853d1ee52bb34e6363d",
+      "description": "Read a local file or directory using an absolute filePath; missing paths error. Default: up to 2000 lines, offset is 1-based; use limit and larger offsets for later sections. Lines are prefixed \"number: content\" (not part of the file); directory entries have no line numbers and directories end in /. Lines over 2000 characters truncate. Use Grep for targeted content/long lines and Glob for uncertain filenames. Batch independent reads; avoid tiny repeated 30-line slices. Images/PDFs can be returned as attachments."
+    },
+    "write": {
+      "source_sha256": "8b7197b6e3a8ec1d129eeb6b82608e4cab759bfcc60ba890ecf36322a6e45180",
+      "description": "Write a file, overwriting it if it exists. Read any existing file first in this conversation or this tool fails. Prefer Edit for existing files; create files only when required. Do not proactively create Markdown documentation/README files unless the user explicitly requested them. No emojis unless requested."
+    },
+    "glob": {
+      "source_sha256": "50b2d2c41d4b8d0286ab4542c6ec882421ac4ae5c0567ad213c3668ed973ed9a",
+      "description": "Find paths by glob pattern, e.g. **/*.js or src/**/*.ts. Batch independent useful searches. For open-ended exploration requiring repeated glob/grep rounds, use Task when delegation is permitted."
+    },
+    "grep": {
+      "source_sha256": "97fa2a9929353d20d3418041aae53ffea3aaf63e9a6e2fdc8cff6db61c3f4c5e",
+      "description": "Search file contents by regex; optional include glob, e.g. *.{ts,tsx}. Returns matching paths and line numbers. For match counts use Bash with rg, not grep. For open-ended repeated searches use Task when delegation is permitted."
+    }
+  },
+  "license_notice": "Compact descriptions adapted from OpenCode tool documentation; MIT, Copyright (c) 2025 opencode. See licenses/opencode-tool-descriptions-MIT.txt."
+}

@@ -1,0 +1,131 @@
+{
+  "schema": "corpus.retrieval-benchmark.v1",
+  "evaluator_sha256": "c47c5d1dd158cdd6cea127e85aed06bb12b7c14e70da0bb15010133a10d9d2b4",
+  "cases": [
+    {
+      "id": "Q01-ranking-exact",
+      "manifest": {
+        "schema": "corpus.retrieval-evaluation.v1",
+        "quality_gates": {
+          "min_mean_recall_at_k": 1,
+          "min_case_hit_rate": 1,
+          "max_forbidden_results": 0
+        },
+        "cases": [
+          {
+            "id": "case",
+            "expected_ids": [
+              "relevant.a"
+            ],
+            "forbidden_ids": [],
+            "result_ids": [
+              "relevant.a",
+              "other"
+            ]
+          }
+        ]
+      },
+      "expected": "pass"
+    },
+    {
+      "id": "Q02-forbidden-result",
+      "manifest": {
+        "schema": "corpus.retrieval-evaluation.v1",
+        "quality_gates": {
+          "min_mean_recall_at_k": 1,
+          "min_case_hit_rate": 1,
+          "max_forbidden_results": 0
+        },
+        "cases": [
+          {
+            "id": "case",
+            "expected_ids": [
+              "relevant.a"
+            ],
+            "forbidden_ids": [
+              "forbidden.x"
+            ],
+            "result_ids": [
+              "relevant.a",
+              "forbidden.x"
+            ]
+          }
+        ]
+      },
+      "expected": "fail"
+    },
+    {
+      "id": "Q03-absent-result",
+      "manifest": {
+        "schema": "corpus.retrieval-evaluation.v1",
+        "quality_gates": {
+          "min_mean_recall_at_k": 1,
+          "min_case_hit_rate": 1,
+          "max_forbidden_results": 0
+        },
+        "cases": [
+          {
+            "id": "case",
+            "expected_ids": [
+              "relevant.a"
+            ],
+            "forbidden_ids": [],
+            "result_ids": []
+          }
+        ]
+      },
+      "expected": "fail"
+    },
+    {
+      "id": "Q04-duplicate-ranking-id",
+      "manifest": {
+        "schema": "corpus.retrieval-evaluation.v1",
+        "quality_gates": {
+          "min_mean_recall_at_k": 1,
+          "min_case_hit_rate": 1,
+          "max_forbidden_results": 0
+        },
+        "cases": [
+          {
+            "id": "case",
+            "expected_ids": [
+              "relevant.a"
+            ],
+            "forbidden_ids": [],
+            "result_ids": [
+              "relevant.a",
+              "relevant.a"
+            ]
+          }
+        ]
+      },
+      "expected": "reject"
+    },
+    {
+      "id": "Q05-ambiguous-expected-forbidden",
+      "manifest": {
+        "schema": "corpus.retrieval-evaluation.v1",
+        "quality_gates": {
+          "min_mean_recall_at_k": 1,
+          "min_case_hit_rate": 1,
+          "max_forbidden_results": 0
+        },
+        "cases": [
+          {
+            "id": "case",
+            "expected_ids": [
+              "relevant.a"
+            ],
+            "forbidden_ids": [
+              "relevant.a"
+            ],
+            "result_ids": [
+              "relevant.a"
+            ]
+          }
+        ]
+      },
+      "expected": "reject"
+    }
+  ]
+}

@@ -1,0 +1,296 @@
+{
+  "schema_version": 1,
+  "boundary": "static_local_tool_catalog",
+  "policy": {
+    "catalog_origin": "native_local_reviewed",
+    "dynamic_tool_discovery": "deny",
+    "unverified_catalog_action": "fail_closed",
+    "execution_authorization": "separate_from_tool_exposure"
+  },
+  "catalog": {
+    "filename": "tool_router_catalog_v2.json",
+    "sha256": "deb8290ba6fc8bab35ae27ed1d9d5987303eda166df3be2382d997b018b3f8c0",
+    "tool_count": 26,
+    "tools": {
+      "bash": {
+        "namespace": "shell",
+        "risk": "high",
+        "effects": [
+          "execute"
+        ],
+        "dependencies": [],
+        "schema_sha256": "ed00ab12305d7e91381fa2f3170c607943c67b82cbcd2708e22e34be7ae5d5f7",
+        "description_sha256": "1f835ce857c63c521b20709e0eba7828b877878fbfdbad02f4cd99be47313d25"
+      },
+      "corpus-retrieval_memory_delete": {
+        "namespace": "memory",
+        "risk": "high",
+        "effects": [
+          "delete",
+          "destructive"
+        ],
+        "dependencies": [],
+        "schema_sha256": "62f0569a54538122778a96b687b8592c0f7ba5549eb6040dae92f86b5cb49b5d",
+        "description_sha256": "f20206619b877bf317676dc0f0a6328e80e0f6e9c3166cfff99e893478134e13"
+      },
+      "corpus-retrieval_memory_index_text": {
+        "namespace": "memory",
+        "risk": "medium",
+        "effects": [
+          "write"
+        ],
+        "dependencies": [],
+        "schema_sha256": "20df21ab6b3ae19b8fc5f05f9c28572c40882250d908d5ac7b974dcf2bf921e2",
+        "description_sha256": "37ffd90cf2ec45b3668e94b624d63ca8867a7b1b003078f5a52d7e37552d0470"
+      },
+      "corpus-retrieval_memory_search": {
+        "namespace": "memory",
+        "risk": "low",
+        "effects": [
+          "read"
+        ],
+        "dependencies": [],
+        "schema_sha256": "093a6796d6e90a99267a6e17c8b613536fa832ceb62c330bf09ff786b622eaff",
+        "description_sha256": "dcb632835436c0d5ef2de0d62b3b7f31d2275e0f6b3d4a40e06f183f7569e209"
+      },
+      "corpus-tools_browser_request": {
+        "namespace": "research",
+        "risk": "medium",
+        "effects": [
+          "network",
+          "read"
+        ],
+        "dependencies": [
+          "corpus-tools_browser_result"
+        ],
+        "schema_sha256": "74a319f81dca79900cd447611ae34ea559410dc79e7dc619eb0c6658d67f8bc1",
+        "description_sha256": "b176cac3ccceb9f4b1a85ebafa8ade2b2ba390d5993239f575587a9803986ba3"
+      },
+      "corpus-tools_browser_result": {
+        "namespace": "research",
+        "risk": "low",
+        "effects": [
+          "read"
+        ],
+        "dependencies": [],
+        "schema_sha256": "7717dd85c2e5ff939b47bf9369acc9c59e449e42f2f3bff74058dcd2eea9242d",
+        "description_sha256": "b43caee27a113f5fe895f7c78eea9d3c15f9acc5eb988c3ce90752b1264be842"
+      },
+      "corpus-tools_document_create": {
+        "namespace": "documents",
+        "risk": "medium",
+        "effects": [
+          "write"
+        ],
+        "dependencies": [
+          "corpus-tools_document_result"
+        ],
+        "schema_sha256": "70d3315e0594286787d8d77c4abee62a49dca482512dbf248cf1764b0322efad",
+        "description_sha256": "bc8cd6fcb6867d8eb1be75a5d9b5cbc1b24fc0ad198535cc0a4169a84b973c7b"
+      },
+      "corpus-tools_document_extract": {
+        "namespace": "documents",
+        "risk": "low",
+        "effects": [
+          "read"
+        ],
+        "dependencies": [
+          "corpus-tools_document_result"
+        ],
+        "schema_sha256": "717fed718add7bbbedd6a1735b6c1e73ebe80495883dcda3ccf16a1037698b4e",
+        "description_sha256": "b70354c3dd8efad906925157e4ec3aad08714397dbac3e4ddec3e888e49b7d1a"
+      },
+      "corpus-tools_document_formats": {
+        "namespace": "documents",
+        "risk": "low",
+        "effects": [
+          "read"
+        ],
+        "dependencies": [],
+        "schema_sha256": "d746974fa9afd5e951f76f9af38954b0ad7f436f2120dc974da65e5ee39f856f",
+        "description_sha256": "bc8cd6fcb6867d8eb1be75a5d9b5cbc1b24fc0ad198535cc0a4169a84b973c7b"
+      },
+      "corpus-tools_document_result": {
+        "namespace": "documents",
+        "risk": "low",
+        "effects": [
+          "read"
+        ],
+        "dependencies": [],
+        "schema_sha256": "7717dd85c2e5ff939b47bf9369acc9c59e449e42f2f3bff74058dcd2eea9242d",
+        "description_sha256": "bc8cd6fcb6867d8eb1be75a5d9b5cbc1b24fc0ad198535cc0a4169a84b973c7b"
+      },
+      "corpus-tools_git_request": {
+        "namespace": "git",
+        "risk": "medium",
+        "effects": [
+          "read",
+          "write"
+        ],
+        "dependencies": [],
+        "schema_sha256": "391812d30a737e8e7e4bb99449a315356a0ad08aa1eeaf545f56ce8d47f913e7",
+        "description_sha256": "cd057c5f00e9680aa56bbf7e812d49e44cb602a6b1a919c759e399055c9d436a"
+      },
+      "corpus-tools_media_generate": {
+        "namespace": "media",
+        "risk": "medium",
+        "effects": [
+          "write",
+          "generate"
+        ],
+        "dependencies": [
+          "corpus-tools_media_result"
+        ],
+        "schema_sha256": "184d70f0f03fd9d671f7161ee6723e5815cbb9f0d2884cbb73ad45af5fa27d93",
+        "description_sha256": "9728038eadac941ad83136abe7c183854f8f92ca27ff902ee419f271046727d1"
+      },
+      "corpus-tools_media_models": {
+        "namespace": "media",
+        "risk": "low",
+        "effects": [
+          "read"
+        ],
+        "dependencies": [],
+        "schema_sha256": "99334726611ccf58a148b0814696bfa6fe08c1b2d027e946beccf5a74331c9aa",
+        "description_sha256": "fb9d49cc37f8f949a6a267e9539e4f797b82ab61aa3fa251df6383aae663c083"
+      },
+      "corpus-tools_media_result": {
+        "namespace": "media",
+        "risk": "low",
+        "effects": [
+          "read"
+        ],
+        "dependencies": [],
+        "schema_sha256": "7717dd85c2e5ff939b47bf9369acc9c59e449e42f2f3bff74058dcd2eea9242d",
+        "description_sha256": "9fb0716e9b8edc5348f7ba05cb0861c994eae8ea943a45183a99937443210c42"
+      },
+      "corpus-tools_plugin_read": {
+        "namespace": "plugins",
+        "risk": "low",
+        "effects": [
+          "read"
+        ],
+        "dependencies": [],
+        "schema_sha256": "eb5d1043a0bd19b451e662aeb7a196380433873b00aa7f212720693b24946903",
+        "description_sha256": "e4af52a83d7dbf0dad9e1e7283a55c1f57228c132f506d48c13eeb60b84a475d"
+      },
+      "corpus-tools_plugin_resources": {
+        "namespace": "plugins",
+        "risk": "low",
+        "effects": [
+          "read"
+        ],
+        "dependencies": [],
+        "schema_sha256": "7717dd85c2e5ff939b47bf9369acc9c59e449e42f2f3bff74058dcd2eea9242d",
+        "description_sha256": "7b8fe3e0aec0305e534ff7e3fb67f7f5bb1dc01627411765df77571f58f8f963"
+      },
+      "corpus-tools_plugins_list": {
+        "namespace": "plugins",
+        "risk": "low",
+        "effects": [
+          "read"
+        ],
+        "dependencies": [],
+        "schema_sha256": "d746974fa9afd5e951f76f9af38954b0ad7f436f2120dc974da65e5ee39f856f",
+        "description_sha256": "6ab0f114e58544a9ec6f53b779aa10720f132ab89fc1b5a0c43177051c400489"
+      },
+      "corpus-tools_research_request": {
+        "namespace": "research",
+        "risk": "medium",
+        "effects": [
+          "network",
+          "read"
+        ],
+        "dependencies": [
+          "corpus-tools_research_result"
+        ],
+        "schema_sha256": "9630c175afa04f9ae95db0bfd4bfd5bf5e1db6a74706ad94579b7859f6589730",
+        "description_sha256": "27047161c50b004d20f548b03f67fbb9931e97ef8e0258ae84d64ab71696dd79"
+      },
+      "corpus-tools_research_result": {
+        "namespace": "research",
+        "risk": "low",
+        "effects": [
+          "read"
+        ],
+        "dependencies": [],
+        "schema_sha256": "7717dd85c2e5ff939b47bf9369acc9c59e449e42f2f3bff74058dcd2eea9242d",
+        "description_sha256": "0382edda66b799275a8433a022e50bbeda04b07d3a24801d01f9cb305e496e3e"
+      },
+      "corpus-tools_ssh_request": {
+        "namespace": "ssh",
+        "risk": "high",
+        "effects": [
+          "network",
+          "execute",
+          "remote"
+        ],
+        "dependencies": [],
+        "schema_sha256": "deee6abebbbcba754abbd84b40b5cd3ecffde1402b96af8f525fd723d2636e88",
+        "description_sha256": "dd907dd6902a2abb93cb4369f8e1e3916a6a4d0a4fb7e084901f760ad211003c"
+      },
+      "edit": {
+        "namespace": "files",
+        "risk": "medium",
+        "effects": [
+          "write"
+        ],
+        "dependencies": [],
+        "schema_sha256": "4f665f9e1717fd102239312fb7140b8d19ee80fce7fdabdcd0121146fd08637b",
+        "description_sha256": "4426ccf60241fe41d01bbafc1e7450ea6538003f9fca863ab0210492a74647f8"
+      },
+      "glob": {
+        "namespace": "files",
+        "risk": "low",
+        "effects": [
+          "read",
+          "search"
+        ],
+        "dependencies": [],
+        "schema_sha256": "30767011136642ac2d50b1bc1f001bb55e3050a0d1fb0a12d25ebebc74a8192a",
+        "description_sha256": "50b2d2c41d4b8d0286ab4542c6ec882421ac4ae5c0567ad213c3668ed973ed9a"
+      },
+      "grep": {
+        "namespace": "files",
+        "risk": "low",
+        "effects": [
+          "read",
+          "search"
+        ],
+        "dependencies": [],
+        "schema_sha256": "f1ba1dc3a8fee05cc5f1dad5004ce5e11f7efb5901d315787468adb756e67039",
+        "description_sha256": "97fa2a9929353d20d3418041aae53ffea3aaf63e9a6e2fdc8cff6db61c3f4c5e"
+      },
+      "read": {
+        "namespace": "files",
+        "risk": "low",
+        "effects": [
+          "read"
+        ],
+        "dependencies": [],
+        "schema_sha256": "17cde99b4f6e8acfc5233a4975d799eca9c220b2887faff62143cde2f8726cdc",
+        "description_sha256": "98ee843341c2dab2227add0019e48d4b2f0f00f9b042b853d1ee52bb34e6363d"
+      },
+      "task": {
+        "namespace": "delegation",
+        "risk": "medium",
+        "effects": [
+          "delegate"
+        ],
+        "dependencies": [],
+        "schema_sha256": "56b6b799f4844d7c3d2e8853a39b244f823b2b5fde06ed20816f742c1c596d69",
+        "description_sha256": "0dae0245843e11ece19750a881ba0d6089a0cce545b982feb17a830d9dcf127c"
+      },
+      "write": {
+        "namespace": "files",
+        "risk": "medium",
+        "effects": [
+          "write"
+        ],
+        "dependencies": [],
+        "schema_sha256": "8fd99c7a58a1cd2eb63501f3f79f42eaf684f2e7ae9ea2f23ec2ed626b15a87e",
+        "description_sha256": "8b7197b6e3a8ec1d129eeb6b82608e4cab759bfcc60ba890ecf36322a6e45180"
+      }
+    }
+  }
+}

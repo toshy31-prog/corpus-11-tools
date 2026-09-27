@@ -46,8 +46,8 @@ function fixture(overrides={}){
  const doc={body,createElement:tag=>new Element(tag),getElementById:id=>body.descendants().find(n=>n.id===id)||null,querySelector:selector=>selector==='main'?main:selector==='main>header'?header:selector==='.workspace'?workspace:body.querySelector(selector),querySelectorAll:selector=>body.querySelectorAll(selector),addEventListener(){}};
  for(const id of ['chat','detail','current-title','history','history-messages']){const n=new Element('div');n.id=id;workspace.append(n);}
  class Reader{readAsDataURL(file){this.file=file;readers.push(this);}finish(value='data:image/png;base64,YQ=='){this.result=value;this.onload?.();}}
- const c=vm.createContext({Promise,Map,Set,Date,JSON,URL,AbortSignal,console,localStorage:{getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v)},document:doc,$:id=>doc.getElementById(id),el:(tag,text,cls)=>new Element(tag,text,cls),nativeSessions:new Map(),nativeCurrent:null,library:{root:'/Corpus',threads:[],documents:[]},locals:[{id:'A',directory:'/Corpus/A'},{id:'B',directory:'/Corpus/B'}],crypto:{randomUUID:()=>String(++uuid)},FileReader:Reader,agentConfig:{reasoning:'direct'},generalSettings:{sendKey:'enter',followup:'queue'},CorpusPersonalization:{context:()=>'',collect:()=>false},personalization:{},persistPersonalization(){},notifyCorpusCompletion(){},temporalContext:()=>'',agentResponseInstructions:()=>'',installChatOptions(){},iconButton(){},settingsIcon:()=>new Element('span'),refreshChatChanges(){},installChatScrollGuide:()=>()=>{},installInlineDictation(){},generalShouldSend:()=>false,nativeRender:s=>renders.push(s.id),nativeRefresh:async s=>{s.ready=true;},nativeApi:async(s,path,data)=>{api.push({id:s.id,path,data});return [];},installComposerExtras(s,form,input,toolbar,attach,file,addImages){s.mediaAdd=addImages;},requestSerial:0,historyRequest:0,history:{replaceState(){}},render(){},status(){},rememberConversation(){},loadHistory(){},sessionUrl:id=>'/session/'+id,subagentsBusy:()=>false,corpusHelpDialog(){const dialog=new Element('dialog'),content=new Element('div');dialog.append(content);body.append(dialog);return content;},...overrides});
- load(c,'normalizeNativeDocuments','nativeDocumentContext','nativeDocumentAttachments','nativeState','nativeSave','nativePump');
+ const c=vm.createContext({Promise,Map,Set,Date,JSON,URL,AbortSignal,console,localStorage:{getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v)},document:doc,$:id=>doc.getElementById(id),el:(tag,text,cls)=>new Element(tag,text,cls),nativeSessions:new Map(),nativeCurrent:null,library:{root:'/Corpus',threads:[],documents:[]},locals:[{id:'A',directory:'/Corpus/A'},{id:'B',directory:'/Corpus/B'}],crypto:{randomUUID:()=>String(++uuid)},FileReader:Reader,agentConfig:{reasoning:'direct'},generalSettings:{sendKey:'enter',followup:'queue'},CorpusPersonalization:{context:()=>'',collect:()=>false},personalization:{},persistPersonalization(){},notifyCorpusCompletion(){},temporalContext:()=>'',temporalMessageContext:()=>'',compatRuntimePath:relative=>'/Corpus/.dev-local/'+relative,archiveState:()=> 'active',conversationUpdatedAt:()=>0,installChatDropZone(){},installChatClipboard(){},agentResponseInstructions:()=>'',installChatOptions(){},iconButton(){},settingsIcon:()=>new Element('span'),refreshChatChanges(){},installChatScrollGuide:()=>()=>{},installInlineDictation(){},generalShouldSend:()=>false,nativeRender:s=>renders.push(s.id),nativeRefresh:async s=>{s.ready=true;},nativeApi:async(s,path,data)=>{api.push({id:s.id,path,data});return [];},installComposerExtras(s,form,input,toolbar,attach,file,addImages){s.mediaAdd=addImages;},requestSerial:0,historyRequest:0,history:{replaceState(){}},render(){},status(){},rememberConversation(){},loadHistory(){},sessionUrl:id=>'/session/'+id,subagentsBusy:()=>false,corpusHelpDialog(){const dialog=new Element('dialog'),content=new Element('div');dialog.append(content);body.append(dialog);return content;},...overrides});
+ load(c,'automaticToolNames','conversationToolSnapshot','normalizeNativeDocuments','nativeDocumentContext','nativeDocumentAttachments','nativeState','nativeSave','nativePump');
  if(source.includes('function createConversationComposer('))load(c,'createConversationComposer');
  load(c,'openNativeConversation');
  function open(id){c.openNativeConversation(id);return {state:c.nativeState(id),input:doc.getElementById('native-input'),form:doc.getElementById('native-input').closest('form'),stop:doc.getElementById('native-stop')};}
@@ -55,6 +55,20 @@ function fixture(overrides={}){
 }
 const image={name:'pixel.png',mime:'image/png',url:'data:image/png;base64,YQ=='};
 const imported={name:'notes.pdf',path:'/Corpus/.dev-local/corpus-attachments/'+ 'a'.repeat(64)+'/original.pdf',textPath:'/Corpus/.dev-local/corpus-attachments/'+ 'a'.repeat(64)+'/content.txt',preview:'REFERENCE ALPHA',characters:15};
+
+test('Composer commands stay in Corpus, filter native actions and preserve the draft without loading OpenCode',()=>{
+ let opened=0;
+ const f=fixture({iconButton:(button,icon,label)=>button.setAttribute('aria-label',label),shortcutActions:[{id:'settings',name:'Ouvrir les paramètres',description:'Réglages Corpus',run:()=>opened++}]});
+ load(f.c,'openCommandMenu');
+ const a=f.open('A'),frame=f.doc.getElementById('chat');frame.hidden=true;
+ a.input.value='Keep this draft';a.input.oninput();
+ a.form.descendants().find(n=>n.getAttribute('aria-label')==='Commandes Corpus').click();
+ const dialog=f.doc.querySelector('dialog');assert.equal(dialog.open,true);assert.equal(dialog.getAttribute('aria-label'),'Commandes Corpus');
+ const search=dialog.querySelector('input');search.value='paramètres';search.oninput();
+ dialog.querySelectorAll('button').find(n=>n.textContent==='Ouvrir les paramètres').click();
+ assert.equal(opened,1);assert.equal(dialog.isConnected,false);assert.equal(frame.hidden,true);assert.equal(frame.src,undefined);
+ assert.equal(f.doc.getElementById('native-chat').hidden,false);assert.equal(a.input.value,'Keep this draft');assert.equal(a.state.draft,'Keep this draft');assert.equal(f.api.length,0);
+});
 
 test('Write, erase and navigate preserve only the latest draft of each session',()=>{
  const {open,storage}=fixture();let a=open('A');a.input.value='secret draft';a.input.oninput();a.input.value='';a.input.oninput();
@@ -69,7 +83,7 @@ test('Double submit queues and transmits one immutable message',async()=>{
 });
 
 test('Typing and queuing another message during a pending send preserves FIFO and both texts',async()=>{
- const gate=deferred(),requests=[];const {c,open}=fixture({nativeApi:(s,path,data)=>{requests.push(data.parts[0].text);return requests.length===1?gate.promise:Promise.resolve();}});
+ const gate=deferred(),requests=[];const {c,open}=fixture({nativeApi:(s,path,data)=>{requests.push(data.parts.find(p=>p.type==='text'&&!p.synthetic).text);return requests.length===1?gate.promise:Promise.resolve();}});
  const a=open('A');a.input.value='First';const first=a.form.requestSubmit();await flush();a.input.value='Second';await a.form.requestSubmit();
  assert.deepEqual(copy(a.state.queue.map(x=>x.text)),['First','Second']);assert.deepEqual(requests,['First']);gate.resolve();await first;
  assert.deepEqual(copy(a.state.queue.map(x=>x.text)),['Second']);a.state.busy=false;a.state.notBefore=0;await c.nativePump(a.state);assert.deepEqual(requests,['First','Second']);
@@ -160,7 +174,7 @@ test('Home creates no backend session until a non-empty request is submitted',as
 test('Home double-click sends one captured request to the returned session',async()=>{
  const gate=deferred(),requests=[],f=landingFixture({fetchJSON:(...args)=>{requests.push(args);return gate.promise;}});f.input.value='First request';f.input.oninput();f.state.images=[image];f.state.documents=[imported];
  const first=f.form.requestSubmit(),second=f.form.requestSubmit();await flush();assert.equal(requests.length,1);gate.resolve({id:'created',title:'Created'});await Promise.all([first,second]);
- assert.equal(f.api.length,1);assert.equal(f.api[0].id,'created');assert.equal(f.api[0].data.parts[0].text,'First request');assert.equal(f.api[0].data.parts.filter(p=>p.type==='file').length,1);assert.equal(f.api[0].data.parts.find(p=>p.synthetic).metadata.corpusDocuments[0].path,imported.path);
+ assert.equal(f.api.length,1);assert.equal(f.api[0].id,'created');assert.equal(f.api[0].data.parts.find(p=>p.type==='text'&&!p.synthetic).text,'First request');assert.equal(f.api[0].data.parts.filter(p=>p.type==='file').length,1);assert.equal(f.api[0].data.parts.find(p=>p.metadata?.corpusDocuments).metadata.corpusDocuments[0].path,imported.path);
 });
 
 test('Late home creation leaves a later chat active and keeps new home typing and attachments',async()=>{
@@ -168,7 +182,7 @@ test('Late home creation leaves a later chat active and keeps new home typing an
  const later={...image,name:'later.png'},laterDoc={...imported,name:'later.pdf',path:imported.path.replaceAll('a'.repeat(64),'b'.repeat(64)),textPath:imported.textPath.replaceAll('a'.repeat(64),'b'.repeat(64))};
  f.input.value='Keep the new draft';f.input.oninput();f.state.images.push(later);f.state.documents=[laterDoc];f.c.requestSerial++;const b=f.open('B');b.input.value='Draft B';b.input.oninput();
  gate.resolve({id:'created',title:'Created'});await sending;
- assert.equal(f.c.nativeCurrent,'B');assert.equal(b.state.draft,'Draft B');assert.equal(f.state.draft,'Keep the new draft');assert.deepEqual(copy(f.state.images).map(x=>x.name),['later.png']);assert.equal(f.state.documents[0].name,'later.pdf');assert.equal(f.api[0].id,'created');assert.equal(f.api[0].data.parts[0].text,'Captured first request');assert.equal(f.api[0].data.parts.filter(p=>p.type==='file').length,1);
+ assert.equal(f.c.nativeCurrent,'B');assert.equal(b.state.draft,'Draft B');assert.equal(f.state.draft,'Keep the new draft');assert.deepEqual(copy(f.state.images).map(x=>x.name),['later.png']);assert.equal(f.state.documents[0].name,'later.pdf');assert.equal(f.api[0].id,'created');assert.equal(f.api[0].data.parts.find(p=>p.type==='text'&&!p.synthetic).text,'Captured first request');assert.equal(f.api[0].data.parts.filter(p=>p.type==='file').length,1);
 });
 
 test('Failed home creation preserves its text and file choices for an explicit retry',async()=>{

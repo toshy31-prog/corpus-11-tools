@@ -1,0 +1,7 @@
+# Raw local validation evidence may contain excerpts of local prompts, paths or
+# transcripts. Keep it in this checkout only. The two short, reviewed indexes
+# remain trackable so the repository documents the evidence boundary.
+*
+!.gitignore
+!README.md
+!RESULTAT.md

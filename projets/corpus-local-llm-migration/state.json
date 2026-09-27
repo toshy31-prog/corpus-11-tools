@@ -96,9 +96,9 @@
     "photo_layout": "compact_navigation_collapsible_Corpus_and_visible_imported_history; PR_scheduler_voice_explicitly_not_migrated"
   },
   "model_selected": "Qwen/Qwen3.6-35B-A3B via unsloth UD-Q4_K_M",
-  "runtime_selected": "llama.cpp b10964 CPU ; variante reconstruite depuis les sources également vérifiée",
+  "runtime_selected": "llama.cpp b10964 CUDA, Qwen3.6 35B A3B; auxiliary retrieval explicitly CPU-only (--device none)",
   "migration_activated": true,
-  "next_step": "Éprouver la réponse du modèle sur des reprises réelles, les modifications avec tests et les méthodes ; migrer ensuite les médias et l’autonomie. Historique hors périmètre et pièces jointes restent à traiter.",
+  "next_step": "Réduire le coût du contexte des tâches avec outils sur le matériel actuel, puis terminer le parcours décision + modification + test ; conserver V5.5 figé et les preuves existantes.",
   "open_decisions": [
     "Versions logicielles et recette de reconstruction hors ligne vérifiées",
     "Admission du modèle après essais français, outils et ressources",
@@ -145,5 +145,223 @@
   "host_comparison_candidate": "Hermes0.21.4 installé, configuration et restauration hors réseau vérifiées ; inférence et autonomie non éprouvées",
   "installation_authorized_on": "2026-09-23",
   "evaluation_model_comparator": "Qwen/Qwen3.6-35B-A3B UD-Q4_K_M downloading after observed dense_model_prefill_latency",
-  "migration_activation_scope": "local_text_and_read_profile_only_not_whole_ecosystem"
+  "migration_activation_scope": "local_text_and_read_profile_only_not_whole_ecosystem",
+  "current_status_2026_09_26": {
+    "scope": "observed_local_runtime_and_filesystem_checks_not_whole_ecosystem_admission",
+    "hardware": {
+      "cpu": "Intel Core i7-13620H",
+      "logical_cpus": 16,
+      "ram_class_gb": 32,
+      "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU",
+      "vram_mib": 8188
+    },
+    "runtime": "Qwen3.6 35B A3B, llama.cpp CUDA, context 16384, OpenCode 1.18.32, llama-swap v258",
+    "retrieval_cpu_fix": {
+      "status": "activated_and_bounded_live_validation_passed",
+      "configuration": "--device none on embedding and reranker",
+      "qwen_reply": "CPU_OK",
+      "evidence": ".migration-smoke/activation-validation.json"
+    },
+    "layout": {
+      "doctor_pass": 44,
+      "doctor_nonpass": 0,
+      "drift": 0,
+      "coverage_gaps": 1,
+      "gc_candidates": 0,
+      "evidence": ".migration-smoke/establishment-checks.json",
+      "coverage_after_evidence": ".migration-smoke/coverage-after.json",
+      "change": "STATE/backups declared as recovery evidence; runtime capture logs remain unclassified"
+    },
+    "maintenance": "Corpus local remains maintainable from Codex; no external inference fallback introduced",
+    "status_document": "ETAT_LOCAL_ACTUEL.md",
+    "end_to_end_edit_test": "compact_trial_time_budget_exceeded_without_edit_or_test",
+    "compact_tool_descriptions": {
+      "status": "tested_live_then_rolled_back",
+      "tools_chars_before": 13752,
+      "tools_chars_after": 7654,
+      "payload_chars_before": 21606,
+      "payload_chars_after": 15508,
+      "units": "characters_not_model_input_tokens",
+      "qwen_quality_validation": "not_accepted_bounded_workflow_incomplete",
+      "mode_file": "CONFIG_ROOT/routing/tool-descriptions-mode",
+      "opt_in_value": "compact-v1",
+      "evidence": ".migration-smoke/compact-provider-report.json",
+      "activation_receipt": ".migration-smoke/compact-activation.json",
+      "trial_seconds": 1219.51,
+      "trial_evidence": ".migration-smoke/compact-e2e-result.json",
+      "rollback_receipt": ".migration-smoke/compact-rollback.json",
+      "first_input_tokens": 4225
+    },
+    "instruction_following_diagnostic": {
+      "status": "isolated_semantics_pass_format_constraints_partial_agent_workflow_unresolved",
+      "short_seconds": 41.842,
+      "full_seconds": 174.852,
+      "exact_full_input_verified": true,
+      "evidence": "DIAGNOSTIC_SUIVI_CONSIGNES.md",
+      "runtime_changed": false
+    },
+    "explicit_tool_scope": {
+      "status": "offline_preparation_and_router_tests_passed_not_live_validated",
+      "before_tools": 10,
+      "after_tools": 3,
+      "schema_char_reduction_pct": 34.77,
+      "qwen_requests": 0,
+      "evidence": "REUSE_TOOL_SCOPE.md"
+    }
+  },
+  "historical_evidence_note": "Les champs evidence et les décisions datées conservent leurs observations historiques ; consulter current_status_2026_09_26 et ETAT_LOCAL_ACTUEL.md pour la reprise actuelle.",
+  "layout_update_2026_09_27": {
+    "coverage_gaps": 0,
+    "recognized_drift": 0,
+    "control_tests_passed": 13,
+    "legacy_capture_location": "classified_exception_not_physically_migrated",
+    "new_capture_location": "STATE/logs/corpus-local/payload-capture",
+    "runtime_restarted": false,
+    "qwen_requests": 0
+  },
+  "organizer_2026_09_27": {
+    "status": "activated_and_observed",
+    "scope": "non_destructive_diagnostic_copies_only",
+    "automatic_copies": 3,
+    "manual_duplicates": 0,
+    "copied_bytes": 53421,
+    "originals_verified": true,
+    "settings_ui": "/corpus/?settings=organizer",
+    "cli": "python3 scripts/corpus organize",
+    "tests": {
+      "organizer": 8,
+      "control": 13,
+      "bridge_and_security": 11
+    },
+    "ui_checked": [
+      "desktop",
+      "390px",
+      "save",
+      "persistent_pause",
+      "resume",
+      "preview",
+      "manual_run"
+    ],
+    "qwen_requests": 0,
+    "documentation": "ORGANIZER.md"
+  },
+  "scoped_workflow_2026_09_27": {
+    "status": "failed_cuda_runtime",
+    "elapsed_seconds": 822.19,
+    "completed_reads": 2,
+    "completed_edits": 0,
+    "test_executed": false,
+    "files_unchanged": {
+      "runtime_limits.py": true,
+      "CONTEXTE_LOCAL.md": true,
+      ".migration-smoke/runtime_limits.py": true
+    },
+    "error": "CUDA error: invalid argument",
+    "stack_frame": "ggml_cuda_try_fuse",
+    "automatic_retry_observed": true,
+    "session_aborted": true,
+    "report": ".migration-smoke/scoped-e2e-result.json",
+    "stderr": ".migration-smoke/scoped-cuda-crash.log",
+    "candidate_not_activated": "GGML_CUDA_DISABLE_FUSION=1; supported by installed source, effectiveness unverified"
+  },
+  "cuda_profile_2026_09_27": {
+    "status": "service_restarted_profile_configured_no_inference",
+    "gpu_layers": 99,
+    "cpu_moe": true,
+    "batch": 256,
+    "ubatch": 256,
+    "validation": "python_syntax_only",
+    "inference_calls": 0,
+    "performance": "unmeasured",
+    "cuda_crash_fixed": false
+  },
+  "project_resume_2026_09_27": {
+    "status": "activated_ui_observed",
+    "path": "Paramètres → Reprise de projet",
+    "storage": "STATE/project-resume",
+    "observed": [
+      "save_checkpoint",
+      "prepare_memory_and_tools",
+      "open_unsent_draft"
+    ],
+    "model_calls": 0,
+    "limitations": [
+      "manual_checkpoints",
+      "new_conversation_on_resume",
+      "no_automatic_memory_consolidation",
+      "model_execution_not_tested"
+    ]
+  },
+  "memory_notes_2026_09_27": {
+    "status": "activated_ui_observed",
+    "model_calls": 0,
+    "features": [
+      "read_edit_notes",
+      "local_revision_history",
+      "stale_write_rejection"
+    ],
+    "storage": "STATE/project-resume/memory-history",
+    "fixture": ".migration-smoke/memory-ui.md"
+  },
+  "tool_profiles_2026_09_27": {
+    "status": "activated_ui_observed",
+    "profiles": 6,
+    "model_calls": 0,
+    "latency_gain": "unmeasured",
+    "scope": "resume_message_only"
+  },
+  "linked_resume_2026_09_27": {
+    "status": "activated_ui_observed",
+    "model_calls": 0,
+    "draft_preserved_after_reload": true,
+    "checkpoint_session_link": true,
+    "inference_speedup": "unmeasured"
+  },
+  "conversation_tools_2026_09_27": {
+    "status": "activated_ui_observed",
+    "storage": "browser_per_conversation",
+    "model_calls": 0,
+    "queued_scope_snapshot": true,
+    "latency_gain": "unmeasured"
+  },
+  "five_tracks_2026_09_27": {
+    "status": "activated_targeted_ui_observed",
+    "dice": [
+      1,
+      5,
+      6,
+      3,
+      4
+    ],
+    "distinct_delegated_agents": 4,
+    "tracks": 5,
+    "model_calls": 0,
+    "consolidated_tests_passed": 9,
+    "mobile_render": "unverified_this_batch",
+    "inference_speedup": "unmeasured",
+    "features": [
+      "resume_search_sort_pagination",
+      "metadata_read_cache",
+      "dialog_accessibility",
+      "tool_labels_profile_validation",
+      "resume_storage_visibility"
+    ]
+  },
+  "ui_polish_2026_09_27": {
+    "status": "activated_ui_observed",
+    "settings_routes_opened": 24,
+    "existing_test_files_passed": 21,
+    "additional_tests_passed": 2,
+    "model_calls": 0,
+    "mobile_content_viewport": [
+      390,
+      844
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "destructive_external_and_model_actions": "not_executed",
+    "report": "UI_CORPUS.md"
+  }
 }

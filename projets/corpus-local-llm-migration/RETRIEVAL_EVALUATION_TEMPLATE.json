@@ -1,0 +1,16 @@
+{
+  "schema": "corpus.retrieval-evaluation.v1",
+  "quality_gates": {
+    "min_mean_recall_at_k": 1,
+    "min_case_hit_rate": 1,
+    "max_forbidden_results": 0
+  },
+  "cases": [
+    {
+      "id": "decision-recall",
+      "expected_ids": ["note.decision.local"],
+      "forbidden_ids": ["note.private.unrelated"],
+      "result_ids": ["note.decision.local", "note.context.local"]
+    }
+  ]
+}

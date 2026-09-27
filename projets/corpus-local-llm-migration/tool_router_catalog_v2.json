@@ -1,0 +1,1891 @@
+{
+  "version": 2,
+  "architecture": {
+    "stage_0": "explicit answer_only / act-vs-abstain decision",
+    "stage_1": "multi-field hierarchical namespace retrieval",
+    "stage_1b": "tool-level evidence aggregated into namespace",
+    "stage_2": "progressive reranking on uncertain candidates",
+    "stage_3": "adaptive set selection for multi-intent requests",
+    "hard_constraints": "effect/scope constraints before final mask",
+    "model_facing_output": "OpenCode native per-turn tool mask"
+  },
+  "namespaces": {
+    "memory": {
+      "summary": "Mémoire locale Corpus : retrouver, indexer ou supprimer explicitement des informations persistantes.",
+      "examples": [
+        "Tu te souviens de ce qu'on avait décidé ?",
+        "Retrouve notre discussion précédente.",
+        "Mémorise cette information.",
+        "Supprime ce souvenir de la mémoire."
+      ],
+      "negative_examples": [
+        "Explique-moi simplement ce concept."
+      ],
+      "tools": [
+        "corpus-retrieval_memory_delete",
+        "corpus-retrieval_memory_index_text",
+        "corpus-retrieval_memory_search"
+      ],
+      "search_document": "namespace: memory\npurpose: Mémoire locale Corpus : retrouver, indexer ou supprimer explicitement des informations persistantes.\npositive examples: Tu te souviens de ce qu'on avait décidé ? | Retrouve notre discussion précédente. | Mémorise cette information. | Supprime ce souvenir de la mémoire.\ntools: corpus-retrieval_memory_delete, corpus-retrieval_memory_index_text, corpus-retrieval_memory_search",
+      "positive_search_document": "namespace: memory\npurpose: Mémoire locale Corpus : retrouver, indexer ou supprimer explicitement des informations persistantes.\npositive examples: Tu te souviens de ce qu'on avait décidé ? | Retrouve notre discussion précédente. | Mémorise cette information. | Supprime ce souvenir de la mémoire.\ntools: corpus-retrieval_memory_delete, corpus-retrieval_memory_index_text, corpus-retrieval_memory_search",
+      "negative_search_document": "namespace: memory\nnegative examples: Explique-moi simplement ce concept.",
+      "capability": [
+        "retrieve persistent Corpus memory",
+        "store persistent memory",
+        "delete persistent memory"
+      ],
+      "operations": [
+        "remember",
+        "recall",
+        "retrieve previous discussion",
+        "memorize",
+        "forget",
+        "delete memory"
+      ],
+      "objects": [
+        "prior conversation",
+        "stored note",
+        "memory index",
+        "persistent context"
+      ],
+      "scope": [
+        "local Corpus memory",
+        "past stored context"
+      ],
+      "effects": [
+        "read memory",
+        "write memory",
+        "delete memory"
+      ],
+      "not_for": [
+        "Explique-moi simplement ce concept.",
+        "general web research",
+        "local source-code search when no memory lookup is requested"
+      ],
+      "retrieval_fields": {
+        "summary": "Mémoire locale Corpus : retrouver, indexer ou supprimer explicitement des informations persistantes.",
+        "capability": "retrieve persistent Corpus memory | store persistent memory | delete persistent memory",
+        "operations": "remember | recall | retrieve previous discussion | memorize | forget | delete memory",
+        "objects": "prior conversation | stored note | memory index | persistent context",
+        "scope": "local Corpus memory | past stored context",
+        "effects": "read memory | write memory | delete memory",
+        "examples": "Tu te souviens de ce qu'on avait décidé ? | Retrouve notre discussion précédente. | Mémorise cette information. | Supprime ce souvenir de la mémoire.",
+        "not_for": "Explique-moi simplement ce concept. | general web research | local source-code search when no memory lookup is requested"
+      }
+    },
+    "files": {
+      "summary": "Fichiers et code locaux : lire, rechercher, inspecter, modifier ou écrire dans le workspace.",
+      "examples": [
+        "Lis corpus_local.py.",
+        "Trouve cette fonction dans le dépôt.",
+        "Corrige ce fichier Python.",
+        "Modifie le JSON de configuration."
+      ],
+      "negative_examples": [
+        "Cherche la documentation Python sur internet.",
+        "Parle-moi du projet llama.cpp."
+      ],
+      "tools": [
+        "edit",
+        "glob",
+        "grep",
+        "read",
+        "write"
+      ],
+      "search_document": "namespace: files\npurpose: Fichiers et code locaux : lire, rechercher, inspecter, modifier ou écrire dans le workspace.\npositive examples: Lis corpus_local.py. | Trouve cette fonction dans le dépôt. | Corrige ce fichier Python. | Modifie le JSON de configuration.\ntools: edit, glob, grep, read, write",
+      "positive_search_document": "namespace: files\npurpose: Fichiers et code locaux : lire, rechercher, inspecter, modifier ou écrire dans le workspace.\npositive examples: Lis corpus_local.py. | Trouve cette fonction dans le dépôt. | Corrige ce fichier Python. | Modifie le JSON de configuration.\ntools: edit, glob, grep, read, write",
+      "negative_search_document": "namespace: files\nnegative examples: Cherche la documentation Python sur internet. | Parle-moi du projet llama.cpp.",
+      "capability": [
+        "read local files",
+        "search local workspace",
+        "edit local files",
+        "write local files"
+      ],
+      "operations": [
+        "read file",
+        "inspect source",
+        "find symbol",
+        "search workspace",
+        "edit",
+        "replace",
+        "patch",
+        "write"
+      ],
+      "objects": [
+        "local path",
+        "source file",
+        "Python file",
+        "JSON",
+        "YAML",
+        "TOML",
+        "README",
+        "workspace",
+        "repository file"
+      ],
+      "scope": [
+        "local filesystem",
+        "current Corpus workspace"
+      ],
+      "effects": [
+        "read local",
+        "write local"
+      ],
+      "not_for": [
+        "Cherche la documentation Python sur internet.",
+        "Parle-moi du projet llama.cpp.",
+        "web documentation",
+        "general explanation with no file access",
+        "Git history operation when no file access is required"
+      ],
+      "retrieval_fields": {
+        "summary": "Fichiers et code locaux : lire, rechercher, inspecter, modifier ou écrire dans le workspace.",
+        "capability": "read local files | search local workspace | edit local files | write local files",
+        "operations": "read file | inspect source | find symbol | search workspace | edit | replace | patch | write",
+        "objects": "local path | source file | Python file | JSON | YAML | TOML | README | workspace | repository file",
+        "scope": "local filesystem | current Corpus workspace",
+        "effects": "read local | write local",
+        "examples": "Lis corpus_local.py. | Trouve cette fonction dans le dépôt. | Corrige ce fichier Python. | Modifie le JSON de configuration.",
+        "not_for": "Cherche la documentation Python sur internet. | Parle-moi du projet llama.cpp. | web documentation | general explanation with no file access | Git history operation when no file access is required"
+      }
+    },
+    "shell": {
+      "summary": "Terminal local et commandes système : bash, processus, systemctl, journalctl, paquets et diagnostics système.",
+      "examples": [
+        "Lance systemctl status.",
+        "Exécute cette commande bash.",
+        "Regarde les processus actifs.",
+        "Affiche les logs avec journalctl."
+      ],
+      "negative_examples": [
+        "Corrige le fichier sans utiliser le terminal.",
+        "N'utilise pas bash."
+      ],
+      "tools": [
+        "bash"
+      ],
+      "search_document": "namespace: shell\npurpose: Terminal local et commandes système : bash, processus, systemctl, journalctl, paquets et diagnostics système.\npositive examples: Lance systemctl status. | Exécute cette commande bash. | Regarde les processus actifs. | Affiche les logs avec journalctl.\ntools: bash",
+      "positive_search_document": "namespace: shell\npurpose: Terminal local et commandes système : bash, processus, systemctl, journalctl, paquets et diagnostics système.\npositive examples: Lance systemctl status. | Exécute cette commande bash. | Regarde les processus actifs. | Affiche les logs avec journalctl.\ntools: bash",
+      "negative_search_document": "namespace: shell\nnegative examples: Corrige le fichier sans utiliser le terminal. | N'utilise pas bash.",
+      "capability": [
+        "execute local terminal commands",
+        "inspect processes",
+        "inspect services",
+        "inspect ports",
+        "run system utilities"
+      ],
+      "operations": [
+        "execute",
+        "run command",
+        "systemctl",
+        "journalctl",
+        "find PID",
+        "inspect process",
+        "inspect port"
+      ],
+      "objects": [
+        "terminal",
+        "shell",
+        "bash",
+        "process",
+        "PID",
+        "port",
+        "service",
+        "system command"
+      ],
+      "scope": [
+        "local operating system",
+        "local process environment"
+      ],
+      "effects": [
+        "execute local command"
+      ],
+      "not_for": [
+        "Corrige le fichier sans utiliser le terminal.",
+        "N'utilise pas bash.",
+        "explaining a command without running it",
+        "requests explicitly saying not to use a terminal"
+      ],
+      "retrieval_fields": {
+        "summary": "Terminal local et commandes système : bash, processus, systemctl, journalctl, paquets et diagnostics système.",
+        "capability": "execute local terminal commands | inspect processes | inspect services | inspect ports | run system utilities",
+        "operations": "execute | run command | systemctl | journalctl | find PID | inspect process | inspect port",
+        "objects": "terminal | shell | bash | process | PID | port | service | system command",
+        "scope": "local operating system | local process environment",
+        "effects": "execute local command",
+        "examples": "Lance systemctl status. | Exécute cette commande bash. | Regarde les processus actifs. | Affiche les logs avec journalctl.",
+        "not_for": "Corrige le fichier sans utiliser le terminal. | N'utilise pas bash. | explaining a command without running it | requests explicitly saying not to use a terminal"
+      }
+    },
+    "delegation": {
+      "summary": "Délégation explicite d'une sous-tâche indépendante à un sous-agent Corpus.",
+      "examples": [
+        "Délègue cette analyse à un sous-agent.",
+        "Fais traiter cette vérification par un subagent."
+      ],
+      "negative_examples": [
+        "Analyse ce texte toi-même."
+      ],
+      "tools": [
+        "task"
+      ],
+      "search_document": "namespace: delegation\npurpose: Délégation explicite d'une sous-tâche indépendante à un sous-agent Corpus.\npositive examples: Délègue cette analyse à un sous-agent. | Fais traiter cette vérification par un subagent.\ntools: task",
+      "positive_search_document": "namespace: delegation\npurpose: Délégation explicite d'une sous-tâche indépendante à un sous-agent Corpus.\npositive examples: Délègue cette analyse à un sous-agent. | Fais traiter cette vérification par un subagent.\ntools: task",
+      "negative_search_document": "namespace: delegation\nnegative examples: Analyse ce texte toi-même.",
+      "capability": [
+        "delegate an independent subtask to another agent"
+      ],
+      "operations": [
+        "delegate",
+        "subagent",
+        "assign subtask"
+      ],
+      "objects": [
+        "independent analysis",
+        "subtask"
+      ],
+      "scope": [
+        "agent orchestration"
+      ],
+      "effects": [
+        "delegate"
+      ],
+      "not_for": [
+        "Analyse ce texte toi-même.",
+        "ordinary analysis performed by the primary assistant",
+        "requests explicitly saying not to delegate"
+      ],
+      "retrieval_fields": {
+        "summary": "Délégation explicite d'une sous-tâche indépendante à un sous-agent Corpus.",
+        "capability": "delegate an independent subtask to another agent",
+        "operations": "delegate | subagent | assign subtask",
+        "objects": "independent analysis | subtask",
+        "scope": "agent orchestration",
+        "effects": "delegate",
+        "examples": "Délègue cette analyse à un sous-agent. | Fais traiter cette vérification par un subagent.",
+        "not_for": "Analyse ce texte toi-même. | ordinary analysis performed by the primary assistant | requests explicitly saying not to delegate"
+      }
+    },
+    "research": {
+      "summary": "Recherche externe et navigation web : internet, URL, actualité, documentation en ligne et recherche approfondie.",
+      "examples": [
+        "Cherche les dernières actualités.",
+        "Ouvre cette URL.",
+        "Vérifie la documentation en ligne.",
+        "Recherche les nouveautés de llama.cpp."
+      ],
+      "negative_examples": [
+        "Cherche cette fonction dans le dépôt local."
+      ],
+      "tools": [
+        "corpus-tools_browser_request",
+        "corpus-tools_browser_result",
+        "corpus-tools_research_request",
+        "corpus-tools_research_result"
+      ],
+      "search_document": "namespace: research\npurpose: Recherche externe et navigation web : internet, URL, actualité, documentation en ligne et recherche approfondie.\npositive examples: Cherche les dernières actualités. | Ouvre cette URL. | Vérifie la documentation en ligne. | Recherche les nouveautés de llama.cpp.\ntools: corpus-tools_browser_request, corpus-tools_browser_result, corpus-tools_research_request, corpus-tools_research_result",
+      "positive_search_document": "namespace: research\npurpose: Recherche externe et navigation web : internet, URL, actualité, documentation en ligne et recherche approfondie.\npositive examples: Cherche les dernières actualités. | Ouvre cette URL. | Vérifie la documentation en ligne. | Recherche les nouveautés de llama.cpp.\ntools: corpus-tools_browser_request, corpus-tools_browser_result, corpus-tools_research_request, corpus-tools_research_result",
+      "negative_search_document": "namespace: research\nnegative examples: Cherche cette fonction dans le dépôt local.",
+      "capability": [
+        "search the public web",
+        "open a web page",
+        "retrieve current information",
+        "consult online documentation"
+      ],
+      "operations": [
+        "search web",
+        "browse",
+        "open URL",
+        "look up latest information",
+        "check official documentation"
+      ],
+      "objects": [
+        "URL",
+        "web page",
+        "online documentation",
+        "news",
+        "latest release",
+        "public source"
+      ],
+      "scope": [
+        "external network",
+        "public internet"
+      ],
+      "effects": [
+        "network read"
+      ],
+      "not_for": [
+        "Cherche cette fonction dans le dépôt local.",
+        "searching within local repository files",
+        "using remembered information only"
+      ],
+      "retrieval_fields": {
+        "summary": "Recherche externe et navigation web : internet, URL, actualité, documentation en ligne et recherche approfondie.",
+        "capability": "search the public web | open a web page | retrieve current information | consult online documentation",
+        "operations": "search web | browse | open URL | look up latest information | check official documentation",
+        "objects": "URL | web page | online documentation | news | latest release | public source",
+        "scope": "external network | public internet",
+        "effects": "network read",
+        "examples": "Cherche les dernières actualités. | Ouvre cette URL. | Vérifie la documentation en ligne. | Recherche les nouveautés de llama.cpp.",
+        "not_for": "Cherche cette fonction dans le dépôt local. | searching within local repository files | using remembered information only"
+      }
+    },
+    "documents": {
+      "summary": "Documents structurés : PDF, DOCX, extraction, conversion et création de documents.",
+      "examples": [
+        "Extrais le contenu de ce PDF.",
+        "Crée un document DOCX.",
+        "Convertis ce rapport en PDF."
+      ],
+      "negative_examples": [
+        "Lis simplement source.py."
+      ],
+      "tools": [
+        "corpus-tools_document_create",
+        "corpus-tools_document_extract",
+        "corpus-tools_document_formats",
+        "corpus-tools_document_result"
+      ],
+      "search_document": "namespace: documents\npurpose: Documents structurés : PDF, DOCX, extraction, conversion et création de documents.\npositive examples: Extrais le contenu de ce PDF. | Crée un document DOCX. | Convertis ce rapport en PDF.\ntools: corpus-tools_document_create, corpus-tools_document_extract, corpus-tools_document_formats, corpus-tools_document_result",
+      "positive_search_document": "namespace: documents\npurpose: Documents structurés : PDF, DOCX, extraction, conversion et création de documents.\npositive examples: Extrais le contenu de ce PDF. | Crée un document DOCX. | Convertis ce rapport en PDF.\ntools: corpus-tools_document_create, corpus-tools_document_extract, corpus-tools_document_formats, corpus-tools_document_result",
+      "negative_search_document": "namespace: documents\nnegative examples: Lis simplement source.py.",
+      "capability": [
+        "extract structured document content",
+        "create documents",
+        "convert document formats"
+      ],
+      "operations": [
+        "extract PDF",
+        "create DOCX",
+        "create PDF",
+        "convert document",
+        "list document formats"
+      ],
+      "objects": [
+        "PDF",
+        "DOCX",
+        "report",
+        "document artifact"
+      ],
+      "scope": [
+        "document artifact workflow"
+      ],
+      "effects": [
+        "read document",
+        "create document"
+      ],
+      "not_for": [
+        "Lis simplement source.py.",
+        "conceptual explanation of document formats without artifact work",
+        "ordinary local source-code files"
+      ],
+      "retrieval_fields": {
+        "summary": "Documents structurés : PDF, DOCX, extraction, conversion et création de documents.",
+        "capability": "extract structured document content | create documents | convert document formats",
+        "operations": "extract PDF | create DOCX | create PDF | convert document | list document formats",
+        "objects": "PDF | DOCX | report | document artifact",
+        "scope": "document artifact workflow",
+        "effects": "read document | create document",
+        "examples": "Extrais le contenu de ce PDF. | Crée un document DOCX. | Convertis ce rapport en PDF.",
+        "not_for": "Lis simplement source.py. | conceptual explanation of document formats without artifact work | ordinary local source-code files"
+      }
+    },
+    "media": {
+      "summary": "Génération et traitement de médias : images, vidéo, audio et modèles multimédias.",
+      "examples": [
+        "Génère une image.",
+        "Crée une illustration.",
+        "Produis une vidéo.",
+        "Quels modèles média sont disponibles ?"
+      ],
+      "negative_examples": [
+        "Décris cette idée uniquement en texte."
+      ],
+      "tools": [
+        "corpus-tools_media_generate",
+        "corpus-tools_media_models",
+        "corpus-tools_media_result"
+      ],
+      "search_document": "namespace: media\npurpose: Génération et traitement de médias : images, vidéo, audio et modèles multimédias.\npositive examples: Génère une image. | Crée une illustration. | Produis une vidéo. | Quels modèles média sont disponibles ?\ntools: corpus-tools_media_generate, corpus-tools_media_models, corpus-tools_media_result",
+      "positive_search_document": "namespace: media\npurpose: Génération et traitement de médias : images, vidéo, audio et modèles multimédias.\npositive examples: Génère une image. | Crée une illustration. | Produis une vidéo. | Quels modèles média sont disponibles ?\ntools: corpus-tools_media_generate, corpus-tools_media_models, corpus-tools_media_result",
+      "negative_search_document": "namespace: media\nnegative examples: Décris cette idée uniquement en texte.",
+      "capability": [
+        "generate or transform image, video or audio media",
+        "inspect available media-generation models"
+      ],
+      "operations": [
+        "generate image",
+        "create illustration",
+        "generate video",
+        "generate audio",
+        "transform image",
+        "list media models"
+      ],
+      "objects": [
+        "image",
+        "photo",
+        "illustration",
+        "video",
+        "audio",
+        "media model"
+      ],
+      "scope": [
+        "media generation workflow"
+      ],
+      "effects": [
+        "generate media"
+      ],
+      "not_for": [
+        "Décris cette idée uniquement en texte.",
+        "explaining image or audio concepts without generating media"
+      ],
+      "retrieval_fields": {
+        "summary": "Génération et traitement de médias : images, vidéo, audio et modèles multimédias.",
+        "capability": "generate or transform image, video or audio media | inspect available media-generation models",
+        "operations": "generate image | create illustration | generate video | generate audio | transform image | list media models",
+        "objects": "image | photo | illustration | video | audio | media model",
+        "scope": "media generation workflow",
+        "effects": "generate media",
+        "examples": "Génère une image. | Crée une illustration. | Produis une vidéo. | Quels modèles média sont disponibles ?",
+        "not_for": "Décris cette idée uniquement en texte. | explaining image or audio concepts without generating media"
+      }
+    },
+    "git": {
+      "summary": "Opérations Git et état du dépôt : status, log, commit, branches, merge, rebase et historique.",
+      "examples": [
+        "Fais un git status.",
+        "Inspecte le dernier commit.",
+        "Montre les branches."
+      ],
+      "negative_examples": [
+        "Lis simplement un fichier source."
+      ],
+      "tools": [
+        "corpus-tools_git_request"
+      ],
+      "search_document": "namespace: git\npurpose: Opérations Git et état du dépôt : status, log, commit, branches, merge, rebase et historique.\npositive examples: Fais un git status. | Inspecte le dernier commit. | Montre les branches.\ntools: corpus-tools_git_request",
+      "positive_search_document": "namespace: git\npurpose: Opérations Git et état du dépôt : status, log, commit, branches, merge, rebase et historique.\npositive examples: Fais un git status. | Inspecte le dernier commit. | Montre les branches.\ntools: corpus-tools_git_request",
+      "negative_search_document": "namespace: git\nnegative examples: Lis simplement un fichier source.",
+      "capability": [
+        "inspect and modify Git repository state",
+        "inspect commit history",
+        "manage branches"
+      ],
+      "operations": [
+        "git status",
+        "git log",
+        "commit",
+        "branch",
+        "checkout",
+        "merge",
+        "rebase",
+        "compare commits"
+      ],
+      "objects": [
+        "Git repository",
+        "commit",
+        "branch",
+        "HEAD",
+        "history"
+      ],
+      "scope": [
+        "version control repository"
+      ],
+      "effects": [
+        "read repository metadata",
+        "modify repository metadata"
+      ],
+      "not_for": [
+        "Lis simplement un fichier source.",
+        "explaining Git concepts without touching repository state",
+        "ordinary source-file reading"
+      ],
+      "retrieval_fields": {
+        "summary": "Opérations Git et état du dépôt : status, log, commit, branches, merge, rebase et historique.",
+        "capability": "inspect and modify Git repository state | inspect commit history | manage branches",
+        "operations": "git status | git log | commit | branch | checkout | merge | rebase | compare commits",
+        "objects": "Git repository | commit | branch | HEAD | history",
+        "scope": "version control repository",
+        "effects": "read repository metadata | modify repository metadata",
+        "examples": "Fais un git status. | Inspecte le dernier commit. | Montre les branches.",
+        "not_for": "Lis simplement un fichier source. | explaining Git concepts without touching repository state | ordinary source-file reading"
+      }
+    },
+    "ssh": {
+      "summary": "Connexion et opérations sur une machine distante via SSH.",
+      "examples": [
+        "Connecte-toi en SSH au serveur.",
+        "Exécute cette opération sur la machine distante."
+      ],
+      "negative_examples": [
+        "Exécute cette commande uniquement sur la machine locale."
+      ],
+      "tools": [
+        "corpus-tools_ssh_request"
+      ],
+      "search_document": "namespace: ssh\npurpose: Connexion et opérations sur une machine distante via SSH.\npositive examples: Connecte-toi en SSH au serveur. | Exécute cette opération sur la machine distante.\ntools: corpus-tools_ssh_request",
+      "positive_search_document": "namespace: ssh\npurpose: Connexion et opérations sur une machine distante via SSH.\npositive examples: Connecte-toi en SSH au serveur. | Exécute cette opération sur la machine distante.\ntools: corpus-tools_ssh_request",
+      "negative_search_document": "namespace: ssh\nnegative examples: Exécute cette commande uniquement sur la machine locale.",
+      "capability": [
+        "connect to and operate on a remote machine using SSH"
+      ],
+      "operations": [
+        "SSH connect",
+        "remote command",
+        "remote diagnostics"
+      ],
+      "objects": [
+        "remote server",
+        "remote host",
+        "remote machine"
+      ],
+      "scope": [
+        "remote machine"
+      ],
+      "effects": [
+        "network",
+        "remote execute"
+      ],
+      "not_for": [
+        "Exécute cette commande uniquement sur la machine locale.",
+        "local shell operations"
+      ],
+      "retrieval_fields": {
+        "summary": "Connexion et opérations sur une machine distante via SSH.",
+        "capability": "connect to and operate on a remote machine using SSH",
+        "operations": "SSH connect | remote command | remote diagnostics",
+        "objects": "remote server | remote host | remote machine",
+        "scope": "remote machine",
+        "effects": "network | remote execute",
+        "examples": "Connecte-toi en SSH au serveur. | Exécute cette opération sur la machine distante.",
+        "not_for": "Exécute cette commande uniquement sur la machine locale. | local shell operations"
+      }
+    },
+    "plugins": {
+      "summary": "Découverte et inspection des plugins/connecteurs Corpus et de leurs ressources.",
+      "examples": [
+        "Liste les plugins disponibles.",
+        "Quelles ressources expose ce plugin ?",
+        "Lis cette ressource du connecteur."
+      ],
+      "negative_examples": [
+        "Liste les fichiers du dépôt."
+      ],
+      "tools": [
+        "corpus-tools_plugin_read",
+        "corpus-tools_plugin_resources",
+        "corpus-tools_plugins_list"
+      ],
+      "search_document": "namespace: plugins\npurpose: Découverte et inspection des plugins/connecteurs Corpus et de leurs ressources.\npositive examples: Liste les plugins disponibles. | Quelles ressources expose ce plugin ? | Lis cette ressource du connecteur.\ntools: corpus-tools_plugin_read, corpus-tools_plugin_resources, corpus-tools_plugins_list",
+      "positive_search_document": "namespace: plugins\npurpose: Découverte et inspection des plugins/connecteurs Corpus et de leurs ressources.\npositive examples: Liste les plugins disponibles. | Quelles ressources expose ce plugin ? | Lis cette ressource du connecteur.\ntools: corpus-tools_plugin_read, corpus-tools_plugin_resources, corpus-tools_plugins_list",
+      "negative_search_document": "namespace: plugins\nnegative examples: Liste les fichiers du dépôt.",
+      "capability": [
+        "discover Corpus plugins and connectors",
+        "list connector resources",
+        "read connector resources"
+      ],
+      "operations": [
+        "list plugins",
+        "inspect connector",
+        "list plugin resources",
+        "read plugin resource"
+      ],
+      "objects": [
+        "plugin",
+        "connector",
+        "plugin resource"
+      ],
+      "scope": [
+        "Corpus plugin registry"
+      ],
+      "effects": [
+        "read connector metadata"
+      ],
+      "not_for": [
+        "Liste les fichiers du dépôt.",
+        "local filesystem resources",
+        "generic software plugins discussed conceptually"
+      ],
+      "retrieval_fields": {
+        "summary": "Découverte et inspection des plugins/connecteurs Corpus et de leurs ressources.",
+        "capability": "discover Corpus plugins and connectors | list connector resources | read connector resources",
+        "operations": "list plugins | inspect connector | list plugin resources | read plugin resource",
+        "objects": "plugin | connector | plugin resource",
+        "scope": "Corpus plugin registry",
+        "effects": "read connector metadata",
+        "examples": "Liste les plugins disponibles. | Quelles ressources expose ce plugin ? | Lis cette ressource du connecteur.",
+        "not_for": "Liste les fichiers du dépôt. | local filesystem resources | generic software plugins discussed conceptually"
+      }
+    },
+    "answer_only": {
+      "summary": "Répondre directement sans utiliser de tool. Pour expliquer, comparer, reformuler, analyser conceptuellement ou répondre à une question qui ne nécessite aucune action externe.",
+      "capability": [
+        "answer from reasoning or existing conversational context",
+        "explain a concept",
+        "compare concepts",
+        "rewrite or summarize supplied text",
+        "conceptual analysis"
+      ],
+      "operations": [
+        "explain",
+        "compare",
+        "summarize",
+        "rewrite",
+        "reason",
+        "answer"
+      ],
+      "objects": [
+        "concept",
+        "idea",
+        "text",
+        "question",
+        "definition"
+      ],
+      "scope": [
+        "no external action",
+        "no filesystem access",
+        "no network access",
+        "no shell execution",
+        "no repository mutation",
+        "no media generation"
+      ],
+      "effects": [
+        "none"
+      ],
+      "examples": [
+        "Explique la récursivité.",
+        "Compare intuition et raisonnement.",
+        "Analyse cette phrase comme un philosophe.",
+        "Explique ce qu'est un commit Git sans toucher au dépôt.",
+        "Explique systemctl sans lancer de terminal.",
+        "Explique la différence entre PDF et DOCX sans créer de document.",
+        "Explique ce qu'est une image vectorielle sans en générer.",
+        "Ne délègue rien, réponds toi-même."
+      ],
+      "not_for": [
+        "When the request explicitly requires reading or modifying local files.",
+        "When current external information must be fetched.",
+        "When a command must actually be executed.",
+        "When an artifact or media file must actually be created."
+      ],
+      "tools": [],
+      "retrieval_fields": {
+        "summary": "Répondre directement sans utiliser de tool. Pour expliquer, comparer, reformuler, analyser conceptuellement ou répondre à une question qui ne nécessite aucune action externe.",
+        "capability": "answer from reasoning or existing conversational context | explain a concept | compare concepts | rewrite or summarize supplied text | conceptual analysis",
+        "operations": "explain | compare | summarize | rewrite | reason | answer",
+        "objects": "concept | idea | text | question | definition",
+        "scope": "no external action | no filesystem access | no network access | no shell execution | no repository mutation | no media generation",
+        "effects": "none",
+        "examples": "Explique la récursivité. | Compare intuition et raisonnement. | Analyse cette phrase comme un philosophe. | Explique ce qu'est un commit Git sans toucher au dépôt. | Explique systemctl sans lancer de terminal. | Explique la différence entre PDF et DOCX sans créer de document. | Explique ce qu'est une image vectorielle sans en générer. | Ne délègue rien, réponds toi-même.",
+        "not_for": "When the request explicitly requires reading or modifying local files. | When current external information must be fetched. | When a command must actually be executed. | When an artifact or media file must actually be created."
+      }
+    }
+  },
+  "tools": {
+    "corpus-retrieval_memory_search": {
+      "namespace": "memory",
+      "effects": [
+        "read"
+      ],
+      "risk": "low",
+      "hot": true,
+      "examples": [
+        "retrouve ce qu'on avait dit",
+        "cherche dans la mémoire locale"
+      ],
+      "name": "corpus-retrieval_memory_search",
+      "captured_description": "Recherche locale hybride FTS + embedding + reranking.",
+      "captured_schema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20,
+            "default": 8
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": false
+      },
+      "raw_json_chars": 345,
+      "dependencies": [],
+      "search_document": "tool: corpus-retrieval_memory_search\nnamespace: memory\npurpose: Mémoire locale Corpus : retrouver, indexer ou supprimer explicitement des informations persistantes.\ndescription: Recherche locale hybride FTS + embedding + reranking.\neffects: read\nexamples: retrouve ce qu'on avait dit | cherche dans la mémoire locale",
+      "positive_search_document": "tool: corpus-retrieval_memory_search\nnamespace: memory\npurpose: Mémoire locale Corpus : retrouver, indexer ou supprimer explicitement des informations persistantes.\ndescription: Recherche locale hybride FTS + embedding + reranking.\neffects: read\nexamples: retrouve ce qu'on avait dit | cherche dans la mémoire locale",
+      "parent_namespace": "memory",
+      "retrieval_fields": {
+        "description": "Recherche locale hybride FTS + embedding + reranking.",
+        "effects": "read",
+        "examples": "retrouve ce qu'on avait dit | cherche dans la mémoire locale"
+      }
+    },
+    "corpus-retrieval_memory_index_text": {
+      "namespace": "memory",
+      "effects": [
+        "write"
+      ],
+      "risk": "medium",
+      "hot": false,
+      "examples": [
+        "mémorise ce texte",
+        "indexe cette information"
+      ],
+      "name": "corpus-retrieval_memory_index_text",
+      "captured_description": "Indexer un texte explicite dans la mémoire locale hybride Corpus.",
+      "captured_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 100000
+          },
+          "source": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "id",
+          "text"
+        ],
+        "additionalProperties": false
+      },
+      "raw_json_chars": 385,
+      "dependencies": [],
+      "search_document": "tool: corpus-retrieval_memory_index_text\nnamespace: memory\npurpose: Mémoire locale Corpus : retrouver, indexer ou supprimer explicitement des informations persistantes.\ndescription: Indexer un texte explicite dans la mémoire locale hybride Corpus.\neffects: write\nexamples: mémorise ce texte | indexe cette information",
+      "positive_search_document": "tool: corpus-retrieval_memory_index_text\nnamespace: memory\npurpose: Mémoire locale Corpus : retrouver, indexer ou supprimer explicitement des informations persistantes.\ndescription: Indexer un texte explicite dans la mémoire locale hybride Corpus.\neffects: write\nexamples: mémorise ce texte | indexe cette information",
+      "parent_namespace": "memory",
+      "retrieval_fields": {
+        "description": "Indexer un texte explicite dans la mémoire locale hybride Corpus.",
+        "effects": "write",
+        "examples": "mémorise ce texte | indexe cette information"
+      }
+    },
+    "corpus-retrieval_memory_delete": {
+      "namespace": "memory",
+      "effects": [
+        "delete",
+        "destructive"
+      ],
+      "risk": "high",
+      "hot": false,
+      "examples": [
+        "supprime ce document de la mémoire"
+      ],
+      "name": "corpus-retrieval_memory_delete",
+      "captured_description": "Supprimer explicitement un document de l’index local.",
+      "captured_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 200
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false
+      },
+      "raw_json_chars": 274,
+      "dependencies": [],
+      "search_document": "tool: corpus-retrieval_memory_delete\nnamespace: memory\npurpose: Mémoire locale Corpus : retrouver, indexer ou supprimer explicitement des informations persistantes.\ndescription: Supprimer explicitement un document de l’index local.\neffects: delete, destructive\nexamples: supprime ce document de la mémoire",
+      "positive_search_document": "tool: corpus-retrieval_memory_delete\nnamespace: memory\npurpose: Mémoire locale Corpus : retrouver, indexer ou supprimer explicitement des informations persistantes.\ndescription: Supprimer explicitement un document de l’index local.\neffects: delete, destructive\nexamples: supprime ce document de la mémoire",
+      "parent_namespace": "memory",
+      "retrieval_fields": {
+        "description": "Supprimer explicitement un document de l’index local.",
+        "effects": "delete | destructive",
+        "examples": "supprime ce document de la mémoire"
+      }
+    },
+    "read": {
+      "namespace": "files",
+      "effects": [
+        "read"
+      ],
+      "risk": "low",
+      "hot": false,
+      "examples": [
+        "lis ce fichier"
+      ],
+      "name": "read",
+      "captured_description": "Read a file or directory from the local filesystem. If the path does not exist, an error is returned.\n\nUsage:\n- The filePath parameter should be an absolute path.\n- By default, this tool returns up to 2000 lines from the start of the file.\n- The offset parameter is the line number to start from (1-indexed).\n- To read later sections, call this tool again with a larger offset.\n- Use the grep tool to find specific content in large files or files with long lines.\n- If you are unsure of the correct file path, use the glob tool to look up filenames by glob pattern.\n- Contents are returned with each line prefixed by its line number as `<line>: <content>`. For example, if a file has contents \"foo\\n\", you will receive \"1: foo\\n\". For directories, entries are returned one per line (without line numbers) with a trailing `/` for subdirectories.\n- Any line longer than 2000 characters is truncated.\n- Call this tool in parallel when you know there are multiple files you want to read.\n- Avoid tiny repeated slices (30 line chunks). If you need more context, read a larger window.\n- This tool can read image files and PDFs and return them as file attachments.\n",
+      "captured_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "filePath": {
+            "type": "string",
+            "description": "The absolute path to the file or directory to read"
+          },
+          "offset": {
+            "minimum": 0,
+            "type": "integer",
+            "maximum": 9007199254740991,
+            "description": "The line number to start reading from (1-indexed)"
+          },
+          "limit": {
+            "minimum": 0,
+            "type": "integer",
+            "maximum": 9007199254740991,
+            "description": "The maximum number of lines to read (defaults to 2000)"
+          }
+        },
+        "required": [
+          "filePath"
+        ]
+      },
+      "raw_json_chars": 1734,
+      "dependencies": [],
+      "search_document": "tool: read\nnamespace: files\npurpose: Fichiers et code locaux : lire, rechercher, inspecter, modifier ou écrire dans le workspace.\ndescription: Read a file or directory from the local filesystem. If the path does not exist, an error is returned.\n\nUsage:\n- The filePath parameter should be an absolute path.\n- By default, this tool returns up to 2000 lines from the start of the file.\n- The offset parameter is the line number to start from (1-indexed).\n- To read later sections, call this tool again with a larger offset.\n- Use the grep tool to find specific content in large files or files with long lines.\n- If you are unsure of the correct file path, use the glob tool to look up filenames by glob pattern.\n- Contents are returned with each line prefixed by its line number as `<line>: <content>`. For example, if a file has contents \"foo\\n\", you will receive \"1: foo\\n\". For directories, entries are returned one per line (without line numbers) with a trailing `/` for subdirectories.\n- Any line longer than 2000 characters is truncated.\n- Call this tool in parallel when you know there are multiple files you want to read.\n- Avoid tiny repeated slices (30 line chunks). If you need more context, read a larger window.\n- This tool can read image files and PDFs and return them as file attachments.\n\neffects: read\nexamples: lis ce fichier",
+      "positive_search_document": "tool: read\nnamespace: files\npurpose: Fichiers et code locaux : lire, rechercher, inspecter, modifier ou écrire dans le workspace.\ndescription: Read a file or directory from the local filesystem. If the path does not exist, an error is returned.\n\nUsage:\n- The filePath parameter should be an absolute path.\n- By default, this tool returns up to 2000 lines from the start of the file.\n- The offset parameter is the line number to start from (1-indexed).\n- To read later sections, call this tool again with a larger offset.\n- Use the grep tool to find specific content in large files or files with long lines.\n- If you are unsure of the correct file path, use the glob tool to look up filenames by glob pattern.\n- Contents are returned with each line prefixed by its line number as `<line>: <content>`. For example, if a file has contents \"foo\\n\", you will receive \"1: foo\\n\". For directories, entries are returned one per line (without line numbers) with a trailing `/` for subdirectories.\n- Any line longer than 2000 characters is truncated.\n- Call this tool in parallel when you know there are multiple files you want to read.\n- Avoid tiny repeated slices (30 line chunks). If you need more context, read a larger window.\n- This tool can read image files and PDFs and return them as file attachments.\n\neffects: read\nexamples: lis ce fichier",
+      "parent_namespace": "files",
+      "retrieval_fields": {
+        "description": "Read a file or directory from the local filesystem. If the path does not exist, an error is returned.\n\nUsage:\n- The filePath parameter should be an absolute path.\n- By default, this tool returns up to 2000 lines from the start of the file.\n- The offset parameter is the line number to start from (1-indexed).\n- To read later sections, call this tool again with a larger offset.\n- Use the grep tool to find specific content in large files or files with long lines.\n- If you are unsure of the correct file path, use the glob tool to look up filenames by glob pattern.\n- Contents are returned with each line prefixed by its line number as `<line>: <content>`. For example, if a file has contents \"foo\\n\", you will receive \"1: foo\\n\". For directories, entries are returned one per line (without line numbers) with a trailing `/` for subdirectories.\n- Any line longer than 2000 characters is truncated.\n- Call this tool in parallel when you know there are multiple files you want to read.\n- Avoid tiny repeated slices (30 line chunks). If you need more context, read a larger window.\n- This tool can read image files and PDFs and return them as file attachments.\n",
+        "effects": "read",
+        "examples": "lis ce fichier"
+      }
+    },
+    "glob": {
+      "namespace": "files",
+      "effects": [
+        "read",
+        "search"
+      ],
+      "risk": "low",
+      "hot": false,
+      "examples": [
+        "trouve les fichiers correspondant à ce motif"
+      ],
+      "name": "glob",
+      "captured_description": "- Fast file pattern matching tool that works with any codebase size\n- Supports glob patterns like \"**/*.js\" or \"src/**/*.ts\"\n- Returns matching file paths\n- Use this tool when you need to find files by name patterns\n- When you are doing an open-ended search that may require multiple rounds of globbing and grepping, use the Task tool instead\n- You have the capability to call multiple tools in a single response. It is always better to speculatively perform multiple searches as a batch that are potentially useful.\n",
+      "captured_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "pattern": {
+            "type": "string",
+            "description": "The glob pattern to match files against"
+          },
+          "path": {
+            "type": "string",
+            "description": "The directory to search in. If not specified, the current working directory will be used. IMPORTANT: Omit this field to use the default directory. DO NOT enter \"undefined\" or \"null\" - simply omit it for the default behavior. Must be a valid directory path if provided."
+          }
+        },
+        "required": [
+          "pattern"
+        ]
+      },
+      "raw_json_chars": 1114,
+      "dependencies": [],
+      "search_document": "tool: glob\nnamespace: files\npurpose: Fichiers et code locaux : lire, rechercher, inspecter, modifier ou écrire dans le workspace.\ndescription: - Fast file pattern matching tool that works with any codebase size\n- Supports glob patterns like \"**/*.js\" or \"src/**/*.ts\"\n- Returns matching file paths\n- Use this tool when you need to find files by name patterns\n- When you are doing an open-ended search that may require multiple rounds of globbing and grepping, use the Task tool instead\n- You have the capability to call multiple tools in a single response. It is always better to speculatively perform multiple searches as a batch that are potentially useful.\n\neffects: read, search\nexamples: trouve les fichiers correspondant à ce motif",
+      "positive_search_document": "tool: glob\nnamespace: files\npurpose: Fichiers et code locaux : lire, rechercher, inspecter, modifier ou écrire dans le workspace.\ndescription: - Fast file pattern matching tool that works with any codebase size\n- Supports glob patterns like \"**/*.js\" or \"src/**/*.ts\"\n- Returns matching file paths\n- Use this tool when you need to find files by name patterns\n- When you are doing an open-ended search that may require multiple rounds of globbing and grepping, use the Task tool instead\n- You have the capability to call multiple tools in a single response. It is always better to speculatively perform multiple searches as a batch that are potentially useful.\n\neffects: read, search\nexamples: trouve les fichiers correspondant à ce motif",
+      "parent_namespace": "files",
+      "retrieval_fields": {
+        "description": "- Fast file pattern matching tool that works with any codebase size\n- Supports glob patterns like \"**/*.js\" or \"src/**/*.ts\"\n- Returns matching file paths\n- Use this tool when you need to find files by name patterns\n- When you are doing an open-ended search that may require multiple rounds of globbing and grepping, use the Task tool instead\n- You have the capability to call multiple tools in a single response. It is always better to speculatively perform multiple searches as a batch that are potentially useful.\n",
+        "effects": "read | search",
+        "examples": "trouve les fichiers correspondant à ce motif"
+      }
+    },
+    "grep": {
+      "namespace": "files",
+      "effects": [
+        "read",
+        "search"
+      ],
+      "risk": "low",
+      "hot": false,
+      "examples": [
+        "cherche cette chaîne dans les fichiers"
+      ],
+      "name": "grep",
+      "captured_description": "- Fast content search tool that works with any codebase size\n- Searches file contents using regular expressions\n- Supports full regex syntax (eg. \"log.*Error\", \"function\\s+\\w+\", etc.)\n- Filter files by pattern with the include parameter (eg. \"*.js\", \"*.{ts,tsx}\")\n- Returns file paths and line numbers with matching lines\n- Use this tool when you need to find files containing specific patterns\n- If you need to identify/count the number of matches within files, use the Bash tool with `rg` (ripgrep) directly. Do NOT use `grep`.\n- When you are doing an open-ended search that may require multiple rounds of globbing and grepping, use the Task tool instead\n",
+      "captured_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "pattern": {
+            "type": "string",
+            "description": "The regex pattern to search for in file contents"
+          },
+          "path": {
+            "type": "string",
+            "description": "The directory to search in. Defaults to the current working directory."
+          },
+          "include": {
+            "type": "string",
+            "description": "File pattern to include in the search (e.g. \"*.js\", \"*.{ts,tsx}\")"
+          }
+        },
+        "required": [
+          "pattern"
+        ]
+      },
+      "raw_json_chars": 1183,
+      "dependencies": [],
+      "search_document": "tool: grep\nnamespace: files\npurpose: Fichiers et code locaux : lire, rechercher, inspecter, modifier ou écrire dans le workspace.\ndescription: - Fast content search tool that works with any codebase size\n- Searches file contents using regular expressions\n- Supports full regex syntax (eg. \"log.*Error\", \"function\\s+\\w+\", etc.)\n- Filter files by pattern with the include parameter (eg. \"*.js\", \"*.{ts,tsx}\")\n- Returns file paths and line numbers with matching lines\n- Use this tool when you need to find files containing specific patterns\n- If you need to identify/count the number of matches within files, use the Bash tool with `rg` (ripgrep) directly. Do NOT use `grep`.\n- When you are doing an open-ended search that may require multiple rounds of globbing and grepping, use the Task tool instead\n\neffects: read, search\nexamples: cherche cette chaîne dans les fichiers",
+      "positive_search_document": "tool: grep\nnamespace: files\npurpose: Fichiers et code locaux : lire, rechercher, inspecter, modifier ou écrire dans le workspace.\ndescription: - Fast content search tool that works with any codebase size\n- Searches file contents using regular expressions\n- Supports full regex syntax (eg. \"log.*Error\", \"function\\s+\\w+\", etc.)\n- Filter files by pattern with the include parameter (eg. \"*.js\", \"*.{ts,tsx}\")\n- Returns file paths and line numbers with matching lines\n- Use this tool when you need to find files containing specific patterns\n- If you need to identify/count the number of matches within files, use the Bash tool with `rg` (ripgrep) directly. Do NOT use `grep`.\n- When you are doing an open-ended search that may require multiple rounds of globbing and grepping, use the Task tool instead\n\neffects: read, search\nexamples: cherche cette chaîne dans les fichiers",
+      "parent_namespace": "files",
+      "retrieval_fields": {
+        "description": "- Fast content search tool that works with any codebase size\n- Searches file contents using regular expressions\n- Supports full regex syntax (eg. \"log.*Error\", \"function\\s+\\w+\", etc.)\n- Filter files by pattern with the include parameter (eg. \"*.js\", \"*.{ts,tsx}\")\n- Returns file paths and line numbers with matching lines\n- Use this tool when you need to find files containing specific patterns\n- If you need to identify/count the number of matches within files, use the Bash tool with `rg` (ripgrep) directly. Do NOT use `grep`.\n- When you are doing an open-ended search that may require multiple rounds of globbing and grepping, use the Task tool instead\n",
+        "effects": "read | search",
+        "examples": "cherche cette chaîne dans les fichiers"
+      }
+    },
+    "edit": {
+      "namespace": "files",
+      "effects": [
+        "write"
+      ],
+      "risk": "medium",
+      "hot": false,
+      "examples": [
+        "corrige cette partie du fichier"
+      ],
+      "name": "edit",
+      "captured_description": "Performs exact string replacements in files. \n\nUsage:\n- You must use your `Read` tool at least once in the conversation before editing. This tool will error if you attempt an edit without reading the file. \n- When editing text from Read tool output, ensure you preserve the exact indentation (tabs/spaces) as it appears AFTER the line number prefix. The line number prefix format is: line number + colon + space (e.g., `1: `). Everything after that space is the actual file content to match. Never include any part of the line number prefix in the oldString or newString.\n- ALWAYS prefer editing existing files in the codebase. NEVER write new files unless explicitly required.\n- Only use emojis if the user explicitly requests it. Avoid adding emojis to files unless asked.\n- The edit will FAIL if `oldString` is not found in the file with an error \"oldString not found in content\".\n- The edit will FAIL if `oldString` is found multiple times in the file with an error \"Found multiple matches for oldString. Provide more surrounding lines in oldString to identify the correct match.\" Either provide a larger string with more surrounding context to make it unique or use `replaceAll` to change every instance of `oldString`. \n- Use `replaceAll` for replacing and renaming strings across the file. This parameter is useful if you want to rename a variable for instance.\n",
+      "captured_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "filePath": {
+            "type": "string",
+            "description": "The absolute path to the file to modify"
+          },
+          "oldString": {
+            "type": "string",
+            "description": "The text to replace"
+          },
+          "newString": {
+            "type": "string",
+            "description": "The text to replace it with (must be different from oldString)"
+          },
+          "replaceAll": {
+            "type": "boolean",
+            "description": "Replace all occurrences of oldString (default false)"
+          }
+        },
+        "required": [
+          "filePath",
+          "oldString",
+          "newString"
+        ]
+      },
+      "raw_json_chars": 1958,
+      "dependencies": [],
+      "search_document": "tool: edit\nnamespace: files\npurpose: Fichiers et code locaux : lire, rechercher, inspecter, modifier ou écrire dans le workspace.\ndescription: Performs exact string replacements in files. \n\nUsage:\n- You must use your `Read` tool at least once in the conversation before editing. This tool will error if you attempt an edit without reading the file. \n- When editing text from Read tool output, ensure you preserve the exact indentation (tabs/spaces) as it appears AFTER the line number prefix. The line number prefix format is: line number + colon + space (e.g., `1: `). Everything after that space is the actual file content to match. Never include any part of the line number prefix in the oldString or newString.\n- ALWAYS prefer editing existing files in the codebase. NEVER write new files unless explicitly required.\n- Only use emojis if the user explicitly requests it. Avoid adding emojis to files unless asked.\n- The edit will FAIL if `oldString` is not found in the file with an error \"oldString not found in content\".\n- The edit will FAIL if `oldString` is found multiple times in the file with an error \"Found multiple matches for oldString. Provide more surrounding lines in oldString to identify the correct match.\" Either provide a larger string with more surrounding context to make it unique or use `replaceAll` to change every instance of `oldString`. \n- Use `replaceAll` for replacing and renaming strings across the file. This parameter is useful if you want to rename a variable for instance.\n\neffects: write\nexamples: corrige cette partie du fichier",
+      "positive_search_document": "tool: edit\nnamespace: files\npurpose: Fichiers et code locaux : lire, rechercher, inspecter, modifier ou écrire dans le workspace.\ndescription: Performs exact string replacements in files. \n\nUsage:\n- You must use your `Read` tool at least once in the conversation before editing. This tool will error if you attempt an edit without reading the file. \n- When editing text from Read tool output, ensure you preserve the exact indentation (tabs/spaces) as it appears AFTER the line number prefix. The line number prefix format is: line number + colon + space (e.g., `1: `). Everything after that space is the actual file content to match. Never include any part of the line number prefix in the oldString or newString.\n- ALWAYS prefer editing existing files in the codebase. NEVER write new files unless explicitly required.\n- Only use emojis if the user explicitly requests it. Avoid adding emojis to files unless asked.\n- The edit will FAIL if `oldString` is not found in the file with an error \"oldString not found in content\".\n- The edit will FAIL if `oldString` is found multiple times in the file with an error \"Found multiple matches for oldString. Provide more surrounding lines in oldString to identify the correct match.\" Either provide a larger string with more surrounding context to make it unique or use `replaceAll` to change every instance of `oldString`. \n- Use `replaceAll` for replacing and renaming strings across the file. This parameter is useful if you want to rename a variable for instance.\n\neffects: write\nexamples: corrige cette partie du fichier",
+      "parent_namespace": "files",
+      "retrieval_fields": {
+        "description": "Performs exact string replacements in files. \n\nUsage:\n- You must use your `Read` tool at least once in the conversation before editing. This tool will error if you attempt an edit without reading the file. \n- When editing text from Read tool output, ensure you preserve the exact indentation (tabs/spaces) as it appears AFTER the line number prefix. The line number prefix format is: line number + colon + space (e.g., `1: `). Everything after that space is the actual file content to match. Never include any part of the line number prefix in the oldString or newString.\n- ALWAYS prefer editing existing files in the codebase. NEVER write new files unless explicitly required.\n- Only use emojis if the user explicitly requests it. Avoid adding emojis to files unless asked.\n- The edit will FAIL if `oldString` is not found in the file with an error \"oldString not found in content\".\n- The edit will FAIL if `oldString` is found multiple times in the file with an error \"Found multiple matches for oldString. Provide more surrounding lines in oldString to identify the correct match.\" Either provide a larger string with more surrounding context to make it unique or use `replaceAll` to change every instance of `oldString`. \n- Use `replaceAll` for replacing and renaming strings across the file. This parameter is useful if you want to rename a variable for instance.\n",
+        "effects": "write",
+        "examples": "corrige cette partie du fichier"
+      }
+    },
+    "write": {
+      "namespace": "files",
+      "effects": [
+        "write"
+      ],
+      "risk": "medium",
+      "hot": false,
+      "examples": [
+        "écris ce nouveau fichier"
+      ],
+      "name": "write",
+      "captured_description": "Writes a file to the local filesystem.\n\nUsage:\n- This tool will overwrite the existing file if there is one at the provided path.\n- If this is an existing file, you MUST use the Read tool first to read the file's contents. This tool will fail if you did not read the file first.\n- ALWAYS prefer editing existing files in the codebase. NEVER write new files unless explicitly required.\n- NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.\n- Only use emojis if the user explicitly requests it. Avoid writing emojis to files unless asked.\n",
+      "captured_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "description": "The content to write to the file"
+          },
+          "filePath": {
+            "type": "string",
+            "description": "The absolute path to the file to write (must be absolute, not relative)"
+          }
+        },
+        "required": [
+          "content",
+          "filePath"
+        ]
+      },
+      "raw_json_chars": 1026,
+      "dependencies": [],
+      "search_document": "tool: write\nnamespace: files\npurpose: Fichiers et code locaux : lire, rechercher, inspecter, modifier ou écrire dans le workspace.\ndescription: Writes a file to the local filesystem.\n\nUsage:\n- This tool will overwrite the existing file if there is one at the provided path.\n- If this is an existing file, you MUST use the Read tool first to read the file's contents. This tool will fail if you did not read the file first.\n- ALWAYS prefer editing existing files in the codebase. NEVER write new files unless explicitly required.\n- NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.\n- Only use emojis if the user explicitly requests it. Avoid writing emojis to files unless asked.\n\neffects: write\nexamples: écris ce nouveau fichier",
+      "positive_search_document": "tool: write\nnamespace: files\npurpose: Fichiers et code locaux : lire, rechercher, inspecter, modifier ou écrire dans le workspace.\ndescription: Writes a file to the local filesystem.\n\nUsage:\n- This tool will overwrite the existing file if there is one at the provided path.\n- If this is an existing file, you MUST use the Read tool first to read the file's contents. This tool will fail if you did not read the file first.\n- ALWAYS prefer editing existing files in the codebase. NEVER write new files unless explicitly required.\n- NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.\n- Only use emojis if the user explicitly requests it. Avoid writing emojis to files unless asked.\n\neffects: write\nexamples: écris ce nouveau fichier",
+      "parent_namespace": "files",
+      "retrieval_fields": {
+        "description": "Writes a file to the local filesystem.\n\nUsage:\n- This tool will overwrite the existing file if there is one at the provided path.\n- If this is an existing file, you MUST use the Read tool first to read the file's contents. This tool will fail if you did not read the file first.\n- ALWAYS prefer editing existing files in the codebase. NEVER write new files unless explicitly required.\n- NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.\n- Only use emojis if the user explicitly requests it. Avoid writing emojis to files unless asked.\n",
+        "effects": "write",
+        "examples": "écris ce nouveau fichier"
+      }
+    },
+    "bash": {
+      "namespace": "shell",
+      "effects": [
+        "execute"
+      ],
+      "risk": "high",
+      "hot": false,
+      "examples": [
+        "lance systemctl",
+        "exécute cette commande terminal"
+      ],
+      "name": "bash",
+      "captured_description": "Executes a given bash command in a persistent shell session with optional timeout, ensuring proper handling and security measures.\n\nBe aware: OS: linux, Shell: bash\n\nAll commands run in the current working directory by default. Use the `workdir` parameter if you need to run a command in a different directory. AVOID using `cd <directory> && <command>` patterns - use `workdir` instead.\n\nUse `/tmp/opencode` for temporary work outside the workspace. This directory has already been created, already exists, and is pre-approved for external directory access.\n\nIMPORTANT: This tool is for terminal operations like git, npm, docker, etc. DO NOT use it for file operations (reading, writing, editing, searching, finding files) - use the specialized tools for this instead.\n\nBefore executing the command, please follow these steps:\n\n1. Directory Verification:\n   - If the command will create new directories or files, first use `ls` to verify the parent directory exists and is the correct location\n   - For example, before running \"mkdir foo/bar\", first use `ls foo` to check that \"foo\" exists and is the intended parent directory\n\n2. Command Execution:\n   - Always quote file paths that contain spaces with double quotes (e.g., rm \"path with spaces/file.txt\")\n   - Examples of proper quoting:\n     - mkdir \"/Users/name/My Documents\" (correct)\n     - mkdir /Users/name/My Documents (incorrect - will fail)\n     - python \"/path/with spaces/script.py\" (correct)\n     - python /path/with spaces/script.py (incorrect - will fail)\n   - After ensuring proper quoting, execute the command.\n   - Capture the output of the command.\n\nUsage notes:\n  - The command argument is required.\n  - You can specify an optional timeout in milliseconds. If not specified, commands will time out after 120000ms.\n  - If the output exceeds 2000 lines or 51200 bytes, it will be truncated and the full output will be written to a file. You can use Read with offset/limit to read specific sections or Grep to search the full content. Do NOT use `head`, `tail`, or other truncation commands to limit output; the full output will already be captured to a file for more precise searching.\n\n  - Avoid using Bash with the `find`, `grep`, `cat`, `head`, `tail`, `sed`, `awk`, or `echo` commands, unless explicitly instructed or when these commands are truly necessary for the task. Instead, always prefer using the dedicated tools for these commands:\n    - File search: Use Glob (NOT find or ls)\n    - Content search: Use Grep (NOT grep or rg)\n    - Read files: Use Read (NOT cat/head/tail)\n    - Edit files: Use Edit (NOT sed/awk)\n    - Write files: Use Write (NOT echo >/cat <<EOF)\n    - Communication: Output text directly (NOT echo/printf)\n  - When issuing multiple commands:\n    - If the commands are independent and can run in parallel, make multiple bash tool calls in a single message. For example, if you need to run \"git status\" and \"git diff\", send a single message with two bash tool calls in parallel.\n    - If the commands depend on each other and must run sequentially, use a single Bash call with '&&' to chain them together (e.g., `git add . && git commit -m \"message\" && git push`). For instance, if one operation must complete before another starts (like mkdir before cp, Write before Bash for git operations, or git add before git commit), run these operations sequentially instead.\n    - Use ';' only when you need to run commands sequentially but don't care if earlier commands fail\n    - DO NOT use newlines to separate commands (newlines are ok in quoted strings)\n  - AVOID using `cd <directory> && <command>`. Use the `workdir` parameter to change directories instead.\n    <good-example>\n    Use workdir=\"/foo/bar\" with command: pytest tests\n    </good-example>\n    <bad-example>\n    cd /foo/bar && pytest tests\n    </bad-example>\n\n# Git and GitHub\n- Only commit, amend, push, or create PRs when explicitly requested.\n- Before committing, inspect `git status`, `git diff`, and `git log --oneline -10`; stage only intended files and never commit secrets.\n- Write a concise commit message that matches the repo style.\n- Do not update git config, skip hooks, use interactive `-i`, force-push, or create empty commits unless explicitly requested.\n- If a commit fails or hooks reject it, fix the issue and create a new commit; do not amend the failed commit.\n- Before creating a PR, inspect status, diff, remote tracking, recent commits, and the diff from the base branch.\n- Review all commits included in the PR, not just the latest commit.\n- Use `gh` for GitHub tasks, including PRs, issues, checks, and releases; return the PR URL when done.\n",
+      "captured_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "command": {
+            "type": "string",
+            "description": "The command to execute"
+          },
+          "timeout": {
+            "minimum": -9007199254740991,
+            "exclusiveMinimum": 0,
+            "type": "integer",
+            "maximum": 9007199254740991,
+            "description": "Optional timeout in milliseconds"
+          },
+          "workdir": {
+            "type": "string",
+            "description": "The working directory to run the command in. Defaults to the current directory. Use this instead of 'cd' commands."
+          }
+        },
+        "required": [
+          "command"
+        ]
+      },
+      "raw_json_chars": 5275,
+      "dependencies": [],
+      "search_document": "tool: bash\nnamespace: shell\npurpose: Terminal local et commandes système : bash, processus, systemctl, journalctl, paquets et diagnostics système.\ndescription: Executes a given bash command in a persistent shell session with optional timeout, ensuring proper handling and security measures.\n\nBe aware: OS: linux, Shell: bash\n\nAll commands run in the current working directory by default. Use the `workdir` parameter if you need to run a command in a different directory. AVOID using `cd <directory> && <command>` patterns - use `workdir` instead.\n\nUse `/tmp/opencode` for temporary work outside the workspace. This directory has already been created, already exists, and is pre-approved for external directory access.\n\nIMPORTANT: This tool is for terminal operations like git, npm, docker, etc. DO NOT use it for file operations (reading, writing, editing, searching, finding files) - use the specialized tools for this instead.\n\nBefore executing the command, please follow these steps:\n\n1. Directory Verification:\n   - If the command will create new directories or files, first use `ls` to verify the parent directory exists and is the correct location\n   - For example, before running \"mkdir foo/bar\", first use `ls foo` to check that \"foo\" exists and is the intended parent directory\n\n2. Command Execution:\n   - Always quote file paths that contain spaces with double quotes (e.g., rm \"path with spaces/file.txt\")\n   - Examples of proper quoting:\n     - mkdir \"/Users/name/My Documents\" (correct)\n     - mkdir /Users/name/My Documents (incorrect - will fail)\n     - python \"/path/with spaces/script.py\" (correct)\n     - python /path/with spaces/script.py (incorrect - will fail)\n   - After ensuring proper quoting, execute the command.\n   - Capture the output of the command.\n\nUsage notes:\n  - The command argument is required.\n  - You can specify an optional timeout in milliseconds. If not specified, commands will time out after 120000ms.\n  - If the output exceeds 2000 lines or 51200 bytes, it will be truncated and the full output will be written to a file. You can use Read with offset/limit to read specific sections or Grep to search the full content. Do NOT use `head`, `tail`, or other truncation commands to limit output; the full output will already be captured to a file for more precise searching.\n\n  - Avoid using Bash with the `find`, `grep`, `cat`, `head`, `tail`, `sed`, `awk`, or `echo` commands, unless explicitly instructed or when these commands are truly necessary for the task. Instead, always prefer using the dedicated tools for these commands:\n    - File search: Use Glob (NOT find or ls)\n    - Content search: Use Grep (NOT grep or rg)\n    - Read files: Use Read (NOT cat/head/tail)\n    - Edit files: Use Edit (NOT sed/awk)\n    - Write files: Use Write (NOT echo >/cat <<EOF)\n    - Communication: Output text directly (NOT echo/printf)\n  - When issuing multiple commands:\n    - If the commands are independent and can run in parallel, make multiple bash tool calls in a single message. For example, if you need to run \"git status\" and \"git diff\", send a single message with two bash tool calls in parallel.\n    - If the commands depend on each other and must run sequentially, use a single Bash call with '&&' to chain them together (e.g., `git add . && git commit -m \"message\" && git push`). For instance, if one operation must complete before another starts (like mkdir before cp, Write before Bash for git operations, or git add before git commit), run these operations sequentially instead.\n    - Use ';' only when you need to run commands sequentially but don't care if earlier commands fail\n    - DO NOT use newlines to separate commands (newlines are ok in quoted strings)\n  - AVOID using `cd <directory> && <command>`. Use the `workdir` parameter to change directories instead.\n    <good-example>\n    Use workdir=\"/foo/bar\" with command: pytest tests\n    </good-example>\n    <bad-example>\n    cd /foo/bar && pytest tests\n    </bad-example>\n\n# Git and GitHub\n- Only commit, amend, push, or create PRs when explicitly requested.\n- Before committing, inspect `git status`, `git diff`, and `git log --oneline -10`; stage only intended files and never commit secrets.\n- Write a concise commit message that matches the repo style.\n- Do not update git config, skip hooks, use interactive `-i`, force-push, or create empty commits unless explicitly requested.\n- If a commit fails or hooks reject it, fix the issue and create a new commit; do not amend the failed commit.\n- Before creating a PR, inspect status, diff, remote tracking, recent commits, and the diff from the base branch.\n- Review all commits included in the PR, not just the latest commit.\n- Use `gh` for GitHub tasks, including PRs, issues, checks, and releases; return the PR URL when done.\n\neffects: execute\nexamples: lance systemctl | exécute cette commande terminal",
+      "positive_search_document": "tool: bash\nnamespace: shell\npurpose: Terminal local et commandes système : bash, processus, systemctl, journalctl, paquets et diagnostics système.\ndescription: Executes a given bash command in a persistent shell session with optional timeout, ensuring proper handling and security measures.\n\nBe aware: OS: linux, Shell: bash\n\nAll commands run in the current working directory by default. Use the `workdir` parameter if you need to run a command in a different directory. AVOID using `cd <directory> && <command>` patterns - use `workdir` instead.\n\nUse `/tmp/opencode` for temporary work outside the workspace. This directory has already been created, already exists, and is pre-approved for external directory access.\n\nIMPORTANT: This tool is for terminal operations like git, npm, docker, etc. DO NOT use it for file operations (reading, writing, editing, searching, finding files) - use the specialized tools for this instead.\n\nBefore executing the command, please follow these steps:\n\n1. Directory Verification:\n   - If the command will create new directories or files, first use `ls` to verify the parent directory exists and is the correct location\n   - For example, before running \"mkdir foo/bar\", first use `ls foo` to check that \"foo\" exists and is the intended parent directory\n\n2. Command Execution:\n   - Always quote file paths that contain spaces with double quotes (e.g., rm \"path with spaces/file.txt\")\n   - Examples of proper quoting:\n     - mkdir \"/Users/name/My Documents\" (correct)\n     - mkdir /Users/name/My Documents (incorrect - will fail)\n     - python \"/path/with spaces/script.py\" (correct)\n     - python /path/with spaces/script.py (incorrect - will fail)\n   - After ensuring proper quoting, execute the command.\n   - Capture the output of the command.\n\nUsage notes:\n  - The command argument is required.\n  - You can specify an optional timeout in milliseconds. If not specified, commands will time out after 120000ms.\n  - If the output exceeds 2000 lines or 51200 bytes, it will be truncated and the full output will be written to a file. You can use Read with offset/limit to read specific sections or Grep to search the full content. Do NOT use `head`, `tail`, or other truncation commands to limit output; the full output will already be captured to a file for more precise searching.\n\n  - Avoid using Bash with the `find`, `grep`, `cat`, `head`, `tail`, `sed`, `awk`, or `echo` commands, unless explicitly instructed or when these commands are truly necessary for the task. Instead, always prefer using the dedicated tools for these commands:\n    - File search: Use Glob (NOT find or ls)\n    - Content search: Use Grep (NOT grep or rg)\n    - Read files: Use Read (NOT cat/head/tail)\n    - Edit files: Use Edit (NOT sed/awk)\n    - Write files: Use Write (NOT echo >/cat <<EOF)\n    - Communication: Output text directly (NOT echo/printf)\n  - When issuing multiple commands:\n    - If the commands are independent and can run in parallel, make multiple bash tool calls in a single message. For example, if you need to run \"git status\" and \"git diff\", send a single message with two bash tool calls in parallel.\n    - If the commands depend on each other and must run sequentially, use a single Bash call with '&&' to chain them together (e.g., `git add . && git commit -m \"message\" && git push`). For instance, if one operation must complete before another starts (like mkdir before cp, Write before Bash for git operations, or git add before git commit), run these operations sequentially instead.\n    - Use ';' only when you need to run commands sequentially but don't care if earlier commands fail\n    - DO NOT use newlines to separate commands (newlines are ok in quoted strings)\n  - AVOID using `cd <directory> && <command>`. Use the `workdir` parameter to change directories instead.\n    <good-example>\n    Use workdir=\"/foo/bar\" with command: pytest tests\n    </good-example>\n    <bad-example>\n    cd /foo/bar && pytest tests\n    </bad-example>\n\n# Git and GitHub\n- Only commit, amend, push, or create PRs when explicitly requested.\n- Before committing, inspect `git status`, `git diff`, and `git log --oneline -10`; stage only intended files and never commit secrets.\n- Write a concise commit message that matches the repo style.\n- Do not update git config, skip hooks, use interactive `-i`, force-push, or create empty commits unless explicitly requested.\n- If a commit fails or hooks reject it, fix the issue and create a new commit; do not amend the failed commit.\n- Before creating a PR, inspect status, diff, remote tracking, recent commits, and the diff from the base branch.\n- Review all commits included in the PR, not just the latest commit.\n- Use `gh` for GitHub tasks, including PRs, issues, checks, and releases; return the PR URL when done.\n\neffects: execute\nexamples: lance systemctl | exécute cette commande terminal",
+      "parent_namespace": "shell",
+      "retrieval_fields": {
+        "description": "Executes a given bash command in a persistent shell session with optional timeout, ensuring proper handling and security measures.\n\nBe aware: OS: linux, Shell: bash\n\nAll commands run in the current working directory by default. Use the `workdir` parameter if you need to run a command in a different directory. AVOID using `cd <directory> && <command>` patterns - use `workdir` instead.\n\nUse `/tmp/opencode` for temporary work outside the workspace. This directory has already been created, already exists, and is pre-approved for external directory access.\n\nIMPORTANT: This tool is for terminal operations like git, npm, docker, etc. DO NOT use it for file operations (reading, writing, editing, searching, finding files) - use the specialized tools for this instead.\n\nBefore executing the command, please follow these steps:\n\n1. Directory Verification:\n   - If the command will create new directories or files, first use `ls` to verify the parent directory exists and is the correct location\n   - For example, before running \"mkdir foo/bar\", first use `ls foo` to check that \"foo\" exists and is the intended parent directory\n\n2. Command Execution:\n   - Always quote file paths that contain spaces with double quotes (e.g., rm \"path with spaces/file.txt\")\n   - Examples of proper quoting:\n     - mkdir \"/Users/name/My Documents\" (correct)\n     - mkdir /Users/name/My Documents (incorrect - will fail)\n     - python \"/path/with spaces/script.py\" (correct)\n     - python /path/with spaces/script.py (incorrect - will fail)\n   - After ensuring proper quoting, execute the command.\n   - Capture the output of the command.\n\nUsage notes:\n  - The command argument is required.\n  - You can specify an optional timeout in milliseconds. If not specified, commands will time out after 120000ms.\n  - If the output exceeds 2000 lines or 51200 bytes, it will be truncated and the full output will be written to a file. You can use Read with offset/limit to read specific sections or Grep to search the full content. Do NOT use `head`, `tail`, or other truncation commands to limit output; the full output will already be captured to a file for more precise searching.\n\n  - Avoid using Bash with the `find`, `grep`, `cat`, `head`, `tail`, `sed`, `awk`, or `echo` commands, unless explicitly instructed or when these commands are truly necessary for the task. Instead, always prefer using the dedicated tools for these commands:\n    - File search: Use Glob (NOT find or ls)\n    - Content search: Use Grep (NOT grep or rg)\n    - Read files: Use Read (NOT cat/head/tail)\n    - Edit files: Use Edit (NOT sed/awk)\n    - Write files: Use Write (NOT echo >/cat <<EOF)\n    - Communication: Output text directly (NOT echo/printf)\n  - When issuing multiple commands:\n    - If the commands are independent and can run in parallel, make multiple bash tool calls in a single message. For example, if you need to run \"git status\" and \"git diff\", send a single message with two bash tool calls in parallel.\n    - If the commands depend on each other and must run sequentially, use a single Bash call with '&&' to chain them together (e.g., `git add . && git commit -m \"message\" && git push`). For instance, if one operation must complete before another starts (like mkdir before cp, Write before Bash for git operations, or git add before git commit), run these operations sequentially instead.\n    - Use ';' only when you need to run commands sequentially but don't care if earlier commands fail\n    - DO NOT use newlines to separate commands (newlines are ok in quoted strings)\n  - AVOID using `cd <directory> && <command>`. Use the `workdir` parameter to change directories instead.\n    <good-example>\n    Use workdir=\"/foo/bar\" with command: pytest tests\n    </good-example>\n    <bad-example>\n    cd /foo/bar && pytest tests\n    </bad-example>\n\n# Git and GitHub\n- Only commit, amend, push, or create PRs when explicitly requested.\n- Before committing, inspect `git status`, `git diff`, and `git log --oneline -10`; stage only intended files and never commit secrets.\n- Write a concise commit message that matches the repo style.\n- Do not update git config, skip hooks, use interactive `-i`, force-push, or create empty commits unless explicitly requested.\n- If a commit fails or hooks reject it, fix the issue and create a new commit; do not amend the failed commit.\n- Before creating a PR, inspect status, diff, remote tracking, recent commits, and the diff from the base branch.\n- Review all commits included in the PR, not just the latest commit.\n- Use `gh` for GitHub tasks, including PRs, issues, checks, and releases; return the PR URL when done.\n",
+        "effects": "execute",
+        "examples": "lance systemctl | exécute cette commande terminal"
+      }
+    },
+    "task": {
+      "namespace": "delegation",
+      "effects": [
+        "delegate"
+      ],
+      "risk": "medium",
+      "hot": false,
+      "examples": [
+        "délègue cette sous-tâche"
+      ],
+      "name": "task",
+      "captured_description": "Launch a new agent to handle complex, multistep tasks autonomously.\n\nWhen using the Task tool, you must specify a subagent_type parameter to select which agent type to use.\n\nWhen NOT to use the Task tool:\n- If you want to read a specific file path, use the Read or Glob tool instead of the Task tool, to find the match more quickly\n- If you are searching for a specific class definition like \"class Foo\", use the Grep tool instead, to find the match more quickly\n- If you are searching for code within a specific file or set of 2-3 files, use the Read tool instead of the Task tool, to find the match more quickly\n- If no available agent is a good fit for the task, use other tools directly\n\n\nUsage notes:\n1. Launch multiple agents concurrently whenever possible, to maximize performance; to do that, use a single message with multiple tool uses\n2. Once you have delegated work to an agent, do not duplicate that work yourself. Continue with non-overlapping tasks, or wait for the result. For background tasks, you will be notified automatically when the result is ready.\n3. When the agent is done, it will return a single message back to you. The result returned by the agent is not visible to the user. To show the user the result, you should send a text message back to the user with a concise summary of the result. The output includes a task_id you can reuse later to continue the same subagent session.\n4. Each agent invocation starts with a fresh context unless you provide task_id to resume the same subagent session (which continues with its previous messages and tool outputs). When starting fresh, your prompt should contain a highly detailed task description for the agent to perform autonomously and you should specify exactly what information the agent should return back to you in its final and only message to you.\n5. The agent's outputs should generally be trusted\n6. Clearly tell the agent whether you expect it to write code or just to do research (search, file reads, web fetches, etc.), since it is not aware of the user's intent. Tell it how to verify its work if possible (e.g., relevant test commands).\n7. If the agent description mentions that it should be used proactively, then you should try your best to use it without the user having to ask for it first. Use your judgement.\n\nAvailable agent types and the tools they have access to:\n- corpus-worker: Sous-tâche Corpus bornée et indépendante : exploration, vérification, rédaction ou modification autorisée. À déléguer spontanément quand cela aide une demande complexe, pas pour une question simple. Même modèle local, permissions du parent, aucune sous-délégation.",
+      "captured_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "A short (3-5 words) description of the task"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "The task for the agent to perform"
+          },
+          "subagent_type": {
+            "type": "string",
+            "description": "The type of specialized agent to use for this task"
+          },
+          "task_id": {
+            "type": "string",
+            "description": "This should only be set if you mean to resume a previous task (you can pass a prior task_id and the task will continue the same subagent session as before instead of creating a fresh one)"
+          },
+          "command": {
+            "type": "string",
+            "description": "The command that triggered this task"
+          }
+        },
+        "required": [
+          "description",
+          "prompt",
+          "subagent_type"
+        ]
+      },
+      "raw_json_chars": 3468,
+      "dependencies": [],
+      "search_document": "tool: task\nnamespace: delegation\npurpose: Délégation explicite d'une sous-tâche indépendante à un sous-agent Corpus.\ndescription: Launch a new agent to handle complex, multistep tasks autonomously.\n\nWhen using the Task tool, you must specify a subagent_type parameter to select which agent type to use.\n\nWhen NOT to use the Task tool:\n- If you want to read a specific file path, use the Read or Glob tool instead of the Task tool, to find the match more quickly\n- If you are searching for a specific class definition like \"class Foo\", use the Grep tool instead, to find the match more quickly\n- If you are searching for code within a specific file or set of 2-3 files, use the Read tool instead of the Task tool, to find the match more quickly\n- If no available agent is a good fit for the task, use other tools directly\n\n\nUsage notes:\n1. Launch multiple agents concurrently whenever possible, to maximize performance; to do that, use a single message with multiple tool uses\n2. Once you have delegated work to an agent, do not duplicate that work yourself. Continue with non-overlapping tasks, or wait for the result. For background tasks, you will be notified automatically when the result is ready.\n3. When the agent is done, it will return a single message back to you. The result returned by the agent is not visible to the user. To show the user the result, you should send a text message back to the user with a concise summary of the result. The output includes a task_id you can reuse later to continue the same subagent session.\n4. Each agent invocation starts with a fresh context unless you provide task_id to resume the same subagent session (which continues with its previous messages and tool outputs). When starting fresh, your prompt should contain a highly detailed task description for the agent to perform autonomously and you should specify exactly what information the agent should return back to you in its final and only message to you.\n5. The agent's outputs should generally be trusted\n6. Clearly tell the agent whether you expect it to write code or just to do research (search, file reads, web fetches, etc.), since it is not aware of the user's intent. Tell it how to verify its work if possible (e.g., relevant test commands).\n7. If the agent description mentions that it should be used proactively, then you should try your best to use it without the user having to ask for it first. Use your judgement.\n\nAvailable agent types and the tools they have access to:\n- corpus-worker: Sous-tâche Corpus bornée et indépendante : exploration, vérification, rédaction ou modification autorisée. À déléguer spontanément quand cela aide une demande complexe, pas pour une question simple. Même modèle local, permissions du parent, aucune sous-délégation.\neffects: delegate\nexamples: délègue cette sous-tâche",
+      "positive_search_document": "tool: task\nnamespace: delegation\npurpose: Délégation explicite d'une sous-tâche indépendante à un sous-agent Corpus.\ndescription: Launch a new agent to handle complex, multistep tasks autonomously.\n\nWhen using the Task tool, you must specify a subagent_type parameter to select which agent type to use.\n\nWhen NOT to use the Task tool:\n- If you want to read a specific file path, use the Read or Glob tool instead of the Task tool, to find the match more quickly\n- If you are searching for a specific class definition like \"class Foo\", use the Grep tool instead, to find the match more quickly\n- If you are searching for code within a specific file or set of 2-3 files, use the Read tool instead of the Task tool, to find the match more quickly\n- If no available agent is a good fit for the task, use other tools directly\n\n\nUsage notes:\n1. Launch multiple agents concurrently whenever possible, to maximize performance; to do that, use a single message with multiple tool uses\n2. Once you have delegated work to an agent, do not duplicate that work yourself. Continue with non-overlapping tasks, or wait for the result. For background tasks, you will be notified automatically when the result is ready.\n3. When the agent is done, it will return a single message back to you. The result returned by the agent is not visible to the user. To show the user the result, you should send a text message back to the user with a concise summary of the result. The output includes a task_id you can reuse later to continue the same subagent session.\n4. Each agent invocation starts with a fresh context unless you provide task_id to resume the same subagent session (which continues with its previous messages and tool outputs). When starting fresh, your prompt should contain a highly detailed task description for the agent to perform autonomously and you should specify exactly what information the agent should return back to you in its final and only message to you.\n5. The agent's outputs should generally be trusted\n6. Clearly tell the agent whether you expect it to write code or just to do research (search, file reads, web fetches, etc.), since it is not aware of the user's intent. Tell it how to verify its work if possible (e.g., relevant test commands).\n7. If the agent description mentions that it should be used proactively, then you should try your best to use it without the user having to ask for it first. Use your judgement.\n\nAvailable agent types and the tools they have access to:\n- corpus-worker: Sous-tâche Corpus bornée et indépendante : exploration, vérification, rédaction ou modification autorisée. À déléguer spontanément quand cela aide une demande complexe, pas pour une question simple. Même modèle local, permissions du parent, aucune sous-délégation.\neffects: delegate\nexamples: délègue cette sous-tâche",
+      "parent_namespace": "delegation",
+      "retrieval_fields": {
+        "description": "Launch a new agent to handle complex, multistep tasks autonomously.\n\nWhen using the Task tool, you must specify a subagent_type parameter to select which agent type to use.\n\nWhen NOT to use the Task tool:\n- If you want to read a specific file path, use the Read or Glob tool instead of the Task tool, to find the match more quickly\n- If you are searching for a specific class definition like \"class Foo\", use the Grep tool instead, to find the match more quickly\n- If you are searching for code within a specific file or set of 2-3 files, use the Read tool instead of the Task tool, to find the match more quickly\n- If no available agent is a good fit for the task, use other tools directly\n\n\nUsage notes:\n1. Launch multiple agents concurrently whenever possible, to maximize performance; to do that, use a single message with multiple tool uses\n2. Once you have delegated work to an agent, do not duplicate that work yourself. Continue with non-overlapping tasks, or wait for the result. For background tasks, you will be notified automatically when the result is ready.\n3. When the agent is done, it will return a single message back to you. The result returned by the agent is not visible to the user. To show the user the result, you should send a text message back to the user with a concise summary of the result. The output includes a task_id you can reuse later to continue the same subagent session.\n4. Each agent invocation starts with a fresh context unless you provide task_id to resume the same subagent session (which continues with its previous messages and tool outputs). When starting fresh, your prompt should contain a highly detailed task description for the agent to perform autonomously and you should specify exactly what information the agent should return back to you in its final and only message to you.\n5. The agent's outputs should generally be trusted\n6. Clearly tell the agent whether you expect it to write code or just to do research (search, file reads, web fetches, etc.), since it is not aware of the user's intent. Tell it how to verify its work if possible (e.g., relevant test commands).\n7. If the agent description mentions that it should be used proactively, then you should try your best to use it without the user having to ask for it first. Use your judgement.\n\nAvailable agent types and the tools they have access to:\n- corpus-worker: Sous-tâche Corpus bornée et indépendante : exploration, vérification, rédaction ou modification autorisée. À déléguer spontanément quand cela aide une demande complexe, pas pour une question simple. Même modèle local, permissions du parent, aucune sous-délégation.",
+        "effects": "delegate",
+        "examples": "délègue cette sous-tâche"
+      }
+    },
+    "corpus-tools_browser_request": {
+      "namespace": "research",
+      "effects": [
+        "network",
+        "read"
+      ],
+      "risk": "medium",
+      "hot": false,
+      "examples": [
+        "ouvre cette page web"
+      ],
+      "name": "corpus-tools_browser_request",
+      "captured_description": "Demander une action du navigateur Corpus. La session Chromium est partagée avec le panneau Navigateur à droite de Corpus : Utiliser snapshot pour observer la page et ses sélecteurs interactifs avant click/fill, ou screenshot pour la voir. Chaque demande doit être approuvée dans ce panneau ou Paramètres > Navigateur. Ne pas répéter une demande en attente.",
+      "captured_schema": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "tab-new",
+              "tab-select",
+              "tab-close",
+              "forward",
+              "launch",
+              "navigate",
+              "snapshot",
+              "screenshot",
+              "click",
+              "fill",
+              "back",
+              "reload",
+              "clear",
+              "close",
+              "download"
+            ]
+          },
+          "tab": {
+            "type": "string",
+            "description": "Identifiant retourné dans tabs pour sélectionner ou fermer un onglet."
+          },
+          "visible": {
+            "type": "boolean",
+            "description": "Ouvrir une fenêtre Chromium dédiée (launch uniquement ; ne pas remplacer une session existante)."
+          },
+          "url": {
+            "type": "string"
+          },
+          "selector": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "action"
+        ],
+        "additionalProperties": false
+      },
+      "raw_json_chars": 1053,
+      "dependencies": [
+        "corpus-tools_browser_result"
+      ],
+      "search_document": "tool: corpus-tools_browser_request\nnamespace: research\npurpose: Recherche externe et navigation web : internet, URL, actualité, documentation en ligne et recherche approfondie.\ndescription: Demander une action du navigateur Corpus. La session Chromium est partagée avec le panneau Navigateur à droite de Corpus : Utiliser snapshot pour observer la page et ses sélecteurs interactifs avant click/fill, ou screenshot pour la voir. Chaque demande doit être approuvée dans ce panneau ou Paramètres > Navigateur. Ne pas répéter une demande en attente.\neffects: network, read\nexamples: ouvre cette page web",
+      "positive_search_document": "tool: corpus-tools_browser_request\nnamespace: research\npurpose: Recherche externe et navigation web : internet, URL, actualité, documentation en ligne et recherche approfondie.\ndescription: Demander une action du navigateur Corpus. La session Chromium est partagée avec le panneau Navigateur à droite de Corpus : Utiliser snapshot pour observer la page et ses sélecteurs interactifs avant click/fill, ou screenshot pour la voir. Chaque demande doit être approuvée dans ce panneau ou Paramètres > Navigateur. Ne pas répéter une demande en attente.\neffects: network, read\nexamples: ouvre cette page web",
+      "parent_namespace": "research",
+      "retrieval_fields": {
+        "description": "Demander une action du navigateur Corpus. La session Chromium est partagée avec le panneau Navigateur à droite de Corpus : Utiliser snapshot pour observer la page et ses sélecteurs interactifs avant click/fill, ou screenshot pour la voir. Chaque demande doit être approuvée dans ce panneau ou Paramètres > Navigateur. Ne pas répéter une demande en attente.",
+        "effects": "network | read",
+        "examples": "ouvre cette page web"
+      }
+    },
+    "corpus-tools_browser_result": {
+      "namespace": "research",
+      "effects": [
+        "read"
+      ],
+      "risk": "low",
+      "hot": false,
+      "companion_of": "corpus-tools_browser_request",
+      "examples": [
+        "récupère le résultat de navigation"
+      ],
+      "name": "corpus-tools_browser_result",
+      "captured_description": "Consulter le résultat d’une demande après validation humaine.",
+      "captured_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false
+      },
+      "raw_json_chars": 263,
+      "dependencies": [],
+      "search_document": "tool: corpus-tools_browser_result\nnamespace: research\npurpose: Recherche externe et navigation web : internet, URL, actualité, documentation en ligne et recherche approfondie.\ndescription: Consulter le résultat d’une demande après validation humaine.\neffects: read\nexamples: récupère le résultat de navigation",
+      "positive_search_document": "tool: corpus-tools_browser_result\nnamespace: research\npurpose: Recherche externe et navigation web : internet, URL, actualité, documentation en ligne et recherche approfondie.\ndescription: Consulter le résultat d’une demande après validation humaine.\neffects: read\nexamples: récupère le résultat de navigation",
+      "parent_namespace": "research",
+      "retrieval_fields": {
+        "description": "Consulter le résultat d’une demande après validation humaine.",
+        "effects": "read",
+        "examples": "récupère le résultat de navigation"
+      }
+    },
+    "corpus-tools_research_request": {
+      "namespace": "research",
+      "effects": [
+        "network",
+        "read"
+      ],
+      "risk": "medium",
+      "hot": false,
+      "examples": [
+        "recherche ce sujet sur internet"
+      ],
+      "name": "corpus-tools_research_request",
+      "captured_description": "Demander une recherche Web structurée via SearXNG + Crawl4AI. Validation humaine requise.",
+      "captured_schema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 8
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": false
+      },
+      "raw_json_chars": 367,
+      "dependencies": [
+        "corpus-tools_research_result"
+      ],
+      "search_document": "tool: corpus-tools_research_request\nnamespace: research\npurpose: Recherche externe et navigation web : internet, URL, actualité, documentation en ligne et recherche approfondie.\ndescription: Demander une recherche Web structurée via SearXNG + Crawl4AI. Validation humaine requise.\neffects: network, read\nexamples: recherche ce sujet sur internet",
+      "positive_search_document": "tool: corpus-tools_research_request\nnamespace: research\npurpose: Recherche externe et navigation web : internet, URL, actualité, documentation en ligne et recherche approfondie.\ndescription: Demander une recherche Web structurée via SearXNG + Crawl4AI. Validation humaine requise.\neffects: network, read\nexamples: recherche ce sujet sur internet",
+      "parent_namespace": "research",
+      "retrieval_fields": {
+        "description": "Demander une recherche Web structurée via SearXNG + Crawl4AI. Validation humaine requise.",
+        "effects": "network | read",
+        "examples": "recherche ce sujet sur internet"
+      }
+    },
+    "corpus-tools_research_result": {
+      "namespace": "research",
+      "effects": [
+        "read"
+      ],
+      "risk": "low",
+      "hot": false,
+      "companion_of": "corpus-tools_research_request",
+      "examples": [
+        "récupère le résultat de recherche"
+      ],
+      "name": "corpus-tools_research_result",
+      "captured_description": "Consulter le résultat d’une recherche approuvée.",
+      "captured_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false
+      },
+      "raw_json_chars": 251,
+      "dependencies": [],
+      "search_document": "tool: corpus-tools_research_result\nnamespace: research\npurpose: Recherche externe et navigation web : internet, URL, actualité, documentation en ligne et recherche approfondie.\ndescription: Consulter le résultat d’une recherche approuvée.\neffects: read\nexamples: récupère le résultat de recherche",
+      "positive_search_document": "tool: corpus-tools_research_result\nnamespace: research\npurpose: Recherche externe et navigation web : internet, URL, actualité, documentation en ligne et recherche approfondie.\ndescription: Consulter le résultat d’une recherche approuvée.\neffects: read\nexamples: récupère le résultat de recherche",
+      "parent_namespace": "research",
+      "retrieval_fields": {
+        "description": "Consulter le résultat d’une recherche approuvée.",
+        "effects": "read",
+        "examples": "récupère le résultat de recherche"
+      }
+    },
+    "corpus-tools_document_extract": {
+      "namespace": "documents",
+      "effects": [
+        "read"
+      ],
+      "risk": "low",
+      "hot": false,
+      "examples": [
+        "extrais le contenu de ce PDF"
+      ],
+      "name": "corpus-tools_document_extract",
+      "captured_description": "Extraire localement le contenu structuré d’un PDF, DOCX, PPTX, XLSX ou autre document avec Docling. À utiliser pour ANALYSER/LIRE un document existant ; ne pas utiliser document_create pour lire un fichier. Le chemin doit rester dans Corpus.",
+      "captured_schema": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "max_chars": {
+            "type": "integer",
+            "minimum": 1000,
+            "maximum": 250000,
+            "default": 120000
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "additionalProperties": false
+      },
+      "raw_json_chars": 529,
+      "dependencies": [
+        "corpus-tools_document_result"
+      ],
+      "search_document": "tool: corpus-tools_document_extract\nnamespace: documents\npurpose: Documents structurés : PDF, DOCX, extraction, conversion et création de documents.\ndescription: Extraire localement le contenu structuré d’un PDF, DOCX, PPTX, XLSX ou autre document avec Docling. À utiliser pour ANALYSER/LIRE un document existant ; ne pas utiliser document_create pour lire un fichier. Le chemin doit rester dans Corpus.\neffects: read\nexamples: extrais le contenu de ce PDF",
+      "positive_search_document": "tool: corpus-tools_document_extract\nnamespace: documents\npurpose: Documents structurés : PDF, DOCX, extraction, conversion et création de documents.\ndescription: Extraire localement le contenu structuré d’un PDF, DOCX, PPTX, XLSX ou autre document avec Docling. À utiliser pour ANALYSER/LIRE un document existant ; ne pas utiliser document_create pour lire un fichier. Le chemin doit rester dans Corpus.\neffects: read\nexamples: extrais le contenu de ce PDF",
+      "parent_namespace": "documents",
+      "retrieval_fields": {
+        "description": "Extraire localement le contenu structuré d’un PDF, DOCX, PPTX, XLSX ou autre document avec Docling. À utiliser pour ANALYSER/LIRE un document existant ; ne pas utiliser document_create pour lire un fichier. Le chemin doit rester dans Corpus.",
+        "effects": "read",
+        "examples": "extrais le contenu de ce PDF"
+      }
+    },
+    "corpus-tools_document_create": {
+      "namespace": "documents",
+      "effects": [
+        "write"
+      ],
+      "risk": "medium",
+      "hot": false,
+      "examples": [
+        "crée un document"
+      ],
+      "name": "corpus-tools_document_create",
+      "captured_description": "Créer ou consulter un fichier local avec LibreOffice/Pandoc libres. Création asynchrone : donner le lien uniquement après state=completed. Tableurs : rows, nombres natifs et textes, une feuille ; pas de formules ni macros. Documents : content Markdown. Ne pas boucler en attente.",
+      "captured_schema": {
+        "type": "object",
+        "properties": {
+          "format": {
+            "type": "string",
+            "enum": [
+              "txt",
+              "md",
+              "html",
+              "odt",
+              "docx",
+              "rtf",
+              "pdf",
+              "epub",
+              "pptx",
+              "odp",
+              "csv",
+              "tsv",
+              "ods",
+              "xlsx"
+            ]
+          },
+          "content": {
+            "type": "string",
+            "maxLength": 15000,
+            "description": "Texte Markdown pour documents ; titres de niveau 1 pour diapositives."
+          },
+          "rows": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": [
+                  "string",
+                  "number"
+                ]
+              }
+            }
+          }
+        },
+        "required": [
+          "format"
+        ],
+        "additionalProperties": false
+      },
+      "raw_json_chars": 805,
+      "dependencies": [
+        "corpus-tools_document_result"
+      ],
+      "search_document": "tool: corpus-tools_document_create\nnamespace: documents\npurpose: Documents structurés : PDF, DOCX, extraction, conversion et création de documents.\ndescription: Créer ou consulter un fichier local avec LibreOffice/Pandoc libres. Création asynchrone : donner le lien uniquement après state=completed. Tableurs : rows, nombres natifs et textes, une feuille ; pas de formules ni macros. Documents : content Markdown. Ne pas boucler en attente.\neffects: write\nexamples: crée un document",
+      "positive_search_document": "tool: corpus-tools_document_create\nnamespace: documents\npurpose: Documents structurés : PDF, DOCX, extraction, conversion et création de documents.\ndescription: Créer ou consulter un fichier local avec LibreOffice/Pandoc libres. Création asynchrone : donner le lien uniquement après state=completed. Tableurs : rows, nombres natifs et textes, une feuille ; pas de formules ni macros. Documents : content Markdown. Ne pas boucler en attente.\neffects: write\nexamples: crée un document",
+      "parent_namespace": "documents",
+      "retrieval_fields": {
+        "description": "Créer ou consulter un fichier local avec LibreOffice/Pandoc libres. Création asynchrone : donner le lien uniquement après state=completed. Tableurs : rows, nombres natifs et textes, une feuille ; pas de formules ni macros. Documents : content Markdown. Ne pas boucler en attente.",
+        "effects": "write",
+        "examples": "crée un document"
+      }
+    },
+    "corpus-tools_document_formats": {
+      "namespace": "documents",
+      "effects": [
+        "read"
+      ],
+      "risk": "low",
+      "hot": false,
+      "examples": [
+        "quels formats de document sont disponibles"
+      ],
+      "name": "corpus-tools_document_formats",
+      "captured_description": "Créer ou consulter un fichier local avec LibreOffice/Pandoc libres. Création asynchrone : donner le lien uniquement après state=completed. Tableurs : rows, nombres natifs et textes, une feuille ; pas de formules ni macros. Documents : content Markdown. Ne pas boucler en attente.",
+      "captured_schema": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "raw_json_chars": 457,
+      "dependencies": [],
+      "search_document": "tool: corpus-tools_document_formats\nnamespace: documents\npurpose: Documents structurés : PDF, DOCX, extraction, conversion et création de documents.\ndescription: Créer ou consulter un fichier local avec LibreOffice/Pandoc libres. Création asynchrone : donner le lien uniquement après state=completed. Tableurs : rows, nombres natifs et textes, une feuille ; pas de formules ni macros. Documents : content Markdown. Ne pas boucler en attente.\neffects: read\nexamples: quels formats de document sont disponibles",
+      "positive_search_document": "tool: corpus-tools_document_formats\nnamespace: documents\npurpose: Documents structurés : PDF, DOCX, extraction, conversion et création de documents.\ndescription: Créer ou consulter un fichier local avec LibreOffice/Pandoc libres. Création asynchrone : donner le lien uniquement après state=completed. Tableurs : rows, nombres natifs et textes, une feuille ; pas de formules ni macros. Documents : content Markdown. Ne pas boucler en attente.\neffects: read\nexamples: quels formats de document sont disponibles",
+      "parent_namespace": "documents",
+      "retrieval_fields": {
+        "description": "Créer ou consulter un fichier local avec LibreOffice/Pandoc libres. Création asynchrone : donner le lien uniquement après state=completed. Tableurs : rows, nombres natifs et textes, une feuille ; pas de formules ni macros. Documents : content Markdown. Ne pas boucler en attente.",
+        "effects": "read",
+        "examples": "quels formats de document sont disponibles"
+      }
+    },
+    "corpus-tools_document_result": {
+      "namespace": "documents",
+      "effects": [
+        "read"
+      ],
+      "risk": "low",
+      "hot": false,
+      "examples": [
+        "récupère le document généré"
+      ],
+      "name": "corpus-tools_document_result",
+      "captured_description": "Créer ou consulter un fichier local avec LibreOffice/Pandoc libres. Création asynchrone : donner le lien uniquement après state=completed. Tableurs : rows, nombres natifs et textes, une feuille ; pas de formules ni macros. Documents : content Markdown. Ne pas boucler en attente.",
+      "captured_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false
+      },
+      "raw_json_chars": 482,
+      "dependencies": [],
+      "search_document": "tool: corpus-tools_document_result\nnamespace: documents\npurpose: Documents structurés : PDF, DOCX, extraction, conversion et création de documents.\ndescription: Créer ou consulter un fichier local avec LibreOffice/Pandoc libres. Création asynchrone : donner le lien uniquement après state=completed. Tableurs : rows, nombres natifs et textes, une feuille ; pas de formules ni macros. Documents : content Markdown. Ne pas boucler en attente.\neffects: read\nexamples: récupère le document généré",
+      "positive_search_document": "tool: corpus-tools_document_result\nnamespace: documents\npurpose: Documents structurés : PDF, DOCX, extraction, conversion et création de documents.\ndescription: Créer ou consulter un fichier local avec LibreOffice/Pandoc libres. Création asynchrone : donner le lien uniquement après state=completed. Tableurs : rows, nombres natifs et textes, une feuille ; pas de formules ni macros. Documents : content Markdown. Ne pas boucler en attente.\neffects: read\nexamples: récupère le document généré",
+      "parent_namespace": "documents",
+      "retrieval_fields": {
+        "description": "Créer ou consulter un fichier local avec LibreOffice/Pandoc libres. Création asynchrone : donner le lien uniquement après state=completed. Tableurs : rows, nombres natifs et textes, une feuille ; pas de formules ni macros. Documents : content Markdown. Ne pas boucler en attente.",
+        "effects": "read",
+        "examples": "récupère le document généré"
+      }
+    },
+    "corpus-tools_media_generate": {
+      "namespace": "media",
+      "effects": [
+        "write",
+        "generate"
+      ],
+      "risk": "medium",
+      "hot": false,
+      "examples": [
+        "génère une image ou une vidéo"
+      ],
+      "name": "corpus-tools_media_generate",
+      "captured_description": "Générer localement une image (flux-klein), une vidéo avec musique optionnelle (wan-5b), une voix parlée expressive (qwen-tts) ou de la musique instrumentale/chantée (ace-step). À utiliser lorsque l’utilisateur demande un rendu. Un seul rendu à la fois. Retourne immédiatement un identifiant : ne pas annoncer terminé avant media_result state=completed. Le lien local retourné peut être affiché dans la réponse. reference_job réutilise une image déjà générée pour la retoucher ou l’animer. Pour wan-5b, frames permet 17 à 121 images (121 par défaut, environ 5 secondes à 24 images/s) et soundtrack décrit une musique instrumentale optionnelle ; aucun son si vide. Pour qwen-tts, prompt est le texte exact à prononcer (1200 caractères maximum), voice_style décrit la voix. Pour ace-step, prompt décrit la musique, lyrics les paroles et duration sa durée. Ne pas inventer le contenu du rendu.",
+      "captured_schema": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "type": "string",
+            "enum": [
+              "flux-klein",
+              "wan-5b",
+              "qwen-tts",
+              "ace-step"
+            ]
+          },
+          "prompt": {
+            "type": "string",
+            "maxLength": 3000
+          },
+          "width": {
+            "type": "integer"
+          },
+          "height": {
+            "type": "integer"
+          },
+          "frames": {
+            "type": "integer",
+            "enum": [
+              17,
+              33,
+              49,
+              65,
+              81,
+              97,
+              121
+            ],
+            "default": 121
+          },
+          "soundtrack": {
+            "type": "string",
+            "maxLength": 1500,
+            "description": "wan-5b : musique instrumentale optionnelle, requiert ACE-Step disponible."
+          },
+          "seed": {
+            "type": "integer"
+          },
+          "reference_job": {
+            "type": "string"
+          },
+          "voice_style": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "qwen-tts : timbre et expression, voix fictive décrite librement."
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "fr",
+              "en",
+              "de",
+              "es",
+              "it",
+              "pt",
+              "ru",
+              "zh",
+              "ja",
+              "ko"
+            ]
+          },
+          "lyrics": {
+            "type": "string",
+            "maxLength": 3000,
+            "description": "ace-step : paroles originales ; vide pour instrumental."
+          },
+          "duration": {
+            "type": "integer",
+            "minimum": 10,
+            "maximum": 120,
+            "description": "ace-step : durée musicale en secondes."
+          }
+        },
+        "required": [
+          "model",
+          "prompt"
+        ],
+        "additionalProperties": false
+      },
+      "raw_json_chars": 1974,
+      "dependencies": [
+        "corpus-tools_media_result"
+      ],
+      "search_document": "tool: corpus-tools_media_generate\nnamespace: media\npurpose: Génération et traitement de médias : images, vidéo, audio et modèles multimédias.\ndescription: Générer localement une image (flux-klein), une vidéo avec musique optionnelle (wan-5b), une voix parlée expressive (qwen-tts) ou de la musique instrumentale/chantée (ace-step). À utiliser lorsque l’utilisateur demande un rendu. Un seul rendu à la fois. Retourne immédiatement un identifiant : ne pas annoncer terminé avant media_result state=completed. Le lien local retourné peut être affiché dans la réponse. reference_job réutilise une image déjà générée pour la retoucher ou l’animer. Pour wan-5b, frames permet 17 à 121 images (121 par défaut, environ 5 secondes à 24 images/s) et soundtrack décrit une musique instrumentale optionnelle ; aucun son si vide. Pour qwen-tts, prompt est le texte exact à prononcer (1200 caractères maximum), voice_style décrit la voix. Pour ace-step, prompt décrit la musique, lyrics les paroles et duration sa durée. Ne pas inventer le contenu du rendu.\neffects: write, generate\nexamples: génère une image ou une vidéo",
+      "positive_search_document": "tool: corpus-tools_media_generate\nnamespace: media\npurpose: Génération et traitement de médias : images, vidéo, audio et modèles multimédias.\ndescription: Générer localement une image (flux-klein), une vidéo avec musique optionnelle (wan-5b), une voix parlée expressive (qwen-tts) ou de la musique instrumentale/chantée (ace-step). À utiliser lorsque l’utilisateur demande un rendu. Un seul rendu à la fois. Retourne immédiatement un identifiant : ne pas annoncer terminé avant media_result state=completed. Le lien local retourné peut être affiché dans la réponse. reference_job réutilise une image déjà générée pour la retoucher ou l’animer. Pour wan-5b, frames permet 17 à 121 images (121 par défaut, environ 5 secondes à 24 images/s) et soundtrack décrit une musique instrumentale optionnelle ; aucun son si vide. Pour qwen-tts, prompt est le texte exact à prononcer (1200 caractères maximum), voice_style décrit la voix. Pour ace-step, prompt décrit la musique, lyrics les paroles et duration sa durée. Ne pas inventer le contenu du rendu.\neffects: write, generate\nexamples: génère une image ou une vidéo",
+      "parent_namespace": "media",
+      "retrieval_fields": {
+        "description": "Générer localement une image (flux-klein), une vidéo avec musique optionnelle (wan-5b), une voix parlée expressive (qwen-tts) ou de la musique instrumentale/chantée (ace-step). À utiliser lorsque l’utilisateur demande un rendu. Un seul rendu à la fois. Retourne immédiatement un identifiant : ne pas annoncer terminé avant media_result state=completed. Le lien local retourné peut être affiché dans la réponse. reference_job réutilise une image déjà générée pour la retoucher ou l’animer. Pour wan-5b, frames permet 17 à 121 images (121 par défaut, environ 5 secondes à 24 images/s) et soundtrack décrit une musique instrumentale optionnelle ; aucun son si vide. Pour qwen-tts, prompt est le texte exact à prononcer (1200 caractères maximum), voice_style décrit la voix. Pour ace-step, prompt décrit la musique, lyrics les paroles et duration sa durée. Ne pas inventer le contenu du rendu.",
+        "effects": "write | generate",
+        "examples": "génère une image ou une vidéo"
+      }
+    },
+    "corpus-tools_media_models": {
+      "namespace": "media",
+      "effects": [
+        "read"
+      ],
+      "risk": "low",
+      "hot": false,
+      "examples": [
+        "liste les modèles média"
+      ],
+      "name": "corpus-tools_media_models",
+      "captured_description": "Lister les moteurs image/vidéo/voix/musique locaux disponibles et les rendus récents.",
+      "captured_schema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "raw_json_chars": 245,
+      "dependencies": [],
+      "search_document": "tool: corpus-tools_media_models\nnamespace: media\npurpose: Génération et traitement de médias : images, vidéo, audio et modèles multimédias.\ndescription: Lister les moteurs image/vidéo/voix/musique locaux disponibles et les rendus récents.\neffects: read\nexamples: liste les modèles média",
+      "positive_search_document": "tool: corpus-tools_media_models\nnamespace: media\npurpose: Génération et traitement de médias : images, vidéo, audio et modèles multimédias.\ndescription: Lister les moteurs image/vidéo/voix/musique locaux disponibles et les rendus récents.\neffects: read\nexamples: liste les modèles média",
+      "parent_namespace": "media",
+      "retrieval_fields": {
+        "description": "Lister les moteurs image/vidéo/voix/musique locaux disponibles et les rendus récents.",
+        "effects": "read",
+        "examples": "liste les modèles média"
+      }
+    },
+    "corpus-tools_media_result": {
+      "namespace": "media",
+      "effects": [
+        "read"
+      ],
+      "risk": "low",
+      "hot": false,
+      "companion_of": "corpus-tools_media_generate",
+      "examples": [
+        "récupère le média généré"
+      ],
+      "name": "corpus-tools_media_result",
+      "captured_description": "Consulter une génération locale. En attente/en cours : laisser le rendu continuer en arrière-plan ; ne pas boucler sur cet outil. L’interface affiche son avancement et permet de joindre le résultat au modèle de vision.",
+      "captured_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false
+      },
+      "raw_json_chars": 418,
+      "dependencies": [],
+      "search_document": "tool: corpus-tools_media_result\nnamespace: media\npurpose: Génération et traitement de médias : images, vidéo, audio et modèles multimédias.\ndescription: Consulter une génération locale. En attente/en cours : laisser le rendu continuer en arrière-plan ; ne pas boucler sur cet outil. L’interface affiche son avancement et permet de joindre le résultat au modèle de vision.\neffects: read\nexamples: récupère le média généré",
+      "positive_search_document": "tool: corpus-tools_media_result\nnamespace: media\npurpose: Génération et traitement de médias : images, vidéo, audio et modèles multimédias.\ndescription: Consulter une génération locale. En attente/en cours : laisser le rendu continuer en arrière-plan ; ne pas boucler sur cet outil. L’interface affiche son avancement et permet de joindre le résultat au modèle de vision.\neffects: read\nexamples: récupère le média généré",
+      "parent_namespace": "media",
+      "retrieval_fields": {
+        "description": "Consulter une génération locale. En attente/en cours : laisser le rendu continuer en arrière-plan ; ne pas boucler sur cet outil. L’interface affiche son avancement et permet de joindre le résultat au modèle de vision.",
+        "effects": "read",
+        "examples": "récupère le média généré"
+      }
+    },
+    "corpus-tools_git_request": {
+      "namespace": "git",
+      "effects": [
+        "read",
+        "write"
+      ],
+      "risk": "medium",
+      "hot": false,
+      "examples": [
+        "git status",
+        "inspecte le dernier commit"
+      ],
+      "name": "corpus-tools_git_request",
+      "captured_description": "Demander status/diff/push/création PR brouillon/fusion. Validation humaine avant exécution. Ne jamais prétendre qu’une demande en attente est exécutée.",
+      "captured_schema": {
+        "type": "object",
+        "properties": {
+          "task": {
+            "type": "string",
+            "enum": [
+              "status",
+              "diff",
+              "push",
+              "pr-create",
+              "pr-merge"
+            ]
+          },
+          "project": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          },
+          "number": {
+            "type": "integer"
+          },
+          "squash": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "task"
+        ],
+        "additionalProperties": false
+      },
+      "raw_json_chars": 544,
+      "dependencies": [],
+      "search_document": "tool: corpus-tools_git_request\nnamespace: git\npurpose: Opérations Git et état du dépôt : status, log, commit, branches, merge, rebase et historique.\ndescription: Demander status/diff/push/création PR brouillon/fusion. Validation humaine avant exécution. Ne jamais prétendre qu’une demande en attente est exécutée.\neffects: read, write\nexamples: git status | inspecte le dernier commit",
+      "positive_search_document": "tool: corpus-tools_git_request\nnamespace: git\npurpose: Opérations Git et état du dépôt : status, log, commit, branches, merge, rebase et historique.\ndescription: Demander status/diff/push/création PR brouillon/fusion. Validation humaine avant exécution. Ne jamais prétendre qu’une demande en attente est exécutée.\neffects: read, write\nexamples: git status | inspecte le dernier commit",
+      "parent_namespace": "git",
+      "retrieval_fields": {
+        "description": "Demander status/diff/push/création PR brouillon/fusion. Validation humaine avant exécution. Ne jamais prétendre qu’une demande en attente est exécutée.",
+        "effects": "read | write",
+        "examples": "git status | inspecte le dernier commit"
+      }
+    },
+    "corpus-tools_ssh_request": {
+      "namespace": "ssh",
+      "effects": [
+        "network",
+        "execute",
+        "remote"
+      ],
+      "risk": "high",
+      "hot": false,
+      "examples": [
+        "connexion SSH distante"
+      ],
+      "name": "corpus-tools_ssh_request",
+      "captured_description": "Demander une commande SSH distante ; validation humaine requise avant toute connexion. Clés SSH existantes uniquement, clé hôte déjà connue requise.",
+      "captured_schema": {
+        "type": "object",
+        "properties": {
+          "host": {
+            "type": "string"
+          },
+          "user": {
+            "type": "string"
+          },
+          "port": {
+            "type": "integer"
+          },
+          "command": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "host",
+          "user",
+          "command"
+        ],
+        "additionalProperties": false
+      },
+      "raw_json_chars": 447,
+      "dependencies": [],
+      "search_document": "tool: corpus-tools_ssh_request\nnamespace: ssh\npurpose: Connexion et opérations sur une machine distante via SSH.\ndescription: Demander une commande SSH distante ; validation humaine requise avant toute connexion. Clés SSH existantes uniquement, clé hôte déjà connue requise.\neffects: network, execute, remote\nexamples: connexion SSH distante",
+      "positive_search_document": "tool: corpus-tools_ssh_request\nnamespace: ssh\npurpose: Connexion et opérations sur une machine distante via SSH.\ndescription: Demander une commande SSH distante ; validation humaine requise avant toute connexion. Clés SSH existantes uniquement, clé hôte déjà connue requise.\neffects: network, execute, remote\nexamples: connexion SSH distante",
+      "parent_namespace": "ssh",
+      "retrieval_fields": {
+        "description": "Demander une commande SSH distante ; validation humaine requise avant toute connexion. Clés SSH existantes uniquement, clé hôte déjà connue requise.",
+        "effects": "network | execute | remote",
+        "examples": "connexion SSH distante"
+      }
+    },
+    "corpus-tools_plugins_list": {
+      "namespace": "plugins",
+      "effects": [
+        "read"
+      ],
+      "risk": "low",
+      "hot": false,
+      "examples": [
+        "liste les plugins"
+      ],
+      "name": "corpus-tools_plugins_list",
+      "captured_description": "Lister les méthodes locales activées dans Paramètres > Plugins. Consulter avant de choisir une méthode.",
+      "captured_schema": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "raw_json_chars": 277,
+      "dependencies": [],
+      "search_document": "tool: corpus-tools_plugins_list\nnamespace: plugins\npurpose: Découverte et inspection des plugins/connecteurs Corpus et de leurs ressources.\ndescription: Lister les méthodes locales activées dans Paramètres > Plugins. Consulter avant de choisir une méthode.\neffects: read\nexamples: liste les plugins",
+      "positive_search_document": "tool: corpus-tools_plugins_list\nnamespace: plugins\npurpose: Découverte et inspection des plugins/connecteurs Corpus et de leurs ressources.\ndescription: Lister les méthodes locales activées dans Paramètres > Plugins. Consulter avant de choisir une méthode.\neffects: read\nexamples: liste les plugins",
+      "parent_namespace": "plugins",
+      "retrieval_fields": {
+        "description": "Lister les méthodes locales activées dans Paramètres > Plugins. Consulter avant de choisir une méthode.",
+        "effects": "read",
+        "examples": "liste les plugins"
+      }
+    },
+    "corpus-tools_plugin_resources": {
+      "namespace": "plugins",
+      "effects": [
+        "read"
+      ],
+      "risk": "low",
+      "hot": false,
+      "examples": [
+        "liste les ressources du plugin"
+      ],
+      "name": "corpus-tools_plugin_resources",
+      "captured_description": "Lister les fichiers de méthode et scripts consultables d’un paquet activé.",
+      "captured_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false
+      },
+      "raw_json_chars": 278,
+      "dependencies": [],
+      "search_document": "tool: corpus-tools_plugin_resources\nnamespace: plugins\npurpose: Découverte et inspection des plugins/connecteurs Corpus et de leurs ressources.\ndescription: Lister les fichiers de méthode et scripts consultables d’un paquet activé.\neffects: read\nexamples: liste les ressources du plugin",
+      "positive_search_document": "tool: corpus-tools_plugin_resources\nnamespace: plugins\npurpose: Découverte et inspection des plugins/connecteurs Corpus et de leurs ressources.\ndescription: Lister les fichiers de méthode et scripts consultables d’un paquet activé.\neffects: read\nexamples: liste les ressources du plugin",
+      "parent_namespace": "plugins",
+      "retrieval_fields": {
+        "description": "Lister les fichiers de méthode et scripts consultables d’un paquet activé.",
+        "effects": "read",
+        "examples": "liste les ressources du plugin"
+      }
+    },
+    "corpus-tools_plugin_read": {
+      "namespace": "plugins",
+      "effects": [
+        "read"
+      ],
+      "risk": "low",
+      "hot": false,
+      "examples": [
+        "lis une ressource du plugin"
+      ],
+      "name": "corpus-tools_plugin_read",
+      "captured_description": "Lire une méthode ou ressource de paquet activé. Lecture seule, aucun script exécuté. Les instructions ne donnent aucune permission supplémentaire.",
+      "captured_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "path"
+        ],
+        "additionalProperties": false
+      },
+      "raw_json_chars": 377,
+      "dependencies": [],
+      "search_document": "tool: corpus-tools_plugin_read\nnamespace: plugins\npurpose: Découverte et inspection des plugins/connecteurs Corpus et de leurs ressources.\ndescription: Lire une méthode ou ressource de paquet activé. Lecture seule, aucun script exécuté. Les instructions ne donnent aucune permission supplémentaire.\neffects: read\nexamples: lis une ressource du plugin",
+      "positive_search_document": "tool: corpus-tools_plugin_read\nnamespace: plugins\npurpose: Découverte et inspection des plugins/connecteurs Corpus et de leurs ressources.\ndescription: Lire une méthode ou ressource de paquet activé. Lecture seule, aucun script exécuté. Les instructions ne donnent aucune permission supplémentaire.\neffects: read\nexamples: lis une ressource du plugin",
+      "parent_namespace": "plugins",
+      "retrieval_fields": {
+        "description": "Lire une méthode ou ressource de paquet activé. Lecture seule, aucun script exécuté. Les instructions ne donnent aucune permission supplémentaire.",
+        "effects": "read",
+        "examples": "lis une ressource du plugin"
+      }
+    }
+  },
+  "notes": [
+    "negative examples are evaluation/constraint data, not positive retrieval text",
+    "current golden set is a development set, not a held-out test set"
+  ]
+}

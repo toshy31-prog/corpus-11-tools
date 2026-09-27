@@ -28,6 +28,23 @@ données, historiques utiles et possibilités de restauration. La migration port
 sur les dépendances d’exécution ; elle ne réécrit pas la provenance historique
 des contenus produits avec GPT.
 
+## Reprise et rangement du chantier local
+
+- [Rangement automatique](ORGANIZER.md) : réglages du site, commandes pour Corpus et limites de conservation.
+- [Arrêt des reprises anormales](INFERENCE_GUARD.md) : garde avant inférence et pause de la file du site, vérifiées sans modèle.
+- [Vérification du travail effectué](WORKFLOW_VERIFICATION.md) : reçu d’exécution et état actuel d’une fixture, accessibles depuis un chat sans relancer d’action.
+- [Fiabilité des tours agentiques](AGENT_RELIABILITY.md) : états réellement observés dans la base locale, sans déduire la qualité des réponses.
+- [Sélection automatique des outils](AUTO_TOOL_SCOPE.md) : exposition minimale basée sur les mots explicites de la demande, sans modèle.
+
+- [État observé au 27 septembre](ETAT_LOCAL_ACTUEL.md) : résultats récents et limites ; complète le suivi historique MIGRATION.md.
+- [Réutilisation des outils par tâche](REUSE_TOOL_SCOPE.md) : sources externes, licences, adaptation préparée sans inférence.
+- [Diagnostic des consignes](DIAGNOSTIC_SUIVI_CONSIGNES.md) : contrôles isolés et épreuve avec outils encore incomplète.
+- [Descriptions compactes](COMPACT_TOOL_DESCRIPTIONS.md) : candidat testé puis désactivé.
+- [Index des preuves locales](.migration-smoke/README.md) : distinguer fixtures, preuves et demandes non exécutées.
+- [Contrat des chemins](PATH_CONTRACT.md) et [cycle de vie](CORPUS_LIFECYCLE.json) : implantation des modèles, runtime, données, état et sauvegardes.
+
+Règle de maintenance : ranger chaque ajout dans son projet et son territoire existants, relier sa documentation depuis l’index, distinguer sources, preuves et données d’exécution. Vérifier les références avant déplacement ; ne pas déplacer les environnements actifs pour un nettoyage visuel. Les prototypes restent explicitement identifiés comme tels.
+
 ## Documents de travail
 
 - [Comparaison actualisée des candidats](COMPARAISON-CANDIDATS.md) : Qwen3.8-27B prioritaire pour l’essai sur le PC, DeepSeek-V4-Flash-0731 pour une cible dédiée ambitieuse ; licences, tailles et ateliers comparés. [Relevé structuré](CANDIDATS.json).

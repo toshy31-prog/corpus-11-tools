@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "links": [
+    {
+      "scenario_id": "C05",
+      "required_namespaces": [
+        "files",
+        "shell"
+      ],
+      "purpose": "Lire, modifier puis vérifier une copie."
+    },
+    {
+      "scenario_id": "C10",
+      "required_namespaces": [
+        "files",
+        "shell"
+      ],
+      "purpose": "Distinguer test unitaire et lancement effectif."
+    },
+    {
+      "scenario_id": "C11",
+      "required_namespaces": [
+        "files",
+        "shell"
+      ],
+      "purpose": "Exécuter une restauration simulée sur copie, constater l’échec et vérifier la préservation de l’état antérieur."
+    },
+    {
+      "scenario_id": "C12",
+      "required_namespaces": [
+        "memory",
+        "files",
+        "shell"
+      ],
+      "purpose": "Retrouver l’état et éviter de rejouer un effet."
+    },
+    {
+      "scenario_id": "C14",
+      "required_namespaces": [
+        "memory"
+      ],
+      "purpose": "Lire une archive sans transformer son texte en permission."
+    },
+    {
+      "scenario_id": "C18",
+      "required_namespaces": [
+        "documents",
+        "media"
+      ],
+      "purpose": "Inventorier les capacités nécessaires aux fichiers et médias."
+    },
+    {
+      "scenario_id": "C20",
+      "required_namespaces": [
+        "files",
+        "shell"
+      ],
+      "purpose": "Modifier, reconstruire et vérifier le retour arrière local."
+    },
+    {
+      "scenario_id": "C24",
+      "required_namespaces": [
+        "memory",
+        "files",
+        "shell"
+      ],
+      "purpose": "Reprendre le bon projet et terminer un travail autorisé."
+    }
+  ],
+  "not_applicable": [
+    "C01",
+    "C02",
+    "C03",
+    "C04",
+    "C06",
+    "C07",
+    "C08",
+    "C09",
+    "C13",
+    "C15",
+    "C16",
+    "C17",
+    "C19",
+    "C21",
+    "C22",
+    "C23"
+  ],
+  "limits": "Le lien décrit les capacités à qualifier pour le scénario ; il ne prouve ni sélection, ni autorisation, ni réussite d’un outil."
+}

@@ -3,6 +3,7 @@ import http.client
 import json
 import threading
 import time
+from tool_scope import CATALOG, with_tools
 
 
 class KvWarmup:
@@ -75,7 +76,7 @@ class KvWarmup:
             connection.close()
 
     def _payload(self):
-        return {
+        body = {
             "agent": "corpus",
             "model": {
                 "providerID": "corpus-local",
@@ -89,6 +90,8 @@ class KvWarmup:
                 },
             ],
         }
+        # Warm-up must only populate cache. It never needs to expose tools.
+        return with_tools(body, [], json.loads(CATALOG.read_text()))
 
     def _run(self):
         session_id = None
@@ -170,6 +173,23 @@ class KvWarmup:
                     pass
 
     def start(self):
+        # CORPUS_KV_WARMUP_V61
+        # The main llama.cpp profile has one inference slot (-np 1).
+        # A background prompt can therefore block the first user request.
+        # Warm-up is explicit opt-in after dynamic tool routing.
+        try:
+            from corpus_paths import CONFIG_ROOT
+            mode_path = CONFIG_ROOT / "routing/kv-warmup-mode"
+            enabled = (
+                mode_path.is_file()
+                and mode_path.read_text(encoding="utf-8").strip().lower() == "on"
+            )
+        except Exception:
+            enabled = False
+
+        if not enabled:
+            return
+
         with self._lock:
             if self._started or self._stop.is_set():
                 return

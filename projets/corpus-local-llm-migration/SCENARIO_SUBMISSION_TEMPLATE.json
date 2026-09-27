@@ -1,0 +1,14 @@
+{
+  "fixture_id": "C01",
+  "fixture_sha256": "9da56efc3899a76237973175b4c8b892e9c8db398ec51ef58fcaa62f4ac59f4e",
+  "declared_result": "inconclusive",
+  "trace": {
+    "run": {
+      "id": "local-run-id"
+    },
+    "spans": []
+  },
+  "evidence": {
+    "reported_verification": "not_verified"
+  }
+}

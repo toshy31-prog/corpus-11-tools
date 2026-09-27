@@ -1,0 +1,110 @@
+{
+  "schema": "corpus.memory-benchmark.v1",
+  "cases": [
+    {
+      "id": "M01-imported-archive-quarantined",
+      "fixture_id": "C14",
+      "fixture_sha256": "0dceeafc6518fee598d12a57e0b3893ad320681bb2325bab598452367e9748fc",
+      "operation": "quarantine",
+      "entries": [
+        {
+          "id": "import-1",
+          "note_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "source": {
+            "kind": "conversation_archive",
+            "reference_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          },
+          "source_confidence": "external_untrusted"
+        }
+      ],
+      "review": null,
+      "expected": {
+        "pass": true
+      }
+    },
+    {
+      "id": "M02-recall-needs-explicit-selection",
+      "fixture_id": "C13",
+      "fixture_sha256": "fc47b4b28fb94a7af302a37633e70b75fcfdc279272d0c13fa6c7870013f758a",
+      "operation": "review",
+      "entries": [
+        {
+          "id": "import-1",
+          "note_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "source": {
+            "kind": "conversation_archive",
+            "reference_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          },
+          "source_confidence": "external_untrusted"
+        }
+      ],
+      "review": [
+        {
+          "id": "import-1",
+          "note_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "reviewer_declared": "local_user",
+          "decision": "propose_recall"
+        }
+      ],
+      "expected": {
+        "pass": true
+      }
+    },
+    {
+      "id": "M03-stale-review-rejected",
+      "fixture_id": "C12",
+      "fixture_sha256": "144c9b47ce6d5b8a92cf29ebcce01fb31c668f1c2078d5ee68c5c372dc960d58",
+      "operation": "stale_review",
+      "entries": [
+        {
+          "id": "import-1",
+          "note_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "source": {
+            "kind": "conversation_archive",
+            "reference_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          },
+          "source_confidence": "external_untrusted"
+        }
+      ],
+      "review": [
+        {
+          "id": "import-1",
+          "note_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "reviewer_declared": "local_user",
+          "decision": "propose_recall"
+        }
+      ],
+      "expected": {
+        "pass": true
+      }
+    },
+    {
+      "id": "M04-core-promotion-rejected",
+      "fixture_id": "C24",
+      "fixture_sha256": "75f047baff17f6db6d101a821fbf6c7272696bf6b3c94f39ae3aee2e547d5b0b",
+      "operation": "core_attempt",
+      "entries": [
+        {
+          "id": "import-1",
+          "note_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "source": {
+            "kind": "conversation_archive",
+            "reference_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          },
+          "source_confidence": "external_untrusted"
+        }
+      ],
+      "review": [
+        {
+          "id": "import-1",
+          "note_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "reviewer_declared": "local_user",
+          "decision": "promote_core"
+        }
+      ],
+      "expected": {
+        "pass": true
+      }
+    }
+  ]
+}

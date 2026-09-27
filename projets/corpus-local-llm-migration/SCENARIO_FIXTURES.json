@@ -1,0 +1,203 @@
+{
+  "schema": "corpus.scenario-fixtures.v1",
+  "source_bank_sha256": "5deb560b9dc854577ba36ded0cff3c2e11da2ece8feeee8d85956fe7c7dd18a0",
+  "fixture_status": "frozen_not_executed",
+  "fixtures": [
+    {
+      "id": "C01",
+      "scenario_sha256": "9da56efc3899a76237973175b4c8b892e9c8db398ec51ef58fcaa62f4ac59f4e",
+      "fixture_status": "frozen_not_executed",
+      "evidence_status": "not_collected",
+      "declared_result": null,
+      "verified_result": null
+    },
+    {
+      "id": "C02",
+      "scenario_sha256": "00a2d9ad13347185e3642e549dc965ae4d5f3a961cc3e5f460848061e787b0f0",
+      "fixture_status": "frozen_not_executed",
+      "evidence_status": "not_collected",
+      "declared_result": null,
+      "verified_result": null
+    },
+    {
+      "id": "C03",
+      "scenario_sha256": "91354effcf745049d997c45ca8e97500cf878b7a4b2e7892465bb0a929de070a",
+      "fixture_status": "frozen_not_executed",
+      "evidence_status": "not_collected",
+      "declared_result": null,
+      "verified_result": null
+    },
+    {
+      "id": "C04",
+      "scenario_sha256": "41ac0ed11d76c046c049b15646000989a3f4d9ed601fc9afa79ae09e6cc1635d",
+      "fixture_status": "frozen_not_executed",
+      "evidence_status": "not_collected",
+      "declared_result": null,
+      "verified_result": null
+    },
+    {
+      "id": "C05",
+      "scenario_sha256": "51f5a5d5d72d782417c458adf1e20b9a42e3af6956d1b4d6841d5ca281c53c97",
+      "fixture_status": "frozen_not_executed",
+      "evidence_status": "not_collected",
+      "declared_result": null,
+      "verified_result": null
+    },
+    {
+      "id": "C06",
+      "scenario_sha256": "37cfc807b1a20e7d414e615bb61da9278d57fb766bd9e9310ac21e5e2df1727d",
+      "fixture_status": "frozen_not_executed",
+      "evidence_status": "not_collected",
+      "declared_result": null,
+      "verified_result": null
+    },
+    {
+      "id": "C07",
+      "scenario_sha256": "8c9965d74dea5136bc70e998c210eb625ca6ce31fc2894c9dc7ec2a9bb98d62f",
+      "fixture_status": "frozen_not_executed",
+      "evidence_status": "not_collected",
+      "declared_result": null,
+      "verified_result": null
+    },
+    {
+      "id": "C08",
+      "scenario_sha256": "4e3af319fd2b4339fd91347d594703ae2e26b24ecd4e06912126fd6386d99c9e",
+      "fixture_status": "frozen_not_executed",
+      "evidence_status": "not_collected",
+      "declared_result": null,
+      "verified_result": null
+    },
+    {
+      "id": "C09",
+      "scenario_sha256": "ef7188be271c826f4a0f19b7989626d55cb5d5aa215b4b1bb29ca948635f393b",
+      "fixture_status": "frozen_not_executed",
+      "evidence_status": "not_collected",
+      "declared_result": null,
+      "verified_result": null
+    },
+    {
+      "id": "C10",
+      "scenario_sha256": "bf75b79da5db31f6ef5736da36ae16d514a0a12ceb6261e643a7e53376aed407",
+      "fixture_status": "frozen_not_executed",
+      "evidence_status": "not_collected",
+      "declared_result": null,
+      "verified_result": null
+    },
+    {
+      "id": "C11",
+      "scenario_sha256": "6f231e16f3c170f8645bd590aa5fb605e14acafb6dc2afb123bb67cd3a2169c5",
+      "fixture_status": "frozen_not_executed",
+      "evidence_status": "not_collected",
+      "declared_result": null,
+      "verified_result": null
+    },
+    {
+      "id": "C12",
+      "scenario_sha256": "144c9b47ce6d5b8a92cf29ebcce01fb31c668f1c2078d5ee68c5c372dc960d58",
+      "fixture_status": "frozen_not_executed",
+      "evidence_status": "not_collected",
+      "declared_result": null,
+      "verified_result": null
+    },
+    {
+      "id": "C13",
+      "scenario_sha256": "fc47b4b28fb94a7af302a37633e70b75fcfdc279272d0c13fa6c7870013f758a",
+      "fixture_status": "frozen_not_executed",
+      "evidence_status": "not_collected",
+      "declared_result": null,
+      "verified_result": null
+    },
+    {
+      "id": "C14",
+      "scenario_sha256": "0dceeafc6518fee598d12a57e0b3893ad320681bb2325bab598452367e9748fc",
+      "fixture_status": "frozen_not_executed",
+      "evidence_status": "not_collected",
+      "declared_result": null,
+      "verified_result": null
+    },
+    {
+      "id": "C15",
+      "scenario_sha256": "e3fab4d3cf89cdc14839e5ce68b46d90dbc213da8ab2f15042074d9a2a1f94e5",
+      "fixture_status": "frozen_not_executed",
+      "evidence_status": "not_collected",
+      "declared_result": null,
+      "verified_result": null
+    },
+    {
+      "id": "C16",
+      "scenario_sha256": "2e6264e1c0a62d35e1c170da4d33504319319797f3a59cb7346897dbf1006013",
+      "fixture_status": "frozen_not_executed",
+      "evidence_status": "not_collected",
+      "declared_result": null,
+      "verified_result": null
+    },
+    {
+      "id": "C17",
+      "scenario_sha256": "efa4437c22eab873a2ec74265e5392d77c8ffb0eab80abc9d0f77b4d821d600f",
+      "fixture_status": "frozen_not_executed",
+      "evidence_status": "not_collected",
+      "declared_result": null,
+      "verified_result": null
+    },
+    {
+      "id": "C18",
+      "scenario_sha256": "e9d003c864066c4977e93aafecfe00302b13af8f5a2a73e0f1546c36d754a88e",
+      "fixture_status": "frozen_not_executed",
+      "evidence_status": "not_collected",
+      "declared_result": null,
+      "verified_result": null
+    },
+    {
+      "id": "C19",
+      "scenario_sha256": "2d44fa4449119272259a0fbe78c24d870e56be95041733368c76305a0ccd7f8e",
+      "fixture_status": "frozen_not_executed",
+      "evidence_status": "not_collected",
+      "declared_result": null,
+      "verified_result": null
+    },
+    {
+      "id": "C20",
+      "scenario_sha256": "015f420b0035bd25186e3aa326c9b4ccbbddd2cf330973f05aca52a221eeb4a7",
+      "fixture_status": "frozen_not_executed",
+      "evidence_status": "not_collected",
+      "declared_result": null,
+      "verified_result": null
+    },
+    {
+      "id": "C21",
+      "scenario_sha256": "01e9d39b0f414274bb8a9157332a74f6e88f29524e7792eed90c3a32e94422e6",
+      "fixture_status": "frozen_not_executed",
+      "evidence_status": "not_collected",
+      "declared_result": null,
+      "verified_result": null
+    },
+    {
+      "id": "C22",
+      "scenario_sha256": "bd7df9b13b9538e06b16fd68d1a09cab408b1bac58433485d1b4488363e4b061",
+      "fixture_status": "frozen_not_executed",
+      "evidence_status": "not_collected",
+      "declared_result": null,
+      "verified_result": null
+    },
+    {
+      "id": "C23",
+      "scenario_sha256": "cd4bdaa773947964b1145e866ad0ad5a8abb25d707929a05ed2b9ce3e89b3237",
+      "fixture_status": "frozen_not_executed",
+      "evidence_status": "not_collected",
+      "declared_result": null,
+      "verified_result": null
+    },
+    {
+      "id": "C24",
+      "scenario_sha256": "75f047baff17f6db6d101a821fbf6c7272696bf6b3c94f39ae3aee2e547d5b0b",
+      "fixture_status": "frozen_not_executed",
+      "evidence_status": "not_collected",
+      "declared_result": null,
+      "verified_result": null
+    }
+  ],
+  "limits": [
+    "Empreintes des cas seulement : aucune exécution de modèle ou outil.",
+    "Un résultat déclaré ne devient pas vérifié par cette matérialisation."
+  ]
+}

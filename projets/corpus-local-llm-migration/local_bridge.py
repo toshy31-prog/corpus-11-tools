@@ -112,7 +112,7 @@ def create_server(socket_path, *, inside, readiness=None):
                             ready=backend_ready(socket_path)
                             self.request.sendall(health_response(ready))
                             return
-                        if target in ('/corpus/api/ephemeral','/corpus/api/worktrees','/corpus/api/environments','/corpus/api/git-settings','/corpus/api/browser','/corpus/api/plugins','/corpus/api/statistics','/corpus/api/resources','/corpus/api/voice','/corpus/api/chat-actions','/corpus/api/schedules','/corpus/api/shares','/corpus/api/media','/corpus/api/generation','/corpus/api/documents','/corpus/api/updates','/corpus/api/file-import'):
+                        if target in ('/corpus/api/project-resume','/corpus/api/organizer','/corpus/api/ephemeral','/corpus/api/worktrees','/corpus/api/environments','/corpus/api/git-settings','/corpus/api/browser','/corpus/api/plugins','/corpus/api/statistics','/corpus/api/resources','/corpus/api/voice','/corpus/api/chat-actions','/corpus/api/schedules','/corpus/api/shares','/corpus/api/media','/corpus/api/generation','/corpus/api/documents','/corpus/api/updates','/corpus/api/file-import','/corpus/api/workflow-receipt','/corpus/api/scenarios'):
                             if method not in ('GET','POST'):
                                 self.request.sendall(error_response('405 Method Not Allowed','Utiliser GET ou POST.'));return
                             if method == 'POST' and (fields.get('origin') not in {'http://' + h for h in hosts} or fields.get('content-type') != 'application/json' or 'transfer-encoding' in fields):
@@ -120,7 +120,7 @@ def create_server(socket_path, *, inside, readiness=None):
                             try:size=int(fields.get('content-length','0'))
                             except ValueError:
                                 self.request.sendall(error_response('400 Bad Request','Taille de requête invalide.'));return
-                            limit=85000000 if target.endswith(('/file-import','/media')) else 6000000 if target.endswith('/generation') else 7200000 if target.endswith('/voice') else 1000000 if target.endswith('/shares') else 200000 if target.endswith('/documents') else 18000000 if target.endswith('/ephemeral') else 32000
+                            limit=300000 if target.endswith(('/project-resume','/workflow-receipt')) else 85000000 if target.endswith(('/file-import','/media')) else 6000000 if target.endswith('/generation') else 7200000 if target.endswith('/voice') else 1000000 if target.endswith('/shares') else 200000 if target.endswith('/documents') else 18000000 if target.endswith('/ephemeral') else 32000
                             if not 0<=size<=limit:
                                 self.request.sendall(error_response('413 Content Too Large','Requête trop volumineuse.'));return
                             body=bytearray()
@@ -128,10 +128,10 @@ def create_server(socket_path, *, inside, readiness=None):
                                 chunk=self.request.recv(size-len(body))
                                 if not chunk: return
                                 body.extend(chunk)
-                            import worktree_manager, environment_manager
+                            import worktree_manager, environment_manager, organizer, project_resume
                             import scheduled_messages, local_shares, media_analysis, media_generation, document_generation, update_manager, file_import
-                            import git_settings, tool_gateway, plugin_manager, local_statistics, local_resources, local_voice, chat_actions
-                            handler = ephemeral if target.endswith('/ephemeral') else file_import if target.endswith('/file-import') else update_manager if target.endswith('/updates') else document_generation if target.endswith('/documents') else media_generation if target.endswith('/generation') else media_analysis if target.endswith('/media') else local_shares if target.endswith('/shares') else scheduled_messages if target.endswith('/schedules') else chat_actions if target.endswith('/chat-actions') else local_voice if target.endswith('/voice') else local_resources if target.endswith("/resources") else local_statistics if target.endswith('/statistics') else plugin_manager if target.endswith('/plugins') else tool_gateway if target.endswith('/browser') else git_settings if target.endswith('/git-settings') else environment_manager if target.endswith('/environments') else worktree_manager
+                            import git_settings, tool_gateway, plugin_manager, local_statistics, local_resources, local_voice, chat_actions, workflow_verifier, scenario_evaluation
+                            handler = scenario_evaluation if target.endswith('/scenarios') else workflow_verifier if target.endswith('/workflow-receipt') else project_resume if target.endswith('/project-resume') else organizer if target.endswith('/organizer') else ephemeral if target.endswith('/ephemeral') else file_import if target.endswith('/file-import') else update_manager if target.endswith('/updates') else document_generation if target.endswith('/documents') else media_generation if target.endswith('/generation') else media_analysis if target.endswith('/media') else local_shares if target.endswith('/shares') else scheduled_messages if target.endswith('/schedules') else chat_actions if target.endswith('/chat-actions') else local_voice if target.endswith('/voice') else local_resources if target.endswith("/resources") else local_statistics if target.endswith('/statistics') else plugin_manager if target.endswith('/plugins') else tool_gateway if target.endswith('/browser') else git_settings if target.endswith('/git-settings') else environment_manager if target.endswith('/environments') else worktree_manager
                             self.request.settimeout(1800 if target.endswith('/media') else 150)
                             self.request.sendall(handler.response(method,bytes(body)));return
                         if target == '/corpus/api/parallel' and (method != 'POST' or fields.get('origin') not in {'http://' + h for h in hosts} or fields.get('content-type') != 'application/json' or 'transfer-encoding' in fields or not 0 < int(fields.get('content-length', '0')) <= 300000):
@@ -180,6 +180,82 @@ def create_server(socket_path, *, inside, readiness=None):
                             self.request.settimeout(250)
                             parallel_chat.respond_to_client(bytes(body), self.request)
                             return
+                        # CORPUS_TOOL_ROUTER_V6
+                        # Intercept only OpenCode user-message POSTs inside the
+                        # isolated network namespace. Other traffic remains byte-for-byte
+                        # on the historical relay path.
+                        method, target, _ = lines[0].split(' ', 2)
+                        route_target = target.split('?', 1)[0]
+                        if (
+                            method == 'POST'
+                            and route_target.startswith('/session/')
+                            and route_target.endswith(('/message', '/prompt_async'))
+                        ):
+                            fields = {
+                                k.lower(): v.strip()
+                                for line in lines[1:]
+                                if ':' in line
+                                for k, v in [line.split(':', 1)]
+                            }
+                            try:
+                                size = int(fields.get('content-length', '-1'))
+                            except ValueError:
+                                size = -1
+                            if (
+                                0 <= size <= 4000000
+                                and 'transfer-encoding' not in fields
+                            ):
+                                body = bytearray()
+                                while len(body) < size:
+                                    chunk = self.request.recv(size - len(body))
+                                    if not chunk:
+                                        return
+                                    body.extend(chunk)
+
+                                import tool_router_runtime
+                                routed_body, _ = tool_router_runtime.route_opencode_body(
+                                    bytes(body)
+                                )
+                                # Privacy-preserving aggregate only.  It sees the
+                                # routed shape, never stores the message, and must
+                                # not make normal message delivery fail.
+                                try:
+                                    import prefix_cache_telemetry
+                                    session = route_target.split('/', 3)[2]
+                                    prefix_cache_telemetry.observe(session, routed_body)
+                                except Exception:
+                                    # Observation is never allowed to block a
+                                    # user request; it has no control effect.
+                                    pass
+
+                                # Rebuild Content-Length after mask injection.
+                                routed_lines = [
+                                    line
+                                    for line in lines[1:]
+                                    if line
+                                    and not line.lower().startswith('content-length:')
+                                ]
+                                routed_lines.append(
+                                    f'Content-Length: {len(routed_body)}'
+                                )
+                                header = (
+                                    lines[0]
+                                    + '\r\n'
+                                    + '\r\n'.join(routed_lines)
+                                    + '\r\n\r\n'
+                                ).encode('latin1')
+
+                                self.request.settimeout(None)
+                                peer.connect(('127.0.0.1', BACKEND_PORT))
+                                peer.sendall(header)
+                                peer.sendall(routed_body)
+                                relay(
+                                    self.request,
+                                    peer,
+                                    restrict_browser=False,
+                                )
+                                return
+
                         self.request.settimeout(None)
                         peer.connect(('127.0.0.1', BACKEND_PORT))
                         peer.sendall(header)

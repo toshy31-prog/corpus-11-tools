@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "profiles": [
+    {
+      "id": "answer",
+      "label": "Répondre sans outil",
+      "description": "Travailler uniquement avec le contexte fourni.",
+      "tools": []
+    },
+    {
+      "id": "read",
+      "label": "Lire une note",
+      "description": "Lire le fichier indiqué.",
+      "tools": [
+        "read"
+      ]
+    },
+    {
+      "id": "explore",
+      "label": "Explorer des fichiers",
+      "description": "Lire et chercher dans les fichiers du projet.",
+      "tools": [
+        "read",
+        "glob",
+        "grep"
+      ]
+    },
+    {
+      "id": "edit",
+      "label": "Modifier et vérifier",
+      "description": "Lire, modifier et exécuter une commande de vérification. Le shell permet d’autres actions : les permissions restent nécessaires.",
+      "tools": [
+        "read",
+        "edit",
+        "bash"
+      ]
+    },
+    {
+      "id": "research",
+      "label": "Rechercher des sources",
+      "description": "Préparer une recherche et consulter ses résultats. Son exécution peut accéder au réseau.",
+      "tools": [
+        "corpus-tools_research_request",
+        "corpus-tools_research_result"
+      ]
+    },
+    {
+      "id": "memory",
+      "label": "Retrouver un souvenir",
+      "description": "Consulter la mémoire locale sans outil d’indexation ou de suppression.",
+      "tools": [
+        "corpus-retrieval_memory_search"
+      ]
+    },
+    {
+      "id": "resume-check",
+      "label": "Reprendre et contrôler",
+      "description": "Retrouver l’état local, relire la copie et lancer seulement le contrôle nécessaire. N’autorise aucune modification.",
+      "tools": [
+        "corpus-retrieval_memory_search",
+        "read",
+        "bash"
+      ]
+    },
+    {
+      "id": "resume-work",
+      "label": "Reprendre, modifier et contrôler",
+      "description": "Retrouver l’état, relire, modifier la copie autorisée puis contrôler. Les permissions restent nécessaires à chaque action.",
+      "tools": [
+        "corpus-retrieval_memory_search",
+        "read",
+        "edit",
+        "bash"
+      ]
+    },
+    {
+      "id": "document-media",
+      "label": "Lire et préparer un document multimédia",
+      "description": "Lire les documents et résultats média locaux, puis préparer et consulter un document. Ne génère aucun média.",
+      "tools": [
+        "corpus-tools_document_extract",
+        "corpus-tools_document_create",
+        "corpus-tools_document_result",
+        "corpus-tools_media_result"
+      ]
+    }
+  ]
+}

@@ -8,6 +8,12 @@ import scheduled_messages as scheduler
 import local_shares as shares
 
 class ConsolidationTests(unittest.TestCase):
+    def test_scheduled_prompt_has_no_implicit_tool_catalog(self):
+        body=scheduler.prompt_body('bonjour')
+        self.assertEqual(body['parts'], [{'type':'text','text':'bonjour'}])
+        self.assertTrue(body['tools'])
+        self.assertFalse(any(body['tools'].values()))
+
     def test_scheduler_retry_and_cancel(self):
         with tempfile.TemporaryDirectory() as tmp, patch.object(scheduler,'DB',Path(tmp)/'jobs.db'), patch('chat_actions.project',return_value='/tmp/project'):
             request={'action':'create','id':'repeatable-test','session':'ses_test','directory':'/tmp/project','text':'hello','at':time.time()*1000+60000}

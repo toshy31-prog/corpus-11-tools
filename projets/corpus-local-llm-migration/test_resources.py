@@ -14,6 +14,9 @@ class ResourcesTests(unittest.TestCase):
             self.assertEqual(result['activity']['tokens'],5)
             self.assertEqual(result['activity']['turns'],2)
             self.assertGreater(result['disk']['total'],0)
+            self.assertEqual(result['inference_profile']['idle_unload_seconds'],1800)
+            self.assertIs(result['inference_profile']['cuda_disable_fusion'],True)
+            self.assertEqual(result['inference_profile']['evidence'],'launcher_configuration_not_inference_measurement')
     def test_missing_sources_are_not_zero_measurements(self):
         def unavailable(_):raise OSError()
         result=r.snapshot(Path('/does-not-exist-corpus'),Path('/does-not-exist-corpus'),unavailable)

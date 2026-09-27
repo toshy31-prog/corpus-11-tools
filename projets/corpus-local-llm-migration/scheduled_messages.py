@@ -9,7 +9,15 @@ import urllib.request
 from pathlib import Path
 import chat_actions
 from corpus_paths import STATE_ROOT
+from tool_scope import CATALOG, with_tools
 DB = STATE_ROOT/'scheduler/schedules.sqlite'
+
+
+def prompt_body(text):
+    """Prepare a scheduled conversational turn with no implicit tool exposure."""
+    body = {'agent':'corpus','parts':[{'type':'text','text':text}],
+            'system':'Message planifié. Heure actuelle UTC : '+time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime())}
+    return with_tools(body, [], json.loads(CATALOG.read_text()))
 
 def connect():
     DB.parent.mkdir(parents=True, exist_ok=True)
@@ -46,7 +54,7 @@ def tick():
             if states.get(job['session'],{}).get('type','idle')!='idle': continue
             with connect() as db:
                 if db.execute("UPDATE jobs SET state='claimed' WHERE id=? AND state='pending'",(job['id'],)).rowcount!=1: continue
-            body={'agent':'corpus','parts':[{'type':'text','text':job['text']}], 'system':'Message planifié. Heure actuelle UTC : '+time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime())}
+            body=prompt_body(job['text'])
             request=urllib.request.Request('http://127.0.0.1:18743/session/'+job['session']+'/prompt_async',data=json.dumps(body).encode(),headers={'Content-Type':'application/json','x-opencode-directory':job['directory']})
             with urllib.request.urlopen(request,timeout=30): pass
             with connect() as db: db.execute("UPDATE jobs SET state='delivered' WHERE id=?",(job['id'],))

@@ -1,0 +1,8 @@
+{
+  "schema": "corpus.resume-summary.v1",
+  "facts": [{"id": "fact-1", "statement": "Une épreuve locale a produit un reçu.", "evidence_ids": ["evidence-1"]}],
+  "hypotheses": [{"id": "hypothesis-1", "statement": "Le cache pourrait réduire le temps de préremplissage.", "basis_ids": ["evidence-1"]}],
+  "evidence": [{"id": "evidence-1", "kind": "local_receipt", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}],
+  "unknowns": [{"id": "unknown-1", "question": "Le gain persiste-t-il sur une tâche équivalente ?", "blocking": true}],
+  "memory_refs": [{"id": "memory-1", "note_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "role": "context_pointer"}]
+}

@@ -81,7 +81,7 @@ def response(method, target, destination=None):
     else:
         static = {'/corpus': ('index.html', 'text/html'), '/corpus/': ('index.html', 'text/html'), '/corpus/index.html': ('index.html', 'text/html'),
                   '/corpus/opencode-corpus.js': ('opencode-corpus.js', 'text/javascript'),
-                  '/corpus/app.js': ('app.js', 'text/javascript'), '/corpus/style.css': ('style.css', 'text/css')}
+                  '/corpus/app.js': ('app.js', 'text/javascript'), '/corpus/app-20260927.js': ('app.js', 'text/javascript'), '/corpus/style.css': ('style.css', 'text/css')}
         file = None
         base = None
         if path in static:

@@ -14,7 +14,7 @@ import urllib.request
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-from runtime_limits import CONTEXT_TOKENS, OUTPUT_TOKENS
+from runtime_limits import CONTEXT_TOKENS, OUTPUT_TOKENS, MAIN_MODEL_IDLE_SECONDS, CUDA_DISABLE_FUSION
 from corpus_paths import CACHE_ROOT, CONFIG_ROOT, DATA_ROOT, LLM_MODELS_ROOT, LOCAL_RUNTIME_ROOT, MODELS_ROOT, OPENCODE_CACHE_HOME, OPENCODE_CONFIG_HOME, OPENCODE_DATA_HOME, OPENCODE_PROFILE_HOME, OPENCODE_STATE_HOME, RUNTIME_ROOT, STATE_ROOT, TOOLCHAINS_ROOT, contract_environment
 BASE = LOCAL_RUNTIME_ROOT
 LOG_ROOT = STATE_ROOT / 'logs/corpus-local'
@@ -47,6 +47,18 @@ def primary_context():
     if not start_separator or not end_separator:
         raise RuntimeError('Structure de CONTEXTE_LOCAL.md inattendue.')
     return before.rstrip() + '\n' + end + after
+
+
+def tool_definition_plugins():
+    """Keep the permission guard; compact descriptions require explicit opt-in."""
+    plugins = [(HERE / name).as_uri() for name in ('plan_guard.mjs', 'inference_guard.mjs')]
+    try:
+        mode = (CONFIG_ROOT / 'routing/tool-descriptions-mode').read_text().strip()
+    except OSError:
+        mode = 'off'
+    if mode == 'compact-v1':
+        plugins.append((HERE / 'compact_tool_descriptions.mjs').as_uri())
+    return plugins
 
 
 def environment(intel=False, moe=False):
@@ -82,14 +94,17 @@ def environment(intel=False, moe=False):
         'enabled_providers': ['corpus-local'], 'share': 'disabled',
         'autoupdate': False, 'lsp': False, 'formatter': False,
         'default_agent': 'corpus', 'subagent_depth': 1,
-        'plugin': [(HERE / 'plan_guard.mjs').as_uri()],
+        'plugin': tool_definition_plugins(),
         'mcp': {'corpus-tools': {'type':'local','command':[sys.executable,str(HERE/'local_tools_mcp.py')],'timeout':300000}, 'corpus-retrieval': {'type':'local','command':[sys.executable,str(HERE/'retrieval_mcp.py')],'timeout':300000}, 'serena': {'type':'local','command':[sys.executable,str(HERE/'serena_wrapper.py')],'timeout':300000}},
         'agent': {'corpus-plan': {'mode':'primary','model':model_ref,'variant':'direct','permission':{'*':'deny'},'tools':{'*':False},'prompt':'Tu es Corpus en mode Plan. Réponds uniquement par un plan. Aucun outil ne doit être utilisé.'}, 'title': {'disable': True}, 'corpus': {'mode': 'primary',
             'model': model_ref,
             'variant': 'direct',
             'description': 'Conversation, création, recherche et projets Corpus',
             # Fail closed: only the loaded guard enables this one task target.
-            'permission': {'task': 'deny'},
+            'permission': {
+                'task': 'deny',
+                'corpus-retrieval_*': 'allow',
+            },
             'prompt': primary_context(), 'steps': 12},
             'corpus-worker': {'mode': 'subagent', 'steps': 6, 'disable': True,
                 'description': 'Sous-tâche Corpus bornée et indépendante : exploration, vérification, rédaction ou modification autorisée. À déléguer spontanément quand cela aide une demande complexe, pas pour une question simple. Même modèle local, permissions du parent, aucune sous-délégation.',
@@ -215,6 +230,8 @@ def enter_sandbox(args, mode):
         tool_gateway.start()
         import scheduled_messages
         scheduled_messages.start()
+        import organizer
+        organizer.start()
         import update_manager
         update_manager.start()
         import media_generation
@@ -352,10 +369,31 @@ def start_model_router(env, executable, model, gpu_layers, device, vision):
     routing = CONFIG_ROOT / "routing"; routing.mkdir(parents=True, exist_ok=True); config = routing / "llama-swap.yaml"
     def quote(x): return "'" + str(x).replace("'", "''") + "'"
     def line(xs): return " ".join(quote(x) for x in xs)
-    main=[str(executable),"-m",str(model),"--alias","corpus","--host","127.0.0.1","--port","${PORT}","--offline","--jinja","-c",str(CONTEXT_TOKENS),"-np","1","-t","8","-tb","8","-ngl",gpu_layers,"-b","256","-ub","64","--reasoning-budget","512",*device,*vision]
-    emb=[str(executable),"-m",str(embedding),"--alias","corpus-embed","--host","127.0.0.1","--port","${PORT}","--offline","--embedding","-c","4096","-b","4096","-ub","4096","-np","1","-t","6","-ngl","0","--no-webui"]
-    rank=[str(executable),"-m",str(reranker),"--alias","corpus-rerank","--host","127.0.0.1","--port","${PORT}","--offline","--embedding","--rerank","--pooling","rank","-c","4096","-b","4096","-ub","4096","-np","1","-t","6","-ngl","0","--no-webui"]
-    config.write_text("healthCheckTimeout: 300\nlogLevel: info\nmodels:\n  corpus:\n    cmd: " + quote(line(main)) + "\n    ttl: 300\n  corpus-embed:\n    cmd: " + quote(line(emb)) + "\n    ttl: 120\n  corpus-rerank:\n    cmd: " + quote(line(rank)) + "\n    ttl: 120\n")
+    main=[str(executable),"-m",str(model),"--alias","corpus","--host","127.0.0.1","--port","${PORT}","--offline","--jinja","-c",str(CONTEXT_TOKENS),"-np","1","-t","8","-tb","8","-ngl",gpu_layers,"-b","256","-ub",("256" if "--cpu-moe" in device else "64"),"--reasoning-budget","512",*device,*vision]
+    # -ngl 0 still permits CUDA operation buffers; retrieval must be CPU-only.
+    emb=[str(executable),"-m",str(embedding),"--alias","corpus-embed","--host","127.0.0.1","--port","${PORT}","--offline","--embedding","-c","4096","-b","4096","-ub","4096","-np","1","-t","6","-ngl","0","--device","none","--no-webui"]
+    rank=[str(executable),"-m",str(reranker),"--alias","corpus-rerank","--host","127.0.0.1","--port","${PORT}","--offline","--embedding","--rerank","--pooling","rank","-c","4096","-b","4096","-ub","4096","-np","1","-t","6","-ngl","0","--device","none","--no-webui"]
+    cuda = '--device' in device and device[device.index('--device') + 1] == 'CUDA0'
+    # Per-model environment: retrieval and CPU/Vulkan launches are unaffected.
+    fusion_env = "\n    env:\n      - 'GGML_CUDA_DISABLE_FUSION=1'" if cuda and CUDA_DISABLE_FUSION else ''
+    config.write_text("healthCheckTimeout: 300\nlogLevel: info\nmodels:\n  corpus:\n    cmd: " + quote(line(main)) + fusion_env + "\n    ttl: " + str(MAIN_MODEL_IDLE_SECONDS) + "\n  corpus-embed:\n    cmd: " + quote(line(emb)) + "\n    ttl: 120\n  corpus-rerank:\n    cmd: " + quote(line(rank)) + "\n    ttl: 120\n")
+    # CORPUS_RETRIEVAL_RESIDENCY_V9
+    with config.open("a", encoding="utf-8") as route_config:
+        route_config.write(
+            "routing:\n"
+            "  router:\n"
+            "    use: group\n"
+            "    settings:\n"
+            "      groups:\n"
+            "        retrieval:\n"
+            "          persistent: true\n"
+            "          swap: false\n"
+            "          exclusive: false\n"
+            "          members:\n"
+            "            - corpus-embed\n"
+            "            - corpus-rerank\n"
+        )
+
     return subprocess.Popen([str(swap),"-config",str(config),"-listen",f"127.0.0.1:{PORT}"],env=env)
 
 
@@ -436,8 +474,9 @@ def main():
         vision = ['--mmproj', str(VISION), '--no-mmproj-offload'] if args.moe and VISION.exists() else []
         device = ['--device', 'Vulkan0', '--fit-target', '2048'] if args.intel else []
         if args.cuda:
-            device = ['--device', 'CUDA0', '--n-cpu-moe', '30', '--load-mode', 'none']
-        gpu_layers = '99' if args.intel else ('20' if args.cuda else '0')
+            # Keep expert weights in RAM; place remaining layers on the GPU.
+            device = ['--device', 'CUDA0', '--cpu-moe', '--load-mode', 'none']
+        gpu_layers = '99' if args.intel or args.cuda else '0'
         server = start_model_router(env, executable, model, gpu_layers, device, vision)
         try:
             print('Chargement du modèle local…', flush=True)
@@ -446,10 +485,15 @@ def main():
                 if server.poll() is not None:
                     raise RuntimeError('Moteur arrêté ; consulter ' + str(logs / 'llama-server.log'))
                 try:
-                    request('/health')
-                    break
-                except (OSError, ValueError):
-                    time.sleep(1)
+                    with urllib.request.urlopen(
+                        f'http://127.0.0.1:{PORT}/health',
+                        timeout=2,
+                    ) as response:
+                        if 200 <= response.status < 300:
+                            break
+                except OSError:
+                    pass
+                time.sleep(1)
             else:
                 raise RuntimeError('Chargement non terminé après 240 secondes.')
             if args.mode == 'smoke':

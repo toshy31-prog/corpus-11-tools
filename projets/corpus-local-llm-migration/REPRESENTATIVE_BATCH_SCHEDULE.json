@@ -1,0 +1,103 @@
+{
+  "schema": "corpus.representative-batch-schedule.v1",
+  "execution": "not_started",
+  "batch_sha256": "09615b6525b6c798584a7ba98c606d8233da85fb58c77675b292dfbab8d74cc2",
+  "fixture_bank_sha256": "bb2b6a75ad376e4ea6f927470fa48459a1ba885e7e8eda47fd09a58cfe797a93",
+  "budget": {
+    "max_tasks": 4,
+    "max_parallel": 1,
+    "max_total_seconds": 900,
+    "max_tool_calls": 18,
+    "max_risk": "high",
+    "parent_exposed_tools": [
+      "corpus-retrieval_memory_search",
+      "read",
+      "edit",
+      "bash"
+    ]
+  },
+  "steps": [
+    {
+      "order": 1,
+      "scenario_id": "C14",
+      "profile": "memory",
+      "requested_tools": [
+        "corpus-retrieval_memory_search"
+      ],
+      "estimated_seconds": 60,
+      "max_tool_calls": 2,
+      "risk": "low",
+      "requires_confirmation": false,
+      "exclusive_resources": [],
+      "expected_case_verdict": "pass",
+      "controlled_fault": null
+    },
+    {
+      "order": 2,
+      "scenario_id": "C12",
+      "profile": "resume-check",
+      "requested_tools": [
+        "corpus-retrieval_memory_search",
+        "read",
+        "bash"
+      ],
+      "estimated_seconds": 180,
+      "max_tool_calls": 4,
+      "risk": "high",
+      "requires_confirmation": true,
+      "exclusive_resources": [
+        "fixture:C12"
+      ],
+      "expected_case_verdict": "pass",
+      "controlled_fault": null
+    },
+    {
+      "order": 3,
+      "scenario_id": "C05",
+      "profile": "edit",
+      "requested_tools": [
+        "read",
+        "edit",
+        "bash"
+      ],
+      "estimated_seconds": 180,
+      "max_tool_calls": 5,
+      "risk": "high",
+      "requires_confirmation": true,
+      "exclusive_resources": [
+        "fixture:C05"
+      ],
+      "expected_case_verdict": "pass",
+      "controlled_fault": null
+    },
+    {
+      "order": 4,
+      "scenario_id": "C11",
+      "profile": "edit",
+      "requested_tools": [
+        "read",
+        "edit",
+        "bash"
+      ],
+      "estimated_seconds": 180,
+      "max_tool_calls": 5,
+      "risk": "high",
+      "requires_confirmation": true,
+      "exclusive_resources": [
+        "fixture:C11"
+      ],
+      "expected_case_verdict": "pass",
+      "controlled_fault": "simulated_quota_error_preserves_prior_state"
+    }
+  ],
+  "stop_conditions": {
+    "after_case_if": "missing_receipt_or_grader_failure_or_case_verdict_not_pass",
+    "on_controlled_error": "continue_only_when_fault_matches_contract_and_case_verdict_pass",
+    "on_budget_exceeded": "stop_before_next_case",
+    "action": "stop_batch_and_preserve_evidence"
+  },
+  "limits": [
+    "Préparation seulement.",
+    "Aucune exécution sans confirmation réobservée et préconditions satisfaites."
+  ]
+}

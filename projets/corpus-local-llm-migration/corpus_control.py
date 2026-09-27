@@ -525,6 +525,26 @@ def main(argv=None):
     p.add_argument("--json", action="store_true")
     p.set_defaults(func=cmd_gc)
 
+    p = sub.add_parser('organize', help='Rangement automatique : état, aperçu et réglages')
+    p.add_argument('organizer_args', nargs=argparse.REMAINDER)
+    def organize(args):
+        import organizer
+        import sys
+        previous=sys.argv
+        try:
+            sys.argv=['organizer']+args.organizer_args
+            organizer.main()
+        finally: sys.argv=previous
+        return 0
+    p.set_defaults(func=organize)
+
+    p = sub.add_parser('resume', help='Préparer une reprise avec mémoire et outils choisis, sans envoi')
+    p.add_argument('resume_args', nargs=argparse.REMAINDER)
+    def resume(args):
+        import project_resume
+        return project_resume.main(args.resume_args)
+    p.set_defaults(func=resume)
+
     args = parser.parse_args(argv)
     return args.func(args)
 

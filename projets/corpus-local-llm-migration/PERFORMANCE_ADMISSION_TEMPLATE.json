@@ -1,0 +1,10 @@
+{
+  "schema": "corpus.performance-admission.v1",
+  "experiment": "cache-reuse-compatibility",
+  "variation": {"key": "cache_reuse", "baseline": 0, "candidate": 128},
+  "immutable_fields": ["engine", "engine_version", "model", "model_sha256", "quantization", "context_tokens", "prompt_sha256", "tool_profile_sha256", "fixture_sha256"],
+  "evidence": {
+    "prefix_cache": {"counters": {"continuations_observed": 10, "prefix_candidates": 5, "content_stored": false}},
+    "cache_latency": {"available": true, "groups": {"with_reported_cache_read": {"steps": 5}, "without_reported_cache_read": {"steps": 5}}}
+  }
+}

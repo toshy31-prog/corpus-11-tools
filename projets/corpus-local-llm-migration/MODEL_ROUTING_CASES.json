@@ -1,0 +1,140 @@
+{
+  "schema": "corpus.model-routing-cases.v1",
+  "registry_sha256": "7cc6a360f2ba38c397ed77e3d7922f815ca3abbc7447236b8f6558f4f0228285",
+  "lock_sha256": "f79fafcb3dea07ec5c1921e02c09e7caa9ac56ba46cc117571f155a101488396",
+  "cases": [
+    {
+      "id": "R01-simple-text-direct",
+      "task_class": "simple",
+      "request": {
+        "mode": "auto",
+        "input_modality": "text",
+        "requires_tool_call": false,
+        "context_tokens": 4096,
+        "budget": {
+          "allow_cold_restore": false,
+          "allow_unmeasured_reasoning": false
+        }
+      },
+      "expected": {
+        "decision": "select_configured_profile",
+        "selected_id": "qwen3.6-direct-local",
+        "deferred_reason": "profil_froid_non_actif"
+      }
+    },
+    {
+      "id": "R02-complex-reflexion-budget-denied",
+      "task_class": "complex",
+      "request": {
+        "mode": "reflexion",
+        "input_modality": "text",
+        "requires_tool_call": false,
+        "context_tokens": 4096,
+        "budget": {
+          "allow_cold_restore": false,
+          "allow_unmeasured_reasoning": false
+        }
+      },
+      "expected": {
+        "decision": "defer_no_eligible_profile",
+        "selected_id": null,
+        "deferred_reason": "raisonnement_non_mesuré_non_autorisé_par_le_budget"
+      }
+    },
+    {
+      "id": "R03-complex-reflexion-budget-granted",
+      "task_class": "complex",
+      "request": {
+        "mode": "reflexion",
+        "input_modality": "text",
+        "requires_tool_call": false,
+        "context_tokens": 4096,
+        "budget": {
+          "allow_cold_restore": false,
+          "allow_unmeasured_reasoning": true
+        }
+      },
+      "expected": {
+        "decision": "select_configured_profile",
+        "selected_id": "qwen3.6-reflexion-local",
+        "deferred_reason": null
+      }
+    },
+    {
+      "id": "R04-tool-task",
+      "task_class": "tool",
+      "request": {
+        "mode": "auto",
+        "input_modality": "text",
+        "requires_tool_call": true,
+        "context_tokens": 4096,
+        "budget": {
+          "allow_cold_restore": false,
+          "allow_unmeasured_reasoning": false
+        }
+      },
+      "expected": {
+        "decision": "select_configured_profile",
+        "selected_id": "qwen3.6-direct-local",
+        "deferred_reason": null
+      }
+    },
+    {
+      "id": "R05-image-tool-task",
+      "task_class": "multimodal",
+      "request": {
+        "mode": "auto",
+        "input_modality": "image",
+        "requires_tool_call": true,
+        "context_tokens": 4096,
+        "budget": {
+          "allow_cold_restore": false,
+          "allow_unmeasured_reasoning": false
+        }
+      },
+      "expected": {
+        "decision": "select_configured_profile",
+        "selected_id": "qwen3.6-direct-local",
+        "deferred_reason": "modalité_non_supportée_par_le_profil"
+      }
+    },
+    {
+      "id": "R06-context-over-profile",
+      "task_class": "complex",
+      "request": {
+        "mode": "auto",
+        "input_modality": "text",
+        "requires_tool_call": false,
+        "context_tokens": 16385,
+        "budget": {
+          "allow_cold_restore": false,
+          "allow_unmeasured_reasoning": false
+        }
+      },
+      "expected": {
+        "decision": "defer_no_eligible_profile",
+        "selected_id": null,
+        "deferred_reason": "contexte_au_delà_du_profil"
+      }
+    },
+    {
+      "id": "R07-cold-profile-remains-deferred",
+      "task_class": "unavailable_profile",
+      "request": {
+        "mode": "auto",
+        "input_modality": "text",
+        "requires_tool_call": false,
+        "context_tokens": 4096,
+        "budget": {
+          "allow_cold_restore": true,
+          "allow_unmeasured_reasoning": false
+        }
+      },
+      "expected": {
+        "decision": "select_configured_profile",
+        "selected_id": "qwen3.6-direct-local",
+        "deferred_reason": "restauration_froide_permise_mais_non_exécutée"
+      }
+    }
+  ]
+}

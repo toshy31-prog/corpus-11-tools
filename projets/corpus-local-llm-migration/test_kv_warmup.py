@@ -1,5 +1,7 @@
 """KV warm-up is optional, bounded and never controls backend readiness."""
 import unittest
+import tempfile
+from pathlib import Path
 from unittest.mock import patch
 
 try:
@@ -63,6 +65,8 @@ class KvWarmupContractTests(unittest.TestCase):
             if p.get("type") == "text"
         ]
         self.assertEqual(texts, ["TEST SILENCIEUX"])
+        self.assertTrue(payload["tools"])
+        self.assertFalse(any(payload["tools"].values()))
 
         self.assertEqual(
             calls[-1].args[:2],
@@ -114,10 +118,14 @@ class KvWarmupContractTests(unittest.TestCase):
     def test_start_runs_only_once(self):
         warm = self.make()
 
-        with patch.object(warm, "_run", return_value=True) as run:
-            warm.start()
-            warm.start()
-            warm.join(2)
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "routing").mkdir()
+            (root / "routing" / "kv-warmup-mode").write_text("on")
+            with patch("corpus_paths.CONFIG_ROOT", root), patch.object(warm, "_run", return_value=True) as run:
+                warm.start()
+                warm.start()
+                warm.join(2)
 
         run.assert_called_once()
 
@@ -125,8 +133,12 @@ class KvWarmupContractTests(unittest.TestCase):
         warm = self.make()
         warm.close()
 
-        with patch.object(warm, "_run") as run:
-            warm.start()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "routing").mkdir()
+            (root / "routing" / "kv-warmup-mode").write_text("on")
+            with patch("corpus_paths.CONFIG_ROOT", root), patch.object(warm, "_run") as run:
+                warm.start()
 
         run.assert_not_called()
 

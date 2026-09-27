@@ -4,7 +4,7 @@ import shutil
 from datetime import datetime, timezone
 from pathlib import Path
 import local_statistics
-from runtime_limits import CONTEXT_TOKENS, OUTPUT_TOKENS
+from runtime_limits import CONTEXT_TOKENS, OUTPUT_TOKENS, MAIN_MODEL_IDLE_SECONDS, CUDA_DISABLE_FUSION
 from corpus_paths import LOCAL_RUNTIME_ROOT
 
 BASE = LOCAL_RUNTIME_ROOT
@@ -23,6 +23,9 @@ def memory(path=Path('/proc/meminfo')):
 def snapshot(base=BASE, meminfo=Path('/proc/meminfo'), aggregate=local_statistics.aggregate):
     result = {'updated_at': datetime.now(timezone.utc).isoformat(),
               'limits': {'context': CONTEXT_TOKENS, 'output': OUTPUT_TOKENS},
+              'inference_profile': {'idle_unload_seconds': MAIN_MODEL_IDLE_SECONDS,
+                                    'cuda_disable_fusion': CUDA_DISABLE_FUSION,
+                                    'evidence': 'launcher_configuration_not_inference_measurement'},
               'memory': None, 'disk': None, 'activity': None, 'errors': {}}
     try:
         result['memory'] = memory(meminfo)

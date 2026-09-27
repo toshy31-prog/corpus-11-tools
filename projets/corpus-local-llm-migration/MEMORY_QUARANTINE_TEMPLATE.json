@@ -1,0 +1,11 @@
+[
+  {
+    "id": "import-001",
+    "note_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "source": {
+      "kind": "conversation_archive",
+      "reference_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    },
+    "source_confidence": "external_untrusted"
+  }
+]

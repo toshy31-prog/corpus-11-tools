@@ -1,0 +1,93 @@
+{
+  "schema": "corpus.delivery-manifest.v1",
+  "scope": "local_migration_lot",
+  "execution": "not_started",
+  "entries": [
+    {
+      "id": "comparable-measurement-contract",
+      "kind": "contract",
+      "path": "COMPARABLE_MEASUREMENT_PROTOCOL.md",
+      "sha256": "d286af485a93e322faa0f820a4e14cb99853b677295cfedfa764b46104bf6802",
+      "status": "verified_static",
+      "note": "Contrat de mesures déclaratives ; aucune attribution causale."
+    },
+    {
+      "id": "batch-schedule-contract",
+      "kind": "contract",
+      "path": "REPRESENTATIVE_BATCH_SCHEDULE.json",
+      "sha256": "be44e68a1f8020930d3bc7f920006bd1741c3e72aff543c0f8b1496a61079955",
+      "status": "prepared_not_executed",
+      "note": "Lot C14, C12, C05, C11 préparé ; son exécution reste not_started."
+    },
+    {
+      "id": "batch-schedule-validator",
+      "kind": "validator",
+      "path": "representative_batch_schedule.py",
+      "sha256": "cf8ca826e42410b66efc8d321f4223b6f485715744ab4b2ddd01f8117a428642",
+      "status": "verified_static",
+      "note": "Valide l’ordre séquentiel, les plafonds et l’arrêt sur preuve manquante."
+    },
+    {
+      "id": "delivery-manifest-validator",
+      "kind": "validator",
+      "path": "delivery_manifest.py",
+      "sha256": "6a6c9e55f84a12714c71e68945a2803a709a0cff9ec16744b4f4aa58d9751d71",
+      "status": "verified_static",
+      "note": "Valide seulement cet index, ses chemins relatifs et ses empreintes."
+    },
+    {
+      "id": "local-status-document",
+      "kind": "documentation",
+      "path": "ETAT_LOCAL_ACTUEL.md",
+      "sha256": "0c9f046ec84f9f6c1335da9203bde92715798a8a11cb6d8ecb4da2c05b12fc46",
+      "status": "observed_bounded",
+      "note": "État local : épreuves V2/V3 bornées, limites et prochaine étape."
+    },
+    {
+      "id": "evidence-index",
+      "kind": "evidence_index",
+      "path": ".migration-smoke/README.md",
+      "sha256": "fe3dbdca57d0e19bb842ca64aa36d5a146625e27a1fb5f45bfea6e4f24633fbb",
+      "status": "observed_bounded",
+      "note": "Index des preuves sans copier les transcriptions ni les identifiants."
+    },
+    {
+      "id": "comparison-validator-test",
+      "kind": "test",
+      "path": "test_durable_run_comparison.py",
+      "sha256": "75ab2f1b8d07444dd7b74e746493444ae688629e59ccfec88f3122a1bcc54836",
+      "status": "verified_static",
+      "note": "Test local du refus d’attribution lorsque les conditions divergent."
+    },
+    {
+      "id": "measurement-validator-test",
+      "kind": "test",
+      "path": "test_comparable_measurement.py",
+      "sha256": "58912bb9c004eba32e9da510d649096eae7251cb0f5bd7bdef68c7450ba78ada",
+      "status": "verified_static",
+      "note": "Test local de l’enveloppe sans contenu ni identifiant de session."
+    },
+    {
+      "id": "batch-schedule-test",
+      "kind": "test",
+      "path": "test_representative_batch_schedule.py",
+      "sha256": "8d4c96df5ed42515ec413ff89e28b28b64966ed46a419afb7090f270dd3b178a",
+      "status": "verified_static",
+      "note": "Test local du plan non exécuteur et de ses arrêts fail-closed."
+    },
+    {
+      "id": "v2-workflow-verifier-test",
+      "kind": "test",
+      "path": "test_workflow_verifier_v2.py",
+      "sha256": "766a327b65c487d554ec85d52ea4e6c9745643998ef43689bf2808532cef2df2",
+      "status": "verified_static",
+      "note": "Test local du vérificateur de reçu de fixture isolée."
+    }
+  ],
+  "limits": [
+    "Index de livraison local : aucun modèle, service, outil, commande de production ou réseau n’est lancé.",
+    "Les statuts observed_bounded concernent des preuves de fixture isolée ; ils ne valident ni autonomie générale ni migration complète.",
+    "prepared_not_executed désigne un plan vérifié hors exécution et ne constitue pas une autorisation.",
+    "Le manifeste ne contient ni texte de prompt, identifiant de session, chemin absolu, commande, sortie d’outil ou donnée utilisateur."
+  ]
+}

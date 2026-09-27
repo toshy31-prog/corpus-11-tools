@@ -1089,6 +1089,60 @@
       "owner": "media-runtime",
       "territory": "runtime",
       "role": "Verrou du worker média."
+    },
+    {
+      "id": "state-runtime-change-backups",
+      "path_key": "state",
+      "relative": "backups",
+      "owner": "recovery-manager",
+      "territory": "state",
+      "role": "Sauvegardes locales préalables aux changements de runtime et routage ; preuves et moyens de retour arrière.",
+      "truth": "recovery-evidence",
+      "recovery": "restore-with-explicit-scope-and-validation",
+      "gc": "never-by-age-alone; preserve-until-replacement-recovery-verified"
+    },
+    {
+      "id": "local-runtime-diagnostic-captures",
+      "path_key": "local_runtime",
+      "relative": "logs",
+      "owner": "local-runtime",
+      "territory": "runtime",
+      "role": "Exception historique : captures locales de diagnostic conservées à leur chemin existant ; ne pas utiliser ce dossier pour de nouveaux journaux.",
+      "truth": "diagnostic-evidence",
+      "classification": "legacy-state-in-runtime",
+      "intended_destination": {
+        "path_key": "state",
+        "relative": "logs/corpus-local/legacy-captures"
+      },
+      "migration_status": "pending_reference_review_and_controlled_move",
+      "gc": "never-by-age-alone",
+      "publication": "local-only-review-before-export"
+    },
+    {
+      "id": "state-organizer",
+      "path_key": "state",
+      "relative": "organizer",
+      "owner": "local-runtime",
+      "territory": "state",
+      "role": "Copies classées des preuves locales, journal de rangement et verrou de concurrence.",
+      "gc": "never-by-age-alone"
+    },
+    {
+      "id": "config-organizer",
+      "path_key": "config",
+      "relative": "organizer.json",
+      "owner": "local-runtime",
+      "territory": "config",
+      "role": "Règles de rangement modifiables par le portail et la commande Corpus."
+    },
+    {
+      "id": "state-project-resume",
+      "path_key": "state",
+      "relative": "project-resume",
+      "owner": "local-runtime",
+      "territory": "state",
+      "role": "Points de reprise et photographies de mémoire choisis par utilisateur, sans exécution automatique.",
+      "gc": "never-by-age-alone"
     }
   ]
 }

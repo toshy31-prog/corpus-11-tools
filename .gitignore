@@ -21,3 +21,7 @@ __pycache__/
 /ne-me-dis-pas-comment-sauver-le-monde-sauve-le/site/
 
 /.toolchains/
+
+# Corpus local migration: ad-hoc payload capture probes are local diagnostics.
+# Their durable replacements live in the tracked workflow and receipt modules.
+/projets/corpus-local-llm-migration/*_TEMP.py
