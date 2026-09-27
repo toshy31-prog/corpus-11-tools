@@ -19,7 +19,7 @@ def portal_state():
         if response.status != 200 or 'text/html' not in response.headers.get('Content-Type', ''):
             raise ValueError('La page Corpus est indisponible.')
         if len(page) > 1_000_000 or not all(marker in page for marker in (
-            b'<title>Corpus local</title>', b'id="chat"', b'src="/corpus/app.js"'
+            b'<title>Corpus local</title>', b'id="chat"', b'id="current-title"'
         )):
             raise ValueError('La réponse reçue n’est pas le portail Corpus.')
     try:
@@ -79,9 +79,16 @@ def main():
             time.sleep(1)
             continue
         try:
-            subprocess.run(['xdg-open', URL], check=True, timeout=30, capture_output=True)
+            # A desktop launcher must not wait for the browser process: some
+            # xdg-open backends keep the caller attached and make the icon look
+            # inert even when Corpus is ready.
+            subprocess.Popen(['xdg-open', URL],
+                             stdin=subprocess.DEVNULL,
+                             stdout=subprocess.DEVNULL,
+                             stderr=subprocess.DEVNULL,
+                             start_new_session=True)
             return 0
-        except (OSError, subprocess.SubprocessError):
+        except OSError:
             show_error('Corpus répond, mais le navigateur n’a pas pu s’ouvrir. Adresse : ' + URL)
             return 1
     show_error('Corpus n’a pas confirmé son démarrage après cinq minutes.')
