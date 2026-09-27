@@ -31,6 +31,7 @@ Corpus est un écosystème local et versionné qui combine un environnement agen
 - Autonomie bornée : `AUTONOMIE_INTEGRATION_LOCALE.md`.
 - Reprise des blocages : `projets/corpus-local-llm-migration/BLOCKER_RESILIENCE.md`.
 - Stockage, volumes et cycle de vie : `ECOSYSTEM_STORAGE.md`.
+- Leçons opérationnelles et invariants : `RESILIENCE_LESSONS.md`.
 
 ## Hiérarchie des sources de vérité
 

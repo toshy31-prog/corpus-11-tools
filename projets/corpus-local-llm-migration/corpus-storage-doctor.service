@@ -1,0 +1,8 @@
+[Unit]
+Description=Corpus storage pressure doctor
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /home/olivier/Documents/ChatGPT/Corpus/projets/corpus-local-llm-migration/corpus_storage_doctor.py
+SuccessExitStatus=2
+NoNewPrivileges=true

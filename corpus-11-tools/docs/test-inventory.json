@@ -113,6 +113,7 @@
     {"path": "projets/corpus-local-llm-migration/test_corpus_gpt_async.py", "git_object": "c6b358a5d4c5c55c8bba854fe9fd9b3bb27d4ada", "kind": "blob"},
     {"path": "projets/corpus-local-llm-migration/test_storage_pressure.py", "git_object": "9ea16f7324d7c81d8ad42ba2c99f40ab8f624c14", "kind": "blob"},
     {"path": "projets/corpus-local-llm-migration/test_corpus_gpt_reload.py", "git_object": "dc7050e199d1aaff9da209f1702ad15e538f1f66", "kind": "blob"},
-    {"path": "corpus-11-tools/tools/check_onboarding.py", "git_object": "4b60c4ea20dc3f36db6801a141c88442adb3f0a0", "kind": "blob"}
+    {"path": "corpus-11-tools/tools/check_onboarding.py", "git_object": "4b60c4ea20dc3f36db6801a141c88442adb3f0a0", "kind": "blob"},
+    {"path": "projets/corpus-local-llm-migration/test_resource_resilience.py", "git_object": "e70379763bc9150bc9f94f164955382565c29fb4", "kind": "blob"}
   ]
 }

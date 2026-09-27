@@ -7,7 +7,7 @@
   ],
   "exclusion_reason": "The attestation cannot contain its own digest without circularity; the annotated Git tag covers the attestation itself.",
   "file_count": 335,
-  "total_bytes": 4123744,
+  "total_bytes": 4123898,
   "files": [
     {
       "path": ".codex-plugin/plugin.json",
@@ -206,8 +206,8 @@
     },
     {
       "path": "docs/test-inventory.json",
-      "bytes": 18136,
-      "sha256": "8b742d9d946292659aff373e326f6f2ada07ef1b5ab82d9c1858d20184f33218"
+      "bytes": 18290,
+      "sha256": "7dc10f71da90bd617464d0fe6599a9afe002cc1af1c2be3312a123b78b455d3b"
     },
     {
       "path": "evals/routing-and-nonregression.jsonl",

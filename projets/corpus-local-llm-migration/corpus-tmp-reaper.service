@@ -1,0 +1,7 @@
+[Unit]
+Description=Reap abandoned known Corpus validation temporaries
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /home/olivier/Documents/ChatGPT/Corpus/projets/corpus-local-llm-migration/corpus_tmp_reaper.py
+NoNewPrivileges=true

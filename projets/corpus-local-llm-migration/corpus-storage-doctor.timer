@@ -1,0 +1,12 @@
+[Unit]
+Description=Measure Corpus storage pressure
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=15min
+AccuracySec=1min
+Persistent=true
+Unit=corpus-storage-doctor.service
+
+[Install]
+WantedBy=timers.target

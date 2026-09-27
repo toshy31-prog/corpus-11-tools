@@ -1,0 +1,12 @@
+[Unit]
+Description=Reap abandoned Corpus temporary validation trees
+
+[Timer]
+OnBootSec=10min
+OnUnitActiveSec=1h
+AccuracySec=5min
+Persistent=true
+Unit=corpus-tmp-reaper.service
+
+[Install]
+WantedBy=timers.target

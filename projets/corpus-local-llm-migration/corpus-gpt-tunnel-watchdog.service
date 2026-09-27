@@ -1,0 +1,8 @@
+[Unit]
+Description=Corpus GPT functional tunnel watchdog
+After=corpus-gpt-tunnel.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /home/olivier/Documents/ChatGPT/Corpus/projets/corpus-local-llm-migration/corpus_gpt_tunnel_watchdog.py
+NoNewPrivileges=true

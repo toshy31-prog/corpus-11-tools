@@ -71,3 +71,7 @@ Le premier nettoyage Git à fort rendement est donc un repack/prune contrôlé d
 5. Modèles HOT/COLD : politique de résidence fondée sur l'usage.
 6. RecoverySnapshots du Vault : rétention et restauration vérifiée.
 7. Audit final chemins, symlinks, unités systemd, docs et volumes.
+
+## Résilience opérationnelle
+
+Les incidents et invariants transversaux sont consolidés dans RESILIENCE_LESSONS.md. Le storage doctor mesure automatiquement espace libre, volume temporaire et ratio Git/objets atteignables.
