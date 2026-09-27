@@ -71,6 +71,7 @@ check-structure:
 		$(PYTHON) tools/check_test_inventory.py --self-test && \
 		$(PYTHON) tools/test_validation_guards.py
 	$(PYTHON) corpus-11-tools/tools/check_tracked_json.py
+	$(PYTHON) corpus-11-tools/tools/check_onboarding.py
 	git diff --check origin/main...HEAD
 
 test-python: bootstrap

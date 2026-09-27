@@ -6,8 +6,8 @@
     "docs/release-content-v1.6.2.json"
   ],
   "exclusion_reason": "The attestation cannot contain its own digest without circularity; the annotated Git tag covers the attestation itself.",
-  "file_count": 334,
-  "total_bytes": 4120821,
+  "file_count": 335,
+  "total_bytes": 4123744,
   "files": [
     {
       "path": ".codex-plugin/plugin.json",
@@ -21,8 +21,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 13300,
-      "sha256": "3fe237f2e96a28a5d850b750b32cb282c57f8b74a30cc525dd2b8c4b0799b627"
+      "bytes": 13343,
+      "sha256": "e326e111770fcc80bc05a5d33e4defc1da5779a607846b19615c1a9ff2fdc1fe"
     },
     {
       "path": "archives/legacy/Atlas_3_0_final.zip",
@@ -206,8 +206,8 @@
     },
     {
       "path": "docs/test-inventory.json",
-      "bytes": 18003,
-      "sha256": "5286568ca5e74ff585e3c68d983fb63157b5a7dfb26e4a2a313b35d81be3119b"
+      "bytes": 18136,
+      "sha256": "8b742d9d946292659aff373e326f6f2ada07ef1b5ab82d9c1858d20184f33218"
     },
     {
       "path": "evals/routing-and-nonregression.jsonl",
@@ -1558,6 +1558,11 @@
       "path": "tools/check_integrity.py",
       "bytes": 2269,
       "sha256": "c96577ea28c5d10942d346ef4f32ecf167229ced8ad5012e8478b4ac82de1353"
+    },
+    {
+      "path": "tools/check_onboarding.py",
+      "bytes": 2747,
+      "sha256": "953925c4da9da917c26e711a974cc08e8aaa691d103e2a44df26410f78b75b29"
     },
     {
       "path": "tools/check_organism.py",

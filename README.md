@@ -1,5 +1,8 @@
 # Corpus 11 Tools
 
+> **Nouveau ici ?** Lire d’abord [Commencer avec Corpus](ONBOARDING.md).
+> **IA sans contexte préalable ?** Lire [AI START HERE](AI_START_HERE.md).
+
 > **Jeux, applications, recherches ou ancien site ?** Voir la [carte des projets et leurs points d’entrée](CARTE_DES_PROJETS.md).
 
 Corpus 11 Tools est un ensemble d’outils pour aider Codex à analyser une question avec davantage de rigueur. Il peut notamment vérifier les sources d’une affirmation, repérer les coûts cachés, distinguer une capacité réelle d’un simple résultat de test et identifier ce qui pourrait invalider une conclusion.

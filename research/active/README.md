@@ -1,5 +1,9 @@
 # Index des recherches actives
 
+STATUT DOCUMENTAIRE : RECHERCHE.
+Les documents sous cet arbre décrivent des expériences, protocoles, preuves ou états de recherche bornés. Ils ne constituent pas l’état global de Corpus et ne prouvent pas un transfert vers le produit. Pour l’état global, repartir du README racine et de ONBOARDING.md.
+
+
 Cet index sépare les recherches par **objet à observer**, et non par les outils
 Corpus qu’elles peuvent employer. Une simulation, un audit ou un produit ne
 constitue pas à lui seul une validation de l’objet recherché.

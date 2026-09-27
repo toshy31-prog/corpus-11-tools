@@ -4,13 +4,14 @@
 
 ### v1.6.2 — portabilité des tests Bubblewrap
 
+- statut final : release publiée ; les mentions ci-dessous décrivent la phase de préparation ;
 - release locale préparée pour deux correctifs de test seulement : le refus
   de namespace est simulé sans dépendre d'un binaire Bubblewrap hôte et le
   test d'exécution réelle utilise le Python système monté dans l'invité plutôt
   que le virtualenv appelant ;
 - ne modifie ni `run_isolated_submission`, ni le résolveur Bubblewrap, ni les
   règles d'isolation ; `independence_unknown` demeure obligatoire ;
-- non taguée, non publiée et non installée.
+- à cette étape, elle n’était pas encore taguée, publiée ni installée.
 
 ### v1.6.1 — correction des frontières de validation publiées
 

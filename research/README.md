@@ -1,5 +1,9 @@
 # Recherches utilisant Corpus
 
+STATUT DOCUMENTAIRE : RECHERCHE.
+Les documents sous cet arbre décrivent des expériences, protocoles, preuves ou états de recherche bornés. Ils ne constituent pas l’état global de Corpus et ne prouvent pas un transfert vers le produit. Pour l’état global, repartir du README racine et de ONBOARDING.md.
+
+
 Cet espace contient des projets de recherche, et non des fonctions automatiquement chargées par le plugin Corpus.
 
 ## États

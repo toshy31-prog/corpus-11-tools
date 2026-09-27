@@ -15,9 +15,10 @@ ni autonomie au plugin. Voir
 
 ## État actuel
 
-- release locale préparée : **v1.6.2**, non taguée ;
-- dernière release publiée : **v1.6.1**, non installée après l'échec global ;
-- version installée dans l’environnement de départ : **v1.5.0** ;
+Le relevé global plus récent établit **v1.6.2 comme release publiée et réobservée dans l’environnement documenté**. Les sections de préparation ci-dessous sont historiques.
+
+- release publiée attestée : **v1.6.2** ;
+- état global de référence : `../README.md` ;
 - 58 skills ;
 - 49 capabilities ;
 - 4 familles descriptives ;
@@ -26,11 +27,7 @@ ni autonomie au plugin. Voir
 
 ## Release locale préparée v1.6.2 — portabilité des tests Bubblewrap
 
-v1.6.2 corrige seulement deux tests Bubblewrap : le refus de namespace est
-simulé sans installation hôte et le test réel invoque le Python système monté
-dans l'invité, non le virtualenv appelant. Elle ne modifie ni le harnais de
-réplication, ni ses limites ; `independence_unknown` demeure obligatoire. Elle
-n'est ni taguée, ni publiée, ni installée.
+Lors de sa préparation, v1.6.2 corrigeait seulement deux tests Bubblewrap. Elle ne modifiait ni le harnais de réplication ni ses limites ; `independence_unknown` demeurait obligatoire. Le statut « non publiée » de cette étape est historique : la release a ensuite été publiée, comme l’atteste le relevé global plus récent.
 
 ## Changement public de v1.6.0 — release publiée
 
