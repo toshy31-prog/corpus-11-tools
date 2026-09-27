@@ -361,3 +361,13 @@ test('Every Add menu command closes the menu and expanded state before opening a
  for(const [label,kind] of [['Créer un document ou tableau','document'],['Créer une image, vidéo, voix ou musique','media']]){attach.onclick();assert.equal(attach.attributes['aria-expanded'],'true');const command=descendantNodes(form).find(n=>n.className==='composer-add-row'&&n.children.some(child=>child.textContent===label));await command.onclick();assert.equal(opened.at(-1),kind);}
  attach.onclick();const filesCommand=descendantNodes(form).find(n=>n.className==='composer-add-row'&&n.children.some(child=>child.textContent==='Fichiers, images et vidéos'));await filesCommand.onclick();checkClosed('files');assert(descendantNodes(form).some(n=>n.type==='file'&&n.clicked));
 });
+
+
+test('Revision seen state is scoped by project and survives panel reconstruction in memory',()=>{
+ const source=require('node:fs').readFileSync(require('node:path').join(__dirname,'portal/app.js'),'utf8');
+ assert.match(source,/const revisionSeenByProject=new Map\(\)/);
+ assert.match(source,/function revisionSeen\(project\)/);
+ assert.match(source,/revisionSeenByProject\.set\(project,new Set\(\)\)/);
+ assert.match(source,/const project=chatProject\(id\),seen=revisionSeen\(project\)/);
+ assert.doesNotMatch(source,/openRevision\(id\)[\s\S]{0,500}const seen=new Set\(\)/);
+});
