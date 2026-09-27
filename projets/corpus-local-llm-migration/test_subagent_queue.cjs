@@ -11,7 +11,7 @@ function load(name,context,next){
 }
 function fixture(overrides={}){
  const calls=[];
- const c=vm.createContext({Promise,Date,locals:[],library:{root:'/Corpus'},nativeApi:async(s,p,data)=>{calls.push({p,data});return [];},fetchJSON:async()=>({}),CorpusPersonalization:{collect:()=>false,context:()=>''},personalization:{},persistPersonalization(){},notifyCorpusCompletion(){},nativeRender(){},nativeSave(){},agentResponseInstructions:()=>'',temporalContext:()=>'',temporalMessageContext:()=>'',agentConfig:{reasoning:'direct'},...overrides});
+ const c=vm.createContext({Promise,Date,locals:[],library:{root:'/Corpus'},nativeApi:async(s,p,data)=>{calls.push({p,data});return [];},fetchJSON:async()=>({}),CorpusPersonalization:{collect:()=>false,context:()=>''},personalization:{},persistPersonalization(){},notifyCorpusCompletion(){},nativeObserveFailure(){},nativeRender(){},nativeSave(){},agentResponseInstructions:()=>'',temporalContext:()=>'',temporalMessageContext:()=>'',agentConfig:{reasoning:'direct'},...overrides});
  load('nativeRefresh',c,'async function nativePump(');
  load('nativePump',c,'function openNativeConversation(');
  return {c,calls};

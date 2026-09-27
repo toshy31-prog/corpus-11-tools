@@ -8,7 +8,7 @@ from unittest.mock import patch
 import launch_desktop as launcher
 
 
-HTML = b'<title>Corpus local</title><script src="/corpus/app.js"></script><iframe id="chat"></iframe>'
+HTML = b'<title>Corpus local</title><script src="/corpus/app.js"></script><h1 id="current-title"></h1><iframe id="chat"></iframe>'
 
 
 class Reply(io.BytesIO):
@@ -54,10 +54,11 @@ class LauncherTests(unittest.TestCase):
                     launcher.portal_state()
 
     def test_unavailable_then_starting_retries_without_restarting_or_enabling(self):
-        with patch.object(launcher.subprocess, 'run') as run, patch.object(launcher, 'portal_state', side_effect=[OSError('not yet'), 'starting']), patch.object(launcher.time, 'sleep') as sleep:
+        with patch.object(launcher.subprocess, 'run') as run, patch.object(launcher.subprocess, 'Popen') as popen, patch.object(launcher, 'portal_state', side_effect=[OSError('not yet'), 'starting']), patch.object(launcher.time, 'sleep') as sleep:
             self.assertEqual(launcher.main(), 0)
         self.assertEqual([call.args[0] for call in run.call_args_list], [
-            ['systemctl', '--user', 'start', 'corpus-local.service'], ['xdg-open', launcher.URL]])
+            ['systemctl', '--user', 'start', 'corpus-local.service']])
+        self.assertEqual(popen.call_args.args[0], ['xdg-open', launcher.URL])
         sleep.assert_called_once_with(1)
         self.assertEqual(launcher.URL, 'http://127.0.0.1:18743/corpus/index.html')
 
@@ -74,9 +75,10 @@ class LauncherTests(unittest.TestCase):
         self.assertIn('cinq minutes', report.call_args.args[0])
 
     def test_browser_failure_is_reported_without_touching_service_again(self):
-        with patch.object(launcher.subprocess, 'run', side_effect=[None, OSError('browser missing')]) as run, patch.object(launcher, 'portal_state', return_value='ready'), patch.object(launcher, 'show_error') as report:
+        with patch.object(launcher.subprocess, 'run') as run, patch.object(launcher.subprocess, 'Popen', side_effect=OSError('browser missing')) as popen, patch.object(launcher, 'portal_state', return_value='ready'), patch.object(launcher, 'show_error') as report:
             self.assertEqual(launcher.main(), 1)
-        self.assertEqual(run.call_count, 2)
+        self.assertEqual(run.call_count, 1)
+        self.assertEqual(popen.call_count, 1)
         self.assertIn(launcher.URL, report.call_args.args[0])
 
     def test_graphical_error_and_notification_fallback_are_local(self):

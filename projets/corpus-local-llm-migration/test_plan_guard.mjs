@@ -148,6 +148,6 @@ test('serialized runtime stays isolated and delegation closed until guard loads'
  assert.equal(config.agent['corpus-worker'].model,undefined,'native task inherits the parent model and variant');
  assert.equal(config.agent['corpus-worker'].permission.task,'deny');assert.equal(config.subagent_depth,1);
  assert.equal(config.agent['corpus-plan'].permission['*'],'deny');
- assert.deepEqual(config.enabled_providers,['corpus-local']);assert.equal(config.plugin.length,1);
- assert(config.plugin[0].endsWith('/plan_guard.mjs'));assert.equal(env.OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS,undefined);
+ assert.deepEqual(config.enabled_providers,['corpus-local']);assert.equal(config.plugin.length,2);
+ assert(config.plugin[0].endsWith('/plan_guard.mjs'));assert(config.plugin[1].endsWith('/inference_guard.mjs'));assert.equal(env.OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS,undefined);
 });

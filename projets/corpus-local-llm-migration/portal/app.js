@@ -875,11 +875,11 @@ function nativeOperationReport(s,config=agentConfig){
  const trace=ended&&!last?.info?.error&&['stop','end_turn'].includes(finish)?'Dernier tour terminé · la preuve d’exécution reste à vérifier':last?.info?.error||['error','unknown','other'].includes(finish)?'Dernier tour interrompu ou en erreur':'Aucune preuve d’exécution disponible pour ce fil';
  return {action,tools,policy,trace,canVerify:!!last};
 }
-async function discardQueuedMessages(s,confirm=corpusConfirm){
+async function discardQueuedMessages(s,confirmAction=corpusConfirm){
  const count=Array.isArray(s.queue)?s.queue.length:0;
  if(!count)return false;
  const noun=count===1?'ce message en attente':'ces '+count+' messages en attente';
- if(!await confirm('Annuler '+noun+' ? Ils ne seront pas envoyés au modèle local.'))return false;
+ if(!await confirmAction('Annuler '+noun+' ? Ils ne seront pas envoyés au modèle local.'))return false;
  s.queue=[];
  s.paused=true;
  s.notice='Messages en attente annulés · aucune nouvelle demande envoyée.';
