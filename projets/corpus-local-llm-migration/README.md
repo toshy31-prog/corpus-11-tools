@@ -54,6 +54,7 @@ des contenus produits avec GPT.
 - [Descriptions compactes](COMPACT_TOOL_DESCRIPTIONS.md) : candidat testé puis désactivé.
 - [Index des preuves locales](.migration-smoke/README.md) : distinguer fixtures, preuves et demandes non exécutées.
 - [Contrat des chemins](PATH_CONTRACT.md) et [cycle de vie](CORPUS_LIFECYCLE.json) : implantation des modèles, runtime, données, état et sauvegardes.
+- [Carte globale de stockage](../../ECOSYSTEM_STORAGE.md) : volumes observés, territoires Git/NVMe/Vault et ordre de nettoyage.
 
 Règle de maintenance : ranger chaque ajout dans son projet et son territoire existants, relier sa documentation depuis l’index, distinguer sources, preuves et données d’exécution. Vérifier les références avant déplacement ; ne pas déplacer les environnements actifs pour un nettoyage visuel. Les prototypes restent explicitement identifiés comme tels.
 
