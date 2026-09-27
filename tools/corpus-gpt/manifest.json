@@ -1,0 +1,32 @@
+{
+  "name": "corpus-gpt",
+  "schema_version": 1,
+  "freeze_id": "20260927-185136",
+  "repository_root": "/home/olivier/Documents/ChatGPT/Corpus",
+  "entrypoint": "/home/olivier/.local/bin/corpus-gpt",
+  "backend": "http://127.0.0.1:18743/corpus/index.html",
+  "cdp": "http://127.0.0.1:9223",
+  "automation": "Playwright over Chromium CDP",
+  "coordinates_allowed": false,
+  "validated": {
+    "runner_v3": true,
+    "lock_release_after_job": true,
+    "cdp_autoheal": true,
+    "chatgpt_text_return": true,
+    "chatgpt_image_return": true,
+    "bb06_next_file": true,
+    "bb07_previous_file": true,
+    "bb08_refresh_preserves_selection": true,
+    "mcp_runtime_probe": true,
+    "mcp_install_managed_job": true
+  },
+  "ui_contract": {
+    "quick_menu_trigger": "button#corpus-quick-menu-button",
+    "quick_menu": "div.corpus-quick-menu[role=menu]",
+    "selected_revision_file": "button.selected[aria-label]",
+    "previous_file": "[aria-label='Fichier précédent']",
+    "next_file": "[aria-label='Fichier suivant']",
+    "refresh_revision": "[aria-label='Actualiser la révision']",
+    "project_path_prefix": "projets/"
+  }
+}

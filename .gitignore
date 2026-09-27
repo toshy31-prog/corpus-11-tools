@@ -25,3 +25,7 @@ __pycache__/
 # Corpus local migration: ad-hoc payload capture probes are local diagnostics.
 # Their durable replacements live in the tracked workflow and receipt modules.
 /projets/corpus-local-llm-migration/*_TEMP.py
+# Corpus GPT: local safety backups stay in this checkout; canonical docs and freezes are tracked.
+/projets/corpus-local-llm-migration/*.pre-*
+/tools/corpus-gpt/bootstrap-backups/
+/tools/corpus-gpt/mcp-backups/

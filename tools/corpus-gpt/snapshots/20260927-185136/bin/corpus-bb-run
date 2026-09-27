@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+BASE="$HOME/.local/share/corpus-bb-runner"; RUNS="$BASE/runs"; STATE="$BASE/state"; LOCK="$STATE/runner-v2.lock"
+[ "$#" -eq 1 ] || { echo "usage: corpus-bb-run JOB.sh" >&2; exit 2; }
+JOB="$(readlink -f "$1")"; [ -f "$JOB" ] || { echo "REFUS: job absent: $JOB" >&2; exit 3; }
+mkdir -p "$RUNS" "$STATE"
+exec 9>"$LOCK"; flock -n 9 || { echo "REFUS: un job BB est déjà actif." >&2; exit 4; }
+ID="$(date +%Y%m%d-%H%M%S)-$$"; DIR="$RUNS/$ID"; mkdir -p "$DIR"
+OUT="$DIR/stdout.log"; ERR="$DIR/stderr.log"; META="$DIR/meta.txt"; REPORT="$DIR/report.txt"; START="$(date +%s)"
+echo "RUNNER_LOCK=ACQUIRED"; echo "RUN_ID=$ID"; echo "RUN_DIR=$DIR"
+{ echo "RUN_ID=$ID"; echo "JOB=$JOB"; echo "START=$(date -Iseconds)"; echo "PWD=$PWD"; } >"$META"
+echo; echo "=== BB INFRA PREFLIGHT ==="
+if [ "${CORPUS_BB_SKIP_INFRA:-0}" = 1 ]; then echo "BB_CDP_PREFLIGHT=SKIPPED"
+elif [ -x "$HOME/.local/bin/corpus-bb-cdp-ensure" ]; then
+  ( exec 9>&-; "$HOME/.local/bin/corpus-bb-cdp-ensure" ) && echo "BB_CDP_PREFLIGHT=PASS" || { R=$?; echo "BB_CDP_PREFLIGHT=FAIL rc=$R"; exit "$R"; }
+fi
+set +e
+timeout --signal=TERM --kill-after=10s 15m bash -c 'exec 9>&-; exec bash "$1"' _ "$JOB" > >(tee "$OUT") 2> >(tee "$ERR" >&2)
+RC=$?
+set -e
+wait || true
+END="$(date +%s)"; { echo "END=$(date -Iseconds)"; echo "EXIT_CODE=$RC"; echo "DURATION_SECONDS=$((END-START))"; } >>"$META"
+{ echo "=== CORPUS BB RUN RESULT ==="; echo "RUN_ID=$ID"; echo "JOB=$(basename "$JOB")"; echo "EXIT_CODE=$RC"; echo "DURATION_SECONDS=$((END-START))"; echo; echo "=== STDOUT (tail 120) ==="; tail -120 "$OUT" || true; echo; echo "=== STDERR (tail 80) ==="; tail -80 "$ERR" || true; echo; echo "=== LOCAL EVIDENCE ==="; echo "RUN_DIR=$DIR"; } >"$REPORT"
+echo "REPORT=$REPORT"
+if [ "${CORPUS_BB_SKIP_GPT:-0}" = 1 ]; then echo "GPT_REPORT_SEND=SKIPPED"
+elif [ -x "$HOME/.local/bin/corpus-bb-send-text" ]; then ( exec 9>&-; "$HOME/.local/bin/corpus-bb-send-text" "$REPORT" ) && echo "GPT_REPORT_SEND=PASS" || echo "GPT_REPORT_SEND=FAIL"
+fi
+echo "JOB_EXIT_CODE=$RC"; exit "$RC"

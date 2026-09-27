@@ -1,0 +1,86 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+CDP="http://127.0.0.1:9223"
+CHROME="/home/olivier/.local/share/corpus/runtime/corpus-local/browsers/chromium-local/chrome-linux64/chrome"
+PROFILE="/home/olivier/.local/share/corpus-bb-sota/chromium-profile"
+STATE="/home/olivier/.local/share/corpus-bb-sota/state"
+
+PIDFILE="$STATE/chromium-cdp.pid"
+LOG="$STATE/chromium-cdp.log"
+
+mkdir -p "$PROFILE" "$STATE"
+
+# Déjà sain : ne rien toucher.
+if curl -fsS --max-time 1 "$CDP/json/version" >/dev/null 2>&1; then
+    echo "CDP_STATE=ALREADY_HEALTHY"
+    "$HOME/.local/bin/corpus-bb-cdp-dedup"
+    echo "CDP_TAB_INVARIANT=PASS"
+    exit 0
+fi
+
+echo "CDP_STATE=DOWN"
+
+# Ne tuer qu'un ancien processus enregistré appartenant à NOTRE profil.
+if [ -f "$PIDFILE" ]; then
+    PID="$(cat "$PIDFILE" 2>/dev/null || true)"
+
+    if [ -n "$PID" ] && kill -0 "$PID" 2>/dev/null; then
+        CMD="$(tr '\0' ' ' < "/proc/$PID/cmdline" 2>/dev/null || true)"
+
+        case "$CMD" in
+            *"$PROFILE"*)
+                echo "STALE_BB_CHROMIUM_PID=$PID"
+                kill "$PID" 2>/dev/null || true
+
+                for _ in $(seq 1 20); do
+                    kill -0 "$PID" 2>/dev/null || break
+                    sleep .1
+                done
+                ;;
+            *)
+                echo "REFUS: PID enregistré étranger au profil BB." >&2
+                exit 20
+                ;;
+        esac
+    fi
+fi
+
+# Aucun processus ne doit actuellement utiliser notre profil.
+if pgrep -a -f "$PROFILE" >/dev/null 2>&1; then
+    echo "REFUS: profil BB déjà utilisé mais CDP indisponible." >&2
+    pgrep -a -f "$PROFILE" >&2 || true
+    exit 21
+fi
+
+rm -f     "$PROFILE/SingletonLock"     "$PROFILE/SingletonSocket"     "$PROFILE/SingletonCookie"     2>/dev/null || true
+
+: > "$LOG"
+
+nohup "$CHROME"     --no-sandbox     --remote-debugging-address=127.0.0.1     --remote-debugging-port=9223     --user-data-dir="$PROFILE"     --no-first-run     --no-default-browser-check     --disable-background-networking     --disable-component-update     --disable-default-apps     --disable-sync     --disable-extensions     --disable-features=OptimizationHints,MediaRouter     --host-resolver-rules="MAP * ~NOTFOUND, EXCLUDE localhost, EXCLUDE 127.0.0.1"     "http://127.0.0.1:18743/corpus/index.html"     >"$LOG" 2>&1 &
+
+PID=$!
+echo "$PID" > "$PIDFILE"
+
+echo "CDP_START_PID=$PID"
+
+for _ in $(seq 1 60); do
+    if curl -fsS --max-time 1 "$CDP/json/version" >/dev/null 2>&1; then
+        "$HOME/.local/bin/corpus-bb-cdp-dedup"
+        echo "CDP_TAB_INVARIANT=PASS"
+        echo "CDP_AUTOHEAL=PASS"
+        exit 0
+    fi
+
+    if ! kill -0 "$PID" 2>/dev/null; then
+        echo "REFUS: Chromium BB s'est arrêté." >&2
+        tail -100 "$LOG" >&2 || true
+        exit 22
+    fi
+
+    sleep .25
+done
+
+echo "REFUS: timeout CDP." >&2
+tail -100 "$LOG" >&2 || true
+exit 23

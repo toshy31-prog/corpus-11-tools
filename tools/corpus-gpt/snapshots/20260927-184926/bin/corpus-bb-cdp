@@ -1,0 +1,254 @@
+#!/home/olivier/.local/share/corpus/runtime/corpus-local/browser-env/bin/python
+import sys
+import json
+import hashlib
+from pathlib import Path
+from datetime import datetime
+
+from playwright.sync_api import sync_playwright
+
+CDP = "http://127.0.0.1:9223"
+ALLOWED = "http://127.0.0.1:18743/corpus/"
+ART = Path("/home/olivier/.local/share/corpus-bb-sota/artifacts")
+ART.mkdir(parents=True, exist_ok=True)
+
+def refuse(message, code=2):
+    print("REFUS:", message, file=sys.stderr)
+    raise SystemExit(code)
+
+def allowed_page(page):
+    return page.url.startswith(ALLOWED)
+
+def get_page(browser):
+    pages = [
+        p
+        for ctx in browser.contexts
+        for p in ctx.pages
+        if allowed_page(p)
+    ]
+
+    if len(pages) != 1:
+        refuse(
+            f"exactement 1 page Corpus autorisée requise, "
+            f"trouvé={len(pages)}"
+        )
+
+    return pages[0]
+
+def visible_nodes(locator):
+    out=[]
+
+    for i in range(locator.count()):
+        n=locator.nth(i)
+        try:
+            if n.is_visible():
+                out.append(n)
+        except Exception:
+            pass
+
+    return out
+
+def by_aria(page, value):
+    q='[aria-label=' + json.dumps(value) + ']'
+    nodes=visible_nodes(page.locator(q))
+
+    if len(nodes) != 1:
+        refuse(
+            f"aria={value!r}: exactement 1 cible visible requise, "
+            f"trouvé={len(nodes)}"
+        )
+
+    return nodes[0]
+
+def by_text(page, value):
+    # Privilégie d'abord un bouton accessible au nom exact.
+    candidates=[]
+
+    for locator in (
+        page.get_by_role("button", name=value, exact=True),
+        page.get_by_text(value, exact=True),
+    ):
+        nodes=visible_nodes(locator)
+
+        if len(nodes) == 1:
+            return nodes[0]
+
+        candidates.extend(nodes)
+
+    refuse(
+        f"text={value!r}: cible non univoque, "
+        f"candidats visibles={len(candidates)}"
+    )
+
+def inspect(node):
+    return node.evaluate("""
+e => {
+    const r=e.getBoundingClientRect();
+    const s=getComputedStyle(e);
+
+    return {
+        tag:e.tagName.toLowerCase(),
+        aria:e.getAttribute('aria-label'),
+        title:e.getAttribute('title'),
+        text:(e.innerText || e.textContent || '').trim().slice(0,500),
+        disabled:!!e.disabled,
+        display:s.display,
+        visibility:s.visibility,
+        opacity:s.opacity,
+        rect:{
+            x:r.x,
+            y:r.y,
+            width:r.width,
+            height:r.height,
+            right:r.right,
+            bottom:r.bottom
+        }
+    };
+}
+""")
+
+def page_state(page):
+    body=page.locator("body").inner_text()
+    return {
+        "url":page.url,
+        "title":page.title(),
+        "body_sha256":hashlib.sha256(
+            body.encode("utf-8","replace")
+        ).hexdigest(),
+        "body_excerpt":body[:16000]
+    }
+
+def artifact_name(prefix):
+    stamp=datetime.now().strftime("%Y%m%d-%H%M%S-%f")
+    return ART / f"{prefix}-{stamp}"
+
+if len(sys.argv) < 2:
+    refuse(
+        "usage: corpus-bb-cdp "
+        "snapshot | inspect aria|text VALEUR | "
+        "click aria|text VALEUR | shot [nom]"
+    )
+
+cmd=sys.argv[1]
+
+with sync_playwright() as pw:
+    browser=pw.chromium.connect_over_cdp(CDP)
+    page=get_page(browser)
+    page.bring_to_front()
+
+    if not allowed_page(page):
+        refuse("page hors périmètre localhost Corpus")
+
+    if cmd == "snapshot":
+        result=[]
+
+        loc=page.locator(
+            'button,input,textarea,select,a,[role="button"],[aria-label]'
+        )
+
+        for i in range(loc.count()):
+            node=loc.nth(i)
+
+            try:
+                if not node.is_visible():
+                    continue
+
+                result.append(inspect(node))
+            except Exception:
+                pass
+
+        print(json.dumps({
+            "page":page_state(page),
+            "elements":result
+        },ensure_ascii=False,indent=2))
+
+        print("SNAPSHOT=PASS")
+
+    elif cmd in ("inspect","click"):
+        if len(sys.argv) < 4:
+            refuse(f"{cmd}: usage {cmd} aria|text VALEUR")
+
+        mode=sys.argv[2]
+        value=" ".join(sys.argv[3:])
+
+        if mode == "aria":
+            node=by_aria(page,value)
+        elif mode == "text":
+            node=by_text(page,value)
+        else:
+            refuse("mode requis: aria ou text")
+
+        target=inspect(node)
+
+        if target.get("disabled"):
+            refuse("cible désactivée")
+
+        if target["rect"]["width"] <= 0 or target["rect"]["height"] <= 0:
+            refuse("géométrie cible invalide")
+
+        if cmd == "inspect":
+            print(json.dumps(target,ensure_ascii=False,indent=2))
+            print("INSPECT=PASS")
+
+        else:
+            stem=artifact_name("click")
+
+            before=page_state(page)
+            before_png=Path(str(stem)+"-before.png")
+            after_png=Path(str(stem)+"-after.png")
+            evidence_json=Path(str(stem)+".json")
+
+            page.screenshot(path=str(before_png),full_page=False)
+
+            node.click()
+
+            # On laisse l'application terminer ses microtasks/rendu.
+            page.wait_for_timeout(700)
+
+            after=page_state(page)
+
+            page.screenshot(path=str(after_png),full_page=False)
+
+            evidence={
+                "command":"click",
+                "mode":mode,
+                "value":value,
+                "target":target,
+                "before":before,
+                "after":after,
+                "state_changed":
+                    before["url"] != after["url"]
+                    or before["body_sha256"] != after["body_sha256"],
+                "before_screenshot":str(before_png),
+                "after_screenshot":str(after_png)
+            }
+
+            evidence_json.write_text(
+                json.dumps(
+                    evidence,
+                    ensure_ascii=False,
+                    indent=2
+                )
+            )
+
+            print(json.dumps(evidence,ensure_ascii=False,indent=2))
+            print("EVIDENCE="+str(evidence_json))
+            print("CLICK=PASS")
+
+    elif cmd == "shot":
+        if len(sys.argv) >= 3:
+            name=Path(sys.argv[2]).name
+        else:
+            name="corpus-bb.png"
+
+        if not name.lower().endswith(".png"):
+            name += ".png"
+
+        path=ART/name
+        page.screenshot(path=str(path),full_page=False)
+
+        print("SCREENSHOT="+str(path))
+        print("SHOT=PASS")
+
+    else:
+        refuse("commande inconnue: "+cmd)

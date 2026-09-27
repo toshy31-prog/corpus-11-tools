@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+[ "$#" -eq 1 ] || {
+    echo "usage: corpus-bb-send-text FILE" >&2
+    exit 2
+}
+
+exec "$HOME/.local/bin/corpus-bb-with-webdriver" \
+ "$HOME/.local/share/corpus-bb-venv/bin/python" \
+ "$HOME/.local/share/corpus-bb-runner/send-text.py" \
+ "$1"

@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+PY="$HOME/.local/share/corpus-bb-venv/bin/python"
+HELPER="$HOME/.local/share/corpus-bb-chat/send-shot.py"
+LOG="$HOME/.local/share/corpus-bb-chat/geckodriver.log"
+
+cleanup() {
+    rc=$?
+
+    if [ -n "${GDPID:-}" ] && kill -0 "$GDPID" 2>/dev/null; then
+        kill "$GDPID" 2>/dev/null || true
+        wait "$GDPID" 2>/dev/null || true
+    fi
+
+    exit "$rc"
+}
+
+trap cleanup EXIT
+
+# Une ancienne session WebDriver n'est PAS réutilisée.
+for pid in $(pgrep -f 'geckodriver.*--port 4444' 2>/dev/null || true); do
+    cmd="$(tr '\0' ' ' < "/proc/$pid/cmdline" 2>/dev/null || true)"
+
+    case "$cmd" in
+        *--connect-existing*--marionette-port*2828*--port*4444*)
+            kill "$pid" 2>/dev/null || true
+            ;;
+    esac
+done
+
+sleep 1
+
+: > "$LOG"
+
+geckodriver \
+    --connect-existing \
+    --marionette-host 127.0.0.1 \
+    --marionette-port 2828 \
+    --host 127.0.0.1 \
+    --port 4444 \
+    >"$LOG" 2>&1 &
+
+GDPID=$!
+
+READY=0
+
+for _ in $(seq 1 30); do
+    if curl -fsS --max-time 1 \
+        http://127.0.0.1:4444/status \
+        >/tmp/corpus-bb-wd-status.$$ 2>/dev/null
+    then
+        READY=1
+        break
+    fi
+
+    sleep 0.2
+done
+
+if [ "$READY" -ne 1 ]; then
+    echo "REFUS: geckodriver indisponible."
+    cat "$LOG" >&2
+    exit 20
+fi
+
+echo "WEBDRIVER_FRESH_SESSION=PASS"
+
+"$PY" "$HELPER" "$@"
+
+echo "CORPUS_BB_SEND_SHOT=PASS"
