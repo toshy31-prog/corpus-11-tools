@@ -2426,7 +2426,23 @@ function sourcesAddHeader(id){
 // Measure the actual app column, including when embedded in a narrow browser pane.
 const corpusMainColumn=document.querySelector('main');
 if(corpusMainColumn){
- const updatePanelSpace=()=>{document.body.classList.toggle('compact-chat-panels',corpusMainColumn.getBoundingClientRect().width<=800);};
+ let corpusPanelsWereCompact=false;
+ const updatePanelSpace=()=>{
+  const compact=corpusMainColumn.getBoundingClientRect().width<=800;
+  document.body.classList.toggle('compact-chat-panels',compact);
+
+  // Entering compact mode is a layout transition: release the workspace once.
+  // A sidebar reopened manually while already compact remains under user control.
+  if(compact&&!corpusPanelsWereCompact&&!document.body.classList.contains('corpus-sidebar-hidden')){
+   document.body.classList.add('corpus-sidebar-hidden');
+   const sidebar=document.querySelector('body>.sidebar');
+   if(sidebar)sidebar.inert=true;
+   document.getElementById('sidebar-toggle')?.setAttribute('aria-expanded','false');
+   document.getElementById('top-sidebar-toggle')?.setAttribute('aria-expanded','false');
+  }
+
+  corpusPanelsWereCompact=compact;
+ };
  new ResizeObserver(updatePanelSpace).observe(corpusMainColumn);updatePanelSpace();
 }
 

@@ -509,3 +509,64 @@ body{padding-top:34px}.settings-shell{top:34px}
 #detail .landing-center h2{font:500 24px/1.3 var(--ui-font,system-ui)!important;margin:0}
 #detail .landing-center{padding:0;min-height:0}
 @container corpus-workspace (min-width:900px){.workspace:has(#chat-summary) #native-chat{margin-left:max(0px,calc((100% - 310px - 980px)/2));margin-right:310px}}
+
+/* BB-03 — canonical responsive contract for auxiliary right panels.
+   Wide workspace: chat + active panel share the available column.
+   Compact workspace: the active panel becomes the workspace surface;
+   inactive panels stay absent and the chat is not squeezed beside it. */
+body.compact-chat-panels:has(
+  :is(
+    #shared-browser,
+    #parallel-chats,
+    #conversation-sources,
+    #side-panel-home,
+    #corpus-revision,
+    #corpus-subagents
+  ).corpus-active-panel
+) main {
+  padding-right: 0 !important;
+}
+
+body.compact-chat-panels:not(.side-panels-hidden)
+:is(
+  #shared-browser,
+  #parallel-chats,
+  #conversation-sources,
+  #side-panel-home,
+  #corpus-revision,
+  #corpus-subagents
+).corpus-active-panel {
+  display: flex !important;
+  flex-direction: column;
+  width: 100% !important;
+  right: 0;
+}
+
+body.compact-chat-panels
+:is(
+  #shared-browser,
+  #parallel-chats,
+  #conversation-sources,
+  #side-panel-home,
+  #corpus-revision,
+  #corpus-subagents
+).corpus-inactive-panel {
+  display: none !important;
+}
+
+/* Once the global layout itself becomes narrow, the sidebar is a drawer.
+   It must no longer consume horizontal workspace width. */
+@media (max-width: 760px) {
+  body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  body > .sidebar {
+    position: fixed;
+    top: 34px;
+    bottom: 0;
+    left: 0;
+    width: min(290px, 86vw);
+    z-index: 49;
+  }
+}
