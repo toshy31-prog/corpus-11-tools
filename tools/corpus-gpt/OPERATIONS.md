@@ -109,3 +109,15 @@ Cas permission : conserver le refus et ne pas changer de canal pour le contourne
 
 Ne pas boucler rapidement sur job_status : lancer une fois, poursuivre le travail
 indépendant possible, puis relire l'état lorsque le résultat devient nécessaire.
+
+### Rechargement automatique des sources MCP
+
+Le watcher utilisateur corpus-gpt-source-watch.path surveille les quatre sources
+qui déterminent la couche MCP. corpus-gpt-source-reload.service appelle le garde
+de hash corpus_gpt_reload.py : si le contenu est inchangé, aucun restart ; si le
+contenu a changé, le tunnel est redémarré et le hash n'est enregistré qu'après
+succès.
+
+État du watcher :
+systemctl --user is-active corpus-gpt-source-watch.path
+systemctl --user is-enabled corpus-gpt-source-watch.path

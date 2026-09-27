@@ -1,0 +1,12 @@
+[Unit]
+Description=Watch Corpus GPT MCP sources
+
+[Path]
+PathChanged=/home/olivier/Documents/ChatGPT/Corpus/projets/corpus-local-llm-migration/corpus_gpt_mcp.py
+PathChanged=/home/olivier/Documents/ChatGPT/Corpus/projets/corpus-local-llm-migration/corpus_gpt_async.py
+PathChanged=/home/olivier/Documents/ChatGPT/Corpus/projets/corpus-local-llm-migration/blocker_resilience.py
+PathChanged=/home/olivier/Documents/ChatGPT/Corpus/projets/corpus-local-llm-migration/corpus_gpt_reload.py
+Unit=corpus-gpt-source-reload.service
+
+[Install]
+WantedBy=default.target

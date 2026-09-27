@@ -17,6 +17,7 @@ SOURCES = (
     HERE / "corpus_gpt_mcp.py",
     HERE / "corpus_gpt_async.py",
     HERE / "blocker_resilience.py",
+    HERE / "corpus_gpt_reload.py",
 )
 STATE_PATH = STATE_ROOT / "corpus-gpt" / "source-reload.json"
 

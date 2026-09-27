@@ -1,0 +1,6 @@
+[Unit]
+Description=Reload Corpus GPT tunnel after MCP source changes
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /home/olivier/Documents/ChatGPT/Corpus/projets/corpus-local-llm-migration/corpus_gpt_reload.py reload

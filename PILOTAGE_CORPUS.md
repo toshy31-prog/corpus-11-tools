@@ -105,6 +105,19 @@ limitées aux gains significatifs, échecs nouveaux ou décisions nécessaires.
 Pendant une attente datée, reporter son prochain réveil à l'échéance.
 Aucun nouveau circuit de rapports récurrents.
 
+## Reprise universelle des blocages — 28 septembre 2026
+
+Tout obstacle rencontré pendant le pilotage suit désormais le contrat
+projets/corpus-local-llm-migration/BLOCKER_RESILIENCE.md. Le comportement attendu
+est transversal : préserver l'état vérifié, classifier l'obstacle, inspecter avant
+retry, réduire au plus petit échec, corriger la cause racine, valider puis reprendre
+depuis la dernière étape sûre.
+
+Un timeout ou une coupure de transport ne vaut pas échec du travail local ; un run
+à état inconnu n'est jamais dupliqué. Un problème récurrent doit devenir un test,
+un garde, une automatisation ou une règle canonique. Les données primaires et les
+travaux concurrents restent protégés, et aucun refus de permission n'est contourné.
+
 ## Correction de la veille — 20 septembre 2026
 
 Les dix derniers cycles consultés avant cette correction ne faisaient que relire

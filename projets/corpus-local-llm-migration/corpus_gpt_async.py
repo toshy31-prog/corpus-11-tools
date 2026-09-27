@@ -12,7 +12,6 @@ import time
 import uuid
 
 TOKEN_RE = re.compile(r"^[a-f0-9]{16}$")
-_DETACHED: dict[str, subprocess.Popen] = {}
 
 
 def _root(bb) -> Path:
@@ -70,15 +69,7 @@ def read_state(bb, token: str) -> dict | None:
 def refresh_state(bb, value: dict) -> dict:
     value = dict(value)
     token = value.get("token")
-    handle = _DETACHED.get(token) if isinstance(token, str) else None
-    if handle is not None:
-        if handle.poll() is None:
-            return value
-        _DETACHED.pop(token, None)
-
     if value.get("status") not in {"starting", "running"}:
-        return value
-    if _pid_alive(value.get("pid")):
         return value
 
     if isinstance(token, str):
@@ -90,13 +81,27 @@ def refresh_state(bb, value: dict) -> dict:
                 final = None
             if isinstance(final, dict):
                 value.update(final)
+                _atomic_json(_state_path(bb, token), value)
+                return value
 
-    if value.get("status") in {"starting", "running"}:
-        value["status"] = "unknown_after_process_exit"
-        value["completion_known"] = False
-        value["updated_at_unix"] = time.time()
-        if isinstance(token, str) and TOKEN_RE.fullmatch(token):
-            _atomic_json(_state_path(bb, token), value)
+    unit = value.get("unit")
+    if isinstance(unit, str) and unit:
+        proc = subprocess.run(
+            ["systemctl", "--user", "show", unit, "-p", "ActiveState", "--value"],
+            text=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+            check=False, timeout=5,
+        )
+        if proc.returncode == 0 and proc.stdout.strip() in {"activating", "active", "deactivating"}:
+            return value
+
+    if _pid_alive(value.get("pid")):
+        return value
+
+    value["status"] = "unknown_after_process_exit"
+    value["completion_known"] = False
+    value["updated_at_unix"] = time.time()
+    if isinstance(token, str) and TOKEN_RE.fullmatch(token):
+        _atomic_json(_state_path(bb, token), value)
     return value
 
 
@@ -162,26 +167,42 @@ def start_job(job: str, *, allowed_jobs: list[str], entry, bb, repo) -> dict:
     }
     _atomic_json(_state_path(bb, token), state)
 
-    worker = subprocess.Popen(
-        [
-            sys.executable,
-            str(Path(__file__).resolve()),
-            "--worker",
-            token,
-            job,
-            str(entry),
-            str(bb),
-            str(repo),
-        ],
-        cwd=str(repo),
-        env=_child_env(entry, bb),
-        stdin=subprocess.DEVNULL,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-        start_new_session=True,
+    unit = "corpus-gpt-async-" + token + ".service"
+    command = [
+        "systemd-run", "--user", "--unit", unit, "--collect", "--quiet",
+        "--working-directory", str(repo),
+        "--setenv", "CORPUS_GPT_BIN=" + str(entry),
+        "--setenv", "CORPUS_BB_RUNNER_ROOT=" + str(bb),
+        "--setenv", "CORPUS_BB_SKIP_GPT=1",
+        sys.executable,
+        str(Path(__file__).resolve()),
+        "--worker", token, job, str(entry), str(bb), str(repo),
+    ]
+    launched = subprocess.run(
+        command, cwd=str(repo), text=True,
+        stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+        check=False, timeout=15,
     )
-    _DETACHED[token] = worker
-    state["pid"] = worker.pid
+    if launched.returncode != 0:
+        state["status"] = "launch_failed"
+        state["completion_known"] = True
+        state["exit_code"] = launched.returncode
+        state["launch_output"] = (launched.stdout or "").strip()
+        state["updated_at_unix"] = time.time()
+        _atomic_json(_state_path(bb, token), state)
+        raise RuntimeError("lancement systemd async refusé: " + state["launch_output"])
+
+    pid_proc = subprocess.run(
+        ["systemctl", "--user", "show", unit, "-p", "MainPID", "--value"],
+        text=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+        check=False, timeout=5,
+    )
+    try:
+        pid = int(pid_proc.stdout.strip()) if pid_proc.returncode == 0 else 0
+    except ValueError:
+        pid = 0
+    state["pid"] = pid or None
+    state["unit"] = unit
     state["status"] = "running"
     state["updated_at_unix"] = time.time()
     _atomic_json(_state_path(bb, token), state)
@@ -190,7 +211,8 @@ def start_job(job: str, *, allowed_jobs: list[str], entry, bb, repo) -> dict:
         "existing": False,
         "token": token,
         "job": job,
-        "pid": worker.pid,
+        "pid": state["pid"],
+        "unit": unit,
         "status": "running",
     }
 

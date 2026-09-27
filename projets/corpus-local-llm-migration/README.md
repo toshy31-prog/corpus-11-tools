@@ -41,6 +41,7 @@ des contenus produits avec GPT.
 
 ## Reprise et rangement du chantier local
 
+- [Reprise intelligente des blocages](BLOCKER_RESILIENCE.md) : classifier, préserver, diagnostiquer, réparer et reprendre sans doublon ni suppression implicite.
 - [Rangement automatique](ORGANIZER.md) : réglages du site, commandes pour Corpus et limites de conservation.
 - [Arrêt des reprises anormales](INFERENCE_GUARD.md) : garde avant inférence et pause de la file du site, vérifiées sans modèle.
 - [Vérification du travail effectué](WORKFLOW_VERIFICATION.md) : reçu d’exécution et état actuel d’une fixture, accessibles depuis un chat sans relancer d’action.

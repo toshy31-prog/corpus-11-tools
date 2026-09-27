@@ -44,3 +44,13 @@ cas. Répéter manuellement la même procédure n'est pas une résolution durabl
 
 Le classifieur blocker_resilience.py est sans effet de bord. Il ne redémarre,
 ne supprime et n'autorise rien ; il rend le chemin de reprise testable.
+
+## Rechargement automatique du pont
+
+corpus-gpt-source-watch.path surveille les sources du MCP, du moteur asynchrone,
+du classifieur de blocage et du garde de reload. Le service associé compare un
+hash de contenu au dernier hash chargé avant de redémarrer le tunnel. Un échec
+de restart ne marque jamais le nouveau hash comme chargé.
+
+Ainsi, une modification future de ces sources ne doit plus nécessiter de rappeler
+manuellement la règle « redémarrer le tunnel après édition du MCP ».

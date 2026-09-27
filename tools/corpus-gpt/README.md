@@ -331,3 +331,7 @@ résultat existant avec job_status.
 
 Le contrat transversal complet est documenté dans
 projets/corpus-local-llm-migration/BLOCKER_RESILIENCE.md.
+
+Watcher de source : corpus-gpt-source-watch.path. Les changements réels du MCP et
+de ses modules de résilience déclenchent un reload protégé par hash ; les écritures
+sans changement de contenu ne doivent pas provoquer de boucle de restart.
