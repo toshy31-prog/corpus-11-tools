@@ -2,7 +2,7 @@
 set -euo pipefail
 project_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 workspace_dir="$(cd -- "${project_dir}/../.." && pwd)"
-godot_bin="${workspace_dir}/.toolchains/godot/Godot_v4.7.2-stable_linux.x86_64"
+godot_bin="${CORPUS_TOOLCHAINS_ROOT:-${HOME}/.local/share/corpus/toolchains}/corpus-3d/godot/Godot_v4.7.2-stable_linux.x86_64"
 scratch_dir=$(mktemp -d /tmp/corpus-3d-check-XXXXXX)
 "${project_dir}/package.sh"
 for scenario in smoke scenario; do

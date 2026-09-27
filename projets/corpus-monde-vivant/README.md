@@ -22,6 +22,10 @@ Lancer `./JOUER-3D.sh`, ou double-cliquer `dist/CORPUS-3D-linux/CORPUS`.
 - Processus Rust long vivant, journal ouvert, verrou et sauvegarde par renommage.
 - Observations analytiques distinctes du rendu, sans score global en jeu.
 
+## Toolchains
+
+Rust/Cargo et Godot ne vivent plus dans une .toolchains locale au dépôt. Ils résident sous CORPUS_TOOLCHAINS_ROOT/corpus-3d, par défaut ~/.local/share/corpus/toolchains/corpus-3d. Les scripts suivent ce contrat et acceptent CORPUS_TOOLCHAINS_ROOT comme override.
+
 ## Vérifier et poursuivre
 
 `./check.sh` : 19 tests Rust, formatage et analyse statique.
