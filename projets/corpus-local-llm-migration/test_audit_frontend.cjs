@@ -245,7 +245,14 @@ function documentFixture(extra={}){const directory='/Corpus/.dev-local/corpus-at
 function attachmentContext(extra={}){const c=context(extra);for(const name of ['normalizeNativeDocuments','nativeDocumentContext','automaticToolNames','conversationToolSnapshot'])load(c,name);return c;}
 class AttachmentNode{
  constructor(tag,text,cls){this.tagName=tag;this.textContent=text||'';this.className=cls||'';this.children=[];this.dataset={};this.attributes={};this.style={};this.classList={toggle(){},add(){}};this.scrollTop=0;this.scrollHeight=0;this.clientHeight=0;}
- append(...nodes){this.children.push(...nodes);}prepend(...nodes){this.children.unshift(...nodes);}replaceChildren(...nodes){this.children=nodes;}setAttribute(k,v){this.attributes[k]=v;}removeAttribute(k){delete this.attributes[k];}focus(){}querySelectorAll(){return [];}
+ append(...nodes){this.children.push(...nodes);}prepend(...nodes){this.children.unshift(...nodes);}replaceChildren(...nodes){this.children=nodes;}setAttribute(k,v){this.attributes[k]=v;}removeAttribute(k){delete this.attributes[k];}focus(){}
+ querySelector(selector){
+  if(selector==='summary')return descendantNodes(this).find(node=>node!==this&&node.tagName==='summary')||null;
+  if(selector==='[data-operation-body]')return descendantNodes(this).find(node=>node!==this&&Object.prototype.hasOwnProperty.call(node.dataset,'operationBody'))||null;
+  if(selector.startsWith('.')){const cls=selector.slice(1);return descendantNodes(this).find(node=>node!==this&&String(node.className||'').split(/\s+/).includes(cls))||null;}
+  return null;
+ }
+ querySelectorAll(){return [];}
 }
 function descendantNodes(node){return [node,...node.children.flatMap(descendantNodes)];}
 
