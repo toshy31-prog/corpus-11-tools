@@ -118,7 +118,22 @@ async function start(data,type,button,options={}){
  if(options.navigate!==false&&navigation===requestSerial)openSession(session.id,data?'Reprise · '+data.title:'Conversation Corpus');return session;
  }catch(e){status(`${e.message}${session?' — la session a été créée mais sa reprise est incomplète. Retrouvez-la dans les conversations locales.':''}`);button.disabled=false;}
 }
-$('new').onclick=()=>start(null,null,$('new'));
+function reusableEmptyConversation(){
+ const id=nativeCurrent;if(!id)return null;
+ const session=locals.find(item=>item.id===id);if(!session)return null;
+ const state=nativeSessions.get(id);
+ if(!state||!state.ready||state.busy||state.sending||state.queue.length||state.messages.length)return null;
+ return session;
+}
+$('new').onclick=()=>{
+ const existing=reusableEmptyConversation();
+ if(existing){
+  openSession(existing.id,existing.title);
+  requestAnimationFrame(()=>$('native-input')?.focus());
+  return;
+ }
+ start(null,null,$('new'));
+};
 $('search').oninput=()=>{const serial=++searchSerial;clearTimeout(searchTimer);searchIds=null;const q=$('search').value;if(kind!=='Conversations'||!q.trim()){render();return;}searchTimer=setTimeout(async()=>{try{const ids=await fetchJSON('/corpus/search?q='+encodeURIComponent(q));if(serial!==searchSerial)return;searchIds=new Set(ids);render();}catch(e){if(serial===searchSerial)status(e.message);}},200);};$('archived').onchange=render;
 async function chooseKind(next){kind=next;searchIds=null;++searchSerial;clearTimeout(searchTimer);$('search').value='';render();}
 $('all-conversations').onclick=()=>chooseKind('Conversations');
