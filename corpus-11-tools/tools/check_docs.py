@@ -224,7 +224,7 @@ for required_path in (
     if required_path not in (repo_root / "README.md").read_text(encoding="utf-8"):
         errors.append(f"README.md: repository map omits {required_path}")
 
-skip_parts = {".git", "node_modules", ".next", "__pycache__"}
+skip_parts = {".git", "node_modules", ".next", "__pycache__", ".toolchains", ".venv", ".dev-local", ".maintenance", ".pytest_cache", ".validation-state"}
 for path in repo_root.rglob("*.md"):
     if any(part in skip_parts for part in path.parts):
         continue

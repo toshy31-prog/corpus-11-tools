@@ -31,30 +31,44 @@ NON_DISTRIBUTED_NAMES = {
 MINIMUM_FREE_BYTES = 256 * 1024 * 1024
 
 
-def copy_repo(destination: Path) -> Path:
-    def ignore_non_distributed(_source: str, names: list[str]) -> set[str]:
-        return {
-            name
-            for name in names
-            if name in NON_DISTRIBUTED_NAMES or name.startswith(".venv-")
-        }
-
-    shutil.copytree(
-        SOURCE_REPO,
-        destination,
-        ignore=ignore_non_distributed,
+def tracked_paths() -> list[Path]:
+    """Return the Git-tracked distribution surface, using current worktree bytes."""
+    proc = subprocess.run(
+        ["git", "ls-files", "-z"],
+        cwd=SOURCE_REPO,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=True,
     )
+    return [
+        Path(raw.decode("utf-8", errors="surrogateescape"))
+        for raw in proc.stdout.split(b"\0")
+        if raw
+    ]
+
+
+def copy_repo(destination: Path) -> Path:
+    """Copy only tracked distribution files, preserving current worktree edits."""
+    destination.mkdir(parents=True, exist_ok=False)
+    for relative in tracked_paths():
+        source = SOURCE_REPO / relative
+        target = destination / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if source.is_symlink():
+            target.symlink_to(source.readlink())
+        else:
+            shutil.copy2(source, target)
     return destination
 
 
 def projected_copy_bytes() -> int:
-    """Measure one mutation copy while excluding non-distributed local state."""
+    """Measure one mutation copy from the Git-tracked distribution surface."""
     total = 0
-    for path in SOURCE_REPO.rglob("*"):
-        relative_parts = path.relative_to(SOURCE_REPO).parts
-        if any(part in NON_DISTRIBUTED_NAMES or part.startswith(".venv-") for part in relative_parts):
-            continue
-        if path.is_file() and not path.is_symlink():
+    for relative in tracked_paths():
+        path = SOURCE_REPO / relative
+        if path.is_symlink():
+            total += path.lstat().st_size
+        elif path.is_file():
             total += path.stat().st_size
     return total
 

@@ -78,8 +78,12 @@ prouve pas une amélioration du raisonnement de Corpus.
 Les candidats de routage C06 évalués restent rejetés. La comparaison rétrospective
 des quatre routeurs sur 72 cas connus décrit leurs erreurs ; elle ne démontre pas
 leur généralisation. Le parseur structuré et le sélecteur par modèle sont des pistes
-proposées, pas des architectures déjà implémentées ou validées. Référence :
-[comparaison des architectures](.dev-local/audits/routage-comparaison-architectures-2026-09-19/README.md).
+proposées, pas des architectures déjà implémentées ou validées. La comparaison
+d’architectures du 19 septembre était conservée localement sous
+`.dev-local/audits/routage-comparaison-architectures-2026-09-19/README.md`,
+mais ce chemin n’est plus présent dans l’état local courant ; les conclusions
+utiles restent donc conservées ici sans prétendre que cette ancienne preuve est
+encore consultable.
 
 Le choix des objectifs de travail et le routage des méthodes analytiques sont deux
 problèmes différents. Préserver les critères figés, les limites et la séparation des

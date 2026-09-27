@@ -7,7 +7,7 @@
   ],
   "exclusion_reason": "The attestation cannot contain its own digest without circularity; the annotated Git tag covers the attestation itself.",
   "file_count": 334,
-  "total_bytes": 4116144,
+  "total_bytes": 4119463,
   "files": [
     {
       "path": ".codex-plugin/plugin.json",
@@ -206,8 +206,8 @@
     },
     {
       "path": "docs/test-inventory.json",
-      "bytes": 14464,
-      "sha256": "00423558c8fcce81f80af48b46031d0afa5f6517440915c75e6353e4ebcf8089"
+      "bytes": 17246,
+      "sha256": "cc349341d19f6da9cf9c35c59ee0c78aec19ee4439ba3a229f06c2ba31570b0c"
     },
     {
       "path": "evals/routing-and-nonregression.jsonl",
@@ -1541,8 +1541,8 @@
     },
     {
       "path": "tools/check_docs.py",
-      "bytes": 10829,
-      "sha256": "8ddc13360cdcc74d0f33975b3d9b1bff9c26ee4d87057623c4f736102a919c30"
+      "bytes": 10921,
+      "sha256": "18c186567ae12ef4758ef87fd3663d682c588cdb51afe9522d044c6f8b95a82f"
     },
     {
       "path": "tools/check_evals.py",
@@ -1671,8 +1671,8 @@
     },
     {
       "path": "tools/test_validation_guards.py",
-      "bytes": 12070,
-      "sha256": "dc143cf94efc521adc2033daa1786ff14595c32b45938b433a70bd54ad563892"
+      "bytes": 12515,
+      "sha256": "a0a6cb01b4f80dbf2bce13c37b929d1efeb914f9d3598f6bed736a6f04f6ac99"
     },
     {
       "path": "tools/validate_package.py",
