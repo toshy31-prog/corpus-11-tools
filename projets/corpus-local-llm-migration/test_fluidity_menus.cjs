@@ -11,3 +11,40 @@ test('branch menu searches and current selection only dismisses without Git muta
 test('branch action closes before confirmation and navigation while confirming prevents mutation',async()=>{let release;const h=branches({corpusConfirm:()=>new Promise(resolve=>release=resolve)});await h.ctx.openBranchMenu('parent',h.anchor);const menu=h.body.querySelector('.branch-menu'),other=menu.querySelectorAll('.branch-menu-row').find(node=>node.textContent==='feature');other.click();other.click();assert.equal(menu.isConnected,false);h.ctx.nativeCurrent='other';release(true);await new Promise(setImmediate);assert.equal(h.branchCalls.length,2);assert.match(h.calls.at(-1)[1],/conversation a changé/);});
 test('late branch reads do not reopen a dismissed menu or modify another session',async()=>{const resolves=[];const h=branches({chatAction:()=>new Promise(r=>resolves.push(r))}),work=h.ctx.openBranchMenu('parent',h.anchor);h.body.querySelector('.branch-menu').remove();h.ctx.nativeCurrent='other';resolves[0]({branches:['main']});resolves[1]({branch:'main'});await work;assert.equal(h.body.querySelector('.branch-menu'),null);assert.equal(h.calls.length,0);});
 test('Git failure leaves loaded attachment sources visible in the summary',async()=>{const h=harness({chatAction:async()=>{throw Error('Git offline');},chatSnapshot:async()=>({messages:[]}),createSubagentSummary:()=>new h.Node('section','Sous-agents'),sourcesAddHeader:()=>new h.Node('div','Sources'),conversationAttachmentEntries:()=>[{file:{filename:'reference.pdf'}}],openConversationSources(){}});h.add('workspace','section',h.main,'workspace');h.run('const parallelChats=new Map(),parallelStartRequests=new Map();');h.load('createParallelChatSummary','paintParallelChatSummary','showChatSummary');await h.ctx.showChatSummary('parent');const card=h.document.getElementById('chat-summary');assert.match(card.textContent,/Git : Git offline/);assert.match(card.textContent,/reference.pdf/);assert.match(card.textContent,/Chats parallèles.*Sous-agents.*Sources/);});
+
+test('summary labels Git totals as project state rather than conversation changes',async()=>{
+ const h=harness({
+  chatAction:async()=>({
+   branch:'main',
+   added:282,
+   removed:50,
+   changes:'M projets/youtube-scout/example.mjs'
+  }),
+  chatSnapshot:async()=>({messages:[]}),
+  createSubagentSummary:()=>new h.Node('section','Sous-agents'),
+  sourcesAddHeader:()=>new h.Node('div','Sources'),
+  conversationAttachmentEntries:()=>[],
+  openConversationSources(){},
+  openRevision(){}
+ });
+ h.add('workspace','section',h.main,'workspace');
+ h.run("nativeCurrent='empty-chat'; const parallelChats=new Map(),parallelStartRequests=new Map();");
+ h.load('createParallelChatSummary','paintParallelChatSummary','showChatSummary');
+
+ await h.ctx.showChatSummary('empty-chat');
+
+ const card=h.document.getElementById('chat-summary');
+ const changes=[...card.querySelectorAll('button')]
+   .find(node=>node.textContent.includes('Modifications du projet'));
+
+ assert.ok(changes);
+ const changeText=changes.querySelector('.summary-row-label');
+ const totals=changes.querySelector('.environment-totals');
+ assert.ok(changeText);
+ assert.ok(totals);
+ assert.equal(changeText.textContent,'Modifications du projet');
+ assert.match(totals.textContent,/\+282/);
+ assert.match(totals.textContent,/−50/);
+ assert.match(changes.title,/État Git actuel du projet par rapport à HEAD/);
+ assert.match(changes.title,/ne sont pas attribués à cette conversation/);
+});
