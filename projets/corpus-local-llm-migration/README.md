@@ -2,10 +2,21 @@
 
 Créé le **22 septembre 2026**. Le **23 septembre**, installation autorisée et migration engagée.
 
-**Premier profil local activé : Qwen3.6 35B à experts + llama.cpp + OpenCode.**
-Le raccourci **Corpus local** figure dans le menu des applications.
+**Profil local observé : Qwen3.6 35B à experts via llama.cpp, servi dans le portail Corpus local.**
+Le raccourci **Corpus local** figure dans le menu des applications. OpenCode n’est pas la destination du produit ni un repli implicite de l’interface.
 
 **Suivi actuel : [MIGRATION.md](MIGRATION.md).** Les études ci-dessous conservent leur statut documentaire.
+
+## Livraison locale — 27 septembre 2026
+
+Le lot local est versionné dans Git avec ses contrats, tests et documentation. Les preuves d’exécution brutes restent locales ; seul leur index synthétique est suivi.
+
+- [Manifeste de livraison](DELIVERY_MANIFEST.md) : éléments, empreintes et statuts de preuve.
+- [Mesures comparables](COMPARABLE_MEASUREMENT_PROTOCOL.md) : protocole sans contenu ni session pour les futurs tests de vitesse.
+- [Batch représentatif](REPRESENTATIVE_BATCH_SCHEDULE.md) : quatre scénarios gelés, séquentiels et **non exécutés**.
+- [État local actuel](ETAT_LOCAL_ACTUEL.md) : résultats observés, dont deux épreuves bornées, et leurs limites.
+
+Aucun de ces documents ne transforme un service actif ou un test local en autonomie générale, validation indépendante ou fonctionnement hors ligne complet.
 
 ## Mandat
 

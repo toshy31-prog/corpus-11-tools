@@ -4,6 +4,14 @@
 
 Corpus 11 Tools est un ensemble d’outils pour aider Codex à analyser une question avec davantage de rigueur. Il peut notamment vérifier les sources d’une affirmation, repérer les coûts cachés, distinguer une capacité réelle d’un simple résultat de test et identifier ce qui pourrait invalider une conclusion.
 
+## Corpus local — état du chantier
+
+Le dépôt contient aussi le chantier applicatif [Corpus local](projets/corpus-local-llm-migration/README.md) : portail de conversations et projets, runtime local, mémoire, outils contrôlés et preuves d’exécution.
+
+Au 27 septembre 2026, le service local et le portail sont observés actifs. Deux épreuves agentiques bornées `lecture → modification → test` ont produit un reçu vérifié ; elles ne démontrent ni autonomie générale, ni qualité universelle, ni indépendance externe. Les contrats de mémoire, outils, routage, mesures de performance et scénarios restent explicitement séparés entre **vérifié**, **observé**, **préparé** et **non exécuté**.
+
+Le suivi opérationnel, le manifeste de livraison et les limites sont dans [l’état local](projets/corpus-local-llm-migration/ETAT_LOCAL_ACTUEL.md) et le [manifeste de livraison](projets/corpus-local-llm-migration/DELIVERY_MANIFEST.md).
+
 ## Relevé historique — 9 septembre 2026
 
 Les indications ci-dessous décrivent l’environnement observé lors de ce relevé.
