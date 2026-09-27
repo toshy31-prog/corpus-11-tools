@@ -1,0 +1,243 @@
+#!/usr/bin/env python3
+import json
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+# OpenCode peut imposer un HOME sandboxé à ses MCP.
+# Ne jamais utiliser ce HOME pour retrouver l'infrastructure utilisateur.
+#
+# Ce fichier vit dans:
+#   ~/Documents/ChatGPT/Corpus/projets/corpus-local-llm-migration/
+# On remonte donc jusqu'au vrai HOME propriétaire du dépôt.
+SELF = Path(__file__).resolve()
+
+try:
+    REAL_HOME = SELF.parents[5]
+except IndexError:
+    raise RuntimeError(
+        f"Impossible de déduire le HOME réel depuis {SELF}"
+    )
+
+ENTRY = Path(
+    os.environ.get(
+        "CORPUS_GPT_BIN",
+        str(REAL_HOME / ".local/bin/corpus-gpt"),
+    )
+)
+
+BB = Path(
+    os.environ.get(
+        "CORPUS_BB_RUNNER_ROOT",
+        str(REAL_HOME / ".local/share/corpus-bb-runner"),
+    )
+)
+
+JOBS = BB / "jobs"
+
+def result(text, error=False):
+    return {"content":[{"type":"text","text":text}], "isError": bool(error)}
+
+def run(args, timeout=360):
+    try:
+        child_env = os.environ.copy()
+        child_env["CORPUS_GPT_BIN"] = str(ENTRY)
+        child_env["CORPUS_BB_RUNNER_ROOT"] = str(BB)
+        child_env["CORPUS_BB_SKIP_GPT"] = "1"
+
+        p = subprocess.run(
+            [str(ENTRY), *args],
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            timeout=timeout,
+            check=False,
+            env=child_env,
+        )
+        return result(p.stdout.rstrip() + f"\nEXIT_CODE={p.returncode}", p.returncode != 0)
+    except subprocess.TimeoutExpired:
+        return result("TIMEOUT", True)
+
+def safe_jobs():
+    out = []
+    if JOBS.is_dir():
+        for p in sorted(JOBS.glob("*.sh")):
+            if p.is_file() and p.parent == JOBS:
+                out.append(p.stem)
+    return out
+
+TOOLS = [
+    {
+        "name":"status",
+        "description":"Lire l'état du pont Corpus GPT : backend, CDP, Firefox et verrou du runner. Lecture seule.",
+        "inputSchema":{"type":"object","properties":{},"additionalProperties":False},
+    },
+    {
+        "name":"runtime_probe",
+        "description":"Diagnostic lecture seule du processus MCP Corpus GPT lui-même. Ne lance aucun job ni subprocess.",
+        "inputSchema":{"type":"object","properties":{},"additionalProperties":False},
+    },
+    {
+        "name":"doctor",
+        "description":"Vérifier l'infrastructure Corpus GPT sans exécuter de job de test.",
+        "inputSchema":{"type":"object","properties":{},"additionalProperties":False},
+    },
+    {
+        "name":"jobs",
+        "description":"Lister les jobs Corpus GPT enregistrés et autorisés.",
+        "inputSchema":{"type":"object","properties":{},"additionalProperties":False},
+    },
+    {
+        "name":"run_job",
+        "description":"Exécuter un job Corpus GPT déjà enregistré. Le nom doit être celui d'un job listé; aucun chemin ni commande shell arbitraire n'est accepté.",
+        "inputSchema":{
+            "type":"object",
+            "properties":{"job":{"type":"string","pattern":"^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$"}},
+            "required":["job"],
+            "additionalProperties":False,
+        },
+    },
+    {
+        "name":"install_managed_job",
+        "description":"Installer ou mettre à jour un job Bash borné dans le registre Corpus GPT. Nom strict, destination imposée, backup et bash -n.",
+        "inputSchema":{
+            "type":"object",
+            "properties":{
+                "name":{"type":"string","pattern":"^[a-z0-9][a-z0-9-]{0,63}$"},
+                "content":{"type":"string","minLength":20,"maxLength":60000}
+            },
+            "required":["name","content"],
+            "additionalProperties":False,
+        },
+    },
+    {
+        "name":"latest_evidence",
+        "description":"Lister les derniers dossiers de preuves Corpus BugBounty. Lecture seule.",
+        "inputSchema":{"type":"object","properties":{},"additionalProperties":False},
+    },
+]
+
+def call(name, a):
+    a = a or {}
+    if name == "runtime_probe":
+        import os
+        import shutil
+
+        lines = [
+            "PID=" + str(os.getpid()),
+            "PPID=" + str(os.getppid()),
+            "FILE=" + str(Path(__file__).resolve()),
+            "HOME_ENV=" + repr(os.environ.get("HOME")),
+            "PATH_ENV=" + repr(os.environ.get("PATH")),
+            "REAL_HOME=" + str(REAL_HOME),
+            "ENTRY=" + str(ENTRY),
+            "ENTRY_EXISTS=" + repr(ENTRY.exists()),
+            "ENTRY_IS_FILE=" + repr(ENTRY.is_file()),
+            "ENTRY_EXECUTABLE=" + repr(os.access(ENTRY, os.X_OK)),
+            "ENTRY_RESOLVED=" + str(ENTRY.resolve()),
+            "BB=" + str(BB),
+            "BB_EXISTS=" + repr(BB.exists()),
+            "BASH_WHICH=" + repr(shutil.which("bash")),
+            "ENV_CORPUS_GPT_BIN=" + repr(os.environ.get("CORPUS_GPT_BIN")),
+            "ENV_CORPUS_BB_RUNNER_ROOT=" + repr(os.environ.get("CORPUS_BB_RUNNER_ROOT")),
+        ]
+
+        return result("\n".join(lines))
+
+    if name == "status":
+        return run(["status"], 20)
+    if name == "doctor":
+        return run(["doctor"], 30)
+    if name == "jobs":
+        return result("\n".join(safe_jobs()))
+    if name == "install_managed_job":
+        import re
+        import shutil
+        import tempfile
+        import datetime
+        job_name = a.get("name")
+        content = a.get("content")
+        if not isinstance(job_name, str) or not re.fullmatch(r"[a-z0-9][a-z0-9-]{0,63}", job_name):
+            return result("REFUS: nom de job invalide", True)
+        if not isinstance(content, str) or not content.startswith("#!/usr/bin/env bash\n"):
+            return result("REFUS: shebang bash requis", True)
+        if len(content) < 20 or len(content) > 60000:
+            return result("REFUS: taille de job invalide", True)
+        jobs = JOBS.resolve()
+        jobs.mkdir(parents=True, exist_ok=True)
+        dest = (jobs / (job_name + ".sh")).resolve()
+        if dest.parent != jobs:
+            return result("REFUS: sortie du registre jobs", True)
+        backup = None
+        if dest.exists():
+            stamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S-%f")
+            bdir = BB / "backups" / "managed-jobs" / stamp
+            bdir.mkdir(parents=True, exist_ok=True)
+            backup = bdir / dest.name
+            shutil.copy2(dest, backup)
+        fd, tmp = tempfile.mkstemp(prefix=".managed-job-", dir=str(jobs))
+        os.close(fd)
+        tp = Path(tmp)
+        try:
+            tp.write_text(content)
+            chk = subprocess.run(
+                ["/usr/bin/bash","-n",str(tp)],
+                text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                timeout=10, check=False,
+            )
+            if chk.returncode != 0:
+                return result("REFUS: bash -n: " + chk.stdout, True)
+            tp.chmod(0o700)
+            tp.replace(dest)
+        finally:
+            if tp.exists():
+                tp.unlink()
+        lines=["MANAGED_JOB_INSTALL=PASS","JOB="+job_name,"PATH="+str(dest),"BASH_N=PASS"]
+        if backup is not None:
+            lines.append("BACKUP="+str(backup))
+        return result("\n".join(lines))
+    if name == "latest_evidence":
+        return run(["evidence"], 20)
+    if name == "run_job":
+        job = a.get("job")
+        allowed = safe_jobs()
+        if not isinstance(job, str) or job not in allowed:
+            return result("REFUS: job non enregistré. Autorisés: " + ", ".join(allowed), True)
+        return run(["run", job], 600)
+    return result("outil inconnu", True)
+
+def send(obj):
+    sys.stdout.write(json.dumps(obj, ensure_ascii=False) + "\n")
+    sys.stdout.flush()
+
+for line in sys.stdin:
+    try:
+        req = json.loads(line)
+        mid = req.get("id")
+        method = req.get("method")
+        if method == "initialize":
+            res = {
+                "protocolVersion":"2024-11-05",
+                "capabilities":{"tools":{}},
+                "serverInfo":{"name":"corpus-gpt","version":"1"},
+            }
+        elif method == "notifications/initialized":
+            continue
+        elif method == "tools/list":
+            res = {"tools":TOOLS}
+        elif method == "tools/call":
+            p = req.get("params") or {}
+            res = call(p.get("name"), p.get("arguments") or {})
+        else:
+            if mid is None:
+                continue
+            send({"jsonrpc":"2.0","id":mid,"error":{"code":-32601,"message":"Method not found"}})
+            continue
+        if mid is not None:
+            send({"jsonrpc":"2.0","id":mid,"result":res})
+    except Exception as e:
+        try:
+            send({"jsonrpc":"2.0","id":req.get("id"),"error":{"code":-32000,"message":str(e)}})
+        except Exception:
+            pass

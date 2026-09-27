@@ -95,7 +95,7 @@ def environment(intel=False, moe=False):
         'autoupdate': False, 'lsp': False, 'formatter': False,
         'default_agent': 'corpus', 'subagent_depth': 1,
         'plugin': tool_definition_plugins(),
-        'mcp': {'corpus-tools': {'type':'local','command':[sys.executable,str(HERE/'local_tools_mcp.py')],'timeout':300000}, 'corpus-retrieval': {'type':'local','command':[sys.executable,str(HERE/'retrieval_mcp.py')],'timeout':300000}, 'serena': {'type':'local','command':[sys.executable,str(HERE/'serena_wrapper.py')],'timeout':300000}},
+        'mcp': {'corpus-tools': {'type':'local','command':[sys.executable,str(HERE/'local_tools_mcp.py')],'timeout':300000}, 'corpus-retrieval': {'type':'local','command':[sys.executable,str(HERE/'retrieval_mcp.py')],'timeout':300000}, 'corpus-gpt': {'type':'local','command':[sys.executable,str(HERE/'corpus_gpt_mcp.py')],'timeout':600000}, 'serena': {'type':'local','command':[sys.executable,str(HERE/'serena_wrapper.py')],'timeout':300000}},
         'agent': {'corpus-plan': {'mode':'primary','model':model_ref,'variant':'direct','permission':{'*':'deny'},'tools':{'*':False},'prompt':'Tu es Corpus en mode Plan. Réponds uniquement par un plan. Aucun outil ne doit être utilisé.'}, 'title': {'disable': True}, 'corpus': {'mode': 'primary',
             'model': model_ref,
             'variant': 'direct',
@@ -104,6 +104,7 @@ def environment(intel=False, moe=False):
             'permission': {
                 'task': 'deny',
                 'corpus-retrieval_*': 'allow',
+                'corpus-gpt_*': 'allow',
             },
             'prompt': primary_context(), 'steps': 12},
             'corpus-worker': {'mode': 'subagent', 'steps': 6, 'disable': True,
