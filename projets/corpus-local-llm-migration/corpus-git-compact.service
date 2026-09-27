@@ -1,0 +1,8 @@
+[Unit]
+Description=Corpus bounded persistent Git compaction
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /home/olivier/Documents/ChatGPT/Corpus/projets/corpus-local-llm-migration/corpus_git_compact.py
+NoNewPrivileges=true
+TimeoutStartSec=2h
