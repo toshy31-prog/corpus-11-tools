@@ -56,6 +56,9 @@ Outils actuellement exposés :
     ou shell arbitraire.
 -   `latest_evidence` : liste les dernières preuves BugBounty.
 -   `runtime_probe` : diagnostic lecture seule du processus MCP.
+-   `install_managed_job(name, content)` : installe ou met à jour un job
+    Bash borné dans le registre géré ; nom strict, destination imposée,
+    sauvegarde de l'ancienne version et validation `bash -n`.
 
 Cette voie a été validée depuis une conversation ChatGPT réelle, sans
 relais terminal humain :
@@ -304,8 +307,9 @@ stocker la clé dans Git.
 6.  Garder distincts : tunnel/MCP, runner, navigation CDP/DOM, transport
     ChatGPT.
 7.  Ne jamais exposer de secret.
-8.  Pour une nouvelle capacité, préférer un job borné, auditable et
-    testable.
+8.  Pour une nouvelle capacité, préférer `install_managed_job` afin de
+    créer un job borné, auditable et testable plutôt qu'un contournement
+    du registre.
 9.  Ne pas extrapoler : les capacités documentées sont celles
     observées/validées.
 10. Le but de l'architecture est une boucle GPT ↔ machine autonome mais

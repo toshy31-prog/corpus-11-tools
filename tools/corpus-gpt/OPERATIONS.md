@@ -9,6 +9,9 @@
 4.  Appelle `Corpus.jobs` avant toute exécution.
 5.  Utilise `Corpus.latest_evidence` pour les preuves.
 6.  Exécute seulement un job listé et pertinent.
+7.  Si l'action nécessaire n'existe pas encore, préfère
+    `Corpus.install_managed_job` pour installer un job Bash borné plutôt
+    qu'un accès shell ou une écriture directe dans le registre.
 
 ## Si le tunnel semble indisponible
 

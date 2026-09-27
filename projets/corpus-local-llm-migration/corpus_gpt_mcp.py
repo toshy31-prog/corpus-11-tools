@@ -121,7 +121,6 @@ TOOLS = [
 def call(name, a):
     a = a or {}
     if name == "runtime_probe":
-        import os
         import shutil
 
         lines = [

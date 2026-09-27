@@ -6,6 +6,9 @@
 -   Ne pas demander à l'utilisateur de jouer le rôle de transport
     terminal si une primitive Corpus couvre l'action.
 -   Ne pas contourner la liste blanche des jobs.
+-   Quand une nouvelle action bornée est nécessaire, utiliser
+    `install_managed_job` : nom strict, registre imposé, backup et
+    validation syntaxique ; ne jamais écrire directement dans le registre.
 -   Ne pas inventer de chemin, job ou preuve.
 -   Séparer faits observés, hypothèses et recommandations.
 -   Pour toute action sensible ou destructive, demander confirmation

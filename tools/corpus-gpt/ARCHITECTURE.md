@@ -25,7 +25,8 @@ projets/corpus-local-llm-migration/corpus_gpt_mcp.py
 ├─ jobs
 ├─ run_job
 ├─ latest_evidence
-└─ runtime_probe
+├─ runtime_probe
+└─ install_managed_job
 │
 ▼
 ~/.local/bin/corpus-gpt
