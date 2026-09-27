@@ -49,3 +49,14 @@ publication.
 - BB-06: navigation fichier suivant.
 - BB-07: navigation fichier précédent.
 - BB-08: refresh conserve sélection, navigation et URL.
+
+## Blocages et exécutions longues
+
+Un timeout de l'appelant ne vaut jamais verdict sur le job. Pour les exécutions
+longues, start_job retourne un token persistant ; async_jobs et job_status servent
+à retrouver et lire le run sans le dupliquer. assess_blocker classe les incidents
+déjà observés sans lancer de commande.
+
+La stratégie générale est : préserver, classifier, inspecter, réduire, réparer,
+valider, reprendre ; une cause répétitive doit devenir une automatisation ou un
+test de régression.

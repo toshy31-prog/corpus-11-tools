@@ -32,10 +32,17 @@ def run(*args: str, cwd: Path = REPO_ROOT, check: bool = True) -> subprocess.Com
     return proc
 
 
-def git_object(path: str) -> str:
-    proc = run("git", "rev-parse", f"HEAD:{path}", check=False)
+def candidate_tree() -> str:
+    proc = run("git", "write-tree", check=False)
+    if proc.returncode == 0 and proc.stdout.strip():
+        return proc.stdout.strip()
+    return run("git", "rev-parse", "HEAD").stdout.strip()
+
+
+def git_object(path: str, tree: str) -> str:
+    proc = run("git", "rev-parse", f"{tree}:{path}", check=False)
     if proc.returncode != 0:
-        fail(f"attested test surface missing from HEAD: {path}")
+        fail(f"attested test surface missing from candidate tree: {path}")
     return proc.stdout.strip()
 
 
@@ -50,6 +57,8 @@ def validate() -> tuple[int, int]:
         fail("test inventory must contain a non-empty surfaces list")
 
     seen: set[str] = set()
+    drifts: list[tuple[str, str, str]] = []
+    tree = candidate_tree()
     for index, entry in enumerate(surfaces, 1):
         if not isinstance(entry, dict):
             fail(f"surface #{index} is not an object")
@@ -66,14 +75,24 @@ def validate() -> tuple[int, int]:
         if not isinstance(expected, str) or len(expected) != 40:
             fail(f"invalid git object id for {path}")
 
-        actual = git_object(path)
+        actual = git_object(path, tree)
         if actual != expected:
-            fail(
-                f"test surface drift for {path}: expected {expected}, got {actual}; "
-                "review the test change and explicitly re-attest docs/test-inventory.json"
-            )
+            drifts.append((path, expected, actual))
 
-    tracked = run("git", "ls-files").stdout.splitlines()
+    if drifts:
+        details = "\n".join(
+            f" - {path}: expected {expected}, got {actual}"
+            for path, expected, actual in drifts
+        )
+        fail(
+            "test surface drift detected for "
+            + str(len(drifts))
+            + " surface(s):\n"
+            + details
+            + "\nreview all source changes before explicitly re-attesting docs/test-inventory.json"
+        )
+
+    tracked = run("git", "ls-files", "--cached").stdout.splitlines()
     attested = set(seen)
 
     def covered(path: str) -> bool:

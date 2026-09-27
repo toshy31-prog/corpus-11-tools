@@ -77,3 +77,35 @@ GPT_REPORT_SEND=SKIPPED
 JOB_EXIT_CODE=0
 EXIT_CODE=0
 ```
+
+## Reprise intelligente après tout blocage
+
+Ordre générique :
+
+1. préserver le HEAD, le working tree et la dernière preuve valide ;
+2. classifier le blocage ;
+3. inspecter l'état réel avant retry ;
+4. réduire au contrôle minimal ;
+5. réparer la cause racine avec une action réversible et bornée ;
+6. valider ciblé puis global ;
+7. reprendre à l'étape vérifiée suivante ;
+8. si le cas s'est déjà produit, automatiser définitivement sa résolution.
+
+Cas transport ou timeout : consulter status/runtime_probe, le verrou runner et les
+runs existants avant tout rerun. Cas pression disque : mesurer les octets réellement
+nécessaires et classifier les chemins selon CORPUS_LIFECYCLE.json avant toute
+proposition de nettoyage. Cas attestation stale : comparer le HEAD, le working tree
+et l'historique ; ne régénérer l'attestation qu'après revue du changement source.
+Cas permission : conserver le refus et ne pas changer de canal pour le contourner.
+
+### Commandes et outils associés
+
+- assess_blocker pour classifier l'obstacle ;
+- start_job pour un job long ;
+- async_jobs pour retrouver un lancement existant ;
+- job_status pour récupérer sa fin et son résultat ;
+- python3 scripts/corpus storage --json pour une pression disque ;
+- python3 scripts/corpus blocker - pour le même classifieur depuis le control plane.
+
+Ne pas boucler rapidement sur job_status : lancer une fois, poursuivre le travail
+indépendant possible, puis relire l'état lorsque le résultat devient nécessaire.

@@ -20,3 +20,16 @@ dans le registre géré des jobs.
 Le runner Corpus GPT reste responsable du lock, de CDP, des preuves et du
 transport. Les jobs lancés via MCP utilisent `CORPUS_BB_SKIP_GPT=1` afin de
 retourner leur résultat par le canal MCP sans double envoi navigateur.
+
+## Résilience
+
+Outils complémentaires :
+
+- assess_blocker : classification déterministe d'un incident déjà observé ;
+- start_job : lancement asynchrone d'un job enregistré ;
+- async_jobs : liste persistante des derniers lancements asynchrones ;
+- job_status : état et sortie d'un lancement par token.
+
+start_job conserve la même liste blanche que run_job et refuse les noms non
+enregistrés. Le même job encore actif est renvoyé comme existant au lieu d'être
+dupliqué. Ces primitives n'accordent aucune permission supplémentaire.

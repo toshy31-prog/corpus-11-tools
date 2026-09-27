@@ -118,3 +118,15 @@ copie ancienne, dépendances modifiées, refus avant écriture, échec après é
 interruption partielle, reprise, chemins protégés, liens, modes, double application
 et corruption des données de récupération. Ces contrôles ne suffisent pas à
 établir une autonomie générale ; une livraison réelle distincte les complète.
+
+### Blocages transversaux
+
+Les règles ci-dessus s'étendent à tout blocage rencontré pendant une initiative.
+Avant de rejouer une étape, déterminer si le travail a réellement échoué ou si seul
+son transport, son attente ou son observabilité a échoué. Conserver le dernier état
+sûr et reprendre à partir de lui. Une difficulté récurrente doit être convertie en
+mécanisme réutilisable plutôt qu'en procédure manuelle répétée.
+
+Le classifieur projets/corpus-local-llm-migration/blocker_resilience.py formalise
+cette décision sans effet de bord. Il ne remplace ni les permissions, ni les
+contrats de données, ni les garde-fous de livraison.

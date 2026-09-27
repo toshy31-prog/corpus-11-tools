@@ -384,6 +384,70 @@ def gc_preview(policy=None, paths=None):
     return [row for row in drift(policy, paths) if row.get("gc_candidate")]
 
 
+def storage_pressure(policy=None, paths=None):
+    policy = policy or load_policy()
+    paths = paths or current_paths()
+    repo = Path(paths["repo"])
+
+    usage = __import__("shutil").disk_usage(repo)
+    territories = []
+    for row in territory_rows(policy, paths):
+        spec = policy["territories"][row["territory"]]
+        territories.append({
+            "territory": row["territory"],
+            "path": row["path"],
+            "bytes": row["bytes"],
+            "truth": spec["truth"],
+            "recovery": spec["recovery"],
+            "gc": spec["gc"],
+            "automatic_delete_allowed": False,
+        })
+
+    ignored = []
+    proc = subprocess.run(
+        ["git", "status", "--ignored", "--short"],
+        cwd=repo, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+        check=False, timeout=120,
+    )
+    if proc.returncode == 0:
+        for line in proc.stdout.splitlines():
+            if not line.startswith("!! "):
+                continue
+            relative = line[3:].rstrip("/")
+            target = repo / relative
+            if not target.exists() and not target.is_symlink():
+                continue
+            ignored.append({
+                "path": relative,
+                "bytes": bytes_used(target),
+                "classification": "repo_ignored_local",
+                "automatic_delete_allowed": False,
+                "next_action": "review_reconstructibility_and_ownership",
+            })
+    ignored.sort(key=lambda row: (row["bytes"] is not None, row["bytes"] or 0), reverse=True)
+
+    return {
+        "schema_version": 1,
+        "filesystem": {
+            "path": str(repo),
+            "total_bytes": usage.total,
+            "used_bytes": usage.used,
+            "free_bytes": usage.free,
+            "used_ratio": round(usage.used / usage.total, 6) if usage.total else None,
+        },
+        "territories": territories,
+        "largest_ignored_repo_paths": ignored[:50],
+        "invariants": [
+            "report_only_no_deletion",
+            "primary_data_requires_explicit_user_intent",
+            "config_requires_explicit_user_intent",
+            "toolchains_require_recovery_proof_before_gc",
+            "models_require_unreferenced_and_recoverable_proof_before_gc",
+            "cache_cleanup_requires_no_hidden_dependency",
+        ],
+    }
+
+
 def print_table(rows, columns):
     if not rows:
         print("<aucun>")
@@ -476,6 +540,37 @@ def cmd_coverage(args):
     return 0
 
 
+def cmd_storage(args):
+    value = storage_pressure()
+    if args.json:
+        print(json.dumps(value, ensure_ascii=False, indent=2))
+    else:
+        fs = value["filesystem"]
+        print(
+            "FILESYSTEM "
+            + human(fs["used_bytes"]) + " / " + human(fs["total_bytes"])
+            + " · libre " + human(fs["free_bytes"])
+        )
+        print("\nTERRITOIRES")
+        rows = [{**row, "size": human(row["bytes"])} for row in value["territories"]]
+        print_table(rows, [
+            ("territory", "TERRITOIRE"),
+            ("size", "TAILLE"),
+            ("truth", "VÉRITÉ"),
+            ("gc", "RÈGLE GC"),
+            ("path", "CHEMIN"),
+        ])
+        print("\nPLUS GROS CHEMINS IGNORÉS DU DÉPÔT")
+        ignored = [{**row, "size": human(row["bytes"])} for row in value["largest_ignored_repo_paths"]]
+        print_table(ignored, [
+            ("size", "TAILLE"),
+            ("classification", "CLASSE"),
+            ("path", "CHEMIN"),
+        ])
+        print("\nAUCUNE_SUPPRESSION=OUI")
+    return 0
+
+
 def cmd_gc(args):
     if not args.dry_run:
         raise SystemExit("Seul `gc --dry-run` existe dans la constitution v1.")
@@ -520,6 +615,10 @@ def main(argv=None):
     p.add_argument("--gaps-only", action="store_true")
     p.set_defaults(func=cmd_coverage)
 
+    p = sub.add_parser("storage", help="Diagnostiquer la pression disque sans supprimer")
+    p.add_argument("--json", action="store_true")
+    p.set_defaults(func=cmd_storage)
+
     p = sub.add_parser("gc")
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--json", action="store_true")
@@ -544,6 +643,13 @@ def main(argv=None):
         import project_resume
         return project_resume.main(args.resume_args)
     p.set_defaults(func=resume)
+
+    p = sub.add_parser('blocker', help='Classifier un blocage observé et proposer une reprise sans effet de bord')
+    p.add_argument('blocker_args', nargs=argparse.REMAINDER)
+    def blocker(args):
+        import blocker_resilience
+        return blocker_resilience.main(['blocker_resilience.py', *args.blocker_args])
+    p.set_defaults(func=blocker)
 
     args = parser.parse_args(argv)
     return args.func(args)

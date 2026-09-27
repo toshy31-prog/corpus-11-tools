@@ -83,3 +83,13 @@ Corpus.latest_evidence si nécessaire
   ↓
 Corpus.run_job seulement pour un job réellement listé
 ```
+
+## Résilience de contrôle
+
+La surface MCP distingue désormais exécution courte et exécution longue.
+run_job reste synchrone. start_job lance uniquement un nom déjà présent dans jobs
+et écrit un état persistant sous le runner local ; async_jobs et job_status
+permettent ensuite de reprendre l'observation après un timeout ou un redémarrage
+du tunnel. Un même job encore actif n'est pas dupliqué.
+
+assess_blocker fournit la stratégie de reprise déterministe commune à Corpus.

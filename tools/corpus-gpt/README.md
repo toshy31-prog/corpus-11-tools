@@ -314,3 +314,20 @@ stocker la clé dans Git.
     observées/validées.
 10. Le but de l'architecture est une boucle GPT ↔ machine autonome mais
     contrôlée, pas l'accès arbitraire à la machine.
+
+## Reprise des blocages et jobs longs
+
+Le MCP expose aussi :
+
+- assess_blocker : classifie un blocage observé sans effet de bord ;
+- start_job : démarre un job enregistré sans attendre sa fin ;
+- async_jobs : retrouve les derniers jobs asynchrones et leurs tokens ;
+- job_status : lit l'état persistant et la fin de sortie d'un job asynchrone.
+
+Pour un job susceptible de dépasser la fenêtre du client, préférer start_job à
+run_job. Ne jamais démarrer une seconde copie tant que l'état du premier run n'est
+pas connu. Après coupure du tunnel, retrouver le token avec async_jobs et lire le
+résultat existant avec job_status.
+
+Le contrat transversal complet est documenté dans
+projets/corpus-local-llm-migration/BLOCKER_RESILIENCE.md.

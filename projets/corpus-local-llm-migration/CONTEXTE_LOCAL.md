@@ -88,3 +88,28 @@ Utiliser document_extract pour lire et analyser un document existant (PDF, DOCX,
 
 ## Rangement local
 Le rangement est consultable dans Paramètres → Rangement et via `python3 scripts/corpus organize status` ou `preview`. `run` classe des copies sans supprimer les originaux. Les règles se modifient avec `settings --settings-file chemin.json` ; consulter ORGANIZER.md avant modification.
+
+## Reprise intelligente des blocages
+
+Tout blocage doit déclencher une reprise structurée, pas un abandon automatique.
+Préserve d'abord l'état vérifié, les modifications locales et les travaux concurrents.
+Distingue au minimum : échec réel, transport coupé, timeout à résultat inconnu,
+validation en échec, état dérivé périmé, pression de ressource, runtime dégradé,
+dépendance externe, refus de permission et modification concurrente.
+
+Avant tout retry, inspecte l'état réel. Ne relance jamais un travail dont l'achèvement
+est inconnu. Réduis l'échec au contrôle minimal, corrige la cause racine, valide
+localement, puis reprends depuis la dernière étape vérifiée. Si le même obstacle
+réapparaît, transforme sa résolution en test, garde, automatisation ou documentation
+canonique. blocker_resilience.py peut classifier un diagnostic déjà observé ; il
+n'accorde aucune permission et n'effectue aucune action.
+
+En manque de ressource, mesure d'abord la surface réellement pertinente et respecte
+CORPUS_LIFECYCLE.json : données primaires et configuration ne sont jamais supprimées
+implicitement. Un refus de permission n'est jamais contourné par un autre canal.
+Pour une dépendance extérieure indisponible, conserve le progrès et continue les
+travaux indépendants possibles.
+
+Commandes de reprise disponibles : python3 scripts/corpus blocker - pour classifier
+un diagnostic JSON et python3 scripts/corpus storage --json pour mesurer une pression
+disque sans suppression.

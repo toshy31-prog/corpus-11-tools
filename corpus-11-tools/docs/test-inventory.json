@@ -13,7 +13,7 @@
     {"path": "corpus-11-tools/tools/test_offline_router.py", "git_object": "a97daf895210267760b100b7cc15e62b8a8dd66c", "kind": "blob"},
     {"path": "corpus-11-tools/tools/test_project_yield_gate.py", "git_object": "b9465c90daa1ec5ac895967c2595602dd0531def", "kind": "blob"},
     {"path": "corpus-11-tools/tools/test_router_generalization.py", "git_object": "2ef1dfa175a85a87cbe92ec5c5a0a549306a75b0", "kind": "blob"},
-    {"path": "corpus-11-tools/tools/test_validation_guards.py", "git_object": "986307329ab6c9eee539a368dd71291f2842575d", "kind": "blob"},
+    {"path": "corpus-11-tools/tools/test_validation_guards.py", "git_object": "59b4fda7d6ca35b8c077a5f51eb509a22fec12f0", "kind": "blob"},
     {"path": "research/active/corpus-hypotheses/experiments/memory-erasure-lab/test-simulator.mjs", "git_object": "85eac26b83b8976e3fd35cd9637874154a4a7e84", "kind": "blob"},
     {"path": "research/active/corpus-hypotheses/lab-adapters/governance/tests", "git_object": "e739202ebc6b437a15e0f779abcba27b8cf7dd2b", "kind": "tree"},
     {"path": "research/active/corpus-hypotheses/lab-adapters/tests", "git_object": "8673393a6b9bed09a6c4b8efb8118f53d4d0ae7f", "kind": "tree"},
@@ -107,6 +107,11 @@
     {"path": "research/active/research-interruptibility-and-recovery-lab/tests/test_partial_checkpoint_recovery.py", "git_object": "ebdca954def45c73484211ddfc7eda46191d794d", "kind": "blob"},
     {"path": "research/artifacts/pr22-study-2026-09-13/characterization.test.mjs", "git_object": "248b674b8682d18d577803a836a7bfbaafcbfb59", "kind": "blob"},
     {"path": "research/scripts/test_foe_001_independent_replication.py", "git_object": "56f61e5f511f2bc794a318b6a874a4363a905d43", "kind": "blob"},
-    {"path": "research/scripts/test_run_foe_001_transversal_campaign.py", "git_object": "f40396b9fc86f3aecf142bf3d9f2a1d2d10140dc", "kind": "blob"}
+    {"path": "research/scripts/test_run_foe_001_transversal_campaign.py", "git_object": "f40396b9fc86f3aecf142bf3d9f2a1d2d10140dc", "kind": "blob"},
+    {"path": "projets/corpus-local-llm-migration/test_blocker_resilience.py", "git_object": "7d8f14f6111e4375171c541f155cb8129321438e", "kind": "blob"},
+    {"path": "projets/corpus-local-llm-migration/test_blocker_control.py", "git_object": "70bf97e02d36549aec2ba6e0cf3dec267f17e127", "kind": "blob"},
+    {"path": "projets/corpus-local-llm-migration/test_corpus_gpt_async.py", "git_object": "c6b358a5d4c5c55c8bba854fe9fd9b3bb27d4ada", "kind": "blob"},
+    {"path": "projets/corpus-local-llm-migration/test_storage_pressure.py", "git_object": "9ea16f7324d7c81d8ad42ba2c99f40ab8f624c14", "kind": "blob"},
+    {"path": "projets/corpus-local-llm-migration/test_corpus_gpt_reload.py", "git_object": "dc7050e199d1aaff9da209f1702ad15e538f1f66", "kind": "blob"}
   ]
 }

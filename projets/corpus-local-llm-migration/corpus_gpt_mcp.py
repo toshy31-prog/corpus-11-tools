@@ -5,6 +5,9 @@ import subprocess
 import sys
 from pathlib import Path
 
+import blocker_resilience as blocker_policy
+import corpus_gpt_async as async_jobs
+
 # OpenCode peut imposer un HOME sandboxé à ses MCP.
 # Ne jamais utiliser ce HOME pour retrouver l'infrastructure utilisateur.
 #
@@ -79,6 +82,25 @@ TOOLS = [
         "inputSchema":{"type":"object","properties":{},"additionalProperties":False},
     },
     {
+        "name":"assess_blocker",
+        "description":"Classifier un blocage déjà observé et retourner une stratégie de reprise déterministe, sans effet de bord.",
+        "inputSchema":{
+            "type":"object",
+            "properties":{
+                "message":{"type":"string","maxLength":12000},
+                "kind":{"type":"string","enum":[
+                    "transport_failure","timeout_unknown_completion","validation_failure",
+                    "stale_derived_state","resource_pressure","concurrent_change",
+                    "runtime_degraded","external_dependency","permission_refusal","environment_constraint","unknown"
+                ]},
+                "known_completion":{"type":"boolean"},
+                "repeated":{"type":"boolean"},
+                "destructive_cleanup_authorized":{"type":"boolean"}
+            },
+            "additionalProperties":False,
+        },
+    },
+    {
         "name":"doctor",
         "description":"Vérifier l'infrastructure Corpus GPT sans exécuter de job de test.",
         "inputSchema":{"type":"object","properties":{},"additionalProperties":False},
@@ -95,6 +117,31 @@ TOOLS = [
             "type":"object",
             "properties":{"job":{"type":"string","pattern":"^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$"}},
             "required":["job"],
+            "additionalProperties":False,
+        },
+    },
+    {
+        "name":"start_job",
+        "description":"Démarrer sans attente un job Corpus GPT déjà enregistré. Le même job actif n'est pas dupliqué; un token persistant est renvoyé.",
+        "inputSchema":{
+            "type":"object",
+            "properties":{"job":{"type":"string","pattern":"^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$"}},
+            "required":["job"],
+            "additionalProperties":False,
+        },
+    },
+    {
+        "name":"async_jobs",
+        "description":"Lister les derniers jobs asynchrones Corpus GPT avec token, état et code de sortie éventuel. Lecture seule.",
+        "inputSchema":{"type":"object","properties":{},"additionalProperties":False},
+    },
+    {
+        "name":"job_status",
+        "description":"Lire l'état persistant et la fin de sortie d'un job asynchrone Corpus GPT.",
+        "inputSchema":{
+            "type":"object",
+            "properties":{"token":{"type":"string","pattern":"^[a-f0-9]{16}$"}},
+            "required":["token"],
             "additionalProperties":False,
         },
     },
@@ -146,10 +193,55 @@ def call(name, a):
 
     if name == "status":
         return run(["status"], 20)
+    if name == "assess_blocker":
+        observation = {key: value for key, value in a.items() if value is not None}
+        try:
+            value = blocker_policy.assess(observation)
+        except ValueError as exc:
+            return result("REFUS: " + str(exc), True)
+        return result(json.dumps(value, ensure_ascii=False, indent=2))
     if name == "doctor":
         return run(["doctor"], 30)
     if name == "jobs":
         return result("\n".join(safe_jobs()))
+    if name == "start_job":
+        job = a.get("job")
+        try:
+            value = async_jobs.start_job(
+                job,
+                allowed_jobs=safe_jobs(),
+                entry=ENTRY,
+                bb=BB,
+                repo=SELF.parents[2],
+            )
+        except ValueError as exc:
+            return result("REFUS: " + str(exc), True)
+        lines = [
+            "ASYNC_JOB_STARTED=" + ("PASS" if value.get("started") else "EXISTING"),
+            "TOKEN=" + str(value.get("token")),
+            "JOB=" + str(value.get("job")),
+            "STATUS=" + str(value.get("status")),
+            "PID=" + str(value.get("pid")),
+        ]
+        return result("\n".join(lines))
+    if name == "async_jobs":
+        rows = []
+        for value in async_jobs.recent_states(BB):
+            rows.append({
+                "token": value.get("token"),
+                "job": value.get("job"),
+                "status": value.get("status"),
+                "completion_known": value.get("completion_known"),
+                "exit_code": value.get("exit_code"),
+                "pid": value.get("pid"),
+            })
+        return result(json.dumps(rows, ensure_ascii=False, indent=2))
+    if name == "job_status":
+        try:
+            value = async_jobs.job_status(a.get("token"), bb=BB)
+        except ValueError as exc:
+            return result("REFUS: " + str(exc), True)
+        return result(json.dumps(value, ensure_ascii=False, indent=2))
     if name == "install_managed_job":
         import re
         import shutil
