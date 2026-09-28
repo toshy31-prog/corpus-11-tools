@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "entities": [
+    {
+      "entity_id": "ent:fixture:a",
+      "kind": "scope",
+      "identity": {
+        "scheme": "canonical-uri",
+        "value": "corpus://fixture/A"
+      },
+      "attributes": {},
+      "display_name": "same"
+    },
+    {
+      "entity_id": "ent:fixture:a-homonym",
+      "kind": "scope",
+      "identity": {
+        "scheme": "canonical-uri",
+        "value": "corpus://fixture/A-homonym"
+      },
+      "attributes": {},
+      "display_name": "same"
+    },
+    {
+      "entity_id": "ent:fixture:b",
+      "kind": "scope",
+      "identity": {
+        "scheme": "canonical-uri",
+        "value": "corpus://fixture/B"
+      },
+      "attributes": {}
+    },
+    {
+      "entity_id": "ent:fixture:source",
+      "kind": "source_state",
+      "identity": {
+        "scheme": "content-digest",
+        "value": "source-A"
+      },
+      "attributes": {}
+    },
+    {
+      "entity_id": "ent:fixture:runtime",
+      "kind": "runtime",
+      "identity": {
+        "scheme": "runtime-instance",
+        "value": "runtime-1"
+      },
+      "attributes": {}
+    },
+    {
+      "entity_id": "ent:fixture:surface-old",
+      "kind": "mcp_surface",
+      "identity": {
+        "scheme": "surface-instance",
+        "value": "surface-old"
+      },
+      "attributes": {}
+    }
+  ],
+  "assertions": [
+    {
+      "assertion_id": "ast:fixture:a",
+      "subject": "ent:fixture:a",
+      "predicate": "scope.state",
+      "value": "stable",
+      "depends_on": [],
+      "evidence": [],
+      "observed_at": null,
+      "validity": {},
+      "supersedes": [],
+      "invalidates": [],
+      "attributes": {}
+    },
+    {
+      "assertion_id": "ast:fixture:b",
+      "subject": "ent:fixture:b",
+      "predicate": "scope.revision",
+      "value": "B1",
+      "depends_on": [],
+      "evidence": [],
+      "observed_at": null,
+      "validity": {},
+      "supersedes": [],
+      "invalidates": [],
+      "attributes": {}
+    },
+    {
+      "assertion_id": "ast:fixture:source",
+      "subject": "ent:fixture:source",
+      "predicate": "source.digest",
+      "value": "source-A",
+      "depends_on": [],
+      "evidence": [],
+      "observed_at": null,
+      "validity": {},
+      "supersedes": [],
+      "invalidates": [],
+      "attributes": {}
+    },
+    {
+      "assertion_id": "ast:fixture:runtime",
+      "subject": "ent:fixture:runtime",
+      "predicate": "runtime.loaded_digest",
+      "value": "source-A",
+      "depends_on": [],
+      "evidence": [],
+      "observed_at": null,
+      "validity": {},
+      "supersedes": [],
+      "invalidates": [],
+      "attributes": {}
+    },
+    {
+      "assertion_id": "ast:fixture:match",
+      "subject": "ent:fixture:runtime",
+      "predicate": "runtime.matches_source",
+      "value": true,
+      "depends_on": [
+        {
+          "role": "runtime_digest",
+          "ref": "ast:fixture:runtime"
+        },
+        {
+          "role": "source_digest",
+          "ref": "ast:fixture:source"
+        }
+      ],
+      "evidence": [],
+      "observed_at": null,
+      "validity": {},
+      "supersedes": [],
+      "invalidates": [],
+      "attributes": {}
+    },
+    {
+      "assertion_id": "ast:fixture:surface",
+      "subject": "ent:fixture:surface-old",
+      "predicate": "surface.schema_digest",
+      "value": "old",
+      "depends_on": [],
+      "evidence": [],
+      "observed_at": null,
+      "validity": {},
+      "supersedes": [],
+      "invalidates": [],
+      "attributes": {}
+    }
+  ],
+  "relations": [],
+  "evidence": []
+}

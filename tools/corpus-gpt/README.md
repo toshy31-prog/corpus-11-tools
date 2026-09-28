@@ -355,3 +355,14 @@ Un job local saute le préflight CDP. Cela évite démarrages Firefox/CDP, dédu
 Sorties : commencer par des résumés bornés et structurés. N'imprimer de gros arbres, logs ou fichiers que lorsqu'un premier résumé révèle une anomalie ou lorsque la tâche exige explicitement le détail.
 
 État persistant : après timeout ou coupure, récupérer token/état/résultat existants avant toute relance. Une sortie de transport manquante n'est pas une preuve d'échec local.
+
+
+### Écriture bornée du dépôt
+
+`write_repo_file` permet une écriture texte atomique strictement confinée au dépôt Corpus. Elle refuse les chemins absolus et traversal ; `require_clean` peut imposer un working tree propre. Elle ne remplace ni les validations métier ni les jobs d’exécution.
+
+### Reprise après changement de capacité
+Après évolution du schéma MCP, un client peut conserver l'ancien tool schema malgré un runtime correctement rechargé. Ce n'est pas un échec local : créer le receipt, ouvrir une session fraîche et reprendre par resume_handoff.
+
+### Continuation après checkpoint
+Un handoff borné est un point de reprise persistant, pas une obligation de changer de conversation. Continuer dans le chat courant si contexte/stream, surface MCP et runtime sont sains. Ne demander reload/refresh/nouveau chat que lorsque les indicateurs du receipt l'exigent et avec new_chat_reason explicite. À la reprise, consommer exact_jobs, async_tokens, baselines et stop_conditions avant toute redécouverte.

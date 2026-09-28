@@ -178,3 +178,17 @@ le signal direct ne suffit pas, et trace de la décision.
 - Un cache hit ne doit pas consommer un budget de requête externe. Une source absente ou limitée doit produire un frontier/stop reason, pas une boucle.
 - Cohérence inter-preuves ne signifie ni vérité ni succès. Un paquet cohérent reste non promu tant que sa vérification propre n'est pas satisfaite.
 - Les receipts et checkpoints doivent transporter métadonnées, hashes, limites et raisons ; éviter de recopier les contenus lourds lorsqu'ils sont déjà attestés.
+
+
+### Écriture bornée du dépôt
+
+`write_repo_file` permet une écriture texte atomique strictement confinée au dépôt Corpus. Elle refuse les chemins absolus et traversal ; `require_clean` peut imposer un working tree propre. Elle ne remplace ni les validations métier ni les jobs d’exécution.
+
+### Capability handoff
+Une évolution de surface MCP suit source → validation → reload demandé → loaded confirmé → vérification en session fraîche. Un digest observé ne devient jamais loaded_digest par observation. Si le schéma client reste ancien : receipt → NEW_CHAT_REQUIRED → nouvelle conversation → resume_handoff → vérification → reprise.
+
+### Trois frontières de refresh
+Un changement de surface distingue runtime reload, redécouverte du plugin/outillage côté client et schéma conservé par la conversation. Un runtime chargé peut donc encore exiger PLUGIN_REFRESH_REQUIRED=true puis NEW_CHAT_REQUIRED=true. Ne jamais assimiler ces états.
+
+### Continuation après checkpoint
+Un handoff borné est un point de reprise persistant, pas une obligation de changer de conversation. Continuer dans le chat courant si contexte/stream, surface MCP et runtime sont sains. Ne demander reload/refresh/nouveau chat que lorsque les indicateurs du receipt l'exigent et avec new_chat_reason explicite. À la reprise, consommer exact_jobs, async_tokens, baselines et stop_conditions avant toute redécouverte.

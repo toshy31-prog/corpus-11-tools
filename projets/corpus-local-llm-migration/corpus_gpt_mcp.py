@@ -1,14 +1,22 @@
 #!/usr/bin/env python3
+import base64
 import json
 import os
+import socket
 import subprocess
 import sys
+import threading
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import blocker_resilience as blocker_policy
+import capability_handoff as handoff
 import corpus_gpt_async as async_jobs
 import corpus_gpt_job_policy as job_policy
+import corpus_gpt_reload as reload_guard
 import corpus_gpt_planner as execution_planner
+
+RUNTIME_LOAD_CONFIRMATION = reload_guard.confirm_loaded_runtime()
 
 # OpenCode peut imposer un HOME sandboxé à ses MCP.
 # Ne jamais utiliser ce HOME pour retrouver l'infrastructure utilisateur.
@@ -44,6 +52,81 @@ JOB_POLICY = BB / "state/job-policy.json"
 
 def result(text, error=False):
     return {"content":[{"type":"text","text":text}], "isError": bool(error)}
+
+_BROWSER_WORKER = None
+_BROWSER_LOCK = threading.Lock()
+_SEND_LOCK = threading.Lock()
+_TOOL_EXECUTOR = ThreadPoolExecutor(max_workers=8, thread_name_prefix="corpus-mcp")
+
+def browser_result(value):
+    clean = dict(value)
+    image_uri = clean.pop("image", None)
+    content = [{"type":"text","text":json.dumps(clean, ensure_ascii=False, separators=(",",":"))}]
+    if image_uri is not None:
+        prefix = "data:image/png;base64,"
+        if not isinstance(image_uri, str) or not image_uri.startswith(prefix):
+            return result("REFUS: image navigateur invalide", True)
+        payload = image_uri[len(prefix):]
+        try:
+            base64.b64decode(payload, validate=True)
+        except Exception:
+            return result("REFUS: image navigateur base64 invalide", True)
+        content.append({"type":"image","data":payload,"mimeType":"image/png"})
+    return {"content":content,"isError":False}
+
+def browser_socket_path():
+    runtime = os.environ.get("XDG_RUNTIME_DIR") or ("/run/user/" + str(os.getuid()))
+    return Path(runtime) / "corpus-gpt-browser.sock"
+
+def browser_call(arguments):
+    worker = SELF.with_name("browser_worker.py")
+    if not worker.is_file():
+        return result("REFUS: browser_worker absent", True)
+    request = (json.dumps(arguments, ensure_ascii=False) + "\n").encode("utf-8")
+    last_error = None
+    with _BROWSER_LOCK:
+        for attempt in range(2):
+            try:
+                with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as peer:
+                    peer.settimeout(35)
+                    print("BROWSER_TRACE before connect", file=sys.stderr, flush=True)
+                    peer.connect(str(browser_socket_path()))
+                    print("BROWSER_TRACE after connect", file=sys.stderr, flush=True)
+                    peer.sendall(request)
+                    print("BROWSER_TRACE after sendall", file=sys.stderr, flush=True)
+                    chunks = bytearray()
+                    while not chunks.endswith(b"\n"):
+                        print("BROWSER_TRACE before recv", file=sys.stderr, flush=True)
+                        part = peer.recv(65536)
+                        print("BROWSER_TRACE after recv", file=sys.stderr, flush=True)
+                        if not part:
+                            break
+                        chunks.extend(part)
+                if not chunks:
+                    return result("REFUS: browser_worker sans réponse", True)
+                response = json.loads(chunks.decode("utf-8"))
+                break
+            except (OSError, json.JSONDecodeError) as exc:
+                last_error = exc
+                if attempt:
+                    return result("REFUS: transport browser_worker: " + str(exc), True)
+                subprocess.run(
+                    ["systemctl", "--user", "start", "corpus-gpt-browser.service"],
+                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                    timeout=5, check=False,
+                )
+                import time
+                deadline = time.monotonic() + 3
+                while time.monotonic() < deadline and not browser_socket_path().exists():
+                    time.sleep(0.05)
+        else:
+            return result("REFUS: transport browser_worker: " + str(last_error), True)
+    if response.get("error"):
+        return result("REFUS: " + str(response["error"]), True)
+    value = response.get("result")
+    if not isinstance(value, dict):
+        return result("REFUS: résultat browser_worker invalide", True)
+    return browser_result(value)
 
 def run(args, timeout=360, extra_env=None):
     try:
@@ -95,7 +178,7 @@ TOOLS = [
                 "kind":{"type":"string","enum":[
                     "transport_failure","timeout_unknown_completion","validation_failure",
                     "stale_derived_state","resource_pressure","concurrent_change",
-                    "runtime_degraded","external_dependency","permission_refusal","environment_constraint","unknown"
+                    "runtime_degraded","external_dependency","permission_refusal","environment_constraint","explicit_cancel","runtime_restart","shutdown","cancelled_unknown","unknown"
                 ]},
                 "known_completion":{"type":"boolean"},
                 "repeated":{"type":"boolean"},
@@ -125,9 +208,19 @@ TOOLS = [
         "inputSchema":{"type":"object","properties":{},"additionalProperties":False},
     },
     {
+        "name":"job_info",
+        "description":"Vérifier un job nommé sans lister tout le registre : existence et classe local/browser.",
+        "inputSchema":{"type":"object","properties":{"job":{"type":"string","pattern":"^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$"}},"required":["job"],"additionalProperties":False},
+    },
+    {
+        "name":"capabilities",
+        "description":"Résumé compact des capacités et du protocole efficace Corpus GPT.",
+        "inputSchema":{"type":"object","properties":{},"additionalProperties":False},
+    },
+    {
         "name":"plan_next",
         "description":"Planifier sans exécuter la prochaine utilisation Corpus GPT avec axes de portée, transversalité, abstraction, réversibilité et preuve.",
-        "inputSchema":{"type":"object","properties":{"status":{"type":"string","enum":["pass","degraded","unknown"]},"job_known":{"type":"boolean"},"job_kind":{"type":"string","enum":["local","browser"]},"potentially_long":{"type":"boolean"},"write":{"type":"boolean"},"destructive":{"type":"boolean"},"abstraction":{"type":"string"},"transversality":{"type":"string"},"reversibility":{"type":"string"},"evidence_freshness":{"type":"string"},"uncertainty":{"type":"string"},"counterfield":{"type":"string"},"revision_condition":{"type":"string"},"stop_condition":{"type":"string"},"exclusive_resources":{"type":"array","items":{"type":"string"}},"preserved_capabilities":{"type":"array","items":{"type":"string"}},"displaced_costs":{"type":"array","items":{"type":"string"}},"modalities":{"type":"array","items":{"type":"string","enum":["local_compute","browser_interaction","visual_evidence","outbound_transport"]}},"delegation":{"type":"object"},"blocker":{"type":"object"}},"additionalProperties":False},
+        "inputSchema":{"type":"object","properties":{"status":{"type":"string","enum":["pass","degraded","unknown"]},"job_known":{"type":"boolean"},"job_kind":{"type":"string","enum":["local","browser","browser-headless","browser-visible","browser-hybrid"]},"potentially_long":{"type":"boolean"},"write":{"type":"boolean"},"destructive":{"type":"boolean"},"abstraction":{"type":"string"},"transversality":{"type":"string"},"reversibility":{"type":"string"},"evidence_freshness":{"type":"string"},"uncertainty":{"type":"string"},"counterfield":{"type":"string"},"revision_condition":{"type":"string"},"stop_condition":{"type":"string"},"exclusive_resources":{"type":"array","items":{"type":"string"}},"preserved_capabilities":{"type":"array","items":{"type":"string"}},"displaced_costs":{"type":"array","items":{"type":"string"}},"modalities":{"type":"array","items":{"type":"string","enum":["local_compute","browser_interaction","visual_evidence","outbound_transport"]}},"delegation":{"type":"object"},"blocker":{"type":"object"}},"additionalProperties":False},
     },
     {
         "name":"run_job",
@@ -155,12 +248,36 @@ TOOLS = [
         "inputSchema":{"type":"object","properties":{},"additionalProperties":False},
     },
     {
+        "name":"cancel_job",
+        "description":"Arrêter un job async Corpus actif par son token exact. Refuse token inconnu, terminé ou unité incohérente.",
+        "inputSchema":{
+            "type":"object",
+            "properties":{"token":{"type":"string","pattern":"^[a-f0-9]{16}$"}},
+            "required":["token"],
+            "additionalProperties":False,
+        },
+    },
+    {
         "name":"job_status",
         "description":"Lire l'état persistant et la fin de sortie d'un job asynchrone Corpus GPT.",
         "inputSchema":{
             "type":"object",
             "properties":{"token":{"type":"string","pattern":"^[a-f0-9]{16}$"},"tail_lines":{"type":"integer","minimum":0,"maximum":200}},
             "required":["token"],
+            "additionalProperties":False,
+        },
+    },
+    {
+        "name":"write_repo_file",
+        "description":"Écrire atomiquement un fichier texte borné sous le dépôt Corpus. Refuse chemins absolus, traversal et écriture hors dépôt.",
+        "inputSchema":{
+            "type":"object",
+            "properties":{
+                "path":{"type":"string","minLength":1,"maxLength":500},
+                "content":{"type":"string","maxLength":200000},
+                "require_clean":{"type":"boolean"}
+            },
+            "required":["path","content"],
             "additionalProperties":False,
         },
     },
@@ -175,6 +292,60 @@ TOOLS = [
             },
             "required":["name","content"],
             "additionalProperties":False,
+        },
+    },
+    {
+        "name":"context_graph_fixture",
+        "description":"Lire le fixture canonique public/minimal ContextGraph v1. Lecture seule; aucune extension de l'algebre.",
+        "inputSchema":{"type":"object","properties":{},"additionalProperties":False},
+    },
+    {
+        "name":"capability_handoff",
+        "description":"Créer un receipt borné de changement de capacité.",
+        "inputSchema":{"type":"object","properties":{
+          "start_head":{"type":"string"},"invariants":{"type":"array","items":{"type":"string"}},
+          "work_in_progress":{"type":"string"},"next_action":{"type":"string"},
+          "validations":{"type":"array","items":{"type":"string"}},
+          "baselines":{"type":"array","items":{"type":"string"}},
+          "expected_capabilities":{"type":"array","items":{"type":"string"}},
+          "observed_capabilities":{"type":"array","items":{"type":"string"}},
+          "exact_jobs":{"type":"object","additionalProperties":{"type":"string"}},
+          "async_tokens":{"type":"array","items":{"type":"object","properties":{"job":{"type":"string"},"token":{"type":"string"},"status":{"type":"string"}},"required":["job","token"],"additionalProperties":False}},
+          "blockers":{"type":"array","items":{"type":"string"}},
+          "stop_conditions":{"type":"array","items":{"type":"string"}},
+          "context_health":{"type":"string","enum":["healthy","degraded","unknown"]},
+          "new_chat_reason":{"type":"string","maxLength":500},
+          "context_graph":{"type":"object"},
+          "projection_roots":{"type":"array","items":{"type":"string"}}
+        },"additionalProperties":False},
+    },
+    {
+        "name":"resume_handoff",
+        "description":"Reprendre un handoff après vérification HEAD et working tree.",
+        "inputSchema":{"type":"object","properties":{
+          "handoff_id":{"type":"string","minLength":1,"maxLength":80},
+          "current_context_graph":{"type":"object"}
+        },"required":["handoff_id"],"additionalProperties":False},
+    },
+    {
+        "name":"browser",
+        "description":"Piloter la session navigateur Corpus bornée. screenshot/frame renvoient une vraie image MCP avec l’état textuel associé.",
+        "inputSchema":{
+            "type":"object",
+            "properties":{
+                "action":{"type":"string","enum":["status","launch","navigate","click","fill","back","forward","reload","snapshot","screenshot","frame","pointer","type","key","scroll","allow-origin","tab-new","tab-select","tab-close","find","zoom","device","history","downloads","close","clear"]},
+                "url":{"type":"string","maxLength":4000},
+                "visible":{"type":"boolean"},
+                "selector":{"type":"string","maxLength":2000},
+                "text":{"type":"string","maxLength":8000},
+                "x":{"type":"number"},"y":{"type":"number"},"dy":{"type":"number"},
+                "key":{"type":"string","maxLength":40},
+                "tab":{"type":"string","maxLength":64},
+                "zoom":{"type":"number"},
+                "mobile":{"type":"boolean"}
+            },
+            "required":["action"],
+            "additionalProperties":False
         },
     },
     {
@@ -228,7 +399,14 @@ def call(name, a):
         if not isinstance(job,str) or job not in allowed:return result(json.dumps({"job":job,"exists":False},ensure_ascii=False))
         return result(json.dumps({"job":job,"exists":True,"kind":job_policy.kind_for(job,job_policy.load(JOB_POLICY))},ensure_ascii=False))
     if name == "capabilities":
-        value={"protocol":"efficient-v2","fast_path":"status_then_known_job","doctor":"on_degraded_only","discovery":"jobs_or_job_info","long_jobs":"start_job_then_job_status","job_status_default_tail_lines":24,"managed_job_default_kind":"local","context_strategy":"stable_metadata_and_attested_evidence_before_heavy_recompute","delegation":"admission_only_no_permission_or_execution","browser_marker":"# corpus-job-kind: browser","repo":str(SELF.parents[2]),"runner":str(BB)}
+        value={"protocol":"efficient-v2","fast_path":"status_then_known_job","doctor":"on_degraded_only","discovery":"jobs_or_job_info","long_jobs":"start_job_then_job_status","job_status_default_tail_lines":24,"managed_job_default_kind":"local","browser_marker":"# corpus-job-kind: browser","visual_job_kinds":["browser-headless","browser-visible","browser-hybrid"],"visual_target_marker":"# corpus-visual-target: <url>","visual_job_kinds":["browser-headless","browser-visible","browser-hybrid"],"visual_target_marker":"# corpus-visual-target: <url>","visual_job_kinds":["browser-headless","browser-visible","browser-hybrid"],"visual_target_marker":"# corpus-visual-target: <url>","repo":str(SELF.parents[2]),"runner":str(BB)}
+        return result(json.dumps(value,ensure_ascii=False,separators=(",",":")))
+    if name == "job_info":
+        job=a.get("job"); allowed=safe_jobs()
+        if not isinstance(job,str) or job not in allowed:return result(json.dumps({"job":job,"exists":False},ensure_ascii=False))
+        return result(json.dumps({"job":job,"exists":True,"kind":job_policy.kind_for(job,job_policy.load(JOB_POLICY))},ensure_ascii=False))
+    if name == "capabilities":
+        value={"protocol":"efficient-v2","fast_path":"status_then_known_job","doctor":"on_degraded_only","discovery":"jobs_or_job_info","long_jobs":"start_job_then_job_status","job_status_default_tail_lines":24,"managed_job_default_kind":"local","context_strategy":"stable_metadata_and_attested_evidence_before_heavy_recompute","delegation":"admission_only_no_permission_or_execution","browser_marker":"# corpus-job-kind: browser","visual_job_kinds":["browser-headless","browser-visible","browser-hybrid"],"visual_target_marker":"# corpus-visual-target: <url>","visual_job_kinds":["browser-headless","browser-visible","browser-hybrid"],"visual_target_marker":"# corpus-visual-target: <url>","visual_job_kinds":["browser-headless","browser-visible","browser-hybrid"],"visual_target_marker":"# corpus-visual-target: <url>","repo":str(SELF.parents[2]),"runner":str(BB)}
         return result(json.dumps(value,ensure_ascii=False,separators=(",",":")))
     if name == "plan_next":
         try: value=execution_planner.plan(a)
@@ -244,6 +422,7 @@ def call(name, a):
                 bb=BB,
                 repo=SELF.parents[2],
                 job_kind=job_policy.kind_for(job, job_policy.load(JOB_POLICY)),
+                visual_target=(job_policy.load(JOB_POLICY).get(job) or {}).get("visual_target",""),
             )
         except ValueError as exc:
             return result("REFUS: " + str(exc), True)
@@ -267,12 +446,56 @@ def call(name, a):
                 "pid": value.get("pid"),
             })
         return result(json.dumps(rows, ensure_ascii=False, indent=2))
+    if name == "cancel_job":
+        try:
+            value = async_jobs.cancel_job(a.get("token"), bb=BB)
+        except (ValueError, RuntimeError) as exc:
+            return result("REFUS: " + str(exc), True)
+        return result(json.dumps(value, ensure_ascii=False, indent=2))
     if name == "job_status":
         try:
             value = async_jobs.job_status(a.get("token"), bb=BB, tail_lines=a.get("tail_lines", 24))
         except ValueError as exc:
             return result("REFUS: " + str(exc), True)
         return result(json.dumps(value, ensure_ascii=False, indent=2))
+    if name == "write_repo_file":
+        import tempfile
+        repo = Path("/home/olivier/Documents/ChatGPT/Corpus").resolve()
+        rel = a.get("path")
+        content = a.get("content")
+        require_clean = a.get("require_clean", False)
+        if not isinstance(rel, str) or not rel or len(rel) > 500:
+            return result("REFUS: chemin invalide", True)
+        candidate = Path(rel)
+        if candidate.is_absolute() or ".." in candidate.parts:
+            return result("REFUS: chemin hors dépôt", True)
+        target = (repo / candidate).resolve()
+        try:
+            target.relative_to(repo)
+        except ValueError:
+            return result("REFUS: chemin hors dépôt", True)
+        if not isinstance(content, str) or len(content) > 200000:
+            return result("REFUS: contenu invalide", True)
+        if require_clean:
+            cp = subprocess.run(["git", "status", "--porcelain=v1"], cwd=repo, text=True, capture_output=True, timeout=10)
+            if cp.returncode != 0:
+                return result("REFUS: état Git illisible", True)
+            if cp.stdout.strip():
+                return result("REFUS: working tree non propre", True)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        fd, tmp = tempfile.mkstemp(prefix=".corpus-write-", dir=str(target.parent))
+        try:
+            with os.fdopen(fd, "w", encoding="utf-8") as fh:
+                fh.write(content)
+                fh.flush()
+                os.fsync(fh.fileno())
+            os.replace(tmp, target)
+        finally:
+            try:
+                if os.path.exists(tmp): os.unlink(tmp)
+            except OSError:
+                pass
+        return result("REPO_WRITE=PASS\nPATH=" + str(candidate) + "\nBYTES=" + str(len(content.encode("utf-8"))))
     if name == "install_managed_job":
         import re
         import shutil
@@ -316,13 +539,27 @@ def call(name, a):
             if tp.exists():
                 tp.unlink()
         registry=job_policy.load(JOB_POLICY)
-        registry[job_name]={"kind":job_policy.kind_from_content(content)}
+        registry[job_name]={"kind":job_policy.kind_from_content(content),"visual_target":job_policy.visual_target_from_content(content)}
         JOB_POLICY.parent.mkdir(parents=True,exist_ok=True)
         JOB_POLICY.write_text(json.dumps(registry,ensure_ascii=False,indent=2)+"\n")
         lines=["MANAGED_JOB_INSTALL=PASS","JOB="+job_name,"KIND="+registry[job_name]["kind"],"PATH="+str(dest),"BASH_N=PASS"]
         if backup is not None:
             lines.append("BACKUP="+str(backup))
         return result("\n".join(lines))
+    if name == "context_graph_fixture":
+        fixture=SELF.with_name("context_graph_fixture.json")
+        if not fixture.is_file(): return result("REFUS: fixture ContextGraph absent", True)
+        return result(fixture.read_text())
+    if name == "capability_handoff":
+        try: value=handoff.create(**a)
+        except (ValueError,RuntimeError) as exc: return result("REFUS: "+str(exc),True)
+        return result(json.dumps(value,ensure_ascii=False,indent=2))
+    if name == "resume_handoff":
+        try: value=handoff.resume(a.get("handoff_id"), current_context_graph=a.get("current_context_graph"))
+        except (ValueError,RuntimeError) as exc: return result("REFUS: "+str(exc),True)
+        return result(json.dumps(value,ensure_ascii=False,indent=2), not value.get("compatible"))
+    if name == "browser":
+        return browser_call(a)
     if name == "latest_evidence":
         return run(["evidence"], 20)
     if name == "run_job":
@@ -330,13 +567,23 @@ def call(name, a):
         allowed = safe_jobs()
         if not isinstance(job, str) or job not in allowed:
             return result("REFUS: job non enregistré. Autorisés: " + ", ".join(allowed), True)
-        kind=job_policy.kind_for(job,job_policy.load(JOB_POLICY))
-        return run(["run", job], 600, job_policy.runner_env(kind))
+        registry=job_policy.load(JOB_POLICY)
+        kind=job_policy.kind_for(job,registry)
+        target=(registry.get(job) or {}).get("visual_target","")
+        return run(["run", job], 600, job_policy.execution_env(kind,target))
     return result("outil inconnu", True)
 
 def send(obj):
-    sys.stdout.write(json.dumps(obj, ensure_ascii=False) + "\n")
-    sys.stdout.flush()
+    with _SEND_LOCK:
+        sys.stdout.write(json.dumps(obj, ensure_ascii=False) + "\n")
+        sys.stdout.flush()
+
+def dispatch_tool_call(mid, params):
+    try:
+        res = call(params.get("name"), params.get("arguments") or {})
+        send({"jsonrpc":"2.0","id":mid,"result":res})
+    except Exception as exc:
+        send({"jsonrpc":"2.0","id":mid,"error":{"code":-32000,"message":str(exc)}})
 
 for line in sys.stdin:
     try:
@@ -355,7 +602,10 @@ for line in sys.stdin:
             res = {"tools":TOOLS}
         elif method == "tools/call":
             p = req.get("params") or {}
-            res = call(p.get("name"), p.get("arguments") or {})
+            if mid is None:
+                continue
+            _TOOL_EXECUTOR.submit(dispatch_tool_call, mid, p)
+            continue
         else:
             if mid is None:
                 continue

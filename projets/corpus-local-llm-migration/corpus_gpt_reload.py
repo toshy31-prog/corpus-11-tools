@@ -9,6 +9,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 from typing import Callable
+import sys
 
 from corpus_paths import STATE_ROOT
 
@@ -18,6 +19,8 @@ SOURCES = (
     HERE / "corpus_gpt_async.py",
     HERE / "blocker_resilience.py",
     HERE / "corpus_gpt_reload.py",
+    HERE / "capability_handoff.py",
+    HERE / "context_algebra.py",
 )
 STATE_PATH = STATE_ROOT / "corpus-gpt" / "source-reload.json"
 
@@ -62,27 +65,71 @@ def write_state(value: dict, path=STATE_PATH) -> None:
 
 
 def prime(path=STATE_PATH, sources=SOURCES) -> dict:
-    value = {"schema_version": 1, "digest": source_digest(sources)}
+    current = source_digest(sources)
+    previous = read_state(path)
+    loaded = previous.get("loaded_digest", previous.get("digest"))
+    value = {"schema_version": 2, "source_digest": current,
+             "validated_digest": previous.get("validated_digest"),
+             "reload_requested_digest": previous.get("reload_requested_digest"),
+             "loaded_digest": loaded if loaded is not None else current}
     write_state(value, path)
     return value
 
+
+def confirm_loaded_runtime(path=STATE_PATH, sources=SOURCES) -> dict:
+    current=source_digest(sources); state=read_state(path)
+    requested=state.get("reload_requested_digest"); validated=state.get("validated_digest")
+    if requested == current and validated == current:
+        state.update({"schema_version":2,"source_digest":current,"loaded_digest":current})
+        write_state(state,path)
+        return {"confirmed":True,"loaded_digest":current}
+    return {"confirmed":False,"loaded_digest":state.get("loaded_digest",state.get("digest")),
+            "source_digest":current,"reason":"requested_or_validated_digest_mismatch"}
+
+def validate_sources(runner: Callable = subprocess.run) -> dict:
+    commands = [
+        [sys.executable, "-m", "py_compile", *[str(p) for p in SOURCES]],
+        [sys.executable, "-m", "unittest", "-q", "test_corpus_gpt_reload.py", "test_capability_handoff.py"],
+    ]
+    outputs=[]
+    for cmd in commands:
+        proc=runner(cmd,cwd=HERE,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,check=False,timeout=60)
+        outputs.append((proc.stdout or "").strip())
+        if proc.returncode != 0:
+            return {"ok":False,"returncode":proc.returncode,"output":"\n".join(outputs)}
+    return {"ok":True,"returncode":0,"output":"\n".join(outputs)}
 
 def reload_if_changed(
     *,
     path=STATE_PATH,
     sources=SOURCES,
     runner: Callable = subprocess.run,
+    validator: Callable = validate_sources,
 ) -> dict:
     current = source_digest(sources)
-    previous = read_state(path).get("digest")
+    state = read_state(path)
+    previous = state.get("loaded_digest", state.get("digest"))
     if previous == current:
         return {
             "changed": False,
             "restarted": False,
-            "digest": current,
+            "source_digest": current,
+            "loaded_digest": previous,
             "reason": "source_unchanged",
         }
 
+    validation = validator()
+    if not validation.get("ok"):
+        write_state({"schema_version": 2, "source_digest": current,
+                     "validated_digest": state.get("validated_digest"),
+                     "reload_requested_digest": state.get("reload_requested_digest"),
+                     "loaded_digest": previous}, path)
+        return {"changed":True,"restarted":False,"source_digest":current,
+                "loaded_digest":previous,"reason":"validation_failed",
+                "validation":validation}
+    write_state({"schema_version": 2, "source_digest": current,
+                 "validated_digest": current,
+                 "reload_requested_digest": current, "loaded_digest": previous}, path)
     proc = runner(
         ["systemctl", "--user", "restart", "corpus-gpt-tunnel.service"],
         text=True,
@@ -91,16 +138,19 @@ def reload_if_changed(
         check=False,
         timeout=30,
     )
-    result = {
+    after = read_state(path)
+    return {
         "changed": True,
+        "restart_requested": True,
         "restarted": proc.returncode == 0,
-        "digest": current,
+        "source_digest": current,
+        "validated_digest": current,
+        "reload_requested_digest": current,
+        "loaded_digest": after.get("loaded_digest", previous),
+        "load_confirmed": after.get("loaded_digest") == current,
         "returncode": proc.returncode,
         "output": (proc.stdout or "").strip(),
     }
-    if proc.returncode == 0:
-        write_state({"schema_version": 1, "digest": current}, path)
-    return result
 
 
 def main(argv=None) -> int:
@@ -117,9 +167,12 @@ def main(argv=None) -> int:
         return 0
     if args.command == "status":
         current = source_digest()
-        previous = read_state().get("digest")
+        state = read_state()
+        previous = state.get("loaded_digest", state.get("digest"))
         print(json.dumps({
-            "current_digest": current,
+            "current_digest": current, "source_digest": current,
+            "validated_digest": state.get("validated_digest"),
+            "reload_requested_digest": state.get("reload_requested_digest"),
             "loaded_digest": previous,
             "reload_needed": current != previous,
         }, ensure_ascii=False, indent=2))
