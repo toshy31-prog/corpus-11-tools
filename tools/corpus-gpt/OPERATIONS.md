@@ -124,6 +124,8 @@ systemctl --user is-enabled corpus-gpt-source-watch.path
 
 ## Ordre de décision efficace
 
+Le fast path reste prioritaire. plan_next n’est pas un préflight obligatoire : l’utiliser seulement lorsque la route, la portée, les modalités, la réversibilité ou un blocage nécessitent un arbitrage. Si le job connu est local, court et sain, l’exécuter directement.
+
 1. status, une seule fois.
 2. Si sain et job connu : exécution directe ; pas de doctor/jobs redondants.
 3. Si job inconnu : jobs.
@@ -157,21 +159,6 @@ Cette séparation reprend les invariants du tool router : exposition minimale,
 fail-closed, respect des outils explicitement requis, fallback seulement lorsque
 le signal direct ne suffit pas, et trace de la décision.
 
-## Modalités de travail et coût caché
-
-Le planner distingue capacité disponible et capacité à initialiser. Il active la modalité minimale nécessaire.
-
-- local_compute : jobs, code, Git, fichiers, tests et diagnostics locaux ; CDP est sauté.
-- browser_interaction : navigation et interaction browser ; CDP reste requis.
-- visual_evidence : screenshot/frame comme preuve uniquement lorsque nécessaire.
-- outbound_transport : envoi historique texte/capture vers ChatGPT comme étape explicite, jamais comme effet implicite de chaque job.
-
-La surface browser vérifiée conserve launch/close, navigate, click, fill, pointer, type, key, scroll, back/forward/reload, snapshot, screenshot/frame, onglets new/select/close, zoom, viewport desktop/mobile, PDF, historique et téléchargements.
-
-Le terminal reste une capacité d'exécution bornée par jobs ; l'optimisation ne transforme pas Corpus GPT en shell graphique arbitraire. Une session UI/UX conserve donc navigateur, clics, saisie, viewport et captures, tandis qu'une session de code pure ne paie pas leur coût d'initialisation.
-
-Cette séparation reprend les invariants du tool router : exposition minimale, fail-closed, respect des outils explicitement requis, fallback seulement lorsque le signal direct ne suffit pas et trace de la décision.
-
 ## Invariants réemployés des routeurs Corpus
 
 - Stage direct avant fallback : un signal explicite suffit ; ne pas appeler un routeur sémantique pour redécouvrir ce qui est déjà connu.
@@ -181,3 +168,13 @@ Cette séparation reprend les invariants du tool router : exposition minimale, f
 - Fail-closed : une erreur de routing n'élargit jamais les capacités.
 - Séparer chemin structurel et preuve contextuelle : la raison d'une route reste inspectable sans être confondue avec l'action elle-même.
 - Une capacité explicitement demandée n'est pas retirée par l'optimisation ; elle est bornée et son coût devient visible.
+
+## Contexte, délégation et preuves — invariants réemployés
+
+- Admission, permission et exécution sont trois états distincts. Un plan admissible ne crée aucune permission et ne lance rien.
+- Une délégation ne peut jamais élargir les outils/permissions exposés au parent. Temps, appels d'outils, parallélisme, profondeur et risque restent bornés.
+- Le contexte stable et le contexte variable restent séparés. Une identité de cache inclut modèle, profil d'outils, permissions et empreinte du contexte invariant ; les tours utilisateur, résultats d'outils et passages récupérés restent variables.
+- Une déduplication de contexte n'est sûre qu'à provenance et permission identiques. L'égalité textuelle ne permet pas de franchir une frontière d'accès.
+- Un cache hit ne doit pas consommer un budget de requête externe. Une source absente ou limitée doit produire un frontier/stop reason, pas une boucle.
+- Cohérence inter-preuves ne signifie ni vérité ni succès. Un paquet cohérent reste non promu tant que sa vérification propre n'est pas satisfaite.
+- Les receipts et checkpoints doivent transporter métadonnées, hashes, limites et raisons ; éviter de recopier les contenus lourds lorsqu'ils sont déjà attestés.

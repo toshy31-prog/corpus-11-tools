@@ -127,7 +127,7 @@ TOOLS = [
     {
         "name":"plan_next",
         "description":"Planifier sans exécuter la prochaine utilisation Corpus GPT avec axes de portée, transversalité, abstraction, réversibilité et preuve.",
-        "inputSchema":{"type":"object","properties":{"status":{"type":"string","enum":["pass","degraded","unknown"]},"job_known":{"type":"boolean"},"job_kind":{"type":"string","enum":["local","browser"]},"potentially_long":{"type":"boolean"},"write":{"type":"boolean"},"destructive":{"type":"boolean"},"abstraction":{"type":"string"},"transversality":{"type":"string"},"reversibility":{"type":"string"},"evidence_freshness":{"type":"string"},"uncertainty":{"type":"string"},"counterfield":{"type":"string"},"revision_condition":{"type":"string"},"stop_condition":{"type":"string"},"exclusive_resources":{"type":"array","items":{"type":"string"}},"preserved_capabilities":{"type":"array","items":{"type":"string"}},"displaced_costs":{"type":"array","items":{"type":"string"}},"modalities":{"type":"array","items":{"type":"string","enum":["local_compute","browser_interaction","visual_evidence","outbound_transport"]}},"blocker":{"type":"object"}},"additionalProperties":False},
+        "inputSchema":{"type":"object","properties":{"status":{"type":"string","enum":["pass","degraded","unknown"]},"job_known":{"type":"boolean"},"job_kind":{"type":"string","enum":["local","browser"]},"potentially_long":{"type":"boolean"},"write":{"type":"boolean"},"destructive":{"type":"boolean"},"abstraction":{"type":"string"},"transversality":{"type":"string"},"reversibility":{"type":"string"},"evidence_freshness":{"type":"string"},"uncertainty":{"type":"string"},"counterfield":{"type":"string"},"revision_condition":{"type":"string"},"stop_condition":{"type":"string"},"exclusive_resources":{"type":"array","items":{"type":"string"}},"preserved_capabilities":{"type":"array","items":{"type":"string"}},"displaced_costs":{"type":"array","items":{"type":"string"}},"modalities":{"type":"array","items":{"type":"string","enum":["local_compute","browser_interaction","visual_evidence","outbound_transport"]}},"delegation":{"type":"object"},"blocker":{"type":"object"}},"additionalProperties":False},
     },
     {
         "name":"run_job",
@@ -228,7 +228,7 @@ def call(name, a):
         if not isinstance(job,str) or job not in allowed:return result(json.dumps({"job":job,"exists":False},ensure_ascii=False))
         return result(json.dumps({"job":job,"exists":True,"kind":job_policy.kind_for(job,job_policy.load(JOB_POLICY))},ensure_ascii=False))
     if name == "capabilities":
-        value={"protocol":"efficient-v2","fast_path":"status_then_known_job","doctor":"on_degraded_only","discovery":"jobs_or_job_info","long_jobs":"start_job_then_job_status","job_status_default_tail_lines":24,"managed_job_default_kind":"local","browser_marker":"# corpus-job-kind: browser","repo":str(SELF.parents[2]),"runner":str(BB)}
+        value={"protocol":"efficient-v2","fast_path":"status_then_known_job","doctor":"on_degraded_only","discovery":"jobs_or_job_info","long_jobs":"start_job_then_job_status","job_status_default_tail_lines":24,"managed_job_default_kind":"local","context_strategy":"stable_metadata_and_attested_evidence_before_heavy_recompute","delegation":"admission_only_no_permission_or_execution","browser_marker":"# corpus-job-kind: browser","repo":str(SELF.parents[2]),"runner":str(BB)}
         return result(json.dumps(value,ensure_ascii=False,separators=(",",":")))
     if name == "plan_next":
         try: value=execution_planner.plan(a)

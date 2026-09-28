@@ -26,6 +26,9 @@ class PlannerTests(unittest.TestCase):
  def test_transport_is_explicit_not_implicit(self):
   v=p.plan({"status":"pass","job_known":True,"modalities":["local_compute","outbound_transport"]})
   self.assertIn("explicit_transport_step",v["calls"])
+ def test_delegation_is_admission_not_execution(self):
+  v=p.plan({"status":"pass","job_known":True,"delegation":{"max_tasks":2,"max_tool_calls":4}})
+  self.assertIn("delegation_admission",v["calls"]);self.assertIn("parent_scope_revalidation",v["calls"]);self.assertEqual(v["execution"],"not_started")
  def test_blocker_reuses_resilience(self):
   v=p.plan({"status":"pass","job_known":True,"blocker":{"message":"timeout","known_completion":False}})
   self.assertEqual(v["recovery"]["blocker"],"timeout_unknown_completion")
