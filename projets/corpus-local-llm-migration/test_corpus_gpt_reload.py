@@ -6,7 +6,24 @@ import unittest
 import corpus_gpt_reload as reload_guard
 
 
+HERE = Path(__file__).resolve().parent
+WATCHER = HERE / "corpus-gpt-source-watch.path"
+
+
+def watcher_path_changed(unit_path=WATCHER):
+    paths = set()
+    for raw in Path(unit_path).read_text().splitlines():
+        line = raw.strip()
+        if line.startswith("PathChanged="):
+            paths.add(Path(line.split("=", 1)[1]).resolve())
+    return paths
+
+
 class CorpusGptReloadTests(unittest.TestCase):
+    def test_digest_sources_are_covered_by_reload_watcher(self):
+        digest_sources = {Path(path).resolve() for path in reload_guard.SOURCES}
+        self.assertLessEqual(digest_sources, watcher_path_changed())
+
     def test_prime_and_change_detection(self):
         with tempfile.TemporaryDirectory() as raw:
             root=Path(raw)

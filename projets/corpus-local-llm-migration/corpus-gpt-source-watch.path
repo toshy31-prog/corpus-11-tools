@@ -6,6 +6,8 @@ PathChanged=/home/olivier/Documents/ChatGPT/Corpus/projets/corpus-local-llm-migr
 PathChanged=/home/olivier/Documents/ChatGPT/Corpus/projets/corpus-local-llm-migration/corpus_gpt_async.py
 PathChanged=/home/olivier/Documents/ChatGPT/Corpus/projets/corpus-local-llm-migration/blocker_resilience.py
 PathChanged=/home/olivier/Documents/ChatGPT/Corpus/projets/corpus-local-llm-migration/corpus_gpt_reload.py
+PathChanged=/home/olivier/Documents/ChatGPT/Corpus/projets/corpus-local-llm-migration/capability_handoff.py
+PathChanged=/home/olivier/Documents/ChatGPT/Corpus/projets/corpus-local-llm-migration/context_algebra.py
 Unit=corpus-gpt-source-reload.service
 
 [Install]
