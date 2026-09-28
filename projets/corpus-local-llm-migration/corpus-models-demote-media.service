@@ -1,0 +1,9 @@
+[Unit]
+Description=Corpus verified media model demotion to configured Vault
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/olivier/Documents/ChatGPT/Corpus/projets/corpus-local-llm-migration
+ExecStart=/usr/bin/python3 -c "import json; import model_residency as r; files=list(r.locks()); print(json.dumps({'result':r.demote(files),'files':files},ensure_ascii=False))"
+NoNewPrivileges=true
+TimeoutStartSec=4h
