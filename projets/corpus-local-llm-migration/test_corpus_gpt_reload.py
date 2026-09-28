@@ -20,6 +20,10 @@ def watcher_path_changed(unit_path=WATCHER):
 
 
 class CorpusGptReloadTests(unittest.TestCase):
+    def test_digest_sources_are_unique(self):
+        resolved_sources = [Path(path).resolve() for path in reload_guard.SOURCES]
+        self.assertEqual(len(resolved_sources), len(set(resolved_sources)))
+
     def test_digest_sources_are_covered_by_reload_watcher(self):
         digest_sources = {Path(path).resolve() for path in reload_guard.SOURCES}
         self.assertLessEqual(digest_sources, watcher_path_changed())
