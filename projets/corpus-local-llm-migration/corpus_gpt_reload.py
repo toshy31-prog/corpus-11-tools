@@ -127,6 +127,11 @@ def reload_if_changed(
         return {"changed":True,"restarted":False,"source_digest":current,
                 "loaded_digest":previous,"reason":"validation_failed",
                 "validation":validation}
+    after_validation = source_digest(sources)
+    if after_validation != current:
+        return {"changed":True,"restarted":False,"source_digest":after_validation,
+                "validated_source_digest":current,"loaded_digest":previous,
+                "reason":"source_changed_during_validation","validation":validation}
     write_state({"schema_version": 2, "source_digest": current,
                  "validated_digest": current,
                  "reload_requested_digest": current, "loaded_digest": previous}, path)

@@ -92,6 +92,43 @@ class CorpusGptReloadTests(unittest.TestCase):
             self.assertTrue(result["confirmed"])
             self.assertEqual(reload_guard.read_state(state)["loaded_digest"],current)
 
+    def test_source_change_during_validation_refuses_promotion_and_restart(self):
+        with tempfile.TemporaryDirectory() as raw:
+            root=Path(raw); source=root/"source.py"; state=root/"state.json"
+            source.write_text("loaded")
+            first=reload_guard.prime(state,(source,))
+            previous={
+                "schema_version":2,
+                "source_digest":first["source_digest"],
+                "validated_digest":"validated-old",
+                "reload_requested_digest":"requested-old",
+                "loaded_digest":first["loaded_digest"],
+            }
+            reload_guard.write_state(previous,state)
+            source.write_text("candidate")
+            before=reload_guard.source_digest((source,))
+            calls=[]
+            def validator():
+                source.write_text("changed-during-validation")
+                return {"ok":True,"returncode":0,"output":"ok"}
+            def fake(cmd, **kwargs):
+                calls.append(cmd)
+                return subprocess.CompletedProcess(cmd,0,stdout="unexpected")
+            result=reload_guard.reload_if_changed(
+                path=state,sources=(source,),runner=fake,validator=validator)
+            final=reload_guard.source_digest((source,))
+            persisted=reload_guard.read_state(state)
+            self.assertTrue(result["changed"])
+            self.assertFalse(result["restarted"])
+            self.assertEqual(result["reason"],"source_changed_during_validation")
+            self.assertEqual(calls,[])
+            self.assertNotEqual(final,before)
+            self.assertEqual(result["source_digest"],final)
+            self.assertEqual(result["validated_source_digest"],before)
+            self.assertEqual(persisted["validated_digest"],"validated-old")
+            self.assertEqual(persisted["reload_requested_digest"],"requested-old")
+            self.assertEqual(persisted["loaded_digest"],first["loaded_digest"])
+
     def test_failed_restart_does_not_mark_digest_loaded(self):
         with tempfile.TemporaryDirectory() as raw:
             root=Path(raw)
