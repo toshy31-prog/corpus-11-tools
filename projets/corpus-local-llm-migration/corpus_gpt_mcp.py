@@ -17,6 +17,7 @@ import corpus_gpt_async as async_jobs
 import corpus_gpt_job_policy as job_policy
 import corpus_gpt_reload as reload_guard
 import corpus_gpt_planner as execution_planner
+import decision_grounding_orchestrator
 
 RUNTIME_LOAD_CONFIRMATION = reload_guard.confirm_loaded_runtime()
 
@@ -316,6 +317,30 @@ TOOLS = [
         },
     },
     {
+        "name":"ground_decision",
+        "description":"Grounding décisionnel composite borné: retrieval réel, consideration, admission, receipt puis planner; aucune exécution.",
+        "inputSchema":{"type":"object","properties":{
+          "goal":{"type":"string","minLength":1,"maxLength":4000},
+          "context_graph":{"type":"object"},
+          "projection_roots":{"type":"array","items":{"type":"string"},"minItems":1},
+          "admission_policy":{"type":"object"},
+          "retrieval_query":{"type":"string","minLength":1,"maxLength":2000},
+          "retrieval_limit":{"type":"integer","minimum":1,"maximum":20},
+          "retrieval_scope":{"type":"string","minLength":1,"maxLength":1000},
+          "retrieval_reason":{"type":"string","minLength":1,"maxLength":1000},
+          "id_resolution_map":{"type":"object"},
+          "planner_base":{"type":"object"},
+          "exposure_context":{"type":"object","properties":{
+            "decision_required":{"type":"boolean"},
+            "persistent_context_required":{"type":"boolean"},
+            "context_graph_available":{"type":"boolean"},
+            "projection_roots_available":{"type":"boolean"}
+          },"required":["decision_required","persistent_context_required","context_graph_available","projection_roots_available"],"additionalProperties":False},
+          "current_context_graph":{"type":"object"},
+          "inferences":{"type":"array","items":{"type":"object"}}
+        },"required":["goal","context_graph","projection_roots","admission_policy","retrieval_query","retrieval_limit","retrieval_scope","retrieval_reason","id_resolution_map","planner_base","exposure_context"],"additionalProperties":False},
+    },
+    {
         "name":"retrieval_grounding",
         "description":"Transport borné vers le provider corpus-retrieval réel; aucune admission ni décision.",
         "inputSchema":{"type":"object","properties":{
@@ -410,6 +435,37 @@ def call(name, a):
 
         return result("\n".join(lines))
 
+    if name == "ground_decision":
+        def retrieval_search(query, limit):
+            payload=json.dumps({"operation":"search","arguments":{"query":query,"limit":limit}},ensure_ascii=False).encode()
+            req=urllib.request.Request("http://127.0.0.1:18743/corpus/api/retrieval-grounding",data=payload,
+                headers={"Content-Type":"application/json","Origin":"http://127.0.0.1:18743","Host":"127.0.0.1:18743"},method="POST")
+            try:
+                with urllib.request.urlopen(req,timeout=260) as response: bridge=json.load(response)
+            except urllib.error.HTTPError as exc:
+                try: return {"error":json.loads(exc.read().decode())}
+                except Exception: return {"error":{"kind":"bridge_http","message":str(exc)}}
+            except (OSError,ValueError) as exc:
+                return {"error":{"kind":"bridge_transport","message":str(exc)}}
+            provider=bridge.get("provider_response") if isinstance(bridge,dict) else None
+            try:
+                if not isinstance(provider,dict): return {"error":{"kind":"invalid_bridge_response","message":"provider_response absent"}}
+                if "error" in provider: return {"error":provider["error"]}
+                return json.loads(provider["result"]["content"][0]["text"])
+            except (KeyError,IndexError,TypeError,ValueError,json.JSONDecodeError) as exc:
+                return {"error":{"kind":"invalid_provider_response","message":str(exc)}}
+        try:
+            value=decision_grounding_orchestrator.orchestrate(
+                goal=a.get("goal"),context_graph=a.get("context_graph"),projection_roots=a.get("projection_roots"),
+                admission_policy=a.get("admission_policy"),retrieval_query=a.get("retrieval_query"),
+                retrieval_limit=a.get("retrieval_limit"),retrieval_scope=a.get("retrieval_scope"),
+                retrieval_reason=a.get("retrieval_reason"),id_resolution_map=a.get("id_resolution_map"),
+                planner_base=a.get("planner_base"),retrieval_search=retrieval_search,
+                exposure_context=a.get("exposure_context"),
+                current_context_graph=a.get("current_context_graph"),inferences=a.get("inferences"))
+        except ValueError as exc:
+            return result("REFUS: "+str(exc),True)
+        return result(json.dumps(value,ensure_ascii=False,separators=(",",":")))
     if name == "retrieval_grounding":
         operation=a.get("operation"); arguments=a.get("arguments")
         if operation not in {"index","search"} or not isinstance(arguments,dict):
