@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="${CORPUS_REPO_ROOT:-$HOME/Documents/ChatGPT/Corpus}"
+SOURCE_DIR="$ROOT/projets/corpus-local-llm-migration"
+SYSTEMD_USER_DIR="${CORPUS_SYSTEMD_USER_DIR:-$HOME/.config/systemd/user}"
+SYSTEMCTL="${CORPUS_SYSTEMCTL:-systemctl}"
+
+WATCH_SOURCE="$SOURCE_DIR/corpus-gpt-source-watch.path"
+SERVICE_SOURCE="$SOURCE_DIR/corpus-gpt-source-reload.service"
+WATCH_TARGET="$SYSTEMD_USER_DIR/corpus-gpt-source-watch.path"
+SERVICE_TARGET="$SYSTEMD_USER_DIR/corpus-gpt-source-reload.service"
+
+for source in "$WATCH_SOURCE" "$SERVICE_SOURCE"; do
+  [ -f "$source" ] || { echo "REFUS missing source: $source" >&2; exit 2; }
+done
+
+mkdir -p "$SYSTEMD_USER_DIR"
+install -m 0644 "$SERVICE_SOURCE" "$SERVICE_TARGET"
+install -m 0644 "$WATCH_SOURCE" "$WATCH_TARGET"
+
+"$SYSTEMCTL" --user daemon-reload
+"$SYSTEMCTL" --user enable --now corpus-gpt-source-watch.path
+
+echo "CORPUS_GPT_SOURCE_WATCH_INSTALL=PASS"
