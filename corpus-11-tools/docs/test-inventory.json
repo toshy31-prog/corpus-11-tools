@@ -110,9 +110,9 @@
     {"path": "research/scripts/test_run_foe_001_transversal_campaign.py", "git_object": "f40396b9fc86f3aecf142bf3d9f2a1d2d10140dc", "kind": "blob"},
     {"path": "projets/corpus-local-llm-migration/test_blocker_resilience.py", "git_object": "7d8f14f6111e4375171c541f155cb8129321438e", "kind": "blob"},
     {"path": "projets/corpus-local-llm-migration/test_blocker_control.py", "git_object": "70bf97e02d36549aec2ba6e0cf3dec267f17e127", "kind": "blob"},
-    {"path": "projets/corpus-local-llm-migration/test_corpus_gpt_async.py", "git_object": "c6b358a5d4c5c55c8bba854fe9fd9b3bb27d4ada", "kind": "blob"},
+    {"path": "projets/corpus-local-llm-migration/test_corpus_gpt_async.py", "git_object": "92bc185ad9e54707672aff97c8a1e6087c4ccca5", "kind": "blob"},
     {"path": "projets/corpus-local-llm-migration/test_storage_pressure.py", "git_object": "9ea16f7324d7c81d8ad42ba2c99f40ab8f624c14", "kind": "blob"},
-    {"path": "projets/corpus-local-llm-migration/test_corpus_gpt_reload.py", "git_object": "dc7050e199d1aaff9da209f1702ad15e538f1f66", "kind": "blob"},
+    {"path": "projets/corpus-local-llm-migration/test_corpus_gpt_reload.py", "git_object": "bb514eed6f446a5112037dce1453c42b8840545d", "kind": "blob"},
     {"path": "corpus-11-tools/tools/check_onboarding.py", "git_object": "4b60c4ea20dc3f36db6801a141c88442adb3f0a0", "kind": "blob"},
     {"path": "projets/corpus-local-llm-migration/test_resource_resilience.py", "git_object": "48d0dd3e075ecbb4a22be5e5858d92f74275c5df", "kind": "blob"},
     {"path": "projets/corpus-local-llm-migration/test_git_compact.py", "git_object": "4c8f5310ff9e0f2a64bb6bab272a67f4d6da765e", "kind": "blob"},
@@ -120,6 +120,10 @@
     {"path": "projets/corpus-local-llm-migration/test_model_residency.py", "git_object": "24f1aca78754bf4dabf27eb6a2fe9c6a2283a323", "kind": "blob"},
     {"path": "projets/corpus-local-llm-migration/test_vault_retention.py", "git_object": "e29ad49e54853121653b3fc195f095320b253294", "kind": "blob"},
     {"path": "projets/corpus-local-llm-migration/test_corpus_gpt_job_policy.py", "git_object": "1c3fea542335c422bb03d847f36ffc11f6765b4d", "kind": "blob"},
-    {"path": "projets/corpus-local-llm-migration/test_corpus_gpt_planner.py", "git_object": "c9276ff357c23d128e325401e4c6b732d67402e5", "kind": "blob"}
+    {"path": "projets/corpus-local-llm-migration/test_corpus_gpt_planner.py", "git_object": "c9276ff357c23d128e325401e4c6b732d67402e5", "kind": "blob"},
+    {"path": "projets/corpus-local-llm-migration/test_capability_handoff.py", "git_object": "1a150d5a9bd799d7e239eaab636ab0b57a05f990", "kind": "blob"},
+    {"path": "projets/corpus-local-llm-migration/test_context_algebra.py", "git_object": "c2ae762ca0e67f4e3b5f5ec024286a93124dce8f", "kind": "blob"},
+    {"path": "projets/corpus-local-llm-migration/test_corpus_execution_lifecycle.py", "git_object": "f375b8523da58d7f2df4a067f06e7f15c3f512ff", "kind": "blob"},
+    {"path": "projets/corpus-local-llm-migration/test_corpus_gpt_browser_surface.py", "git_object": "052c73b8a7ab2d9a507933f5886bbf1534694c5f", "kind": "blob"}
   ]
 }
