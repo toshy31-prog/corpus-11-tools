@@ -79,3 +79,11 @@ Les incidents et invariants transversaux sont consolidés dans RESILIENCE_LESSON
 ## Preuve de résidence média
 
 Le 28 septembre 2026, les huit poids média/audio ont été vérifiés COLD par taille et SHA-256. Les quatre profils flux-klein, wan-5b, qwen-tts et ace-step étaient cold et ready. Un round-trip réel du plus petit poids a validé COLD → HOT → hash → COLD → hash sans lancer d’inférence.
+
+## Politique de rétention du Vault
+
+- La capsule corpus-f1aa6af8cc37-20260925-192112 est la baseline de récupération validée. Elle est conservée : sa simulation de restauration couvre Git, runtime, sémantique Unix, fonctionnement offline, Docling, média, Qwen3.6 CUDA et Qwen3.8 COLD.
+- Les petits snapshots phase5/phase6 restent conservés pendant migration. Les doublons exacts sont détectés par hash mais ne sont pas supprimés automatiquement.
+- Les quarantaines temporaires ont une fin de vie conditionnelle. La quarantaine Git du 28 septembre a été retirée après compactage persistant, fsck PASS, refs stables, HEAD égal à origin/main et pushs ultérieurs réussis ; son receipt reste dans STATE.
+- ColdEnvs contient actuellement deux environnements retirés, Docling GPU (~6,6 Go) et tiny-doctrine (~7,0 Go), chacun accompagné de SHA256. Ils sont archivaux et seront réévalués à la clôture de migration.
+- Les vérifications de hash de dizaines de Go sont événementielles ; elles ne doivent pas être lancées périodiquement par un timer.
