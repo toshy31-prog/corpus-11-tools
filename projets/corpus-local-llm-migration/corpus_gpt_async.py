@@ -97,8 +97,12 @@ def refresh_state(bb, value: dict) -> dict:
     if _pid_alive(value.get("pid")):
         return value
 
+    value["previous_status"] = value.get("status", "unknown")
     value["status"] = "unknown_after_process_exit"
     value["completion_known"] = False
+    value["termination_reason"] = "unknown"
+    value["termination_source"] = "unknown"
+    value["termination_mechanism"] = "unknown"
     value["updated_at_unix"] = time.time()
     if isinstance(token, str) and TOKEN_RE.fullmatch(token):
         _atomic_json(_state_path(bb, token), value)
@@ -135,7 +139,7 @@ def _child_env(entry: Path, bb: Path, job_kind="browser") -> dict[str, str]:
     return env
 
 
-def start_job(job: str, *, allowed_jobs: list[str], entry, bb, repo, job_kind="browser") -> dict:
+def start_job(job: str, *, allowed_jobs: list[str], entry, bb, repo, job_kind="browser", visual_target="") -> dict:
     if not isinstance(job, str) or job not in allowed_jobs:
         raise ValueError("job non enregistré")
 
@@ -165,6 +169,8 @@ def start_job(job: str, *, allowed_jobs: list[str], entry, bb, repo, job_kind="b
         "updated_at_unix": time.time(),
         "pid": None,
         "log": str(_log_path(bb, token)),
+        "job_kind": job_kind,
+        "visual_target": visual_target if job_kind in {"browser-visible", "browser-hybrid"} else "",
     }
     _atomic_json(_state_path(bb, token), state)
 
@@ -175,7 +181,8 @@ def start_job(job: str, *, allowed_jobs: list[str], entry, bb, repo, job_kind="b
         "--setenv", "CORPUS_GPT_BIN=" + str(entry),
         "--setenv", "CORPUS_BB_RUNNER_ROOT=" + str(bb),
         "--setenv", "CORPUS_BB_SKIP_GPT=1",
-        *(["--setenv", "CORPUS_BB_SKIP_INFRA=1"] if job_kind == "local" else []),
+        *(["--setenv", "CORPUS_BB_SKIP_INFRA=1"] if job_kind in {"local", "browser-headless"} else []),
+        *(["--setenv", "CORPUS_BB_VISUAL_TARGET=" + visual_target] if job_kind in {"browser-visible", "browser-hybrid"} and visual_target else []),
         sys.executable,
         str(Path(__file__).resolve()),
         "--worker", token, job, str(entry), str(bb), str(repo),
@@ -219,11 +226,65 @@ def start_job(job: str, *, allowed_jobs: list[str], entry, bb, repo, job_kind="b
     }
 
 
+def cancel_job(token: str, *, bb, reason="explicit cancel_job request", source="mcp.cancel_job", actor="requesting_client", mechanism="explicit_cancel") -> dict:
+    if not isinstance(token, str) or not TOKEN_RE.fullmatch(token):
+        raise ValueError("token async invalide")
+    state = read_state(bb, token)
+    if state is None:
+        raise ValueError("token async inconnu")
+    state = refresh_state(bb, state)
+    if state.get("status") not in {"starting", "running"}:
+        raise ValueError("job async non actif")
+    expected = "corpus-gpt-async-" + token + ".service"
+    unit = state.get("unit")
+    if unit != expected:
+        raise ValueError("unité async incohérente")
+    previous_status = state.get("status", "unknown")
+    state["previous_status"] = previous_status
+    state["status"] = "cancelling"
+    state["cancel_reason"] = str(reason or "unknown")
+    state["cancel_source"] = str(source or "unknown")
+    state["cancel_actor"] = str(actor or "unknown")
+    state["cancel_mechanism"] = str(mechanism or "unknown")
+    state["cancel_requested_at_unix"] = time.time()
+    state["updated_at_unix"] = time.time()
+    _atomic_json(_state_path(bb, token), state)
+    proc = subprocess.run(["systemctl", "--user", "stop", unit], text=True,
+        stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=False, timeout=15)
+    if proc.returncode != 0:
+        raise RuntimeError("arrêt async refusé: " + (proc.stdout or "").strip())
+    state["status"] = "cancelled"
+    state["completion_known"] = True
+    state["exit_code"] = None
+    state["cancel_reason"] = state.get("cancel_reason", "unknown")
+    state["cancel_source"] = state.get("cancel_source", "unknown")
+    state["cancel_actor"] = state.get("cancel_actor", "unknown")
+    state["cancel_mechanism"] = state.get("cancel_mechanism", "unknown")
+    state["previous_status"] = state.get("previous_status", "unknown")
+    state["cancelled_at_unix"] = time.time()
+    log = _log_path(bb, token)
+    if log.is_file():
+        lines = log.read_text(errors="replace").splitlines()
+        if lines:
+            state["output_tail"] = "\n".join(lines[-200:])
+            state["output_tail_persisted"] = True
+    state["updated_at_unix"] = time.time()
+    _atomic_json(_state_path(bb, token), state)
+    return state
+
+
 def job_status(token: str, *, bb, tail_lines: int = 24) -> dict:
     state = read_state(bb, token)
     if state is None:
         raise ValueError("token async inconnu")
     state = refresh_state(bb, state)
+    if state.get("status") == "cancelled":
+        state = dict(state)
+        state.setdefault("cancel_reason", "unknown")
+        state.setdefault("cancel_source", "unknown")
+        state.setdefault("cancel_actor", "unknown")
+        state.setdefault("cancel_mechanism", "unknown")
+        state.setdefault("previous_status", "unknown")
     log = _log_path(bb, token)
     if log.is_file():
         try:
@@ -246,22 +307,22 @@ def worker(token: str, job: str, entry, bb, repo) -> int:
 
     started = time.time()
     try:
-        proc = subprocess.run(
-            [str(entry), "run", job],
-            cwd=str(repo),
-            env=_child_env(entry, bb),
-            text=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            check=False,
-        )
-        code = proc.returncode
-        output = proc.stdout or ""
+        log_path = _log_path(bb, token)
+        log_path.parent.mkdir(parents=True, exist_ok=True)
+        with log_path.open("w", encoding="utf-8", errors="replace") as log:
+            proc = subprocess.Popen(
+                [str(entry), "run", job],
+                cwd=str(repo),
+                env=_child_env(entry, bb),
+                text=True,
+                stdout=log,
+                stderr=subprocess.STDOUT,
+            )
+            code = proc.wait()
     except Exception as exc:
         code = 125
-        output = "ASYNC_WORKER_EXCEPTION=" + repr(exc) + "\n"
-
-    _log_path(bb, token).write_text(output)
+        with _log_path(bb, token).open("a", encoding="utf-8", errors="replace") as log:
+            log.write("ASYNC_WORKER_EXCEPTION=" + repr(exc) + "\n")
     final = {
         "status": "completed",
         "completion_known": True,

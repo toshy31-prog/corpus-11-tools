@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+CHROME="/home/olivier/.local/share/corpus/runtime/corpus-local/browsers/chromium-local/chrome-linux64/chrome"
+PROFILE="/home/olivier/.local/share/corpus-bb-sota/chromium-profile"
+STATE="/home/olivier/.local/share/corpus-bb-sota/state"
+TARGET="${1:-http://127.0.0.1:18743/corpus/index.html}"
+mkdir -p "$PROFILE" "$STATE"
+exec "$CHROME" --no-sandbox --remote-debugging-address=127.0.0.1 --remote-debugging-port=9223 --user-data-dir="$PROFILE" --no-first-run --no-default-browser-check --disable-background-networking --disable-component-update --disable-default-apps --disable-sync --disable-extensions --disable-features=OptimizationHints,MediaRouter --host-resolver-rules="MAP * ~NOTFOUND, EXCLUDE localhost, EXCLUDE 127.0.0.1" "$TARGET"

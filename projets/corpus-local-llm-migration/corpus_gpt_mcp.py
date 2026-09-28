@@ -78,33 +78,57 @@ def browser_socket_path():
     runtime = os.environ.get("XDG_RUNTIME_DIR") or ("/run/user/" + str(os.getuid()))
     return Path(runtime) / "corpus-gpt-browser.sock"
 
+def active_visual_target():
+    active = []
+    for state in async_jobs.recent_states(BB, 100):
+        if state.get("status") not in {"starting", "running"}:
+            continue
+        if state.get("job_kind") not in {"browser-visible", "browser-hybrid"}:
+            continue
+        target = state.get("visual_target")
+        if isinstance(target, str) and target.startswith(("http://", "https://")):
+            active.append((float(state.get("created_at_unix") or 0), state.get("token"), target))
+    if not active:
+        return None
+    active.sort(reverse=True)
+    _, token, target = active[0]
+    return {"token": token, "target": target}
+
 def browser_call(arguments):
     worker = SELF.with_name("browser_worker.py")
     if not worker.is_file():
         return result("REFUS: browser_worker absent", True)
-    request = (json.dumps(arguments, ensure_ascii=False) + "\n").encode("utf-8")
+    request_arguments = dict(arguments)
+    lifecycle = active_visual_target()
+    action = request_arguments.get("action")
+    if lifecycle is not None and action == "navigate" and request_arguments.get("url") != lifecycle["target"]:
+        return result("REFUS: navigation hors cible lifecycle active", True)
+    sync_request = None
+    if lifecycle is not None and action not in {"close", "clear"}:
+        sync_request = {"action": "navigate", "url": lifecycle["target"], "visible": False}
     last_error = None
     with _BROWSER_LOCK:
         for attempt in range(2):
             try:
-                with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as peer:
-                    peer.settimeout(35)
-                    print("BROWSER_TRACE before connect", file=sys.stderr, flush=True)
-                    peer.connect(str(browser_socket_path()))
-                    print("BROWSER_TRACE after connect", file=sys.stderr, flush=True)
-                    peer.sendall(request)
-                    print("BROWSER_TRACE after sendall", file=sys.stderr, flush=True)
-                    chunks = bytearray()
-                    while not chunks.endswith(b"\n"):
-                        print("BROWSER_TRACE before recv", file=sys.stderr, flush=True)
-                        part = peer.recv(65536)
-                        print("BROWSER_TRACE after recv", file=sys.stderr, flush=True)
-                        if not part:
-                            break
-                        chunks.extend(part)
-                if not chunks:
-                    return result("REFUS: browser_worker sans réponse", True)
-                response = json.loads(chunks.decode("utf-8"))
+                def exchange(payload):
+                    with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as peer:
+                        peer.settimeout(35)
+                        peer.connect(str(browser_socket_path()))
+                        peer.sendall((json.dumps(payload, ensure_ascii=False) + "\n").encode("utf-8"))
+                        chunks = bytearray()
+                        while not chunks.endswith(b"\n"):
+                            part = peer.recv(65536)
+                            if not part:
+                                break
+                            chunks.extend(part)
+                    if not chunks:
+                        raise OSError("browser_worker sans réponse")
+                    return json.loads(chunks.decode("utf-8"))
+                if sync_request is not None:
+                    synced = exchange(sync_request)
+                    if synced.get("error"):
+                        return result("REFUS: convergence cible lifecycle: " + str(synced["error"]), True)
+                response = exchange(request_arguments)
                 break
             except (OSError, json.JSONDecodeError) as exc:
                 last_error = exc
@@ -126,6 +150,11 @@ def browser_call(arguments):
     value = response.get("result")
     if not isinstance(value, dict):
         return result("REFUS: résultat browser_worker invalide", True)
+    if lifecycle is not None:
+        value = dict(value)
+        value["lifecycle_target"] = lifecycle["target"]
+        value["lifecycle_token"] = lifecycle["token"]
+        value["target_converged"] = value.get("url") == lifecycle["target"]
     return browser_result(value)
 
 def run(args, timeout=360, extra_env=None):
@@ -195,16 +224,6 @@ TOOLS = [
     {
         "name":"jobs",
         "description":"Lister les jobs Corpus GPT enregistrés et autorisés.",
-        "inputSchema":{"type":"object","properties":{},"additionalProperties":False},
-    },
-    {
-        "name":"job_info",
-        "description":"Vérifier un job nommé sans lister tout le registre : existence et classe local/browser.",
-        "inputSchema":{"type":"object","properties":{"job":{"type":"string","pattern":"^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$"}},"required":["job"],"additionalProperties":False},
-    },
-    {
-        "name":"capabilities",
-        "description":"Résumé compact des capacités et du protocole efficace Corpus GPT.",
         "inputSchema":{"type":"object","properties":{},"additionalProperties":False},
     },
     {
@@ -399,14 +418,7 @@ def call(name, a):
         if not isinstance(job,str) or job not in allowed:return result(json.dumps({"job":job,"exists":False},ensure_ascii=False))
         return result(json.dumps({"job":job,"exists":True,"kind":job_policy.kind_for(job,job_policy.load(JOB_POLICY))},ensure_ascii=False))
     if name == "capabilities":
-        value={"protocol":"efficient-v2","fast_path":"status_then_known_job","doctor":"on_degraded_only","discovery":"jobs_or_job_info","long_jobs":"start_job_then_job_status","job_status_default_tail_lines":24,"managed_job_default_kind":"local","browser_marker":"# corpus-job-kind: browser","visual_job_kinds":["browser-headless","browser-visible","browser-hybrid"],"visual_target_marker":"# corpus-visual-target: <url>","visual_job_kinds":["browser-headless","browser-visible","browser-hybrid"],"visual_target_marker":"# corpus-visual-target: <url>","visual_job_kinds":["browser-headless","browser-visible","browser-hybrid"],"visual_target_marker":"# corpus-visual-target: <url>","repo":str(SELF.parents[2]),"runner":str(BB)}
-        return result(json.dumps(value,ensure_ascii=False,separators=(",",":")))
-    if name == "job_info":
-        job=a.get("job"); allowed=safe_jobs()
-        if not isinstance(job,str) or job not in allowed:return result(json.dumps({"job":job,"exists":False},ensure_ascii=False))
-        return result(json.dumps({"job":job,"exists":True,"kind":job_policy.kind_for(job,job_policy.load(JOB_POLICY))},ensure_ascii=False))
-    if name == "capabilities":
-        value={"protocol":"efficient-v2","fast_path":"status_then_known_job","doctor":"on_degraded_only","discovery":"jobs_or_job_info","long_jobs":"start_job_then_job_status","job_status_default_tail_lines":24,"managed_job_default_kind":"local","context_strategy":"stable_metadata_and_attested_evidence_before_heavy_recompute","delegation":"admission_only_no_permission_or_execution","browser_marker":"# corpus-job-kind: browser","visual_job_kinds":["browser-headless","browser-visible","browser-hybrid"],"visual_target_marker":"# corpus-visual-target: <url>","visual_job_kinds":["browser-headless","browser-visible","browser-hybrid"],"visual_target_marker":"# corpus-visual-target: <url>","visual_job_kinds":["browser-headless","browser-visible","browser-hybrid"],"visual_target_marker":"# corpus-visual-target: <url>","repo":str(SELF.parents[2]),"runner":str(BB)}
+        value={"protocol":"efficient-v2","fast_path":"status_then_known_job","doctor":"on_degraded_only","discovery":"jobs_or_job_info","long_jobs":"start_job_then_job_status","job_status_default_tail_lines":24,"managed_job_default_kind":"local","context_strategy":"stable_metadata_and_attested_evidence_before_heavy_recompute","delegation":"admission_only_no_permission_or_execution","browser_marker":"# corpus-job-kind: browser","visual_job_kinds":["browser-headless","browser-visible","browser-hybrid"],"visual_target_marker":"# corpus-visual-target: <url>","repo":str(SELF.parents[2]),"runner":str(BB)}
         return result(json.dumps(value,ensure_ascii=False,separators=(",",":")))
     if name == "plan_next":
         try: value=execution_planner.plan(a)

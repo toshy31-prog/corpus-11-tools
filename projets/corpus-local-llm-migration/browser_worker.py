@@ -2,6 +2,7 @@
 import base64
 import json
 import os
+import socket
 import sys
 import uuid
 from pathlib import Path
@@ -198,14 +199,67 @@ class Controller:
         return result
 
 
+def _response(controller, line):
+    try:
+        return {'result': controller.handle(json.loads(line))}
+    except Exception as exc:
+        return {'error': str(exc)[:1200]}
+
+
+def serve_socket(path):
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        if path.exists() or path.is_socket():
+            path.unlink()
+    except FileNotFoundError:
+        pass
+    server = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    server.bind(str(path))
+    path.chmod(0o600)
+    server.listen(8)
+    try:
+        from playwright.sync_api import sync_playwright
+        with sync_playwright() as pw:
+            controller = Controller(pw)
+            while True:
+                peer, _ = server.accept()
+                with peer:
+                    peer.settimeout(1.0)
+                    try:
+                        stream = peer.makefile('rwb')
+                        line = stream.readline()
+                        if not line:
+                            continue
+                        try:
+                            request = line.decode('utf-8')
+                            json.loads(request)
+                        except (UnicodeDecodeError, json.JSONDecodeError):
+                            continue
+                        payload = json.dumps(_response(controller, request), ensure_ascii=False) + '\n'
+                        stream.write(payload.encode('utf-8'))
+                        stream.flush()
+                    except (TimeoutError, socket.timeout, OSError):
+                        continue
+    finally:
+        server.close()
+        try:
+            path.unlink()
+        except FileNotFoundError:
+            pass
+
+
 def main():
+    if len(sys.argv) == 3 and sys.argv[1] == '--socket':
+        serve_socket(sys.argv[2])
+        return
+    if len(sys.argv) != 1:
+        raise SystemExit('usage: browser_worker.py [--socket PATH]')
     from playwright.sync_api import sync_playwright
     with sync_playwright() as pw:
         controller = Controller(pw)
         for line in sys.stdin:
-            try: response = {'result': controller.handle(json.loads(line))}
-            except Exception as exc: response = {'error': str(exc)[:1200]}
-            print(json.dumps(response), flush=True)
+            print(json.dumps(_response(controller, line), ensure_ascii=False), flush=True)
 
 
 if __name__ == '__main__': main()
