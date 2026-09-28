@@ -6,6 +6,8 @@ import socket
 import subprocess
 import sys
 import threading
+import urllib.request
+import urllib.error
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -314,6 +316,14 @@ TOOLS = [
         },
     },
     {
+        "name":"retrieval_grounding",
+        "description":"Transport borné vers le provider corpus-retrieval réel; aucune admission ni décision.",
+        "inputSchema":{"type":"object","properties":{
+          "operation":{"type":"string","enum":["index","search"]},
+          "arguments":{"type":"object"}
+        },"required":["operation","arguments"],"additionalProperties":False},
+    },
+    {
         "name":"context_graph_fixture",
         "description":"Lire le fixture canonique public/minimal ContextGraph v1. Lecture seule; aucune extension de l'algebre.",
         "inputSchema":{"type":"object","properties":{},"additionalProperties":False},
@@ -400,6 +410,23 @@ def call(name, a):
 
         return result("\n".join(lines))
 
+    if name == "retrieval_grounding":
+        operation=a.get("operation"); arguments=a.get("arguments")
+        if operation not in {"index","search"} or not isinstance(arguments,dict):
+            return result(json.dumps({"error":{"kind":"invalid_request","message":"operation/arguments invalides"}},ensure_ascii=False),True)
+        payload=json.dumps({"operation":operation,"arguments":arguments},ensure_ascii=False).encode()
+        req=urllib.request.Request("http://127.0.0.1:18743/corpus/api/retrieval-grounding",data=payload,
+            headers={"Content-Type":"application/json","Origin":"http://127.0.0.1:18743","Host":"127.0.0.1:18743"},method="POST")
+        try:
+            with urllib.request.urlopen(req,timeout=260) as response:
+                value=json.load(response)
+            return result(json.dumps(value,ensure_ascii=False,separators=(",",":")))
+        except urllib.error.HTTPError as exc:
+            try:value=json.loads(exc.read().decode())
+            except Exception:value={"error":{"kind":"bridge_http","message":str(exc)}}
+            return result(json.dumps(value,ensure_ascii=False,separators=(",",":")),True)
+        except (OSError,ValueError) as exc:
+            return result(json.dumps({"error":{"kind":"bridge_transport","message":str(exc)}},ensure_ascii=False,separators=(",",":")),True)
     if name == "status":
         return run(["status"], 20)
     if name == "assess_blocker":

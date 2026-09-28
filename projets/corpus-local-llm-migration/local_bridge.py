@@ -44,6 +44,54 @@ def health_response(ready):
     return (f'HTTP/1.1 {status}\r\nContent-Type: application/json\r\nContent-Length: {len(body)}\r\nCache-Control: no-store\r\nRetry-After: 2\r\nConnection: close\r\n\r\n').encode()+body
 
 
+def retrieval_grounding_response(body):
+    """Bounded bridge to corpus-retrieval inside the legitimate network namespace."""
+    import subprocess, sys
+    from pathlib import Path
+    try:
+        data = json.loads(body)
+        if not isinstance(data, dict) or set(data) - {"operation", "arguments"}:
+            raise ValueError("Requête retrieval invalide.")
+        operation, arguments = data.get("operation"), data.get("arguments")
+        if operation not in {"index", "search"} or not isinstance(arguments, dict):
+            raise ValueError("Opération retrieval invalide.")
+        if operation == "search":
+            if set(arguments) - {"query", "limit"} or not isinstance(arguments.get("query"), str) or not 1 <= len(arguments["query"]) <= 2000:
+                raise ValueError("Arguments search invalides.")
+            limit = arguments.get("limit", 8)
+            if not isinstance(limit, int) or not 1 <= limit <= 20:
+                raise ValueError("Limite search invalide.")
+            arguments = {"query": arguments["query"], "limit": limit}
+            tool = "memory_search"
+        else:
+            if set(arguments) - {"id", "text", "source"} or not isinstance(arguments.get("id"), str) or not 1 <= len(arguments["id"]) <= 200:
+                raise ValueError("ID index invalide.")
+            if not isinstance(arguments.get("text"), str) or not 1 <= len(arguments["text"]) <= 100000:
+                raise ValueError("Texte index invalide.")
+            source = arguments.get("source", "")
+            if not isinstance(source, str) or len(source) > 1000:
+                raise ValueError("Source index invalide.")
+            arguments = {"id": arguments["id"], "text": arguments["text"], "source": source}
+            tool = "memory_index_text"
+        request = {"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":tool,"arguments":arguments}}
+        proc = subprocess.run([sys.executable, str(Path(__file__).with_name("retrieval_mcp.py"))],
+                              input=json.dumps(request)+"\n", text=True, stdout=subprocess.PIPE,
+                              stderr=subprocess.PIPE, timeout=240, check=False)
+        line = proc.stdout.strip().splitlines()
+        if not line:
+            raise RuntimeError("Provider retrieval sans réponse.")
+        provider = json.loads(line[-1])
+        payload = {"operation": operation, "provider":"corpus-retrieval", "arguments": arguments,
+                   "provider_response": provider, "exit_code": proc.returncode}
+        status = "200 OK" if "result" in provider else "502 Bad Gateway"
+    except (ValueError, json.JSONDecodeError) as exc:
+        payload, status = {"error":{"kind":"invalid_request","message":str(exc)}}, "400 Bad Request"
+    except (OSError, subprocess.TimeoutExpired, RuntimeError) as exc:
+        payload, status = {"error":{"kind":"provider_transport","message":str(exc)}}, "502 Bad Gateway"
+    encoded=json.dumps(payload,ensure_ascii=False,separators=(",",":")).encode()
+    return (f"HTTP/1.1 {status}\r\nContent-Type: application/json; charset=utf-8\r\n"
+            f"Content-Length: {len(encoded)}\r\nCache-Control: no-store\r\nConnection: close\r\n\r\n").encode()+encoded
+
 def relay(left, right, restrict_browser=False):
     response_header = bytearray()
     header_done = not restrict_browser
@@ -112,7 +160,7 @@ def create_server(socket_path, *, inside, readiness=None):
                             ready=backend_ready(socket_path)
                             self.request.sendall(health_response(ready))
                             return
-                        if target in ('/corpus/api/project-resume','/corpus/api/organizer','/corpus/api/ephemeral','/corpus/api/worktrees','/corpus/api/environments','/corpus/api/git-settings','/corpus/api/browser','/corpus/api/plugins','/corpus/api/statistics','/corpus/api/resources','/corpus/api/voice','/corpus/api/chat-actions','/corpus/api/schedules','/corpus/api/shares','/corpus/api/media','/corpus/api/generation','/corpus/api/documents','/corpus/api/updates','/corpus/api/file-import','/corpus/api/workflow-receipt','/corpus/api/scenarios'):
+                        if target in ('/corpus/api/project-resume','/corpus/api/organizer','/corpus/api/ephemeral','/corpus/api/worktrees','/corpus/api/environments','/corpus/api/git-settings','/corpus/api/browser','/corpus/api/plugins','/corpus/api/statistics','/corpus/api/resources','/corpus/api/voice','/corpus/api/chat-actions','/corpus/api/schedules','/corpus/api/shares','/corpus/api/media','/corpus/api/generation','/corpus/api/documents','/corpus/api/updates','/corpus/api/file-import','/corpus/api/workflow-receipt','/corpus/api/scenarios','/corpus/api/retrieval-grounding'):
                             if method not in ('GET','POST'):
                                 self.request.sendall(error_response('405 Method Not Allowed','Utiliser GET ou POST.'));return
                             if method == 'POST' and (fields.get('origin') not in {'http://' + h for h in hosts} or fields.get('content-type') != 'application/json' or 'transfer-encoding' in fields):
@@ -120,7 +168,7 @@ def create_server(socket_path, *, inside, readiness=None):
                             try:size=int(fields.get('content-length','0'))
                             except ValueError:
                                 self.request.sendall(error_response('400 Bad Request','Taille de requête invalide.'));return
-                            limit=300000 if target.endswith(('/project-resume','/workflow-receipt')) else 85000000 if target.endswith(('/file-import','/media')) else 6000000 if target.endswith('/generation') else 7200000 if target.endswith('/voice') else 1000000 if target.endswith('/shares') else 200000 if target.endswith('/documents') else 18000000 if target.endswith('/ephemeral') else 32000
+                            limit=120000 if target.endswith('/retrieval-grounding') else 300000 if target.endswith(('/project-resume','/workflow-receipt')) else 85000000 if target.endswith(('/file-import','/media')) else 6000000 if target.endswith('/generation') else 7200000 if target.endswith('/voice') else 1000000 if target.endswith('/shares') else 200000 if target.endswith('/documents') else 18000000 if target.endswith('/ephemeral') else 32000
                             if not 0<=size<=limit:
                                 self.request.sendall(error_response('413 Content Too Large','Requête trop volumineuse.'));return
                             body=bytearray()
@@ -131,7 +179,14 @@ def create_server(socket_path, *, inside, readiness=None):
                             import worktree_manager, environment_manager, organizer, project_resume
                             import scheduled_messages, local_shares, media_analysis, media_generation, document_generation, update_manager, file_import
                             import git_settings, tool_gateway, plugin_manager, local_statistics, local_resources, local_voice, chat_actions, workflow_verifier, scenario_evaluation
-                            handler = scenario_evaluation if target.endswith('/scenarios') else workflow_verifier if target.endswith('/workflow-receipt') else project_resume if target.endswith('/project-resume') else organizer if target.endswith('/organizer') else ephemeral if target.endswith('/ephemeral') else file_import if target.endswith('/file-import') else update_manager if target.endswith('/updates') else document_generation if target.endswith('/documents') else media_generation if target.endswith('/generation') else media_analysis if target.endswith('/media') else local_shares if target.endswith('/shares') else scheduled_messages if target.endswith('/schedules') else chat_actions if target.endswith('/chat-actions') else local_voice if target.endswith('/voice') else local_resources if target.endswith("/resources") else local_statistics if target.endswith('/statistics') else plugin_manager if target.endswith('/plugins') else tool_gateway if target.endswith('/browser') else git_settings if target.endswith('/git-settings') else environment_manager if target.endswith('/environments') else worktree_manager
+                            handler = None if target.endswith('/retrieval-grounding') else scenario_evaluation if target.endswith('/scenarios') else workflow_verifier if target.endswith('/workflow-receipt') else project_resume if target.endswith('/project-resume') else organizer if target.endswith('/organizer') else ephemeral if target.endswith('/ephemeral') else file_import if target.endswith('/file-import') else update_manager if target.endswith('/updates') else document_generation if target.endswith('/documents') else media_generation if target.endswith('/generation') else media_analysis if target.endswith('/media') else local_shares if target.endswith('/shares') else scheduled_messages if target.endswith('/schedules') else chat_actions if target.endswith('/chat-actions') else local_voice if target.endswith('/voice') else local_resources if target.endswith("/resources") else local_statistics if target.endswith('/statistics') else plugin_manager if target.endswith('/plugins') else tool_gateway if target.endswith('/browser') else git_settings if target.endswith('/git-settings') else environment_manager if target.endswith('/environments') else worktree_manager
+                            if target.endswith('/retrieval-grounding'):
+                                self.request.settimeout(None)
+                                try: peer.connect(str(socket_path))
+                                except OSError:
+                                    self.request.sendall(error_response('503 Service Unavailable','Runtime retrieval indisponible.'));return
+                                peer.sendall(header); peer.sendall(body)
+                                relay(self.request, peer, restrict_browser=False); return
                             self.request.settimeout(1800 if target.endswith('/media') else 150)
                             self.request.sendall(handler.response(method,bytes(body)));return
                         if target == '/corpus/api/parallel' and (method != 'POST' or fields.get('origin') not in {'http://' + h for h in hosts} or fields.get('content-type') != 'application/json' or 'transfer-encoding' in fields or not 0 < int(fields.get('content-length', '0')) <= 300000):
@@ -162,6 +217,21 @@ def create_server(socket_path, *, inside, readiness=None):
                         if lines[0].split(' ')[:2] == ['GET', '/corpus/api/health']:
                             self.request.sendall(health_response(bool(readiness and readiness())))
                             return
+                        method, raw_target, _ = lines[0].split(' ', 2)
+                        route_target = raw_target.split('?',1)[0]
+                        if method == 'POST' and route_target == '/corpus/api/retrieval-grounding':
+                            fields = {k.lower(): v.strip() for line in lines[1:] if ':' in line for k,v in [line.split(':',1)]}
+                            try: size=int(fields.get('content-length','-1'))
+                            except ValueError: size=-1
+                            if not 0 < size <= 120000 or 'transfer-encoding' in fields:
+                                self.request.sendall(error_response('413 Content Too Large','Requête retrieval invalide.')); return
+                            body=bytearray()
+                            while len(body)<size:
+                                chunk=self.request.recv(size-len(body))
+                                if not chunk:return
+                                body.extend(chunk)
+                            self.request.settimeout(260)
+                            self.request.sendall(retrieval_grounding_response(bytes(body))); return
                         if lines[0].split(' ')[1].split('?',1)[0] == '/corpus/api/ephemeral':
                             # This socket is reachable by model tools. The registry
                             # exists only outside their process/network namespace.
