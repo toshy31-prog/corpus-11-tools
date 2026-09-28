@@ -17,6 +17,14 @@ Le protocole distingue quatre décisions :
 
 new_chat_required n'est donc jamais la conséquence automatique d'un checkpoint. Il devient vrai pour une raison explicite (new_chat_reason) : changement de surface/schema nécessitant renégociation, contexte/stream dégradé, incompatibilité runtime ou autre frontière technique justifiée. Un simple bloc borné avec surface stable continue dans la même conversation.
 
+## Provenance des capacités observées
+
+expected_capabilities décrit les capacités attendues après un changement de surface. observed_capabilities décrit les capacités réellement visibles depuis la surface du client ou de la conversation qui crée le handoff.
+
+observed_capabilities est donc une observation déclarée par le client/caller ; Corpus backend ne la calcule pas à partir de son propre registre de tools et ne peut pas en déduire seul le schema effectivement chargé dans une conversation ChatGPT.
+
+Un drift de source sans changement de schema n'impose pas automatiquement de nouvelle conversation. Lorsqu'un schema de tools change réellement, la surface cliente doit être rafraîchie si nécessaire puis réobserver les tools disponibles avant la reprise. Un resume_handoff réussi atteste la compatibilité de reprise qu'il vérifie ; il ne constitue pas, à lui seul, une preuve de fraîcheur du schema conversationnel.
+
 ## Reprise sans redécouverte
 
 resume_handoff vérifie HEAD + working tree puis rend le receipt complet. Le consommateur utilise d'abord next_action, exact_jobs, async_tokens, baselines, blockers et stop_conditions ; il ne reliste ni ne rediagnostique les éléments déjà transportés sauf divergence ou régression fraîche.
