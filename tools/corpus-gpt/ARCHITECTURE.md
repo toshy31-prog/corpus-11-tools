@@ -93,3 +93,26 @@ permettent ensuite de reprendre l'observation après un timeout ou un redémarra
 du tunnel. Un même job encore actif n'est pas dupliqué.
 
 assess_blocker fournit la stratégie de reprise déterministe commune à Corpus.
+
+## Cycle de vie des objets persistants spécialisés
+
+Corpus ne possède pas de gestionnaire global de rétention. Chaque propriétaire
+persistant reste responsable de son propre contrat de conservation et de
+suppression. Pour tout nouvel objet persistant, sa documentation doit préciser :
+
+1. sa source canonique ;
+2. s'il est mutable ou immutable ;
+3. si sa suppression est `safe`, `conditional`, `unsafe` ou encore
+   `undefined` ;
+4. ce qui cesse d'être résoluble lorsque l'objet disparaît ;
+5. si metadata et payload ont des disponibilités distinctes ;
+6. si une expiration logique existe indépendamment de la suppression physique.
+
+Cette convention s'applique notamment aux états async, handoffs, occurrences
+visuelles, Decision Receipts et rapports/preuves, sans leur imposer une durée de
+conservation commune. Une référence devenue non résoluble après suppression
+n'est pas pour autant historiquement invalide. De même, une expiration logique
+ne vaut jamais ordre de suppression physique ; par exemple
+`authorization.expires_at` ne signifie pas `delete_at`. Pour les occurrences
+visuelles, la disponibilité du receipt/metadata reste distincte de celle du
+payload.
