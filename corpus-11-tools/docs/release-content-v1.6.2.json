@@ -207,7 +207,7 @@
     {
       "path": "docs/test-inventory.json",
       "bytes": 19191,
-      "sha256": "922ba92a175b4bb179643bee86260edd7b5e28a7c74c5d6b90b566d3c3305000"
+      "sha256": "16a2e3e46fe5a93ef4b460ec3839b54115a1805b1472121de2da0a1088877eea"
     },
     {
       "path": "evals/routing-and-nonregression.jsonl",

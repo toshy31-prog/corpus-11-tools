@@ -17,6 +17,15 @@ class PlannerTests(unittest.TestCase):
  def test_dimensions_are_not_collapsed_into_score(self):
   v=p.plan({"status":"pass","job_known":True,"uncertainty":"high","preserved_capabilities":["recovery"],"displaced_costs":["ssd_io"]})
   self.assertNotIn("score",v);self.assertIn("no_hidden_composite_score",v["invariants"])
+ def test_ui_work_preserves_browser_and_visual_evidence(self):
+  v=p.plan({"status":"pass","job_known":True,"job_kind":"browser","modalities":["browser_interaction","visual_evidence"]})
+  self.assertIn("screenshot_or_frame_evidence",v["calls"]);self.assertNotIn("cdp_preflight",v["skip"])
+ def test_local_code_does_not_pay_browser_cost(self):
+  v=p.plan({"status":"pass","job_known":True,"job_kind":"local","modalities":["local_compute"]})
+  self.assertIn("cdp_preflight",v["skip"]);self.assertNotIn("screenshot_or_frame_evidence",v["calls"])
+ def test_transport_is_explicit_not_implicit(self):
+  v=p.plan({"status":"pass","job_known":True,"modalities":["local_compute","outbound_transport"]})
+  self.assertIn("explicit_transport_step",v["calls"])
  def test_blocker_reuses_resilience(self):
   v=p.plan({"status":"pass","job_known":True,"blocker":{"message":"timeout","known_completion":False}})
   self.assertEqual(v["recovery"]["blocker"],"timeout_unknown_completion")

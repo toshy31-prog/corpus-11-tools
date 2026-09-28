@@ -133,3 +133,51 @@ systemctl --user is-enabled corpus-gpt-source-watch.path
 7. Pour un job local géré : aucun préflight CDP.
 8. Pour navigation/DOM/screenshot : déclarer corpus-job-kind: browser.
 9. Préférer résumé/delta/hash/compteurs avant dump intégral.
+
+## Modalités de travail et coût caché
+
+Le planner ne confond pas capacité disponible et capacité à initialiser. Il active
+la modalité minimale nécessaire :
+
+- local_compute : jobs, code, Git, fichiers, tests et diagnostics locaux ; CDP est sauté.
+- browser_interaction : navigation et interaction browser ; CDP reste requis.
+- visual_evidence : screenshot/frame demandé comme preuve, sans être ajouté aux tâches qui n'en ont pas besoin.
+- outbound_transport : envoi historique texte/capture vers ChatGPT comme étape explicite, jamais comme effet implicite de chaque job.
+
+La surface browser vérifiée conserve launch/close, navigate, click, fill, pointer,
+type, key, scroll, back/forward/reload, snapshot, screenshot/frame, onglets
+new/select/close, zoom, viewport desktop/mobile, PDF, historique et téléchargements.
+
+Le terminal reste une capacité d'exécution bornée par jobs ; le plugin ne
+transforme pas l'optimisation en shell graphique arbitraire. Une session UI/UX
+peut donc conserver navigateur, clics, saisie, viewport et captures, tandis
+qu'une session de code pure ne paie pas leur coût d'initialisation.
+
+Cette séparation reprend les invariants du tool router : exposition minimale,
+fail-closed, respect des outils explicitement requis, fallback seulement lorsque
+le signal direct ne suffit pas, et trace de la décision.
+
+## Modalités de travail et coût caché
+
+Le planner distingue capacité disponible et capacité à initialiser. Il active la modalité minimale nécessaire.
+
+- local_compute : jobs, code, Git, fichiers, tests et diagnostics locaux ; CDP est sauté.
+- browser_interaction : navigation et interaction browser ; CDP reste requis.
+- visual_evidence : screenshot/frame comme preuve uniquement lorsque nécessaire.
+- outbound_transport : envoi historique texte/capture vers ChatGPT comme étape explicite, jamais comme effet implicite de chaque job.
+
+La surface browser vérifiée conserve launch/close, navigate, click, fill, pointer, type, key, scroll, back/forward/reload, snapshot, screenshot/frame, onglets new/select/close, zoom, viewport desktop/mobile, PDF, historique et téléchargements.
+
+Le terminal reste une capacité d'exécution bornée par jobs ; l'optimisation ne transforme pas Corpus GPT en shell graphique arbitraire. Une session UI/UX conserve donc navigateur, clics, saisie, viewport et captures, tandis qu'une session de code pure ne paie pas leur coût d'initialisation.
+
+Cette séparation reprend les invariants du tool router : exposition minimale, fail-closed, respect des outils explicitement requis, fallback seulement lorsque le signal direct ne suffit pas et trace de la décision.
+
+## Invariants réemployés des routeurs Corpus
+
+- Stage direct avant fallback : un signal explicite suffit ; ne pas appeler un routeur sémantique pour redécouvrir ce qui est déjà connu.
+- Contraintes négatives avant exposition : une interdiction retire une capacité candidate au lieu d'être noyée dans un score.
+- Contexte hérité avec parcimonie : réutiliser le contexte de sous-tâche pertinent sans relire tout l'historique.
+- Budget explicite : ne pas supposer qu'un chemin plus coûteux, un modèle plus lourd ou davantage de preuves est meilleur.
+- Fail-closed : une erreur de routing n'élargit jamais les capacités.
+- Séparer chemin structurel et preuve contextuelle : la raison d'une route reste inspectable sans être confondue avec l'action elle-même.
+- Une capacité explicitement demandée n'est pas retirée par l'optimisation ; elle est bornée et son coût devient visible.

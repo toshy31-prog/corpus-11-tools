@@ -120,6 +120,6 @@
     {"path": "projets/corpus-local-llm-migration/test_model_residency.py", "git_object": "24f1aca78754bf4dabf27eb6a2fe9c6a2283a323", "kind": "blob"},
     {"path": "projets/corpus-local-llm-migration/test_vault_retention.py", "git_object": "e29ad49e54853121653b3fc195f095320b253294", "kind": "blob"},
     {"path": "projets/corpus-local-llm-migration/test_corpus_gpt_job_policy.py", "git_object": "1c3fea542335c422bb03d847f36ffc11f6765b4d", "kind": "blob"},
-    {"path": "projets/corpus-local-llm-migration/test_corpus_gpt_planner.py", "git_object": "435668bbcaf1142f40aa2c0739e628184ee89e10", "kind": "blob"}
+    {"path": "projets/corpus-local-llm-migration/test_corpus_gpt_planner.py", "git_object": "26245ca3e979e43ff34d765698915615f917d6c1", "kind": "blob"}
   ]
 }

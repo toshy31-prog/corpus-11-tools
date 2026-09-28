@@ -8,7 +8,7 @@ EVIDENCE={'fresh','attested','stale','missing'}
 
 def plan(request):
  if not isinstance(request,dict):raise ValueError("objet requis")
- allowed={"status","job_known","job_kind","potentially_long","blocker","write","destructive","abstraction","transversality","reversibility","evidence_freshness","uncertainty","counterfield","revision_condition","stop_condition","exclusive_resources","preserved_capabilities","displaced_costs"}
+ allowed={"status","job_known","job_kind","potentially_long","blocker","write","destructive","abstraction","transversality","reversibility","evidence_freshness","uncertainty","counterfield","revision_condition","stop_condition","exclusive_resources","preserved_capabilities","displaced_costs","modalities"}
  if set(request)-allowed:raise ValueError("champs inconnus")
  status=request.get("status","unknown")
  known=request.get("job_known",False)
@@ -24,6 +24,9 @@ def plan(request):
   if key in request and (not isinstance(request[key],str) or not request[key].strip()):raise ValueError(key+" invalide")
  for key in ("exclusive_resources","preserved_capabilities","displaced_costs"):
   if key in request and (not isinstance(request[key],list) or any(not isinstance(x,str) or not x for x in request[key])):raise ValueError(key+" invalide")
+ modalities=request.get("modalities",["local_compute"])
+ allowed_modalities={"local_compute","browser_interaction","visual_evidence","outbound_transport"}
+ if not isinstance(modalities,list) or not modalities or any(x not in allowed_modalities for x in modalities):raise ValueError("modalities invalide")
  calls=[]
  skip=[]
  if status=="unknown":calls.append("status")
@@ -37,9 +40,12 @@ def plan(request):
  if destructive or rev=="irreversible":calls.append("explicit_authorization_and_rollback_evidence")
  if trans in {"multi_project","ecosystem"}:calls.append("boundary_and_dependency_check")
  if abstraction in {"system","organism"}:calls.append("cross_surface_invariant_check")
+ if "browser_interaction" in modalities and kind!="browser":calls.append("browser_job_required")
+ if "visual_evidence" in modalities:calls.append("screenshot_or_frame_evidence")
+ if "outbound_transport" in modalities:calls.append("explicit_transport_step")
  blocker=request.get("blocker")
  recovery=None
  if blocker:
   if not isinstance(blocker,dict):raise ValueError("blocker invalide")
   recovery=blocker_resilience.assess(blocker)
- return {"schema_version":2,"kind":"corpus_gpt_execution_plan","calls":calls,"skip":skip,"recovery":recovery,"authorization":"required" if destructive or rev=="irreversible" else "unchanged","execution":"not_started","decision_axes":{"abstraction":abstraction,"transversality":trans,"reversibility":rev,"evidence_freshness":fresh,"uncertainty":request.get("uncertainty","unknown"),"counterfield":request.get("counterfield"),"revision_condition":request.get("revision_condition"),"stop_condition":request.get("stop_condition"),"exclusive_resources":request.get("exclusive_resources",[]),"preserved_capabilities":request.get("preserved_capabilities",[]),"displaced_costs":request.get("displaced_costs",[])},"invariants":["no_hidden_composite_score","causal_priority_over_rigid_sequence","preserve_existing_capacity_before_uncertain_reconstruction","no_common_failure_assumed_as_redundancy","method_remains_replaceable","human_arbitration_when_dimensions_remain_incomparable"]}
+ return {"schema_version":2,"kind":"corpus_gpt_execution_plan","calls":calls,"skip":skip,"recovery":recovery,"authorization":"required" if destructive or rev=="irreversible" else "unchanged","execution":"not_started","decision_axes":{"abstraction":abstraction,"transversality":trans,"reversibility":rev,"evidence_freshness":fresh,"uncertainty":request.get("uncertainty","unknown"),"counterfield":request.get("counterfield"),"revision_condition":request.get("revision_condition"),"stop_condition":request.get("stop_condition"),"exclusive_resources":request.get("exclusive_resources",[]),"preserved_capabilities":request.get("preserved_capabilities",[]),"displaced_costs":request.get("displaced_costs",[]),"modalities":modalities},"invariants":["no_hidden_composite_score","causal_priority_over_rigid_sequence","preserve_existing_capacity_before_uncertain_reconstruction","no_common_failure_assumed_as_redundancy","method_remains_replaceable","human_arbitration_when_dimensions_remain_incomparable"]}
