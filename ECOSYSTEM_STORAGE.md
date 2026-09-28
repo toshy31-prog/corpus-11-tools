@@ -22,7 +22,7 @@ La partition / dispose d'environ 176 Go, dont 165 Go utilisés et seulement 1,6 
 
 Le dépôt occupe environ 6,9 Go, dont 4,1 Go sous .git. Le working tree suivi courant ne représente qu'environ 50 MiB.
 
-Corpus local hors dépôt : environ 52 Go sous ~/.local/share/corpus, dont 45 Go de modèles HOT et 6,1 Go de runtimes ; environ 2,9 Go sous ~/.cache/corpus ; environ 289 Mo de STATE ; environ 59 Mo de DATA primaire.
+Après la campagne du 28 septembre, les modèles média/audio (~22,18 Go) résident sous le Vault COLD avec promotion vérifiée à la demande. Qwen3.6, retrieval, Docling et Whisper restent HOT. Les chiffres initiaux de 45 Go HOT et 2,9 Go de cache décrivent l’état avant nettoyage.
 
 ### Vault SSD Kingston
 
@@ -75,3 +75,7 @@ Le premier nettoyage Git à fort rendement est donc un repack/prune contrôlé d
 ## Résilience opérationnelle
 
 Les incidents et invariants transversaux sont consolidés dans RESILIENCE_LESSONS.md. Le storage doctor mesure automatiquement espace libre, volume temporaire et ratio Git/objets atteignables.
+
+## Preuve de résidence média
+
+Le 28 septembre 2026, les huit poids média/audio ont été vérifiés COLD par taille et SHA-256. Les quatre profils flux-klein, wan-5b, qwen-tts et ace-step étaient cold et ready. Un round-trip réel du plus petit poids a validé COLD → HOT → hash → COLD → hash sans lancer d’inférence.
