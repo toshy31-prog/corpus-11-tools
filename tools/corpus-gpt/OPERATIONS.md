@@ -2,14 +2,25 @@
 
 ## Si tu es une nouvelle IA
 
-1.  Appelle `Corpus.status`.
+1.  Appelle `Corpus.status` une seule fois.
 2.  Si l'outil n'existe pas, indique que le plugin/tunnel n'est pas
     disponible dans cette session ; ne prétends pas avoir accès au PC.
-3.  Si `status` passe, appelle `Corpus.doctor`.
-4.  Appelle `Corpus.jobs` avant toute exécution.
-5.  Utilise `Corpus.latest_evidence` pour les preuves.
-6.  Exécute seulement un job listé et pertinent.
-7.  Si l'action nécessaire n'existe pas encore, préfère
+3.  Si `status` passe et que le job exact est déjà connu, utilise directement
+    `Corpus.run_job` ou `Corpus.start_job` selon le cas ; ne relance pas
+    `doctor` ni la découverte des jobs par simple routine.
+4.  Si le job est inconnu, utilise `Corpus.job_info` pour vérifier un nom
+    candidat précis ou `Corpus.jobs` lorsqu'une découverte est réellement
+    nécessaire.
+5.  Appelle `Corpus.doctor` seulement si l'infrastructure est dégradée ou si
+    l'état observé ne suffit pas à établir qu'elle est saine.
+6.  Utilise `Corpus.plan_next` seulement lorsqu'un arbitrage réel de route,
+    portée, modalités, réversibilité ou reprise après blocage est nécessaire.
+    `plan_next` n'est ni un préflight obligatoire ni une autorisation.
+7.  Utilise `Corpus.latest_evidence` lorsque les preuves existantes sont
+    nécessaires à la conclusion.
+8.  Exécute seulement un job listé, pertinent et autorisé par le contexte :
+    job connu ne signifie pas action autorisée.
+9.  Si l'action nécessaire n'existe pas encore, préfère
     `Corpus.install_managed_job` pour installer un job Bash borné plutôt
     qu'un accès shell ou une écriture directe dans le registre.
 
