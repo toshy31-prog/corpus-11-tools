@@ -259,7 +259,15 @@ TOOLS = [
         "description":"Démarrer sans attente un job Corpus GPT déjà enregistré. Le même job actif n'est pas dupliqué; un token persistant est renvoyé.",
         "inputSchema":{
             "type":"object",
-            "properties":{"job":{"type":"string","pattern":"^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$"}},
+            "properties":{
+                "job":{"type":"string","pattern":"^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$"},
+                "causal_refs":{"type":"object","properties":{
+                    "decision_ref":{"type":"string","minLength":1,"maxLength":500},
+                    "authorization_ref":{"type":"string","minLength":1,"maxLength":500},
+                    "parent_ref":{"type":"string","minLength":1,"maxLength":500},
+                    "evidence_refs":{"type":"array","items":{"type":"string","minLength":1,"maxLength":500},"maxItems":100}
+                },"additionalProperties":False}
+            },
             "required":["job"],
             "additionalProperties":False,
         },
@@ -268,6 +276,18 @@ TOOLS = [
         "name":"async_jobs",
         "description":"Lister les derniers jobs asynchrones Corpus GPT avec token, état et code de sortie éventuel. Lecture seule.",
         "inputSchema":{"type":"object","properties":{},"additionalProperties":False},
+    },
+    {
+        "name":"causal_trace",
+        "description":"Retrouver la lignée causale d'un job async depuis son token ou une référence causale exacte.",
+        "inputSchema":{
+            "type":"object",
+            "properties":{
+                "token":{"type":"string","pattern":"^[a-f0-9]{16}$"},
+                "ref":{"type":"string","minLength":1,"maxLength":500}
+            },
+            "additionalProperties":False,
+        },
     },
     {
         "name":"cancel_job",
@@ -518,6 +538,7 @@ def call(name, a):
                 repo=SELF.parents[2],
                 job_kind=job_policy.kind_for(job, job_policy.load(JOB_POLICY)),
                 visual_target=(job_policy.load(JOB_POLICY).get(job) or {}).get("visual_target",""),
+                causal_refs=a.get("causal_refs"),
             )
         except ValueError as exc:
             return result("REFUS: " + str(exc), True)
@@ -528,6 +549,8 @@ def call(name, a):
             "STATUS=" + str(value.get("status")),
             "PID=" + str(value.get("pid")),
         ]
+        if value.get("causal_refs"):
+            lines.append("CAUSAL_REFS=" + json.dumps(value["causal_refs"], ensure_ascii=False, sort_keys=True, separators=(",",":")))
         return result("\n".join(lines))
     if name == "async_jobs":
         rows = []
@@ -541,6 +564,18 @@ def call(name, a):
                 "pid": value.get("pid"),
             })
         return result(json.dumps(rows, ensure_ascii=False, indent=2))
+    if name == "causal_trace":
+        token=a.get("token"); ref=a.get("ref")
+        if bool(token) == bool(ref):
+            return result("REFUS: fournir exactement token ou ref", True)
+        try:
+            if token:
+                value=async_jobs.job_status(token, bb=BB, tail_lines=0)
+                return result(json.dumps({"query":{"token":token},"matches":[value]},ensure_ascii=False,indent=2))
+            rows=async_jobs.find_states_by_causal_ref(BB, ref, limit=50)
+            return result(json.dumps({"query":{"ref":ref},"matches":rows},ensure_ascii=False,indent=2))
+        except ValueError as exc:
+            return result("REFUS: "+str(exc),True)
     if name == "cancel_job":
         try:
             value = async_jobs.cancel_job(a.get("token"), bb=BB)

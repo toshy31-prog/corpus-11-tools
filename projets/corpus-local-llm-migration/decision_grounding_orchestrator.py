@@ -57,6 +57,10 @@ def orchestrate(*,goal,context_graph,projection_roots,admission_policy,retrieval
     receipt["consideration"]=deepcopy(decision["consideration"])
     receipt["admission"]=deepcopy(decision["admission"])
     receipt["decision_context_receipt"]=deepcopy({k:v for k,v in decision.items() if k!="consideration"})
+    decision_ref="decision_context_receipt:"+decision["receipt_digest"]
+    evidence_refs=sorted({ref for row in decision.get("observations",[]) for ref in row.get("provenance",{}).get("evidence_refs",[])})
+    receipt["decision_ref"]=decision_ref
+    receipt["causal_refs"]={"decision_ref":decision_ref,"evidence_refs":evidence_refs}
     receipt["planner_input"]=deepcopy(decision["planner_input"])
     merge=merge_planner_inputs(planner_base,decision["planner_input"]);receipt["merge"]=merge
     if not merge["compatible"]:

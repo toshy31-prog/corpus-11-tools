@@ -12,7 +12,7 @@ class T5aTests(unittest.TestCase):
   e,a,g=self.fixture();return o.orchestrate(goal="safe change",context_graph=g,projection_roots=[e["entity_id"]],admission_policy=POLICY,retrieval_query="q",retrieval_limit=5,retrieval_scope="A",retrieval_reason="ground",id_resolution_map={"doc":{"assertion_ref":a["assertion_id"]}} if mapping else {},planner_base=BASE if base is None else base,retrieval_search=search,exposure_context=EXPOSURE)
  def provider(self,q,l):return {"results":[{"id":"doc","source":"fixture","text":"not evidence","score":.9}]}
  def test_full_chain_and_axis_provenance(self):
-  r=self.call(self.provider);self.assertEqual(r["state"],"planned");self.assertEqual(r["planner_input"],{"reversibility":"reversible"});self.assertEqual(r["merge"]["axes"]["reversibility"]["provenance"],"grounding");self.assertIsNotNone(r["execution_plan"])
+  r=self.call(self.provider);self.assertEqual(r["state"],"planned");self.assertEqual(r["planner_input"],{"reversibility":"reversible"});self.assertEqual(r["merge"]["axes"]["reversibility"]["provenance"],"grounding");self.assertIsNotNone(r["execution_plan"]);self.assertEqual(r["decision_ref"],"decision_context_receipt:"+r["decision_context_receipt"]["receipt_digest"]);self.assertEqual(r["causal_refs"]["decision_ref"],r["decision_ref"]);self.assertEqual(r["causal_refs"]["evidence_refs"],["ev:x"])
  def test_same_axis_same_value_is_explicit_convergence(self):
   b={**BASE,"reversibility":"reversible"};r=self.call(self.provider,b);self.assertEqual(r["merge"]["axes"]["reversibility"]["provenance"],"convergent");self.assertEqual(r["state"],"planned")
  def test_conflicting_axis_stops_before_planner(self):
