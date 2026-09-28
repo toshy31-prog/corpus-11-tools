@@ -18,6 +18,7 @@ import corpus_gpt_job_policy as job_policy
 import corpus_gpt_reload as reload_guard
 import corpus_gpt_planner as execution_planner
 import decision_grounding_orchestrator
+import visual_artifact_occurrence as visual_artifacts
 
 RUNTIME_LOAD_CONFIRMATION = reload_guard.confirm_loaded_runtime()
 
@@ -52,6 +53,7 @@ BB = Path(
 
 JOBS = BB / "jobs"
 JOB_POLICY = BB / "state/job-policy.json"
+VISUAL_ARTIFACT_ROOT = BB / "visual-artifacts"
 
 def result(text, error=False):
     return {"content":[{"type":"text","text":text}], "isError": bool(error)}
@@ -61,7 +63,18 @@ _BROWSER_LOCK = threading.Lock()
 _SEND_LOCK = threading.Lock()
 _TOOL_EXECUTOR = ThreadPoolExecutor(max_workers=8, thread_name_prefix="corpus-mcp")
 
-def browser_result(value):
+def _browser_png(image_uri):
+    prefix = "data:image/png;base64,"
+    if not isinstance(image_uri, str) or not image_uri.startswith(prefix):
+        raise ValueError("image navigateur invalide")
+    payload = image_uri[len(prefix):]
+    try:
+        raw = base64.b64decode(payload, validate=True)
+    except Exception as exc:
+        raise ValueError("image navigateur base64 invalide") from exc
+    return payload, raw
+
+def browser_result(value, *, error=False):
     clean = dict(value)
     image_uri = clean.pop("image", None)
     content = [{"type":"text","text":json.dumps(clean, ensure_ascii=False, separators=(",",":"))}]
@@ -75,7 +88,42 @@ def browser_result(value):
         except Exception:
             return result("REFUS: image navigateur base64 invalide", True)
         content.append({"type":"image","data":payload,"mimeType":"image/png"})
-    return {"content":content,"isError":False}
+    return {"content":content,"isError":bool(error)}
+
+def _persist_browser_visual(value, *, action, lifecycle_known, lifecycle, lifecycle_error=None):
+    if action not in {"screenshot", "frame"} or "image" not in value:
+        return value, False
+    value = dict(value)
+    if not lifecycle_known:
+        value["visual_occurrence_status"] = "attribution_uncertain"
+        value["visual_occurrence_error"] = str(lifecycle_error or "lifecycle indéterminé")[:1200]
+        return value, True
+    try:
+        _, raw = _browser_png(value["image"])
+    except ValueError:
+        return value, False
+    producing_token = lifecycle["token"] if lifecycle is not None else None
+    value["visual_occurrence_attribution"] = "lifecycle" if lifecycle is not None else "standalone"
+    try:
+        occurrence_ref = visual_artifacts.persist_visual_occurrence(
+            VISUAL_ARTIFACT_ROOT, raw, producing_token, action
+        )
+    except visual_artifacts.VisualArtifactPublicationError as exc:
+        value["visual_occurrence_status"] = "publication_error"
+        value["visual_occurrence_error"] = str(exc)[:1200]
+        value["visual_occurrence_published"] = bool(exc.published)
+        if exc.published and exc.occurrence_ref:
+            value["visual_occurrence_ref"] = exc.occurrence_ref
+        return value, True
+    except visual_artifacts.VisualArtifactError as exc:
+        value["visual_occurrence_status"] = "publication_error"
+        value["visual_occurrence_error"] = str(exc)[:1200]
+        value["visual_occurrence_published"] = False
+        return value, True
+    value["visual_occurrence_status"] = "published"
+    value["visual_occurrence_published"] = True
+    value["visual_occurrence_ref"] = occurrence_ref
+    return value, False
 
 def browser_socket_path():
     runtime = os.environ.get("XDG_RUNTIME_DIR") or ("/run/user/" + str(os.getuid()))
@@ -102,8 +150,17 @@ def browser_call(arguments):
     if not worker.is_file():
         return result("REFUS: browser_worker absent", True)
     request_arguments = dict(arguments)
-    lifecycle = active_visual_target()
     action = request_arguments.get("action")
+    lifecycle = None
+    lifecycle_known = False
+    lifecycle_error = None
+    try:
+        lifecycle = active_visual_target()
+        lifecycle_known = True
+    except Exception as exc:
+        lifecycle_error = exc
+        if action not in {"screenshot", "frame"}:
+            return result("REFUS: lecture lifecycle visuel: " + str(exc), True)
     if lifecycle is not None and action == "navigate" and request_arguments.get("url") != lifecycle["target"]:
         return result("REFUS: navigation hors cible lifecycle active", True)
     sync_request = None
@@ -158,7 +215,14 @@ def browser_call(arguments):
         value["lifecycle_target"] = lifecycle["target"]
         value["lifecycle_token"] = lifecycle["token"]
         value["target_converged"] = value.get("url") == lifecycle["target"]
-    return browser_result(value)
+    value, visual_error = _persist_browser_visual(
+        value,
+        action=action,
+        lifecycle_known=lifecycle_known,
+        lifecycle=lifecycle,
+        lifecycle_error=lifecycle_error,
+    )
+    return browser_result(value, error=visual_error)
 
 def run(args, timeout=360, extra_env=None):
     try:
