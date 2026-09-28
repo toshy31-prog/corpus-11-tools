@@ -32,7 +32,12 @@ def exposure_admission(exposure_context):
     admitted=isinstance(exposure_context,dict) and not invalid and not extra and not missing
     return {"admission":admitted,"missing_preconditions":missing,"invalid_preconditions":invalid,"unknown_preconditions":extra}
 
-def orchestrate(*,goal,context_graph,projection_roots,admission_policy,retrieval_query,retrieval_limit,retrieval_scope,retrieval_reason,id_resolution_map,planner_base,retrieval_search,exposure_context,current_context_graph=None,inferences=None):
+def orchestrate(*,goal,context_graph,projection_roots,admission_policy,retrieval_query,retrieval_limit,retrieval_scope,retrieval_reason,id_resolution_map,planner_base,retrieval_search,exposure_context,current_context_graph=None,inferences=None,receipt_store_root=None):
+    """Build the usual result; persist only when a storage root is explicit.
+
+    A persistence error stops planning but does not prove receipt absence:
+    publication may have happened before the error was raised.
+    """
     gate=exposure_admission(exposure_context)
     receipt={"schema_version":1,"kind":"decision_grounding_operational_receipt","goal":goal,
              "exposure_context":deepcopy(exposure_context),"exposure_admission":gate["admission"],
@@ -54,14 +59,24 @@ def orchestrate(*,goal,context_graph,projection_roots,admission_policy,retrieval
     if normalized["status"]=="provider_failure":
         receipt["state"]="stopped_before_planner";receipt["stop_reason"]="provider_failure";return receipt
     decision=dg.build_retrieval_grounded_receipt(goal=goal,context_graph=context_graph,projection_roots=projection_roots,policy=admission_policy,retrieval_results=normalized["retrieval_results"],retrieval_bounds=normalized["retrieval_bounds"],current_context_graph=current_context_graph,inferences=inferences)
+    decision_ref="decision_context_receipt:"+decision["receipt_digest"]
+    if receipt_store_root is not None:
+        try:
+            from decision_receipt_store import store_decision_receipt
+            receipt["persistence"]=store_decision_receipt(receipt_store_root,decision)
+        except Exception as exc:
+            # No retry or deletion: an error can follow successful publication.
+            receipt["persistence"]={"decision_ref":decision_ref,"status":"error","availability":"unknown",
+                                    "error":{"kind":type(exc).__name__,"message":str(exc)}}
     receipt["consideration"]=deepcopy(decision["consideration"])
     receipt["admission"]=deepcopy(decision["admission"])
     receipt["decision_context_receipt"]=deepcopy({k:v for k,v in decision.items() if k!="consideration"})
-    decision_ref="decision_context_receipt:"+decision["receipt_digest"]
     evidence_refs=sorted({ref for row in decision.get("observations",[]) for ref in row.get("provenance",{}).get("evidence_refs",[])})
     receipt["decision_ref"]=decision_ref
     receipt["causal_refs"]={"decision_ref":decision_ref,"evidence_refs":evidence_refs}
     receipt["planner_input"]=deepcopy(decision["planner_input"])
+    if receipt_store_root is not None and receipt["persistence"]["status"]=="error":
+        receipt["state"]="stopped_before_planner";receipt["stop_reason"]="decision_receipt_persistence_failed";return receipt
     merge=merge_planner_inputs(planner_base,decision["planner_input"]);receipt["merge"]=merge
     if not merge["compatible"]:
         receipt["state"]="stopped_before_planner";receipt["stop_reason"]="planner_input_collision";return receipt
