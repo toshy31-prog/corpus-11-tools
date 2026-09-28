@@ -18,6 +18,10 @@ class ResourceResilienceTests(unittest.TestCase):
         self.assertEqual(reaper.PREFIXES, ("corpus-validation-guards-",))
         self.assertGreaterEqual(reaper.MIN_AGE, 6 * 3600)
 
+    def test_runtime_backup_markers_are_detection_only(self):
+        self.assertEqual(storage.RUNTIME_BACKUP_MARKERS, (".bad", ".pre-"))
+        self.assertIn("/.local/share/corpus/runtime", str(storage.RUNTIME_ROOT))
+
     def test_watchdog_requires_two_failures(self):
         self.assertEqual(watchdog.THRESHOLD, 2)
 

@@ -12,6 +12,8 @@ CRITICAL_FREE=5*1024**3
 TMP_WARNING=2*1024**3
 GIT_RATIO_WARNING=3.0
 KNOWN_TMP_PREFIXES=("corpus-validation-guards-",)
+RUNTIME_ROOT=HOME/".local/share/corpus/runtime"
+RUNTIME_BACKUP_MARKERS=(".bad",".pre-")
 
 def size(path: Path) -> int:
     p=subprocess.run(["du","-sb",str(path)],text=True,stdout=subprocess.PIPE,stderr=subprocess.DEVNULL,check=False,timeout=30)
@@ -36,6 +38,11 @@ def main():
         if not child.is_dir() or not child.name.startswith(KNOWN_TMP_PREFIXES): continue
         age=now-child.stat().st_mtime
         orphan_candidates.append({"path":str(child),"bytes":size(child),"age_seconds":int(age)})
+    runtime_backup_candidates=[]
+    if RUNTIME_ROOT.exists():
+        for p in RUNTIME_ROOT.rglob("*"):
+            if p.is_file() and any(marker in p.name for marker in RUNTIME_BACKUP_MARKERS):
+                runtime_backup_candidates.append({"path":str(p),"bytes":p.stat().st_size})
     level="ok"
     reasons=[]
     if usage.free<CRITICAL_FREE: level="critical"; reasons.append("free_space_below_5GiB")
@@ -50,6 +57,7 @@ def main():
       "tmp_bytes":tmp,
       "git":{"total_bytes":git_total,"reachable_bytes":git_reachable,"ratio":ratio},
       "known_tmp_candidates":orphan_candidates,
+      "runtime_backup_candidates":runtime_backup_candidates,
       "policy":{"warning_free_bytes":WARNING_FREE,"critical_free_bytes":CRITICAL_FREE,"tmp_warning_bytes":TMP_WARNING},
       "observed_at_unix":now,
     }
