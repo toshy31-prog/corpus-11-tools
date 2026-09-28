@@ -7,6 +7,7 @@ from pathlib import Path
 
 import blocker_resilience as blocker_policy
 import corpus_gpt_async as async_jobs
+import corpus_gpt_job_policy as job_policy
 
 # OpenCode peut imposer un HOME sandboxé à ses MCP.
 # Ne jamais utiliser ce HOME pour retrouver l'infrastructure utilisateur.
@@ -38,16 +39,18 @@ BB = Path(
 )
 
 JOBS = BB / "jobs"
+JOB_POLICY = BB / "state/job-policy.json"
 
 def result(text, error=False):
     return {"content":[{"type":"text","text":text}], "isError": bool(error)}
 
-def run(args, timeout=360):
+def run(args, timeout=360, extra_env=None):
     try:
         child_env = os.environ.copy()
         child_env["CORPUS_GPT_BIN"] = str(ENTRY)
         child_env["CORPUS_BB_RUNNER_ROOT"] = str(BB)
         child_env["CORPUS_BB_SKIP_GPT"] = "1"
+        child_env.update(extra_env or {})
 
         p = subprocess.run(
             [str(ENTRY), *args],
@@ -111,6 +114,16 @@ TOOLS = [
         "inputSchema":{"type":"object","properties":{},"additionalProperties":False},
     },
     {
+        "name":"job_info",
+        "description":"Vérifier un job nommé sans lister tout le registre : existence et classe local/browser.",
+        "inputSchema":{"type":"object","properties":{"job":{"type":"string","pattern":"^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$"}},"required":["job"],"additionalProperties":False},
+    },
+    {
+        "name":"capabilities",
+        "description":"Résumé compact des capacités et du protocole efficace Corpus GPT.",
+        "inputSchema":{"type":"object","properties":{},"additionalProperties":False},
+    },
+    {
         "name":"run_job",
         "description":"Exécuter un job Corpus GPT déjà enregistré. Le nom doit être celui d'un job listé; aucun chemin ni commande shell arbitraire n'est accepté.",
         "inputSchema":{
@@ -140,7 +153,7 @@ TOOLS = [
         "description":"Lire l'état persistant et la fin de sortie d'un job asynchrone Corpus GPT.",
         "inputSchema":{
             "type":"object",
-            "properties":{"token":{"type":"string","pattern":"^[a-f0-9]{16}$"}},
+            "properties":{"token":{"type":"string","pattern":"^[a-f0-9]{16}$"},"tail_lines":{"type":"integer","minimum":0,"maximum":200}},
             "required":["token"],
             "additionalProperties":False,
         },
@@ -204,6 +217,13 @@ def call(name, a):
         return run(["doctor"], 30)
     if name == "jobs":
         return result("\n".join(safe_jobs()))
+    if name == "job_info":
+        job=a.get("job"); allowed=safe_jobs()
+        if not isinstance(job,str) or job not in allowed:return result(json.dumps({"job":job,"exists":False},ensure_ascii=False))
+        return result(json.dumps({"job":job,"exists":True,"kind":job_policy.kind_for(job,job_policy.load(JOB_POLICY))},ensure_ascii=False))
+    if name == "capabilities":
+        value={"protocol":"efficient-v2","fast_path":"status_then_known_job","doctor":"on_degraded_only","discovery":"jobs_or_job_info","long_jobs":"start_job_then_job_status","job_status_default_tail_lines":24,"managed_job_default_kind":"local","browser_marker":"# corpus-job-kind: browser","repo":str(SELF.parents[2]),"runner":str(BB)}
+        return result(json.dumps(value,ensure_ascii=False,separators=(",",":")))
     if name == "start_job":
         job = a.get("job")
         try:
@@ -213,6 +233,7 @@ def call(name, a):
                 entry=ENTRY,
                 bb=BB,
                 repo=SELF.parents[2],
+                job_kind=job_policy.kind_for(job, job_policy.load(JOB_POLICY)),
             )
         except ValueError as exc:
             return result("REFUS: " + str(exc), True)
@@ -238,7 +259,7 @@ def call(name, a):
         return result(json.dumps(rows, ensure_ascii=False, indent=2))
     if name == "job_status":
         try:
-            value = async_jobs.job_status(a.get("token"), bb=BB)
+            value = async_jobs.job_status(a.get("token"), bb=BB, tail_lines=a.get("tail_lines", 24))
         except ValueError as exc:
             return result("REFUS: " + str(exc), True)
         return result(json.dumps(value, ensure_ascii=False, indent=2))
@@ -284,7 +305,11 @@ def call(name, a):
         finally:
             if tp.exists():
                 tp.unlink()
-        lines=["MANAGED_JOB_INSTALL=PASS","JOB="+job_name,"PATH="+str(dest),"BASH_N=PASS"]
+        registry=job_policy.load(JOB_POLICY)
+        registry[job_name]={"kind":job_policy.kind_from_content(content)}
+        JOB_POLICY.parent.mkdir(parents=True,exist_ok=True)
+        JOB_POLICY.write_text(json.dumps(registry,ensure_ascii=False,indent=2)+"\n")
+        lines=["MANAGED_JOB_INSTALL=PASS","JOB="+job_name,"KIND="+registry[job_name]["kind"],"PATH="+str(dest),"BASH_N=PASS"]
         if backup is not None:
             lines.append("BACKUP="+str(backup))
         return result("\n".join(lines))
@@ -295,7 +320,8 @@ def call(name, a):
         allowed = safe_jobs()
         if not isinstance(job, str) or job not in allowed:
             return result("REFUS: job non enregistré. Autorisés: " + ", ".join(allowed), True)
-        return run(["run", job], 600)
+        kind=job_policy.kind_for(job,job_policy.load(JOB_POLICY))
+        return run(["run", job], 600, job_policy.runner_env(kind))
     return result("outil inconnu", True)
 
 def send(obj):

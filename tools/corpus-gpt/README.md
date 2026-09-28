@@ -335,3 +335,23 @@ projets/corpus-local-llm-migration/BLOCKER_RESILIENCE.md.
 Watcher de source : corpus-gpt-source-watch.path. Les changements réels du MCP et
 de ses modules de résilience déclenchent un reload protégé par hash ; les écritures
 sans changement de contenu ne doivent pas provoquer de boucle de restart.
+
+## Protocole d'efficacité V2
+
+Le protocole historique status → doctor → jobs n'est plus une séquence obligatoire. Il reste valable en diagnostic, mais le chemin normal minimise les probes redondants.
+
+Fast path : appeler status une fois. Si PASS et si le nom du job est déjà connu, ne pas appeler doctor ni jobs. Lancer directement le job court.
+
+Discovery path : appeler jobs uniquement lorsque le nom autorisé n'est pas déjà connu.
+
+Degraded path : appeler doctor seulement si status est dégradé, incohérent, ou si un job échoue pour une cause d'infrastructure.
+
+Long-job path : utiliser start_job dès qu'une opération peut dépasser la fenêtre MCP, puis job_status. Ne pas commencer par run_job et attendre un timeout. job_status retourne une queue courte par défaut ; demander davantage seulement si nécessaire.
+
+Managed jobs : install_managed_job classe désormais les nouveaux jobs local par défaut. Un job qui a réellement besoin du navigateur doit déclarer en commentaire corpus-job-kind: browser. Les jobs legacy sans métadonnée restent browser par prudence.
+
+Un job local saute le préflight CDP. Cela évite démarrages Firefox/CDP, déduplication d'onglets et sorties de preuve inutiles pour Git, filesystem, documentation, tests ou diagnostics locaux.
+
+Sorties : commencer par des résumés bornés et structurés. N'imprimer de gros arbres, logs ou fichiers que lorsqu'un premier résumé révèle une anomalie ou lorsque la tâche exige explicitement le détail.
+
+État persistant : après timeout ou coupure, récupérer token/état/résultat existants avant toute relance. Une sortie de transport manquante n'est pas une preuve d'échec local.

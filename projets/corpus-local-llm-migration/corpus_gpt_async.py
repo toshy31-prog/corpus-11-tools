@@ -126,15 +126,16 @@ def recent_states(bb, limit: int = 20) -> list[dict]:
     return rows
 
 
-def _child_env(entry: Path, bb: Path) -> dict[str, str]:
+def _child_env(entry: Path, bb: Path, job_kind="browser") -> dict[str, str]:
     env = os.environ.copy()
     env["CORPUS_GPT_BIN"] = str(entry)
     env["CORPUS_BB_RUNNER_ROOT"] = str(bb)
     env["CORPUS_BB_SKIP_GPT"] = "1"
+    if job_kind == "local": env["CORPUS_BB_SKIP_INFRA"] = "1"
     return env
 
 
-def start_job(job: str, *, allowed_jobs: list[str], entry, bb, repo) -> dict:
+def start_job(job: str, *, allowed_jobs: list[str], entry, bb, repo, job_kind="browser") -> dict:
     if not isinstance(job, str) or job not in allowed_jobs:
         raise ValueError("job non enregistré")
 
@@ -174,6 +175,7 @@ def start_job(job: str, *, allowed_jobs: list[str], entry, bb, repo) -> dict:
         "--setenv", "CORPUS_GPT_BIN=" + str(entry),
         "--setenv", "CORPUS_BB_RUNNER_ROOT=" + str(bb),
         "--setenv", "CORPUS_BB_SKIP_GPT=1",
+        *(["--setenv", "CORPUS_BB_SKIP_INFRA=1"] if job_kind == "local" else []),
         sys.executable,
         str(Path(__file__).resolve()),
         "--worker", token, job, str(entry), str(bb), str(repo),
@@ -217,7 +219,7 @@ def start_job(job: str, *, allowed_jobs: list[str], entry, bb, repo) -> dict:
     }
 
 
-def job_status(token: str, *, bb, tail_lines: int = 120) -> dict:
+def job_status(token: str, *, bb, tail_lines: int = 24) -> dict:
     state = read_state(bb, token)
     if state is None:
         raise ValueError("token async inconnu")
@@ -228,9 +230,9 @@ def job_status(token: str, *, bb, tail_lines: int = 120) -> dict:
             lines = log.read_text(errors="replace").splitlines()
         except OSError:
             lines = []
-        if lines:
+        if lines and tail_lines:
             state = dict(state)
-            state["output_tail"] = "\n".join(lines[-max(1, tail_lines):])
+            state["output_tail"] = "\n".join(lines[-tail_lines:])
     return state
 
 

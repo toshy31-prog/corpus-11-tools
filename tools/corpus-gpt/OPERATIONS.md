@@ -121,3 +121,15 @@ succès.
 État du watcher :
 systemctl --user is-active corpus-gpt-source-watch.path
 systemctl --user is-enabled corpus-gpt-source-watch.path
+
+## Ordre de décision efficace
+
+1. status, une seule fois.
+2. Si sain et job connu : exécution directe ; pas de doctor/jobs redondants.
+3. Si job inconnu : jobs.
+4. Si infrastructure dégradée : doctor.
+5. Si durée potentiellement longue : start_job puis job_status.
+6. Si timeout : récupérer l'état existant ; ne pas dupliquer.
+7. Pour un job local géré : aucun préflight CDP.
+8. Pour navigation/DOM/screenshot : déclarer corpus-job-kind: browser.
+9. Préférer résumé/delta/hash/compteurs avant dump intégral.
