@@ -39,9 +39,15 @@ import { selectedCatalogueEntity } from "/selected-catalogue-seed.mjs";
 import { reviewedVideo, departureRevision, departureRoutingSnapshot } from "/departure-integrity.mjs";
 import { ephemeralClient } from "/ephemeral-client.mjs";
 import { personalBackup } from "/personal-memory.mjs";
+import { discogsTrackCatalogueProvenance, musicBrainzRecordingCatalogueProvenance, collectionProvenanceGraph } from "/collection-catalogue-provenance.mjs";
 
-const explorationTransport = ephemeralClient(globalThis.fetch.bind(globalThis), location.origin);
+const auditAfterStart = typeof globalThis.__SCOUT_AUDIT_AFTER_EXPLORATION_START__ === "function"
+  ? globalThis.__SCOUT_AUDIT_AFTER_EXPLORATION_START__ : undefined;
+const explorationTransport = ephemeralClient(globalThis.fetch.bind(globalThis), location.origin, { afterStart: auditAfterStart });
 const fetch = explorationTransport.fetch;
+if (typeof globalThis.__SCOUT_AUDIT_ATTACH_EXPLORATION_FETCH__ === "function") {
+  globalThis.__SCOUT_AUDIT_ATTACH_EXPLORATION_FETCH__((input, options) => fetch(input, options));
+}
 addEventListener("pagehide", () => { void explorationTransport.close(); });
 addEventListener("pageshow", event => { if (event.persisted) location.reload(); });
 
@@ -765,10 +771,31 @@ async function rejectSeedArtistEdge(edge, expectedSeedId = activeDig.seed?.id) {
   await refreshExplorationGraph(seed.id);
   if (activeDig.seed?.id !== expectedSeedId) return;
 
+  // A rejected artist identity must also invalidate any curator catalogue state
+  // accumulated under that identity. The video/channel route itself remains a
+  // valid departure capability, but previously loaded curator cards are no
+  // longer admissible until the user explicitly launches a fresh exploration.
+  activeDig.catalogueGroups = {
+    ...(activeDig.catalogueGroups || {}),
+    curator: {
+      ...(activeDig.catalogueGroups?.curator || {}),
+      items: [],
+      selectedIds: [],
+      seenIds: [],
+      turn: 0,
+      coverage: {
+        state: "not_checked",
+        message: "Identité révoquée. Relancez explicitement la recherche pour consulter la chaîne du départ."
+      }
+    }
+  };
+
   const remainingArtists = confirmedSeedArtistEdges(seed.id);
   activeDig = {
     ...activeDig,
-    catalogueGroups: {},
+    catalogueGroups: activeDig.catalogueGroups,
+    derived: [],
+    participantDraft: null,
     front: null,
     synthMix: null,
     collaborationArtist: remainingArtists.length ? declaredDepartureArtist(explorationGraph, seed.id) : "",
@@ -787,7 +814,7 @@ async function rejectSeedArtistEdge(edge, expectedSeedId = activeDig.seed?.id) {
   renderCatalogueGroups();
   renderCollaborationAtlas();
 
-  await openExploration({ seed, preserveLineage: true });
+  await openExploration({ seed, preserveLineage: true, suppressAutomaticCuratorReload: true });
 }
 
 async function confirmSeedArtist(candidate, expectedSeedId = activeDig.seed?.id) {
@@ -1377,7 +1404,12 @@ async function refreshExplorationGraph(preferredId = "") {
   const generation = compositionGeneration;
   const activeLibrary = explorationLibrary({ includeExternal: false });
   const refreshPicker = snapshot => {
-    const pickerState = augmentExplorationGraph(snapshot, activeLibrary, collaborationIndex);
+    const collectionGraph = collectionProvenanceGraph(activeLibrary);
+    const durableState = {
+      entities: { ...(snapshot.entities || {}), ...(collectionGraph.entities || {}) },
+      edges: { ...(snapshot.edges || {}), ...(collectionGraph.edges || {}) }
+    };
+    const pickerState = augmentExplorationGraph(durableState, activeLibrary, collaborationIndex);
     const pickerGraph = projectActiveCollectionGraph(pickerState, activeLibrary);
     seedCatalog = buildSeedCatalog(pickerGraph, activeLibrary, collaborationIndex);
     renderSeedOptions(preferredId || explorationSession?.seed?.id || "");
@@ -1874,6 +1906,19 @@ async function hydrateExplorationSeed(seed) {
     });
 
     graphPersisted = persisted.ok;
+    if (persisted.ok) {
+      const index = library.findIndex(item => item.id === video.id);
+      if (index >= 0) {
+        const provenance = discogsTrackCatalogueProvenance(video, recording)
+          || musicBrainzRecordingCatalogueProvenance(video, recording);
+        if (provenance) {
+          const next = [...library];
+          next[index] = { ...next[index], departureRevision: video.departureRevision || "", catalogueProvenance: provenance };
+          await writeCachedLibrary(next);
+          library = next;
+        }
+      }
+    }
   }
 
   if (
@@ -2380,7 +2425,7 @@ function renderCatalogueGroups() {
   return Boolean(Object.keys(activeDig.catalogueGroups || {}).length);
 }
 
-async function openExploration({ seed = currentSeed(), preserveLineage = false, lineage = null, configure = false, reviewed = false } = {}) {
+async function openExploration({ seed = currentSeed(), preserveLineage = false, lineage = null, configure = false, reviewed = false, suppressAutomaticCuratorReload = false } = {}) {
   if (!seed) return;
   // The picker chooses an object, not a hidden label-only search. Directions
   // are configured on the next screen before any catalogue branch is loaded.
@@ -2553,7 +2598,7 @@ async function openExploration({ seed = currentSeed(), preserveLineage = false, 
     await Promise.all([searchSuggestedParticipants(automaticDraft), searchSuggestedParticipantIdentities(automaticDraft)]);
     if (generation !== compositionGeneration) return;
   }
-  if ((!configure || automaticDraft) && getScoutMixerView().workflow !== "identify") {
+  if ((!configure || automaticDraft) && getScoutMixerView().workflow !== "identify" && !suppressAutomaticCuratorReload) {
     // A name-only search does not authorize catalogue identity assertions.
     // The source channel remains usable without an identified recording.
     const sessionToLoad = automaticDraft && !currentJourneyGuidance().identityConfirmed
@@ -2633,6 +2678,7 @@ function cancelWorkspaceSearch() {
     sourceStates: { ...activeDig.dossier.sourceStates, recording: "interrupted" },
     message: "Attente interrompue. Les requêtes déjà envoyées peuvent finir côté serveur."
   };
+  renderActiveSeed();
   renderCatalogueGroups();
   persistExplorationSession().catch(error => workspace?.notify(error.message, { error: true }));
 }

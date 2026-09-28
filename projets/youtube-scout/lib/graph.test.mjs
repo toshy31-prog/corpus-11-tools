@@ -259,3 +259,16 @@ test("graphFromResolution matérialise le label Discogs structuré d'une éditio
     )
   );
 });
+
+test("une résolution MusicBrainz autoritative matérialise ses labels de release exacts", () => {
+  const graph=graphFromResolution(
+    {id:"abcdefghijk",title:"Track",departureRevision:"r1"},
+    null,
+    {resolved:{id:"rec-1",title:"Track",artistCredits:[],isrcs:[],releases:[{
+      id:"rel-1",title:"Release",date:"2024-01-01",country:"FR",
+      labels:[{id:"lab-1",name:"Exact Label",catalogueNumber:"CAT-1"}]
+    }]}}
+  );
+  assert.ok(graph.entities.some(entity=>entity.id==="label:musicbrainz:lab-1" && entity.name==="Exact Label"));
+  assert.ok(graph.edges.some(edge=>edge.from==="release:musicbrainz:rel-1" && edge.to==="label:musicbrainz:lab-1" && edge.kind==="issued_by" && edge.status==="observed" && edge.evidence.includes("musicbrainz") && edge.catalogueNumber==="CAT-1"));
+});

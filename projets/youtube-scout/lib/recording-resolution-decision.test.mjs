@@ -437,3 +437,30 @@ test("une release Discogs de recherche seule ne peut pas auto-résoudre un recor
     1
   );
 });
+
+test("l'autorité MusicBrainz acceptée conserve les labels bornés de ses releases exactes", () => {
+  const runtime=decideRuntimeRecording({plan:plan(),musicBrainzCandidates:[{
+    id:"recording-dot",title:"Substance (Felix da Housecat Remix)",sourceScore:100,
+    artistCredits:[{id:"artist-dot",name:"Dot Allison"}],
+    releases:[{id:"release-1",title:"Release",date:"2024-01-01",country:"GB",status:"Official"}],isrcs:[],
+    raw:{releases:[{id:"release-1","label-info":[{"catalog-number":"CAT-1",label:{id:"label-1",name:"Label One"}}]}]}
+  }]});
+  const result=applyRuntimeRecordingAuthority({
+    ...legacyResolved("recording-dot"),
+    resolved:{...legacyResolved("recording-dot").resolved,releases:[{id:"release-1",title:"Release",date:"2024-01-01",country:"GB",status:"Official"}]}
+  },runtime);
+  assert.equal(result.status,"resolved");
+  assert.deepEqual(result.resolved.releases[0].labels,[{id:"label-1",name:"Label One",catalogueNumber:"CAT-1"}]);
+});
+
+test("une décision MusicBrainz rejetée ne projette jamais ses labels dans resolved", () => {
+  const runtime=decideRuntimeRecording({plan:plan(),musicBrainzCandidates:[{
+    id:"wrong",title:"Substance (Felix da Housecat Remix)",sourceScore:100,
+    artistCredits:[{id:"wrong-artist",name:"Another Artist"}],
+    releases:[{id:"release-x",title:"Wrong"}],isrcs:[],
+    raw:{releases:[{id:"release-x","label-info":[{label:{id:"label-x",name:"Wrong Label"}}]}]}
+  }]});
+  const result=applyRuntimeRecordingAuthority({...legacyResolved("wrong"),resolved:{...legacyResolved("wrong").resolved,releases:[{id:"release-x",title:"Wrong"}]}},runtime);
+  assert.notEqual(result.status,"resolved");
+  assert.equal(result.resolved,null);
+});

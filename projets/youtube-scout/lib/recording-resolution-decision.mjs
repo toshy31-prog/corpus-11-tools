@@ -95,6 +95,13 @@ function expectedFromPlan(plan = {}) {
 }
 
 function legacyMusicBrainzToRaw(candidate = {}) {
+  const rawByReleaseId = new Map();
+  for (const release of candidate.raw?.releases || []) {
+    const releaseId = clean(release?.id);
+    if (!releaseId) continue;
+    if (rawByReleaseId.has(releaseId)) rawByReleaseId.set(releaseId, null);
+    else rawByReleaseId.set(releaseId, release);
+  }
   return {
     id: candidate.id,
     title: candidate.title,
@@ -109,13 +116,22 @@ function legacyMusicBrainzToRaw(candidate = {}) {
         }
       })),
     releases:
-      (candidate.releases || []).map((release) => ({
-        id: release.id,
-        title: release.title,
-        date: release.date,
-        country: release.country,
-        status: release.status
-      })),
+      (candidate.releases || []).map((release) => {
+        const raw = rawByReleaseId.get(clean(release.id));
+        return {
+          id: release.id,
+          title: release.title,
+          date: release.date,
+          country: release.country,
+          status: release.status,
+          labels: raw ? (raw["label-info"] || []).flatMap(info => {
+            const labelId = clean(info?.label?.id), name = clean(info?.label?.name);
+            if (!labelId || !name) return [];
+            const catalogueNumber = clean(info?.["catalog-number"]);
+            return [{ id: labelId, name, ...(catalogueNumber ? { catalogueNumber } : {}) }];
+          }) : []
+        };
+      }),
     isrcs: candidate.isrcs || []
   };
 }
@@ -322,10 +338,15 @@ export function applyRuntimeRecordingAuthority(
     );
 
   if (authoritativeResolved) {
+    const acceptedRaw = runtimeDecision.decision?.best?.candidate?.raw;
+    const resolved = {
+      ...legacyResolution.resolved,
+      ...(acceptedRaw?.releases ? { releases: acceptedRaw.releases } : {})
+    };
     return {
       ...legacyResolution,
       status: "resolved",
-      resolved: legacyResolution.resolved,
+      resolved,
       corroboration: {
         ...(legacyResolution.corroboration || {}),
         musicbrainz: "resolved"

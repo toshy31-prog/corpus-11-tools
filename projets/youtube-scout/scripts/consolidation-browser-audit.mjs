@@ -6,16 +6,27 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import assert from "node:assert/strict";
 import { discogsReleaseGraph } from "../lib/catalogue.mjs";
+import { sessionFetch } from "../tests/session-fetch.mjs";
 
 // Real UI + local graph HTTP, synthetic catalogues, disposable browser/state.
 const browserName = process.env.SCOUT_AUDIT_BROWSER || "chromium";
 const librarySize = Math.max(1, Math.min(5000, Number(process.env.SCOUT_AUDIT_LIBRARY_SIZE) || 1));
 const playwright = await import(process.env.SCOUT_PLAYWRIGHT_MODULE || "playwright");
 const folder = await mkdtemp(join(tmpdir(), "scout-consolidation-ui-"));
+  const hostile = '<img data-audit-xss="yes" src=x onerror="window.auditXss=true">';
 console.log(`Audit artifacts: ${folder}`);
 const fixture = createServer((request, response) => {
   response.setHeader("content-type", "application/json");
-  response.end(JSON.stringify({ releases: [], recordings: [], artists: [], relations: [], results: [], pagination: { pages: 1 } }));
+  const url = new URL(request.url, "http://fixture.local");
+  let body = { releases: [], recordings: [], artists: [], relations: [], results: [], pagination: { pages: 1 } };
+  if (url.pathname === "/artists/10") body = { id: 10, name: "Signal Coast" };
+  else if (url.pathname === "/artists/10/releases") body = { releases: [{ id: 100, type: "release" }], pagination: { pages: 1 } };
+  else if (url.pathname === "/labels/77/releases") body = { releases: Array.from({ length: 18 }, (_, i) => ({ id: 100 + i, type: "release" })), pagination: { pages: 1 } };
+  else {
+    const id = Number(url.pathname.match(/^\/releases\/(\d+)$/)?.[1]);
+    if (id >= 100 && id < 118) body = { id, title: id === 100 ? "First Light" : `Night Routes ${id - 100} ${hostile}`, artists: [{ id: id === 100 ? 10 : 20 + id - 100, name: id === 100 ? "Signal Coast" : `Satellite ${id - 100}` }], labels: [{ id: 77, name: "Tidal Records" }], tracklist: [] };
+  }
+  response.end(JSON.stringify(body));
 });
 fixture.listen(0, "127.0.0.1"); await once(fixture, "listening");
 const root = `http://127.0.0.1:${fixture.address().port}`;
@@ -24,20 +35,37 @@ const port = probe.address().port; await new Promise(resolve => probe.close(reso
 const server = spawn(process.execPath, ["server.mjs"], {
   cwd: new URL("../", import.meta.url),
   env: { ...process.env, PORT: String(port), SCOUT_DATA_FILE: join(folder, "state.json"), DISCOGS_TOKEN_FILE: join(folder, "token"),
-    DISCOGS_TOKEN: "", APPLE_MUSIC_TOKEN: "", SPOTIFY_TOKEN: "", SOUNDCLOUD_TOKEN: "",
+    DISCOGS_TOKEN: "fixture-discogs-token", APPLE_MUSIC_TOKEN: "", SPOTIFY_TOKEN: "", SOUNDCLOUD_TOKEN: "",
     MUSICBRAINZ_ROOT: root, MUSICBRAINZ_INTERVAL: "0", WIKIDATA_ROOT: root, DISCOGS_ROOT: root,
     LISTENBRAINZ_ROOT: root, APPLE_MUSIC_ROOT: root, SPOTIFY_ROOT: root, YOUTUBE_THUMBNAIL_ROOT: root },
   stdio: ["ignore", "pipe", "pipe"]
 });
-let browser, page;
+let browser, page, visibleContext = null, visibleMirror = false;
 const checks = [], errors = [], calls = [];
 let delayGraph = false;
 const check = (name, condition) => { assert.ok(condition, name); checks.push(name); console.log(`PASS ${name}`); };
+const apiFetch = sessionFetch(globalThis.fetch);
 try {
   await Promise.race([once(server.stdout, "data"), new Promise((_, reject) => setTimeout(() => reject(new Error("Server startup timeout")), 5000))]);
-  browser = await playwright[browserName].launch({ headless: true });
-  page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+  visibleMirror = process.env.SCOUT_VISIBLE_MIRROR === "1";
+  browser = visibleMirror
+    ? await playwright.chromium.connectOverCDP(process.env.SCOUT_VISIBLE_CDP || "http://127.0.0.1:9223", { slowMo: Number(process.env.SCOUT_VISIBLE_SLOWMO || 280) })
+    : await playwright[browserName].launch({ headless: true });
+  visibleContext = null;
+  if (visibleMirror) {
+    visibleContext = await browser.newContext({ viewport: { width: 1440, height: 1000 }, acceptDownloads: true });
+    page = await visibleContext.newPage();
+  } else page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
   page.setDefaultTimeout(15000);
+  await page.addInitScript(() => {
+    globalThis.__SCOUT_AUDIT_ATTACH_EXPLORATION_FETCH__ = capability => { globalThis.__SCOUT_AUDIT_EXPLORATION_FETCH__ = capability; };
+    globalThis.__SCOUT_AUDIT_AFTER_EXPLORATION_START__ = async (fetchCapability, seedId) => {
+      const fixture = globalThis.__SCOUT_AUDIT_CONTEXT_FIXTURE__;
+      if (!fixture || seedId !== "artist:discogs:10") return;
+      const response = await fetchCapability("/api/graph/ingest", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(fixture) });
+      if (!response.ok) throw new Error("Browser audit context fixture injection failed.");
+    };
+  });
   page.on("pageerror", error => errors.push(error.message));
   await page.route("**/*", async route => {
     const url = route.request().url();
@@ -48,6 +76,13 @@ try {
   page.on("request", request => { if (request.url().includes("/api/music/")) calls.push(request.url()); });
   const base = `http://localhost:${port}`;
   await page.goto(base);
+  if (visibleMirror) await page.evaluate(() => {
+    const badge=document.createElement("div"); badge.id="corpus-visible-audit";
+    badge.textContent="CORPUS · AUDIT UI VISIBLE · fixture isolée";
+    Object.assign(badge.style,{position:"fixed",top:"8px",right:"8px",zIndex:"2147483647",padding:"8px 12px",background:"#111",color:"#fff",font:"12px system-ui",borderRadius:"6px",opacity:".88",pointerEvents:"none"});
+    document.body.append(badge);
+  });
+  if (visibleMirror) console.log("VISIBLE_STAGE=page-ready");
   await page.locator("#workspace-empty").waitFor();
   await page.keyboard.press("Control+k");
   await page.locator("#seed-dialog[open]").waitFor();
@@ -56,9 +91,9 @@ try {
   check("Search is visible immediately without scrolling", await page.locator("#seed-search").evaluate(node => { const box = node.getBoundingClientRect(); return box.top >= 0 && box.bottom < innerHeight; }));
   await page.keyboard.press("Escape");
   check("Escape closes picker", !await page.locator("#seed-dialog").evaluate(node => node.open));
+  if (visibleMirror) console.log("VISIBLE_STAGE=picker-basic");
   const deltas = Array.from({ length: 18 }, (_, i) => discogsReleaseGraph({ id: 100 + i, title: i ? `Night Routes ${i}` : "First Light", artists: [{ id: i ? 20 + i : 10, name: i ? `Satellite ${i}` : "Signal Coast" }], labels: [{ id: 77, name: "Tidal Records" }], tracklist: [] }));
   const delta = { entities: deltas.flatMap(x => x.entities), edges: deltas.flatMap(x => x.edges) };
-  const hostile = '<img data-audit-xss="yes" src=x onerror="window.auditXss=true">';
   for (const node of delta.entities) if (node.type === "release" && node.id !== "release:discogs:100") {
     node.title += ` ${hostile}`;
     node.url = "javascript:window.auditXss=true";
@@ -66,13 +101,17 @@ try {
   const video = { id: "fixture0001", title: "Signal Coast - First Light", channelTitle: "Fixture Channel", durationSeconds: 360, playlistIds: ["fixture-list"], playlistNames: ["Fixture collection"] };
   delta.entities.push({ id: `video:youtube:${video.id}`, type: "video", title: video.title });
   delta.edges.push({ from: `video:youtube:${video.id}`, to: "artist:discogs:10", kind: "probable_artist", status: "confirmed_user", evidence: ["fixture"] });
-  check("Fixture graph ingested", (await fetch(`${base}/api/graph/ingest`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(delta) })).ok);
+  if (visibleMirror) console.log("VISIBLE_STAGE=before-ingest");
+  check("Fixture graph ingested", (await apiFetch(`${base}/api/graph/ingest`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(delta) })).ok);
   const library = [video, ...Array.from({ length: librarySize - 1 }, (_, i) => ({ ...video, id: `fixture${String(i + 2).padStart(5, "0")}`, title: `Collection item ${i + 2}`, channelTitle: "Fixture archive" }))];
   await page.evaluate(async library => {
     const db = await new Promise((resolve, reject) => { const request = indexedDB.open("youtube-scout", 3); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); });
     await new Promise((resolve, reject) => { const tx = db.transaction("library", "readwrite"); tx.objectStore("library").put(library, "videos"); tx.oncomplete = resolve; tx.onerror = () => reject(tx.error); }); db.close();
   }, library);
+  if (visibleMirror) console.log("VISIBLE_STAGE=after-library-write");
   await page.reload();
+  await page.evaluate(delta => { globalThis.__SCOUT_AUDIT_CONTEXT_FIXTURE__ = delta; }, delta);
+  check("Fixture graph ingested into page exploration context", await page.evaluate(async delta => (await globalThis.__SCOUT_AUDIT_EXPLORATION_FETCH__("/api/graph/ingest", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(delta) })).ok, delta));
   await page.getByRole("button", { name: "＋ Choisir un départ" }).click();
   check("Picker renders a bounded initial list", await page.locator(".seed-result").count() <= 8);
   await page.locator("#seed-search").fill("Signal Coast");
@@ -82,25 +121,32 @@ try {
   await page.screenshot({ path: join(folder, "picker.png") });
   // Regression from the real workflow: all optional directions unchecked,
   // then choosing a track must not silently refuse the click behind the modal.
-  await page.locator(".seed-advanced > summary").click();
-  for (const checkbox of await page.locator("#exploration-directions input").all()) await checkbox.uncheck();
+  if (visibleMirror) console.log("VISIBLE_STAGE=picker-selected");
   delayGraph = true;
-  await page.locator('[data-seed-id="video:youtube:fixture0001"]').focus();
+  await page.locator('.seed-result[data-seed-id="video:youtube:fixture0001"]').focus();
   await page.keyboard.press("Enter");
+  check("Keyboard selection is explicit before launch", await page.locator("#seed-dialog").evaluate(node => node.open) && await page.locator("#launch-seed").isEnabled() && await page.locator('.seed-result[data-seed-id="video:youtube:fixture0001"]').getAttribute("aria-pressed") === "true");
+  await page.locator("#launch-seed").click();
   await page.waitForTimeout(300);
-  check("Track selection works with no optional direction selected", !await page.locator("#seed-dialog").evaluate(node => node.open));
-  await page.waitForFunction(() => document.querySelector(".mix-source-name")?.textContent?.includes("First Light"));
+  check("Explicit launch closes picker", !await page.locator("#seed-dialog").evaluate(node => node.open));
+  await page.locator(".mix-source-name").filter({ hasText: "First Light" }).waitFor();
+  if (visibleMirror) console.log("VISIBLE_STAGE=track-launched");
   await page.locator("#workspace-change-seed").click();
   await page.locator("#seed-type").selectOption("artist");
   await page.locator("#seed-search").fill("signal");
   await page.locator('[data-seed-id="artist:discogs:10"]').click();
+  check("Artist selection uses the explicit launch step", await page.locator("#seed-dialog").evaluate(node => node.open) && await page.locator("#launch-seed").isEnabled());
+  await page.locator("#launch-seed").click();
+  await page.locator('#scout-mixer-rack [data-action="dig"]').waitFor({ state: "visible" });
+  if (visibleMirror) console.log("VISIBLE_STAGE=artist-launched");
+  await page.locator('#scout-mixer-rack [data-action="dig"]').click();
   const cards = page.locator("#scout-mixer-rack .mix-grid .derived-card");
   await cards.first().waitFor();
   await page.waitForTimeout(600);
   delayGraph = false;
   check("Changing departure during a delayed graph read keeps the latest choice", (await page.locator(".mix-source-name").innerText()) === "Signal Coast");
   check("Active collection artist opens discoveries", await cards.count() > 0);
-  check("Hostile catalogue titles stay text", await cards.first().locator("h3").textContent().then(text => text.includes("<img")) && await page.locator("[data-audit-xss]").count() === 0);
+  check("Hostile catalogue titles stay text", (await cards.locator("h3").allTextContents()).some(text => text.includes("<img")) && await page.locator("[data-audit-xss]").count() === 0);
   check("Hostile catalogue URLs never become executable links", await page.locator('a[href^="javascript:"], a[href^="data:"]').count() === 0);
   check("Picker closes on choice", !await page.locator("#seed-dialog").evaluate(node => node.open));
   check("Mixer settings are available without obscuring results", !await page.locator(".mix-tuning").evaluate(node => node.open));
@@ -109,11 +155,17 @@ try {
     return second.left > first.left && Math.abs(second.top - first.top) < 2;
   }));
   await cards.first().locator(".catalogue-proof > summary").click();
-  check("Expanded evidence stays bounded and the explanation remains visible", await cards.first().evaluate(card => card.querySelector(".catalogue-proof").getBoundingClientRect().height <= 321 && Boolean(card.querySelector(".catalogue-reason").textContent)));
+  const evidenceMetrics = await cards.first().evaluate(card => { const proof = card.querySelector(".catalogue-proof"), style = getComputedStyle(proof); return { reason: card.querySelector(".catalogue-reason").textContent, overflowY: style.overflowY, maxHeight: style.maxHeight, scrollHeight: proof.scrollHeight, clientHeight: proof.clientHeight }; });
+  check("Expanded evidence stays in normal flow and the explanation remains visible", evidenceMetrics.overflowY === "visible" && evidenceMetrics.scrollHeight === evidenceMetrics.clientHeight && Boolean(evidenceMetrics.reason));
   await cards.first().locator(".catalogue-proof > summary").click();
   await page.locator('#scout-mixer-rack [data-action="dig"]').waitFor({ state: "visible" });
   await page.screenshot({ path: join(folder, "desktop.png"), fullPage: true });
+  for (let stable = 0, previous = -1; stable < 5;) {
+    await page.waitForTimeout(100);
+    if (calls.length === previous) stable++; else { previous = calls.length; stable = 0; }
+  }
   const beforeCalls = calls.length;
+  if (visibleMirror) console.log("VISIBLE_STAGE=desktop-proof-done");
   await page.locator(".mix-tuning > summary").click();
   await page.locator("#scout-param-shape-spread").fill("0.4");
   await page.locator("#scout-param-shape-spread").dispatchEvent("input");
@@ -124,41 +176,44 @@ try {
   await page.waitForTimeout(150);
   check("NEXT changes the candidate page", JSON.stringify(await cards.locator("h3").allTextContents()) !== JSON.stringify(oldTitles));
   await cards.first().locator("[data-keep]").click();
+  if (visibleMirror) console.log("VISIBLE_STAGE=next-keep-done");
   await page.getByRole("link", { name: /Carnet/ }).click();
   await page.locator(".notebook-card textarea").fill("Conserver le chemin du label.");
   await page.locator(".notebook-card select").selectOption("listen");
   await page.locator(".notebook-card textarea").blur();
-  await page.waitForFunction(() => JSON.parse(localStorage.getItem("youtube-scout.active-dig.v2"))?.seed?.id === "artist:discogs:10");
-  await page.evaluate(() => {
-    const key = "youtube-scout.active-dig.v2";
-    const saved = JSON.parse(localStorage.getItem(key));
-    const stale = { id: "release:fixture:stale-era", title: "Unrelated remembered result", artist: "Unrelated", type: "release", direction: "era", path: [] };
-    saved.front.directions = [...new Set([...saved.front.directions, "era"])];
-    saved.catalogueGroups.era = { items: [stale], selectedIds: [stale.id], coverage: { complete: true, state: "documented" } };
-    saved.updatedAt = new Date(Date.now() + 1000).toISOString();
-    localStorage.setItem(key, JSON.stringify(saved));
-  });
+  check("Active exploration is not persisted in localStorage", await page.evaluate(() => localStorage.getItem("youtube-scout.active-dig.v2") === null));
   await page.reload();
   await page.locator(".notebook-card").waitFor();
   check("Notebook note survives reload", await page.locator(".notebook-card textarea").inputValue() === "Conserver le chemin du label.");
   await page.getByRole("link", { name: /Explorer/ }).click();
-  await page.locator("#workspace-resume").waitFor();
-  check("Reload does not reactivate the last departure", await page.locator("#workspace-empty").isVisible());
-  const resumeCalls = calls.length;
-  await page.locator("#workspace-resume").click();
+  check("Reload leaves exploration empty and offers no implicit resume", await page.locator("#workspace-empty").isVisible() && await page.locator("#workspace-resume").count() === 0);
+  await page.locator("#workspace-change-seed").click();
+  await page.locator("#seed-search").fill("Signal Coast");
+  await page.locator('.seed-result[data-seed-id="video:youtube:fixture0001"]').click();
+  await page.locator("#launch-seed").click();
+  await page.locator(".mix-source-name").filter({ hasText: "First Light" }).waitFor();
+  await page.locator("#workspace-change-seed").click();
+  await page.locator("#seed-search").fill("Signal Coast");
+  await page.locator('.seed-result[data-seed-id="video:youtube:fixture0001"]').click();
+  await page.locator("#launch-seed").click();
+  await page.locator(".mix-source-name").filter({ hasText: "First Light" }).waitFor();
+  await page.locator("#workspace-change-seed").click();
+  await page.locator("#seed-type").selectOption("artist");
+  await page.locator("#seed-search").fill("signal");
+  await page.locator('[data-seed-id="artist:discogs:10"]').click();
+  await page.locator("#launch-seed").click();
+  await page.locator('#scout-mixer-rack [data-action="dig"]').click();
   await cards.first().waitFor();
-  check("Explicit resume restores the departure", (await page.locator(".mix-source-name").innerText()).includes("Signal Coast"));
-  check("Resume reads local knowledge without provider searches", calls.length === resumeCalls);
-  await page.waitForFunction(() => JSON.parse(localStorage.getItem("youtube-scout.active-dig.v2"))?.catalogueGroups?.era?.retiredItems?.length === 1);
-  check("Resume excludes an obsolete remembered result without erasing its history", await page.evaluate(() => {
-    const group = JSON.parse(localStorage.getItem("youtube-scout.active-dig.v2")).catalogueGroups.era;
-    return group.items.length === 0 && group.selectedIds.length === 0 && group.retiredItems[0].title === "Unrelated remembered result";
-  }));
+  check("Explicit relaunch restores discoveries without reviving a saved dig", (await page.locator(".mix-source-name").innerText()) === "Signal Coast");
+  if (visibleMirror) console.log("VISIBLE_STAGE=relaunch-done");
   await cards.first().locator("[data-continue]").click();
-  await page.waitForFunction(() => document.querySelector(".mix-source-name")?.textContent?.includes("Night Routes"));
+  await page.locator(".mix-source-name").filter({ hasText: "Night Routes" }).waitFor();
   await page.locator(".mix-source-back").click();
-  await page.waitForFunction(() => document.querySelector(".mix-source-name")?.textContent?.includes("Signal Coast"));
-  check("Continue and back retain the route", await cards.count() > 0);
+  await page.locator(".mix-source-name").filter({ hasText: "Signal Coast" }).waitFor();
+  check("Continue and back restore the departure with a fresh result set", (await page.locator(".mix-source-name").innerText()).includes("Signal Coast") && await cards.count() === 0);
+  await page.locator('#scout-mixer-rack [data-action="dig"]').click();
+  await cards.first().waitFor();
+  if (visibleMirror) console.log("VISIBLE_STAGE=back-redig-done");
   await page.setViewportSize({ width: 390, height: 844 });
   await page.evaluate(async () => { await document.fonts.ready; await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))); });
   const mobileCard = await cards.first().evaluate(card => {
@@ -176,6 +231,7 @@ try {
   await page.screenshot({ path: join(folder, "mobile.png"), fullPage: true });
   await cards.first().screenshot({ path: join(folder, "mobile-card.png") });
   check("No horizontal overflow on mobile", await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+  if (visibleMirror) console.log("VISIBLE_STAGE=mobile-done");
   const backupChecks = await page.evaluate(async () => {
     const { createBackup, validateBackup } = await import('/library-state.mjs');
     const backup = createBackup({ local: { activeDig: { apiKey: "secret-fixture", nested: { access_token: "secret-fixture" } } } });
@@ -191,6 +247,7 @@ try {
   check("Malformed and cross-departure backups are rejected", backupChecks.invalid === 2);
   check("No injected script ran", !await page.evaluate(() => window.auditXss));
   check("No uncaught browser errors", errors.length === 0);
+  if (visibleMirror) console.log("VISIBLE_STAGE=final-checks-done");
   await writeFile(join(folder, "report.json"), JSON.stringify({ fixtureOnly: true, browser: browserName, librarySize, checks, errors }, null, 2));
   console.log(JSON.stringify({ status: "passed", checks: checks.length, folder, fixtureOnly: true }));
 } catch (error) {
@@ -198,5 +255,7 @@ try {
   await writeFile(join(folder, "failure.json"), JSON.stringify({ message: error.message, errors, checks }, null, 2));
   throw error;
 } finally {
-  await browser?.close(); server.kill("SIGTERM"); fixture.close();
+  if (visibleMirror) await visibleContext?.close().catch(() => {});
+  else await browser?.close();
+  server.kill("SIGTERM"); fixture.close();
 }

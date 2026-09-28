@@ -1047,6 +1047,31 @@ async function serveStatic(request, response) {
     response.end(content);
     return;
   }
+  if (pathname === "/collection-catalogue-provenance.mjs") {
+    const content = await readFile(new URL("./lib/collection-catalogue-provenance.mjs", import.meta.url));
+    response.writeHead(200, { ...SECURITY_HEADERS, "content-type": MIME[".js"] });
+    response.end(content);
+    return;
+  }
+  if (pathname === "/catalogue-release-graph.mjs") {
+    const content = await readFile(new URL("./lib/catalogue-release-graph.mjs", import.meta.url));
+    response.writeHead(200, { ...SECURITY_HEADERS, "content-type": MIME[".js"] });
+    response.end(content);
+    return;
+  }
+  if (pathname === "/public/departure-integrity.mjs") {
+    const content = await readFile(new URL("./public/departure-integrity.mjs", import.meta.url));
+    response.writeHead(200, { ...SECURITY_HEADERS, "content-type": MIME[".js"] });
+    response.end(content);
+    return;
+  }
+  const browserLibModule = pathname.startsWith("/lib/") ? pathname.slice(5) : "";
+  if (["collection-catalogue-provenance.mjs", "catalogue-release-graph.mjs", "catalogue-graph.mjs", "departure-integrity.mjs"].includes(browserLibModule)) {
+    const content = await readFile(new URL("./lib/" + browserLibModule, import.meta.url));
+    response.writeHead(200, { ...SECURITY_HEADERS, "content-type": MIME[".js"] });
+    response.end(content);
+    return;
+  }
   if (pathname === "/video-credits.mjs") {
     const content = await readFile(new URL("./public/video-credits.mjs", import.meta.url));
     response.writeHead(200, { ...SECURITY_HEADERS, "content-type": MIME[".js"] });

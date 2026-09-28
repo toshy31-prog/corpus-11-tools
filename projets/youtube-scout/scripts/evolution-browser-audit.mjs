@@ -32,6 +32,7 @@ const server = spawn(process.execPath, ["server.mjs"], { cwd: new URL("../", imp
 }, stdio: ["ignore", "pipe", "pipe"] });
 let browser, page, failure;
 const checks = [], errors = [], forbidden = [], musicRequests = [], serverLog = [];
+let auditExplorationFetch, enableExactCatalogueResolution = false;
 server.stderr.on("data", value => serverLog.push(String(value)));
 const check = (name, result) => { assert.ok(result, name); checks.push(name); console.log(`PASS ${name}`); };
 const videos = Array.from({ length: 30 }, (_, i) => ({ id: `evol${String(i).padStart(7, "0")}`,
@@ -44,6 +45,15 @@ try {
   await Promise.race([once(server.stdout, "data"), new Promise((_, reject) => setTimeout(() => reject(new Error("Server startup timeout")), 5000))]);
   browser = await pw[engine].launch({ headless: true });
   page = await browser.newPage({ viewport: { width: 1440, height: 1000 } }); page.setDefaultTimeout(12000);
+  await page.addInitScript(() => {
+    globalThis.__SCOUT_AUDIT_ATTACH_EXPLORATION_FETCH__ = capability => { globalThis.__SCOUT_AUDIT_EXPLORATION_FETCH__ = capability; };
+    globalThis.__SCOUT_AUDIT_AFTER_EXPLORATION_START__ = async (fetchCapability, seedId) => {
+      const fixture = globalThis.__SCOUT_AUDIT_CONTEXT_FIXTURE__;
+      if (!fixture || seedId !== "label:discogs:77") return;
+      const response = await fetchCapability("/api/graph/ingest", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(fixture) });
+      if (!response.ok) throw new Error("Audit context fixture injection failed.");
+    };
+  });
   page.on("pageerror", error => errors.push(error.message));
   await page.route("**/*", async route => {
     const url = new URL(route.request().url());
@@ -53,7 +63,13 @@ try {
     if (url.pathname.startsWith("/api/youtube/thumbnail/")) return route.fulfill({ contentType: "image/svg+xml", body: '<svg xmlns="http://www.w3.org/2000/svg" width="160" height="90"><rect width="160" height="90" fill="#477867"/><circle cx="80" cy="45" r="30" fill="#f07f60"/></svg>' });
     if (url.pathname === "/api/music/artist-choices") return json({ candidates: catalogueArtistChoices({ entities: [exactArtist] }, url.searchParams.get("name") || "6SISS"), sourceStates: {} });
     if (url.pathname === "/api/music/identity") return json({ requestedName: url.searchParams.get("name"), claims: [], resolution: { status: "unresolved" }, sourceStates: {} });
-    if (url.pathname === "/api/music/recording") return json({ status: "not_found", candidates: [], resolved: null });
+    if (url.pathname === "/api/music/recording") return json(enableExactCatalogueResolution ? {
+      status: "resolved_track", resolved: null,
+      resolvedDiscogsTrack: { id: "discogs-track-700-0", source: "discogs", title: "Synthetic label track",
+        trackEntityId: "track:discogs:700:0", artistCredits: [{ id: "70", name: "Fixture Label Artist" }],
+        release: { id: 700, title: "Synthetic album", artists: [{ id: 70, name: "Fixture Label Artist" }], labels: [{ id: 77, name: "Fixture Records" }], tracklist: [{ title: "Synthetic label track", position: "A1" }] },
+        position: "A1", durationMs: 160000, url: "https://www.discogs.com/release/700" }
+    } : { status: "not_found", candidates: [], resolved: null });
     return route.continue();
   });
   await page.goto(base); await page.locator("#workspace-empty").waitFor();
@@ -61,17 +77,17 @@ try {
     labels: [{ id: 77, name: "Fixture Records" }], tracklist: [{ title: "Synthetic label track", position: "A1" }] });
   const localArtist = { id: "artist:local:6siss", type: "artist", name: "6SISS", status: "user_supplied", seedEligible: true };
   const seedId = `video:youtube:${videos[0].id}`;
-  const graph = { entities: [...release.entities, localArtist, { id: seedId, type: "video", title: videos[0].title }, { id: `video:youtube:${videos[1].id}`, type: "video", title: videos[1].title }], edges: [
-    ...release.edges, { from: localArtist.id, to: seedId, kind: "credited_on", status: "observed", source: "fixture" },
-    { from: seedId, to: "track:discogs:700:0", kind: "embodies", status: "resolved", source: "fixture" },
-    { from: `video:youtube:${videos[1].id}`, to: "track:discogs:700:0", kind: "embodies", status: "resolved", source: "fixture" }
+  const graph = { entities: [localArtist, { id: seedId, type: "video", title: videos[0].title }, { id: `video:youtube:${videos[1].id}`, type: "video", title: videos[1].title }], edges: [
+    { from: localArtist.id, to: seedId, kind: "credited_on", status: "observed", source: "fixture" }
   ] };
-  check("Synthetic graph stored on isolated server", (await fetch(`${base}/api/graph/ingest`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(graph) })).ok);
+  check("Synthetic graph stored on isolated server", await page.evaluate(async graph => (await globalThis.__SCOUT_AUDIT_EXPLORATION_FETCH__("/api/graph/ingest", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(graph) })).ok, graph));
   await page.evaluate(async library => {
     const db = await new Promise((resolve, reject) => { const request = indexedDB.open("youtube-scout", 3); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); });
     await new Promise((resolve, reject) => { const tx = db.transaction("library", "readwrite"); tx.objectStore("library").put(library, "videos"); tx.oncomplete = resolve; tx.onerror = () => reject(tx.error); }); db.close();
   }, videos);
-  await page.reload(); await page.locator("#workspace-change-seed").click();
+  await page.reload();
+  await page.evaluate(release => { globalThis.__SCOUT_AUDIT_CONTEXT_FIXTURE__ = release; }, release);
+  await page.locator("#workspace-change-seed").click();
   await page.locator("#seed-type").selectOption("track");
   const order = () => page.locator("#seed-results [data-seed-id]").evaluateAll(rows => rows.map(row => row.dataset.seedId));
   check("Random is the initial departure ordering", await page.locator("#seed-sort").inputValue() === "random");
@@ -118,9 +134,11 @@ try {
   await page.locator('.departure-members input[type="search"]').fill("Synthetic Beginning");
   await page.screenshot({ path: join(folder, "playlist-members.png") });
   await page.locator(`[data-departure-member="${seedId}"]`).click();
-  await page.waitForFunction(() => document.querySelector(".mix-source-name")?.textContent.includes("Synthetic Beginning"));
+  await page.locator(".mix-source-name").filter({ hasText: "Synthetic Beginning" }).waitFor();
   check("Playlist member becomes the next departure", (await page.locator(".mix-source-name").innerText()).includes("Synthetic Beginning"));
-  const review = page.locator(".departure-review"); await review.waitFor();
+  const review = page.locator(".departure-review");
+  if (!await review.isVisible()) await page.getByRole("button", { name: /Corriger le titre ou les artistes|Corriger le titre ou les crédits/ }).click();
+  await review.waitFor();
   const beforeReviewRequests = musicRequests.length;
   await review.locator('[name="title"]').fill("Corrected beginning");
   await review.locator('[name="artist"]').fill("Manual Performer");
@@ -129,14 +147,15 @@ try {
   await page.setViewportSize({ width: 390, height: 844 });
   check("Review text survives responsive rendering", await review.locator('[name="artist"]').inputValue() === "Manual Performer");
   await page.screenshot({ path: join(folder, "departure-review-mobile.png"), fullPage: true });
+  enableExactCatalogueResolution = true;
   const correctionSaved = page.waitForResponse(response => response.url() === `${base}/api/departure/correction` && response.ok());
   await review.locator('button[type="submit"]').click(); await correctionSaved;
-  await page.waitForFunction(() => !document.querySelector(".departure-review"));
-  await page.waitForFunction(() => document.querySelector(".mix-source-name")?.textContent.includes("Corrected beginning"));
-  const correctedGraph = await fetch(`${base}/api/graph`).then(r => r.json());
+  await page.locator(".departure-review").waitFor({ state: "hidden" });
+  await page.locator(".mix-source-name").filter({ hasText: "Corrected beginning" }).waitFor();
+  const correctedGraph = await page.evaluate(async () => globalThis.__SCOUT_AUDIT_EXPLORATION_FETCH__("/api/graph").then(r => r.json()));
   check("Correction is persisted without erasing the original title", correctedGraph.entities[seedId].departureCorrection.artist === "Manual Performer" && correctedGraph.entities[seedId].departureCorrection.originalTitle === videos[0].title);
-  const late = await fetch(`${base}/api/resolution`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ video: videos[0], identity: { id: "old-wrong-artist", canonicalName: "Release" } }) });
-  check("Late resolution of the original departure is rejected", late.status === 409);
+  const lateStatus = await page.evaluate(async video => (await globalThis.__SCOUT_AUDIT_EXPLORATION_FETCH__("/api/resolution", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ video, identity: { id: "old-wrong-artist", canonicalName: "Release" } }) })).status, videos[0]);
+  check("Late resolution of the original departure is rejected", lateStatus === 409);
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.getByText("Fiche du départ et historique", { exact: true }).click();
   await page.getByRole("button", { name: "Corriger le titre ou l’artiste", exact: true }).click();
@@ -150,13 +169,10 @@ try {
   await page.locator("[data-search-departure-artist]").click();
   await page.locator('[data-confirm-departure-artist="artist:discogs:60"]').waitFor();
   await page.screenshot({ path: join(folder, "artist-choice.png") });
-  const savedArtist = page.waitForResponse(response => response.url() === `${base}/api/exploration/session`
-    && response.request().method() === "PUT" && response.request().postDataJSON()?.session?.seed?.id === exactArtist.id && response.ok());
   await page.locator('[data-confirm-departure-artist="artist:discogs:60"]').click();
-  await page.waitForFunction(() => !document.querySelector("#departure-artist-query"));
-  await savedArtist;
-  const session = await (await fetch(`${base}/api/exploration/session`)).json();
-  check("Chosen remote artist ID survives navigation and persistence", (session.session?.seed || session.seed)?.id === exactArtist.id);
+  await page.locator("#departure-artist-query").waitFor({ state: "hidden" });
+  const chosenArtistGraph = await page.evaluate(async () => globalThis.__SCOUT_AUDIT_EXPLORATION_FETCH__("/api/graph").then(r => r.json()));
+  check("Chosen remote artist ID survives navigation in the same ephemeral context", Boolean(chosenArtistGraph.entities?.[exactArtist.id]));
   await page.screenshot({ path: join(folder, "artist-exact-departure.png") });
   await page.locator("#workspace-change-seed").click(); await page.locator("#seed-type").selectOption("label"); await page.locator("#seed-search").fill("Fixture Records");
   await page.locator('[data-seed-id="label:discogs:77"]').click(); await page.locator("#launch-seed").click();

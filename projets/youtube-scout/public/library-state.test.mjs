@@ -131,3 +131,13 @@ test("a backup cannot combine the departure from one session with another front"
   payload.local.activeDig = { seed: { id: "A" }, front: { seed: { id: "B" }, branches: [] } };
   assert.throws(() => validateBackup(payload), /départ|session|incohér/i);
 });
+
+test("réimport complet et incomplet conservent la provenance catalogue d'une vidéo toujours active", () => {
+  const provenance={revision:"r1",discogsTrack:{releaseId:"700",trackIndex:0,release:{title:"Album",released:"2024",masterYear:"",artists:[],labels:[{id:"77",name:"Label",catno:"X"}],formats:[],track:{title:"Track",position:"A1",duration:""}}}};
+  const prior={...video("known01"),catalogueProvenance:provenance};
+  for (const complete of [true,false]) {
+    const result=finalizeLibraryImport([prior],[{...video("known01"),title:"Fresh"}],{complete,selectedIds:["list-a"]});
+    assert.deepEqual(result.videos[0].catalogueProvenance,provenance);
+  }
+  assert.equal(finalizeLibraryImport([prior],[],{complete:true,selectedIds:["list-a"]}).videos.length,0);
+});

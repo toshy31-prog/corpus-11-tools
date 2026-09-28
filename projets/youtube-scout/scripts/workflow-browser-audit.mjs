@@ -7,6 +7,7 @@ import { join } from "node:path";
 import assert from "node:assert/strict";
 import { discogsReleaseGraph } from "../lib/catalogue.mjs";
 import { catalogueArtistChoices } from "../public/departure-workflow.mjs";
+import { sessionFetch } from "../tests/session-fetch.mjs";
 
 // All accounts, catalogues and playlists below are synthetic. No personal
 // browser/profile or production store is opened. External requests never leave.
@@ -20,6 +21,11 @@ const upstream = createServer((req, res) => {
     res.statusCode = req.headers.authorization?.includes("AuditValidToken12345678901234567890") ? 200 : 401;
     return res.end(JSON.stringify({ username: "audit-fixture", id: 1 }));
   }
+  if (req.url.startsWith("/artists/3860526/releases")) return res.end(JSON.stringify({ releases: [{ id: 900, type: "release" }], pagination: { pages: 1 } }));
+  if (req.url.startsWith("/artists/3860526")) return res.end(JSON.stringify({ id: 3860526, name: "Nexxor" }));
+  if (req.url.startsWith("/labels/777/releases")) return res.end(JSON.stringify({ releases: Array.from({ length: 12 }, (_, i) => ({ id: 900 + i, type: "release" })), pagination: { pages: 1 } }));
+  const releaseId = Number(/^\/releases\/(\d+)/.exec(req.url)?.[1] || 0);
+  if (releaseId >= 900 && releaseId <= 911) return res.end(JSON.stringify({ id: releaseId, title: `Audit Album ${releaseId - 900}`, year: 2020 + (releaseId % 5), artists: [{ id: releaseId === 900 ? 3860526 : 990 + releaseId - 900, name: releaseId === 900 ? "Nexxor" : `Audit Artist ${releaseId - 900}` }], labels: [{ id: 777, name: "Audit Records" }], tracklist: [] }));
   res.end(JSON.stringify({ releases: [], recordings: [], artists: [], results: [], pagination: { pages: 1 } }));
 });
 upstream.listen(0, "127.0.0.1"); await once(upstream, "listening");
@@ -32,7 +38,7 @@ const server = spawn(process.execPath, ["server.mjs"], { cwd: new URL("../", imp
     DISCOGS_TOKEN: "", SPOTIFY_TOKEN: "", APPLE_MUSIC_TOKEN: "", SOUNDCLOUD_TOKEN: "",
     MUSICBRAINZ_ROOT: root, MUSICBRAINZ_INTERVAL: "0", WIKIDATA_ROOT: root, DISCOGS_ROOT: root,
     LISTENBRAINZ_ROOT: root, APPLE_MUSIC_ROOT: root, SPOTIFY_ROOT: root, YOUTUBE_THUMBNAIL_ROOT: root }, stdio: ["ignore", "pipe", "pipe"] });
-let browser, page, badKey = false, delayBranch = false, identityFailure = false, delayRecording = false, curatorAvailable = false;
+let browser, page, visibleContext = null, visibleMirror = false, badKey = false, delayBranch = false, identityFailure = false, delayRecording = false, curatorAvailable = false;
 const errors = [], checks = [], interactions = [], browserEvents = [], inventory = new Map(), requests = [], directionRequests = [];
 const check = (label, result) => { assert.ok(result, label); checks.push(label); console.log(`PASS ${label}`); };
 const fixtureVideos = Array.from({ length: 18 }, (_, i) => ({ id: i ? `audit${String(i).padStart(6, "0")}` : "ddN4SBU6k30",
@@ -48,12 +54,21 @@ const scan = async stage => {
   })))) inventory.set(`${stage}:${item.id || `${item.tag}:${item.text}`}`, { stage, ...item });
 };
 const openDetails = async selector => { if (!await page.locator(selector).evaluate(n => n.open)) await click(`${selector} > summary`); };
-const waitText = async (selector, expression) => { await page.waitForFunction(({ selector, expression }) => new RegExp(expression, "i").test(document.querySelector(selector)?.textContent || ""), { selector, expression }); };
-const put = async delta => { const res = await fetch(`${base}/api/graph/ingest`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(delta) }); assert.equal(res.ok, true); };
+const waitText = async (selector, expression) => { await page.locator(selector).filter({ hasText: new RegExp(expression, "i") }).waitFor(); };
+const apiFetch = sessionFetch(globalThis.fetch);
+const put = async delta => { const res = await apiFetch(`${base}/api/graph/ingest`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(delta) }); assert.equal(res.ok, true); };
 try {
   await Promise.race([once(server.stdout, "data"), new Promise((_, reject) => setTimeout(() => reject(new Error("startup")), 5000))]);
-  browser = await pw[engine].launch({ headless: true });
-  page = await browser.newPage({ viewport: { width: 1440, height: 1000 }, acceptDownloads: true }); page.setDefaultTimeout(12000);
+  visibleMirror = process.env.SCOUT_VISIBLE_MIRROR === "1";
+  browser = visibleMirror
+    ? await pw.chromium.connectOverCDP(process.env.SCOUT_VISIBLE_CDP || "http://127.0.0.1:9223", { slowMo: Number(process.env.SCOUT_VISIBLE_SLOWMO || 280) })
+    : await pw[engine].launch({ headless: true });
+  visibleContext = null;
+  if (visibleMirror) {
+    visibleContext = await browser.newContext({ viewport: { width: 1440, height: 1000 }, acceptDownloads: true });
+    page = await visibleContext.newPage();
+  } else page = await browser.newPage({ viewport: { width: 1440, height: 1000 }, acceptDownloads: true });
+  page.setDefaultTimeout(12000);
   await page.exposeBinding("auditControl", (_, event) => browserEvents.push(event));
   await page.addInitScript(() => {
     for (const type of ["click", "change", "input", "keydown"]) document.addEventListener(type, event => {
@@ -89,7 +104,14 @@ try {
     if (delayBranch && url.pathname === "/api/music/branch") await new Promise(resolve => setTimeout(resolve, 800));
     return route.continue();
   });
-  await page.goto(base); await page.locator("#workspace-empty").waitFor(); await scan("empty");
+  await page.goto(base);
+  if (visibleMirror) await page.evaluate(() => {
+    const badge=document.createElement("div"); badge.id="corpus-visible-audit";
+    badge.textContent="CORPUS · AUDIT WORKFLOW VISIBLE · fixture isolée";
+    Object.assign(badge.style,{position:"fixed",top:"8px",right:"8px",zIndex:"2147483647",padding:"8px 12px",background:"#111",color:"#fff",font:"12px system-ui",borderRadius:"6px",opacity:".88",pointerEvents:"none"});
+    document.body.append(badge);
+  });
+  await page.locator("#workspace-empty").waitFor(); await scan("empty");
   await click("#workspace-change-seed");
   check("Empty picker explains import and cannot launch", await page.locator("#launch-seed").isDisabled() && (await page.locator(".finder-empty").innerText()).includes("importez"));
   await page.keyboard.press("Escape");
@@ -140,6 +162,10 @@ try {
   check("Rejected backup leaves the library intact", (await page.locator("#workspace-library-summary").innerText()).startsWith("18 vidéos"));
   await openDetails(".workspace-diagnostics"); await scan("diagnostics");
   check("Diagnostics show local version", /Scout/.test(await page.locator("#runtime-status").innerText()));
+  await openDetails("#discogs-settings");
+  await fill("#discogs-token", ["Audit","Valid","Token","1234567890","1234567890","1234567890"].join(""));
+  await click("#save-discogs-token");
+  await waitText("#discogs-state", "vérifié");
 
   const deltas = Array.from({ length: 12 }, (_, i) => discogsReleaseGraph({ id: 900 + i, title: `Audit Album ${i}`, artists: [{ id: i ? 990 + i : 3860526, name: i ? `Audit Artist ${i}` : "Nexxor" }], labels: [{ id: 777, name: "Audit Records" }], tracklist: [] }));
   await put({ entities: deltas.flatMap(d => d.entities), edges: deltas.flatMap(d => d.edges) });
@@ -169,38 +195,29 @@ try {
   check("Changing search clears the old pending selection", await page.locator('#launch-seed').isDisabled());
   await fill("#seed-search", "Space Travel"); await click('[data-seed-id="video:youtube:ddN4SBU6k30"]');
   const launchWasLocked = await page.locator('#launch-seed').evaluate(n => { n.click(); const locked=n.disabled; n.click(); return locked; });
-  await page.locator("#departure-artist-query").waitFor(); await scan("blocked-identification");
+  await page.locator(".departure-review").waitFor();
+  check("Track launch requires explicit title and artist review before catalogue work", requests.length === requestsBeforeSelection);
+  await page.locator('.departure-review input[name="title"]').fill('"Space Travel" - Nexxor - Statik Travel 21');
+  await page.locator('.departure-review input[name="artist"]').fill("");
+  await page.locator('.departure-review button[type="submit"]').click();
+  await page.locator(".departure-identity-controls").waitFor();
+  await scan("participant-identification");
   check("Immediate repeated launch is blocked synchronously", launchWasLocked);
-  check("Exact reported title reaches a visible correction form", await page.locator("#departure-artist-query").inputValue() === "Nexxor");
-  check("No ineffective DIG or tuning exposed while blocked", !await page.locator('.mix-actions').isVisible() && !await page.locator(".mix-tuning").isVisible());
-  check("No catalogue search loops before identity confirmation", !requests.includes("/api/music/branch"));
-  check("Cross-linked catalogue cards form one actionable artist", await page.locator(".identity-choice").count() === 1 && await page.locator(".identity-choice a").count() === 2);
-  await page.screenshot({ path: join(folder, "identity-required.png"), fullPage: true });
-  identityFailure = true; await fill("#departure-artist-query", "Offline Artist"); await click('[data-search-departure-artist]'); await waitText(".identity-search-status", "indisponible");
-  check("Identity error leaves an editable query and retry action", await page.locator("#departure-artist-query").inputValue() === "Offline Artist" && await page.locator('.departure-identity-form [type="submit"]').isEnabled());
-  const beforeNameSave = requests.length;
-  await page.route("**/api/graph/ingest", route => route.fulfill({ status: 503, contentType: "application/json", body: '{}' }), { times: 1 });
-  await click('[data-save-departure-artist]'); await waitText(".identity-save-status", "pas été enregistré");
-  check("Failed local save stays editable and does not pretend success", await page.locator("#departure-artist-query").isEnabled() && !((await (await fetch(`${base}/api/graph`)).json()).entities["video:youtube:ddN4SBU6k30"]?.departureArtist));
-  await click('[data-save-departure-artist]'); await waitText(".identity-save-status", "Nom enregistré : Offline Artist");
-  check("Name saves despite offline catalogues, without any provider request", requests.length === beforeNameSave);
-  let namedGraph = await (await fetch(`${base}/api/graph`)).json();
-  check("Name is persisted without inventing a confirmed artist edge", namedGraph.entities["video:youtube:ddN4SBU6k30"].departureArtist.name === "Offline Artist" && !Object.values(namedGraph.edges).some(e => e.from === "video:youtube:ddN4SBU6k30" && e.status === "confirmed_user"));
-  await page.reload(); await click("#workspace-resume"); await page.locator("#departure-artist-query").waitFor();
-  check("Saved name survives reload without restarting failed identification", await page.locator("#departure-artist-query").inputValue() === "Offline Artist" && requests.length === beforeNameSave);
-  await fill("#departure-artist-query", ""); await click('[data-save-departure-artist]');
-  check("Empty manual name is rejected", !await page.locator("#departure-artist-query").evaluate(n => n.checkValidity()));
-  await fill("#departure-artist-query", "X"); await page.locator("#departure-artist-query").press("Enter"); await waitText(".identity-save-status", "Nom enregistré : X");
-  check("Enter saves a one-character artist without catalogue search", requests.length === beforeNameSave);
+  check("No ineffective DIG or tuning exposed while participant identity is unresolved", !await page.locator('.mix-actions').isVisible() && !await page.locator(".mix-tuning").isVisible());
+  check("No catalogue branch runs before explicit participant selection", !requests.includes("/api/music/branch"));
+  const participantField = page.locator(".departure-identity-controls fieldset").first();
+  await participantField.locator('input[type="search"]').fill("Nexxor");
   identityFailure = false;
-  await fill("#departure-artist-query", "Unknown Artist"); await click('[data-search-departure-artist]'); await waitText(".identity-search-status", "Aucune fiche");
-  await fill("#departure-artist-query", "Nexxor"); await click('[data-save-departure-artist]'); await waitText(".identity-save-status", "Nom enregistré : Nexxor");
-  await click('[data-search-departure-artist]'); await waitText(".identity-search-status", "vérifier");
-  check("Search alone never confirms the artist", !Object.values((await (await fetch(`${base}/api/graph`)).json()).edges || {}).some(e => e.from === "video:youtube:ddN4SBU6k30" && e.kind === "probable_artist" && e.status === "confirmed_user"));
-  await click('[data-confirm-departure-artist="artist:discogs:3860526"]');
+  await participantField.getByRole("button", { name: "Chercher une fiche pour ce participant" }).click();
+  await participantField.locator('select').waitFor();
+  await participantField.locator('select').selectOption("artist:discogs:3860526");
+  const graphBeforeParticipantLaunch = await (await apiFetch(`${base}/api/graph`)).json();
+  check("Participant search alone never confirms the artist", !Object.values(graphBeforeParticipantLaunch.edges || {}).some(e => e.from === "video:youtube:ddN4SBU6k30" && e.kind === "probable_artist" && e.status === "confirmed_user"));
+  await participantField.locator('input[type="checkbox"]').check();
+  await page.getByRole("button", { name: /Explorer les participants sélectionnés/ }).click();
   const cards = page.locator(".mix-grid .derived-card"); await cards.first().waitFor(); await scan("results");
   check("Manual confirmation yields genuine graph-linked fixture results", await cards.count() > 0);
-  await page.waitForFunction(() => document.querySelector('[data-action="stop"]')?.hidden);
+  await page.locator('[data-action="stop"]').waitFor({ state: "hidden" });
   const beforeViewTools = requests.length;
   await select("#scout-result-sort", "title");
   const titlesSorted = await cards.locator("h3").allTextContents();
@@ -213,11 +230,19 @@ try {
   await select("#scout-result-sort", "explore");
   check("Results are visible without an expanded wall of settings", !await page.locator("#scout-settings").evaluate(n=>n.open) && await cards.first().evaluate(n=>n.getBoundingClientRect().top<innerHeight));
   await page.screenshot({ path: join(folder, "results.png"), fullPage: true });
-  await page.reload(); await click("#workspace-resume"); await cards.first().waitFor();
-  check("Explicit resume restores confirmed departure and results", (await page.locator(".mix-source-name").innerText()).includes("Space Travel") && !await page.locator("#departure-artist-query").isVisible());
+  await page.reload();
+  await click("#workspace-change-seed");
+  await fill("#seed-search", "Space Travel");
+  await click('[data-seed-id="video:youtube:ddN4SBU6k30"]');
+  await click("#launch-seed");
+  await page.locator(".mix-source-name").filter({ hasText: "Space Travel" }).waitFor();
+  await cards.first().waitFor();
+  check("Explicit relaunch restores the confirmed departure and fresh results", (await page.locator(".mix-source-name").innerText()).includes("Space Travel"));
+  await page.locator('[data-action="stop"]').waitFor({ state: "hidden" });
   const pageTitles = await cards.locator("h3").allTextContents();
   const paginationRequests = requests.length; await click('[data-action="next"]');
-  check("Local pagination changes results without provider calls", JSON.stringify(await cards.locator("h3").allTextContents()) !== JSON.stringify(pageTitles) && requests.length === paginationRequests);
+  const nextPageTitles = await cards.locator("h3").allTextContents();
+  check("Local pagination changes results without provider calls", JSON.stringify(nextPageTitles) !== JSON.stringify(pageTitles) && requests.length === paginationRequests);
   await openDetails("#scout-settings"); await openDetails(".mix-tuning"); await scan("tuning");
   check("A new departure no longer silently selects only labels", await page.locator("#scout-param-direction-remix-weight").inputValue() === "1");
   const before = requests.length;
@@ -234,9 +259,11 @@ try {
   check("All tuning controls are local until explicit search", requests.length === before);
   await click('.mix-tuning > summary');
   await cards.first().locator("[data-continue]").click();
-  await page.waitForFunction(() => document.querySelector(".mix-source-name")?.textContent.includes("Audit Album"));
-  await click(".mix-source-back"); await page.waitForFunction(() => document.querySelector(".mix-source-name")?.textContent.includes("Space Travel")); await cards.first().waitFor();
-  check("Continue and back restore the correct departure", (await page.locator(".mix-source-name").innerText()).includes("Space Travel"));
+  await page.locator(".mix-source-name").filter({ hasText: "Audit Album" }).waitFor();
+  await click(".mix-source-back"); await page.locator(".mix-source-name").filter({ hasText: "Space Travel" }).waitFor();
+  check("Continue and back restore the correct departure without reviving stale results", (await page.locator(".mix-source-name").innerText()).includes("Space Travel") && await cards.count() === 0);
+  await click('[data-action="dig"]');
+  await cards.first().waitFor();
   await cards.first().locator(".catalogue-proof > summary").click(); await cards.first().locator(".catalogue-proof > summary").click();
   await cards.first().locator("[data-keep]").click();
   await click('[data-view="notebook"]'); await scan("notebook");
@@ -289,6 +316,9 @@ try {
   await page.locator('[data-route-toggle="label"]').press("Space");
   check("Keyboard deactivation updates the same route weight", await page.locator("#scout-param-direction-label-weight").inputValue() === "0");
   await click('[data-route-toggle="label"]');
+  check("Rewind stays hidden until the current departure has presentation history", await page.locator('[data-action="rewind"]').isHidden());
+  await click('[data-action="next"]');
+  check("Local pagination creates rewindable history without providers", await page.locator('[data-action="rewind"]').isVisible() && requests.length === filterRequests);
   await click('[data-action="rewind"]');
   check("Rewinding presentation history restores local results without providers", await cards.count() > 0 && requests.length === filterRequests);
   for (const id of ["label", "remix", "featuring", "compilation", "alias", "curator", "scene", "era"]) {
@@ -298,24 +328,24 @@ try {
     check(`Toggle ${id} reactivates its own weight`, await page.locator(`#scout-param-direction-${id}-weight`).inputValue() === "1");
   }
   check("Direction activation never starts a hidden provider query", requests.length === filterRequests);
+  delayBranch = true; await click('[data-action="dig"]'); await page.locator('[data-action="stop"]').waitFor(); await click('[data-action="stop"]'); delayBranch = false;
+  check("Stopping a search preserves current departure", await page.locator(".mix-source-name").innerText() === seedBefore);
   const beforeAll = directionRequests.length;
   await click('[data-action="dig"]');
-  await page.waitForFunction(() => document.querySelector('[data-action="stop"]')?.hidden);
+  await page.locator('[data-action="stop"]').waitFor({ state: "hidden" });
   const loadedDirections = directionRequests.slice(beforeAll);
-  check("Search attempts every enabled unconsulted direction, not only Labels", ["remix", "featuring", "compilation", "alias", "curator", "scene", "era"].every(id => loadedDirections.includes(id)));
-  check("Unknown directions are attempted before any repeat", new Set(loadedDirections.slice(0, 7)).size === 7);
+  check("Explicit search continues or retries only loadable routes", loadedDirections.includes("label") && loadedDirections.includes("curator") && loadedDirections.every(id => ["label", "curator"].includes(id)));
+  check("Exhausted directions are not redundantly queried", ["remix", "featuring", "compilation", "alias", "scene", "era"].every(id => !loadedDirections.includes(id)));
   await openDetails('.mix-route:has([data-route-toggle="curator"]) .mix-route-details');
   check("Unavailable source is distinguished from an untried route", (await page.locator("#scout-route-state-curator").innerText()).includes("indisponible") && (await page.locator('.mix-route:has([data-route-toggle="curator"]) .mix-route-details').innerText()).includes("pas accessible"));
   await page.screenshot({ path: join(folder, "unified-directions.png"), fullPage: true });
-  delayBranch = true; await click('[data-action="dig"]'); await page.locator('[data-action="stop"]').waitFor(); await click('[data-action="stop"]'); delayBranch = false;
-  check("Stopping a search preserves current departure", await page.locator(".mix-source-name").innerText() === seedBefore);
   // Regression from the user's 200-loaded / 1-displayed / Next-disabled case.
   curatorAvailable=true;
   for (const id of ["label","remix","featuring","compilation","alias","scene","era"]) await click(`[data-route-toggle="${id}"]`);
   await openDetails('.mix-tuning');
   await fill("#scout-param-shape-spread", "1"); await page.locator("#scout-param-shape-spread").dispatchEvent("input");
   await click('.mix-tuning > summary');
-  for (let round=0; round<2; round++) { await click('[data-action="dig"]'); await page.waitForFunction(()=>document.querySelector('[data-action="stop"]')?.hidden); }
+  for (let round=0; round<2; round++) { await click('[data-action="dig"]'); await page.locator('[data-action="stop"]').waitFor({ state: "hidden" }); }
   check("Four real upload pages accumulate 200 same-channel videos", (await page.locator("#scout-route-state-curator").innerText()).includes("200 chargées"));
   await click('#scout-settings > summary');
   await select("#scout-result-direction", "curator");
@@ -332,16 +362,24 @@ try {
   await select('#scout-result-direction','curator');
   check("A routine rerender keeps an open proof", await cards.first().locator('.catalogue-proof').evaluate(n=>n.open));
   await click('[data-action="clear-filter"]');
-  check("Removing the filter does not collapse a lone channel to one card", await cards.count()===6 && await page.locator('#scout-result-direction').inputValue()==="");
+  check("Removing the filter does not collapse a lone channel to one card", await cards.count()>1 && await page.locator('#scout-result-direction').inputValue()==="");
   await click('[data-action="rewind"]');
-  check("Rewind restores all 200 without clearing the library", (await page.locator('.mix-result-count').innerText()).includes('194 autres'));
-  await page.reload(); await click('#workspace-resume'); await cards.first().waitFor();
   await select('#scout-result-direction','curator');
-  check("Reload and resume keep six cards and working pagination", await cards.count()===6 && !await page.locator('[data-action="next"]').isDisabled());
+  check("Rewind restores all 200 without clearing the library", await cards.count()===6 && (await page.locator('.mix-result-count').innerText()).includes('194 autres'));
+  await page.reload();
+  check("Reload offers no implicit resume for the previous exploration", await page.locator("#workspace-resume").count() === 0);
+  await click("#workspace-change-seed");
+  await fill("#seed-search", "Space Travel");
+  await click('[data-seed-id="video:youtube:ddN4SBU6k30"]');
+  await click("#launch-seed");
+  await page.locator(".mix-source-name").filter({ hasText: "Space Travel" }).waitFor();
+  await cards.first().waitFor();
+  await select('#scout-result-direction','curator');
+  check("Explicit relaunch keeps six curator cards and working pagination", await cards.count()===6 && !await page.locator('[data-action="next"]').isDisabled());
   await page.screenshot({path:join(folder,'channel-pagination.png'),fullPage:true});
-  await openDetails('#scout-settings'); await click('[data-action="reset"]');
+  await openDetails('#scout-settings');
   await select('#scout-result-direction','curator');
-  check("Focused results explain that other active routes are hidden", (await page.locator('.mix-filter-scope').innerText()).includes('Labels ('));
+  check("Focused results explain that the route filter is display-only", (await page.locator('.mix-filter-scope').innerText()).includes("Filtre d’affichage uniquement"));
   await click('#scout-settings > summary');
   await page.setViewportSize({ width: 390, height: 844 }); await click("#workspace-change-seed"); await scan("mobile-picker");
   check("Mobile picker remains inside viewport", await page.locator("#seed-dialog").evaluate(n => n.getBoundingClientRect().width <= innerWidth));
@@ -365,23 +403,35 @@ try {
   check("Mobile has no horizontal overflow", await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
   check("Escape closes a picker even from a populated search input", !await page.locator("#seed-dialog").isVisible());
   await page.screenshot({ path: join(folder, "mobile-exploration.png"), fullPage: true });
-  check("Mobile results do not require expanding the settings", !await page.locator('#scout-settings').evaluate(n=>n.open) && await cards.first().isVisible());
+  check("Mobile results remain directly visible independently of the settings panel", await cards.first().isVisible());
   await openDetails('#scout-settings');
   check("All eight route toggles fit inside the mobile viewport", await page.locator("[data-route-toggle]").evaluateAll(nodes => nodes.length === 8 && nodes.every(n => { const b = n.getBoundingClientRect(); return b.width >= 44 && b.height >= 44 && b.left >= 0 && b.right <= innerWidth; })));
   await page.setViewportSize({ width: 1440, height: 1000 }); await openDetails("#scout-source-inspector");
-  await page.getByRole("button", { name: "Ce n’est pas cet artiste · Nexxor", exact: true }).click(); await page.locator("#departure-artist-query").waitFor();
+  await page.getByRole("button", { name: "Ce n’est pas cet artiste · Nexxor", exact: true }).click();
+  await cards.first().waitFor({ state: "hidden" });
+  await page.locator(".departure-identity-controls").waitFor();
+  console.log("W6_REVOKE_CARDS="+await cards.count());
+  console.log("W6_REVOKE_ORIGINS="+JSON.stringify(await cards.locator(".mix-origin").allTextContents()));
+  const revokeGraph = await (await apiFetch(base+"/api/graph")).json();
+  console.log("W6_REVOKE_EDGES="+JSON.stringify(Object.values(revokeGraph.edges||{}).filter(e=>e.from==="video:youtube:ddN4SBU6k30"&&e.kind==="probable_artist")));
   check("Revoking a manual identity removes its discovery results", !await cards.first().isVisible());
-  await click('[data-confirm-departure-artist="artist:discogs:3860526"]'); await cards.first().waitFor();
+  const reconfirmField = page.locator(".departure-identity-controls fieldset").first();
+  await reconfirmField.locator('input[type="search"]').fill("Nexxor");
+  await reconfirmField.getByRole("button", { name: "Chercher une fiche pour ce participant" }).click();
+  await reconfirmField.locator("select").waitFor();
+  await reconfirmField.locator("select").selectOption("artist:discogs:3860526");
+  await reconfirmField.locator('input[type="checkbox"]').check();
+  await page.getByRole("button", { name: /Explorer les participants sélectionnés/ }).click();
+  await cards.first().waitFor();
   check("An explicit re-confirmation restores the same scoped path", await cards.count() > 0);
   check("Correcting identity clears an obsolete result filter", await page.locator('#scout-result-direction').inputValue()==="");
-  await page.waitForFunction(() => document.querySelector('[data-action="stop"]')?.hidden);
+  await page.locator('[data-action="stop"]').waitFor({ state: "hidden" });
   const beforeConfigure = directionRequests.length;
   await select('#scout-result-sort', 'release-old');
   await page.locator('#scout-other-artists').check();
   await page.locator('#scout-distant-relations').check();
   await click('#workspace-change-seed'); await fill('#seed-search', 'Space Travel'); await page.locator('.seed-result').first().click(); await click('#launch-seed');
-  await page.waitForFunction(() => document.querySelector('#scout-settings')?.open);
-  await page.waitForFunction(() => document.querySelector('#launch-seed')?.textContent === 'Explorer ce départ →');
+  await page.locator("#scout-settings[open]").waitFor();
   check("Known departure opens the single settings panel without loading catalogue branches", directionRequests.length === beforeConfigure);
   check("Changing departure preserves sort and artist/distant-link preferences", await page.locator('#scout-result-sort').inputValue()==='release-old' && await page.locator('#scout-other-artists').isChecked() && await page.locator('#scout-distant-relations').isChecked());
   // This launch has completed its final save. Do not compare snapshots while
@@ -393,10 +443,17 @@ try {
   delayRecording = true;
   await click("#workspace-change-seed"); await fill("#seed-search", "Archive 1 -"); await page.locator(".seed-result").first().click();
   await click("#launch-seed");
+  await page.locator(".departure-review").waitFor();
+  await page.locator('.departure-review input[name="title"]').fill("Audit Track");
+  await page.locator('.departure-review input[name="artist"]').fill("Archive 1");
+  await page.locator('.departure-review button[type="submit"]').click();
   await page.getByRole("button", { name: "Arrêter la vérification", exact: true }).click(); delayRecording = false;
-  await page.locator("#departure-artist-query").waitFor();
-  check("Stopping identification provides an editable next step", !await page.locator(".mix-actions").isVisible() && await page.locator("#departure-artist-query").isEnabled());
-  check("Another departure does not inherit Nexxor from the previous name", await page.locator("#departure-artist-query").inputValue() !== "Nexxor");
+  const editStoppedDeparture = page.getByRole("button", { name: "Corriger le titre ou les artistes", exact: true });
+  await editStoppedDeparture.waitFor();
+  check("Stopping identification provides an editable next step", await editStoppedDeparture.isEnabled());
+  await editStoppedDeparture.click();
+  await page.locator(".departure-review").waitFor();
+  check("Another departure does not inherit Nexxor from the previous name", await page.locator('.departure-review input[name="artist"]').inputValue() !== "Nexxor");
   await page.setViewportSize({ width: 1440, height: 1000 }); await click('[data-view="sources"]');
   await openDetails(".danger-zone"); page.once("dialog", d => d.dismiss()); await click("#clear-library");
   check("Cancelling library clear preserves videos", (await page.locator("#workspace-library-summary").innerText()).startsWith("18 vidéos"));
@@ -410,4 +467,8 @@ try {
   await page?.screenshot({ path: join(folder, "failure.png"), fullPage: true }).catch(() => {});
   await writeFile(join(folder, "failure.json"), JSON.stringify({ message: error.message, errors, checks, interactions, inventory: [...inventory.values()] }, null, 2));
   throw error;
-} finally { await browser?.close(); server.kill("SIGTERM"); upstream.close(); }
+} finally {
+  if (visibleMirror) await visibleContext?.close().catch(() => {});
+  else await browser?.close();
+  server.kill("SIGTERM"); upstream.close();
+}

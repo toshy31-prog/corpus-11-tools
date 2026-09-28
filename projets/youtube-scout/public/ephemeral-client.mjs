@@ -1,4 +1,4 @@
-export function ephemeralClient(nativeFetch, origin) {
+export function ephemeralClient(nativeFetch, origin, { afterStart } = {}) {
   let epoch = 0, pending = null;
   const obsolete = () => new DOMException("Le départ a changé.", "AbortError");
   async function start(seedId = "") {
@@ -18,6 +18,16 @@ export function ephemeralClient(nativeFetch, origin) {
       if (generation !== epoch) {
         await nativeFetch("/api/exploration/context", { method: "DELETE", headers: { "x-scout-exploration": token } }).catch(() => {});
         throw obsolete();
+      }
+      if (afterStart) {
+        const scopedFetch = (input, options = {}) => {
+          const url = new URL(typeof input === "string" ? input : input.url, origin);
+          const headers = new Headers(options.headers || (typeof input !== "string" ? input.headers : undefined));
+          headers.set("x-scout-exploration", token);
+          return nativeFetch(input, { ...options, headers });
+        };
+        await afterStart(scopedFetch, seedId);
+        if (generation !== epoch) throw obsolete();
       }
       return token;
     })();

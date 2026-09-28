@@ -1,57 +1,95 @@
-import { createHash } from "node:crypto";
-import { departureArtistIds, artistRelation, artistRelationAllowed } from "../public/music-sorting.mjs";
-import { departureRoutingGraph } from "./departure-integrity.mjs";
+import { nodeId, sourceUrl, releaseDates } from "./catalogue-graph.mjs";
 
-import { CATALOGUE_DIRECTIONS, LABELS, MAIN, RELEASE, clean, label, nodeId, sourceUrl, validId, graphIndex, directionAnchors, releaseDates, catalogueCandidates } from "./catalogue-graph.mjs";
-import { deltaBuilder, discogsReleaseGraph, musicBrainzReleaseGraph } from "./catalogue-release-graph.mjs";
-export { discogsReleaseGraph, musicBrainzReleaseGraph } from "./catalogue-release-graph.mjs";
-export { CATALOGUE_DIRECTIONS, releaseDates, catalogueCandidates } from "./catalogue-graph.mjs";
-
-/** The display policy is also a collection objective, never an evidence filter.
- * Keep this predicate aligned with the browser's artist / distant-link rules.
- * Names only exclude a visible result; they never identify or merge entities. */
-export function createCatalogueEligibility({ graph = {}, seedId = "", seedArtistIds = [], seedArtist = "", otherArtistsOnly = false, includeUnknownArtists = false, includeCollaborations = false, includeDistant = true, excludeIds = [], directLinkedIds = [], excludeLibraryVideos = false } = {}) {
-  const excluded = new Set(excludeIds), direct = new Set(directLinkedIds);
-  const forGraph = (currentGraph = graph) => {
-    const artistIds = [...new Set([...seedArtistIds, ...departureArtistIds(currentGraph, seedId)])];
-    const libraryIds = new Set();
-    if (excludeLibraryVideos) {
-      const index = graphIndex(currentGraph);
-      for (const [id, node] of Object.entries(index.entities)) {
-        if (node.type === "video" && (index.adjacency.get(id) || []).some(({ to, edge }) => edge.kind === "included_in" && index.entities[to]?.type === "playlist")) libraryIds.add(id);
-      }
-    }
-    return candidate => {
-      if (excluded.has(candidate.id) || libraryIds.has(candidate.id)) return false;
-      if (!includeDistant && candidate.relationship?.distant && !direct.has(candidate.id) && candidate.anchor?.id !== seedId) return false;
-      if (!otherArtistsOnly) return true;
-      // A collection or label has no single reference artist. Treat an unavailable
-      // artist scope as inapplicable, not a reason to hide every collected track.
-      if (!artistIds.length && !String(seedArtist).trim()) return true;
-      return artistRelationAllowed(artistRelation(candidate, { artistIds, name: seedArtist }), { includeUnknownArtists, includeCollaborations });
-    };
+export function deltaBuilder() {
+  const entities = new Map(), edges = new Map();
+  return {
+    entity(value) { entities.set(value.id, { ...(entities.get(value.id) || {}), ...value }); return value.id; },
+    edge(from, to, kind, source, url, extra = {}) { const value = { from, to, kind, status: "observed", source, sourceUrl: url, evidence: [{ source, url }], ...extra }; edges.set(`${from}:${kind}:${to}`, value); },
+    result() { return { entities: [...entities.values()], edges: [...edges.values()], claims: [] }; }
   };
-  // Bind a single graph snapshot per candidate batch rather than rebuilding the
-  // identity / library indexes once per track in a large cached catalogue.
-  const predicate = (candidate, currentGraph = graph) => forGraph(currentGraph)(candidate);
-  predicate.forGraph = forGraph;
-  return predicate;
+}
+
+function addReleaseEra(builder, releaseId, date, source, url) {
+  const year = Number(String(date || "").match(/^\d{4}/)?.[0]);
+  if (!(year >= 1900 && year <= 2100)) return;
+  const name = `${Math.floor(year / 10) * 10}s`;
+  const id = builder.entity({ id: nodeId("era", "music-date", name), type: "era", name, basis: "catalogue_release_date" });
+  builder.edge(releaseId, id, "released_in_era", source, url, { basis: "catalogue_release_date" });
 }
 
 // Order only; retain every edition and identifier. Prefer another artist and
 // release before returning to an album already represented in this page.
-export function diversifyCatalogueReleases(items = []) {
-  const remaining = [...items], result = [], artists = new Map(), albums = new Map();
-  const artistKey = item => String(item.artist || (item["artist-credit"] || item.artists || []).map(a => a.name || a.artist?.name).join(" & ")).toLocaleLowerCase();
-  const albumKey = item => item.releaseId || `${artistKey(item)}:${item.title || item.id}`;
-  while (remaining.length) {
-    const cost = item => (artists.get(artistKey(item)) || 0) + (albums.get(albumKey(item)) || 0) * 2;
-    remaining.sort((a, b) => cost(a) - cost(b));
-    const item = remaining.shift(); result.push(item);
-    artists.set(artistKey(item), (artists.get(artistKey(item)) || 0) + 1);
-    albums.set(albumKey(item), (albums.get(albumKey(item)) || 0) + 1);
+export function discogsReleaseGraph(release, { now } = {}) {
+  const builder = deltaBuilder();
+  const releaseId = nodeId("release", "discogs", release.id);
+  const url = release.uri || sourceUrl("discogs", "release", release.id);
+  const formats = (release.formats || []).flatMap((format) => [format.name, ...(format.descriptions || [])]).filter(Boolean);
+  const artistNode = (artist) => artist?.id && builder.entity({ id: nodeId("artist", "discogs", artist.id), type: "artist", name: artist.name || artist.anv, externalIds: { discogs: String(artist.id) }, source: "discogs", url: sourceUrl("discogs", "artist", artist.id) });
+  const main = (release.artists || []).map((artist) => ({ id: artistNode(artist), name: artist.name })).filter(({ id }) => id);
+  const dates = releaseDates({ date: release.released || release.year || "", originalDate: release.master_year || "", formats, now });
+  builder.entity({ id: releaseId, type: "release", title: release.title, artists: main, date: dates.releaseDate, dates, source: "discogs", releaseType: formats.join(" · "), format: formats.join(" · "), externalIds: { discogs: String(release.id) }, url });
+  addReleaseEra(builder, releaseId, dates.firstReleaseDate || dates.releaseDate, "discogs", url);
+  for (const artist of main) builder.edge(artist.id, releaseId, "credited_on_release", "discogs", url);
+  for (const recordLabel of release.labels || []) {
+    if (!recordLabel.id) continue;
+    const id = builder.entity({ id: nodeId("label", "discogs", recordLabel.id), type: "label", name: recordLabel.name, externalIds: { discogs: String(recordLabel.id) }, source: "discogs", url: sourceUrl("discogs", "label", recordLabel.id) });
+    builder.edge(releaseId, id, "issued_by", "discogs", url, { catalogueNumber: recordLabel.catno || "" });
   }
-  return result;
+  for (const [position, track] of (release.tracklist || []).entries()) {
+    if (!track.title || ["heading", "index"].includes(track.type_)) continue;
+    const trackId = nodeId("track", "discogs", `${release.id}:${position}`);
+    const artists = track.artists?.length ? track.artists.map((artist) => ({ id: artistNode(artist), name: artist.name })).filter(({ id }) => id) : main;
+    builder.entity({ id: trackId, type: "track", title: track.title, artists, date: dates.releaseDate, dates, duration: track.duration || "", position: track.position || "", source: "discogs", url, releaseId });
+    builder.edge(trackId, releaseId, "appears_on", "discogs", url);
+    for (const artist of artists) builder.edge(artist.id, trackId, "credited_on", "discogs", url);
+    const credits = [...(track.extraartists || []), ...(release.extraartists || []).filter((credit) => !credit.tracks || String(credit.tracks).split(/\s*,\s*/).includes(track.position))];
+    for (const credit of credits) {
+      const id = artistNode(credit);
+      if (!id) continue;
+      const kind = /remix/i.test(credit.role) ? "remixed_by" : /featur/i.test(credit.role) ? "featured_with" : /produc/i.test(credit.role) ? "produced_by" : "credited_on";
+      if (kind === "credited_on") builder.edge(id, trackId, kind, "discogs", url, { role: credit.role || "" });
+      else builder.edge(trackId, id, kind, "discogs", url, { role: credit.role || "" });
+    }
+    // A main joint credit is a documented collaboration, not an inferred feature.
+    for (let left = 0; left < artists.length; left++) for (let right = left + 1; right < artists.length; right++) builder.edge(artists[left].id, artists[right].id, "featured_with", "discogs", url, { role: "joint_main_credit", trackId });
+  }
+  return builder.result();
+}
+
+export function musicBrainzReleaseGraph(release, { now } = {}) {
+  const builder = deltaBuilder();
+  const releaseId = nodeId("release", "musicbrainz", release.id);
+  const url = sourceUrl("musicbrainz", "release", release.id);
+  const artistNode = (credit) => { const artist = credit.artist || credit; return artist?.id && { id: builder.entity({ id: nodeId("artist", "musicbrainz", artist.id), type: "artist", name: artist.name, externalIds: { musicbrainz: artist.id }, source: "musicbrainz", url: sourceUrl("musicbrainz", "artist", artist.id) }), name: artist.name }; };
+  const main = (release["artist-credit"] || []).map(artistNode).filter(Boolean);
+  const group = release["release-group"] || {};
+  const dates = releaseDates({ date: release.date, originalDate: group["first-release-date"], now });
+  builder.entity({ id: releaseId, type: "release", title: release.title, artists: main, date: dates.releaseDate, dates, releaseType: [group["primary-type"], ...(group["secondary-types"] || [])].filter(Boolean).join(" · "), externalIds: { musicbrainz: release.id }, source: "musicbrainz", url });
+  addReleaseEra(builder, releaseId, dates.firstReleaseDate || dates.releaseDate, "musicbrainz", url);
+  for (const artist of main) builder.edge(artist.id, releaseId, "credited_on_release", "musicbrainz", url);
+  for (const info of release["label-info"] || []) {
+    if (!info.label?.id) continue;
+    const id = builder.entity({ id: nodeId("label", "musicbrainz", info.label.id), type: "label", name: info.label.name, externalIds: { musicbrainz: info.label.id }, source: "musicbrainz", url: sourceUrl("musicbrainz", "label", info.label.id) });
+    builder.edge(releaseId, id, "issued_by", "musicbrainz", url, { catalogueNumber: info["catalog-number"] || "" });
+  }
+  for (const medium of release.media || []) for (const track of medium.tracks || []) {
+    const recording = track.recording || {};
+    if (!recording.id) continue;
+    const id = nodeId("recording", "musicbrainz", recording.id);
+    const artists = (recording["artist-credit"] || track["artist-credit"] || release["artist-credit"] || []).map(artistNode).filter(Boolean);
+    builder.entity({ id, type: "recording", title: recording.title || track.title, artists, duration: recording.length || track.length, isrcs: recording.isrcs || [], date: dates.releaseDate, dates, source: "musicbrainz", externalIds: { musicbrainz: recording.id }, url: sourceUrl("musicbrainz", "recording", recording.id) });
+    builder.edge(id, releaseId, "appears_on", "musicbrainz", url);
+    for (const artist of artists) builder.edge(artist.id, id, "credited_on", "musicbrainz", url);
+    for (const relation of recording.relations || []) {
+      if (relation["target-type"] !== "artist" || !relation.artist?.id) continue;
+      const artist = artistNode(relation.artist);
+      const kind = /remix/i.test(relation.type) ? "remixed_by" : /produc/i.test(relation.type) ? "produced_by" : /vocal|instrument/i.test(relation.type) ? "credited_on" : "";
+      if (kind === "credited_on") builder.edge(artist.id, id, kind, "musicbrainz", url, { role: relation.type });
+      else if (kind) builder.edge(id, artist.id, kind, "musicbrainz", url, { role: relation.type });
+    }
+    for (let left = 0; left < artists.length; left++) for (let right = left + 1; right < artists.length; right++) builder.edge(artists[left].id, artists[right].id, "featured_with", "musicbrainz", url, { role: "joint_main_credit", recordingId: id });
+  }
+  return builder.result();
 }
 
 function mergeGraph(graph, delta) {
@@ -533,35 +571,4 @@ export async function exploreCatalogueBranch({ graph, seedId, direction, cursor 
         : hasMore ? "Catalogue partiel ; d’autres pages peuvent être explorées."
           : "Fin des relations documentées dans les sources consultées ; ce n’est pas une preuve d’exhaustivité mondiale.";
   return { status, seedId, direction, candidates: pageCandidates, confirmationCandidates, graphDelta: combined.result(), coverage: { state: status, complete, scope: requiredSources.size ? "documented_catalogues" : "local_graph", requiredSources: [...requiredSources], sourceStates, hasMore, nextCursor, pendingPages: progress.queue.length, fetchedRequests: calls, cacheHits, processedTasks, completedTasks: done.size, requestBudget: budget, selection, message } };
-}
-
-export function bandcampEvidenceGraph(payload = {}) {
-  const url = new URL(payload.sourceUrl || payload.url || "");
-  if (url.protocol !== "https:" || !/(^|\.)bandcamp\.com$/i.test(url.hostname) || !/\/(album|track)\/[^/]+/.test(url.pathname)) throw new Error("Une URL Bandcamp d’album ou de morceau est nécessaire.");
-  if (!clean(payload.artist) || !clean(payload.title)) throw new Error("Artiste et titre requis.");
-  const builder = deltaBuilder();
-  const key = createHash("sha256").update(url.origin + url.pathname).digest("hex").slice(0, 32);
-  // Label-hosted albums can have unrelated artists on the same subdomain.
-  // Scope the asserted artist to this supplied release; never merge by host.
-  const artistId = nodeId("artist", "bandcamp", key);
-  const releaseId = nodeId("release", "bandcamp", key);
-  const dates = releaseDates({ date: payload.releaseDate, originalDate: payload.originalDate });
-  builder.entity({ id: artistId, type: "artist", name: clean(payload.artist).slice(0, 120), url: url.origin, source: "user_supplied", status: "user_supplied" });
-  builder.entity({ id: releaseId, type: "release", title: clean(payload.title).slice(0, 300), artists: [{ id: artistId, name: clean(payload.artist) }], date: dates.releaseDate, dates, url: url.href, source: "user_supplied", status: "user_supplied" });
-  builder.edge(artistId, releaseId, "credited_on_release", "user_supplied", url.href, { status: "user_supplied" });
-  if (payload.artistEntityId) builder.edge(String(payload.artistEntityId), artistId, "same_identity", "user_supplied", url.href, { status: "confirmed_user" });
-  if (payload.label) {
-    const labelId = builder.entity({ id: nodeId("label", "bandcamp", key), type: "label", name: clean(typeof payload.label === "string" ? payload.label : payload.label.name).slice(0, 160), url: url.origin, source: "user_supplied", status: "user_supplied" });
-    builder.edge(releaseId, labelId, "issued_by", "user_supplied", url.href, { status: "user_supplied" });
-  }
-  if (payload.tracks && !Array.isArray(payload.tracks)) throw new Error("La liste des morceaux doit être un tableau.");
-  if ((payload.tracks || []).length > 500) throw new Error("500 morceaux maximum par import Bandcamp.");
-  for (const [index, track] of (payload.tracks || []).entries()) {
-    if (!clean(track.title)) continue;
-    const trackArtist = track.artist && track.artist !== payload.artist ? builder.entity({ id: nodeId("artist", "bandcamp", `${key}:${index}`), type: "artist", name: clean(track.artist).slice(0, 120), source: "user_supplied" }) : artistId;
-    const id = builder.entity({ id: nodeId("track", "bandcamp", `${key}:${index}`), type: "track", title: clean(track.title).slice(0, 300), artists: [{ id: trackArtist, name: clean(track.artist || payload.artist) }], date: dates.releaseDate, dates, url: url.href, source: "user_supplied" });
-    builder.edge(id, releaseId, "appears_on", "user_supplied", url.href, { status: "user_supplied" });
-    builder.edge(trackArtist, id, "credited_on", "user_supplied", url.href, { status: "user_supplied" });
-  }
-  return builder.result();
 }

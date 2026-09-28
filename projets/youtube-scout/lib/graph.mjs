@@ -108,6 +108,12 @@ export function graphFromResolution(video, identity, recording, context = {}) {
       const releaseId = entityId("release", "musicbrainz", release.id);
       addEntity({ id: releaseId, type: "release", title: release.title, date: release.date, country: release.country || "", externalIds: { musicbrainz: release.id } });
       addEdge({ from: recordingId, to: releaseId, kind: "appears_on", status: "observed", evidence: ["musicbrainz"] });
+      for (const label of release.labels || []) {
+        if (!label?.id || !label?.name) continue;
+        const labelId = entityId("label", "musicbrainz", label.id);
+        addEntity({ id: labelId, type: "label", name: label.name, externalIds: { musicbrainz: label.id } });
+        addEdge({ from: releaseId, to: labelId, kind: "issued_by", status: "observed", evidence: ["musicbrainz"], ...(label.catalogueNumber ? { catalogueNumber: label.catalogueNumber } : {}) });
+      }
       const releaseEra = decade(release.date);
       if (releaseEra) {
         const eraId = entityId("era", "derived", releaseEra);

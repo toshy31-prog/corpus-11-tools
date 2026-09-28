@@ -64,7 +64,12 @@ test("UI contract: public modules referenced by the application and HTML exist",
   const scripts = tags.filter(({ tag }) => tag === "script").map((tag) => attribute(tag, "src")).filter((src) => src && !/^https?:/.test(src));
   const modules = [...app.matchAll(/\bfrom\s+["']([^"']+\.mjs)["']/g)].map((match) => match[1]);
   for (const source of new Set([...scripts, ...modules])) {
-    const file = source === "/catalogue-graph.mjs" ? new URL("./catalogue-graph.mjs", import.meta.url) : new URL(source.replace(/^\//, ""), publicRoot);
+    const libModules = new Map([
+      ["/catalogue-graph.mjs", "./catalogue-graph.mjs"],
+      ["/collection-catalogue-provenance.mjs", "./collection-catalogue-provenance.mjs"],
+      ["/catalogue-release-graph.mjs", "./catalogue-release-graph.mjs"]
+    ]);
+    const file = libModules.has(source) ? new URL(libModules.get(source), import.meta.url) : new URL(source.replace(/^\//, ""), publicRoot);
     assert.ok(existsSync(file), `Module public introuvable : ${fileURLToPath(file)}`);
   }
   for (const required of ["library-state.mjs", "discovery-model.mjs", "bandcamp-tools.mjs"]) {

@@ -1,3 +1,4 @@
+import { validateCatalogueProvenance } from "../lib/collection-catalogue-provenance.mjs";
 const FORMAT = "youtube-scout-backup";
 export const LIBRARY_LIMIT = 5000;
 export const NOTEBOOK_STATUSES = Object.freeze({ listen: "À écouter", explore: "À creuser", kept: "Gardées" });
@@ -134,8 +135,9 @@ export function finalizeLibraryImport(previous, incoming, { complete, selectedId
   const result = complete ? new Map() : new Map(old);
   for (const video of available) {
     if (!result.has(video.id) && result.size >= limit) continue;
-    const prior = !complete ? old.get(video.id) : null;
-    result.set(video.id, prior ? { ...prior, ...video, playlistIds: [...new Set([...(prior.playlistIds || []), ...(video.playlistIds || [])])], playlistNames: [...new Set([...(prior.playlistNames || []), ...(video.playlistNames || [])])] } : video);
+    const prior = old.get(video.id) || null;
+    const localProvenance = prior?.catalogueProvenance ? { catalogueProvenance: prior.catalogueProvenance } : {};
+    result.set(video.id, prior ? { ...prior, ...video, ...localProvenance, playlistIds: [...new Set([...(prior.playlistIds || []), ...(video.playlistIds || [])])], playlistNames: [...new Set([...(prior.playlistNames || []), ...(video.playlistNames || [])])] } : video);
   }
   const selected = new Set(selectedIds || []);
   const removed = complete ? previous.filter(({ id }) => !result.has(id)) : [];
@@ -160,6 +162,7 @@ export function validateBackup(input) {
   for (const video of value.library) {
     if (!object(video) || !/^[A-Za-z0-9_-]{6,20}$/.test(video.id || "") || typeof video.title !== "string" || ids.has(video.id)) throw new Error("Identifiant vidéo invalide ou en double dans la sauvegarde.");
     if (video.playlistIds !== undefined && (!Array.isArray(video.playlistIds) || video.playlistIds.some((id) => typeof id !== "string"))) throw new Error("Appartenance à une playlist invalide.");
+    if (video.catalogueProvenance !== undefined) video.catalogueProvenance = validateCatalogueProvenance(video.catalogueProvenance);
     ids.add(video.id);
   }
   requireArray(value.notebook, "carnet", 5000);

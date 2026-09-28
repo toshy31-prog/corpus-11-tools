@@ -61,7 +61,7 @@ test("a graph response received out of order cannot erase newer knowledge", asyn
     fetch: async () => ({ ok: true, json: () => ++calls === 1 ? older.promise : Promise.resolve({ version: "new" }) }),
     sanitizeExplorationGraph: value => value,
     departureRoutingSnapshot,
-    explorationLibrary: () => [], augmentExplorationGraph: value => value,
+    explorationLibrary: () => [], collectionProvenanceGraph: () => ({ entities: {}, edges: {} }), augmentExplorationGraph: value => value,
     projectActiveCollectionGraph: value => value, buildSeedCatalog: () => [],
     collaborationIndex: [], explorationSession: null, renderSeedOptions() {}
   };
@@ -222,7 +222,7 @@ function hydrateContext({ releaseLabels, fetch }) {
     }),
     fetchDiscogsProfile: async () => null,
     releaseLabels, fetch,
-    bandcampProfiles: {}, registryStorageKey: (name) => name, extractCreditRelations: () => []
+    bandcampProfiles: {}, library: [], writeCachedLibrary: async () => {}, discogsTrackCatalogueProvenance: () => null, musicBrainzRecordingCatalogueProvenance: () => null, registryStorageKey: (name) => name, extractCreditRelations: () => []
   };
   actualFunction("hydrateExplorationSeed", "populateDerivedFromFront", context);
   return context;
@@ -316,6 +316,7 @@ test("local departures remain listed even when the exploration API is unavailabl
   const context = {
     graphReadSequence: 0, compositionGeneration: 0, explorationSession: null, collaborationIndex: [],
     explorationLibrary: () => [{ id: "local", title: "Imported" }],
+    collectionProvenanceGraph: () => ({ entities: {}, edges: {} }),
     augmentExplorationGraph: value => value, projectActiveCollectionGraph: value => value,
     buildSeedCatalog: (_graph, videos) => videos, renderSeedOptions() {},
     fetch: async () => { throw new Error("Server unavailable"); }

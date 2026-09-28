@@ -44,3 +44,29 @@ test("late body decoding is rejected even after headers arrived", async () => {
   await client.start("a"); const response = await client.fetch("/api/graph");
   await client.start("b"); await assert.rejects(response.json(), { name: "AbortError" });
 });
+
+test("afterStart receives only a scoped fetch capability and initializes the new isolated context before use", async () => {
+  let count = 0;
+  const stores = new Map();
+  const fetcher = async (url, options = {}) => {
+    const path = new URL(url, "http://localhost:4181").pathname;
+    if (path === "/api/exploration/context" && options.method === "POST") {
+      const token = `t${++count}`; stores.set(token, new Set()); return Response.json({ token });
+    }
+    if (path === "/api/exploration/context" && options.method === "DELETE") { stores.delete(options.headers["x-scout-exploration"]); return Response.json({}); }
+    const headers = new Headers(options.headers); const token = headers.get("x-scout-exploration");
+    const store = stores.get(token); if (!store) return new Response("missing", { status: 410 });
+    if (path === "/api/setup") { store.add(JSON.parse(options.body).fixture); return Response.json({ ok: true }); }
+    return Response.json({ values: [...store] });
+  };
+  const client = ephemeralClient(fetcher, "http://localhost:4181", { afterStart: async (fetch, seedId) => {
+    await fetch("/api/setup", { method: "POST", body: JSON.stringify({ fixture: `fixture:${seedId}` }) });
+  }});
+  await client.start("artist:A");
+  assert.deepEqual(await (await client.fetch("/api/graph")).json(), { values: ["fixture:artist:A"] });
+  await client.start("label:B");
+  assert.deepEqual(await (await client.fetch("/api/graph")).json(), { values: ["fixture:label:B"] });
+  assert.equal(stores.size, 1);
+  assert.ok(![...stores.values()][0].has("fixture:artist:A"));
+  await client.close();
+});
