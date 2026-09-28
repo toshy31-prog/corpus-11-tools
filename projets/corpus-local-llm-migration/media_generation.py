@@ -14,6 +14,7 @@ import threading
 import time
 import uuid
 import audio_generation
+import model_residency
 from corpus_paths import MEDIA_JOBS_DATA_ROOT, MEDIA_MODELS_ROOT, MEDIA_RUNTIME_ROOT
 
 BASE = MEDIA_RUNTIME_ROOT
@@ -133,10 +134,9 @@ def reference(data):
 def create(data):
     config = validate(data)
     raw = reference(data)
-    if config.get('soundtrack') and not ready('ace-step'):
-        raise ValueError('Le moteur musical ACE-Step doit être installé pour sonoriser la vidéo.')
-    if not ready(config['model']):
-        raise ValueError('Le modèle est encore indisponible ou en cours d’installation.')
+    if config.get('soundtrack'):
+        ensure_model('ace-step')
+    ensure_model(config['model'])
     if shutil.disk_usage(JOBS.parent).free < 2 * 1024**3:
         raise ValueError('Au moins 2 Go libres sont nécessaires.')
     start()
@@ -299,9 +299,22 @@ def start():
         threading.Thread(target=worker, daemon=True, name='corpus-media').start()
 
 
-def ready(model):
+def residency(model):
     profile = MODELS[model]
-    return (BASE / profile.get('runtime', 'runtime/sd-cli')).is_file() and all((MODEL_BASE / f).is_file() for f in profile['files'])
+    if not (BASE / profile.get('runtime', 'runtime/sd-cli')).is_file():
+        return 'unavailable'
+    return model_residency.residency(profile['files'])
+
+
+def ready(model):
+    return residency(model) in {'hot', 'cold'}
+
+
+def ensure_model(model):
+    profile = MODELS[model]
+    if not (BASE / profile.get('runtime', 'runtime/sd-cli')).is_file():
+        raise ValueError('Le runtime du modèle est indisponible.')
+    model_residency.ensure_hot(profile['files'])
 
 
 def operate(data=None):
@@ -333,7 +346,7 @@ def operate(data=None):
             return public(job)
     if action != 'list':
         raise ValueError('Action inconnue.')
-    return {'models': [dict(value, id=key, ready=ready(key)) for key, value in MODELS.items()],
+    return {'models': [dict(value, id=key, ready=ready(key), residency=residency(key)) for key, value in MODELS.items()],
             'jobs': [public(j) for j in jobs()[:50]], 'local': True, 'audio': True}
 
 

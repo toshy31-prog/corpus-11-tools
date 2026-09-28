@@ -260,3 +260,11 @@ ainsi immédiatement visible.
 ## Capability expansion 2026-09-26
 
 RUNTIME/corpus-routing contient llama-swap. RUNTIME/corpus-tools contient Serena/Crawl4AI. MODELS/retrieval contient embedding/reranker. DATA/retrieval contient l’index hybride. Toute recherche réseau du modèle reste soumise au tool_gateway et à l’approbation humaine.
+
+## MODELS Phase 2A4 — résidence média HOT/COLD
+
+Les poids conversationnels Qwen3.6, retrieval, Docling et Whisper restent HOT. Les poids média/audio verrouillés peuvent résider sous CORPUS_VAULT_ROOT/ColdModels/media.
+
+Le listing média ne déclenche jamais de copie. Il distingue hot, cold et unavailable. Un profil COLD reste disponible ; sa création déclenche une promotion atomique vers MEDIA_MODELS_ROOT, après validation taille et SHA-256 du lock et seulement si au moins 10 GiB resteront libres. Un Vault absent ou un poids COLD invalide échoue fermé.
+
+La démotion vérifie le poids HOT, copie vers un temporaire COLD, revalide le SHA-256, publie atomiquement la copie COLD puis seulement retire le poids HOT. Aucune suppression HOT ne précède la preuve COLD.

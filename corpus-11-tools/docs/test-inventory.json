@@ -116,6 +116,7 @@
     {"path": "corpus-11-tools/tools/check_onboarding.py", "git_object": "4b60c4ea20dc3f36db6801a141c88442adb3f0a0", "kind": "blob"},
     {"path": "projets/corpus-local-llm-migration/test_resource_resilience.py", "git_object": "48d0dd3e075ecbb4a22be5e5858d92f74275c5df", "kind": "blob"},
     {"path": "projets/corpus-local-llm-migration/test_git_compact.py", "git_object": "4c8f5310ff9e0f2a64bb6bab272a67f4d6da765e", "kind": "blob"},
-    {"path": "projets/corpus-local-llm-migration/test_cache_clean.py", "git_object": "fbdd457021748d87e6857907559757f3160f8c7f", "kind": "blob"}
+    {"path": "projets/corpus-local-llm-migration/test_cache_clean.py", "git_object": "fbdd457021748d87e6857907559757f3160f8c7f", "kind": "blob"},
+    {"path": "projets/corpus-local-llm-migration/test_model_residency.py", "git_object": "24f1aca78754bf4dabf27eb6a2fe9c6a2283a323", "kind": "blob"}
   ]
 }
