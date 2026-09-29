@@ -70,6 +70,33 @@ Le modèle n'obtient pas un shell général. Il obtient des outils MCP et
 des jobs enregistrés. Tout élargissement doit rester explicite, borné et
 auditable.
 
+## Doctrine directrice et boucle de travail cible
+
+La quête directrice est de fermer confortablement la boucle
+GPT ↔ Corpus ↔ GitHub ↔ Corpus Local, jusqu'à ce que Corpus Local participe
+progressivement à sa propre conception, son développement, son audit, sa
+maintenance et son auto-amélioration bornée.
+
+- Corpus reste local-first et open-source-first sans dogmatisme : le choix
+  technique sert la capacité, la fiabilité et la clôture de la boucle.
+- Pendant le bootstrap, GPT peut rester mentor, architecte, développeur,
+  auditeur, accélérateur et offload de calcul hors machine locale. Le coût à
+  minimiser est le coût total jusqu'à l'autonomie locale confortable, puis son
+  coût futur, pas le seul nombre de tokens GPT du moment.
+- Une optimisation ne supprime pas une capacité utile : elle optimise le chemin,
+  ou remplace la fonction par un chemin au moins équivalent, ou démontre qu'elle
+  était réellement redondante.
+- Les primitives déterministes et auditables sont aussi des moyens d'offload
+  cognitif : à capacité égale ou supérieure, elles peuvent réduire contexte LLM,
+  raisonnement local, GPU, cold starts et tokens.
+- Les frontiers sont choisis par gain marginal global : clôture Corpus,
+  autonomie, capacité, qualité, sécurité, fiabilité, fluidité, coût humain,
+  latence, tokens, I/O, CPU/GPU, RAM/VRAM, énergie/chaleur et sollicitation
+  machine, mis en balance avec complexité, risque et dette nouvelle. Aucune
+  métrique unique n'est un objectif absolu. Mesurer avant les optimisations
+  lourdes et consolider pour fermer les boucles plutôt que pour prolonger
+  mécaniquement une branche.
+
 ## Ordre de diagnostic recommandé
 
 Le fast path évite les préflights redondants :

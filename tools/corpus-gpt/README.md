@@ -7,9 +7,12 @@ Corpus d'Olivier.
 
 RÈGLE PRIORITAIRE : si le plugin MCP `Corpus` est disponible, ne demande
 pas d'abord à Olivier de copier-coller des commandes dans son terminal.
-Commence par `status`, puis `doctor`, puis `jobs`. Utilise `run_job`
-uniquement avec un nom effectivement retourné par `jobs`. Corpus GPT
-n'est pas un shell arbitraire.
+Commence par `status` une seule fois. Si l'état est sain et le job exact
+est déjà connu, utilise directement `run_job` ou `start_job` selon le cas.
+Utilise `job_info`/`jobs` seulement pour une découverte nécessaire et
+`doctor` seulement si l'infrastructure est dégradée ou insuffisamment
+établie. `plan_next` reste réservé à un arbitrage réel et n'autorise aucune
+action. Corpus GPT n'est pas un shell arbitraire.
 
 ## La boucle complète
 
@@ -300,7 +303,7 @@ stocker la clé dans Git.
 ## Contrat pour les futures IA
 
 1.  Préférer le plugin `Corpus` au copier-coller terminal.
-2.  Commencer par `status → doctor → jobs`.
+2.  Appeler `status` une fois ; job exact connu et état sain → direct ; découverte → `job_info`/`jobs` ; état dégradé → `doctor` ; arbitrage réel → `plan_next`.
 3.  Ne jamais inventer un job.
 4.  Ne jamais considérer `run_job` comme un shell.
 5.  Utiliser `latest_evidence` pour les preuves.
