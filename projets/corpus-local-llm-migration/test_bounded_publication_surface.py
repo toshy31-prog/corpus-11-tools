@@ -360,6 +360,86 @@ class BoundedPublicationSurfaceTests(unittest.TestCase):
             flat = [" ".join(call.args[1]) for call in wrapped.call_args_list if len(call.args) > 1]
             self.assertFalse(any("push" in x or "fetch" in x or "ls-remote" in x for x in flat))
 
+
+    def test_reconcile_published_targets_updates_only_targets(self):
+        td, repo, base = self.fixture()
+        with td:
+            run(repo, "branch", "other", base)
+            (repo / "app.txt").write_bytes(b"candidate\n")
+            prepared, commit = self.prepare_one_worktree_commit(repo, base)
+            cas = surf.cas_checked_out_source_branch(prepared, commit, expected_old=base)
+            foreign_before = run(repo, "ls-files", "-s", "--", "foreign.txt")
+            worktree_before = (repo / "app.txt").read_bytes()
+            receipt = surf.reconcile_published_target_index(prepared, commit, cas)
+            self.assertTrue(receipt["foreign_index_entries_preserved"])
+            self.assertEqual(run(repo, "ls-files", "-s", "--", "foreign.txt"), foreign_before)
+            self.assertEqual((repo / "app.txt").read_bytes(), worktree_before)
+            self.assertEqual(
+                run(repo, "ls-files", "-s", "--", "app.txt").split()[1],
+                run(repo, "rev-parse", f"{commit.commit}:app.txt"),
+            )
+
+    def test_reconcile_preserves_foreign_staging_exactly(self):
+        td, repo, base = self.fixture()
+        with td:
+            (repo / "app.txt").write_bytes(b"candidate\n")
+            prepared, commit = self.prepare_one_worktree_commit(repo, base)
+            cas = surf.cas_checked_out_source_branch(prepared, commit, expected_old=base)
+            (repo / "foreign.txt").write_bytes(b"foreign-staged\n")
+            run(repo, "add", "foreign.txt")
+            foreign_before = run(repo, "ls-files", "-s", "--", "foreign.txt")
+            surf.reconcile_published_target_index(prepared, commit, cas)
+            self.assertEqual(run(repo, "ls-files", "-s", "--", "foreign.txt"), foreign_before)
+
+    def test_reconcile_refuses_concurrent_target_restage(self):
+        td, repo, base = self.fixture()
+        with td:
+            (repo / "app.txt").write_bytes(b"candidate\n")
+            prepared, commit = self.prepare_one_worktree_commit(repo, base)
+            cas = surf.cas_checked_out_source_branch(prepared, commit, expected_old=base)
+            (repo / "app.txt").write_bytes(b"restaged-user\n")
+            run(repo, "add", "app.txt")
+            with self.assertRaisesRegex(git1.PublicationRefusal, "target index changed"):
+                surf.reconcile_published_target_index(prepared, commit, cas)
+
+    def test_reconcile_preserves_changed_target_worktree_bytes(self):
+        td, repo, base = self.fixture()
+        with td:
+            (repo / "app.txt").write_bytes(b"candidate\n")
+            prepared, commit = self.prepare_one_worktree_commit(repo, base)
+            cas = surf.cas_checked_out_source_branch(prepared, commit, expected_old=base)
+            (repo / "app.txt").write_bytes(b"user-after-cas\n")
+            before = (repo / "app.txt").read_bytes()
+            surf.reconcile_published_target_index(prepared, commit, cas)
+            self.assertEqual((repo / "app.txt").read_bytes(), before)
+            self.assertEqual(
+                run(repo, "ls-files", "-s", "--", "app.txt").split()[1],
+                run(repo, "rev-parse", f"{commit.commit}:app.txt"),
+            )
+            self.assertEqual(run(repo, "diff", "--name-only", "--", "app.txt"), "app.txt")
+            self.assertEqual(run(repo, "diff", "--cached", "--name-only", "--", "app.txt"), "")
+
+    def test_reconcile_published_targets_enables_second_publication(self):
+        td, repo, base = self.fixture()
+        with td:
+            (repo / "app.txt").write_bytes(b"p1\n")
+            p1, k1 = self.prepare_one_worktree_commit(repo, base, b"p1\n")
+            c1 = surf.cas_checked_out_source_branch(p1, k1, expected_old=base)
+            surf.reconcile_published_target_index(p1, k1, c1)
+            self.assertEqual(run(repo, "write-tree"), run(repo, "rev-parse", "HEAD^{tree}"))
+
+            (repo / "foreign.txt").write_bytes(b"p2\n")
+            p2 = surf.prepare_worktree_commit(
+                repo,
+                source_branch="main",
+                expected_base=k1.commit,
+                files=[self.worktree_selection(repo, k1.commit, "foreign.txt")],
+                validator=lambda root: (root / "foreign.txt").read_bytes() == b"p2\n",
+                message="p2",
+            )
+            k2 = surf.commit_prepared_worktree(p2)
+            self.assertEqual(k2.parent, k1.commit)
+
     def test_surface_has_no_remote_push_api(self):
         self.assertFalse(hasattr(surf, "push"))
         self.assertFalse(hasattr(surf, "publish_remote"))

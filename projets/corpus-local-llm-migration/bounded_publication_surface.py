@@ -174,6 +174,92 @@ def cas_checked_out_source_branch(
     )
 
 
+def reconcile_published_target_index(
+    prepared: PreparedWorktreeCommit,
+    commit: git1.CommitReceipt,
+    cas_receipt: git1.PublicationReceipt,
+) -> dict:
+    if not isinstance(prepared, PreparedWorktreeCommit):
+        raise git1.PublicationRefusal("prepared worktree commit required")
+    if not isinstance(commit, git1.CommitReceipt):
+        raise git1.PublicationRefusal("commit receipt required")
+    if not isinstance(cas_receipt, git1.PublicationReceipt):
+        raise git1.PublicationRefusal("CAS receipt required")
+
+    candidate = prepared.candidate
+    repo = candidate.repo
+    ref = git1._ref_for_branch(repo, candidate.source_branch)
+    if cas_receipt.ref != ref or cas_receipt.old != candidate.base or cas_receipt.new != commit.commit:
+        raise git1.PublicationRefusal("CAS receipt mismatch")
+    if commit.parent != candidate.base or commit.tree != candidate.tree:
+        raise git1.PublicationRefusal("commit receipt mismatch")
+    if prepared.validation.candidate_tree != candidate.tree:
+        raise git1.PublicationRefusal("validation/candidate mismatch")
+    if git1._text(repo, "symbolic-ref", "-q", "HEAD") != ref:
+        raise git1.PublicationRefusal("HEAD no longer points to prepared branch")
+    if git1._text(repo, "rev-parse", "HEAD") != commit.commit:
+        raise git1.PublicationRefusal("published HEAD mismatch")
+    if git1._text(repo, "rev-parse", ref) != commit.commit:
+        raise git1.PublicationRefusal("published source ref mismatch")
+
+    targets = set(candidate.selected_paths)
+    before_entries = git1._text(repo, "ls-files", "-s").splitlines()
+    before_foreign = [line for line in before_entries if line.split("	",1)[-1] not in targets]
+    worktree_before = {}
+    updates = []
+
+    for item in prepared.selections:
+        path = git1._normalize_path(item.path)
+        rows = git1._text(repo, "ls-files", "-s", "--", path).splitlines()
+        if len(rows) != 1:
+            raise git1.PublicationRefusal("target index entry missing or ambiguous")
+        meta, indexed_path = rows[0].split("	", 1)
+        mode, index_blob, stage = meta.split()
+        if indexed_path != path or stage != "0":
+            raise git1.PublicationRefusal("target index entry invalid")
+        if index_blob != item.expected_head_blob:
+            raise git1.PublicationRefusal("target index changed since prepare")
+
+        published = git1._base_entry(repo, commit.commit, path)
+        if published is None:
+            raise git1.PublicationRefusal("published target missing")
+        published_mode, kind, published_blob = published
+        if kind != "blob" or published_mode not in git1.ALLOWED_MODES:
+            raise git1.PublicationRefusal("published target invalid")
+
+        target = (repo / path).resolve()
+        worktree_before[path] = target.read_bytes()
+        updates.append(f"{published_mode} {published_blob}\t{path}\n")
+
+    git1._run(repo, ["update-index", "--index-info"], input_bytes="".join(updates).encode())
+
+    after_entries = git1._text(repo, "ls-files", "-s").splitlines()
+    after_foreign = [line for line in after_entries if line.split("	",1)[-1] not in targets]
+    if after_foreign != before_foreign:
+        raise git1.PublicationRefusal("foreign index entries changed")
+
+    reconciled = {}
+    for item in prepared.selections:
+        path = item.path
+        published_mode, _, published_blob = git1._base_entry(repo, commit.commit, path)
+        rows = git1._text(repo, "ls-files", "-s", "--", path).splitlines()
+        mode, index_blob, stage = rows[0].split("	",1)[0].split()
+        if mode != published_mode or index_blob != published_blob or stage != "0":
+            raise git1.PublicationRefusal("target index reconciliation failed")
+        target = (repo / path).resolve()
+        if target.read_bytes() != worktree_before[path]:
+            raise git1.PublicationRefusal("target worktree changed during reconciliation")
+        reconciled[path] = published_blob
+
+    return {
+        "ref": ref,
+        "commit": commit.commit,
+        "targets": reconciled,
+        "foreign_index_entries_preserved": True,
+        "worktree_preserved": True,
+    }
+
+
 def prepare_bounded_publication(
     repo,
     *,
