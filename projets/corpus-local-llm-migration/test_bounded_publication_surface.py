@@ -379,6 +379,78 @@ class BoundedPublicationSurfaceTests(unittest.TestCase):
                 run(repo, "rev-parse", f"{commit.commit}:app.txt"),
             )
 
+    def test_reconcile_concurrent_foreign_lock_race_is_never_deleted(self):
+        td, repo, base = self.fixture()
+        with td:
+            (repo / "app.txt").write_bytes(b"candidate\n")
+            prepared, commit = self.prepare_one_worktree_commit(repo, base)
+            cas = surf.cas_checked_out_source_branch(prepared, commit, expected_old=base)
+            lock = repo / ".git/index.lock"
+            index_before = (repo / ".git/index").read_bytes()
+            real_open = surf.os.open
+
+            def race_open(path, flags, mode=0o777):
+                Path(path).write_bytes(b"foreign-lock")
+                raise FileExistsError(path)
+
+            with patch.object(surf.os, "open", side_effect=race_open):
+                with self.assertRaisesRegex(git1.PublicationRefusal, "index lock present"):
+                    surf.reconcile_published_target_index(prepared, commit, cas)
+
+            self.assertTrue(lock.exists())
+            self.assertEqual(lock.read_bytes(), b"foreign-lock")
+            self.assertEqual((repo / ".git/index").read_bytes(), index_before)
+
+    def test_reconcile_existing_foreign_lock_is_never_deleted(self):
+        td, repo, base = self.fixture()
+        with td:
+            (repo / "app.txt").write_bytes(b"candidate\n")
+            prepared, commit = self.prepare_one_worktree_commit(repo, base)
+            cas = surf.cas_checked_out_source_branch(prepared, commit, expected_old=base)
+            lock = repo / ".git/index.lock"
+            lock.write_bytes(b"foreign-entry-lock")
+            index_before = (repo / ".git/index").read_bytes()
+
+            with self.assertRaisesRegex(git1.PublicationRefusal, "index lock present"):
+                surf.reconcile_published_target_index(prepared, commit, cas)
+
+            self.assertTrue(lock.exists())
+            self.assertEqual(lock.read_bytes(), b"foreign-entry-lock")
+            self.assertEqual((repo / ".git/index").read_bytes(), index_before)
+
+    def test_reconcile_error_after_own_lock_cleans_only_own_lock(self):
+        td, repo, base = self.fixture()
+        with td:
+            (repo / "app.txt").write_bytes(b"candidate\n")
+            prepared, commit = self.prepare_one_worktree_commit(repo, base)
+            cas = surf.cas_checked_out_source_branch(prepared, commit, expected_old=base)
+            lock = repo / ".git/index.lock"
+            index_before = (repo / ".git/index").read_bytes()
+
+            with patch.object(
+                surf,
+                "_index_rows_for_path",
+                side_effect=git1.PublicationRefusal("forced after acquire"),
+            ):
+                with self.assertRaisesRegex(git1.PublicationRefusal, "forced after acquire"):
+                    surf.reconcile_published_target_index(prepared, commit, cas)
+
+            self.assertFalse(lock.exists())
+            self.assertEqual((repo / ".git/index").read_bytes(), index_before)
+
+    def test_reconcile_success_leaves_no_lock_residue(self):
+        td, repo, base = self.fixture()
+        with td:
+            (repo / "app.txt").write_bytes(b"candidate\n")
+            prepared, commit = self.prepare_one_worktree_commit(repo, base)
+            cas = surf.cas_checked_out_source_branch(prepared, commit, expected_old=base)
+            lock = repo / ".git/index.lock"
+
+            surf.reconcile_published_target_index(prepared, commit, cas)
+
+            self.assertFalse(lock.exists())
+            self.assertEqual(run(repo, "write-tree"), run(repo, "rev-parse", "HEAD^{tree}"))
+
     def test_reconcile_preserves_foreign_staging_exactly(self):
         td, repo, base = self.fixture()
         with td:

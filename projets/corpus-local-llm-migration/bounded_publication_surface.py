@@ -252,6 +252,7 @@ def reconcile_published_target_index(
     worktree_before = {}
     worktree_modes_before = {}
     promoted = False
+    lock_owned = False
     fd = None
 
     try:
@@ -259,6 +260,7 @@ def reconcile_published_target_index(
             fd = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, index_path.stat().st_mode & 0o777)
         except FileExistsError as exc:
             raise git1.PublicationRefusal("index lock present") from exc
+        lock_owned = True
         if index_path.read_bytes() != index_before:
             raise git1.PublicationRefusal("index changed before reconciliation lock")
         os.write(fd, index_before)
@@ -329,6 +331,7 @@ def reconcile_published_target_index(
         if index_path.read_bytes() != index_before:
             raise git1.PublicationRefusal("real index changed despite reconciliation lock")
         os.replace(lock_path, index_path)
+        lock_owned = False
         promoted = True
 
         return {
@@ -341,7 +344,7 @@ def reconcile_published_target_index(
     finally:
         if fd is not None:
             os.close(fd)
-        if not promoted:
+        if lock_owned and not promoted:
             try:
                 lock_path.unlink()
             except FileNotFoundError:
