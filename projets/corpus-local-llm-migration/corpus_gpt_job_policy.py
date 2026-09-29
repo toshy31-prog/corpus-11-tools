@@ -4,6 +4,7 @@ from pathlib import Path
 
 BROWSER_MARKER="# corpus-job-kind: browser"
 LOCAL_MARKER="# corpus-job-kind: local"
+AUTHORIZATION_MARKER_PREFIX="# corpus-requires-durable-authorization:"
 
 def kind_from_content(content):
  header=content.splitlines()[:8]
@@ -33,6 +34,24 @@ def visual_target_from_content(content):
    value=line[len(prefix):].strip()
    if value.startswith(("http://","https://")) and len(value)<=2048: return value
  return ""
+
+def authorization_requirement_from_content(content):
+ for line in content.splitlines()[:12]:
+  if line.startswith(AUTHORIZATION_MARKER_PREFIX):
+   value=line[len(AUTHORIZATION_MARKER_PREFIX):].strip()
+   if value=="true": return True
+   if value=="false": return False
+   raise ValueError("requires_durable_authorization marker invalide")
+ return False
+
+def requires_durable_authorization(job,registry):
+ value=registry.get(job) if isinstance(registry,dict) else None
+ if not isinstance(value,dict) or "requires_durable_authorization" not in value:
+  return False
+ required=value["requires_durable_authorization"]
+ if type(required) is not bool:
+  raise ValueError("requires_durable_authorization invalide")
+ return required
 
 def execution_env(kind, visual_target=""):
  env=runner_env(kind)

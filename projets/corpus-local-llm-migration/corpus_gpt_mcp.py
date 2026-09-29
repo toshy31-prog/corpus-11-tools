@@ -12,6 +12,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import blocker_resilience as blocker_policy
+import authorized_async_gate as auth_gate
 import capability_handoff as handoff
 import corpus_gpt_async as async_jobs
 import corpus_gpt_job_policy as job_policy
@@ -53,6 +54,7 @@ BB = Path(
 
 JOBS = BB / "jobs"
 JOB_POLICY = BB / "state/job-policy.json"
+AUTHORIZATION_CONFIG = BB / "state/authorization.json"
 VISUAL_ARTIFACT_ROOT = BB / "visual-artifacts"
 
 def result(text, error=False):
@@ -594,15 +596,18 @@ def call(name, a):
     if name == "start_job":
         job = a.get("job")
         try:
-            value = async_jobs.start_job(
+            registry = job_policy.load(JOB_POLICY)
+            value = auth_gate.start_job_configured(
                 job,
                 allowed_jobs=safe_jobs(),
                 entry=ENTRY,
                 bb=BB,
                 repo=SELF.parents[2],
-                job_kind=job_policy.kind_for(job, job_policy.load(JOB_POLICY)),
-                visual_target=(job_policy.load(JOB_POLICY).get(job) or {}).get("visual_target",""),
+                job_kind=job_policy.kind_for(job, registry),
+                visual_target=(registry.get(job) or {}).get("visual_target",""),
                 causal_refs=a.get("causal_refs"),
+                job_registry=registry,
+                authorization_config_path=AUTHORIZATION_CONFIG,
             )
         except ValueError as exc:
             return result("REFUS: " + str(exc), True)
@@ -703,6 +708,10 @@ def call(name, a):
             return result("REFUS: shebang bash requis", True)
         if len(content) < 20 or len(content) > 60000:
             return result("REFUS: taille de job invalide", True)
+        try:
+            requires_auth = job_policy.authorization_requirement_from_content(content)
+        except ValueError as exc:
+            return result("REFUS: " + str(exc), True)
         jobs = JOBS.resolve()
         jobs.mkdir(parents=True, exist_ok=True)
         dest = (jobs / (job_name + ".sh")).resolve()
@@ -733,7 +742,7 @@ def call(name, a):
             if tp.exists():
                 tp.unlink()
         registry=job_policy.load(JOB_POLICY)
-        registry[job_name]={"kind":job_policy.kind_from_content(content),"visual_target":job_policy.visual_target_from_content(content)}
+        registry[job_name]={"kind":job_policy.kind_from_content(content),"visual_target":job_policy.visual_target_from_content(content),"requires_durable_authorization":requires_auth}
         JOB_POLICY.parent.mkdir(parents=True,exist_ok=True)
         JOB_POLICY.write_text(json.dumps(registry,ensure_ascii=False,indent=2)+"\n")
         lines=["MANAGED_JOB_INSTALL=PASS","JOB="+job_name,"KIND="+registry[job_name]["kind"],"PATH="+str(dest),"BASH_N=PASS"]

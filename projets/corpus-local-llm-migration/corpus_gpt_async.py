@@ -204,15 +204,9 @@ def _child_env(entry: Path, bb: Path, job_kind="browser") -> dict[str, str]:
     return env
 
 
-def start_job(job: str, *, allowed_jobs: list[str], entry, bb, repo, job_kind="browser", visual_target="", causal_refs=None) -> dict:
-    if not isinstance(job, str) or job not in allowed_jobs:
-        raise ValueError("job non enregistré")
+def existing_active_job(job: str, *, bb, causal_refs=None) -> dict | None:
+    """Return the async-owned idempotence verdict without starting new work."""
     causal_refs = normalize_causal_refs(causal_refs, allow_verification=False)
-
-    bb = Path(bb)
-    entry = Path(entry)
-    repo = Path(repo)
-
     for state in recent_states(bb, 100):
         if state.get("job") == job and state.get("status") in {"starting", "running"}:
             existing_refs = normalize_causal_refs(state.get("causal_refs"))
@@ -227,6 +221,21 @@ def start_job(job: str, *, allowed_jobs: list[str], entry, bb, repo, job_kind="b
                 "status": state.get("status"),
                 "causal_refs": existing_refs,
             }
+    return None
+
+
+def start_job(job: str, *, allowed_jobs: list[str], entry, bb, repo, job_kind="browser", visual_target="", causal_refs=None) -> dict:
+    if not isinstance(job, str) or job not in allowed_jobs:
+        raise ValueError("job non enregistré")
+    causal_refs = normalize_causal_refs(causal_refs, allow_verification=False)
+
+    bb = Path(bb)
+    entry = Path(entry)
+    repo = Path(repo)
+
+    existing = existing_active_job(job, bb=bb, causal_refs=causal_refs)
+    if existing is not None:
+        return existing
 
     token = uuid.uuid4().hex[:16]
     state = {
