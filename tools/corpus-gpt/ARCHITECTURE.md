@@ -72,17 +72,18 @@ auditable.
 
 ## Ordre de diagnostic recommandé
 
+Le fast path évite les préflights redondants :
+
 ``` text
-Corpus.status
-  ↓
-Corpus.doctor
-  ↓
-Corpus.jobs
-  ↓
-Corpus.latest_evidence si nécessaire
-  ↓
-Corpus.run_job seulement pour un job réellement listé
+Corpus.status, une fois
+  ├─ sain + job exact connu → run_job / start_job selon le cas
+  ├─ job inconnu → job_info ou jobs
+  ├─ infrastructure dégradée / état insuffisant → doctor
+  └─ arbitrage réel de route, portée, modalités ou réversibilité → plan_next
 ```
+
+`latest_evidence` reste disponible lorsque des preuves existantes sont
+nécessaires à la conclusion. Job connu ne signifie jamais action autorisée.
 
 ## Résilience de contrôle
 
@@ -116,3 +117,23 @@ ne vaut jamais ordre de suppression physique ; par exemple
 `authorization.expires_at` ne signifie pas `delete_at`. Pour les occurrences
 visuelles, la disponibilité du receipt/metadata reste distincte de celle du
 payload.
+
+## Provenance des références
+
+Les champs qui transportent des références décrivent leur rôle causal :
+`decision_ref`, `authorization_ref`, `evidence_refs`, `verification_refs`
+ou `parent_ref` ne forment pas un espace global de résolution.
+
+- Le propriétaire spécialisé reste responsable de la syntaxe, de la résolution
+  et de l'intégrité éventuelles de ses références. Par exemple, Decision Receipt
+  et Authorization conservent leurs propres contrats de vérification.
+- Une référence peut être transportée comme ancre opaque sans promettre de
+  résolution globale. `evidence_refs` et `parent_ref` peuvent notamment
+  rester transport-only pour un consommateur qui ne les interprète pas.
+- L'existence n'a pas à être vérifiée au simple transport lorsque le consommateur
+  ne dépend pas de l'objet référencé ; elle doit l'être par l'owner au moment où
+  une interprétation ou une résolution est réellement requise.
+- Une référence historiquement valide peut devenir actuellement non résoluble
+  sans rendre faux le lien historique qu'elle attestait.
+- Un préfixe auto-descriptif comme `decision_context_receipt:` ou
+  `authorization:` n'implique jamais l'existence d'un resolver fédéré.

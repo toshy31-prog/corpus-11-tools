@@ -1,7 +1,8 @@
 """Local content-addressed persistence for decision context receipts.
 
-DR1-only primitive: explicit callers choose whether to persist.  Nothing in
-decision grounding or the MCP surface is wired to call this module.
+Persistence remains explicit and opt-in.  The decision grounding orchestrator
+may invoke this module only when receipt_store_root is explicitly supplied;
+the MCP ground_decision surface does not expose that option.
 """
 from __future__ import annotations
 
