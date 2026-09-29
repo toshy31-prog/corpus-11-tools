@@ -11,6 +11,7 @@ import urllib.error
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
+import artifact_footprints
 import blocker_resilience as blocker_policy
 import authorized_async_gate as auth_gate
 import capability_handoff as handoff
@@ -537,6 +538,19 @@ TOOLS = [
 
 if _local_task_client_allowed():
     TOOLS.append({
+        "name":"artifact_footprints",
+        "description":"Observer post hoc les traces déjà présentes d'un artefact repo dans une session OpenCode existante. GET uniquement; ne lit pas l'artefact et ne relance pas l'agent.",
+        "inputSchema":{
+            "type":"object",
+            "properties":{
+                "session_id":{"type":"string","pattern":"^ses_[A-Za-z0-9_-]{1,96}$"},
+                "artifact_path":{"type":"string","minLength":1,"maxLength":500}
+            },
+            "required":["session_id","artifact_path"],
+            "additionalProperties":False,
+        },
+    })
+    TOOLS.append({
         "name":"local_task",
         "description":"Déléguer une tâche bornée au Corpus Local/OpenCode existant et retourner un résultat compact. Aucun transcript complet; aucune permission OpenCode n'est auto-approuvée.",
         "inputSchema":{
@@ -822,6 +836,17 @@ def call(name, a):
         try: value=handoff.resume(a.get("handoff_id"), current_context_graph=a.get("current_context_graph"))
         except (ValueError,RuntimeError) as exc: return result("REFUS: "+str(exc),True)
         return result(json.dumps(value,ensure_ascii=False,indent=2), not value.get("compatible"))
+    if name == "artifact_footprints":
+        if not _local_task_client_allowed():
+            return result("REFUS: artifact_footprints n'est pas exposé au client OpenCode local.", True)
+        try:
+            value = artifact_footprints.observe_session(
+                session_id=a.get("session_id"),
+                artifact_path=a.get("artifact_path"),
+            )
+        except (ValueError, RuntimeError) as exc:
+            return result("REFUS: " + str(exc), True)
+        return result(json.dumps(value,ensure_ascii=False,separators=(",",":")))
     if name == "local_task":
         if not _local_task_client_allowed():
             return result("REFUS: local_task n'est pas exposé au client OpenCode local.", True)
