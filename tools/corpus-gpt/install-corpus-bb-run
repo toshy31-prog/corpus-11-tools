@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+SELF="$(readlink -f "$0")"; SOURCE="$(dirname "$SELF")/corpus-bb-run"; DEST="$HOME/.local/bin/corpus-bb-run"; BACKUP_ROOT="$HOME/.local/share/corpus-runner-owner/backups"
+if [ "${1:-}" = "--rollback" ]; then
+  [ "$#" -eq 2 ] || exit 2
+  case "$2" in "$BACKUP_ROOT"/*) ;; *) echo "REFUS: backup hors owner" >&2; exit 3;; esac
+  [ -f "$2" ] || exit 4; bash -n "$2"
+  tmp="$(mktemp "$HOME/.local/bin/.corpus-bb-run.rollback.XXXXXX")"; trap 'rm -f "$tmp"' EXIT
+  cp "$2" "$tmp"; chmod 775 "$tmp"; mv -f "$tmp" "$DEST"; echo RUNNER_ROLLBACK=PASS; sha256sum "$DEST"; exit 0
+fi
+[ "$#" -eq 0 ] || { echo "usage: install-corpus-bb-run [--rollback BACKUP]" >&2; exit 2; }
+[ -f "$SOURCE" ] && [ ! -L "$SOURCE" ] || exit 5
+bash -n "$SOURCE"; mkdir -p "$(dirname "$DEST")" "$BACKUP_ROOT"
+if [ -e "$DEST" ]; then
+  [ -f "$DEST" ] && [ ! -L "$DEST" ] || exit 6
+  backup="$BACKUP_ROOT/corpus-bb-run.$(date +%Y%m%d-%H%M%S)-$$"; cp "$DEST" "$backup"; chmod 775 "$backup"; echo "RUNNER_BACKUP=$backup"
+fi
+tmp="$(mktemp "$HOME/.local/bin/.corpus-bb-run.install.XXXXXX")"; trap 'rm -f "$tmp"' EXIT
+cp "$SOURCE" "$tmp"; chmod 775 "$tmp"; bash -n "$tmp"
+src_sha="$(sha256sum "$SOURCE"|awk '{print $1}')"; tmp_sha="$(sha256sum "$tmp"|awk '{print $1}')"; [ "$src_sha" = "$tmp_sha" ] || exit 7
+mv -f "$tmp" "$DEST"; dep_sha="$(sha256sum "$DEST"|awk '{print $1}')"; [ "$src_sha" = "$dep_sha" ] || exit 8
+[ "$(stat -c '%a' "$DEST")" = 775 ] || exit 9
+echo RUNNER_INSTALL=PASS; echo "SOURCE_SHA256=$src_sha"; echo "DEPLOYED_SHA256=$dep_sha"
