@@ -1,5 +1,7 @@
 from __future__ import annotations
+import hashlib
 import json
+import re
 from pathlib import Path
 
 BROWSER_MARKER="# corpus-job-kind: browser"
@@ -19,6 +21,17 @@ def load(path):
  try:value=json.loads(Path(path).read_text())
  except (OSError,json.JSONDecodeError):return {}
  return value if isinstance(value,dict) else {}
+
+def managed_job_definition(job, *, jobs_root):
+ if not isinstance(job,str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,79}",job):
+  raise ValueError("job invalide")
+ root=Path(jobs_root).resolve()
+ path=(root/(job+".sh")).resolve()
+ if path.parent!=root or not path.is_file():
+  raise ValueError("job non enregistré")
+ source=path.read_text(encoding="utf-8")
+ return {"job":job,"source_path":str(path),"sha256":hashlib.sha256(source.encode("utf-8")).hexdigest(),"source":source}
+
 
 def kind_for(job,registry):
  value=registry.get(job)

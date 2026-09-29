@@ -1,3 +1,6 @@
+import hashlib
+from pathlib import Path
+import tempfile
 import unittest
 import corpus_gpt_job_policy as p
 class PolicyTests(unittest.TestCase):
@@ -26,4 +29,26 @@ class PolicyTests(unittest.TestCase):
   r={"x":{"effects":[]}}
   self.assertFalse(p.requires_durable_authorization("x",r))
   self.assertEqual(p.effect_projection("x",r)["status"],"attested")
+ def test_managed_job_definition_is_bounded_read_only(self):
+  with tempfile.TemporaryDirectory() as raw:
+   root=Path(raw)
+   script=root/"demo.sh"
+   source="#!/usr/bin/env bash\necho ok\n"
+   script.write_text(source)
+   value=p.managed_job_definition("demo",jobs_root=root)
+   self.assertEqual(value["job"],"demo")
+   self.assertEqual(value["source_path"],str(script.resolve()))
+   self.assertEqual(value["source"],source)
+   self.assertEqual(value["sha256"],hashlib.sha256(source.encode()).hexdigest())
+   self.assertEqual(script.read_text(),source)
+
+ def test_managed_job_definition_refuses_unregistered_or_pathlike_names(self):
+  with tempfile.TemporaryDirectory() as raw:
+   root=Path(raw)
+   (root/"registered.sh").write_text("#!/usr/bin/env bash\ntrue\n")
+   for name in ("missing","../registered","/tmp/registered","bad name",""):
+    with self.assertRaises(ValueError):
+     p.managed_job_definition(name,jobs_root=root)
+
+
 if __name__=="__main__":unittest.main()
