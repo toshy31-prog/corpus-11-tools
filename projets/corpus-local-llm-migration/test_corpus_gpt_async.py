@@ -1,3 +1,4 @@
+import fcntl
 import json
 from pathlib import Path
 import tempfile
@@ -145,6 +146,85 @@ class CorpusGptAsyncTests(unittest.TestCase):
             root = Path(raw)
             with self.assertRaises(ValueError):
                 async_jobs.start_job("other", allowed_jobs=["demo"], entry=root / "entry", bb=root / "bb", repo=root)
+
+    def make_lock_entry(self, root: Path, counter: Path) -> Path:
+        entry = root / "entry-lock.py"
+        entry.write_text("#!/usr/bin/env python3\nimport os\nfd=os.environ.get('CORPUS_BB_LOCK_HELD_FD')\nif not fd: raise SystemExit(94)\nwith open("+repr(str(Path("/tmp/placeholder")))+",'a'): pass\n")
+        entry.write_text(
+            "#!/usr/bin/env python3\n"
+            "import os\n"
+            "fd=os.environ.get('CORPUS_BB_LOCK_HELD_FD')\n"
+            "if not fd: raise SystemExit(94)\n"
+            "with open("+repr(str(counter))+",'a') as h: h.write('run\\n')\n"
+            "print('RUN_ID=fixture-run',flush=True)\n"
+            "print('REPORT=/tmp/fixture-report',flush=True)\n"
+        )
+        entry.chmod(0o700)
+        return entry
+
+    def wait_status(self, token, bb, wanted, timeout=4):
+        deadline=time.time()+timeout
+        while time.time()<deadline:
+            value=async_jobs.job_status(token,bb=bb,tail_lines=50)
+            if value.get("status")==wanted: return value
+            time.sleep(0.02)
+        self.fail("status non atteint: "+wanted)
+
+    def test_wait_for_runner_waits_then_executes_exactly_once(self):
+        with tempfile.TemporaryDirectory() as raw:
+            root=Path(raw); bb=root/"bb"; lock=bb/"state"/"runner-v2.lock"; lock.parent.mkdir(parents=True)
+            counter=root/"count"; entry=self.make_lock_entry(root,counter)
+            with lock.open("a+b") as holder:
+                fcntl.flock(holder.fileno(),fcntl.LOCK_EX)
+                started=async_jobs.start_job("fixture",allowed_jobs=["fixture"],entry=entry,bb=bb,repo=root,job_kind="local",wait_for_runner=True,runner_lock=lock,causal_refs={"decision_ref":"decision:rw1"})
+                self.wait_status(started["token"],bb,"waiting_for_runner"); self.assertFalse(counter.exists())
+                fcntl.flock(holder.fileno(),fcntl.LOCK_UN)
+            final=self.wait_done(started["token"],bb)
+            self.assertEqual(final["exit_code"],0); self.assertEqual(counter.read_text().splitlines(),["run"])
+            self.assertEqual(final["causal_refs"]["decision_ref"],"decision:rw1"); self.assertIn("execution_evidence",final)
+
+    def test_cancel_while_waiting_never_executes(self):
+        with tempfile.TemporaryDirectory() as raw:
+            root=Path(raw); bb=root/"bb"; lock=bb/"state"/"runner-v2.lock"; lock.parent.mkdir(parents=True)
+            counter=root/"count"; entry=self.make_lock_entry(root,counter)
+            with lock.open("a+b") as holder:
+                fcntl.flock(holder.fileno(),fcntl.LOCK_EX)
+                started=async_jobs.start_job("fixture",allowed_jobs=["fixture"],entry=entry,bb=bb,repo=root,job_kind="local",wait_for_runner=True,runner_lock=lock)
+                self.wait_status(started["token"],bb,"waiting_for_runner")
+                final=async_jobs.cancel_job(started["token"],bb=bb); self.assertEqual(final["status"],"cancelled")
+                fcntl.flock(holder.fileno(),fcntl.LOCK_UN)
+            time.sleep(0.2); self.assertFalse(counter.exists())
+
+    def test_two_waiters_never_overlap(self):
+        with tempfile.TemporaryDirectory() as raw:
+            root=Path(raw); bb=root/"bb"; lock=bb/"state"/"runner-v2.lock"; lock.parent.mkdir(parents=True)
+            events=root/"events"
+            def make_entry(name):
+                entry=root/("entry-"+name+".py")
+                entry.write_text(
+                    "#!/usr/bin/env python3\nimport time\n"
+                    + "p=" + repr(str(events)) + "\n"
+                    + "name=" + repr(name) + "\n"
+                    + "with open(p,'a') as h: h.write(name+' start '+str(time.time())+'\\n')\n"
+                    + "time.sleep(0.15)\n"
+                    + "with open(p,'a') as h: h.write(name+' end '+str(time.time())+'\\n')\n"
+                    + "print('RUN_ID='+name,flush=True)\nprint('REPORT=/tmp/'+name,flush=True)\n"
+                )
+                entry.chmod(0o700); return entry
+            with lock.open("a+b") as holder:
+                fcntl.flock(holder.fileno(),fcntl.LOCK_EX)
+                first=async_jobs.start_job("wa",allowed_jobs=["wa","wb"],entry=make_entry("wa"),bb=bb,repo=root,job_kind="local",wait_for_runner=True,runner_lock=lock)
+                second=async_jobs.start_job("wb",allowed_jobs=["wa","wb"],entry=make_entry("wb"),bb=bb,repo=root,job_kind="local",wait_for_runner=True,runner_lock=lock)
+                self.wait_status(first["token"],bb,"waiting_for_runner"); self.wait_status(second["token"],bb,"waiting_for_runner")
+                for _ in range(3):
+                    async_jobs.job_status(first["token"],bb=bb); async_jobs.job_status(second["token"],bb=bb)
+                self.assertFalse(events.exists())
+                fcntl.flock(holder.fileno(),fcntl.LOCK_UN)
+            self.wait_done(first["token"],bb); self.wait_done(second["token"],bb)
+            spans={}
+            for name,kind,stamp in (line.split() for line in events.read_text().splitlines()):
+                spans.setdefault(name,{})[kind]=float(stamp)
+            self.assertTrue(spans["wa"]["end"] <= spans["wb"]["start"] or spans["wb"]["end"] <= spans["wa"]["start"])
 
     def test_unknown_token_is_refused(self):
         with tempfile.TemporaryDirectory() as raw:

@@ -4,7 +4,15 @@ BASE="$HOME/.local/share/corpus-bb-runner"; RUNS="$BASE/runs"; STATE="$BASE/stat
 [ "$#" -eq 1 ] || { echo "usage: corpus-bb-run JOB.sh" >&2; exit 2; }
 JOB="$(readlink -f "$1")"; [ -f "$JOB" ] || { echo "REFUS: job absent: $JOB" >&2; exit 3; }
 mkdir -p "$RUNS" "$STATE"
-exec 9>"$LOCK"; flock -n 9 || { echo "REFUS: un job BB est déjà actif." >&2; exit 4; }
+INHERITED_FD="$(printenv CORPUS_BB_LOCK_HELD_FD || true)"
+if [ -n "$INHERITED_FD" ]; then
+  [[ "$INHERITED_FD" =~ ^[0-9]+$ ]] || { echo "REFUS: inherited runner lock fd invalide." >&2; exit 4; }
+  [ -e "/proc/$$/fd/$INHERITED_FD" ] || { echo "REFUS: inherited runner lock fd fermé." >&2; exit 4; }
+  [ "$(readlink -f "/proc/$$/fd/$INHERITED_FD")" = "$(readlink -f "$LOCK")" ] || { echo "REFUS: inherited runner lock fd incorrect." >&2; exit 4; }
+  flock -n "$INHERITED_FD" || { echo "REFUS: inherited runner lock non détenu." >&2; exit 4; }
+else
+  exec 9>"$LOCK"; flock -n 9 || { echo "REFUS: un job BB est déjà actif." >&2; exit 4; }
+fi
 ID="$(date +%Y%m%d-%H%M%S)-$$"; DIR="$RUNS/$ID"; mkdir -p "$DIR"
 OUT="$DIR/stdout.log"; ERR="$DIR/stderr.log"; META="$DIR/meta.txt"; REPORT="$DIR/report.txt"; START="$(date +%s)"
 echo "RUNNER_LOCK=ACQUIRED"; echo "RUN_ID=$ID"; echo "RUN_DIR=$DIR"

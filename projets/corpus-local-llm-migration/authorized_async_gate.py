@@ -50,6 +50,8 @@ def start_job(
     authorization_root=None,
     authorization_checker=authorization_owner.check_authorization,
     now=None,
+    wait_for_runner=False,
+    runner_lock=None,
 ):
     """Gate only explicitly protected jobs, then delegate to the historical start_job."""
     protected = requires_durable_authorization(job, job_registry)
@@ -82,6 +84,8 @@ def start_job(
         job_kind=job_kind,
         visual_target=visual_target,
         causal_refs=causal_refs,
+        wait_for_runner=wait_for_runner,
+        runner_lock=runner_lock,
     )
 
 def requires_durable_authorization(job, registry):

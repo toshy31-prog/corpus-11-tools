@@ -1,6 +1,7 @@
 """Persistent asynchronous execution for registered Corpus GPT jobs."""
 from __future__ import annotations
 
+import fcntl
 import json
 import os
 from pathlib import Path
@@ -208,7 +209,7 @@ def existing_active_job(job: str, *, bb, causal_refs=None) -> dict | None:
     """Return the async-owned idempotence verdict without starting new work."""
     causal_refs = normalize_causal_refs(causal_refs, allow_verification=False)
     for state in recent_states(bb, 100):
-        if state.get("job") == job and state.get("status") in {"starting", "running"}:
+        if state.get("job") == job and state.get("status") in {"starting", "waiting_for_runner", "running"}:
             existing_refs = normalize_causal_refs(state.get("causal_refs"))
             if existing_refs != causal_refs:
                 raise ValueError("job actif avec causal_refs différents")
@@ -224,10 +225,11 @@ def existing_active_job(job: str, *, bb, causal_refs=None) -> dict | None:
     return None
 
 
-def start_job(job: str, *, allowed_jobs: list[str], entry, bb, repo, job_kind="browser", visual_target="", causal_refs=None) -> dict:
+def start_job(job: str, *, allowed_jobs: list[str], entry, bb, repo, job_kind="browser", visual_target="", causal_refs=None, wait_for_runner=False, runner_lock=None) -> dict:
     if not isinstance(job, str) or job not in allowed_jobs:
         raise ValueError("job non enregistré")
     causal_refs = normalize_causal_refs(causal_refs, allow_verification=False)
+    if type(wait_for_runner) is not bool: raise ValueError("wait_for_runner invalide")
 
     bb = Path(bb)
     entry = Path(entry)
@@ -250,7 +252,11 @@ def start_job(job: str, *, allowed_jobs: list[str], entry, bb, repo, job_kind="b
         "log": str(_log_path(bb, token)),
         "job_kind": job_kind,
         "visual_target": visual_target if job_kind in {"browser-visible", "browser-hybrid"} else "",
+        "wait_for_runner": wait_for_runner,
     }
+    if wait_for_runner:
+        state["runner_lock"] = str(Path(runner_lock) if runner_lock is not None else bb / "state" / "runner-v2.lock")
+        state["resource_wait"] = "runner"
     if causal_refs:
         state["causal_refs"] = causal_refs
     _atomic_json(_state_path(bb, token), state)
@@ -293,7 +299,7 @@ def start_job(job: str, *, allowed_jobs: list[str], entry, bb, repo, job_kind="b
         pid = 0
     state["pid"] = pid or None
     state["unit"] = unit
-    state["status"] = "running"
+    state["status"] = "waiting_for_runner" if wait_for_runner else "running"
     state["updated_at_unix"] = time.time()
     _atomic_json(_state_path(bb, token), state)
     return {
@@ -303,7 +309,7 @@ def start_job(job: str, *, allowed_jobs: list[str], entry, bb, repo, job_kind="b
         "job": job,
         "pid": state["pid"],
         "unit": unit,
-        "status": "running",
+        "status": state["status"],
         "causal_refs": causal_refs,
     }
 
@@ -315,7 +321,7 @@ def cancel_job(token: str, *, bb, reason="explicit cancel_job request", source="
     if state is None:
         raise ValueError("token async inconnu")
     state = refresh_state(bb, state)
-    if state.get("status") not in {"starting", "running"}:
+    if state.get("status") not in {"starting", "waiting_for_runner", "running"}:
         raise ValueError("job async non actif")
     expected = "corpus-gpt-async-" + token + ".service"
     unit = state.get("unit")
@@ -388,14 +394,25 @@ def worker(token: str, job: str, entry, bb, repo) -> int:
         return 2
 
     started = time.time()
+    runner_lock_file = None
     try:
+        if state.get("wait_for_runner"):
+            lock_path = Path(state.get("runner_lock") or (bb / "state" / "runner-v2.lock"))
+            lock_path.parent.mkdir(parents=True, exist_ok=True)
+            runner_lock_file = lock_path.open("a+b")
+            fcntl.flock(runner_lock_file.fileno(), fcntl.LOCK_EX)
+            current = read_state(bb, token) or state
+            if current.get("status") in {"cancelling", "cancelled"}: return 0
+            state.update(current); state["status"] = "running"; state["runner_acquired_at_unix"] = time.time(); state["updated_at_unix"] = time.time()
+            _atomic_json(_state_path(bb, token), state)
         log_path = _log_path(bb, token)
         log_path.parent.mkdir(parents=True, exist_ok=True)
         with log_path.open("w", encoding="utf-8", errors="replace") as log:
             proc = subprocess.Popen(
                 [str(entry), "run", job],
                 cwd=str(repo),
-                env=_child_env(entry, bb),
+                env={**_child_env(entry, bb), **({"CORPUS_BB_LOCK_HELD_FD": str(runner_lock_file.fileno())} if runner_lock_file is not None else {})},
+                pass_fds=((runner_lock_file.fileno(),) if runner_lock_file is not None else ()),
                 text=True,
                 stdout=log,
                 stderr=subprocess.STDOUT,
@@ -405,6 +422,8 @@ def worker(token: str, job: str, entry, bb, repo) -> int:
         code = 125
         with _log_path(bb, token).open("a", encoding="utf-8", errors="replace") as log:
             log.write("ASYNC_WORKER_EXCEPTION=" + repr(exc) + "\n")
+    finally:
+        if runner_lock_file is not None: runner_lock_file.close()
     execution_evidence = {}
     try:
         log_text = _log_path(bb, token).read_text(errors="replace")

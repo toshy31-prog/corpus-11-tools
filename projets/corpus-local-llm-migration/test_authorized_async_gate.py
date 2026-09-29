@@ -3,6 +3,7 @@ from pathlib import Path
 import tempfile
 import time
 import unittest
+from unittest.mock import patch
 
 import authorization_owner as owner
 import authorized_async_gate as gate
@@ -132,6 +133,27 @@ class AuthorizedAsyncGateTests(unittest.TestCase):
             final=self.wait_done(result["token"],bb)
             self.assertEqual(final["exit_code"],7)
             self.assertEqual(owner.check_authorization(store,auth["authorization_ref"],action="start_job",target="fixture-A",now=100)["status"],"valid")
+
+    def test_wait_for_runner_is_propagated_to_async_owner(self):
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            entry = self.make_entry(root)
+            registry = {"free-job": {"kind": "local", "effects": []}}
+            with patch.object(async_jobs, "start_job", return_value={"started": True, "token": "tok", "job": "free-job", "status": "waiting_for_runner"}) as mocked:
+                value = gate.start_job(
+                    "free-job",
+                    allowed_jobs=["free-job"],
+                    entry=entry,
+                    bb=root / "bb",
+                    repo=root,
+                    job_kind="local",
+                    job_registry=registry,
+                    wait_for_runner=True,
+                    runner_lock=root / "runner-v2.lock",
+                )
+            self.assertEqual(value["status"], "waiting_for_runner")
+            self.assertTrue(mocked.call_args.kwargs["wait_for_runner"])
+            self.assertEqual(mocked.call_args.kwargs["runner_lock"], root / "runner-v2.lock")
 
     def test_owner_self_coherence_and_no_overwrite(self):
         with tempfile.TemporaryDirectory() as raw:

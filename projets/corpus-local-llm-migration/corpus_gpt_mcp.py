@@ -373,7 +373,8 @@ TOOLS = [
                     "authorization_ref":{"type":"string","minLength":1,"maxLength":500},
                     "parent_ref":{"type":"string","minLength":1,"maxLength":500},
                     "evidence_refs":{"type":"array","items":{"type":"string","minLength":1,"maxLength":500},"maxItems":100}
-                },"additionalProperties":False}
+                },"additionalProperties":False},
+                "wait_for_runner":{"type":"boolean"}
             },
             "required":["job"],
             "additionalProperties":False,
@@ -683,6 +684,7 @@ def call(name, a):
                 causal_refs=a.get("causal_refs"),
                 job_registry=registry,
                 authorization_config_path=AUTHORIZATION_CONFIG,
+                wait_for_runner=a.get("wait_for_runner", False),
             )
         except ValueError as exc:
             return result("REFUS: " + str(exc), True)
