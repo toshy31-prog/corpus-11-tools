@@ -4,13 +4,162 @@ It records the session id before prompt submission and never resubmits it.
 The process can therefore be launched independently of a browser/client.
 """
 import argparse
+from contextlib import contextmanager
+import fcntl
+import hashlib
 import json
 import os
+import re
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
+
+from corpus_paths import STATE_ROOT
+
+
+RECOVERY_ROOT = STATE_ROOT / "local-task-recovery"
+_RECOVERY_REF = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$")
+_SESSION_ID = re.compile(r"^ses_[A-Za-z0-9_-]{1,96}$")
+_RECOVERY_STATES = {
+    "creating", "create_uncertain", "created", "submitting",
+    "submitted", "submit_uncertain", "deadline",
+}
+
+
+def recovery_path(recovery_ref, root=None):
+    """Map a bounded caller handle to Corpus-owned durable state."""
+    if not isinstance(recovery_ref, str) or not _RECOVERY_REF.fullmatch(recovery_ref):
+        raise ValueError("recovery_ref invalide")
+    base = RECOVERY_ROOT if root is None else Path(root)
+    return base / (recovery_ref + ".json")
+
+
+def _spec_digest(spec):
+    try:
+        encoded = json.dumps(
+            spec, ensure_ascii=False, sort_keys=True, separators=(",", ":"),
+            allow_nan=False,
+        ).encode("utf-8")
+    except (TypeError, ValueError) as error:
+        raise ValueError("recovery spec invalide") from error
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def _read_recovery(path):
+    path = Path(path)
+    if not path.is_file() or path.stat().st_size > 64_000:
+        raise ValueError("recovery state absent ou invalide")
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError, json.JSONDecodeError) as error:
+        raise ValueError("recovery state illisible") from error
+    if not isinstance(value, dict) or value.get("schema_version") != 1:
+        raise ValueError("recovery state schema invalide")
+    if value.get("state") not in _RECOVERY_STATES:
+        raise ValueError("recovery state inconnu")
+    digest = value.get("spec_sha256")
+    if not isinstance(digest, str) or not re.fullmatch(r"[0-9a-f]{64}", digest):
+        raise ValueError("recovery spec digest invalide")
+    started = value.get("started_at")
+    deadline = value.get("deadline_seconds")
+    deadline_at = value.get("deadline_at")
+    if (not isinstance(started, (int, float))
+            or not isinstance(deadline, (int, float)) or deadline <= 0 or deadline > 3600
+            or not isinstance(deadline_at, (int, float))):
+        raise ValueError("recovery timing invalide")
+    if value["state"] in {"created", "submitting", "submitted", "submit_uncertain", "deadline"}:
+        ident = value.get("session_id")
+        if not isinstance(ident, str) or not _SESSION_ID.fullmatch(ident):
+            raise ValueError("recovery session_id invalide")
+    return value
+
+
+@contextmanager
+def _recovery_claim(path):
+    """Serialize only the create-or-resume decision and first submission."""
+    path = Path(path)
+    lock = Path(str(path) + ".lock")
+    lock.parent.mkdir(parents=True, exist_ok=True)
+    with lock.open("a+", encoding="utf-8") as handle:
+        fcntl.flock(handle.fileno(), fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+
+
+def start_or_resume(request, message, result_path, *, spec, title, directory, deadline=600):
+    """Create and submit once, or recover the same OpenCode session without resubmission."""
+    if not isinstance(deadline, (int, float)) or deadline <= 0 or deadline > 3600:
+        raise ValueError("deadline invalide")
+    path = Path(result_path)
+    digest = _spec_digest(spec)
+    with _recovery_claim(path):
+        if path.exists():
+            result = _read_recovery(path)
+            if result["spec_sha256"] != digest:
+                raise ValueError("recovery_ref incompatible avec cette tâche")
+            if result["state"] in {"submitting", "submitted", "submit_uncertain", "deadline"}:
+                return result, False
+            raise ValueError("recovery state incomplet; reprise refusée")
+
+        started = time.time()
+        result = {
+            "schema_version": 1,
+            "state": "creating",
+            "started_at": started,
+            "deadline_seconds": deadline,
+            "deadline_at": started + deadline,
+            "spec_sha256": digest,
+        }
+        atomic_json(path, result)
+        try:
+            session = request("POST", "/session", {"title": title}, directory)
+        except Exception as error:
+            result["state"] = "create_uncertain"
+            record_error(result, "create_session", error)
+            atomic_json(path, result)
+            return result, True
+
+        ident = session.get("id") if isinstance(session, dict) else None
+        if not isinstance(ident, str) or not _SESSION_ID.fullmatch(ident):
+            result["state"] = "create_uncertain"
+            record_error(result, "create_session", "session_id invalide")
+            atomic_json(path, result)
+            return result, True
+
+        result.update(state="created", session_id=ident)
+        atomic_json(path, result)
+
+        # Persist intent before the network call. A crash from this point onward
+        # is never interpreted as permission to send the prompt a second time.
+        result.update(state="submitting", submit_attempted_at=time.time())
+        atomic_json(path, result)
+        try:
+            request("POST", "/session/" + ident + "/prompt_async", message, directory)
+            result.update(state="submitted", submitted_at=time.time())
+        except Exception as error:
+            result["state"] = "submit_uncertain"
+            record_error(result, "submit_prompt", error)
+        atomic_json(path, result)
+        return result, True
+
+
+def mark_recovery_deadline(result_path, *, spec):
+    """Persist the bridge's own terminal deadline without creating or resubmitting work."""
+    path = Path(result_path)
+    value = _read_recovery(path)
+    if value["spec_sha256"] != _spec_digest(spec):
+        raise ValueError("recovery_ref incompatible avec cette tâche")
+    if value["state"] == "deadline":
+        return value
+    if value["state"] not in {"submitting", "submitted", "submit_uncertain"}:
+        raise ValueError("recovery state non actif")
+    value.update(state="deadline", finished_at=time.time())
+    atomic_json(path, value)
+    return value
 
 
 def atomic_json(path, value):

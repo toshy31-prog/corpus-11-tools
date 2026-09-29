@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import time
 
+import durable_e2e
 from durable_e2e import local_request
 
 MODEL = {
@@ -145,6 +146,7 @@ def submit_local_task(
     context_refs=None,
     constraints=None,
     session_id=None,
+    recovery_ref=None,
     title="Tâche locale bornée",
     agent="corpus",
     tool_scope=None,
@@ -155,14 +157,18 @@ def submit_local_task(
     clock=time.monotonic,
     sleep=time.sleep,
 ):
-    """Submit one turn to an existing OpenCode session or create one.
+    """Submit one turn, or recover a caller-known durable turn without resubmission.
 
     The result is compact by construction: no conversation history is copied.
+    OpenCode's session id remains the durable work identity; recovery_ref only
+    maps the caller to the Corpus-owned receipt that records that session.
     """
     if not isinstance(directory, str) or not directory:
         raise ValueError("directory requis")
     if session_id is not None and (not isinstance(session_id, str) or not session_id):
         raise ValueError("session_id invalide")
+    if recovery_ref is not None and session_id is not None:
+        raise ValueError("session_id et recovery_ref sont incompatibles")
     if not isinstance(deadline, (int, float)) or deadline <= 0 or deadline > 3600:
         raise ValueError("deadline invalide")
     payload = _message(objective, context_refs, constraints, agent=agent, tool_scope=tool_scope)
@@ -171,38 +177,99 @@ def submit_local_task(
 
     started = clock()
     created = session_id is None
-    try:
-        if created:
-            session = request("POST", "/session", {"title": title}, directory)
-            session_id = session.get("id") if isinstance(session, dict) else None
-            if not isinstance(session_id, str) or not session_id:
-                return {"status": "error", "error": "invalid_session", "session_id": None}
-        else:
-            request("GET", "/session/" + session_id, None, directory)
+    recovery_state = None
+    recovery_result_path = None
+    recovery_spec = None
+    extra = {}
 
-        before = request("GET", "/session/" + session_id + "/message", None, directory)
-        before_ids = {
-            row.get("info", {}).get("id")
-            for row in before if isinstance(row, dict)
-        } if isinstance(before, list) else set()
+    if recovery_ref is not None:
+        recovery_result_path = durable_e2e.recovery_path(recovery_ref)
+        recovery_spec = {"directory": directory, "message": payload}
+        recovery_state, created = durable_e2e.start_or_resume(
+            request,
+            payload,
+            recovery_result_path,
+            spec=recovery_spec,
+            title=title,
+            directory=directory,
+            deadline=deadline,
+        )
+        extra["recovery_ref"] = recovery_ref
+        session_id = recovery_state.get("session_id")
+        state = recovery_state.get("state")
+        if state == "deadline":
+            return {
+                "status": "error",
+                "error": "task_timeout",
+                "session_id": session_id,
+                "session_created": False,
+                "summary": "",
+                "tool_calls": [],
+                "bridge_seconds": 0.0,
+                "first_useful_seconds": None,
+                "total_seconds": max(0.0, time.time() - recovery_state["started_at"]),
+                **extra,
+            }
+        if not isinstance(session_id, str) or not session_id:
+            errors = recovery_state.get("errors") or []
+            detail = str(errors[-1].get("message") or "") if errors and isinstance(errors[-1], dict) else ""
+            return {
+                "status": "error",
+                "error": _classify_exception(RuntimeError(detail)) if detail else "recovery_unavailable",
+                "detail": detail[:1000],
+                "session_id": None,
+                "session_created": created,
+                "bridge_seconds": max(0.0, clock() - started),
+                **extra,
+            }
+        before_ids = set()
+        attempted = recovery_state.get("submit_attempted_at", recovery_state["started_at"])
+        bridge_seconds = max(0.0, attempted - recovery_state["started_at"])
+        recovery_deadline_at = recovery_state["deadline_at"]
+    else:
+        try:
+            if created:
+                session = request("POST", "/session", {"title": title}, directory)
+                session_id = session.get("id") if isinstance(session, dict) else None
+                if not isinstance(session_id, str) or not session_id:
+                    return {"status": "error", "error": "invalid_session", "session_id": None}
+            else:
+                request("GET", "/session/" + session_id, None, directory)
 
-        submit_started = clock()
-        request("POST", "/session/" + session_id + "/prompt_async", payload, directory)
-        bridge_seconds = max(0.0, clock() - submit_started)
-    except Exception as exc:
-        return {
-            "status": "error",
-            "error": _classify_exception(exc),
-            "detail": str(exc)[:1000],
-            "session_id": session_id,
-            "session_created": created,
-            "bridge_seconds": max(0.0, clock() - started),
-        }
+            before = request("GET", "/session/" + session_id + "/message", None, directory)
+            before_ids = {
+                row.get("info", {}).get("id")
+                for row in before if isinstance(row, dict)
+            } if isinstance(before, list) else set()
 
-    end = clock() + deadline
+            submit_started = clock()
+            request("POST", "/session/" + session_id + "/prompt_async", payload, directory)
+            bridge_seconds = max(0.0, clock() - submit_started)
+        except Exception as exc:
+            return {
+                "status": "error",
+                "error": _classify_exception(exc),
+                "detail": str(exc)[:1000],
+                "session_id": session_id,
+                "session_created": created,
+                "bridge_seconds": max(0.0, clock() - started),
+            }
+        end = clock() + deadline
+        recovery_deadline_at = None
+
+    def total_seconds():
+        if recovery_state is not None:
+            return max(0.0, time.time() - recovery_state["started_at"])
+        return max(0.0, clock() - started)
+
+    def before_deadline():
+        if recovery_deadline_at is not None:
+            return time.time() < recovery_deadline_at
+        return clock() < end
+
     first_useful = None
     latest = None
-    while clock() < end:
+    while before_deadline():
         try:
             permissions = request("GET", "/permission", None, directory)
             if isinstance(permissions, list):
@@ -222,7 +289,8 @@ def submit_local_task(
                         ],
                         "bridge_seconds": bridge_seconds,
                         "first_useful_seconds": first_useful,
-                        "total_seconds": max(0.0, clock() - started),
+                        "total_seconds": total_seconds(),
+                        **extra,
                     }
             messages = request("GET", "/session/" + session_id + "/message", None, directory)
         except Exception as exc:
@@ -238,7 +306,10 @@ def submit_local_task(
         if turn is not None:
             latest = turn
             if first_useful is None and (turn["text"] or turn["tool_calls"]):
-                first_useful = max(0.0, clock() - submit_started)
+                if recovery_state is not None:
+                    first_useful = max(0.0, time.time() - recovery_state["started_at"])
+                else:
+                    first_useful = max(0.0, clock() - submit_started)
             if turn["error"]:
                 return {
                     "status": "error",
@@ -250,7 +321,8 @@ def submit_local_task(
                     "tool_calls": turn["tool_calls"],
                     "bridge_seconds": bridge_seconds,
                     "first_useful_seconds": first_useful,
-                    "total_seconds": max(0.0, clock() - started),
+                    "total_seconds": total_seconds(),
+                    **extra,
                 }
             if turn["complete"]:
                 return {
@@ -261,7 +333,8 @@ def submit_local_task(
                     "tool_calls": turn["tool_calls"],
                     "bridge_seconds": bridge_seconds,
                     "first_useful_seconds": first_useful,
-                    "total_seconds": max(0.0, clock() - started),
+                    "total_seconds": total_seconds(),
+                    **extra,
                 }
         sleep(poll_delay)
 
@@ -269,6 +342,8 @@ def submit_local_task(
         request("POST", "/session/" + session_id + "/abort", {}, directory)
     except Exception:
         pass
+    if recovery_result_path is not None:
+        durable_e2e.mark_recovery_deadline(recovery_result_path, spec=recovery_spec)
     return {
         "status": "error",
         "error": "task_timeout",
@@ -278,5 +353,6 @@ def submit_local_task(
         "tool_calls": latest.get("tool_calls", []) if isinstance(latest, dict) else [],
         "bridge_seconds": bridge_seconds,
         "first_useful_seconds": first_useful,
-        "total_seconds": max(0.0, clock() - started),
+        "total_seconds": total_seconds(),
+        **extra,
     }

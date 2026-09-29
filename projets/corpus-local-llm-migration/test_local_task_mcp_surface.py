@@ -36,7 +36,8 @@ class LocalTaskMcpSurfaceTests(unittest.TestCase):
     def test_schema_is_bounded_and_compact(self):
         schema=tool_schema()
         self.assertEqual(schema["required"],["objective"])
-        self.assertEqual(set(schema["properties"]),{"objective","context_refs","constraints","session_id","tool_scope"})
+        self.assertEqual(set(schema["properties"]),{"objective","context_refs","constraints","session_id","recovery_ref","tool_scope"})
+        self.assertEqual(schema["properties"]["recovery_ref"]["pattern"],"^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$")
         self.assertFalse(schema["additionalProperties"])
         self.assertEqual(schema["properties"]["objective"]["maxLength"],12000)
         self.assertEqual(schema["properties"]["context_refs"]["maxItems"],20)
@@ -73,6 +74,7 @@ class LocalTaskMcpSurfaceTests(unittest.TestCase):
             'local_task_bridge.submit_local_task(',
             'directory=str(SELF.parents[2])',
             'session_id=a.get("session_id")',
+            'recovery_ref=a.get("recovery_ref")',
             'tool_scope=scope',
             'deadline=240',
             'value.get("status") != "completed"',

@@ -526,6 +526,7 @@ if _local_task_client_allowed():
                 "context_refs":{"type":"array","maxItems":20,"items":{"type":"string","minLength":1,"maxLength":500}},
                 "constraints":{"type":"array","maxItems":20,"items":{"type":"string","minLength":1,"maxLength":1000}},
                 "session_id":{"type":"string","pattern":"^ses_[A-Za-z0-9_-]{1,96}$"},
+                "recovery_ref":{"type":"string","pattern":"^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$"},
                 "tool_scope":{"type":"object","maxProperties":100,"additionalProperties":{"type":"boolean"}}
             },
             "required":["objective"],
@@ -811,6 +812,7 @@ def call(name, a):
                 context_refs=a.get("context_refs"),
                 constraints=a.get("constraints"),
                 session_id=a.get("session_id"),
+                recovery_ref=a.get("recovery_ref"),
                 tool_scope=scope,
                 deadline=240,
             )
