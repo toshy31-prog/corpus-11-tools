@@ -2,6 +2,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 import unittest
+from unittest.mock import patch
 
 import bounded_single_commit_publication as git1
 import bounded_publication_surface as surf
@@ -158,6 +159,206 @@ class BoundedPublicationSurfaceTests(unittest.TestCase):
                     expected_old=base,
                 )
             self.assertEqual(run(repo, "rev-parse", "publish"), base)
+
+
+    def worktree_selection(self, repo, base, path):
+        head_blob = run(repo, "rev-parse", f"{base}:{path}")
+        worktree_blob = run(repo, "hash-object", path)
+        return surf.WorktreeSelection(
+            path=path,
+            expected_head_blob=head_blob,
+            expected_worktree_blob=worktree_blob,
+        )
+
+    def test_worktree_two_file_commit_is_exact_and_preserves_foreign_dirty(self):
+        td, repo, base = self.fixture()
+        with td:
+            (repo / "app.txt").write_bytes(b"app-local\n")
+            (repo / "foreign.txt").write_bytes(b"foreign-local\n")
+            (repo / "second.txt").write_bytes(b"second-base\n")
+            run(repo, "add", "second.txt")
+            run(repo, "commit", "-m", "add second")
+            base = run(repo, "rev-parse", "HEAD")
+            (repo / "app.txt").write_bytes(b"app-local\n")
+            (repo / "second.txt").write_bytes(b"second-local\n")
+            (repo / "foreign.txt").write_bytes(b"foreign-local\n")
+            foreign_before = (repo / "foreign.txt").read_bytes()
+            files = [
+                self.worktree_selection(repo, base, "app.txt"),
+                self.worktree_selection(repo, base, "second.txt"),
+            ]
+            prepared = surf.prepare_worktree_commit(
+                repo,
+                source_branch="main",
+                expected_base=base,
+                files=files,
+                validator=lambda root: (
+                    (root / "app.txt").read_bytes() == b"app-local\n"
+                    and (root / "second.txt").read_bytes() == b"second-local\n"
+                    and (root / "foreign.txt").read_bytes() == b"foreign-base\n"
+                ),
+                message="two exact files",
+            )
+            commit = surf.commit_prepared_worktree(prepared)
+            self.assertEqual(commit.parent, base)
+            self.assertEqual(commit.tree, prepared.candidate.tree)
+            names = set(run(repo, "diff-tree", "--no-commit-id", "--name-only", "-r", commit.commit).splitlines())
+            self.assertEqual(names, {"app.txt", "second.txt"})
+            self.assertEqual((repo / "foreign.txt").read_bytes(), foreign_before)
+            self.assertEqual(run(repo, "rev-parse", "HEAD"), base)
+
+    def test_worktree_target_change_after_prepare_is_refused(self):
+        td, repo, base = self.fixture()
+        with td:
+            (repo / "app.txt").write_bytes(b"candidate\n")
+            files = [self.worktree_selection(repo, base, "app.txt")]
+            prepared = surf.prepare_worktree_commit(
+                repo, source_branch="main", expected_base=base, files=files,
+                validator=lambda root: True, message="candidate",
+            )
+            (repo / "app.txt").write_bytes(b"changed-after-prepare\n")
+            with self.assertRaisesRegex(git1.PublicationRefusal, "unexpected worktree blob"):
+                surf.commit_prepared_worktree(prepared)
+
+    def test_worktree_head_drift_after_prepare_is_refused(self):
+        td, repo, base = self.fixture()
+        with td:
+            (repo / "app.txt").write_bytes(b"candidate\n")
+            prepared = surf.prepare_worktree_commit(
+                repo, source_branch="main", expected_base=base,
+                files=[self.worktree_selection(repo, base, "app.txt")],
+                validator=lambda root: True, message="candidate",
+            )
+            (repo / "foreign.txt").write_bytes(b"next\n")
+            run(repo, "add", "foreign.txt")
+            run(repo, "commit", "-m", "advance")
+            with self.assertRaisesRegex(git1.PublicationRefusal, "base/head drift"):
+                surf.commit_prepared_worktree(prepared)
+
+    def test_worktree_unexpected_blob_and_path_escape_are_refused(self):
+        td, repo, base = self.fixture()
+        with td:
+            good = self.worktree_selection(repo, base, "app.txt")
+            bad = surf.WorktreeSelection(
+                path=good.path,
+                expected_head_blob=good.expected_head_blob,
+                expected_worktree_blob="0" * len(good.expected_worktree_blob),
+            )
+            with self.assertRaisesRegex(git1.PublicationRefusal, "unexpected worktree blob"):
+                surf.prepare_worktree_commit(
+                    repo, source_branch="main", expected_base=base, files=[bad],
+                    validator=lambda root: True, message="bad",
+                )
+            escape = surf.WorktreeSelection(
+                path="../app.txt",
+                expected_head_blob=good.expected_head_blob,
+                expected_worktree_blob=good.expected_worktree_blob,
+            )
+            with self.assertRaisesRegex(git1.PublicationRefusal, "invalid path"):
+                surf.prepare_worktree_commit(
+                    repo, source_branch="main", expected_base=base, files=[escape],
+                    validator=lambda root: True, message="escape",
+                )
+
+    def test_worktree_foreign_index_is_refused_not_embedded(self):
+        td, repo, base = self.fixture()
+        with td:
+            (repo / "app.txt").write_bytes(b"candidate\n")
+            files = [self.worktree_selection(repo, base, "app.txt")]
+            (repo / "foreign.txt").write_bytes(b"staged\n")
+            run(repo, "add", "foreign.txt")
+            with self.assertRaisesRegex(git1.PublicationRefusal, "human index"):
+                surf.prepare_worktree_commit(
+                    repo, source_branch="main", expected_base=base, files=files,
+                    validator=lambda root: True, message="candidate",
+                )
+            self.assertEqual(run(repo, "diff", "--cached", "--name-only"), "foreign.txt")
+
+
+    def prepare_one_worktree_commit(self, repo, base, content=b"candidate\n"):
+        (repo / "app.txt").write_bytes(content)
+        prepared = surf.prepare_worktree_commit(
+            repo,
+            source_branch="main",
+            expected_base=base,
+            files=[self.worktree_selection(repo, base, "app.txt")],
+            validator=lambda root: (root / "app.txt").read_bytes() == content,
+            message="candidate",
+        )
+        commit = surf.commit_prepared_worktree(prepared)
+        return prepared, commit
+
+    def test_checked_out_source_cas_happy_path_preserves_index_worktree_and_other_refs(self):
+        td, repo, base = self.fixture()
+        with td:
+            run(repo, "branch", "other", base)
+            (repo / "foreign.txt").write_bytes(b"foreign-local\n")
+            foreign_before = (repo / "foreign.txt").read_bytes()
+            index_before = (repo / ".git/index").read_bytes()
+            other_before = run(repo, "rev-parse", "refs/heads/other")
+            prepared, commit = self.prepare_one_worktree_commit(repo, base)
+            receipt = surf.cas_checked_out_source_branch(prepared, commit, expected_old=base)
+            self.assertEqual(receipt.ref, "refs/heads/main")
+            self.assertEqual(receipt.old, base)
+            self.assertEqual(receipt.new, commit.commit)
+            self.assertEqual(run(repo, "rev-parse", "HEAD"), commit.commit)
+            self.assertEqual(run(repo, "rev-parse", "refs/heads/main"), commit.commit)
+            self.assertEqual(run(repo, "rev-parse", "refs/heads/other"), other_before)
+            self.assertEqual((repo / ".git/index").read_bytes(), index_before)
+            self.assertEqual((repo / "foreign.txt").read_bytes(), foreign_before)
+            self.assertEqual((repo / "app.txt").read_bytes(), b"candidate\n")
+
+    def test_checked_out_source_cas_refuses_stale_main(self):
+        td, repo, base = self.fixture()
+        with td:
+            prepared, commit = self.prepare_one_worktree_commit(repo, base)
+            (repo / "foreign.txt").write_bytes(b"next\n")
+            run(repo, "add", "foreign.txt")
+            run(repo, "commit", "-m", "advance")
+            with self.assertRaisesRegex(git1.PublicationRefusal, "base/head drift|source branch stale"):
+                surf.cas_checked_out_source_branch(prepared, commit, expected_old=base)
+
+    def test_checked_out_source_cas_refuses_wrong_checked_out_branch(self):
+        td, repo, base = self.fixture()
+        with td:
+            run(repo, "branch", "other", base)
+            prepared, commit = self.prepare_one_worktree_commit(repo, base)
+            run(repo, "checkout", "other")
+            with self.assertRaisesRegex(git1.PublicationRefusal, "source branch changed|HEAD no longer points"):
+                surf.cas_checked_out_source_branch(prepared, commit, expected_old=base)
+
+    def test_checked_out_source_cas_refuses_forged_receipt(self):
+        td, repo, base = self.fixture()
+        with td:
+            prepared, commit = self.prepare_one_worktree_commit(repo, base)
+            forged = git1.CommitReceipt(commit=commit.commit, tree="0"*40, parent=commit.parent)
+            with self.assertRaisesRegex(git1.PublicationRefusal, "commit tree mismatch"):
+                surf.cas_checked_out_source_branch(prepared, forged, expected_old=base)
+
+    def test_checked_out_source_cas_refuses_wrong_parent(self):
+        td, repo, base = self.fixture()
+        with td:
+            prepared, commit = self.prepare_one_worktree_commit(repo, base)
+            forged = git1.CommitReceipt(commit=commit.commit, tree=commit.tree, parent="0"*40)
+            with self.assertRaisesRegex(git1.PublicationRefusal, "commit parent mismatch"):
+                surf.cas_checked_out_source_branch(prepared, forged, expected_old=base)
+
+    def test_checked_out_source_cas_refuses_target_drift_after_commit(self):
+        td, repo, base = self.fixture()
+        with td:
+            prepared, commit = self.prepare_one_worktree_commit(repo, base)
+            (repo / "app.txt").write_bytes(b"drift\n")
+            with self.assertRaisesRegex(git1.PublicationRefusal, "unexpected worktree blob"):
+                surf.cas_checked_out_source_branch(prepared, commit, expected_old=base)
+
+    def test_checked_out_source_cas_contacts_no_remote(self):
+        td, repo, base = self.fixture()
+        with td:
+            prepared, commit = self.prepare_one_worktree_commit(repo, base)
+            with patch.object(git1, "_run", wraps=git1._run) as wrapped:
+                surf.cas_checked_out_source_branch(prepared, commit, expected_old=base)
+            flat = [" ".join(call.args[1]) for call in wrapped.call_args_list if len(call.args) > 1]
+            self.assertFalse(any("push" in x or "fetch" in x or "ls-remote" in x for x in flat))
 
     def test_surface_has_no_remote_push_api(self):
         self.assertFalse(hasattr(surf, "push"))
