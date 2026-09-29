@@ -58,3 +58,24 @@ def execution_env(kind, visual_target=""):
  if kind in {"browser-visible","browser-hybrid"} and visual_target:
   env["CORPUS_BB_VISUAL_TARGET"]=visual_target
  return env
+
+EFFECTS = frozenset({"repo_write","filesystem_write","service_mutation","outbound_transport","browser_interaction"})
+
+def effect_projection(job, registry):
+ value=registry.get(job) if isinstance(registry,dict) else None
+ if not isinstance(value,dict) or "effects" not in value:
+  return {"status":"unknown","effects":[]}
+ effects=value["effects"]
+ if (not isinstance(effects,list) or len(effects)>len(EFFECTS)
+     or any(not isinstance(x,str) or x not in EFFECTS for x in effects)
+     or len(set(effects))!=len(effects)):
+  return {"status":"unknown","effects":[]}
+ out={"status":"attested","effects":sorted(effects)}
+ if "write_set" in value:
+  write_set=value["write_set"]
+  if (not isinstance(write_set,list) or len(write_set)>100
+      or any(not isinstance(x,str) or not x or len(x)>500 or x.startswith("/") or ".." in x.split("/") for x in write_set)
+      or len(set(write_set))!=len(write_set)):
+   return {"status":"unknown","effects":[]}
+  out["write_set"]=sorted(write_set)
+ return out

@@ -7,4 +7,23 @@ class PolicyTests(unittest.TestCase):
  def test_unknown_legacy_fails_conservative(self):self.assertEqual(p.kind_for("old",{}),"browser")
  def test_local_skips_only_infra(self):self.assertEqual(p.runner_env("local"),{"CORPUS_BB_SKIP_INFRA":"1"})
  def test_browser_has_no_skip(self):self.assertEqual(p.runner_env("browser"),{})
+ def test_legacy_effects_are_unknown(self):self.assertEqual(p.effect_projection("old",{}),{"status":"unknown","effects":[]})
+ def test_attested_read_only_has_no_invented_effect(self):self.assertEqual(p.effect_projection("read",{"read":{"effects":[]}}),{"status":"attested","effects":[]})
+ def test_effects_are_projected_before_execution(self):
+  r={"w":{"effects":["repo_write"]},"push":{"effects":["outbound_transport"]},"svc":{"effects":["filesystem_write","service_mutation"]},"web":{"effects":["browser_interaction"]}}
+  self.assertEqual(p.effect_projection("w",r)["effects"],["repo_write"])
+  self.assertEqual(p.effect_projection("push",r)["effects"],["outbound_transport"])
+  self.assertEqual(p.effect_projection("svc",r)["effects"],["filesystem_write","service_mutation"])
+  self.assertEqual(p.effect_projection("web",r)["effects"],["browser_interaction"])
+ def test_dynamic_may_effect_is_conservative(self):self.assertEqual(p.effect_projection("x",{"x":{"effects":["repo_write","outbound_transport"]}})["effects"],["outbound_transport","repo_write"])
+ def test_static_write_set_is_optional_projection(self):
+  self.assertEqual(p.effect_projection("x",{"x":{"effects":["repo_write"],"write_set":["b","a"]}})["write_set"],["a","b"])
+  self.assertNotIn("write_set",p.effect_projection("x",{"x":{"effects":["repo_write"]}}))
+ def test_invalid_effect_metadata_fails_closed(self):
+  for value in ({"effects":["safe"]},{"effects":"repo_write"},{"effects":["repo_write","repo_write"]},{"effects":[],"write_set":["../x"]}):
+   self.assertEqual(p.effect_projection("x",{"x":value}),{"status":"unknown","effects":[]})
+ def test_effect_metadata_does_not_grant_authorization(self):
+  r={"x":{"effects":[]}}
+  self.assertFalse(p.requires_durable_authorization("x",r))
+  self.assertEqual(p.effect_projection("x",r)["status"],"attested")
 if __name__=="__main__":unittest.main()
