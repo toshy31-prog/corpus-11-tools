@@ -19,6 +19,7 @@ import corpus_gpt_job_policy as job_policy
 import corpus_gpt_reload as reload_guard
 import corpus_gpt_planner as execution_planner
 import decision_grounding_orchestrator
+import local_task_bridge
 import visual_artifact_occurrence as visual_artifacts
 
 RUNTIME_LOAD_CONFIRMATION = reload_guard.confirm_loaded_runtime()
@@ -59,6 +60,25 @@ VISUAL_ARTIFACT_ROOT = BB / "visual-artifacts"
 
 def result(text, error=False):
     return {"content":[{"type":"text","text":text}], "isError": bool(error)}
+
+def _local_task_client_allowed():
+    # corpus_gpt_mcp.py is also spawned inside OpenCode itself.  Do not expose
+    # a GPT->local delegation tool back to that local model and create recursion.
+    return not bool(os.environ.get("OPENCODE_TEST_HOME"))
+
+def _local_task_scope(raw):
+    catalog = json.loads(SELF.with_name("tool_router_catalog_v2.json").read_text(encoding="utf-8"))
+    names = set(catalog.get("tools", {}))
+    if raw is None:
+        return {name: False for name in sorted(names)}
+    if (not isinstance(raw, dict) or len(raw) > 100
+            or not all(isinstance(k, str) and k and len(k) <= 200 and type(v) is bool
+                       for k, v in raw.items())):
+        raise ValueError("tool_scope invalide")
+    unknown = set(raw) - names
+    if unknown:
+        raise ValueError("tool_scope inconnu: " + ", ".join(sorted(unknown)))
+    return {name: bool(raw.get(name, False)) for name in sorted(names)}
 
 _BROWSER_WORKER = None
 _BROWSER_LOCK = threading.Lock()
@@ -493,7 +513,25 @@ TOOLS = [
         "description":"Lister les derniers dossiers de preuves Corpus BugBounty. Lecture seule.",
         "inputSchema":{"type":"object","properties":{},"additionalProperties":False},
     },
-]
+ ]
+
+if _local_task_client_allowed():
+    TOOLS.append({
+        "name":"local_task",
+        "description":"Déléguer une tâche bornée au Corpus Local/OpenCode existant et retourner un résultat compact. Aucun transcript complet; aucune permission OpenCode n'est auto-approuvée.",
+        "inputSchema":{
+            "type":"object",
+            "properties":{
+                "objective":{"type":"string","minLength":1,"maxLength":12000},
+                "context_refs":{"type":"array","maxItems":20,"items":{"type":"string","minLength":1,"maxLength":500}},
+                "constraints":{"type":"array","maxItems":20,"items":{"type":"string","minLength":1,"maxLength":1000}},
+                "session_id":{"type":"string","pattern":"^ses_[A-Za-z0-9_-]{1,96}$"},
+                "tool_scope":{"type":"object","maxProperties":100,"additionalProperties":{"type":"boolean"}}
+            },
+            "required":["objective"],
+            "additionalProperties":False,
+        },
+    })
 
 def call(name, a):
     a = a or {}
@@ -585,7 +623,8 @@ def call(name, a):
     if name == "job_info":
         job=a.get("job"); allowed=safe_jobs()
         if not isinstance(job,str) or job not in allowed:return result(json.dumps({"job":job,"exists":False},ensure_ascii=False))
-        return result(json.dumps({"job":job,"exists":True,"kind":job_policy.kind_for(job,job_policy.load(JOB_POLICY))},ensure_ascii=False))
+        registry=job_policy.load(JOB_POLICY)
+        return result(json.dumps({"job":job,"exists":True,"kind":job_policy.kind_for(job,registry),"effect":job_policy.effect_projection(job,registry)},ensure_ascii=False))
     if name == "capabilities":
         value={"protocol":"efficient-v2","fast_path":"status_then_known_job","doctor":"on_degraded_only","discovery":"jobs_or_job_info","long_jobs":"start_job_then_job_status","job_status_default_tail_lines":24,"managed_job_default_kind":"local","context_strategy":"stable_metadata_and_attested_evidence_before_heavy_recompute","delegation":"admission_only_no_permission_or_execution","browser_marker":"# corpus-job-kind: browser","visual_job_kinds":["browser-headless","browser-visible","browser-hybrid"],"visual_target_marker":"# corpus-visual-target: <url>","repo":str(SELF.parents[2]),"runner":str(BB)}
         return result(json.dumps(value,ensure_ascii=False,separators=(",",":")))
@@ -761,6 +800,23 @@ def call(name, a):
         try: value=handoff.resume(a.get("handoff_id"), current_context_graph=a.get("current_context_graph"))
         except (ValueError,RuntimeError) as exc: return result("REFUS: "+str(exc),True)
         return result(json.dumps(value,ensure_ascii=False,indent=2), not value.get("compatible"))
+    if name == "local_task":
+        if not _local_task_client_allowed():
+            return result("REFUS: local_task n'est pas exposé au client OpenCode local.", True)
+        try:
+            scope = _local_task_scope(a.get("tool_scope"))
+            value = local_task_bridge.submit_local_task(
+                objective=a.get("objective"),
+                directory=str(SELF.parents[2]),
+                context_refs=a.get("context_refs"),
+                constraints=a.get("constraints"),
+                session_id=a.get("session_id"),
+                tool_scope=scope,
+                deadline=240,
+            )
+        except ValueError as exc:
+            return result("REFUS: " + str(exc), True)
+        return result(json.dumps(value,ensure_ascii=False,separators=(",",":")), value.get("status") != "completed")
     if name == "browser":
         return browser_call(a)
     if name == "latest_evidence":
