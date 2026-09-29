@@ -123,7 +123,11 @@ test("MusicBrainz exact track credit and label IDs are retained; homonyms stay s
 test("Bandcamp supplied imports are labelled and cannot merge artists by a label subdomain", () => {
   const one = bandcampEvidenceGraph({ sourceUrl: "https://label.bandcamp.com/album/one", artist: "One", title: "Album One", tracks: [{ title: "Track" }], releaseDate: "2024" });
   const two = bandcampEvidenceGraph({ sourceUrl: "https://label.bandcamp.com/album/two", artist: "Two", title: "Album Two" });
-  assert.notEqual(one.entities.find(({ type }) => type === "artist").id, two.entities.find(({ type }) => type === "artist").id);
+  const suppliedArtist = one.entities.find(({ type }) => type === "artist");
+  assert.notEqual(suppliedArtist.id, two.entities.find(({ type }) => type === "artist").id);
+  assert.match(suppliedArtist.id, /^artist:bandcamp:/);
+  assert.equal(suppliedArtist.status, "user_supplied");
+  assert.equal(suppliedArtist.externalIds, undefined);
   assert.ok(one.edges.every(({ source }) => source === "user_supplied"));
   assert.throws(() => bandcampEvidenceGraph({ sourceUrl: "https://bandcamp.com.evil.test/album/test", artist: "A", title: "B" }), /Bandcamp/);
 });

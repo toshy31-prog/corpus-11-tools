@@ -150,6 +150,18 @@ try {
   check("Non-Bandcamp form URL rejected", !(await page.locator("#bandcamp-import-status").innerText()).includes("enregistrée"));
   await fill("#bandcamp-url", "https://fixture.bandcamp.com/album/audit"); await fill("#bandcamp-label", "Audit Label"); await fill("#bandcamp-tracks", "One\nTwo");
   await click('#bandcamp-entry-form button[type="submit"]'); await waitText("#bandcamp-import-status", "enregistrée");
+  await click("#workspace-change-seed");
+  check("Bandcamp import is not silently promoted into picker choices", await page.locator('#seed-results [data-seed-id^="artist:bandcamp:"]').count() === 0);
+  await page.keyboard.press("Escape");
+  const bandcampDeparture = page.locator("#workspace-notices button").filter({ hasText: "Utiliser Audit Artist comme départ" });
+  check("Bandcamp import offers an explicit departure action", await bandcampDeparture.count() === 1 && await bandcampDeparture.isVisible());
+  await bandcampDeparture.click();
+  await page.locator("#seed-action").filter({ hasText: "Audit Artist" }).waitFor();
+  check("Explicit Bandcamp departure reaches identity review without canonical promotion", await page.locator("#departure-artist-query").inputValue() === "Audit Artist");
+  await page.reload(); await click('[data-view="sources"]'); await openDetails("#catalogue-tools");
+  await click("#workspace-change-seed");
+  check("Reload does not silently retain the external departure in picker choices", await page.locator('#seed-results [data-seed-id^="artist:bandcamp:"]').count() === 0);
+  await page.keyboard.press("Escape");
   const uploadDetails = page.locator("#bandcamp-import").locator("xpath=ancestor::details[1]"); await uploadDetails.locator(":scope > summary").click();
   await page.locator("#bandcamp-import").setInputFiles({ name: "bad.json", mimeType: "application/json", buffer: Buffer.from("{}") }); await waitText("#bandcamp-import-status", "requ|URL|lien");
   await page.locator("#bandcamp-import").setInputFiles({ name: "valid.json", mimeType: "application/json", buffer: Buffer.from(JSON.stringify({ sourceUrl: "https://fixture.bandcamp.com/album/two", artist: "Audit Artist", title: "Second Release" })) }); await waitText("#bandcamp-import-status", "enregistrée");

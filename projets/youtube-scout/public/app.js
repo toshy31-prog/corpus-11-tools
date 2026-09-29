@@ -4968,12 +4968,40 @@ async function init() {
   memoryNotice.textContent = "Fouille éphémère : chaque départ repart à neuf. Bibliothèque, carnet, corrections et réglages conservés ; résultats non repris après rechargement.";
   document.querySelector(".workspace-topbar").after(memoryNotice);
   await refreshRuntimeStatus();
-  bindCatalogueTools({ fetcher: fetch, onImported: async () => {
+  bindCatalogueTools({ fetcher: fetch, onImported: async (data) => {
     await refreshExplorationGraph(activeDig.seed?.id || "");
     if (explorationSession) {
       explorationSession = createExplorationSession({ state: explorationGraph, seed: explorationSession.seed, directions: explorationSession.directions, depth: explorationSession.depth, previous: explorationSession, coverage: explorationSession.coverage, rerollKey: "bandcamp-import" });
       renderExplorationSession();
       await persistExplorationSession();
+    }
+    const importedEntities = Array.isArray(data?.graphDelta?.entities) ? data.graphDelta.entities : [];
+    const importedRelease = importedEntities.find(entity =>
+      entity?.type === "release" &&
+      entity?.source === "user_supplied" &&
+      /^release:bandcamp:/.test(String(entity.id || ""))
+    );
+    const importedArtistId = importedRelease?.artists?.[0]?.id;
+    const importedArtist = importedEntities.find(entity =>
+      entity?.id === importedArtistId &&
+      entity?.type === "artist" &&
+      entity?.source === "user_supplied" &&
+      /^artist:bandcamp:/.test(String(entity.id || ""))
+    );
+    if (importedArtist?.id && importedArtist?.name) {
+      const seed = {
+        id: importedArtist.id,
+        type: "artist",
+        label: importedArtist.name,
+        url: importedRelease?.url || importedArtist.url || "",
+        sourceType: "artist"
+      };
+      workspace?.notify("« " + (importedRelease?.title || importedArtist.name) + " » est enregistrée. L’artiste reste une donnée fournie par vous jusqu’à résolution catalogue.", {
+        action: {
+          label: "Utiliser " + importedArtist.name + " comme départ",
+          run: () => openExploration({ seed }).catch(error => workspace?.notify(error.message, { error: true }))
+        }
+      });
     }
   } });
   initializeExplorationDirections();
