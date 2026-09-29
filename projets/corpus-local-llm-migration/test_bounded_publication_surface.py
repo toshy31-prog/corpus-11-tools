@@ -440,6 +440,185 @@ class BoundedPublicationSurfaceTests(unittest.TestCase):
             k2 = surf.commit_prepared_worktree(p2)
             self.assertEqual(k2.parent, k1.commit)
 
+
+    def new_selection(self, repo, path, mode):
+        return surf.WorktreeSelection(
+            path=path,
+            expected_head_blob=None,
+            expected_worktree_blob=run(repo, "hash-object", path),
+            mode=mode,
+        )
+
+    def test_mixed_tracked_and_two_new_full_chain_then_second_publication(self):
+        td, repo, base = self.fixture()
+        with td:
+            (repo / "app.txt").write_bytes(b"tracked-p1\n")
+            (repo / "new-a.txt").write_bytes(b"new-a\n")
+            (repo / "new-b.sh").write_bytes(b"#!/bin/sh\necho b\n")
+            (repo / "new-b.sh").chmod(0o755)
+            (repo / "foreign.txt").write_bytes(b"foreign-p2\n")
+            (repo / "noise.txt").write_bytes(b"noise-untracked\n")
+            foreign_before = (repo / "foreign.txt").read_bytes()
+            noise_before = (repo / "noise.txt").read_bytes()
+
+            files = [
+                self.worktree_selection(repo, base, "app.txt"),
+                self.new_selection(repo, "new-a.txt", "100644"),
+                self.new_selection(repo, "new-b.sh", "100755"),
+            ]
+
+            with patch.object(git1, "_run", wraps=git1._run) as wrapped:
+                p1 = surf.prepare_worktree_commit(
+                    repo,
+                    source_branch="main",
+                    expected_base=base,
+                    files=files,
+                    validator=lambda root: (
+                        (root / "app.txt").read_bytes() == b"tracked-p1\n"
+                        and (root / "new-a.txt").read_bytes() == b"new-a\n"
+                        and (root / "new-b.sh").read_bytes() == b"#!/bin/sh\necho b\n"
+                        and bool((root / "new-b.sh").stat().st_mode & 0o111)
+                        and (root / "foreign.txt").read_bytes() == b"foreign-base\n"
+                        and not (root / "noise.txt").exists()
+                    ),
+                    message="mixed p1",
+                )
+                k1 = surf.commit_prepared_worktree(p1)
+                self.assertEqual(
+                    set(run(repo, "diff-tree", "--no-commit-id", "--name-only", "-r", k1.commit).splitlines()),
+                    {"app.txt", "new-a.txt", "new-b.sh"},
+                )
+                self.assertTrue(run(repo, "ls-tree", k1.commit, "--", "new-a.txt").startswith("100644 "))
+                self.assertTrue(run(repo, "ls-tree", k1.commit, "--", "new-b.sh").startswith("100755 "))
+                c1 = surf.cas_checked_out_source_branch(p1, k1, expected_old=base)
+                surf.reconcile_published_target_index(p1, k1, c1)
+
+                self.assertEqual(run(repo, "write-tree"), run(repo, "rev-parse", "HEAD^{tree}"))
+                self.assertEqual((repo / "foreign.txt").read_bytes(), foreign_before)
+                self.assertEqual((repo / "noise.txt").read_bytes(), noise_before)
+                self.assertEqual(run(repo, "ls-files", "--", "noise.txt"), "")
+
+                p2 = surf.prepare_worktree_commit(
+                    repo,
+                    source_branch="main",
+                    expected_base=k1.commit,
+                    files=[self.worktree_selection(repo, k1.commit, "foreign.txt")],
+                    validator=lambda root: (root / "foreign.txt").read_bytes() == b"foreign-p2\n",
+                    message="tracked p2",
+                )
+                k2 = surf.commit_prepared_worktree(p2)
+                c2 = surf.cas_checked_out_source_branch(p2, k2, expected_old=k1.commit)
+                surf.reconcile_published_target_index(p2, k2, c2)
+
+            commands = [" ".join(call.args[1]) for call in wrapped.call_args_list if len(call.args) > 1]
+            self.assertFalse(any(any(x in cmd.split() for x in ("push","fetch","pull","ls-remote")) for cmd in commands))
+            self.assertEqual(run(repo, "write-tree"), run(repo, "rev-parse", "HEAD^{tree}"))
+            self.assertEqual((repo / "noise.txt").read_bytes(), noise_before)
+
+    def test_new_declared_absent_but_tracked_is_refused(self):
+        td, repo, base = self.fixture()
+        with td:
+            good = self.worktree_selection(repo, base, "app.txt")
+            new_claim = surf.WorktreeSelection(
+                path="app.txt",
+                expected_head_blob=None,
+                expected_worktree_blob=good.expected_worktree_blob,
+                mode="100644",
+            )
+            with self.assertRaisesRegex(git1.PublicationRefusal, "expected absent target is tracked"):
+                surf.prepare_worktree_commit(
+                    repo, source_branch="main", expected_base=base,
+                    files=[new_claim], validator=lambda root: True, message="bad",
+                )
+
+    def test_new_target_already_staged_is_refused(self):
+        td, repo, base = self.fixture()
+        with td:
+            (repo / "new.txt").write_bytes(b"new\n")
+            selection = self.new_selection(repo, "new.txt", "100644")
+            run(repo, "add", "new.txt")
+            with self.assertRaisesRegex(git1.PublicationRefusal, "new target index entry must be absent"):
+                surf.prepare_worktree_commit(
+                    repo, source_branch="main", expected_base=base,
+                    files=[selection], validator=lambda root: True, message="bad",
+                )
+
+    def test_new_target_bytes_or_mode_change_after_prepare_is_refused(self):
+        td, repo, base = self.fixture()
+        with td:
+            (repo / "new.txt").write_bytes(b"new\n")
+            selection = self.new_selection(repo, "new.txt", "100644")
+            prepared = surf.prepare_worktree_commit(
+                repo, source_branch="main", expected_base=base,
+                files=[selection], validator=lambda root: True, message="new",
+            )
+            (repo / "new.txt").write_bytes(b"changed\n")
+            with self.assertRaisesRegex(git1.PublicationRefusal, "unexpected worktree blob"):
+                surf.commit_prepared_worktree(prepared)
+
+        td, repo, base = self.fixture()
+        with td:
+            (repo / "new.txt").write_bytes(b"new\n")
+            selection = self.new_selection(repo, "new.txt", "100644")
+            prepared = surf.prepare_worktree_commit(
+                repo, source_branch="main", expected_base=base,
+                files=[selection], validator=lambda root: True, message="new",
+            )
+            (repo / "new.txt").chmod(0o755)
+            with self.assertRaisesRegex(git1.PublicationRefusal, "unexpected worktree mode"):
+                surf.commit_prepared_worktree(prepared)
+
+    def test_new_target_staged_after_cas_before_reconcile_is_refused(self):
+        td, repo, base = self.fixture()
+        with td:
+            (repo / "new.txt").write_bytes(b"new\n")
+            prepared = surf.prepare_worktree_commit(
+                repo, source_branch="main", expected_base=base,
+                files=[self.new_selection(repo, "new.txt", "100644")],
+                validator=lambda root: True, message="new",
+            )
+            commit = surf.commit_prepared_worktree(prepared)
+            cas = surf.cas_checked_out_source_branch(prepared, commit, expected_old=base)
+            (repo / "new.txt").write_bytes(b"user-stage\n")
+            run(repo, "add", "new.txt")
+            with self.assertRaisesRegex(git1.PublicationRefusal, "new target index entry appeared"):
+                surf.reconcile_published_target_index(prepared, commit, cas)
+
+    def test_new_target_missing_symlink_or_forbidden_path_is_refused(self):
+        td, repo, base = self.fixture()
+        with td:
+            missing = surf.WorktreeSelection(
+                path="missing.txt", expected_head_blob=None,
+                expected_worktree_blob="0"*40, mode="100644",
+            )
+            with self.assertRaisesRegex(git1.PublicationRefusal, "target missing|unexpected worktree blob"):
+                surf.prepare_worktree_commit(
+                    repo, source_branch="main", expected_base=base,
+                    files=[missing], validator=lambda root: True, message="missing",
+                )
+
+            (repo / "real.txt").write_bytes(b"real\n")
+            (repo / "link.txt").symlink_to(repo / "real.txt")
+            link = surf.WorktreeSelection(
+                path="link.txt", expected_head_blob=None,
+                expected_worktree_blob=run(repo, "hash-object", "real.txt"), mode="100644",
+            )
+            with self.assertRaisesRegex(git1.PublicationRefusal, "symlink target refused"):
+                surf.prepare_worktree_commit(
+                    repo, source_branch="main", expected_base=base,
+                    files=[link], validator=lambda root: True, message="link",
+                )
+
+            forbidden = surf.WorktreeSelection(
+                path="../escape.txt", expected_head_blob=None,
+                expected_worktree_blob="0"*40, mode="100644",
+            )
+            with self.assertRaisesRegex(git1.PublicationRefusal, "invalid path"):
+                surf.prepare_worktree_commit(
+                    repo, source_branch="main", expected_base=base,
+                    files=[forbidden], validator=lambda root: True, message="escape",
+                )
+
     def test_surface_has_no_remote_push_api(self):
         self.assertFalse(hasattr(surf, "push"))
         self.assertFalse(hasattr(surf, "publish_remote"))

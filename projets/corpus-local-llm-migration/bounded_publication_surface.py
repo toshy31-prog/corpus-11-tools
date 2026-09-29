@@ -10,7 +10,9 @@ prepared state, expose MCP, or treat a client-serialized receipt as authority.
 from __future__ import annotations
 
 from dataclasses import dataclass
+import os
 from pathlib import Path
+import stat
 from typing import Any, Callable
 
 import bounded_single_commit_publication as git1
@@ -26,8 +28,9 @@ class PreparedPublication:
 @dataclass(frozen=True)
 class WorktreeSelection:
     path: str
-    expected_head_blob: str
+    expected_head_blob: str | None
     expected_worktree_blob: str
+    mode: str | None = None
 
 
 @dataclass(frozen=True)
@@ -38,25 +41,63 @@ class PreparedWorktreeCommit:
     message: str
 
 
-def _worktree_file_selection(repo: Path, base: str, item: WorktreeSelection) -> git1.FileSelection:
-    if not isinstance(item, WorktreeSelection):
-        raise git1.PublicationRefusal("worktree selection required")
-    path = git1._normalize_path(item.path)
-    entry = git1._base_entry(repo, base, path)
-    if entry is None:
-        raise git1.PublicationRefusal("tracked target required")
-    mode, kind, head_blob = entry
-    if kind != "blob" or mode not in git1.ALLOWED_MODES:
-        raise git1.PublicationRefusal("regular tracked target required")
-    if head_blob != item.expected_head_blob:
-        raise git1.PublicationRefusal("unexpected head blob")
-    target = (repo / path).resolve()
+def _worktree_regular_file(repo: Path, path: str) -> tuple[Path, str]:
+    raw = repo / path
+    current = repo
+    for part in Path(path).parts:
+        current = current / part
+        if current.is_symlink():
+            raise git1.PublicationRefusal("symlink target refused")
+    target = raw.resolve()
     try:
         target.relative_to(repo)
     except ValueError as exc:
         raise git1.PublicationRefusal("target outside repository") from exc
-    if not target.is_file():
+    if not target.exists():
         raise git1.PublicationRefusal("target missing")
+    mode_bits = target.stat().st_mode
+    if not stat.S_ISREG(mode_bits):
+        raise git1.PublicationRefusal("regular worktree file required")
+    git_mode = "100755" if mode_bits & 0o111 else "100644"
+    return target, git_mode
+
+
+def _index_rows_for_path(repo: Path, path: str, *, env=None) -> list[str]:
+    return git1._text(repo, "ls-files", "-s", "--", path, env=env).splitlines()
+
+
+def _worktree_file_selection(repo: Path, base: str, item: WorktreeSelection) -> git1.FileSelection:
+    if not isinstance(item, WorktreeSelection):
+        raise git1.PublicationRefusal("worktree selection required")
+    path = git1._normalize_path(item.path)
+    if not isinstance(item.expected_worktree_blob, str) or not git1.FULL_OID.fullmatch(item.expected_worktree_blob):
+        raise git1.PublicationRefusal("expected worktree blob required")
+
+    entry = git1._base_entry(repo, base, path)
+    if item.expected_head_blob is None:
+        if entry is not None:
+            raise git1.PublicationRefusal("expected absent target is tracked")
+        if _index_rows_for_path(repo, path):
+            raise git1.PublicationRefusal("new target index entry must be absent")
+        if item.mode not in git1.ALLOWED_MODES:
+            raise git1.PublicationRefusal("new target mode required")
+        mode = item.mode
+    else:
+        if not isinstance(item.expected_head_blob, str) or not git1.FULL_OID.fullmatch(item.expected_head_blob):
+            raise git1.PublicationRefusal("expected head blob invalid")
+        if entry is None:
+            raise git1.PublicationRefusal("tracked target required")
+        mode, kind, head_blob = entry
+        if kind != "blob" or mode not in git1.ALLOWED_MODES:
+            raise git1.PublicationRefusal("regular tracked target required")
+        if head_blob != item.expected_head_blob:
+            raise git1.PublicationRefusal("unexpected head blob")
+        if item.mode is not None and item.mode != mode:
+            raise git1.PublicationRefusal("tracked mode override unsupported")
+
+    target, worktree_mode = _worktree_regular_file(repo, path)
+    if item.expected_head_blob is None and worktree_mode != mode:
+        raise git1.PublicationRefusal("unexpected worktree mode")
     content = target.read_bytes()
     worktree_blob = git1._run(repo, ["hash-object", "--stdin"], input_bytes=content).stdout.decode().strip()
     if worktree_blob != item.expected_worktree_blob:
@@ -203,61 +244,108 @@ def reconcile_published_target_index(
         raise git1.PublicationRefusal("published source ref mismatch")
 
     targets = set(candidate.selected_paths)
-    before_entries = git1._text(repo, "ls-files", "-s").splitlines()
-    before_foreign = [line for line in before_entries if line.split("	",1)[-1] not in targets]
+    index_path = git1._git_path(repo, "index")
+    lock_path = Path(str(index_path) + ".lock")
+    if lock_path.exists():
+        raise git1.PublicationRefusal("index lock present")
+    index_before = index_path.read_bytes()
     worktree_before = {}
-    updates = []
+    worktree_modes_before = {}
+    promoted = False
+    fd = None
 
-    for item in prepared.selections:
-        path = git1._normalize_path(item.path)
-        rows = git1._text(repo, "ls-files", "-s", "--", path).splitlines()
-        if len(rows) != 1:
-            raise git1.PublicationRefusal("target index entry missing or ambiguous")
-        meta, indexed_path = rows[0].split("	", 1)
-        mode, index_blob, stage = meta.split()
-        if indexed_path != path or stage != "0":
-            raise git1.PublicationRefusal("target index entry invalid")
-        if index_blob != item.expected_head_blob:
-            raise git1.PublicationRefusal("target index changed since prepare")
+    try:
+        try:
+            fd = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, index_path.stat().st_mode & 0o777)
+        except FileExistsError as exc:
+            raise git1.PublicationRefusal("index lock present") from exc
+        if index_path.read_bytes() != index_before:
+            raise git1.PublicationRefusal("index changed before reconciliation lock")
+        os.write(fd, index_before)
+        os.fsync(fd)
+        os.close(fd)
+        fd = None
 
-        published = git1._base_entry(repo, commit.commit, path)
-        if published is None:
-            raise git1.PublicationRefusal("published target missing")
-        published_mode, kind, published_blob = published
-        if kind != "blob" or published_mode not in git1.ALLOWED_MODES:
-            raise git1.PublicationRefusal("published target invalid")
+        locked_env = {"GIT_INDEX_FILE": str(lock_path)}
+        before_entries = git1._text(repo, "ls-files", "-s", env=locked_env).splitlines()
+        before_foreign = [line for line in before_entries if line.split("	",1)[-1] not in targets]
+        updates = []
 
-        target = (repo / path).resolve()
-        worktree_before[path] = target.read_bytes()
-        updates.append(f"{published_mode} {published_blob}\t{path}\n")
+        for item in prepared.selections:
+            path = git1._normalize_path(item.path)
+            rows = _index_rows_for_path(repo, path, env=locked_env)
+            if item.expected_head_blob is None:
+                if rows:
+                    raise git1.PublicationRefusal("new target index entry appeared")
+            else:
+                if len(rows) != 1:
+                    raise git1.PublicationRefusal("target index entry missing or ambiguous")
+                meta, indexed_path = rows[0].split("	", 1)
+                mode, index_blob, stage = meta.split()
+                if indexed_path != path or stage != "0":
+                    raise git1.PublicationRefusal("target index entry invalid")
+                if index_blob != item.expected_head_blob:
+                    raise git1.PublicationRefusal("target index changed since prepare")
 
-    git1._run(repo, ["update-index", "--index-info"], input_bytes="".join(updates).encode())
+            published = git1._base_entry(repo, commit.commit, path)
+            if published is None:
+                raise git1.PublicationRefusal("published target missing")
+            published_mode, kind, published_blob = published
+            if kind != "blob" or published_mode not in git1.ALLOWED_MODES:
+                raise git1.PublicationRefusal("published target invalid")
 
-    after_entries = git1._text(repo, "ls-files", "-s").splitlines()
-    after_foreign = [line for line in after_entries if line.split("	",1)[-1] not in targets]
-    if after_foreign != before_foreign:
-        raise git1.PublicationRefusal("foreign index entries changed")
+            target, current_mode = _worktree_regular_file(repo, path)
+            worktree_before[path] = target.read_bytes()
+            worktree_modes_before[path] = current_mode
+            updates.append(f"{published_mode} {published_blob}\t{path}\n")
 
-    reconciled = {}
-    for item in prepared.selections:
-        path = item.path
-        published_mode, _, published_blob = git1._base_entry(repo, commit.commit, path)
-        rows = git1._text(repo, "ls-files", "-s", "--", path).splitlines()
-        mode, index_blob, stage = rows[0].split("	",1)[0].split()
-        if mode != published_mode or index_blob != published_blob or stage != "0":
-            raise git1.PublicationRefusal("target index reconciliation failed")
-        target = (repo / path).resolve()
-        if target.read_bytes() != worktree_before[path]:
-            raise git1.PublicationRefusal("target worktree changed during reconciliation")
-        reconciled[path] = published_blob
+        git1._run(
+            repo,
+            ["update-index", "--index-info"],
+            input_bytes="".join(updates).encode(),
+            env=locked_env,
+        )
 
-    return {
-        "ref": ref,
-        "commit": commit.commit,
-        "targets": reconciled,
-        "foreign_index_entries_preserved": True,
-        "worktree_preserved": True,
-    }
+        after_entries = git1._text(repo, "ls-files", "-s", env=locked_env).splitlines()
+        after_foreign = [line for line in after_entries if line.split("	",1)[-1] not in targets]
+        if after_foreign != before_foreign:
+            raise git1.PublicationRefusal("foreign index entries changed")
+
+        reconciled = {}
+        for item in prepared.selections:
+            path = item.path
+            published_mode, _, published_blob = git1._base_entry(repo, commit.commit, path)
+            rows = _index_rows_for_path(repo, path, env=locked_env)
+            if len(rows) != 1:
+                raise git1.PublicationRefusal("target index reconciliation failed")
+            mode, index_blob, stage = rows[0].split("	",1)[0].split()
+            if mode != published_mode or index_blob != published_blob or stage != "0":
+                raise git1.PublicationRefusal("target index reconciliation failed")
+            target, current_mode = _worktree_regular_file(repo, path)
+            if target.read_bytes() != worktree_before[path] or current_mode != worktree_modes_before[path]:
+                raise git1.PublicationRefusal("target worktree changed during reconciliation")
+            reconciled[path] = published_blob
+
+        if index_path.read_bytes() != index_before:
+            raise git1.PublicationRefusal("real index changed despite reconciliation lock")
+        os.replace(lock_path, index_path)
+        promoted = True
+
+        return {
+            "ref": ref,
+            "commit": commit.commit,
+            "targets": reconciled,
+            "foreign_index_entries_preserved": True,
+            "worktree_preserved": True,
+        }
+    finally:
+        if fd is not None:
+            os.close(fd)
+        if not promoted:
+            try:
+                lock_path.unlink()
+            except FileNotFoundError:
+                pass
 
 
 def prepare_bounded_publication(
