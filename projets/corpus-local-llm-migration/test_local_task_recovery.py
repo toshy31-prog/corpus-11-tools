@@ -164,6 +164,26 @@ class LocalTaskRecoveryTests(unittest.TestCase):
                 sum(url.endswith("/prompt_async") for _, url, _, _ in fake.calls), 1
             )
 
+    def test_E2_required_tools_are_bound_into_recovery_spec(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "receipt.json"
+            fake = FakeOpenCode()
+            payload = self.payload("audit")
+            first_spec = {**self.spec(payload), "required_tools": ["read"]}
+            durable_e2e.start_or_resume(
+                fake, payload, path, spec=first_spec,
+                title="test", directory="/Corpus", deadline=30,
+            )
+            second_spec = {**self.spec(payload), "required_tools": ["glob"]}
+            with self.assertRaisesRegex(ValueError, "incompatible"):
+                durable_e2e.start_or_resume(
+                    fake, payload, path, spec=second_spec,
+                    title="test", directory="/Corpus", deadline=30,
+                )
+            self.assertEqual(
+                sum(url.endswith("/prompt_async") for _, url, _, _ in fake.calls), 1
+            )
+
     def test_F_concurrent_creation_same_handle_is_at_most_once(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "receipt.json"

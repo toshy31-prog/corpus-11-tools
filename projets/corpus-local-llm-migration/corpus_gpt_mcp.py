@@ -66,9 +66,13 @@ def _local_task_client_allowed():
     # a GPT->local delegation tool back to that local model and create recursion.
     return not bool(os.environ.get("OPENCODE_TEST_HOME"))
 
-def _local_task_scope(raw):
+def _local_task_catalog_names():
     catalog = json.loads(SELF.with_name("tool_router_catalog_v2.json").read_text(encoding="utf-8"))
-    names = set(catalog.get("tools", {}))
+    return set(catalog.get("tools", {}))
+
+
+def _local_task_scope(raw):
+    names = _local_task_catalog_names()
     if raw is None:
         return {name: False for name in sorted(names)}
     if (not isinstance(raw, dict) or len(raw) > 100
@@ -79,6 +83,22 @@ def _local_task_scope(raw):
     if unknown:
         raise ValueError("tool_scope inconnu: " + ", ".join(sorted(unknown)))
     return {name: bool(raw.get(name, False)) for name in sorted(names)}
+
+
+def _local_task_required_tools(raw, scope):
+    if raw is None:
+        return None
+    if (not isinstance(raw, list) or len(raw) > 20
+            or not all(isinstance(name, str) and 0 < len(name) <= 200 for name in raw)
+            or len(set(raw)) != len(raw)):
+        raise ValueError("required_tools invalides")
+    unknown = set(raw) - _local_task_catalog_names()
+    if unknown:
+        raise ValueError("required_tools inconnus: " + ", ".join(sorted(unknown)))
+    disabled = [name for name in raw if not scope.get(name, False)]
+    if disabled:
+        raise ValueError("required_tools non activés: " + ", ".join(disabled))
+    return list(raw)
 
 _BROWSER_WORKER = None
 _BROWSER_LOCK = threading.Lock()
@@ -527,7 +547,8 @@ if _local_task_client_allowed():
                 "constraints":{"type":"array","maxItems":20,"items":{"type":"string","minLength":1,"maxLength":1000}},
                 "session_id":{"type":"string","pattern":"^ses_[A-Za-z0-9_-]{1,96}$"},
                 "recovery_ref":{"type":"string","pattern":"^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$"},
-                "tool_scope":{"type":"object","maxProperties":100,"additionalProperties":{"type":"boolean"}}
+                "tool_scope":{"type":"object","maxProperties":100,"additionalProperties":{"type":"boolean"}},
+                "required_tools":{"type":"array","maxItems":20,"uniqueItems":True,"items":{"type":"string","minLength":1,"maxLength":200}}
             },
             "required":["objective"],
             "additionalProperties":False,
@@ -806,6 +827,7 @@ def call(name, a):
             return result("REFUS: local_task n'est pas exposé au client OpenCode local.", True)
         try:
             scope = _local_task_scope(a.get("tool_scope"))
+            required_tools = _local_task_required_tools(a.get("required_tools"), scope)
             value = local_task_bridge.submit_local_task(
                 objective=a.get("objective"),
                 directory=str(SELF.parents[2]),
@@ -814,6 +836,7 @@ def call(name, a):
                 session_id=a.get("session_id"),
                 recovery_ref=a.get("recovery_ref"),
                 tool_scope=scope,
+                required_tools=required_tools,
                 deadline=240,
             )
         except ValueError as exc:

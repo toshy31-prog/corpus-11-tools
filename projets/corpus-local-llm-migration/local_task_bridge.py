@@ -62,7 +62,14 @@ def _turn(messages, before_ids):
         and row["info"].get("parentID") == user_id
     ]
     if not assistants:
-        return {"user_id": user_id, "complete": False, "text": "", "tool_calls": [], "error": None}
+        return {
+            "user_id": user_id,
+            "complete": False,
+            "text": "",
+            "tool_calls": [],
+            "all_tool_calls": [],
+            "error": None,
+        }
 
     text = "\n".join(
         value
@@ -84,8 +91,22 @@ def _turn(messages, before_ids):
         "complete": completed,
         "text": text,
         "tool_calls": tools[:100],
+        "all_tool_calls": tools,
         "error": error,
     }
+
+
+def _required_tools(raw, tool_scope):
+    if raw is None:
+        return []
+    if (not isinstance(raw, list) or len(raw) > 20
+            or not all(isinstance(name, str) and 0 < len(name) <= 200 for name in raw)
+            or len(set(raw)) != len(raw)):
+        raise ValueError("required_tools invalides")
+    disabled = [name for name in raw if not isinstance(tool_scope, dict) or not tool_scope.get(name, False)]
+    if disabled:
+        raise ValueError("required_tools non activés: " + ", ".join(disabled))
+    return list(raw)
 
 
 def _classify_exception(exc):
@@ -150,6 +171,7 @@ def submit_local_task(
     title="Tâche locale bornée",
     agent="corpus",
     tool_scope=None,
+    required_tools=None,
     base_url="http://127.0.0.1:18743",
     deadline=240,
     poll_delay=0.5,
@@ -171,6 +193,8 @@ def submit_local_task(
         raise ValueError("session_id et recovery_ref sont incompatibles")
     if not isinstance(deadline, (int, float)) or deadline <= 0 or deadline > 3600:
         raise ValueError("deadline invalide")
+    required_tools_supplied = required_tools is not None
+    required_tools = _required_tools(required_tools, tool_scope)
     payload = _message(objective, context_refs, constraints, agent=agent, tool_scope=tool_scope)
     if request is None:
         request = local_request(base_url)
@@ -185,6 +209,8 @@ def submit_local_task(
     if recovery_ref is not None:
         recovery_result_path = durable_e2e.recovery_path(recovery_ref)
         recovery_spec = {"directory": directory, "message": payload}
+        if required_tools_supplied:
+            recovery_spec["required_tools"] = required_tools
         recovery_state, created = durable_e2e.start_or_resume(
             request,
             payload,
@@ -325,6 +351,29 @@ def submit_local_task(
                     **extra,
                 }
             if turn["complete"]:
+                completed_tools = {
+                    call["tool"]
+                    for call in turn["all_tool_calls"]
+                    if call["status"] == "completed"
+                }
+                satisfied_tools = [name for name in required_tools if name in completed_tools]
+                missing_tools = [name for name in required_tools if name not in completed_tools]
+                if missing_tools:
+                    return {
+                        "status": "error",
+                        "error": "required_tool_not_satisfied",
+                        "required_tools": required_tools,
+                        "satisfied_tools": satisfied_tools,
+                        "missing_tools": missing_tools,
+                        "summary": turn["text"],
+                        "session_id": session_id,
+                        "session_created": created,
+                        "tool_calls": turn["tool_calls"],
+                        "bridge_seconds": bridge_seconds,
+                        "first_useful_seconds": first_useful,
+                        "total_seconds": total_seconds(),
+                        **extra,
+                    }
                 return {
                     "status": "completed",
                     "summary": turn["text"],
