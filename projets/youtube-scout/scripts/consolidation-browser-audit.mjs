@@ -256,6 +256,6 @@ try {
   throw error;
 } finally {
   if (visibleMirror) await visibleContext?.close().catch(() => {});
-  else await browser?.close();
+  await browser?.close().catch(() => {});
   server.kill("SIGTERM"); fixture.close();
 }
